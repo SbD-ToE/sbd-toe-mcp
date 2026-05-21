@@ -23,3 +23,12 @@ export function createZipArchive(
     };
   }
 ): Promise<boolean>;
+
+export function generateArtifactManifest(
+  bundleRoot: string,
+  version: string
+): Promise<string>;
+
+export function scanBundleForPrivatePaths(bundleRoot: string): Promise<string[]>;
+
+export function shouldExcludeFromBundle(filePath: string): boolean;

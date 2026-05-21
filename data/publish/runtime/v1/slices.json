@@ -1,0 +1,220 @@
+[
+  {
+    "composite_objective": "ACO-SCBI-007",
+    "contract_file": "appsec-core-supply-chain-build-integrity-slice-contract.yaml",
+    "contract_status": "working_contract",
+    "counts_actual": {
+      "artifacts": 10,
+      "control_objectives": 7,
+      "mechanisms": 5,
+      "practices": 7
+    },
+    "counts_declared": {
+      "artifacts": 10,
+      "control_objectives": 7,
+      "mechanisms": 6,
+      "practices": 7
+    },
+    "drift_fields": [
+      "mechanisms"
+    ],
+    "objective_family": "ACO-SCBI",
+    "scope": "supply_chain_and_build_integrity",
+    "slice_id": "ASC-01"
+  },
+  {
+    "composite_objective": "ACO-IAT-007",
+    "contract_file": "appsec-core-identity-access-session-trust-slice-contract.yaml",
+    "contract_status": "working_contract",
+    "counts_actual": {
+      "artifacts": 6,
+      "control_objectives": 7,
+      "mechanisms": 6,
+      "practices": 6
+    },
+    "counts_declared": {
+      "artifacts": 6,
+      "control_objectives": 7,
+      "mechanisms": 6,
+      "practices": 6
+    },
+    "drift_fields": [],
+    "objective_family": "ACO-IAT",
+    "scope": "identity_access_and_session_trust",
+    "slice_id": "ASC-02"
+  },
+  {
+    "composite_objective": "ACO-ATB-007",
+    "contract_file": "appsec-core-architecture-trust-boundaries-slice-contract.yaml",
+    "contract_status": "working_contract",
+    "counts_actual": {
+      "artifacts": 4,
+      "control_objectives": 7,
+      "mechanisms": 5,
+      "practices": 7
+    },
+    "counts_declared": {
+      "artifacts": 4,
+      "control_objectives": 7,
+      "mechanisms": 5,
+      "practices": 7
+    },
+    "drift_fields": [],
+    "objective_family": "ACO-ATB",
+    "scope": "architecture_and_trust_boundaries",
+    "slice_id": "ASC-03"
+  },
+  {
+    "composite_objective": "ACO-TSV-007",
+    "contract_file": "appsec-core-testing-security-validation-slice-contract.yaml",
+    "contract_status": "working_contract",
+    "counts_actual": {
+      "artifacts": 6,
+      "control_objectives": 7,
+      "mechanisms": 5,
+      "practices": 7
+    },
+    "counts_declared": {
+      "artifacts": 6,
+      "control_objectives": 7,
+      "mechanisms": 5,
+      "practices": 7
+    },
+    "drift_fields": [],
+    "objective_family": "ACO-TSV",
+    "scope": "testing_security_validation_and_empirical_assurance",
+    "slice_id": "ASC-04"
+  },
+  {
+    "composite_objective": "ACO-TMR-007",
+    "contract_file": "appsec-core-threat-modeling-risk-disposition-slice-contract.yaml",
+    "contract_status": "working_contract",
+    "counts_actual": {
+      "artifacts": 4,
+      "control_objectives": 8,
+      "mechanisms": 8,
+      "practices": 9
+    },
+    "counts_declared": {
+      "artifacts": 4,
+      "control_objectives": 8,
+      "mechanisms": 8,
+      "practices": 9
+    },
+    "drift_fields": [],
+    "objective_family": "ACO-TMR",
+    "scope": "threat_modeling_risk_disposition_and_mitigation_traceability",
+    "slice_id": "ASC-05"
+  },
+  {
+    "composite_objective": "ACO-SPC-007",
+    "contract_file": "appsec-core-secrets-protected-config-slice-contract.yaml",
+    "contract_status": "working_contract",
+    "counts_actual": {
+      "artifacts": 2,
+      "control_objectives": 7,
+      "mechanisms": 4,
+      "practices": 6
+    },
+    "counts_declared": {
+      "artifacts": 2,
+      "control_objectives": 7,
+      "mechanisms": 4,
+      "practices": 6
+    },
+    "drift_fields": [],
+    "objective_family": "ACO-SPC",
+    "scope": "secret_handling_protected_configuration_and_operational_identities",
+    "slice_id": "ASC-06"
+  },
+  {
+    "composite_objective": "ACO-IVF-007",
+    "contract_file": "appsec-core-input-validation-safe-failure-slice-contract.yaml",
+    "contract_status": "working_contract",
+    "counts_actual": {
+      "artifacts": 6,
+      "control_objectives": 8,
+      "mechanisms": 5,
+      "practices": 7
+    },
+    "counts_declared": {
+      "artifacts": 6,
+      "control_objectives": 8,
+      "mechanisms": 5,
+      "practices": 7
+    },
+    "drift_fields": [],
+    "objective_family": "ACO-IVF",
+    "scope": "input_output_data_safety_and_controlled_failure",
+    "slice_id": "ASC-07"
+  },
+  {
+    "composite_objective": "ACO-ITS-007",
+    "contract_file": "appsec-core-integration-trust-service-security-slice-contract.yaml",
+    "contract_status": "working_contract",
+    "counts_actual": {
+      "artifacts": 5,
+      "control_objectives": 7,
+      "mechanisms": 5,
+      "practices": 6
+    },
+    "counts_declared": {
+      "artifacts": 5,
+      "control_objectives": 7,
+      "mechanisms": 5,
+      "practices": 6
+    },
+    "drift_fields": [],
+    "objective_family": "ACO-ITS",
+    "scope": "integration_trust_and_service_to_service_security",
+    "slice_id": "ASC-08"
+  },
+  {
+    "composite_objective": "ACO-RPR-007",
+    "contract_file": "appsec-core-release-promotion-controlled-rollout-slice-contract.yaml",
+    "contract_status": "working_contract",
+    "counts_actual": {
+      "artifacts": 8,
+      "control_objectives": 10,
+      "mechanisms": 4,
+      "practices": 6
+    },
+    "counts_declared": {
+      "artifacts": 12,
+      "control_objectives": 10,
+      "mechanisms": 8,
+      "practices": 9
+    },
+    "drift_fields": [
+      "practices",
+      "mechanisms",
+      "artifacts"
+    ],
+    "objective_family": "ACO-RPR",
+    "scope": "release_promotion_controlled_rollout_and_rollback_readiness",
+    "slice_id": "ASC-09"
+  },
+  {
+    "composite_objective": "ACO-SLG-007",
+    "contract_file": "appsec-core-security-event-logging-audit-trail-slice-contract.yaml",
+    "contract_status": "working_contract",
+    "counts_actual": {
+      "artifacts": 2,
+      "control_objectives": 7,
+      "mechanisms": 4,
+      "practices": 5
+    },
+    "counts_declared": {
+      "artifacts": 2,
+      "control_objectives": 7,
+      "mechanisms": 6,
+      "practices": 5
+    },
+    "drift_fields": [
+      "mechanisms"
+    ],
+    "objective_family": "ACO-SLG",
+    "scope": "security_event_logging_audit_trail_and_centralized_logging",
+    "slice_id": "ASC-10"
+  }
+]

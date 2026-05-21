@@ -1,0 +1,527 @@
+[
+  {
+    "entity_id": "ACO-SCBI-001",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-SCBI",
+    "slice_id": "ASC-01"
+  },
+  {
+    "entity_id": "ACO-SCBI-002",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-SCBI",
+    "slice_id": "ASC-01"
+  },
+  {
+    "entity_id": "ACO-SCBI-003",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-SCBI",
+    "slice_id": "ASC-01"
+  },
+  {
+    "entity_id": "ACO-SCBI-004",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-SCBI",
+    "slice_id": "ASC-01"
+  },
+  {
+    "entity_id": "ACO-SCBI-005",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-SCBI",
+    "slice_id": "ASC-01"
+  },
+  {
+    "entity_id": "ACO-SCBI-006",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-SCBI",
+    "slice_id": "ASC-01"
+  },
+  {
+    "entity_id": "ACO-SCBI-007",
+    "entity_type": "ControlObjective",
+    "role": "composite",
+    "slice_family": "ACO-SCBI",
+    "slice_id": "ASC-01"
+  },
+  {
+    "entity_id": "ACO-IAT-001",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-IAT",
+    "slice_id": "ASC-02"
+  },
+  {
+    "entity_id": "ACO-IAT-002",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-IAT",
+    "slice_id": "ASC-02"
+  },
+  {
+    "entity_id": "ACO-IAT-003",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-IAT",
+    "slice_id": "ASC-02"
+  },
+  {
+    "entity_id": "ACO-IAT-004",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-IAT",
+    "slice_id": "ASC-02"
+  },
+  {
+    "entity_id": "ACO-IAT-005",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-IAT",
+    "slice_id": "ASC-02"
+  },
+  {
+    "entity_id": "ACO-IAT-006",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-IAT",
+    "slice_id": "ASC-02"
+  },
+  {
+    "entity_id": "ACO-IAT-007",
+    "entity_type": "ControlObjective",
+    "role": "composite",
+    "slice_family": "ACO-IAT",
+    "slice_id": "ASC-02"
+  },
+  {
+    "entity_id": "ACO-ATB-001",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-ATB",
+    "slice_id": "ASC-03"
+  },
+  {
+    "entity_id": "ACO-ATB-002",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-ATB",
+    "slice_id": "ASC-03"
+  },
+  {
+    "entity_id": "ACO-ATB-003",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-ATB",
+    "slice_id": "ASC-03"
+  },
+  {
+    "entity_id": "ACO-ATB-004",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-ATB",
+    "slice_id": "ASC-03"
+  },
+  {
+    "entity_id": "ACO-ATB-005",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-ATB",
+    "slice_id": "ASC-03"
+  },
+  {
+    "entity_id": "ACO-ATB-006",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-ATB",
+    "slice_id": "ASC-03"
+  },
+  {
+    "entity_id": "ACO-ATB-007",
+    "entity_type": "ControlObjective",
+    "role": "composite",
+    "slice_family": "ACO-ATB",
+    "slice_id": "ASC-03"
+  },
+  {
+    "entity_id": "ACO-TSV-001",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-TSV",
+    "slice_id": "ASC-04"
+  },
+  {
+    "entity_id": "ACO-TSV-002",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-TSV",
+    "slice_id": "ASC-04"
+  },
+  {
+    "entity_id": "ACO-TSV-003",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-TSV",
+    "slice_id": "ASC-04"
+  },
+  {
+    "entity_id": "ACO-TSV-004",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-TSV",
+    "slice_id": "ASC-04"
+  },
+  {
+    "entity_id": "ACO-TSV-005",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-TSV",
+    "slice_id": "ASC-04"
+  },
+  {
+    "entity_id": "ACO-TSV-006",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-TSV",
+    "slice_id": "ASC-04"
+  },
+  {
+    "entity_id": "ACO-TSV-007",
+    "entity_type": "ControlObjective",
+    "role": "composite",
+    "slice_family": "ACO-TSV",
+    "slice_id": "ASC-04"
+  },
+  {
+    "entity_id": "ACO-TMR-001",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-TMR",
+    "slice_id": "ASC-05"
+  },
+  {
+    "entity_id": "ACO-TMR-002",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-TMR",
+    "slice_id": "ASC-05"
+  },
+  {
+    "entity_id": "ACO-TMR-003",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-TMR",
+    "slice_id": "ASC-05"
+  },
+  {
+    "entity_id": "ACO-TMR-004",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-TMR",
+    "slice_id": "ASC-05"
+  },
+  {
+    "entity_id": "ACO-TMR-005",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-TMR",
+    "slice_id": "ASC-05"
+  },
+  {
+    "entity_id": "ACO-TMR-006",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-TMR",
+    "slice_id": "ASC-05"
+  },
+  {
+    "entity_id": "ACO-TMR-008",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-TMR",
+    "slice_id": "ASC-05"
+  },
+  {
+    "entity_id": "ACO-TMR-007",
+    "entity_type": "ControlObjective",
+    "role": "composite",
+    "slice_family": "ACO-TMR",
+    "slice_id": "ASC-05"
+  },
+  {
+    "entity_id": "ACO-SPC-001",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-SPC",
+    "slice_id": "ASC-06"
+  },
+  {
+    "entity_id": "ACO-SPC-002",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-SPC",
+    "slice_id": "ASC-06"
+  },
+  {
+    "entity_id": "ACO-SPC-003",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-SPC",
+    "slice_id": "ASC-06"
+  },
+  {
+    "entity_id": "ACO-SPC-004",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-SPC",
+    "slice_id": "ASC-06"
+  },
+  {
+    "entity_id": "ACO-SPC-005",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-SPC",
+    "slice_id": "ASC-06"
+  },
+  {
+    "entity_id": "ACO-SPC-006",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-SPC",
+    "slice_id": "ASC-06"
+  },
+  {
+    "entity_id": "ACO-SPC-007",
+    "entity_type": "ControlObjective",
+    "role": "composite",
+    "slice_family": "ACO-SPC",
+    "slice_id": "ASC-06"
+  },
+  {
+    "entity_id": "ACO-IVF-001",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-IVF",
+    "slice_id": "ASC-07"
+  },
+  {
+    "entity_id": "ACO-IVF-002",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-IVF",
+    "slice_id": "ASC-07"
+  },
+  {
+    "entity_id": "ACO-IVF-003",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-IVF",
+    "slice_id": "ASC-07"
+  },
+  {
+    "entity_id": "ACO-IVF-004",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-IVF",
+    "slice_id": "ASC-07"
+  },
+  {
+    "entity_id": "ACO-IVF-005",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-IVF",
+    "slice_id": "ASC-07"
+  },
+  {
+    "entity_id": "ACO-IVF-006",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-IVF",
+    "slice_id": "ASC-07"
+  },
+  {
+    "entity_id": "ACO-IVF-008",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-IVF",
+    "slice_id": "ASC-07"
+  },
+  {
+    "entity_id": "ACO-IVF-007",
+    "entity_type": "ControlObjective",
+    "role": "composite",
+    "slice_family": "ACO-IVF",
+    "slice_id": "ASC-07"
+  },
+  {
+    "entity_id": "ACO-ITS-001",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-ITS",
+    "slice_id": "ASC-08"
+  },
+  {
+    "entity_id": "ACO-ITS-002",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-ITS",
+    "slice_id": "ASC-08"
+  },
+  {
+    "entity_id": "ACO-ITS-003",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-ITS",
+    "slice_id": "ASC-08"
+  },
+  {
+    "entity_id": "ACO-ITS-004",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-ITS",
+    "slice_id": "ASC-08"
+  },
+  {
+    "entity_id": "ACO-ITS-005",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-ITS",
+    "slice_id": "ASC-08"
+  },
+  {
+    "entity_id": "ACO-ITS-006",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-ITS",
+    "slice_id": "ASC-08"
+  },
+  {
+    "entity_id": "ACO-ITS-007",
+    "entity_type": "ControlObjective",
+    "role": "composite",
+    "slice_family": "ACO-ITS",
+    "slice_id": "ASC-08"
+  },
+  {
+    "entity_id": "ACO-RPR-001",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-RPR",
+    "slice_id": "ASC-09"
+  },
+  {
+    "entity_id": "ACO-RPR-002",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-RPR",
+    "slice_id": "ASC-09"
+  },
+  {
+    "entity_id": "ACO-RPR-003",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-RPR",
+    "slice_id": "ASC-09"
+  },
+  {
+    "entity_id": "ACO-RPR-004",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-RPR",
+    "slice_id": "ASC-09"
+  },
+  {
+    "entity_id": "ACO-RPR-005",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-RPR",
+    "slice_id": "ASC-09"
+  },
+  {
+    "entity_id": "ACO-RPR-006",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-RPR",
+    "slice_id": "ASC-09"
+  },
+  {
+    "entity_id": "ACO-RPR-008",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-RPR",
+    "slice_id": "ASC-09"
+  },
+  {
+    "entity_id": "ACO-RPR-009",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-RPR",
+    "slice_id": "ASC-09"
+  },
+  {
+    "entity_id": "ACO-RPR-010",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-RPR",
+    "slice_id": "ASC-09"
+  },
+  {
+    "entity_id": "ACO-RPR-007",
+    "entity_type": "ControlObjective",
+    "role": "composite",
+    "slice_family": "ACO-RPR",
+    "slice_id": "ASC-09"
+  },
+  {
+    "entity_id": "ACO-SLG-001",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-SLG",
+    "slice_id": "ASC-10"
+  },
+  {
+    "entity_id": "ACO-SLG-002",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-SLG",
+    "slice_id": "ASC-10"
+  },
+  {
+    "entity_id": "ACO-SLG-003",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-SLG",
+    "slice_id": "ASC-10"
+  },
+  {
+    "entity_id": "ACO-SLG-004",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-SLG",
+    "slice_id": "ASC-10"
+  },
+  {
+    "entity_id": "ACO-SLG-005",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-SLG",
+    "slice_id": "ASC-10"
+  },
+  {
+    "entity_id": "ACO-SLG-006",
+    "entity_type": "ControlObjective",
+    "role": "atomic",
+    "slice_family": "ACO-SLG",
+    "slice_id": "ASC-10"
+  },
+  {
+    "entity_id": "ACO-SLG-007",
+    "entity_type": "ControlObjective",
+    "role": "composite",
+    "slice_family": "ACO-SLG",
+    "slice_id": "ASC-10"
+  }
+]

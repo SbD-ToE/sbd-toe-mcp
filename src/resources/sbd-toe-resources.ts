@@ -2,6 +2,11 @@
 // Source of truth: assets/agent-guide.md chapter reference table.
 // Used by MCP resources chapter-applicability and prompt setup_sbd_toe_agent.
 
+import { readFileSync } from "node:fs";
+import path from "node:path";
+
+import { resolveAppPath } from "../config.js";
+
 const VALID_RISK_LEVELS = ["L1", "L2", "L3"] as const;
 type RiskLevel = (typeof VALID_RISK_LEVELS)[number];
 
@@ -125,5 +130,99 @@ export function buildSetupAgentPrompt(riskLevel: string, projectRole?: string): 
     `Call plan_sbd_toe_repo_governance(riskLevel="${riskLevel}") to get the full list of artefacts/documents`,
     "the manual identifies for this risk level, grouped by chapter.",
     "Use that list as the basis for any governance, documentation, or audit planning — do not invent artefacts."
+  ].join("\n");
+}
+
+const VALID_CODEGEN_MODES = ["codegen", "review", "test-plan"] as const;
+type CodegenMode = (typeof VALID_CODEGEN_MODES)[number];
+
+function isValidCodegenMode(value: unknown): value is CodegenMode {
+  return typeof value === "string" && (VALID_CODEGEN_MODES as readonly string[]).includes(value);
+}
+
+/**
+ * Loads the static grounded-codegen guide from disk. Path is resolved against
+ * the configured app root so packaged installs and dev checkouts both work.
+ */
+export function readGroundedCodegenGuide(): string {
+  const guidePath = resolveAppPath(path.join("prompts", "sbd-toe-grounded-codegen.md"));
+  return readFileSync(guidePath, "utf-8");
+}
+
+/**
+ * Builds a per-task prompt that bundles the canonical grounded-codegen guide
+ * with the user's task and a directive to call `prepare_sbd_toe_codegen_context`
+ * before producing any code. The mode/risk_level/concerns/regulatory_frameworks
+ * arguments are echoed back so the agent can call the tool with the same shape
+ * the user described.
+ */
+export function buildGroundedCodegenPrompt(args: {
+  task: string;
+  mode?: string;
+  riskLevel?: string;
+  concerns?: readonly string[];
+  regulatoryFrameworks?: readonly string[];
+  includeRegulatoryOverlay?: boolean;
+  stack?: string;
+}): string {
+  const task = args.task.trim();
+  if (task.length === 0) {
+    throw new Error('The "task" argument is required and must be a non-empty string.');
+  }
+  const mode = isValidCodegenMode(args.mode) ? args.mode : "codegen";
+  // Whitelist riskLevel to L1/L2/L3. Anything else (including stray strings,
+  // numbers cast to string, etc.) is treated as "not provided" so the agent
+  // is forced to ask the user instead of echoing untrusted input.
+  const riskLevelLine = isValidRiskLevel(args.riskLevel)
+    ? `- risk_level: ${args.riskLevel}`
+    : '- risk_level: (not provided — ask the user before proceeding if the ask is non-trivial)';
+  const concernsLine =
+    args.concerns && args.concerns.length > 0
+      ? `- concerns: [${args.concerns.map((concern) => JSON.stringify(concern)).join(", ")}]`
+      : "- concerns: (let the activation engine infer them, or supply explicit ones if you have them)";
+  const stackLine =
+    args.stack !== undefined && args.stack.length > 0
+      ? `- stack: ${args.stack}`
+      : "- stack: (informational)";
+  const overlayWanted =
+    args.includeRegulatoryOverlay === true ||
+    (args.regulatoryFrameworks !== undefined && args.regulatoryFrameworks.length > 0);
+  const regulatoryLine = overlayWanted
+    ? `- regulatory_frameworks: ${
+        args.regulatoryFrameworks && args.regulatoryFrameworks.length > 0
+          ? `[${args.regulatoryFrameworks.map((framework) => JSON.stringify(framework)).join(", ")}]`
+          : "(none specified — overlay catalog only)"
+      }; include_regulatory_overlay: true`
+    : "- regulatory_frameworks: (none); include_regulatory_overlay: false";
+
+  const guide = readGroundedCodegenGuide();
+
+  return [
+    guide,
+    "",
+    "---",
+    "",
+    "## Task for this session",
+    "",
+    `> ${task}`,
+    "",
+    "### Suggested first tool call",
+    "",
+    "Call `prepare_sbd_toe_codegen_context` with at least:",
+    "",
+    `- task: ${JSON.stringify(task)}`,
+    `- mode: ${mode}`,
+    riskLevelLine,
+    concernsLine,
+    stackLine,
+    regulatoryLine,
+    "",
+    "Then branch on `status` exactly as described in the guide above:",
+    "- `ready_for_codegen` → fill `security_rationale_template`, cite `citation_map` IDs, produce code + tests + evidence.",
+    "- `needs_clarification` → STOP, ask the user the specific missing inputs.",
+    "- `needs_decomposition` → STOP, propose 2–4 bite-size sub-tasks; ask the user to pick one before re-calling the tool.",
+    "- `unsupported_scope` → STOP, report the missing capability verbatim. Do NOT fabricate IDs.",
+    "",
+    "Do NOT declare regulatory compliance. Do NOT invent identifiers. Do NOT treat AI-generated code as evidence."
   ].join("\n");
 }

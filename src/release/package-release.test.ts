@@ -28,6 +28,8 @@ interface PackageReleaseLib {
       };
     }
   ): Promise<boolean>;
+  scanBundleForPrivatePaths(bundleRoot: string): Promise<string[]>;
+  shouldExcludeFromBundle(filePath: string): boolean;
 }
 
 async function loadPackageReleaseLib(): Promise<PackageReleaseLib> {
@@ -261,5 +263,121 @@ describe("package-release", () => {
     } finally {
       await rm(repoRoot, { recursive: true, force: true });
     }
+  });
+
+  it("scanBundleForPrivatePaths flags absolute build-machine paths in docs/", async () => {
+    const packageReleaseLib = await loadPackageReleaseLib();
+    const bundleRoot = await mkdtemp(path.join(os.tmpdir(), "sbd-leak-test-"));
+    try {
+      await writeText(
+        path.join(bundleRoot, "docs", "leaky-plan.md"),
+        '"args": ["/Volumes/G-DRIVE/Shared/Manual-SbD-ToE/sbd-toe-mcp-poc/dist/index.js"]\n'
+      );
+      const leaks = await packageReleaseLib.scanBundleForPrivatePaths(bundleRoot);
+      expect(leaks.length).toBeGreaterThan(0);
+      expect(leaks.join(" ")).toMatch(/docs\/leaky-plan\.md/);
+      expect(leaks.join(" ")).toMatch(/Volumes/);
+    } finally {
+      await rm(bundleRoot, { recursive: true, force: true });
+    }
+  });
+
+  it("scanBundleForPrivatePaths allowlists placeholder strings like <absolute-path-to-repo>", async () => {
+    const packageReleaseLib = await loadPackageReleaseLib();
+    const bundleRoot = await mkdtemp(path.join(os.tmpdir(), "sbd-leak-allow-"));
+    try {
+      await writeText(
+        path.join(bundleRoot, "docs", "guide.md"),
+        '"args": ["<absolute-path-to-repo>/dist/index.js"]\n' +
+          "Replace `<repo-root>` with the local checkout path.\n"
+      );
+      const leaks = await packageReleaseLib.scanBundleForPrivatePaths(bundleRoot);
+      expect(leaks).toEqual([]);
+    } finally {
+      await rm(bundleRoot, { recursive: true, force: true });
+    }
+  });
+
+  it("scanBundleForPrivatePaths catches /Users/ and /home/ leaks in any text artefact", async () => {
+    const packageReleaseLib = await loadPackageReleaseLib();
+    const bundleRoot = await mkdtemp(path.join(os.tmpdir(), "sbd-leak-multi-"));
+    try {
+      await writeText(
+        path.join(bundleRoot, "data", "publish", "runtime", "x.json"),
+        '{"trace":"corpus document /Users/alice/foo/bar.md matched"}'
+      );
+      await writeText(
+        path.join(bundleRoot, "examples", "config.json"),
+        '{"cmd":"node /home/runner/work/x.js"}'
+      );
+      const leaks = await packageReleaseLib.scanBundleForPrivatePaths(bundleRoot);
+      expect(leaks.length).toBe(2);
+    } finally {
+      await rm(bundleRoot, { recursive: true, force: true });
+    }
+  });
+
+  it("scanBundleForPrivatePaths returns empty on a clean bundle", async () => {
+    const packageReleaseLib = await loadPackageReleaseLib();
+    const bundleRoot = await mkdtemp(path.join(os.tmpdir(), "sbd-leak-clean-"));
+    try {
+      await writeText(path.join(bundleRoot, "docs", "guide.md"), "Use the cli.\n");
+      await writeJson(path.join(bundleRoot, "data", "publish", "x.json"), { ok: true });
+      const leaks = await packageReleaseLib.scanBundleForPrivatePaths(bundleRoot);
+      expect(leaks).toEqual([]);
+    } finally {
+      await rm(bundleRoot, { recursive: true, force: true });
+    }
+  });
+
+  it("generateArtifactManifest walks data/publish recursively (v0.9.0 fix)", async () => {
+    const packageReleaseLib = await loadPackageReleaseLib();
+    const bundleRoot = await mkdtemp(path.join(os.tmpdir(), "sbd-manifest-recursive-"));
+    try {
+      await writeJson(path.join(bundleRoot, "data", "publish", "top.json"), { a: 1 });
+      await writeJson(
+        path.join(bundleRoot, "data", "publish", "runtime", "v1", "v1_manifest.json"),
+        { ok: true }
+      );
+      await writeJson(
+        path.join(bundleRoot, "data", "publish", "overlay", "external_frameworks.json"),
+        { items: [] }
+      );
+      await writeText(
+        path.join(bundleRoot, "data", "publish", "ontology", "appsec-core-ontology.yaml"),
+        "ok: true\n"
+      );
+
+      const manifestPath = await packageReleaseLib.generateArtifactManifest(
+        bundleRoot,
+        "v0.9.0-test"
+      );
+      const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
+      const keys = Object.keys(manifest.files).sort();
+      expect(keys).toEqual(
+        [
+          "top.json",
+          "ontology/appsec-core-ontology.yaml",
+          "overlay/external_frameworks.json",
+          "runtime/v1/v1_manifest.json"
+        ].sort()
+      );
+      for (const sha of Object.values(manifest.files)) {
+        expect(typeof sha).toBe("string");
+        expect(sha).toMatch(/^[0-9a-f]{64}$/);
+      }
+      expect(manifest.files["artifact-manifest.json"]).toBeUndefined();
+    } finally {
+      await rm(bundleRoot, { recursive: true, force: true });
+    }
+  });
+
+  it("shouldExcludeFromBundle filters .DS_Store and similar OS noise", async () => {
+    const packageReleaseLib = await loadPackageReleaseLib();
+    expect(packageReleaseLib.shouldExcludeFromBundle("docs/.DS_Store")).toBe(true);
+    expect(packageReleaseLib.shouldExcludeFromBundle("data/Thumbs.db")).toBe(true);
+    expect(packageReleaseLib.shouldExcludeFromBundle("docs/._hidden")).toBe(true);
+    expect(packageReleaseLib.shouldExcludeFromBundle("docs/guide.md")).toBe(false);
+    expect(packageReleaseLib.shouldExcludeFromBundle("data/publish/runtime/x.json")).toBe(false);
   });
 });

@@ -25,9 +25,12 @@ import { handleConsultSecurityRequirements } from "./tools/consult-security-requ
 import { handleGetThreatLandscape } from "./tools/get-threat-landscape.js";
 import { handleGetGuideByRole } from "./tools/get-guide-by-role.js";
 import { handleResolveEntities } from "./tools/resolve-entities.js";
+import { handlePrepareCodegenContext } from "./tools/prepare-codegen-context.js";
 import {
   buildChapterApplicabilityJson,
-  buildSetupAgentPrompt
+  buildGroundedCodegenPrompt,
+  buildSetupAgentPrompt,
+  readGroundedCodegenGuide
 } from "./resources/sbd-toe-resources.js";
 
 type JsonRpcId = string | number;
@@ -839,23 +842,67 @@ class McpRuntime {
           name: "resolve_entities",
           title: "Resolve SbD-ToE Entities",
           description:
-            "Low-level entity resolver over the published SbD-ToE deterministic runtime bundle. " +
+            "Low-level entity resolver over the published SbD-ToE deterministic artefacts. " +
+            "Three sources are routed by record_type, each with its own provenance: " +
+            "(1) runtime v0 (data/publish/runtime/*.json) for requirement / control / threat / artifact " +
+            "and related links; " +
+            "(2) AppSec Core v1 (data/publish/runtime/v1/*) for appsec_slice, control_objective, mechanism, " +
+            "appsec_practice, appsec_artifact and appsec_relation; " +
+            "(3) regulatory overlay (data/publish/overlay/*) for regulatory_framework, regulatory_obligation, " +
+            "regulatory_mapping and regulatory_playbook. " +
             "Query any entity type by record_type with optional field filters. " +
             "Supports dot-notation for nested fields (e.g. 'applicable_levels.L2'), " +
             "comparison operators ({gte, lte} for numbers, {in: [...]} for set membership), " +
             "and array membership checks. " +
+            "If the regulatory overlay is not published in this deployment, regulatory record types " +
+            "return total: 0 with an absent-reason note instead of throwing. " +
             "Use this when the high-level tools (consult_security_requirements, get_threat_landscape, " +
             "get_guide_by_role) do not cover your specific query. " +
-            "All data from the published SbD-ToE deterministic runtime bundle — nothing is invented.",
+            "All data from the published SbD-ToE deterministic artefacts — nothing is invented.",
           inputSchema: {
             type: "object",
             properties: {
               record_type: {
                 type: "string",
                 description:
-                  "Entity type to query. Well-known types: requirement, control, practice, threat, " +
+                  "Entity type to query. " +
+                  "Runtime v0 (data/publish/runtime/*.json): requirement, control, practice, threat, " +
                   "user_story, assignment, role, phase, artifact, evidence_pattern, signal, antipattern, " +
-                  "requirement_control_link, signal_evidence_link. Read sbd://toe/ontology to see the schemas."
+                  "requirement_control_link, signal_evidence_link, antipattern_requirement_link, " +
+                  "antipattern_threat_link. " +
+                  "AppSec Core v1 (data/publish/runtime/v1/*): appsec_slice, control_objective, mechanism, " +
+                  "appsec_practice, appsec_artifact, appsec_relation. " +
+                  "Regulatory overlay (data/publish/overlay/*): regulatory_framework, regulatory_obligation, " +
+                  "regulatory_mapping, regulatory_playbook. " +
+                  "Read sbd://toe/ontology to see the schemas.",
+                enum: [
+                  "requirement",
+                  "control",
+                  "practice",
+                  "threat",
+                  "user_story",
+                  "assignment",
+                  "role",
+                  "phase",
+                  "artifact",
+                  "evidence_pattern",
+                  "signal",
+                  "antipattern",
+                  "requirement_control_link",
+                  "signal_evidence_link",
+                  "antipattern_requirement_link",
+                  "antipattern_threat_link",
+                  "appsec_slice",
+                  "control_objective",
+                  "mechanism",
+                  "appsec_practice",
+                  "appsec_artifact",
+                  "appsec_relation",
+                  "regulatory_framework",
+                  "regulatory_obligation",
+                  "regulatory_mapping",
+                  "regulatory_playbook"
+                ]
               },
               filters: {
                 type: "object",
@@ -872,6 +919,94 @@ class McpRuntime {
               }
             },
             required: ["record_type"],
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
+          name: "prepare_sbd_toe_codegen_context",
+          title: "Prepare SbD-ToE Grounded Codegen Context",
+          description:
+            "Prepares deterministic, bite-sized grounded context for a downstream LLM to generate, " +
+            "review or plan tests for code. This tool DOES NOT generate code and DOES NOT edit files. " +
+            "It runs a scope gate (rejecting vague or overly broad asks), an auditable semantic " +
+            "activation step (explicit concerns, single-token lexicon, compound phrases such as " +
+            "'endpoint seguro', PT/EN alias expansion via the semantic gateway, and a whole-word intent " +
+            "classifier — every activation carries a deterministic score in [0,1]), and deterministic " +
+            "resolution against runtime v0, runtime v1 and the regulatory overlay. " +
+            "Returns one of four statuses: ready_for_codegen, needs_clarification, needs_decomposition, " +
+            "unsupported_scope. On ready_for_codegen the output carries activation_trace (with score, " +
+            "source and reason), activated_scope, g2_context, manual_grounding, regulatory_overlay, " +
+            "citation_map, completeness_report (incl. evidence-pattern relevance-cap metrics), " +
+            "llm_codegen_instructions and security_rationale_template — with provenance for each section. " +
+            "Evidence patterns are ranked by relevance to the activated scope and capped (default 25) so " +
+            "the LLM context stays manageable; the dropped patterns are listed in debug.rejected_candidates " +
+            "when debug=true. No canonical IDs are ever invented; names are surfaced only when " +
+            "manual_rastreabilidade publishes them.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              task: {
+                type: "string",
+                description:
+                  "Concrete task to ground (e.g. 'Add payload validation to PATCH /users/:id/email'). Required."
+              },
+              risk_level: {
+                type: "string",
+                enum: ["L1", "L2", "L3"],
+                description: "Application risk level. Filters runtime v0 requirements when provided."
+              },
+              mode: {
+                type: "string",
+                enum: ["codegen", "review", "test-plan"],
+                description: "Defaults to 'codegen'. Changes llm_codegen_instructions flavor."
+              },
+              stack: {
+                type: "string",
+                description: "Free-text stack hint (e.g. 'Node.js/Express'). Informational only at WP5."
+              },
+              exposure: {
+                type: "string",
+                enum: ["local", "internal", "authenticated", "public"],
+                description: "Application exposure level. Informational only at WP5."
+              },
+              data_sensitivity: {
+                type: "string",
+                enum: ["low", "personal", "regulated", "secrets"],
+                description: "Data sensitivity level. Informational only at WP5."
+              },
+              concerns: {
+                type: "array",
+                items: { type: "string" },
+                description:
+                  "Explicit concerns to activate. Lexicon: auth, logging, validation, api, config, " +
+                  "integrity, distribution, ide, requirements, architecture, iac, encryption, secrets, " +
+                  "build, supply_chain, testing, threat_modeling, monitoring, release, deployment, integration. " +
+                  "Unknown values are rejected (visible in debug.rejected_candidates)."
+              },
+              changed_files: {
+                type: "array",
+                items: { type: "string" },
+                description: "Optional file paths. Path-based heuristics may add concerns (visible in activation_trace)."
+              },
+              regulatory_frameworks: {
+                type: "array",
+                items: { type: "string" },
+                description:
+                  "Optional regulatory framework IDs or short codes (e.g. 'EXT-DORA', 'CRA'). " +
+                  "Resolved via the overlay loader. If the overlay is absent, returns unsupported_scope."
+              },
+              include_regulatory_overlay: {
+                type: "boolean",
+                description:
+                  "When true (and overlay is published), enriches the response with regulatory_overlay context."
+              },
+              debug: {
+                type: "boolean",
+                description: "When true, includes rejected_candidates and trace notes in the output."
+              }
+            },
+            required: ["task"],
             additionalProperties: false
           },
           annotations: { readOnlyHint: true }
@@ -917,6 +1052,55 @@ class McpRuntime {
               required: false
             }
           ]
+        },
+        {
+          name: "prepare_grounded_codegen",
+          title: "Prepare Grounded Codegen (SbD-ToE)",
+          description:
+            "MCP prompt that bundles the grounded-codegen guide with a user task and instructs the " +
+            "agent to call prepare_sbd_toe_codegen_context before producing code. Forces citation of " +
+            "citation_map IDs, fills security_rationale_template, distinguishes code/tests/evidence, " +
+            "blocks compliance claims, and routes needs_clarification / needs_decomposition / " +
+            "unsupported_scope to user dialog instead of silent guessing.",
+          arguments: [
+            {
+              name: "task",
+              description: "Concrete coding task (e.g. 'Add payload validation to PATCH /users/:id/email').",
+              required: true
+            },
+            {
+              name: "mode",
+              description: "codegen | review | test-plan. Defaults to codegen.",
+              required: false
+            },
+            {
+              name: "riskLevel",
+              description: "Project risk level: L1, L2 or L3.",
+              required: false
+            },
+            {
+              name: "concerns",
+              description:
+                "Optional explicit concerns (comma-separated string or array). Otherwise inferred by the activation engine.",
+              required: false
+            },
+            {
+              name: "stack",
+              description: "Stack hint (e.g. 'Node.js/Express'). Informational.",
+              required: false
+            },
+            {
+              name: "regulatoryFrameworks",
+              description:
+                "Optional regulatory framework short codes or IDs (e.g. 'GDPR', 'EXT-DORA'). Comma-separated string or array.",
+              required: false
+            },
+            {
+              name: "includeRegulatoryOverlay",
+              description: "When true, asks the tool to surface regulatory overlay context.",
+              required: false
+            }
+          ]
         }
       ]
     });
@@ -937,6 +1121,52 @@ class McpRuntime {
         `Question: ${question}`;
       this.sendResponse(request.id, {
         description: "Grounded prompt for questions about the SbD-ToE manual.",
+        messages: [
+          {
+            role: "user",
+            content: {
+              type: "text",
+              text: promptText
+            }
+          }
+        ]
+      });
+      return;
+    }
+
+    if (name === "prepare_grounded_codegen") {
+      const taskArg = args["task"];
+      if (typeof taskArg !== "string" || taskArg.trim().length === 0) {
+        this.sendError(request.id, -32602, 'The "task" argument is required and must be a non-empty string.');
+        return;
+      }
+      const modeArg = typeof args["mode"] === "string" ? args["mode"] : undefined;
+      const riskLevelArg = typeof args["riskLevel"] === "string" ? args["riskLevel"] : undefined;
+      const stackArg = typeof args["stack"] === "string" ? args["stack"] : undefined;
+      const concerns = this.parseStringListArg(args["concerns"]);
+      const regulatoryFrameworks = this.parseStringListArg(args["regulatoryFrameworks"]);
+      const includeRegulatoryOverlay =
+        args["includeRegulatoryOverlay"] === true ||
+        args["includeRegulatoryOverlay"] === "true";
+      let promptText: string;
+      try {
+        promptText = buildGroundedCodegenPrompt({
+          task: taskArg,
+          ...(modeArg ? { mode: modeArg } : {}),
+          ...(riskLevelArg ? { riskLevel: riskLevelArg } : {}),
+          ...(stackArg ? { stack: stackArg } : {}),
+          ...(concerns ? { concerns } : {}),
+          ...(regulatoryFrameworks ? { regulatoryFrameworks } : {}),
+          ...(includeRegulatoryOverlay ? { includeRegulatoryOverlay: true } : {})
+        });
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        this.sendError(request.id, -32603, `Could not build grounded codegen prompt: ${message}`);
+        return;
+      }
+      this.sendResponse(request.id, {
+        description:
+          "Bundled SbD-ToE grounded codegen prompt — instructs the agent to call prepare_sbd_toe_codegen_context first, branch on status, cite citation_map and avoid compliance claims.",
         messages: [
           {
             role: "user",
@@ -1020,6 +1250,17 @@ class McpRuntime {
           name: "SbD-ToE MCP Version",
           description: "Current version of the running SbD-ToE MCP server (name, version, description).",
           mimeType: "application/json"
+        },
+        {
+          uri: "sbd://toe/grounded-codegen-guide",
+          name: "SbD-ToE Grounded Codegen Guide",
+          description:
+            "Agent-facing guide for using prepare_sbd_toe_codegen_context. " +
+            "Covers workflow, branching by status (ready_for_codegen / needs_clarification / " +
+            "needs_decomposition / unsupported_scope), output discipline (cite citation_map, fill " +
+            "security_rationale, distinguish code/tests/evidence), and explicit prohibitions " +
+            "(no invented IDs, no compliance claims, no rastreabilidade-noise inside source files).",
+          mimeType: "text/markdown"
         }
       ]
     });
@@ -1079,7 +1320,7 @@ class McpRuntime {
     }
 
     if (uri === "sbd://toe/ontology") {
-      const ontologyPath = resolveAppPath("data/publish/sbdtoe-ontology.yaml");
+      const ontologyPath = resolveAppPath("data/publish/ontology/sbdtoe-ontology.yaml");
       let ontologyText: string;
       try {
         ontologyText = readFileSync(ontologyPath, "utf-8");
@@ -1089,6 +1330,20 @@ class McpRuntime {
       }
       this.sendResponse(request.id, {
         contents: [{ uri, mimeType: "application/yaml", text: ontologyText }]
+      });
+      return;
+    }
+
+    if (uri === "sbd://toe/grounded-codegen-guide") {
+      let guideText: string;
+      try {
+        guideText = readGroundedCodegenGuide();
+      } catch {
+        this.sendError(request.id, -32603, "Could not read SbD-ToE grounded codegen guide.");
+        return;
+      }
+      this.sendResponse(request.id, {
+        contents: [{ uri, mimeType: "text/markdown", text: guideText }]
       });
       return;
     }
@@ -1111,6 +1366,23 @@ class McpRuntime {
     }
 
     this.sendError(request.id, -32602, `Unknown resource URI: ${uri}`);
+  }
+
+  private parseStringListArg(value: unknown): string[] | undefined {
+    if (Array.isArray(value)) {
+      const filtered = value.filter(
+        (entry): entry is string => typeof entry === "string" && entry.trim().length > 0
+      );
+      return filtered.length > 0 ? filtered : undefined;
+    }
+    if (typeof value === "string" && value.trim().length > 0) {
+      const parts = value
+        .split(",")
+        .map((entry) => entry.trim())
+        .filter((entry) => entry.length > 0);
+      return parts.length > 0 ? parts : undefined;
+    }
+    return undefined;
   }
 
   private getStringArg(args: Record<string, unknown>, key: string): string {
@@ -1490,6 +1762,22 @@ class McpRuntime {
         }
         case "resolve_entities": {
           const result = handleResolveEntities(args);
+          this.sendResponse(request.id, {
+            content: [{ type: "text", text: JSON.stringify(result) }]
+          });
+          await this.log("info", {
+            event_type: "tool.call",
+            outcome: "succeeded",
+            duration_ms: Date.now() - startedAt,
+            ...metadata,
+            message: "Tool invocation completed"
+          });
+          return;
+        }
+        case "prepare_sbd_toe_codegen_context": {
+          const result = handlePrepareCodegenContext(
+            args as unknown as Parameters<typeof handlePrepareCodegenContext>[0]
+          );
           this.sendResponse(request.id, {
             content: [{ type: "text", text: JSON.stringify(result) }]
           });

@@ -19,7 +19,8 @@ const execFileAsync = promisify(execFile);
 export const PROJECT_NAME = "sbd-toe-mcp";
 
 export const REQUIRED_PUBLISH_FILES = [
-  "data/publish/sbdtoe-ontology.yaml",
+  "data/publish/ontology/appsec-core-ontology.yaml",
+  "data/publish/ontology/sbdtoe-ontology.yaml",
   "data/publish/sbd-toe-index-compact.json",
   "data/publish/indexes/publication_manifest.json",
   "data/publish/indexes/bundle_catalog.jsonl",
@@ -46,6 +47,19 @@ export const REQUIRED_PUBLISH_FILES = [
   "data/publish/runtime/antipatterns.json",
   "data/publish/runtime/antipattern_requirement_links.json",
   "data/publish/runtime/antipattern_threat_links.json",
+  "data/publish/runtime/v1/v1_manifest.json",
+  "data/publish/runtime/v1/slices.json",
+  "data/publish/runtime/v1/control_objectives.json",
+  "data/publish/runtime/v1/mechanisms.json",
+  "data/publish/runtime/v1/practices.json",
+  "data/publish/runtime/v1/artifacts.json",
+  "data/publish/runtime/v1/relations.jsonl",
+  "data/publish/runtime/v1/manual_rastreabilidade.jsonl",
+  "data/publish/overlay/external_frameworks.json",
+  "data/publish/overlay/external_obligations.json",
+  "data/publish/overlay/overlay_playbooks.json",
+  "data/publish/overlay/overlay_mappings.jsonl",
+  "data/publish/overlay/framework_overlay_index.json",
   "data/reports/run_manifest.json"
 ];
 
@@ -53,8 +67,13 @@ export const REQUIRED_BUNDLE_ENTRIES = [
   { kind: "dir", src: "dist", dest: "dist" },
   {
     kind: "file",
-    src: "data/publish/sbdtoe-ontology.yaml",
-    dest: "data/publish/sbdtoe-ontology.yaml"
+    src: "data/publish/ontology/appsec-core-ontology.yaml",
+    dest: "data/publish/ontology/appsec-core-ontology.yaml"
+  },
+  {
+    kind: "file",
+    src: "data/publish/ontology/sbdtoe-ontology.yaml",
+    dest: "data/publish/ontology/sbdtoe-ontology.yaml"
   },
   {
     kind: "file",
@@ -97,6 +116,7 @@ export const REQUIRED_BUNDLE_ENTRIES = [
     dest: "data/publish/indexes/chunk_relation_hints.jsonl"
   },
   { kind: "dir", src: "data/publish/runtime", dest: "data/publish/runtime" },
+  { kind: "dir", src: "data/publish/overlay", dest: "data/publish/overlay" },
   {
     kind: "file",
     src: "data/reports/run_manifest.json",
@@ -189,12 +209,33 @@ export async function ensureRequiredBundleInputs(repoRoot) {
   }
 }
 
+/**
+ * Returns true if the path should be excluded from the bundle copy. Used to
+ * filter out OS noise (`.DS_Store`, `Thumbs.db`) and editor scratch files that
+ * have no business going into a published release.
+ */
+export function shouldExcludeFromBundle(filePath) {
+  const base = path.basename(filePath);
+  if (base === ".DS_Store" || base === "Thumbs.db") return true;
+  if (base === ".AppleDouble" || base === ".LSOverride") return true;
+  if (base.startsWith("._")) return true;
+  return false;
+}
+
 export async function copyEntry(repoRoot, bundleRoot, entry) {
   const sourcePath = path.join(repoRoot, entry.src);
   const destinationPath = path.join(bundleRoot, entry.dest);
 
   await mkdir(path.dirname(destinationPath), { recursive: true });
-  await cp(sourcePath, destinationPath, { recursive: entry.kind === "dir" });
+  if (entry.kind === "dir") {
+    await cp(sourcePath, destinationPath, {
+      recursive: true,
+      filter: (candidate) => !shouldExcludeFromBundle(candidate)
+    });
+  } else {
+    if (shouldExcludeFromBundle(sourcePath)) return;
+    await cp(sourcePath, destinationPath);
+  }
 }
 
 export async function createTarball(parentDir, bundleDirName, tarPath, execFileImpl = execFileAsync) {
@@ -248,17 +289,121 @@ export async function writeChecksumFile(outputDir, archivePaths, archiveBaseName
   return checksumPath;
 }
 
+const PRIVATE_PATH_PATTERN = /\/(Users|home|Volumes)\/[A-Za-z][^"\s/]*/g;
+
+// Allowlist of placeholder tokens that look like absolute paths but are
+// deliberate documentation stubs (callers replace them with their real path).
+const PRIVATE_PATH_ALLOWLIST = new Set([
+  "<private>",
+  "<absolute-path-to-repo>",
+  "<repo-root>",
+  "<user>"
+]);
+
+const SCAN_TEXT_FILE_EXTENSIONS = new Set([
+  ".md",
+  ".txt",
+  ".json",
+  ".jsonl",
+  ".yaml",
+  ".yml",
+  ".env",
+  ".env.example",
+  ".js",
+  ".d.ts",
+  ".ts"
+]);
+
+async function walkFiles(rootDir) {
+  const results = [];
+  async function walk(dir) {
+    const entries = await readdir(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        await walk(full);
+      } else if (entry.isFile()) {
+        results.push(full);
+      }
+    }
+  }
+  await walk(rootDir);
+  return results;
+}
+
+/**
+ * Scans every text artefact under `bundleRoot` for absolute build-machine
+ * paths. Matches starting with `/Users/`, `/home/` or `/Volumes/` are
+ * reported; deliberate placeholder strings (e.g. `<private>`,
+ * `<absolute-path-to-repo>`) are allowlisted because they do not leak real
+ * machine state.
+ *
+ * Throws when leaks are found so the release script aborts before producing
+ * the tarball / zip. Throws nothing on a clean bundle (returns the empty
+ * `string[]`).
+ */
+export async function scanBundleForPrivatePaths(bundleRoot) {
+  const files = await walkFiles(bundleRoot);
+  const leaks = [];
+  for (const file of files) {
+    const ext = path.extname(file).toLowerCase();
+    // Always scan .DS_Store-style files as a safety net even if extension is unknown.
+    const base = path.basename(file);
+    if (
+      !SCAN_TEXT_FILE_EXTENSIONS.has(ext) &&
+      base !== ".env" &&
+      base !== ".env.example"
+    ) {
+      continue;
+    }
+    let contents;
+    try {
+      contents = await readFile(file, "utf8");
+    } catch {
+      continue;
+    }
+    PRIVATE_PATH_PATTERN.lastIndex = 0;
+    let match;
+    while ((match = PRIVATE_PATH_PATTERN.exec(contents))) {
+      const captured = match[0];
+      const trimmed = captured.split(/[\s")\]}]/)[0];
+      // Allowlist matches that are part of a placeholder pattern like
+      // `<absolute-path-to-repo>/Users` (unlikely but defensive).
+      if (PRIVATE_PATH_ALLOWLIST.has(trimmed)) continue;
+      const relative = path.relative(bundleRoot, file);
+      leaks.push(`${relative}: '${trimmed}'`);
+      break; // one leak per file is enough to flag it
+    }
+  }
+  return leaks;
+}
+
+async function collectPublishFilesRecursive(publishDir) {
+  const collected = [];
+  async function walk(dir, relPrefix) {
+    const entries = await readdir(dir, { withFileTypes: true });
+    entries.sort((a, b) => a.name.localeCompare(b.name));
+    for (const entry of entries) {
+      if (entry.name === "artifact-manifest.json") continue;
+      const full = path.join(dir, entry.name);
+      const rel = relPrefix ? `${relPrefix}/${entry.name}` : entry.name;
+      if (entry.isDirectory()) {
+        await walk(full, rel);
+      } else if (entry.isFile()) {
+        collected.push({ rel, full });
+      }
+    }
+  }
+  await walk(publishDir, "");
+  return collected;
+}
+
 export async function generateArtifactManifest(bundleRoot, version) {
   const publishDir = path.join(bundleRoot, "data", "publish");
-  const entries = await readdir(publishDir);
+  const collected = await collectPublishFilesRecursive(publishDir);
   const files = {};
-
-  for (const entry of entries.sort()) {
-    if (entry === "artifact-manifest.json") continue;
-    const filePath = path.join(publishDir, entry);
-    const fileStat = await stat(filePath);
-    if (!fileStat.isFile()) continue;
-    files[entry] = await computeSha256(filePath);
+  for (const { rel, full } of collected) {
+    files[rel] = await computeSha256(full);
   }
 
   const manifest = {
@@ -292,6 +437,14 @@ export async function buildReleaseBundle(options = {}) {
 
     for (const entry of REQUIRED_BUNDLE_ENTRIES) {
       await copyEntry(repoRoot, bundleRoot, entry);
+    }
+
+    const privatePathLeaks = await scanBundleForPrivatePaths(bundleRoot);
+    if (privatePathLeaks.length > 0) {
+      throw new Error(
+        "Release bundle leaks private absolute paths (cancelling tar/zip):\n  - " +
+          privatePathLeaks.join("\n  - ")
+      );
     }
 
     await generateArtifactManifest(bundleRoot, version);

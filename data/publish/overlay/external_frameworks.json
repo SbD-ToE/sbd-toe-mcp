@@ -1,0 +1,40 @@
+{
+  "items": [
+    {
+      "authority_class": "external_normative_overlay",
+      "framework_id": "EXT-DORA",
+      "framework_kind": "regulation",
+      "jurisdiction": "EU",
+      "name": "Digital Operational Resilience Act",
+      "scope_summary": "Operational resilience, ICT risk, incident reporting, testing and third-party oversight.",
+      "short_code": "DORA"
+    },
+    {
+      "authority_class": "external_normative_overlay",
+      "framework_id": "EXT-NIS2",
+      "framework_kind": "directive",
+      "jurisdiction": "EU",
+      "name": "Network and Information Security Directive",
+      "scope_summary": "Cybersecurity risk management, governance, incident reporting, supply chain and continuity.",
+      "short_code": "NIS2"
+    },
+    {
+      "authority_class": "external_normative_overlay",
+      "framework_id": "EXT-CRA",
+      "framework_kind": "regulation",
+      "jurisdiction": "EU",
+      "name": "Cyber Resilience Act",
+      "scope_summary": "Secure product lifecycle, vulnerability handling, SBOM and software supply chain assurance.",
+      "short_code": "CRA"
+    },
+    {
+      "authority_class": "external_normative_overlay",
+      "framework_id": "EXT-RGPD",
+      "framework_kind": "regulation",
+      "jurisdiction": "EU",
+      "name": "Regulamento Geral sobre a Proteção de Dados",
+      "scope_summary": "Data protection by design/default, security of processing, incidents and DPIA support.",
+      "short_code": "RGPD"
+    }
+  ]
+}

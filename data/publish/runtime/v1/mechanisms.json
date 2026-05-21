@@ -1,0 +1,308 @@
+[
+  {
+    "entity_id": "ACM-SCBI-001",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-SCBI",
+    "slice_id": "ASC-01"
+  },
+  {
+    "entity_id": "ACM-SCBI-002",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-SCBI",
+    "slice_id": "ASC-01"
+  },
+  {
+    "entity_id": "ACM-SCBI-003",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-SCBI",
+    "slice_id": "ASC-01"
+  },
+  {
+    "entity_id": "ACM-SCBI-004",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-SCBI",
+    "slice_id": "ASC-01"
+  },
+  {
+    "entity_id": "ACM-SCBI-005",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-SCBI",
+    "slice_id": "ASC-01"
+  },
+  {
+    "entity_id": "ACM-IAT-001",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-IAT",
+    "slice_id": "ASC-02"
+  },
+  {
+    "entity_id": "ACM-IAT-002",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-IAT",
+    "slice_id": "ASC-02"
+  },
+  {
+    "entity_id": "ACM-IAT-003",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-IAT",
+    "slice_id": "ASC-02"
+  },
+  {
+    "entity_id": "ACM-IAT-004",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-IAT",
+    "slice_id": "ASC-02"
+  },
+  {
+    "entity_id": "ACM-IAT-005",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-IAT",
+    "slice_id": "ASC-02"
+  },
+  {
+    "entity_id": "ACM-IAT-006",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-IAT",
+    "slice_id": "ASC-02"
+  },
+  {
+    "entity_id": "ACM-ATB-001",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-ATB",
+    "slice_id": "ASC-03"
+  },
+  {
+    "entity_id": "ACM-ATB-002",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-ATB",
+    "slice_id": "ASC-03"
+  },
+  {
+    "entity_id": "ACM-ATB-003",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-ATB",
+    "slice_id": "ASC-03"
+  },
+  {
+    "entity_id": "ACM-ATB-004",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-ATB",
+    "slice_id": "ASC-03"
+  },
+  {
+    "entity_id": "ACM-ATB-005",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-ATB",
+    "slice_id": "ASC-03"
+  },
+  {
+    "entity_id": "ACM-TSV-001",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-TSV",
+    "slice_id": "ASC-04"
+  },
+  {
+    "entity_id": "ACM-TSV-002",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-TSV",
+    "slice_id": "ASC-04"
+  },
+  {
+    "entity_id": "ACM-TSV-003",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-TSV",
+    "slice_id": "ASC-04"
+  },
+  {
+    "entity_id": "ACM-TSV-004",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-TSV",
+    "slice_id": "ASC-04"
+  },
+  {
+    "entity_id": "ACM-TSV-005",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-TSV",
+    "slice_id": "ASC-04"
+  },
+  {
+    "entity_id": "ACM-TMR-001",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-TMR",
+    "slice_id": "ASC-05"
+  },
+  {
+    "entity_id": "ACM-TMR-002",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-TMR",
+    "slice_id": "ASC-05"
+  },
+  {
+    "entity_id": "ACM-TMR-003",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-TMR",
+    "slice_id": "ASC-05"
+  },
+  {
+    "entity_id": "ACM-TMR-004",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-TMR",
+    "slice_id": "ASC-05"
+  },
+  {
+    "entity_id": "ACM-TMR-005",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-TMR",
+    "slice_id": "ASC-05"
+  },
+  {
+    "entity_id": "ACM-TMR-006",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-TMR",
+    "slice_id": "ASC-05"
+  },
+  {
+    "entity_id": "ACM-TMR-007",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-TMR",
+    "slice_id": "ASC-05"
+  },
+  {
+    "entity_id": "ACM-TMR-008",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-TMR",
+    "slice_id": "ASC-05"
+  },
+  {
+    "entity_id": "ACM-SPC-001",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-SPC",
+    "slice_id": "ASC-06"
+  },
+  {
+    "entity_id": "ACM-SPC-002",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-SPC",
+    "slice_id": "ASC-06"
+  },
+  {
+    "entity_id": "ACM-SPC-003",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-SPC",
+    "slice_id": "ASC-06"
+  },
+  {
+    "entity_id": "ACM-SPC-004",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-SPC",
+    "slice_id": "ASC-06"
+  },
+  {
+    "entity_id": "ACM-IVF-001",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-IVF",
+    "slice_id": "ASC-07"
+  },
+  {
+    "entity_id": "ACM-IVF-002",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-IVF",
+    "slice_id": "ASC-07"
+  },
+  {
+    "entity_id": "ACM-IVF-003",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-IVF",
+    "slice_id": "ASC-07"
+  },
+  {
+    "entity_id": "ACM-IVF-004",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-IVF",
+    "slice_id": "ASC-07"
+  },
+  {
+    "entity_id": "ACM-IVF-005",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-IVF",
+    "slice_id": "ASC-07"
+  },
+  {
+    "entity_id": "ACM-ITS-001",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-ITS",
+    "slice_id": "ASC-08"
+  },
+  {
+    "entity_id": "ACM-ITS-002",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-ITS",
+    "slice_id": "ASC-08"
+  },
+  {
+    "entity_id": "ACM-ITS-003",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-ITS",
+    "slice_id": "ASC-08"
+  },
+  {
+    "entity_id": "ACM-ITS-004",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-ITS",
+    "slice_id": "ASC-08"
+  },
+  {
+    "entity_id": "ACM-ITS-005",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-ITS",
+    "slice_id": "ASC-08"
+  },
+  {
+    "entity_id": "ACM-RPR-001",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-RPR",
+    "slice_id": "ASC-09"
+  },
+  {
+    "entity_id": "ACM-RPR-002",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-RPR",
+    "slice_id": "ASC-09"
+  },
+  {
+    "entity_id": "ACM-RPR-003",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-RPR",
+    "slice_id": "ASC-09"
+  },
+  {
+    "entity_id": "ACM-RPR-004",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-RPR",
+    "slice_id": "ASC-09"
+  },
+  {
+    "entity_id": "ACM-SLG-001",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-SLG",
+    "slice_id": "ASC-10"
+  },
+  {
+    "entity_id": "ACM-SLG-002",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-SLG",
+    "slice_id": "ASC-10"
+  },
+  {
+    "entity_id": "ACM-SLG-003",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-SLG",
+    "slice_id": "ASC-10"
+  },
+  {
+    "entity_id": "ACM-SLG-004",
+    "entity_type": "Mechanism",
+    "slice_family": "ACO-SLG",
+    "slice_id": "ASC-10"
+  }
+]

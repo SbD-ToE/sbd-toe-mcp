@@ -1,12 +1,42 @@
 /**
  * resolve_entities
  *
- * Low-level entity resolver over the published SbD-ToE deterministic runtime
- * bundle. This is the generic structural fallback when the higher-level
- * consult/guide/threats tools are too opinionated for the query.
+ * Low-level entity resolver over the published SbD-ToE deterministic artefacts.
+ *
+ * Three independent sources, each with its own provenance:
+ *
+ *   - runtime_v0 — `data/publish/runtime/*.json` (existing requirement /
+ *     control / threat / artifact / signal / antipattern record types).
+ *   - runtime_v1 — `data/publish/runtime/v1/*` (AppSec Core v1 slices,
+ *     control objectives, mechanisms, practices, artifacts and relations).
+ *   - overlay   — `data/publish/overlay/*` (regulatory frameworks,
+ *     obligations, mappings and playbooks).
+ *
+ * The routing is decided by `record_type`. Each branch loads only what it
+ * needs, so an absent overlay or a missing runtime/v1 directory affects only
+ * the corresponding record types.
  */
 
+import {
+  RuntimeV1AssetMissingError,
+  getG2Runtime,
+  type AppSecRelation,
+  type AppSecSlice,
+  type ArtifactV1,
+  type ControlObjectiveV1,
+  type G2RuntimeData,
+  type MechanismV1,
+  type PracticeV1
+} from "./g2-runtime-loader.js";
 import { getOntologyData } from "./ontology-loader.js";
+import {
+  getRegulatoryOverlay,
+  type RegulatoryFramework,
+  type RegulatoryMapping,
+  type RegulatoryObligation,
+  type RegulatoryOverlayData,
+  type RegulatoryPlaybook
+} from "./regulatory-overlay-loader.js";
 
 const DEFAULT_LIMIT = 50;
 const MAX_LIMIT = 200;
@@ -42,7 +72,7 @@ export interface ResolveEntitiesResult {
   };
 }
 
-type RuntimeRecordType =
+type RuntimeV0RecordType =
   | "requirement"
   | "control"
   | "practice"
@@ -60,9 +90,47 @@ type RuntimeRecordType =
   | "antipattern_requirement_link"
   | "antipattern_threat_link";
 
-let _runtimeCache: unknown[] | undefined;
+type RuntimeV1RecordType =
+  | "appsec_slice"
+  | "control_objective"
+  | "mechanism"
+  | "appsec_practice"
+  | "appsec_artifact"
+  | "appsec_relation";
 
-function withRecordType(record_type: RuntimeRecordType, items: unknown[]): unknown[] {
+type OverlayRecordType =
+  | "regulatory_framework"
+  | "regulatory_obligation"
+  | "regulatory_mapping"
+  | "regulatory_playbook";
+
+const RUNTIME_V1_RECORD_TYPES: ReadonlySet<RuntimeV1RecordType> = new Set([
+  "appsec_slice",
+  "control_objective",
+  "mechanism",
+  "appsec_practice",
+  "appsec_artifact",
+  "appsec_relation"
+]);
+
+const OVERLAY_RECORD_TYPES: ReadonlySet<OverlayRecordType> = new Set([
+  "regulatory_framework",
+  "regulatory_obligation",
+  "regulatory_mapping",
+  "regulatory_playbook"
+]);
+
+export function isRuntimeV1RecordType(value: string): value is RuntimeV1RecordType {
+  return RUNTIME_V1_RECORD_TYPES.has(value as RuntimeV1RecordType);
+}
+
+export function isOverlayRecordType(value: string): value is OverlayRecordType {
+  return OVERLAY_RECORD_TYPES.has(value as OverlayRecordType);
+}
+
+let _runtimeV0Cache: unknown[] | undefined;
+
+function withRecordType(record_type: string, items: unknown[]): unknown[] {
   return items.map((item) =>
     typeof item === "object" && item !== null
       ? { record_type, ...(item as Record<string, unknown>) }
@@ -70,11 +138,11 @@ function withRecordType(record_type: RuntimeRecordType, items: unknown[]): unkno
   );
 }
 
-function loadRuntimeItems(): unknown[] {
-  if (_runtimeCache) return _runtimeCache;
+function loadRuntimeV0Items(): unknown[] {
+  if (_runtimeV0Cache) return _runtimeV0Cache;
 
   const ontology = getOntologyData();
-  const collections: Array<[RuntimeRecordType, unknown[]]> = [
+  const collections: Array<[RuntimeV0RecordType, unknown[]]> = [
     ["requirement", ontology.requirements],
     ["control", ontology.controls],
     ["practice", ontology.practices ?? []],
@@ -90,13 +158,57 @@ function loadRuntimeItems(): unknown[] {
     ["requirement_control_link", ontology.requirementControlLinks ?? []],
     ["signal_evidence_link", ontology.signalEvidenceLinks ?? []],
     ["antipattern_requirement_link", ontology.antipatternRequirementLinks ?? []],
-    ["antipattern_threat_link", ontology.antipatternThreatLinks ?? []],
+    ["antipattern_threat_link", ontology.antipatternThreatLinks ?? []]
   ];
 
-  _runtimeCache = collections.flatMap(([record_type, items]) =>
+  _runtimeV0Cache = collections.flatMap(([record_type, items]) =>
     withRecordType(record_type, items)
   );
-  return _runtimeCache;
+  return _runtimeV0Cache;
+}
+
+function clearRuntimeV0CacheForTests(): void {
+  _runtimeV0Cache = undefined;
+}
+
+export const __internal = {
+  clearRuntimeV0CacheForTests
+};
+
+function selectV1Items(
+  recordType: RuntimeV1RecordType,
+  data: G2RuntimeData
+): unknown[] {
+  switch (recordType) {
+    case "appsec_slice":
+      return withRecordType(recordType, data.slices as unknown as AppSecSlice[]);
+    case "control_objective":
+      return withRecordType(recordType, data.controlObjectives as unknown as ControlObjectiveV1[]);
+    case "mechanism":
+      return withRecordType(recordType, data.mechanisms as unknown as MechanismV1[]);
+    case "appsec_practice":
+      return withRecordType(recordType, data.practices as unknown as PracticeV1[]);
+    case "appsec_artifact":
+      return withRecordType(recordType, data.artifacts as unknown as ArtifactV1[]);
+    case "appsec_relation":
+      return withRecordType(recordType, data.relations as unknown as AppSecRelation[]);
+  }
+}
+
+function selectOverlayItems(
+  recordType: OverlayRecordType,
+  data: RegulatoryOverlayData
+): unknown[] {
+  switch (recordType) {
+    case "regulatory_framework":
+      return withRecordType(recordType, data.frameworks as unknown as RegulatoryFramework[]);
+    case "regulatory_obligation":
+      return withRecordType(recordType, data.obligations as unknown as RegulatoryObligation[]);
+    case "regulatory_mapping":
+      return withRecordType(recordType, data.mappings as unknown as RegulatoryMapping[]);
+    case "regulatory_playbook":
+      return withRecordType(recordType, data.playbooks as unknown as RegulatoryPlaybook[]);
+  }
 }
 
 function resolvePath(obj: unknown, path: string): unknown {
@@ -143,9 +255,13 @@ function matchesAllFilters(item: unknown, filters: Record<string, unknown>): boo
   return true;
 }
 
+const DEFAULT_NOTE =
+  "Entities resolved from the published deterministic runtime bundle. Filters support dot-notation for nested fields, {gte,lte} for numeric comparisons, {in:[...]} for membership and direct array membership checks.";
+
 export function _resolveEntities(
   args: Record<string, unknown>,
-  items: unknown[]
+  items: unknown[],
+  options: { note?: string } = {}
 ): Omit<ResolveEntitiesResult, "provenance"> {
   const recordType = args["record_type"];
   if (typeof recordType !== "string" || recordType.trim().length === 0) {
@@ -174,12 +290,7 @@ export function _resolveEntities(
     return matchesAllFilters(item, filters);
   });
 
-  const STRIP_FIELDS = new Set([
-    "confidence",
-    "warnings",
-    "evidence",
-    "record_type",
-  ]);
+  const STRIP_FIELDS = new Set(["confidence", "warnings", "evidence", "record_type"]);
   const ARRAY_CAP = 8;
   const entities = matched.slice(0, limit).map((item) => {
     if (typeof item !== "object" || item === null) return item;
@@ -199,23 +310,110 @@ export function _resolveEntities(
     limit,
     meta: {
       filtersApplied: filters,
-      note:
-        "Entities resolved from the published deterministic runtime bundle. Filters support dot-notation for nested fields, {gte,lte} for numeric comparisons, {in:[...]} for membership and direct array membership checks.",
-    },
+      note: options.note ?? DEFAULT_NOTE
+    }
+  };
+}
+
+const RUNTIME_V0_PROVENANCE: McpProvenance = {
+  content_type: "canonical",
+  produced_by: "direct_runtime_lookup",
+  source_data: "data/publish/runtime/*.json",
+  note: "Entities are canonical deterministic runtime records, projected only for response compactness."
+};
+
+const RUNTIME_V1_PROVENANCE: McpProvenance = {
+  content_type: "canonical",
+  produced_by: "direct_runtime_v1_lookup",
+  source_data: "data/publish/runtime/v1/*",
+  note:
+    "Entities are AppSec Core v1 records loaded from data/publish/runtime/v1/ with manifest-checked counts. " +
+    "Names are surfaced only when manual_rastreabilidade.jsonl publishes them — never invented."
+};
+
+const OVERLAY_PROVENANCE_PUBLISHED: McpProvenance = {
+  content_type: "canonical",
+  produced_by: "direct_overlay_lookup",
+  source_data: "data/publish/overlay/*",
+  note:
+    "Regulatory overlay records are loaded from data/publish/overlay/. The overlay is an external normative cross-check, not an SbD-ToE compliance claim."
+};
+
+const OVERLAY_PROVENANCE_ABSENT: McpProvenance = {
+  content_type: "canonical",
+  produced_by: "direct_overlay_lookup",
+  source_data: "data/publish/overlay/* (absent)",
+  note:
+    "Regulatory overlay artefacts are not published in this deployment. No regulatory record types are available."
+};
+
+function emptyOverlayResult(
+  recordType: string,
+  args: Record<string, unknown>,
+  absentReason: string
+): ResolveEntitiesResult {
+  const rawLimit = args["limit"];
+  const limit =
+    typeof rawLimit === "number" && rawLimit > 0
+      ? Math.min(Math.round(rawLimit), MAX_LIMIT)
+      : DEFAULT_LIMIT;
+  const rawFilters = args["filters"];
+  const filters: Record<string, unknown> =
+    typeof rawFilters === "object" && rawFilters !== null && !Array.isArray(rawFilters)
+      ? (rawFilters as Record<string, unknown>)
+      : {};
+  return {
+    provenance: OVERLAY_PROVENANCE_ABSENT,
+    record_type: recordType,
+    entities: [],
+    total: 0,
+    limit,
+    meta: {
+      filtersApplied: filters,
+      note: `Overlay regulatório ausente: ${absentReason}. Nenhum registo regulatório disponível.`
+    }
   };
 }
 
 export function handleResolveEntities(
   args: Record<string, unknown>
 ): ResolveEntitiesResult {
-  const result = _resolveEntities(args, loadRuntimeItems());
-  return {
-    provenance: {
-      content_type: "canonical",
-      produced_by: "direct_runtime_lookup",
-      source_data: "data/publish/runtime/*.json",
-      note: "Entities are canonical deterministic runtime records, projected only for response compactness.",
-    },
-    ...result,
-  };
+  const recordType = args["record_type"];
+  if (typeof recordType !== "string" || recordType.trim().length === 0) {
+    // Defer the structured error to _resolveEntities so the message stays consistent.
+    const result = _resolveEntities(args, []);
+    return { provenance: RUNTIME_V0_PROVENANCE, ...result };
+  }
+
+  if (isRuntimeV1RecordType(recordType)) {
+    const data = getG2Runtime();
+    const items = selectV1Items(recordType, data);
+    const result = _resolveEntities(args, items, {
+      note:
+        "AppSec Core v1 records. Filters support dot-notation, {gte,lte}, {in:[...]} and array membership. Provenance: data/publish/runtime/v1/*."
+    });
+    return { provenance: RUNTIME_V1_PROVENANCE, ...result };
+  }
+
+  if (isOverlayRecordType(recordType)) {
+    const overlay = getRegulatoryOverlay();
+    if (overlay.status === "absent") {
+      return emptyOverlayResult(
+        recordType,
+        args,
+        overlay.absentReason ?? "overlay artefacts not published"
+      );
+    }
+    const items = selectOverlayItems(recordType, overlay);
+    const result = _resolveEntities(args, items, {
+      note:
+        "Regulatory overlay records. Filters support dot-notation, {gte,lte}, {in:[...]} and array membership. Provenance: data/publish/overlay/*."
+    });
+    return { provenance: OVERLAY_PROVENANCE_PUBLISHED, ...result };
+  }
+
+  const result = _resolveEntities(args, loadRuntimeV0Items());
+  return { provenance: RUNTIME_V0_PROVENANCE, ...result };
 }
+
+export { RuntimeV1AssetMissingError };

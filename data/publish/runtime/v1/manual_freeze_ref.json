@@ -1,0 +1,72 @@
+{
+  "artifact_type": "manual_freeze_ref",
+  "schema_version": "1.0",
+  "purpose": "Citable reference to the SbD-ToE Manual snapshot concomitant with KG v1.2 (this repository). Allows external readers (paper8 publish bundle, future cycles, MCP consumers) to locate the exact Manual state deposited alongside the Cycle B frozen ceremony 2026-05-12.",
+  "authored_at": "2026-05-14",
+  "manual": {
+    "repository": {
+      "name": "SbD-ToE-Manual",
+      "canonical_url": "https://github.com/SbD-ToE/sbd-toe-manual",
+      "ssh_url": "git@github.com:SbD-ToE/sbd-toe-manual.git"
+    },
+    "tag": "cycle-b-frozen-2026-05-12",
+    "tag_object_sha": "c838ea20a83073e13d6257a7e92f3f8df6380681",
+    "commit_sha": "455124a18be9bc154caeab249bd34d9d75a8303e",
+    "branch_at_freeze": "phase-c-methodology-revision",
+    "iteration_anchor": "run-2",
+    "ontology": {
+      "name": "SbD-ToE Manual Ontology",
+      "version": "2.0",
+      "canonical_path_in_kg_mirror": "ontology/sbdtoe-ontology.yaml",
+      "format": "semi-formal YAML (OWL+SHACL formalisation deferred to Stream 2)"
+    }
+  },
+  "kg_companion": {
+    "peer_tag": "cycle-b-frozen-2026-05-12",
+    "peer_tag_object_sha": "11369ef6cac79b7cfd86a21a3f75fb8637ad6c9d",
+    "peer_commit_sha": "dacfaca5364091894a0d458b2abb22b081522163",
+    "kg_internal_tag": "kg-v1-cycle-b-run-2-aligned-2026-05-12",
+    "kg_internal_tag_commit_sha": "727d4c3d69a84a1190613450443b5ac91176b208",
+    "consumer_contract_version": "1.2"
+  },
+  "archive": {
+    "figshare_doi": null,
+    "figshare_doi_status": "TBD",
+    "note": "figshare deposit deferred to a separate programme-lead workflow. Two-service archive rule (PROGRAMME-PRESERVATION-PROTOCOL.md §5.5) governed at programme level; not a KG-side action."
+  },
+  "narrative_pointer": "Snapshot do Manual SbD-ToE no momento da Cycle B frozen ceremony (2026-05-12). Commit 455124a1 é Run 2 HEAD, fechando o trabalho substantivo de Cycle B Manual content (4 iterções + 2 runs: rastreabilidade-regen → AI/ML prose extension → entity-first regenerate → richness extension → §26 methodology refresh + V2 vocab integration → achievable-maturity + 50-ameacas-mitigadas enrichment). Para o closure brief consolidado ver DevelopmentGovernance/docs/cycle-b-frozen-state-consolidated.md @ db60b1b.",
+  "provenance": {
+    "authored_by": "Codex (sbd-toe-knowledge-graph)",
+    "authoring_tag": "kg-v1-cycle-b-manual-ref-2026-05-14",
+    "dispatcher": "sbd-ai-runtime/handover/em-curso/2026-05-14-orchestrator-codex-manual-freeze-ref-and-registry-backfill-dispatch.md",
+    "programme_lead_authority_date": "2026-05-14",
+    "architecture_rationale": "KG-derivative — ref ao Manual concomitante pertence ao KG porque o KG é derivativo do Manual; concomitância é natureza própria do KG. Per ADR-0004 (KG repositioning as manual compilation backend)."
+  },
+  "cross_references": {
+    "dg_closure_brief": "DevelopmentGovernance/docs/cycle-b-frozen-state-consolidated.md @ db60b1b",
+    "cartographer_companion_dispatcher": "sbd-ai-runtime/handover/em-curso/2026-05-14-orchestrator-cartographer-paper8-bundle-extension-dispatch.md",
+    "paper8_baseline_bundle_delivery": "sbd-ai-runtime/handover/em-curso/2026-05-13-cartographer-paper8-publish-bundle-spec-delivery.md",
+    "peer_cross_repo_tags": {
+      "knowledge_graph": {
+        "tag": "cycle-b-frozen-2026-05-12",
+        "commit_sha": "dacfaca5364091894a0d458b2abb22b081522163",
+        "tag_object_sha": "11369ef6cac79b7cfd86a21a3f75fb8637ad6c9d"
+      },
+      "manual": {
+        "tag": "cycle-b-frozen-2026-05-12",
+        "commit_sha": "455124a18be9bc154caeab249bd34d9d75a8303e",
+        "tag_object_sha": "c838ea20a83073e13d6257a7e92f3f8df6380681"
+      },
+      "external_sources_inventory": {
+        "tag": "cycle-b-frozen-2026-05-12",
+        "commit_sha": "d5da1a0",
+        "tag_object_sha": "7bd4404088fcb941b703aa3e321292cd738db3c2"
+      },
+      "development_governance": {
+        "tag": "cycle-b-frozen-2026-05-12",
+        "commit_sha": "db60b1b",
+        "tag_object_sha": "01f2b3e8c65eaf9b40a150953022d8282d260a08"
+      }
+    }
+  }
+}
