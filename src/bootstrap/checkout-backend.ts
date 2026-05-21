@@ -1,6 +1,7 @@
-import { copyFile, cp, mkdir, readFile, writeFile } from "node:fs/promises";
+import { copyFile, cp, mkdir, readFile, readdir, stat, writeFile } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { getAppRoot, getConfig, resolveAppPath } from "../config.js";
 import { checkoutFromRelease } from "./release-checkout.js";
@@ -31,6 +32,7 @@ interface PublicRunManifestPayload {
 interface PublicationManifestPayload {
   primary_artifact?: string;
   substrate_version?: string;
+  artifacts?: string[];
 }
 
 interface LocalCheckoutLockPayload {
@@ -88,6 +90,55 @@ async function copyFileIfExists(
   }
 }
 
+async function pathExists(target: string): Promise<boolean> {
+  try {
+    await stat(target);
+    return true;
+  } catch (error) {
+    if (typeof error === "object" && error !== null && "code" in error && error.code === "ENOENT") {
+      return false;
+    }
+    throw error;
+  }
+}
+
+async function listFilesShallow(dir: string): Promise<string[]> {
+  try {
+    const entries = await readdir(dir, { withFileTypes: true });
+    return entries.filter((entry) => entry.isFile()).map((entry) => entry.name);
+  } catch (error) {
+    if (typeof error === "object" && error !== null && "code" in error && error.code === "ENOENT") {
+      return [];
+    }
+    throw error;
+  }
+}
+
+async function copyDeclaredOverlayArtifacts(
+  upstreamOverlayDir: string,
+  localOverlayDir: string,
+  declaredOverlayPaths: string[]
+): Promise<string[]> {
+  const copied: string[] = [];
+  for (const declared of declaredOverlayPaths) {
+    const relative = declared.startsWith("overlay/")
+      ? declared.slice("overlay/".length)
+      : declared;
+    if (!relative || relative.includes("..")) {
+      continue;
+    }
+    const source = path.join(upstreamOverlayDir, relative);
+    if (!(await pathExists(source))) {
+      continue;
+    }
+    const destination = path.join(localOverlayDir, relative);
+    await ensureParent(destination);
+    await copyFile(source, destination);
+    copied.push(`overlay/${relative}`);
+  }
+  return copied;
+}
+
 function normalizePublicRepoUrl(value: string | undefined): string | undefined {
   if (!value) {
     return undefined;
@@ -100,6 +151,44 @@ function normalizePublicRepoUrl(value: string | undefined): string | undefined {
   }
 
   return trimmed;
+}
+
+const PRIVATE_ABS_PATH_RE = /\/(Users|home|Volumes)\/[^/\s"]+/g;
+
+/**
+ * Replaces the leading `/Users/<user>` / `/home/<user>` / `/Volumes/<vol>`
+ * segments with the literal `<private>` so any absolute build-machine path
+ * leaked by upstream KG artefacts (e.g. inside the `evidence` field of
+ * runtime/artifacts.json) stops being published verbatim.
+ *
+ * The relative tail of the path is preserved, so citations like
+ * `<private>/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/...`
+ * remain useful as provenance pointers.
+ *
+ * Idempotent: a second pass on a sanitised string is a no-op.
+ */
+export function sanitizePrivateAbsolutePaths(text: string): string {
+  return text.replace(PRIVATE_ABS_PATH_RE, "<private>");
+}
+
+async function sanitizeFileIfNeeded(absolutePath: string): Promise<boolean> {
+  let contents: string;
+  try {
+    contents = await readFile(absolutePath, "utf8");
+  } catch (error) {
+    if (typeof error === "object" && error !== null && "code" in error && error.code === "ENOENT") {
+      return false;
+    }
+    throw error;
+  }
+  if (!PRIVATE_ABS_PATH_RE.test(contents)) {
+    PRIVATE_ABS_PATH_RE.lastIndex = 0;
+    return false;
+  }
+  PRIVATE_ABS_PATH_RE.lastIndex = 0;
+  const sanitised = sanitizePrivateAbsolutePaths(contents);
+  await writeFile(absolutePath, sanitised, "utf8");
+  return true;
 }
 
 export function sanitizeRunManifest(
@@ -217,6 +306,7 @@ async function main(): Promise<void> {
   const checkoutFilePath = resolveAppPath(config.backend.checkoutFile);
   const localPublishedIndexesDir = resolveAppPath(config.backend.publishedIndexesDir);
   const localPublishedRuntimeDir = resolveAppPath(config.backend.publishedRuntimeDir);
+  const localPublishedOverlayDir = resolveAppPath(config.backend.publishedOverlayDir);
   const localPublicationManifest = resolveAppPath(config.backend.publicationManifestFile);
   const localDeterministicManifest = resolveAppPath(config.backend.deterministicManifestFile);
   const localBundleCatalog = resolveAppPath("data/publish/indexes/bundle_catalog.jsonl");
@@ -226,6 +316,9 @@ async function main(): Promise<void> {
   const localChunkRelationHints = resolveAppPath(config.backend.chunkRelationHintsFile);
   const localCompactIndex = resolveAppPath("data/publish/sbd-toe-index-compact.json");
   const localOntologyFile = resolveAppPath(config.backend.ontologyFile);
+  const localNormalizationOntologyFile = resolveAppPath(
+    "data/publish/ontology/appsec-core-ontology.yaml"
+  );
   const localRunManifest = resolveAppPath(config.backend.runManifestFile);
   const upstreamPublishedIndexesDir = path.join(
     upstreamRepoPath,
@@ -238,6 +331,12 @@ async function main(): Promise<void> {
     "data",
     "publish",
     "runtime"
+  );
+  const upstreamPublishedOverlayDir = path.join(
+    upstreamRepoPath,
+    "data",
+    "publish",
+    "overlay"
   );
   const upstreamPublicationManifest = path.join(
     upstreamPublishedIndexesDir,
@@ -277,7 +376,15 @@ async function main(): Promise<void> {
     upstreamRepoPath,
     "data",
     "publish",
+    "ontology",
     "sbdtoe-ontology.yaml"
+  );
+  const upstreamNormalizationOntologyFile = path.join(
+    upstreamRepoPath,
+    "data",
+    "publish",
+    "ontology",
+    "appsec-core-ontology.yaml"
   );
   const upstreamRunManifest = path.join(
     upstreamRepoPath,
@@ -320,11 +427,16 @@ async function main(): Promise<void> {
     ensureParent(localChunkRelationHints),
     ensureParent(localCompactIndex),
     ensureParent(localOntologyFile),
+    ensureParent(localNormalizationOntologyFile),
     ensureParent(localRunManifest),
     ensureParent(checkoutFilePath)
   ]);
 
   const publicRunManifest = sanitizeRunManifest(runManifest);
+
+  const declaredOverlayArtifacts = (publicationManifest.artifacts ?? []).filter(
+    (artifact) => typeof artifact === "string" && artifact.startsWith("overlay/")
+  );
 
   const copyResults = await Promise.all([
     copyFile(upstreamPublicationManifest, localPublicationManifest),
@@ -338,9 +450,78 @@ async function main(): Promise<void> {
     }),
     copyFileIfExists(upstreamCompactIndex, localCompactIndex),
     copyFile(upstreamOntologyFile, localOntologyFile),
+    copyFile(upstreamNormalizationOntologyFile, localNormalizationOntologyFile),
     writeFile(localRunManifest, `${JSON.stringify(publicRunManifest, null, 2)}\n`, "utf8")
   ]);
   const compactIndexCopied = copyResults[7] === true;
+
+  const upstreamOverlayExists = await pathExists(upstreamPublishedOverlayDir);
+  let overlayInfo: NonNullable<BackendCheckout["overlay"]>;
+  if (upstreamOverlayExists && declaredOverlayArtifacts.length > 0) {
+    await mkdir(localPublishedOverlayDir, { recursive: true });
+    const copiedOverlay = await copyDeclaredOverlayArtifacts(
+      upstreamPublishedOverlayDir,
+      localPublishedOverlayDir,
+      declaredOverlayArtifacts
+    );
+    overlayInfo = {
+      status: "published",
+      artifacts: copiedOverlay
+    };
+  } else if (upstreamOverlayExists) {
+    overlayInfo = {
+      status: "pending",
+      note: "Upstream overlay directory present but no overlay artifacts declared in publication_manifest."
+    };
+  } else {
+    overlayInfo = {
+      status: "absent",
+      note: "Upstream KG did not publish data/publish/overlay; overlay capabilities flagged as unsupported_scope."
+    };
+  }
+
+  const localRuntimeV1Dir = path.join(localPublishedRuntimeDir, "v1");
+  const localRuntimeV1Manifest = path.join(localRuntimeV1Dir, "v1_manifest.json");
+  const runtimeV1Exists = await pathExists(localRuntimeV1Manifest);
+  const runtimeV1Info: NonNullable<BackendCheckout["runtimeV1"]> = runtimeV1Exists
+    ? {
+        status: "published",
+        manifestPath: localRuntimeV1Manifest,
+        artifacts: await listFilesShallow(localRuntimeV1Dir)
+      }
+    : { status: "absent" };
+
+  // Defensive post-copy sanitisation: strip private absolute build-machine
+  // paths (e.g. /Users/<name>/...) from upstream-published runtime, indexes
+  // and overlay JSON/JSONL. We skip `runtime/v1/` because its sha256s are
+  // declared in v1_manifest.json — any change there would break manifest
+  // checksums. The v1 surface is currently leak-free; if a future leak shows
+  // up there, the loader's consistency report will flag it instead of
+  // silently mangling content.
+  const sanitisationTargets: string[] = [];
+  const scanShallow = async (dir: string): Promise<void> => {
+    let entries: string[];
+    try {
+      entries = await readdir(dir);
+    } catch (error) {
+      if (typeof error === "object" && error !== null && "code" in error && error.code === "ENOENT") {
+        return;
+      }
+      throw error;
+    }
+    for (const entry of entries) {
+      if (!entry.endsWith(".json") && !entry.endsWith(".jsonl")) continue;
+      sanitisationTargets.push(path.join(dir, entry));
+    }
+  };
+  await scanShallow(localPublishedRuntimeDir);
+  await scanShallow(localPublishedIndexesDir);
+  await scanShallow(localPublishedOverlayDir);
+  let sanitisedCount = 0;
+  for (const target of sanitisationTargets) {
+    const sanitised = await sanitizeFileIfNeeded(target);
+    if (sanitised) sanitisedCount += 1;
+  }
 
   const checkout: BackendCheckout = {
     schemaVersion: "0.1.0",
@@ -356,6 +537,7 @@ async function main(): Promise<void> {
       runManifest: localRunManifest,
       publishedIndexesDir: localPublishedIndexesDir,
       publishedRuntimeDir: localPublishedRuntimeDir,
+      publishedOverlayDir: localPublishedOverlayDir,
       publicationManifest: localPublicationManifest,
       deterministicManifest: localDeterministicManifest,
       bundleCatalog: localBundleCatalog,
@@ -363,8 +545,11 @@ async function main(): Promise<void> {
       canonicalChunks: localCanonicalChunks,
       chunkEntityMentions: localChunkEntityMentions,
       chunkRelationHints: localChunkRelationHints,
-      ontologyFile: localOntologyFile
+      ontologyFile: localOntologyFile,
+      normalizationOntologyFile: localNormalizationOntologyFile
     },
+    overlay: overlayInfo,
+    runtimeV1: runtimeV1Info,
     runManifest: {
       runId: runManifest.run_id,
       generatedAt: runManifest.generated_at,
@@ -385,6 +570,13 @@ async function main(): Promise<void> {
       `Backend checkout criado em ${checkoutFilePath}`,
       `published_indexes_dir=${localPublishedIndexesDir}`,
       `published_runtime_dir=${localPublishedRuntimeDir}`,
+      `published_overlay_dir=${localPublishedOverlayDir} (status=${overlayInfo.status}${
+        overlayInfo.artifacts ? `; artifacts=${overlayInfo.artifacts.length}` : ""
+      })`,
+      `runtime_v1_status=${runtimeV1Info.status}${
+        runtimeV1Info.artifacts ? `; files=${runtimeV1Info.artifacts.length}` : ""
+      }`,
+      `private_path_sanitisation=${sanitisedCount} file(s) rewritten`,
       `publication_manifest=${localPublicationManifest}`,
       `deterministic_manifest=${localDeterministicManifest}`,
       `bundle_catalog=${localBundleCatalog}`,
@@ -405,8 +597,19 @@ async function main(): Promise<void> {
   );
 }
 
-main().catch((error) => {
-  const message = error instanceof Error ? error.stack ?? error.message : String(error);
-  process.stderr.write(`${message}\n`);
-  process.exit(1);
-});
+function isExecutedAsEntryPoint(moduleUrl: string): boolean {
+  const entryArg = process.argv[1];
+  if (!entryArg) {
+    return false;
+  }
+
+  return path.resolve(fileURLToPath(moduleUrl)) === path.resolve(entryArg);
+}
+
+if (isExecutedAsEntryPoint(import.meta.url)) {
+  main().catch((error) => {
+    const message = error instanceof Error ? error.stack ?? error.message : String(error);
+    process.stderr.write(`${message}\n`);
+    process.exit(1);
+  });
+}

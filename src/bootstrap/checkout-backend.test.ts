@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
+  sanitizePrivateAbsolutePaths,
   sanitizeRunManifest,
   validateLocalCheckoutLock,
 } from "../bootstrap/checkout-backend.js";
@@ -175,6 +176,42 @@ describe("checkout-backend.ts", () => {
           }
         )
       ).toThrow("run_id esperado=run-001 observado=run-002");
+    });
+  });
+
+  describe("sanitizePrivateAbsolutePaths", () => {
+    it("replaces /Users/<name> with <private> and preserves the relative tail", () => {
+      const before =
+        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/baseline.md matched aliases ['x']";
+      const after = sanitizePrivateAbsolutePaths(before);
+      expect(after).toContain("<private>");
+      expect(after).not.toMatch(/\/Users\//);
+      expect(after).toContain("/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/baseline.md");
+    });
+
+    it("replaces /home/<name> and /Volumes/<vol> prefixes too", () => {
+      const before = "ref1=/home/runner/build/file.md ref2=/Volumes/Build/source.md";
+      const after = sanitizePrivateAbsolutePaths(before);
+      expect(after).toContain("<private>/build/file.md");
+      expect(after).toContain("<private>/source.md");
+      expect(after).not.toMatch(/\/(home|Volumes)\//);
+    });
+
+    it("is idempotent — a second pass is a no-op", () => {
+      const once = sanitizePrivateAbsolutePaths("/Users/x/y/z.md");
+      const twice = sanitizePrivateAbsolutePaths(once);
+      expect(twice).toBe(once);
+    });
+
+    it("leaves text without private absolute paths untouched", () => {
+      const input = '{"path":"v1/relations.jsonl","sha256":"deadbeef"}';
+      expect(sanitizePrivateAbsolutePaths(input)).toBe(input);
+    });
+
+    it("strips multiple private prefixes in the same string", () => {
+      const before = "a=/Users/alice/x b=/home/bob/y c=/Volumes/Disk/z";
+      const after = sanitizePrivateAbsolutePaths(before);
+      expect(after.match(/<private>/g)?.length).toBe(3);
     });
   });
 });

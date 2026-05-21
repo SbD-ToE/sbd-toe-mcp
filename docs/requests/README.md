@@ -60,3 +60,5 @@ O template segue a estrutura já usada no upstream para pedidos adicionais, para
   - proposta para exigir disclosure e revisão humana em documentos gerados com apoio de IA/MCP
 - `ai-assisted-authoring-guidance.md`
   - proposta para guidance/prompt operacional sobre uso de IA/MCP na criação e revisão de artefactos
+- `mcp-v0.9-g2-grounded-codegen-execution-plan.md`
+  - plano de execução da versão 0.9.0 com KG atualizado, runtime v1, overlay regulatória, scope gate e contexto G2 para codegen grounded

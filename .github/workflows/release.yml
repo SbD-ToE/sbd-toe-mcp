@@ -81,8 +81,24 @@ jobs:
               --generate-notes
           fi
 
-      - name: Set version from tag
-        run: npm version "${GITHUB_REF_NAME#v}" --no-git-tag-version
+      - name: Verify package.json version matches tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="${GITHUB_REF_NAME#v}"
+          actual=$(node -p "require('./package.json').version")
+          if [ "$expected" != "$actual" ]; then
+            echo "Error: package.json version ($actual) does not match tag ($expected)."
+            echo "Bump package.json + package-lock.json on master before tagging."
+            exit 1
+          fi
+          lock_actual=$(node -p "require('./package-lock.json').version")
+          if [ "$expected" != "$lock_actual" ]; then
+            echo "Error: package-lock.json version ($lock_actual) does not match tag ($expected)."
+            echo "Run npm install --package-lock-only on master before tagging."
+            exit 1
+          fi
+          echo "OK: package.json and package-lock.json version $actual matches tag $expected"
 
       - name: Publish to npm
         run: npm publish --access public --provenance

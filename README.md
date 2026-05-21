@@ -66,23 +66,80 @@ All data is bundled locally. No Algolia, no internet connection required at runt
 | `query_sbd_toe_entities` | Queries structured entities (controls, requirements, patterns) |
 | `get_sbd_toe_chapter_brief` | Returns a structured brief for a specific chapter |
 | `map_sbd_toe_applicability` | Maps a project profile to applicable chapter bundles |
-| `generate_document` | Generates a structured document skeleton (5 types × 3 risk levels) |
 | `map_sbd_toe_review_scope` | Maps changed file paths to relevant SbD-ToE knowledge bundles |
 | `plan_sbd_toe_repo_governance` | Produces an advisory governance plan for a repository |
+| `consult_security_requirements` | Resolves requirements/controls/artifacts for an application context |
+| `get_threat_landscape` | Returns canonical threats for an application context |
+| `get_guide_by_role` | Returns practices/assignments/user stories per role and phase |
+| `resolve_entities` | Low-level entity resolver over runtime v0 + AppSec Core v1 + regulatory overlay (per-source provenance) |
+| `generate_sbd_toe_skill` | Generates the skill template payload for AI agents |
+| `prepare_sbd_toe_codegen_context` | **New in 0.9.0.** Prepares deterministic grounded context for codegen / review / test-plan. Returns one of `ready_for_codegen`, `needs_clarification`, `needs_decomposition`, `unsupported_scope`. **Does not generate code.** See [Grounded codegen](#grounded-codegen-v090) below. |
 
 ### Resources
 
 | Resource | Description |
 |---|---|
+| `sbd://toe/agent-guide` | Operational guide for AI agents (read first) |
 | `sbd://toe/index-compact` | Compact chapter index (<5KB) — injectable into system prompts |
-| `sbd://toe/skill-template` | Skill template for AI agent configuration (L1/L2/L3) |
-| `sbd://toe/chapter-applicability` | Chapter applicability by risk level |
+| `sbd://toe/chapter-applicability/{riskLevel}` | Chapter applicability by risk level |
+| `sbd://toe/ontology` | Full SbD-ToE ontology YAML with domain mapping and inference rules |
+| `sbd://toe/version` | Running MCP server name/version/description |
+| `sbd://toe/grounded-codegen-guide` | **New in 0.9.0.** Agent-facing guide for using `prepare_sbd_toe_codegen_context` |
 
 ### Prompts
 
 | Prompt | Description |
 |---|---|
+| `ask_sbd_toe_manual` | Grounded Q&A prompt — guides retrieval before answering |
 | `setup_sbd_toe_agent` | Slash command to configure an AI agent with SbD-ToE context |
+| `prepare_grounded_codegen` | **New in 0.9.0.** Bundles the grounded-codegen guide with a user task — instructs the agent to call `prepare_sbd_toe_codegen_context` before producing code |
+
+---
+
+## Grounded codegen (v0.9.0)
+
+`prepare_sbd_toe_codegen_context` is the v0.9.0 entry point for code-generation, code-review and test-plan work that has to stay grounded in the SbD-ToE manual / AppSec Core v1 surface / regulatory overlay.
+
+### What it does — and what it does NOT do
+
+- **Does** assemble deterministic context: activation trace, activated scope (requirements / controls / slices / regulatory obligations), AppSec Core v1 entities and relations, evidence patterns ranked by relevance, manual rastreabilidade entries, regulatory overlay entries, citation map, completeness report, LLM codegen instructions, and a `security_rationale_template` for the agent to fill.
+- **Does** apply an auditable scope gate before returning ready context (see below).
+- **Does NOT** generate code, edit files, or call an LLM. The tool returns context only.
+- **Does NOT** invent identifiers, slices, requirements, controls, obligations or evidence. Anything not in the `citation_map` did not surface in the deterministic resolvers.
+- **Does NOT** declare regulatory compliance. Regulatory overlay is published as an external cross-check, never as a SbD-ToE conformance signal.
+
+### Scope gate — four output states
+
+| Status | When | What the agent should do |
+|---|---|---|
+| `ready_for_codegen` | Task is bite-size (one technical surface, one phase, 1–3 concerns, ≤3 slice families) | Fill `security_rationale_template`, cite IDs from `citation_map`, produce code + tests + expected evidence |
+| `needs_clarification` | Task missing/too short, no concerns activatable, ambiguous | STOP. Echo `reasons[]` and `suggestions[]` to the user; ask for the missing input before re-calling |
+| `needs_decomposition` | Vague pattern matched (e.g. "make secure"), >3 slice families, or >50 estimated v0 requirements | STOP. Propose 2–4 sub-tasks; let the user pick one; re-call for that sub-task |
+| `unsupported_scope` | Runtime v1 missing locally, overlay requested but absent, regulatory framework unknown | STOP. Report the missing capability verbatim. Do NOT fabricate IDs to keep working |
+
+### Semantic activation
+
+Each `activation_trace` entry carries `source`, `produced`, `trigger`, `score` (deterministic, in `[0,1]`), `confidence` and `reason`. Sources include:
+
+- `explicit_concern` (1.0)
+- `task_term` (0.8)
+- `compound_term` (0.7) — e.g. *"endpoint seguro"*, *"segredo hardcoded"*, *"release pipeline"*
+- `alias_expansion` (0.6) — PT↔EN expansion (via the semantic gateway + codegen alias table)
+- `intent_keyword` (0.5) — whole-word matcher; the semantic gateway's substring matcher is intentionally NOT reused for codegen activation
+- `changed_file` (0.5) — path-based heuristics over `changed_files`
+- `risk_level` (1.0) — informational, drives v0 requirement filtering
+
+Evidence patterns are scored against the activated scope (direct control match = 1.0, active requirement = 0.7, derived control = 0.5) and capped at 25 to keep the LLM context manageable. Capped patterns surface in `debug.rejected_candidates` when `debug=true`.
+
+### How to consume the response
+
+See [`prompts/sbd-toe-grounded-codegen.md`](prompts/sbd-toe-grounded-codegen.md) (also exposed as the MCP resource `sbd://toe/grounded-codegen-guide`). The guide is the authoritative contract for agents — keep it open while wiring downstream LLM flows.
+
+### Limitations
+
+- This is the MVP G2 release. The full Paper 5 experimental programme is not in scope.
+- The activation lexicon is deliberately small and auditable. Probabilistic/learned scoring is not part of v0.9.0.
+- The shipped overlay represents the published regulatory cross-check, not a compliance attestation surface.
 
 ---
 
@@ -157,11 +214,11 @@ Copy `.env.example` to `.env` and adjust as needed.
 
 | Repository | Role |
 |---|---|
-| `Shiftleftpt/SbD-ToE-Manual` | canonical editorial source of the manual |
-| `sbd-toe-knowledge-graph` | builder/publisher of semantic snapshots |
+| `SbD-ToE/sbd-toe-manual` | canonical editorial source of the manual |
+| `SbD-ToE/sbd-toe-knowledge-graph` | builder/publisher of the compiled manual surface |
 | `@shiftleftpt/sbd-toe-mcp` | MCP server — consumes snapshots, exposes tools |
 
-This project **consumes** artefacts already produced by `sbd-toe-knowledge-graph`. It does not re-index the manual, does not rebuild semantics and does not replace the builder.
+This project **consumes** the published bundle of the compiled SbD-ToE manual. It does not re-index the manual, does not reconcile `AppSec Core` directly, does not rebuild semantics and does not replace the builder.
 
 Maintainers who want to update the bundled snapshots from a local checkout of `sbd-toe-knowledge-graph`:
 

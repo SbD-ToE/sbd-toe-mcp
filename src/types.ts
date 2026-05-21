@@ -16,6 +16,7 @@ export interface AppConfig {
     checkoutFile: string;
     publishedIndexesDir: string;
     publishedRuntimeDir: string;
+    publishedOverlayDir: string;
     publicationManifestFile: string;
     deterministicManifestFile: string;
     mcpChunksFile: string;
@@ -87,6 +88,7 @@ export interface BackendCheckout {
     runManifest: string;
     publishedIndexesDir?: string | undefined;
     publishedRuntimeDir?: string | undefined;
+    publishedOverlayDir?: string | undefined;
     publicationManifest?: string | undefined;
     deterministicManifest?: string | undefined;
     bundleCatalog?: string | undefined;
@@ -96,7 +98,18 @@ export interface BackendCheckout {
     chunkEntityMentions?: string | undefined;
     chunkRelationHints?: string | undefined;
     ontologyFile?: string | undefined;
+    normalizationOntologyFile?: string | undefined;
   };
+  overlay?: {
+    status: "published" | "pending" | "absent";
+    artifacts?: string[] | undefined;
+    note?: string | undefined;
+  } | undefined;
+  runtimeV1?: {
+    status: "published" | "absent";
+    manifestPath?: string | undefined;
+    artifacts?: string[] | undefined;
+  } | undefined;
   runManifest: {
     runId?: string | undefined;
     generatedAt?: string | undefined;

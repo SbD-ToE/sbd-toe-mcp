@@ -1,0 +1,48 @@
+{
+  "annotated_sha256": "5a808390986af1a203f76ce59ff1045b0b548329fd1a71979e1d01ebb6ae86a4",
+  "artifact_type": "evidence_patterns_v1_annotation_manifest",
+  "build": {
+    "generated_at": "2026-05-11T23:11:51.262192+00:00",
+    "generator": "sbdtoe_indexing.workflows.enrich_evidence_patterns_with_v1"
+  },
+  "category_distribution": {
+    "ACC": 10,
+    "API": 7,
+    "ARC": 13,
+    "AUT": 10,
+    "CFG": 7,
+    "CIC": 10,
+    "CLA": 8,
+    "CNT": 12,
+    "DEP": 10,
+    "DEV": 9,
+    "DPL": 9,
+    "DST": 7,
+    "ERR": 7,
+    "GOV": 12,
+    "IDE": 6,
+    "INT": 8,
+    "LOG": 10,
+    "OPS": 10,
+    "REQ": 7,
+    "SES": 8,
+    "THR": 7,
+    "TRN": 9,
+    "TST": 10,
+    "VAL": 7
+  },
+  "counts": {
+    "patterns_cross_cutting": 29,
+    "patterns_mapped_to_v1_slice": 184,
+    "patterns_unmapped_category": 0,
+    "patterns_without_category": 0,
+    "total_patterns": 213
+  },
+  "evidence_patterns_path": "data/publish/runtime/evidence_patterns.json",
+  "predecessor_sha256": "5a808390986af1a203f76ce59ff1045b0b548329fd1a71979e1d01ebb6ae86a4",
+  "v1_ontology_anchor": {
+    "expected_commit_sha": "84fe8bf6f5de1443d778f9b2f0555b722540bbff",
+    "tag": "ontology-v1.1-fair-baseline"
+  },
+  "warnings": []
+}

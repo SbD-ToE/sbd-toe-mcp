@@ -89,6 +89,10 @@ export function getConfig(): AppConfig {
         "PUBLISHED_RUNTIME_DIR",
         "./data/publish/runtime"
       ),
+      publishedOverlayDir: getEnv(
+        "PUBLISHED_OVERLAY_DIR",
+        "./data/publish/overlay"
+      ),
       publicationManifestFile: getEnv(
         "PUBLICATION_MANIFEST_FILE",
         "./data/publish/indexes/publication_manifest.json"
@@ -119,7 +123,7 @@ export function getConfig(): AppConfig {
       ),
       ontologyFile: getEnv(
         "ONTOLOGY_FILE",
-        "./data/publish/sbdtoe-ontology.yaml"
+        "./data/publish/ontology/sbdtoe-ontology.yaml"
       ),
       runManifestFile: getEnv(
         "RUN_MANIFEST_FILE",

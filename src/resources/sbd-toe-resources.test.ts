@@ -1,7 +1,9 @@
 import { describe, it, expect } from "vitest";
 import {
   buildChapterApplicabilityJson,
-  buildSetupAgentPrompt
+  buildGroundedCodegenPrompt,
+  buildSetupAgentPrompt,
+  readGroundedCodegenGuide
 } from "./sbd-toe-resources.js";
 
 describe("buildChapterApplicabilityJson", () => {
@@ -108,5 +110,121 @@ describe("buildSetupAgentPrompt", () => {
 
   it("invalid empty string riskLevel throws Error", () => {
     expect(() => buildSetupAgentPrompt("")).toThrow(Error);
+  });
+});
+
+describe("readGroundedCodegenGuide", () => {
+  it("loads the canonical grounded-codegen guide from disk and enforces gate rules", () => {
+    const guide = readGroundedCodegenGuide();
+    expect(guide.length).toBeGreaterThan(500);
+    // The guide must explicitly cover the four status branches.
+    for (const status of [
+      "ready_for_codegen",
+      "needs_clarification",
+      "needs_decomposition",
+      "unsupported_scope"
+    ]) {
+      expect(guide).toContain(status);
+    }
+    // Must mandate citation_map citations.
+    expect(guide).toMatch(/citation_map/);
+    // Must forbid compliance claims and ID invention.
+    expect(guide.toLowerCase()).toMatch(/never declare compliance|do not declare/);
+    expect(guide.toLowerCase()).toMatch(/never invent|do not invent/);
+    // Must distinguish code / tests / evidence.
+    expect(guide.toLowerCase()).toMatch(/code/);
+    expect(guide.toLowerCase()).toMatch(/tests?/);
+    expect(guide.toLowerCase()).toMatch(/evidence/);
+  });
+});
+
+describe("buildGroundedCodegenPrompt", () => {
+  it("embeds the canonical guide and the user task", () => {
+    const prompt = buildGroundedCodegenPrompt({
+      task: "Add payload validation to PATCH /users/:id/email"
+    });
+    expect(prompt).toContain("SbD-ToE Grounded Codegen Guide");
+    expect(prompt).toContain("Add payload validation to PATCH /users/:id/email");
+    expect(prompt).toContain("prepare_sbd_toe_codegen_context");
+  });
+
+  it("echoes mode / risk_level / concerns / stack / regulatory args in the tool-call recipe", () => {
+    const prompt = buildGroundedCodegenPrompt({
+      task: "Add payload validation to PATCH /users/:id/email",
+      mode: "codegen",
+      riskLevel: "L2",
+      concerns: ["api", "validation"],
+      stack: "Node.js/Express",
+      regulatoryFrameworks: ["CRA"],
+      includeRegulatoryOverlay: true
+    });
+    expect(prompt).toMatch(/mode:\s*codegen/);
+    expect(prompt).toMatch(/risk_level:\s*L2/);
+    expect(prompt).toMatch(/concerns:\s*\["api",\s*"validation"\]/);
+    expect(prompt).toMatch(/stack:\s*Node\.js\/Express/);
+    expect(prompt).toMatch(/regulatory_frameworks:\s*\["CRA"\]/);
+    expect(prompt).toMatch(/include_regulatory_overlay:\s*true/);
+  });
+
+  it("defaults mode=codegen when omitted and signals missing risk_level", () => {
+    const prompt = buildGroundedCodegenPrompt({
+      task: "Remove hardcoded API key from src/config.ts"
+    });
+    expect(prompt).toMatch(/mode:\s*codegen/);
+    expect(prompt).toMatch(/risk_level: \(not provided/);
+    expect(prompt).toMatch(/concerns: \(let the activation engine infer/);
+    expect(prompt).toMatch(/include_regulatory_overlay: false/);
+  });
+
+  it("rejects empty task strings", () => {
+    expect(() => buildGroundedCodegenPrompt({ task: "" })).toThrow(Error);
+    expect(() => buildGroundedCodegenPrompt({ task: "   " })).toThrow(Error);
+  });
+
+  it("rejects invalid mode by falling back to codegen rather than echoing it", () => {
+    const prompt = buildGroundedCodegenPrompt({
+      task: "Add payload validation",
+      mode: "destroy-everything"
+    });
+    expect(prompt).toMatch(/mode:\s*codegen/);
+    expect(prompt).not.toContain("destroy-everything");
+  });
+
+  it("riskLevel is whitelisted to L1/L2/L3 — invalid strings are treated as not provided", () => {
+    const evil = buildGroundedCodegenPrompt({
+      task: "Add payload validation",
+      riskLevel: "L9; rm -rf /"
+    });
+    expect(evil).not.toContain("L9");
+    expect(evil).not.toContain("rm -rf");
+    expect(evil).toMatch(/risk_level: \(not provided/);
+
+    const empty = buildGroundedCodegenPrompt({
+      task: "Add payload validation",
+      riskLevel: ""
+    });
+    expect(empty).toMatch(/risk_level: \(not provided/);
+
+    const valid = buildGroundedCodegenPrompt({
+      task: "Add payload validation",
+      riskLevel: "L2"
+    });
+    expect(valid).toMatch(/risk_level:\s*L2/);
+  });
+
+  it("guidance forbids compliance claims and ID invention even after task echo", () => {
+    const prompt = buildGroundedCodegenPrompt({
+      task: "Add payload validation to PATCH /users/:id/email"
+    });
+    expect(prompt.toLowerCase()).toContain("do not declare regulatory compliance");
+    expect(prompt.toLowerCase()).toContain("do not invent identifiers");
+    expect(prompt.toLowerCase()).toContain("do not treat ai-generated code as evidence");
+  });
+
+  it("distinguishes needs_clarification, needs_decomposition and unsupported_scope branches", () => {
+    const prompt = buildGroundedCodegenPrompt({ task: "Add payload validation" });
+    expect(prompt).toMatch(/needs_clarification\b.*STOP/s);
+    expect(prompt).toMatch(/needs_decomposition\b.*STOP/s);
+    expect(prompt).toMatch(/unsupported_scope\b.*STOP/s);
   });
 });

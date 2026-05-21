@@ -1,0 +1,244 @@
+{
+  "items": [
+    {
+      "adoption_status": "curated_reference",
+      "applicability_scope": "framework_specific",
+      "authority_class": "external_normative_overlay",
+      "curation_status": "curated",
+      "framework_ids": [
+        "EXT-DORA"
+      ],
+      "playbook_id": "OVR-DORA-intro",
+      "playbook_kind": "normative_cross_check",
+      "source_bundle_id": "dora",
+      "source_document_id": "002-cross-check-normativo-dora-01-intro",
+      "source_path": "002-cross-check-normativo/dora/01-intro.md",
+      "title": "DORA - Cross-Check Normativo"
+    },
+    {
+      "adoption_status": "curated_reference",
+      "applicability_scope": "framework_specific",
+      "authority_class": "external_normative_overlay",
+      "curation_status": "curated",
+      "framework_ids": [
+        "EXT-DORA"
+      ],
+      "playbook_id": "OVR-DORA-playbook",
+      "playbook_kind": "implementation_playbook",
+      "source_bundle_id": "dora",
+      "source_document_id": "002-cross-check-normativo-dora-02-playbook",
+      "source_path": "002-cross-check-normativo/dora/02-playbook.md",
+      "title": "SbD-ToE 4 DORA: Playbook de Implementação"
+    },
+    {
+      "adoption_status": "curated_reference",
+      "applicability_scope": "framework_specific",
+      "authority_class": "external_normative_overlay",
+      "curation_status": "curated",
+      "framework_ids": [
+        "EXT-DORA"
+      ],
+      "playbook_id": "OVR-DORA-convergencia-nis2",
+      "playbook_kind": "convergence_note",
+      "source_bundle_id": "dora",
+      "source_document_id": "002-cross-check-normativo-dora-03-convergencia-nis2",
+      "source_path": "002-cross-check-normativo/dora/03-convergencia-nis2.md",
+      "title": "Nota - Convergência DORA & NIS2"
+    },
+    {
+      "adoption_status": "curated_reference",
+      "applicability_scope": "framework_specific",
+      "authority_class": "external_normative_overlay",
+      "curation_status": "curated",
+      "framework_ids": [
+        "EXT-NIS2"
+      ],
+      "playbook_id": "OVR-NIS2-intro",
+      "playbook_kind": "normative_cross_check",
+      "source_bundle_id": "nis2",
+      "source_document_id": "002-cross-check-normativo-nis2-01-intro",
+      "source_path": "002-cross-check-normativo/nis2/01-intro.md",
+      "title": "NIS2 - Cross-check normativo"
+    },
+    {
+      "adoption_status": "curated_reference",
+      "applicability_scope": "framework_specific",
+      "authority_class": "external_normative_overlay",
+      "curation_status": "curated",
+      "framework_ids": [
+        "EXT-NIS2"
+      ],
+      "playbook_id": "OVR-NIS2-playbook",
+      "playbook_kind": "implementation_playbook",
+      "source_bundle_id": "nis2",
+      "source_document_id": "002-cross-check-normativo-nis2-02-playbook",
+      "source_path": "002-cross-check-normativo/nis2/02-playbook.md",
+      "title": "SbD-ToE 4 NIS2: Playbook de Implementação"
+    },
+    {
+      "adoption_status": "curated_reference",
+      "applicability_scope": "framework_specific",
+      "authority_class": "external_normative_overlay",
+      "curation_status": "curated",
+      "framework_ids": [
+        "EXT-NIS2"
+      ],
+      "playbook_id": "OVR-NIS2-convergencia-dora",
+      "playbook_kind": "convergence_note",
+      "source_bundle_id": "nis2",
+      "source_document_id": "002-cross-check-normativo-nis2-03-convergencia-dora",
+      "source_path": "002-cross-check-normativo/nis2/03-convergencia-dora.md",
+      "title": "Nota - Convergência DORA & NIS2"
+    },
+    {
+      "adoption_status": "curated_reference",
+      "applicability_scope": "framework_specific",
+      "authority_class": "external_normative_overlay",
+      "curation_status": "curated",
+      "framework_ids": [
+        "EXT-CRA"
+      ],
+      "playbook_id": "OVR-CRA-intro",
+      "playbook_kind": "normative_cross_check",
+      "source_bundle_id": "cra",
+      "source_document_id": "002-cross-check-normativo-cra-01-intro",
+      "source_path": "002-cross-check-normativo/cra/01-intro.md",
+      "title": "CRA - Cross-Check Normativo"
+    },
+    {
+      "adoption_status": "curated_reference",
+      "applicability_scope": "framework_specific",
+      "authority_class": "external_normative_overlay",
+      "curation_status": "curated",
+      "framework_ids": [
+        "EXT-CRA"
+      ],
+      "playbook_id": "OVR-CRA-playbook",
+      "playbook_kind": "implementation_playbook",
+      "source_bundle_id": "cra",
+      "source_document_id": "002-cross-check-normativo-cra-02-playbook",
+      "source_path": "002-cross-check-normativo/cra/02-playbook.md",
+      "title": "SbD-ToE 4 CRA: Playbook de Implementação"
+    },
+    {
+      "adoption_status": "curated_reference",
+      "applicability_scope": "framework_specific",
+      "authority_class": "external_normative_overlay",
+      "curation_status": "curated",
+      "framework_ids": [
+        "EXT-RGPD"
+      ],
+      "playbook_id": "OVR-GDPR-intro",
+      "playbook_kind": "normative_cross_check",
+      "source_bundle_id": "gdpr",
+      "source_document_id": "002-cross-check-normativo-gdpr-01-intro",
+      "source_path": "002-cross-check-normativo/gdpr/01-intro.md",
+      "title": "GDPR - Cross-Check Normativo"
+    },
+    {
+      "adoption_status": "curated_reference",
+      "applicability_scope": "framework_specific",
+      "authority_class": "external_normative_overlay",
+      "curation_status": "curated",
+      "framework_ids": [
+        "EXT-RGPD"
+      ],
+      "playbook_id": "OVR-GDPR-playbook",
+      "playbook_kind": "implementation_playbook",
+      "source_bundle_id": "gdpr",
+      "source_document_id": "002-cross-check-normativo-gdpr-02-playbook",
+      "source_path": "002-cross-check-normativo/gdpr/02-playbook.md",
+      "title": "SbD-ToE 4 GDPR: Playbook de Implementação"
+    },
+    {
+      "adoption_status": "example_only",
+      "applicability_scope": "multi_framework_support",
+      "authority_class": "illustrative_overlay",
+      "curation_status": "illustrative_example",
+      "framework_ids": [
+        "EXT-DORA",
+        "EXT-NIS2",
+        "EXT-CRA",
+        "EXT-RGPD"
+      ],
+      "playbook_id": "OVR-EXEMPLO-PLAYBOOK-exemplo-toolchain-options",
+      "playbook_kind": "illustrative_example",
+      "source_bundle_id": "exemplo-playbook",
+      "source_document_id": "002-cross-check-normativo-exemplo-playbook-01-exemplo-toolchain-options",
+      "source_path": "002-cross-check-normativo/exemplo-playbook/01-exemplo-toolchain-options.md",
+      "title": "Exemplo: Opções de Toolchain"
+    },
+    {
+      "adoption_status": "example_only",
+      "applicability_scope": "multi_framework_support",
+      "authority_class": "illustrative_overlay",
+      "curation_status": "illustrative_example",
+      "framework_ids": [
+        "EXT-DORA",
+        "EXT-NIS2",
+        "EXT-CRA",
+        "EXT-RGPD"
+      ],
+      "playbook_id": "OVR-EXEMPLO-PLAYBOOK-exemplo-kpis-targets",
+      "playbook_kind": "illustrative_example",
+      "source_bundle_id": "exemplo-playbook",
+      "source_document_id": "002-cross-check-normativo-exemplo-playbook-02-exemplo-kpis-targets",
+      "source_path": "002-cross-check-normativo/exemplo-playbook/02-exemplo-kpis-targets.md",
+      "title": "Exemplo: KPIs e Targets"
+    },
+    {
+      "adoption_status": "example_only",
+      "applicability_scope": "multi_framework_support",
+      "authority_class": "illustrative_overlay",
+      "curation_status": "illustrative_example",
+      "framework_ids": [
+        "EXT-DORA",
+        "EXT-NIS2",
+        "EXT-CRA",
+        "EXT-RGPD"
+      ],
+      "playbook_id": "OVR-EXEMPLO-PLAYBOOK-exemplo-raci-governance",
+      "playbook_kind": "illustrative_example",
+      "source_bundle_id": "exemplo-playbook",
+      "source_document_id": "002-cross-check-normativo-exemplo-playbook-03-exemplo-raci-governance",
+      "source_path": "002-cross-check-normativo/exemplo-playbook/03-exemplo-raci-governance.md",
+      "title": "Exemplo: RACI e Governança"
+    },
+    {
+      "adoption_status": "example_only",
+      "applicability_scope": "multi_framework_support",
+      "authority_class": "illustrative_overlay",
+      "curation_status": "illustrative_example",
+      "framework_ids": [
+        "EXT-DORA",
+        "EXT-NIS2",
+        "EXT-CRA",
+        "EXT-RGPD"
+      ],
+      "playbook_id": "OVR-EXEMPLO-PLAYBOOK-exemplo-relatorio-incidentes",
+      "playbook_kind": "illustrative_example",
+      "source_bundle_id": "exemplo-playbook",
+      "source_document_id": "002-cross-check-normativo-exemplo-playbook-04-exemplo-relatorio-incidentes",
+      "source_path": "002-cross-check-normativo/exemplo-playbook/04-exemplo-relatorio-incidentes.md",
+      "title": "Exemplo: Reporte de Incidentes"
+    },
+    {
+      "adoption_status": "example_only",
+      "applicability_scope": "multi_framework_support",
+      "authority_class": "illustrative_overlay",
+      "curation_status": "illustrative_example",
+      "framework_ids": [
+        "EXT-DORA",
+        "EXT-NIS2",
+        "EXT-CRA",
+        "EXT-RGPD"
+      ],
+      "playbook_id": "OVR-EXEMPLO-PLAYBOOK-indice",
+      "playbook_kind": "illustrative_index",
+      "source_bundle_id": "exemplo-playbook",
+      "source_document_id": "002-cross-check-normativo-exemplo-playbook-readme",
+      "source_path": "002-cross-check-normativo/exemplo-playbook/README.md",
+      "title": "Exemplos de Suporte aos Playbooks"
+    }
+  ]
+}

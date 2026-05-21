@@ -1,0 +1,146 @@
+{
+  "artifact_type": "v1_runtime_surface_manifest",
+  "build": {
+    "generated_at": "2026-05-11T23:14:46.780944+00:00",
+    "generator": "sbdtoe_indexing.workflows.build_v1_runtime_surface"
+  },
+  "drift_note": "Counts sourced from slice contracts (authoritative actual). Declared sum from consolidated index. Drift concentrated in working_contract slices (notably ASC-09 RPR); upstream V1 enumeration incomplete in some slices. Flagged for Archon visibility via Step 8 delivery handover.",
+  "entity_counts": {
+    "actual": {
+      "artifacts": 53,
+      "control_objectives": 75,
+      "mechanisms": 51,
+      "practices": 66,
+      "total": 245
+    },
+    "declared": {
+      "artifacts": 57,
+      "control_objectives": 75,
+      "mechanisms": 58,
+      "practices": 69,
+      "total": 259
+    },
+    "drift_summary": {
+      "artifacts": 4,
+      "mechanisms": 7,
+      "practices": 3
+    }
+  },
+  "files": {
+    "artifacts": {
+      "path": "v1/artifacts.json",
+      "sha256": "c38aeacdce66741dce3f9d691c10094af37da008947397ad457e76ed0133c666"
+    },
+    "control_objectives": {
+      "path": "v1/control_objectives.json",
+      "sha256": "026115be178c16fb0b706be46f9b5c5fd2e5552feaa4a0a7cd0e7e7a9dd4a940"
+    },
+    "manual_maturity_progression": {
+      "path": "v1/manual_maturity_progression.jsonl",
+      "sha256": "a3386c3e69c5420219d8e7e84fc3b84029a6ee95ccf8b144c48ae64a3ceaf738"
+    },
+    "manual_rastreabilidade": {
+      "path": "v1/manual_rastreabilidade.jsonl",
+      "sha256": "a0ecd9ebe473908f1a8e443bf4e452971e183686a629be7ad06c62cedcb57245"
+    },
+    "manual_threat_mitigation": {
+      "path": "v1/manual_threat_mitigation.jsonl",
+      "sha256": "304b032f3064ec458f3c44b2e24f9e25ccab97aa430a24ae853bd3641c8e9e4c"
+    },
+    "mechanisms": {
+      "path": "v1/mechanisms.json",
+      "sha256": "a7d247a625e2f2d010c0c7dc235661143fc5a145e7bcb9c14d75181e6beba650"
+    },
+    "practices": {
+      "path": "v1/practices.json",
+      "sha256": "e0dd6071c1fc383bf0b411687d03772adb7e5be93fdf3d0a28b1610a0dfd4a32"
+    },
+    "relations": {
+      "path": "v1/relations.jsonl",
+      "sha256": "4ec5d07e2e274e7d59b40106a728fd8b6a123a8735415a4d480bb83fe5628135"
+    },
+    "slices": {
+      "path": "v1/slices.json",
+      "sha256": "8d32a3683f89b19f66f3321f2ca94887ba93197272b53961ce291506ddbdc640"
+    }
+  },
+  "future_work_entries": [
+    {
+      "entity_id": "ACM-IVF-004",
+      "iter_registered": "iter-3",
+      "manual_chapter": "06-desenvolvimento-seguro",
+      "note": "Content gap registered for P8 §10 future-work surface during Iter 3 Stage 5 Editorial Feedback; not closed at Iter 3 prose authoring.",
+      "registered_as": "p8_section_10"
+    }
+  ],
+  "manual_maturity_progression": {
+    "counts": {
+      "manual_v2_entity": 168,
+      "maturity_progression": 168,
+      "total": 336
+    },
+    "format_note": "Run 2 5-section structure (Manual ontology V2 entities (MaturityMapping) + SAMM/DSOMM maturity progression + SLSA build/integrity progression + Out-of-Maturity scope + Future-work register). Per §26 §4 discipline: SAMM v2.1 + DSOMM são fontes primárias; SLSA só onde fizer sentido como progressão de build/integridade; alinhamento regulatório NÃO é maturity score.",
+    "source_files": "<chapter>/achievable-maturity.md × 14 (Cap 00 fundamentos excluded)"
+  },
+  "manual_rastreabilidade": {
+    "counts": {
+      "manual_only_coverage": 21,
+      "manual_v2_entity": 807,
+      "out_of_appsec_coverage": 18,
+      "placeholder": 57,
+      "substrate_landing": 202,
+      "total": 1105
+    },
+    "coverage_counts": {
+      "manual_only": 21,
+      "out_of_appsec": 18,
+      "placeholder": 57,
+      "substantive": 202,
+      "v2_entity_index": 807
+    },
+    "expected_iter2_commit_sha": "b1d129f0",
+    "expected_iter3_commit_sha": "71b9c029",
+    "expected_run2_commit_sha": "455124a1",
+    "format_note": "run-2 5-section structure (Manual ontology V2 entities + Core-mapped + Manual-only + Out-of-AppSec + Future-work). Substrate refs surface in ES grounding column inline (`<Source>: <ref1>, <ref2>; ... ; + N more sources`). §26 methodology label per Core-mapped row (Explícito/Semântico/Parcial/Reparação/Gap/Scope boundary). Manual V2 entities indexed per chapter.",
+    "manual_commit_sha": "455124a18be9bc154caeab249bd34d9d75a8303e",
+    "manual_iter_anchor": "run-2"
+  },
+  "manual_threat_mitigation": {
+    "counts": {
+      "antipattern_exposure": 5,
+      "cwe_supporting": 3,
+      "manual_v2_entity": 282,
+      "threat_mitigation": 233,
+      "total": 523
+    },
+    "format_note": "Run 2 6-section structure (Manual ontology V2 entities (Threat + AntiPattern + Signal) + Threat surfaces (Manual + CAPEC primary) + AntiPattern exposure mapping + CWE references (supporting only) + V1 overlay mitigation pathway + Future-work register). Mitigation strength labelled per threat row (forte / parcial / dependente_de_outros_capitulos).",
+    "source_files": "<chapter>/canon/50-ameacas-mitigadas.md × 14 (Cap 00 fundamentos excluded)"
+  },
+  "methodology_label_distribution": {
+    "Explícito": 565,
+    "Gap": 1,
+    "Parcial": 6,
+    "Semântico": 31
+  },
+  "ontology_anchor": {
+    "consolidated_meta_version": "1.0",
+    "expected_commit_sha": "84fe8bf6f5de1443d778f9b2f0555b722540bbff",
+    "mirror_recorded_commit_sha": "84fe8bf6f5de1443d778f9b2f0555b722540bbff",
+    "repo": "https://github.com/SbD-ToE/sbd-toe-ontology.git",
+    "tag": "ontology-v1.1-fair-baseline"
+  },
+  "relation_counts": {
+    "belongsToSlice": 259,
+    "objective_implemented_by_mechanism": 144,
+    "objective_realized_by_practice": 126,
+    "total": 529
+  },
+  "slice_count": 10,
+  "warnings": [
+    "ASC-01 mechanisms: declared=6 actual=5 (slice contract status=working_contract)",
+    "ASC-09 practices: declared=9 actual=6 (slice contract status=working_contract)",
+    "ASC-09 mechanisms: declared=8 actual=4 (slice contract status=working_contract)",
+    "ASC-09 artifacts: declared=12 actual=8 (slice contract status=working_contract)",
+    "ASC-10 mechanisms: declared=6 actual=4 (slice contract status=working_contract)"
+  ]
+}

@@ -1,0 +1,244 @@
+{
+  "items": [
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "Cadeia Fornecimento",
+      "framework_id": "EXT-CRA",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-CRA-OBL-cadeia-fornecimento",
+      "obligation_kind": "topic",
+      "title": "Cadeia Fornecimento",
+      "topic": "Cadeia Fornecimento"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "Ciclo de Vida Seguro",
+      "framework_id": "EXT-CRA",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-CRA-OBL-ciclo-de-vida-seguro",
+      "obligation_kind": "topic",
+      "title": "Ciclo de Vida Seguro",
+      "topic": "Ciclo de Vida Seguro"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "Documentação Segurança",
+      "framework_id": "EXT-CRA",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-CRA-OBL-documentacao-seguranca",
+      "obligation_kind": "topic",
+      "title": "Documentação Segurança",
+      "topic": "Documentação Segurança"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "Exceções",
+      "framework_id": "EXT-CRA",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-CRA-OBL-excecoes",
+      "obligation_kind": "topic",
+      "title": "Exceções",
+      "topic": "Exceções"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "Patching Rápido",
+      "framework_id": "EXT-CRA",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-CRA-OBL-patching-rapido",
+      "obligation_kind": "topic",
+      "title": "Patching Rápido",
+      "topic": "Patching Rápido"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "Reporte Exploração",
+      "framework_id": "EXT-CRA",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-CRA-OBL-reporte-exploracao",
+      "obligation_kind": "topic",
+      "title": "Reporte Exploração",
+      "topic": "Reporte Exploração"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "SBOM",
+      "framework_id": "EXT-CRA",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-CRA-OBL-sbom",
+      "obligation_kind": "topic",
+      "title": "SBOM",
+      "topic": "SBOM"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "Vulnerability Handling",
+      "framework_id": "EXT-CRA",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-CRA-OBL-vulnerability-handling",
+      "obligation_kind": "topic",
+      "title": "Vulnerability Handling",
+      "topic": "Vulnerability Handling"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "16",
+      "framework_id": "EXT-DORA",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-DORA-OBL-16",
+      "obligation_kind": "article",
+      "title": "Partilha de Ameaças",
+      "topic": "Partilha de Ameaças"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "18",
+      "framework_id": "EXT-DORA",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-DORA-OBL-18",
+      "obligation_kind": "article",
+      "title": "Reporte de Incidentes",
+      "topic": "Reporte de Incidentes"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "19–20",
+      "framework_id": "EXT-DORA",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-DORA-OBL-19-20",
+      "obligation_kind": "article",
+      "title": "Testes de Resiliência",
+      "topic": "Testes de Resiliência"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "26–28",
+      "framework_id": "EXT-DORA",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-DORA-OBL-26-28",
+      "obligation_kind": "article",
+      "title": "Gestão de Fornecedores",
+      "topic": "Gestão de Fornecedores"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "5",
+      "framework_id": "EXT-DORA",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-DORA-OBL-5",
+      "obligation_kind": "article",
+      "title": "Gestão de Risco TIC",
+      "topic": "Gestão de Risco TIC"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "20",
+      "framework_id": "EXT-NIS2",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-NIS2-OBL-20",
+      "obligation_kind": "article",
+      "title": "Governação e Responsabilização",
+      "topic": "Governação e Responsabilização"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "21",
+      "framework_id": "EXT-NIS2",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-NIS2-OBL-21",
+      "obligation_kind": "article",
+      "title": "Medidas de Gestão de Risco",
+      "topic": "Medidas de Gestão de Risco"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "23",
+      "framework_id": "EXT-NIS2",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-NIS2-OBL-23",
+      "obligation_kind": "article",
+      "title": "Reporte de Incidentes",
+      "topic": "Reporte de Incidentes"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "Continuidade",
+      "framework_id": "EXT-NIS2",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-NIS2-OBL-continuidade-e-crise",
+      "obligation_kind": "topic",
+      "title": "Continuidade e Crise",
+      "topic": "Continuidade e Crise"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "Cadeia Fornecimento",
+      "framework_id": "EXT-NIS2",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-NIS2-OBL-seguranca-de-fornecedores",
+      "obligation_kind": "topic",
+      "title": "Segurança de Fornecedores",
+      "topic": "Segurança de Fornecedores"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "25",
+      "framework_id": "EXT-RGPD",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-RGPD-OBL-25",
+      "obligation_kind": "article",
+      "title": "Privacy by design/default",
+      "topic": "Privacy by design/default"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "30",
+      "framework_id": "EXT-RGPD",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-RGPD-OBL-30",
+      "obligation_kind": "article",
+      "title": "ROPA",
+      "topic": "ROPA"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "32",
+      "framework_id": "EXT-RGPD",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-RGPD-OBL-32",
+      "obligation_kind": "article",
+      "title": "Segurança do tratamento",
+      "topic": "Segurança do tratamento"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "33/34",
+      "framework_id": "EXT-RGPD",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-RGPD-OBL-33-34",
+      "obligation_kind": "article",
+      "title": "Violação de dados",
+      "topic": "Violação de dados"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "35",
+      "framework_id": "EXT-RGPD",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-RGPD-OBL-35",
+      "obligation_kind": "article",
+      "title": "DPIA",
+      "topic": "DPIA"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "5",
+      "framework_id": "EXT-RGPD",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-RGPD-OBL-5",
+      "obligation_kind": "article",
+      "title": "Princípios",
+      "topic": "Princípios"
+    }
+  ]
+}

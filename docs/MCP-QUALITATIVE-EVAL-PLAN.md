@@ -92,7 +92,7 @@ Run the MCP locally from this repo, not from published npm:
     "sbdToeLocal": {
       "type": "stdio",
       "command": "node",
-      "args": ["/Volumes/G-DRIVE/Shared/Manual-SbD-ToE/sbd-toe-mcp-poc/dist/index.js"],
+      "args": ["<absolute-path-to-repo>/dist/index.js"],
       "env": {
         "DEBUG_MODE": "true"
       }
