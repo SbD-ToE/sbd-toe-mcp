@@ -1,0 +1,17 @@
+{
+  "servers": {
+    "aos_engine": {
+      "type": "stdio",
+      "command": "${workspaceFolder}/.venv/bin/aos-engine-mcp",
+      "env": {
+        "AOS_DATA_DIR": "${workspaceFolder}/.aos_engine_data"
+      }
+    },
+    "sbdToe": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["${workspaceFolder}/dist/index.js"],
+      "envFile": "${workspaceFolder}/.env"
+    }
+  }
+}
