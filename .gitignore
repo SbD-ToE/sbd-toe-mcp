@@ -13,3 +13,11 @@ data/upstream/backend-checkout.json
 .mcp.json
 .claude/
 .aos_engine_data/
+
+# Cleanup 2026-05-23 — pre-ICSME-2026 submission
+# .vscode/mcp.json fica trackeado: é entrada obrigatória do bundle de release
+# (scripts/package-release-lib.mjs)
+.vscode/*
+!.vscode/mcp.json
+GITHUB-CONFIG.md
+NEXT-STEPS.md

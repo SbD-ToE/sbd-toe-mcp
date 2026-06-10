@@ -1,0 +1,88 @@
+cff-version: 1.2.0
+title: "SbD-ToE MCP: Ontology-Grounded Retrieval Model Context Protocol Server for Security-by-Design"
+message: "If you use this software, please cite both the software and the associated paper (see preferred-citation)."
+type: software
+authors:
+  - family-names: "Farinha"
+    given-names: "Pedro"
+    affiliation: "Independent Researcher / Shiftleft - Secure Software Engineering, Lda."
+    email: "pedro.farinha@shiftleft.pt"
+    orcid: "https://orcid.org/0009-0001-0569-9020"
+repository-code: "https://github.com/Shiftleftpt/sbd-toe-mcp-poc"
+url: "https://github.com/Shiftleftpt/sbd-toe-mcp-poc"
+identifiers:
+  # --- OSF: full project deposit (bundle + screencast + manifest + SHASUMS in one place) ---
+  - type: doi
+    value: "10.17605/OSF.IO/PGDR6"
+    description: "OSF full project deposit — single landing surface holding bundle, screencast, MANIFEST, SHASUMS together"
+  # --- Tool bundle deposits (npm tgz + release tar.gz + manifest + SHASUMS; no screencast) ---
+  - type: doi
+    value: "10.6084/m9.figshare.32389887"
+    description: "figshare tool-bundle deposit (without screencast; bundle + manifest + SHASUMS)"
+  - type: doi
+    value: "10.23728/b2share.2bgbn-k8044"
+    description: "B2SHARE tool-bundle deposit (without screencast; second-service archive partner of figshare 32389887 under the programme's two-service rule)"
+  # --- Screencast-only deposits (4 min 12 s demonstration video) ---
+  - type: doi
+    value: "10.6084/m9.figshare.32389878"
+    description: "figshare screencast-only deposit (primary viewer surface; inline video player); the URL cited in the ICSME 2026 abstract"
+  - type: doi
+    value: "10.23728/b2share.z5sgr-wkt02"
+    description: "B2SHARE screencast-only deposit (second-service archive partner of figshare 32389878 under the programme's two-service rule)"
+license: "Apache-2.0"
+version: "0.9.0"
+date-released: 2026-05-21
+abstract: >
+  SbD-ToE MCP is an installable Model Context Protocol (MCP) server providing
+  citation-backed, ontology-grounded retrieval over a Security-by-Design
+  practitioner manual. The 15-chapter manual corpus is normalized against
+  thirty-one external sources (frameworks, standards, regulations) and bound
+  to AppSec Core v1, a typed ontology of 259 entities across ten domain slices.
+  All knowledge artefacts are derived from frozen, SHA-256-pinned releases of
+  the upstream AppSec Core research programme (papers P1, P6, P7, P8). The
+  server runs offline, requires no API keys, and integrates with Claude,
+  GitHub Copilot, Cursor, Windsurf, Zed, and other MCP-compatible clients.
+
+  Note on licensing: the code in this repository is released under Apache-2.0;
+  the bundled data artefacts derived from the SbD-ToE practitioner manual are
+  released under CC-BY-SA-4.0 (see LICENSE-DATA and LICENSE-NOTE.md).
+keywords:
+  - Model Context Protocol
+  - MCP
+  - ontology-grounded retrieval
+  - security by design
+  - SbD
+  - application security
+  - AppSec
+  - knowledge graph
+  - retrieval-augmented generation
+  - LLM tooling
+  - AppSec Core
+  - SbD-ToE
+preferred-citation:
+  type: conference-paper
+  title: "SbD-ToE MCP: Ontology-Grounded Retrieval for Security-by-Design Code Generation"
+  authors:
+    - family-names: "Farinha"
+      given-names: "Pedro"
+      orcid: "https://orcid.org/0009-0001-0569-9020"
+  conference:
+    name: "IEEE International Conference on Software Maintenance and Evolution (ICSME)"
+    city: "Benevento"
+    country: "IT"
+  year: 2026
+  month: 9
+  notes: >
+    Tool Demonstration and Data Showcase track. The companion research
+    programme is curated at:
+    https://github.com/sbd-ai-runtime/appsec-core-ontology-research
+
+    Programme paper DOIs cited by this tool:
+      P1 = 10.17605/OSF.IO/WG8PV  (AppSec Core v0 — Normalized Ontology)
+      P5 = 10.17605/OSF.IO/KH8Y7  (MCP Instrument Specification — pre-registered companion)
+      P6 = 10.17605/OSF.IO/U9CRD  (AppSec Core v1 — Formalized Ontology)
+      P7 = 10.17605/OSF.IO/3E8G5  (Pressure-Testing AppSec Core — DSR)
+      P8 = 10.17605/OSF.IO/TXW8P  (Coverage-Preserving Compilation v2)
+
+    Programme prospectus DOI (programme-level anchor):
+      P0 = 10.17605/OSF.IO/7T849
