@@ -181,6 +181,19 @@ export interface ManualToolResult {
     };
     prompt: string;
     selectedCitationIds: string[];
+    /**
+     * Bounding metadata emitted by inspection-style tools when `retrieved` is
+     * capped to the inspection depth (topK). Absent for unbounded callers.
+     */
+    meta?: {
+      retrievedTotal: number;
+      retrievedReturned: number;
+      retrievedTruncated: boolean;
+      retrievedOmitted: number;
+      selectedCount: number;
+      excerptMaxChars: number;
+      note: string;
+    } | undefined;
     retrieved: Array<{
       citationId: string;
       source: RetrievalSource;
