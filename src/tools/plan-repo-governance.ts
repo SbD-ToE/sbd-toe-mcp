@@ -12,6 +12,7 @@
 
 import type { SnapshotCache } from "../backend/semantic-index-gateway.js";
 import { getOntologyData } from "./ontology-loader.js";
+import { paginate, type CoverageMap } from "../serving/response-shaping.js";
 
 const VALID_RISK_LEVELS = ["L1", "L2", "L3"] as const;
 type RiskLevel = (typeof VALID_RISK_LEVELS)[number];
@@ -85,6 +86,10 @@ export interface PlanRepoGovernanceResult {
   riskLevel: string | null;
   totalArtefacts: number;
   byChapter: ArtefactsByChapter[];
+  /** Coverage-preserving page descriptor over `byChapter` (follow `nextOffset`). */
+  coverage: CoverageMap;
+  /** Estimated serialized size (chars) of the returned `byChapter` page. */
+  size_estimate: number;
   note: string;
 }
 
@@ -175,13 +180,30 @@ export function handlePlanRepoGovernance(
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([chapterId, arts]) => ({ chapterId, artefacts: arts }));
 
+  // Coverage-preserving pagination over byChapter. Opt-in: without offset/limit
+  // the default page covers every chapter (non-breaking), but `coverage` and
+  // `size_estimate` are always returned so consumers can budget and page.
+  const offsetArg = args["offset"];
+  const limitArg = args["limit"];
+  const page = paginate(
+    byChapter,
+    {
+      offset: typeof offsetArg === "number" ? offsetArg : undefined,
+      limit: typeof limitArg === "number" ? limitArg : undefined,
+    },
+    byChapter.length || 1
+  );
+
   return {
     riskLevel,
     totalArtefacts: artefacts.length,
-    byChapter,
+    byChapter: page.items,
+    coverage: page.coverage,
+    size_estimate: page.size_estimate,
     note:
       "Artefacts sourced from the published SbD-ToE runtime and manual chapter applicability model. " +
       "The manual does not provide document templates — if a template is needed, " +
-      "ask the LLM to generate one based on the artefact description."
+      "ask the LLM to generate one based on the artefact description. " +
+      "byChapter is coverage-preserving paginated — follow coverage.nextOffset to page."
   };
 }

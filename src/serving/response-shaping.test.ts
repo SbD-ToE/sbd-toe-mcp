@@ -4,6 +4,8 @@ import {
   truncateText,
   resolveBudget,
   CONSUMER_BUDGETS,
+  paginate,
+  estimateSize,
 } from "./response-shaping.js";
 
 describe("boundList", () => {
@@ -91,5 +93,71 @@ describe("resolveBudget", () => {
     expect(resolveBudget("inline", { maxRecords: 0, maxExcerptChars: -1 })).toEqual(
       CONSUMER_BUDGETS.inline
     );
+  });
+});
+
+describe("estimateSize", () => {
+  it("returns the serialized length", () => {
+    expect(estimateSize([1, 2, 3])).toBe(JSON.stringify([1, 2, 3]).length);
+  });
+
+  it("returns 0 for non-serializable input", () => {
+    const circular: Record<string, unknown> = {};
+    circular.self = circular;
+    expect(estimateSize(circular)).toBe(0);
+  });
+});
+
+describe("paginate", () => {
+  const data = Array.from({ length: 25 }, (_, i) => i);
+
+  it("returns the first window with a coverage map and size estimate", () => {
+    const page = paginate(data, { offset: 0, limit: 10 });
+    expect(page.items).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    expect(page.coverage).toEqual({
+      total: 25,
+      returned: 10,
+      offset: 0,
+      nextOffset: 10,
+      hasMore: true,
+    });
+    expect(page.size_estimate).toBe(estimateSize(page.items));
+  });
+
+  it("signals exhaustion on the last page", () => {
+    const page = paginate(data, { offset: 20, limit: 10 });
+    expect(page.items).toEqual([20, 21, 22, 23, 24]);
+    expect(page.coverage.hasMore).toBe(false);
+    expect(page.coverage.nextOffset).toBeNull();
+  });
+
+  it("is coverage-preserving: walking nextOffset yields the full set, no loss/dup", () => {
+    const collected: number[] = [];
+    let offset: number | null = 0;
+    let guard = 0;
+    while (offset !== null && guard++ < 100) {
+      const page: ReturnType<typeof paginate<number>> = paginate(data, { offset, limit: 7 });
+      collected.push(...page.items);
+      offset = page.coverage.nextOffset;
+    }
+    expect(collected).toEqual(data);
+  });
+
+  it("clamps an out-of-range offset to the end (empty page, no crash)", () => {
+    const page = paginate(data, { offset: 999, limit: 10 });
+    expect(page.items).toEqual([]);
+    expect(page.coverage.offset).toBe(25);
+    expect(page.coverage.hasMore).toBe(false);
+  });
+
+  it("falls back to the agentic default limit for invalid limits", () => {
+    const page = paginate(data, { limit: 0 });
+    expect(page.coverage.returned).toBe(CONSUMER_BUDGETS.agentic.maxRecords);
+  });
+
+  it("tolerates non-array input", () => {
+    const page = paginate(undefined as unknown as number[], { limit: 5 });
+    expect(page.items).toEqual([]);
+    expect(page.coverage.total).toBe(0);
   });
 });

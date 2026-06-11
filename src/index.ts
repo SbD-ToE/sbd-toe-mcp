@@ -633,6 +633,16 @@ class McpRuntime {
                 type: "string",
                 enum: ["L1", "L2", "L3"],
                 description: "Optional. If provided, only artefacts applicable at this risk level are returned."
+              },
+              offset: {
+                type: "integer",
+                minimum: 0,
+                description: "Optional. 0-based chapter offset for coverage-preserving pagination of byChapter. Follow `coverage.nextOffset` to page; default covers all chapters."
+              },
+              limit: {
+                type: "integer",
+                minimum: 1,
+                description: "Optional. Max chapters per page. Use with `offset` to keep the response within a size budget; see `coverage` and `size_estimate` in the result."
               }
             },
             required: [],

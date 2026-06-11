@@ -120,3 +120,91 @@ export function resolveBudget(
         : base.maxExcerptChars,
   };
 }
+
+/**
+ * Estimated serialized size (in characters) of a value — a cheap proxy for the
+ * token/byte cost a consumer pays. Used to populate `size_estimate` so consumers
+ * can budget without re-serializing. Non-serializable input yields 0.
+ */
+export function estimateSize(value: unknown): number {
+  try {
+    return JSON.stringify(value)?.length ?? 0;
+  } catch {
+    return 0;
+  }
+}
+
+export interface PageRequest {
+  /** 0-based index of the first item to return. */
+  offset?: number | undefined;
+  /** Maximum items in the page. */
+  limit?: number | undefined;
+}
+
+/**
+ * Coverage descriptor for a page. Makes omission explicit and tells the consumer
+ * exactly how to retrieve the rest — the contract's coverage-preserving
+ * guarantee (E5): the union of all pages walked via `nextOffset` is the full
+ * set, with nothing silently dropped.
+ */
+export interface CoverageMap {
+  /** Total items available across all pages. */
+  total: number;
+  /** Items returned in this page. */
+  returned: number;
+  /** 0-based start index of this page. */
+  offset: number;
+  /** Cursor for the next page, or null when this page reaches the end. */
+  nextOffset: number | null;
+  /** True when more items exist beyond this page. */
+  hasMore: boolean;
+}
+
+export interface Page<T> {
+  items: T[];
+  coverage: CoverageMap;
+  /** Estimated serialized size (chars) of `items`. */
+  size_estimate: number;
+}
+
+/**
+ * Coverage-preserving pagination. Returns a window plus a {@link CoverageMap}
+ * the consumer follows (via `nextOffset`) to retrieve everything without loss.
+ * Out-of-range/invalid offsets clamp to a valid window; `limit` defaults to the
+ * agentic budget. This is the serving mechanism the consumer contract (v1.3/E5)
+ * projects through — bundle-independent.
+ */
+export function paginate<T>(
+  items: readonly T[],
+  request: PageRequest = {},
+  defaultLimit: number = CONSUMER_BUDGETS.agentic.maxRecords
+): Page<T> {
+  const source = Array.isArray(items) ? items : [];
+  const total = source.length;
+
+  const limit =
+    Number.isFinite(request.limit) && (request.limit as number) > 0
+      ? Math.floor(request.limit as number)
+      : defaultLimit;
+  const rawOffset =
+    Number.isFinite(request.offset) && (request.offset as number) > 0
+      ? Math.floor(request.offset as number)
+      : 0;
+  const offset = Math.min(rawOffset, total);
+
+  const page = source.slice(offset, offset + limit);
+  const end = offset + page.length;
+  const hasMore = end < total;
+
+  return {
+    items: page,
+    coverage: {
+      total,
+      returned: page.length,
+      offset,
+      nextOffset: hasMore ? end : null,
+      hasMore,
+    },
+    size_estimate: estimateSize(page),
+  };
+}
