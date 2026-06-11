@@ -60,6 +60,30 @@ const ACTIVE_CHAPTERS_BY_RISK: Record<RiskLevel, string[]> = {
   L3: Object.keys(READABLE_TITLES),
 };
 
+const RISK_ORDER: readonly RiskLevel[] = ["L1", "L2", "L3"];
+
+interface ChapterApplicability {
+  applicability: { L1: boolean; L2: boolean; L3: boolean };
+  minLevel: RiskLevel | null;
+}
+
+/**
+ * Per-risk-level applicability for a chapter, derived from ACTIVE_CHAPTERS_BY_RISK.
+ * `minLevel` is the lowest level at which the chapter activates (null if never).
+ * Bundle-independent — driven by the in-code risk model, not the runtime bundle.
+ */
+function chapterApplicability(chapterId: string): ChapterApplicability {
+  const applicability = {
+    L1: ACTIVE_CHAPTERS_BY_RISK.L1.includes(chapterId),
+    L2: ACTIVE_CHAPTERS_BY_RISK.L2.includes(chapterId),
+    L3: ACTIVE_CHAPTERS_BY_RISK.L3.includes(chapterId),
+  };
+  return {
+    applicability,
+    minLevel: RISK_ORDER.find((level) => applicability[level]) ?? null,
+  };
+}
+
 let cachedBundleCatalog: LooseRecord[] | undefined;
 let cachedMcpChunks: LooseRecord[] | undefined;
 
@@ -134,7 +158,9 @@ export function handleListSbdToeChapters(
   if (hasProvidedCache(cache)) {
     const items = getEntityItems(cache);
     const seen = new Set<string>();
-    const chapters: Array<{ id: string; title: string; readableTitle: string }> = [];
+    const chapters: Array<
+      { id: string; title: string; readableTitle: string } & ChapterApplicability
+    > = [];
 
     for (const item of items) {
       const oid = getStr(item, "objectID") ?? "";
@@ -159,7 +185,12 @@ export function handleListSbdToeChapters(
 
       seen.add(id);
       const title = getStr(item, "title") ?? id;
-      chapters.push({ id, title, readableTitle: READABLE_TITLES[id] ?? title });
+      chapters.push({
+        id,
+        title,
+        readableTitle: READABLE_TITLES[id] ?? title,
+        ...chapterApplicability(id),
+      });
     }
 
     return { chapters };
@@ -177,7 +208,12 @@ export function handleListSbdToeChapters(
 
   const chapters = chapterIds.map((id) => {
     const title = titleByChapter.get(id) ?? READABLE_TITLES[id] ?? id;
-    return { id, title, readableTitle: READABLE_TITLES[id] ?? title };
+    return {
+      id,
+      title,
+      readableTitle: READABLE_TITLES[id] ?? title,
+      ...chapterApplicability(id),
+    };
   });
 
   return { chapters };

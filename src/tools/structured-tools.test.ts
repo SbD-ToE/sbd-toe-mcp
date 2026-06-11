@@ -627,3 +627,47 @@ describe("handleMapSbdToeApplicability — activatedBundles", () => {
     expect(result.activatedBundles.foundationBundles).toHaveLength(3);
   });
 });
+
+// --- list_sbd_toe_chapters — applicability/minLevel (Wave 1 item 9) ---
+
+describe("handleListSbdToeChapters — applicability", () => {
+  type Chapter = {
+    id: string;
+    title: string;
+    readableTitle: string;
+    applicability: { L1: boolean; L2: boolean; L3: boolean };
+    minLevel: "L1" | "L2" | "L3" | null;
+  };
+
+  function listAll(): Chapter[] {
+    // No cache → real-chapter path driven by ACTIVE_CHAPTERS_BY_RISK.
+    return (handleListSbdToeChapters({}) as { chapters: Chapter[] }).chapters;
+  }
+
+  it("exposes applicability + minLevel on every chapter (the promised-but-missing fields)", () => {
+    for (const c of listAll()) {
+      expect(c.applicability).toBeDefined();
+      expect(typeof c.applicability.L1).toBe("boolean");
+      expect(["L1", "L2", "L3", null]).toContain(c.minLevel);
+    }
+  });
+
+  it("derives minLevel from the lowest active risk level", () => {
+    const byId = new Map(listAll().map((c) => [c.id, c]));
+    // Foundation chapter active at every level.
+    expect(byId.get("02-requisitos-seguranca")?.minLevel).toBe("L1");
+    // Secure-development activates at L2 (not L1).
+    expect(byId.get("06-desenvolvimento-seguro")?.applicability.L1).toBe(false);
+    expect(byId.get("06-desenvolvimento-seguro")?.minLevel).toBe("L2");
+    // Training/onboarding is L3-only.
+    expect(byId.get("13-formacao-onboarding")?.applicability).toEqual({ L1: false, L2: false, L3: true });
+    expect(byId.get("13-formacao-onboarding")?.minLevel).toBe("L3");
+  });
+
+  it("keeps readableTitle clean even when the canonical title carries editorial noise", () => {
+    const tm = listAll().find((c) => c.id === "03-threat-modeling");
+    expect(tm?.readableTitle).toBe("Threat Modeling");
+    // canonical title may carry a "Capítulo 3 - " prefix; readableTitle must not.
+    expect(tm?.readableTitle).not.toMatch(/Cap[íi]tulo/i);
+  });
+});

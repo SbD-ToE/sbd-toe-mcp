@@ -569,7 +569,8 @@ class McpRuntime {
         {
           name: "list_sbd_toe_chapters",
           title: "List SbD-ToE Chapters",
-          description: "Lists SbD-ToE manual chapters with id, title and applicability.",
+          description:
+            "Lists SbD-ToE manual chapters with id, canonical title, a clean readableTitle for display, and per-risk-level applicability (L1/L2/L3) plus minLevel.",
           inputSchema: {
             type: "object",
             properties: {
