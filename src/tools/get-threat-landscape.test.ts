@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { _resolveThreatLandscape } from "./get-threat-landscape.js";
+import { _resolveThreatLandscape, handleGetThreatLandscape } from "./get-threat-landscape.js";
 import type { OntologyData } from "./ontology-loader.js";
 
 // ---------------------------------------------------------------------------
@@ -140,6 +140,31 @@ describe("_resolveThreatLandscape", () => {
     const result = _resolveThreatLandscape({ risk_level: "L2" }, makeOntologyData());
     for (const t of result.threats) {
       expect(Array.isArray(t.mitigated_by)).toBe(true);
+    }
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Surface pass-through (against the published bundle): associated_controls was
+// hardcoded to [] in the surface handle even though runtime/threats.json carries
+// it. Guard that the serving layer no longer drops the substrate field.
+// ---------------------------------------------------------------------------
+
+describe("handleGetThreatLandscape surface", () => {
+  it("passes through associated_controls carried by the bundle (not hardcoded [])", () => {
+    const result = handleGetThreatLandscape({ risk_level: "L2" });
+    const withAssoc = result.threats.filter(
+      (t) => Array.isArray(t.associated_controls) && t.associated_controls.length > 0
+    );
+    // The bundle populates associated_controls on its threats; at least some
+    // must survive to the surface.
+    expect(withAssoc.length).toBeGreaterThan(0);
+  });
+
+  it("keeps associated_controls an array on every surfaced threat", () => {
+    const result = handleGetThreatLandscape({ risk_level: "L2" });
+    for (const t of result.threats) {
+      expect(Array.isArray(t.associated_controls)).toBe(true);
     }
   });
 });

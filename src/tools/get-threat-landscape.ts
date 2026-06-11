@@ -271,7 +271,10 @@ export function handleGetThreatLandscape(
       mitigation_confidence: threat.mitigation_confidence,
       mitigated_by: threat.mitigated_by,
       related_antipatterns: threat.related_antipatterns,
-      associated_controls: [],
+      // Surface the threat's own associated_controls carried by the substrate
+      // (runtime/threats.json). Previously hardcoded to [] — a serving-layer
+      // drop, not absent data. Pontifex serves what the bundle carries.
+      associated_controls: threat.associated_controls ?? [],
       ...(threat.mitigated_threat_id ? { mitigated_threat_id: threat.mitigated_threat_id } : {}),
       ...(threat.chapter_id ? { chapter_id: threat.chapter_id } : {}),
       ...(threat.mitigation_summary ? { mitigation_summary: threat.mitigation_summary } : {}),
