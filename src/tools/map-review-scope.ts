@@ -123,6 +123,18 @@ interface PatternRule {
   matches: (normalizedPath: string) => boolean;
 }
 
+/** Last path segment (filename) of a normalized "/"-separated path. */
+function basename(normalizedPath: string): string {
+  const segments = normalizedPath.split("/");
+  return segments[segments.length - 1] ?? normalizedPath;
+}
+
+/** True when any "/"-separated segment of the path equals one of `names`. */
+function hasSegment(normalizedPath: string, names: string[]): boolean {
+  const segments = normalizedPath.split("/");
+  return names.some((name) => segments.includes(name));
+}
+
 const PATTERN_RULES: PatternRule[] = [
   {
     pattern: "src/config.ts",
@@ -168,6 +180,75 @@ const PATTERN_RULES: PatternRule[] = [
     pattern: "aos/** / .github/skills/**",
     bundles: ["14-governanca-contratacao", "13-formacao-onboarding"],
     matches: (p) => p.startsWith("aos/") || p.startsWith(".github/skills/")
+  },
+  {
+    // Containers & orchestration → Containers e Imagens
+    pattern: "Dockerfile / Containerfile / *compose* / .dockerignore / k8s/** / helm/**",
+    bundles: ["09-containers-imagens"],
+    matches: (p) => {
+      const name = basename(p);
+      return (
+        name === "Dockerfile" ||
+        name.startsWith("Dockerfile.") ||
+        name === "Containerfile" ||
+        name === ".dockerignore" ||
+        name === "docker-compose.yml" ||
+        name === "docker-compose.yaml" ||
+        name === "compose.yml" ||
+        name === "compose.yaml" ||
+        name === "Chart.yaml" ||
+        hasSegment(p, ["k8s", "kubernetes", "helm", "charts"])
+      );
+    }
+  },
+  {
+    // Infrastructure as Code → IaC e Infraestrutura
+    pattern: "*.tf / *.tfvars / *.bicep",
+    bundles: ["08-iac-infraestrutura"],
+    matches: (p) => p.endsWith(".tf") || p.endsWith(".tfvars") || p.endsWith(".bicep")
+  },
+  {
+    // Python dependency manifests → Dependências, SBOM e SCA
+    pattern: "requirements*.txt / Pipfile / pyproject.toml / poetry.lock / setup.py",
+    bundles: ["05-dependencias-sbom-sca"],
+    matches: (p) => {
+      const name = basename(p);
+      return (
+        (name.startsWith("requirements") && name.endsWith(".txt")) ||
+        name === "Pipfile" ||
+        name === "Pipfile.lock" ||
+        name === "pyproject.toml" ||
+        name === "poetry.lock" ||
+        name === "setup.py" ||
+        name === "setup.cfg"
+      );
+    }
+  },
+  {
+    // Non-GitHub CI/CD pipelines → mirror the .github/workflows mapping
+    pattern: ".gitlab-ci.yml / Jenkinsfile / .circleci/** / azure-pipelines.yml / bitbucket-pipelines.yml",
+    bundles: ["07-cicd-seguro", "10-testes-seguranca", "11-deploy-seguro"],
+    matches: (p) => {
+      const name = basename(p);
+      return (
+        name === ".gitlab-ci.yml" ||
+        name === ".gitlab-ci.yaml" ||
+        name === "Jenkinsfile" ||
+        name === "azure-pipelines.yml" ||
+        name === "azure-pipelines.yaml" ||
+        name === "bitbucket-pipelines.yml" ||
+        hasSegment(p, [".circleci"])
+      );
+    }
+  },
+  {
+    // Environment / secrets files → Desenvolvimento Seguro (secrets handling)
+    pattern: ".env / .env.*",
+    bundles: ["06-desenvolvimento-seguro"],
+    matches: (p) => {
+      const name = basename(p);
+      return name === ".env" || name.startsWith(".env.");
+    }
   }
 ];
 
