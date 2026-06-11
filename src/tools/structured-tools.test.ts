@@ -730,3 +730,20 @@ describe("handleMapSbdToeApplicability — conditional model", () => {
     expect(result.active).toEqual(baseline.active);
   });
 });
+
+// --- get_chapter_brief: surface role (Wave 1 item 8 serve-side) ---
+// The description promised role + intent_topics but the output carried neither.
+// role is derived from assignments; intent_topics is absent from the v1.6.x
+// substrate (description corrected to not over-promise).
+describe("handleGetSbdToeChapterBrief — role", () => {
+  it("surfaces the distinct roles of a chapter from assignments", () => {
+    const result = handleGetSbdToeChapterBrief({ chapterId: "02-requisitos-seguranca" }) as {
+      found: boolean;
+      role?: string[];
+    };
+    expect(result.found).toBe(true);
+    expect(Array.isArray(result.role)).toBe(true);
+    expect((result.role ?? []).length).toBeGreaterThan(0);
+    expect(result.role).toEqual([...(result.role ?? [])].sort()); // deduped + sorted
+  });
+});

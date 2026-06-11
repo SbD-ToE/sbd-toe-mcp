@@ -606,7 +606,7 @@ class McpRuntime {
           name: "get_sbd_toe_chapter_brief",
           title: "Get SbD-ToE Chapter Brief",
           description:
-            "Returns an operational summary of a chapter: role, phases, artefacts, intent_topics.",
+            "Returns an operational summary of a chapter: title, objective, role, phases, artefacts (fields are present when the substrate carries them).",
           inputSchema: {
             type: "object",
             properties: {

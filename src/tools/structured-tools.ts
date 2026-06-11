@@ -387,6 +387,13 @@ export function handleGetSbdToeChapterBrief(
         .map((assignment) => assignment.phase)
     )
   ).sort();
+  const roles = Array.from(
+    new Set(
+      ontology.assignments
+        .filter((assignment) => assignment.chapter_id === chapterId && assignment.role.length > 0)
+        .map((assignment) => assignment.role)
+    )
+  ).sort();
   const artifacts = Array.from(
     new Set(
       (ontology.artifactRequirements ?? [])
@@ -415,6 +422,7 @@ export function handleGetSbdToeChapterBrief(
     found: true,
     title: (bundle ? getStr(bundle, "title") : undefined) ?? READABLE_TITLES[chapterId] ?? chapterId,
     ...(objective !== undefined ? { objective } : {}),
+    ...(roles.length > 0 ? { role: roles } : {}),
     ...(phases.length > 0 ? { phases } : {}),
     ...(artifacts.length > 0 ? { artifacts } : {})
   };
