@@ -721,16 +721,19 @@ class McpRuntime {
               },
               hasPersonalData: {
                 type: "boolean",
-                description: "Does the project process personal data?"
+                description:
+                  "Does the project process personal data? Informational only — does not affect the returned scope (chapter/control activation derives from riskLevel and technologies)."
               },
               isPublicFacing: {
                 type: "boolean",
-                description: "Does the project have public-facing exposure?"
+                description:
+                  "Does the project have public-facing exposure? Informational only — does not affect the returned scope (chapter/control activation derives from riskLevel and technologies)."
               },
               projectRole: {
                 type: "string",
                 enum: ["developer", "architect", "security", "devops", "manager"],
-                description: "User role in the project."
+                description:
+                  "User role in the project. Informational only — does not affect the returned scope."
               }
             },
             required: ["riskLevel"],
