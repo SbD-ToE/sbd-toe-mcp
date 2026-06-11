@@ -15,7 +15,7 @@ methodological substance, not an AI-content-generation event).
 
 | Tool | Provider | Used for |
 |------|----------|----------|
-| **Claude** (Opus 4.6, Opus 4.7, Sonnet 4.6) | Anthropic | Implementation pair-programming, README and documentation drafting, code review, refactoring, release-pipeline scripting |
+| **Claude** (Opus 4.6, Opus 4.7, Opus 4.8, Sonnet 4.6) | Anthropic | Implementation pair-programming, README and documentation drafting, code review, refactoring, release-pipeline scripting |
 | **Codex** | OpenAI | Initial code-generation drafts for selected modules during early development iterations |
 
 ## Development Use
@@ -36,6 +36,24 @@ Core research programme's frozen artefacts.
 The author retains full responsibility for the design, the code, the bundled
 data composition, the licensing model, and the operational behaviour of the
 released software.
+
+### Multi-Agent Persona Protocol (development workflow)
+
+As of 2026-06-11, AI-assisted development across the SbD-ToE / AppSec Core
+programme is organized under a named multi-agent persona protocol defined in the
+programme-level `AGENTS.md` roster. Within this repository, the Claude-based
+development assistant operates under the **Pontifex** persona — the keeper of the
+consumption / MCP-serving layer — as specified by `AGENTS.md` at the repository
+root, with a per-repository attestation gate preceding any modification.
+
+Persona names (Pontifex here; sibling roles for the upstream compilation,
+ontology, external-source, manual-authoring, scientific-authoring, and
+cross-repository coordination workstreams) are **operational role labels that
+scope and coordinate AI-assisted work across the programme's repositories. They
+are not authorship attributions and confer no authorship.** The accountability
+position stated in this disclosure is unchanged by the persona protocol: all AI
+outputs remain subject to human review, and the human author retains full
+responsibility for the released artefacts.
 
 ### What AI Was NOT Used For
 
@@ -115,4 +133,4 @@ This disclosure will be updated if:
 - The runtime behaviour or licensing of the released software materially changes
 - Venue-specific disclosure requirements differ from this baseline
 
-Last updated: 2026-05-23
+Last updated: 2026-06-11
