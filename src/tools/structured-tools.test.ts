@@ -336,32 +336,6 @@ describe("handleGetSbdToeChapterBrief", () => {
     expect(result.objective).toBe("Summary of Cap. 01");
   });
 
-  it("uses enriched lookup for intent_topics when available", () => {
-    const objectID = "entity::chapter_bundle::01-cap::bundle";
-    const item = {
-      objectID,
-      entity_type: "chapter_bundle",
-      chapter_id: "01-cap",
-      title: "Cap. 01",
-      risk_levels: [],
-      summary: "Test summary",
-      related_phases: [],
-      artifact_ids: []
-    };
-    const enrichedLookup = new Map([
-      [objectID, { intent_topics: ["bootstrap", "classification"] as readonly string[] }]
-    ]);
-    const cache: SnapshotCache = {
-      docs: { items: [] },
-      entities: { items: [item as never] },
-      docsEnrichedLookup: new Map(),
-      entitiesEnrichedLookup: enrichedLookup
-    };
-    const result = handleGetSbdToeChapterBrief({ chapterId: "01-cap" }, cache) as {
-      intent_topics?: string[];
-    };
-    expect(result.intent_topics).toEqual(["bootstrap", "classification"]);
-  });
 });
 
 // --- list_sbd_toe_chapters — readableTitle ---

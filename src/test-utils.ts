@@ -22,7 +22,6 @@ export const mockSnapshotPayload: SnapshotPayload = {
       section_title: "Bootstrap",
       tags: ["bootstrap", "setup"],
       aliases_pt_en: ["repository initialization", "initial setup"],
-      intent_topics: ["bootstrap"],
       canonical_control_ids: ["REQ-001"],
       artifact_ids: ["ART-001"],
       authority_level: "canonical"
@@ -35,7 +34,6 @@ export const mockSnapshotPayload: SnapshotPayload = {
       section_title: "Dependências",
       tags: ["dependencies", "sbom", "sca"],
       aliases_pt_en: ["dependency management", "package security"],
-      intent_topics: ["dependency_governance"],
       canonical_control_ids: ["REQ-002"],
       artifact_ids: ["ART-002"],
       authority_level: "guidance"
@@ -48,7 +46,6 @@ export const mockSnapshotPayload: SnapshotPayload = {
       section_title: "CI/CD Seguro",
       tags: ["ci/cd", "pipeline", "approval"],
       aliases_pt_en: ["continuous integration", "release gates"],
-      intent_topics: ["ci_cd_gates"],
       canonical_control_ids: ["REQ-003"],
       artifact_ids: [],
       authority_level: "canonical"
@@ -141,7 +138,6 @@ export function createMockNormalizedRecord(overrides: Record<string, unknown> = 
     documentTitle: "Test Document",
     tags: ["test", "mock"],
     aliases_pt_en: undefined,
-    intent_topics: undefined,
     canonical_control_ids: undefined,
     artifact_ids: undefined,
     authority_level: undefined,
@@ -154,19 +150,6 @@ export function createMockNormalizedRecord(overrides: Record<string, unknown> = 
     },
     ...overrides
   };
-}
-
-/**
- * Helper para criar um record com intent topics específicos.
- */
-export function createMockRecordWithIntentTopics(
-  intent: string,
-  overrides: Record<string, unknown> = {}
-) {
-  return createMockNormalizedRecord({
-    intent_topics: [intent, "secondary_topic"],
-    ...overrides
-  });
 }
 
 /**

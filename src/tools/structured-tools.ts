@@ -354,9 +354,6 @@ export function handleGetSbdToeChapterBrief(
     const enriched = oid !== undefined ? enrichedLookup.get(oid) : undefined;
 
     const phases = getStrArr(found, "related_phases");
-    const intentTopics = enriched?.intent_topics
-      ? [...enriched.intent_topics]
-      : getStrArr(found, "intent_topics");
     const artifacts = enriched?.artifact_ids
       ? [...enriched.artifact_ids]
       : getStrArr(found, "artifact_ids");
@@ -369,8 +366,7 @@ export function handleGetSbdToeChapterBrief(
       title: getStr(found, "title") ?? chapterId,
       ...(objective !== undefined ? { objective } : {}),
       ...(phases.length > 0 ? { phases } : {}),
-      ...(artifacts.length > 0 ? { artifacts } : {}),
-      ...(intentTopics.length > 0 ? { intent_topics: intentTopics } : {})
+      ...(artifacts.length > 0 ? { artifacts } : {})
     };
   }
 

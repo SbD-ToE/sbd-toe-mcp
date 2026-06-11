@@ -5,7 +5,6 @@ import {
   mockSnapshotPayload,
   emptySnapshotPayload,
   createMockNormalizedRecord,
-  createMockRecordWithIntentTopics,
   createMockRecordWithAliases
 } from "../test-utils.js";
 import {
@@ -49,7 +48,6 @@ describe("semantic-index-gateway.ts", () => {
       const result = buildEnrichedLookup(mockSnapshotPayload);
       const doc001 = result.get("doc-001");
 
-      expect(doc001?.intent_topics).toContain("bootstrap");
       expect(doc001?.canonical_control_ids).toContain("REQ-001");
       expect(doc001?.authority_level).toBe("canonical");
     });
@@ -301,31 +299,6 @@ describe("semantic-index-gateway.ts", () => {
       expect(score).toBe(0);
     });
 
-    it("adds +3 for matching intent_topics in repo_bootstrap", () => {
-      const record = createMockRecordWithIntentTopics("bootstrap");
-      const score = computeIntentScore(record, "repo_bootstrap", []);
-
-      expect(score).toBeGreaterThanOrEqual(3);
-    });
-
-    it("adds +3 for matching intent_topics in dependency_governance", () => {
-      const record = createMockRecordWithIntentTopics("dependency_governance", {
-        intent_topics: ["dependency", "sbom"]
-      });
-      const score = computeIntentScore(record, "dependency_governance", []);
-
-      expect(score).toBeGreaterThanOrEqual(3);
-    });
-
-    it("adds +3 for matching intent_topics in ci_cd_gates", () => {
-      const record = createMockRecordWithIntentTopics("ci_cd_gates", {
-        intent_topics: ["pipeline"]
-      });
-      const score = computeIntentScore(record, "ci_cd_gates", []);
-
-      expect(score).toBeGreaterThanOrEqual(3);
-    });
-
     it("adds +2 for matching aliases", () => {
       const record = createMockRecordWithAliases(["continuous integration", "ci"]);
       const score = computeIntentScore(record, "ci_cd_gates", ["continuous", "integration"]);
@@ -361,15 +334,14 @@ describe("semantic-index-gateway.ts", () => {
     });
 
     it("combines multiple scoring factors", () => {
-      const record = createMockRecordWithIntentTopics("ci_cd_gates", {
-        intent_topics: ["pipeline", "ci"],
+      const record = createMockNormalizedRecord({
         aliases_pt_en: ["continuous integration"],
         authority_level: "canonical"
       });
       const score = computeIntentScore(record, "ci_cd_gates", ["continuous", "integration"]);
 
-      // Should have: +3 (intent_topics) + 2 (aliases) + 1 (canonical) = at least 6
-      expect(score).toBeGreaterThanOrEqual(6);
+      // Should have: +2 (aliases) + 1 (canonical) = at least 3
+      expect(score).toBeGreaterThanOrEqual(3);
     });
 
     it("handles normalized diacritics in aliases", () => {
@@ -380,7 +352,7 @@ describe("semantic-index-gateway.ts", () => {
     });
 
     it("score is 0 when no matching enrichment", () => {
-      const record = createMockRecordWithIntentTopics("review_scope");
+      const record = createMockNormalizedRecord({});
       const score = computeIntentScore(record, "dependency_governance", ["unknown"]);
 
       expect(score).toBe(0);
@@ -395,7 +367,6 @@ describe("semantic-index-gateway.ts", () => {
       expect(hit).toBeDefined();
 
       const enriched = enrichedLookup.get("doc-001");
-      expect(enriched?.intent_topics).toContain("bootstrap");
       expect(enriched?.aliases_pt_en).toContain("repository initialization");
     });
 
@@ -413,7 +384,7 @@ describe("semantic-index-gateway.ts", () => {
       expect(hit?.objectID).toBe("doc-001");
 
       const enriched = enrichedLookup.get("doc-001");
-      expect(enriched?.intent_topics).toBeDefined();
+      expect(enriched?.aliases_pt_en).toBeDefined();
 
       // Enrichment should not duplicate raw fields
       expect(enriched?.aliases_pt_en?.some((a) => a === undefined)).toBe(false);
@@ -512,7 +483,6 @@ describe("semantic-index-gateway.ts", () => {
       const result = normalizeHit(hit, "docs", "test_index", 0, "D1", "bootstrap", enrichedLookup);
 
       expect(result.aliases_pt_en).toContain("repository initialization");
-      expect(result.intent_topics).toContain("bootstrap");
       expect(result.authority_level).toBe("canonical");
     });
 
@@ -521,7 +491,6 @@ describe("semantic-index-gateway.ts", () => {
       const result = normalizeHit(hit, "docs", "test_index", 0, "D1", "query");
 
       expect(result.aliases_pt_en).toBeUndefined();
-      expect(result.intent_topics).toBeUndefined();
     });
 
     it("returns explicit url when url field present in hit", () => {

@@ -61,7 +61,6 @@ export interface NormalizedRecord {
   documentTitle?: string | undefined;
   tags: string[];
   aliases_pt_en?: readonly string[] | undefined;
-  intent_topics?: readonly string[] | undefined;
   canonical_control_ids?: readonly string[] | undefined;
   artifact_ids?: readonly string[] | undefined;
   authority_level?: string | undefined;
