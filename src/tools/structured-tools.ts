@@ -219,6 +219,29 @@ export function handleListSbdToeChapters(
   return { chapters };
 }
 
+/**
+ * Exact entity-ID lookup across the runtime entity indexes. query_entities is a
+ * semantic search over chunks, so an exact id (e.g. CTRL-<domain>-<slug>-<hash>)
+ * never matches and returns 0. This resolves a real id directly from the entity
+ * index before falling back to semantic search. Returns undefined when the query
+ * is not an exact id (then the caller runs the semantic path).
+ */
+function exactEntityLookup(query: string): Record<string, unknown> | undefined {
+  const od = getOntologyData();
+  const collections: Array<[string, ReadonlyArray<Record<string, unknown>>, string]> = [
+    ["control", od.controls as unknown as Record<string, unknown>[], "control_id"],
+    ["requirement", od.requirements as unknown as Record<string, unknown>[], "requirement_id"],
+    ["threat", od.threats as unknown as Record<string, unknown>[], "id"],
+    ["artifact", (od.artifacts ?? []) as unknown as Record<string, unknown>[], "artifact_type_id"],
+    ["role", od.roles as unknown as Record<string, unknown>[], "role_id"],
+  ];
+  for (const [entityType, items, idField] of collections) {
+    const match = items.find((item) => item[idField] === query);
+    if (match) return { entity_type: entityType, ...match };
+  }
+  return undefined;
+}
+
 export async function handleQuerySbdToeEntities(
   args: Record<string, unknown>,
   cache?: SnapshotCache
@@ -230,6 +253,13 @@ export async function handleQuerySbdToeEntities(
     throw new Error(
       'O argumento "query" é obrigatório e deve ter entre 1 e 200 caracteres.'
     );
+  }
+
+  // Exact entity-id lookup first: a real id resolves deterministically from the
+  // entity index instead of returning 0 from the semantic search over chunks.
+  const exact = exactEntityLookup(query);
+  if (exact) {
+    return { entities: [exact], total: 1, match: "exact_id" };
   }
 
   const topKArg = args["topK"];

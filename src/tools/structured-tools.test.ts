@@ -671,3 +671,30 @@ describe("handleListSbdToeChapters — applicability", () => {
     expect(tm?.readableTitle).not.toMatch(/Cap[íi]tulo/i);
   });
 });
+
+// --- query_entities exact-id lookup (Wave 1 item 3) ---
+// Before this fix, an exact id (CTRL-<domain>-<slug>-<hash>) returned 0 from the
+// semantic search; now it resolves directly from the entity index.
+describe("handleQuerySbdToeEntities — exact id lookup", () => {
+  it("resolves a real control id directly with match=exact_id", async () => {
+    const { getOntologyData } = await import("./ontology-loader.js");
+    const realId = getOntologyData().controls[0]?.control_id;
+    expect(typeof realId).toBe("string");
+
+    const result = (await handleQuerySbdToeEntities({ query: realId as string })) as {
+      total: number;
+      match?: string;
+      entities: Array<Record<string, unknown>>;
+    };
+    expect(result.total).toBe(1);
+    expect(result.match).toBe("exact_id");
+    expect(result.entities[0]?.control_id).toBe(realId);
+    expect(result.entities[0]?.entity_type).toBe("control");
+  });
+
+  it("does not exact-match a guessed/partial token", async () => {
+    // 'CTRL-06' is not a real id → no exact match (falls through to semantic).
+    const result = (await handleQuerySbdToeEntities({ query: "CTRL-06" })) as { match?: string };
+    expect(result.match).toBeUndefined();
+  });
+});

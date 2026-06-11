@@ -296,6 +296,8 @@ Always distinguish between:
 
 ## Identifier conventions
 
-- **Artefacts**: `ART-<chapterId>-<name>` — use `get_sbd_toe_chapter_brief` to list `artifact_ids`
-- **Controls**: `CTRL-<chapter>-<number>` — use `query_sbd_toe_entities(query="CTRL-06", entityType="control")`
+- **Controls**: `CTRL-<domain>-<slug>-<hash>` (e.g. `CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4`). There is **no** `CTRL-<chapter>-<number>` form.
+- **Threats**: `MT-<number>` (e.g. `MT-001`)
+- **Artefacts**: `ART-<…>` — use `get_sbd_toe_chapter_brief` to list a chapter's `artifact_ids`
+- **Looking up by id:** pass the exact id to `query_sbd_toe_entities(query="<id>")` — it resolves the entity directly (`match: "exact_id"`). A guessed token like `"CTRL-06"` is **not** an id and falls back to semantic search. For structured filtering by type, use `resolve_sbd_toe_entities(record_type, filters)`.
 - Always cite identifiers when presenting manual-grounded answers
