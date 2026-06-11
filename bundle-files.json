@@ -1,0 +1,18 @@
+{
+  "_doc": "Single source of truth for the upstream KG publish-surface files the MCP serving layer consumes. Used by scripts/sync-bundle.mjs (fetch-the-KG sync) and src/bootstrap/release-checkout.ts (runtime checkout) so the two never drift. Paths are repo-root-relative, forward-slash. `kind` is 'file' or 'dir'. SECURITY: only these known paths are copied — no dynamic traversal of upstream content.",
+  "entries": [
+    { "kind": "file", "path": "data/publish/indexes/publication_manifest.json" },
+    { "kind": "file", "path": "data/publish/indexes/bundle_catalog.jsonl" },
+    { "kind": "file", "path": "data/publish/indexes/mcp_chunks.jsonl" },
+    { "kind": "file", "path": "data/publish/indexes/canonical_chunks.jsonl" },
+    { "kind": "file", "path": "data/publish/indexes/chunk_entity_mentions.jsonl" },
+    { "kind": "file", "path": "data/publish/indexes/chunk_relation_hints.jsonl" },
+    { "kind": "file", "path": "data/publish/indexes/cross_layer_referrals.jsonl", "since": "v1.3", "optional": true },
+    { "kind": "file", "path": "data/publish/sbd-toe-index-compact.json" },
+    { "kind": "dir", "path": "data/publish/runtime" },
+    { "kind": "dir", "path": "data/publish/overlay" },
+    { "kind": "file", "path": "data/publish/ontology/appsec-core-ontology.yaml" },
+    { "kind": "file", "path": "data/publish/ontology/sbdtoe-ontology.yaml" },
+    { "kind": "file", "path": "data/reports/run_manifest.json" }
+  ]
+}
