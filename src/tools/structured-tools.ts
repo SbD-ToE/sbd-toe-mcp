@@ -620,10 +620,32 @@ export function handleMapSbdToeApplicability(
     });
   }
 
+  // conditional = chapters activated by the provided CONTEXT (technologies),
+  // beyond the risk baseline. Previously hardcoded [] (a dead field while the
+  // context activation lived only in activatedBundles). Now derived from the
+  // technology-driven bundles, so the model is coherent: `active` is the risk
+  // baseline, `conditional` is the context overlay, `activatedBundles` is the
+  // full structured view. Empty when no technologies are supplied.
+  const conditionalSeen = new Set<string>();
+  const conditional: Array<{ chapterId: string; reason: string }> = [];
+  for (const bundle of [
+    ...activatedBundles.foundationBundles,
+    ...activatedBundles.domainBundles,
+    ...activatedBundles.operationalBundles
+  ]) {
+    if (
+      bundle.reason.toLowerCase().includes("technologies inclui") &&
+      !conditionalSeen.has(bundle.chapterId)
+    ) {
+      conditionalSeen.add(bundle.chapterId);
+      conditional.push({ chapterId: bundle.chapterId, reason: bundle.reason });
+    }
+  }
+
   return {
     riskLevel,
     active,
-    conditional: [],
+    conditional,
     excluded,
     activatedBundles
   };

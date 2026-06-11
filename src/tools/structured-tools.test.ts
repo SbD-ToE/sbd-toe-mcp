@@ -698,3 +698,35 @@ describe("handleQuerySbdToeEntities — exact id lookup", () => {
     expect(result.match).toBeUndefined();
   });
 });
+
+// --- map_applicability: conditional populated by context (Wave 1 item 7) ---
+// conditional was hardcoded [] (dead) while context activation lived only in
+// activatedBundles. Now active = risk baseline, conditional = technology overlay.
+describe("handleMapSbdToeApplicability — conditional model", () => {
+  type Result = {
+    active: string[];
+    conditional: Array<{ chapterId: string; reason: string }>;
+    activatedBundles: unknown;
+  };
+
+  it("is empty when no technologies are supplied", () => {
+    const result = handleMapSbdToeApplicability({ riskLevel: "L2" }) as Result;
+    expect(result.conditional).toEqual([]);
+  });
+
+  it("is populated by technologies, distinct from the risk-baseline active set", () => {
+    const result = handleMapSbdToeApplicability({
+      riskLevel: "L2",
+      technologies: ["containers", "iac", "ci-cd", "monitoring"],
+    }) as Result;
+    const ids = result.conditional.map((c) => c.chapterId);
+    expect(ids).toEqual(expect.arrayContaining(["08-iac-infraestrutura", "09-containers-imagens", "07-cicd-seguro"]));
+    expect(new Set(ids).size).toBe(ids.length); // deduped
+    for (const c of result.conditional) {
+      expect(c.reason.toLowerCase()).toContain("technologies inclui");
+    }
+    // active stays the risk baseline (unchanged by technologies).
+    const baseline = handleMapSbdToeApplicability({ riskLevel: "L2" }) as Result;
+    expect(result.active).toEqual(baseline.active);
+  });
+});
