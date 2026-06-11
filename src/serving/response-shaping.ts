@@ -146,6 +146,31 @@ export function estimateSize(value: unknown): SizeEstimate {
   return { chars, approx_tokens: Math.ceil(chars / 4) };
 }
 
+/**
+ * Read a record's contract-provided `size_estimate` (mcp_chunks / vector_chunks
+ * carry `{ chars, approx_tokens }` since contract v1.3 §1.12) — preferring the
+ * substrate's own value over recomputing. Falls back to {@link estimateSize} of
+ * the record when the field is absent or malformed (older bundles).
+ */
+export function readSizeEstimate(record: unknown): SizeEstimate {
+  if (record && typeof record === "object") {
+    const candidate = (record as { size_estimate?: unknown }).size_estimate;
+    if (candidate && typeof candidate === "object") {
+      const { chars, approx_tokens } = candidate as { chars?: unknown; approx_tokens?: unknown };
+      if (typeof chars === "number" && Number.isFinite(chars)) {
+        return {
+          chars,
+          approx_tokens:
+            typeof approx_tokens === "number" && Number.isFinite(approx_tokens)
+              ? approx_tokens
+              : Math.ceil(chars / 4),
+        };
+      }
+    }
+  }
+  return estimateSize(record);
+}
+
 export interface PageRequest {
   /** 0-based index of the first item to return. */
   offset?: number | undefined;

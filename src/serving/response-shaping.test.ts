@@ -6,6 +6,7 @@ import {
   CONSUMER_BUDGETS,
   paginate,
   estimateSize,
+  readSizeEstimate,
 } from "./response-shaping.js";
 
 describe("boundList", () => {
@@ -106,6 +107,25 @@ describe("estimateSize", () => {
     const circular: Record<string, unknown> = {};
     circular.self = circular;
     expect(estimateSize(circular)).toEqual({ chars: 0, approx_tokens: 0 });
+  });
+});
+
+describe("readSizeEstimate", () => {
+  it("prefers the substrate's own size_estimate (contract v1.3 §1.12)", () => {
+    expect(readSizeEstimate({ size_estimate: { chars: 1655, approx_tokens: 414 } })).toEqual({
+      chars: 1655,
+      approx_tokens: 414,
+    });
+  });
+
+  it("derives approx_tokens when only chars is provided", () => {
+    expect(readSizeEstimate({ size_estimate: { chars: 40 } })).toEqual({ chars: 40, approx_tokens: 10 });
+  });
+
+  it("falls back to estimateSize when size_estimate is absent or malformed", () => {
+    const record = { a: 1 };
+    expect(readSizeEstimate(record)).toEqual(estimateSize(record));
+    expect(readSizeEstimate({ size_estimate: "nope" })).toEqual(estimateSize({ size_estimate: "nope" }));
   });
 });
 
