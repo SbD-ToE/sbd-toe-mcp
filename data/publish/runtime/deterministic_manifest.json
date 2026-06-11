@@ -1,7 +1,7 @@
 {
   "artifacts": [
     {
-      "count": 235,
+      "count": 251,
       "entity_type": "Requirement",
       "file": "requirements.json",
       "name": "requirements",
@@ -26,7 +26,7 @@
       "source_artifact": "data/entities/canonical_controls.json"
     },
     {
-      "count": 211,
+      "count": 260,
       "entity_type": "Practice",
       "file": "practices.json",
       "name": "practices",
@@ -36,7 +36,7 @@
       "source_artifact": "data/entities/practices.json"
     },
     {
-      "count": 1023,
+      "count": 1569,
       "entity_type": "PracticeAssignment",
       "file": "assignments.json",
       "name": "assignments",
@@ -46,7 +46,7 @@
       "source_artifact": "data/entities/practice_assignments.json"
     },
     {
-      "count": 211,
+      "count": 260,
       "entity_type": "UserStory",
       "file": "user_stories.json",
       "name": "user_stories",

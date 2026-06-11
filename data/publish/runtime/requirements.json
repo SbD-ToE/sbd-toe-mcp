@@ -1,6 +1,6 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 235,
+  "count": 251,
   "entity_type": "Requirement",
   "items": [
     {
@@ -508,6 +508,40 @@
       "evidence_types": [],
       "name": "Validação automática de topologia em CI/CD ou como código",
       "requirement_id": "ARC-013",
+      "source_bundle": "04-arquitetura-segura",
+      "source_chapter": 4,
+      "source_file": "04-arquitetura-segura/addon/01-catalogo-requisitos.md",
+      "type": "domain-specific"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "ARC",
+      "description": "Sistemas que integram componentes AI/ML (LLMs, modelos preditivos, RAG, agentes autónomos) têm padrões arquitetónicos dedicados: trust boundaries explícitas entre training data / model artifacts / inference endpoints / tool invocations agenticas; controlos de input sanitization e output filtering específicos para prompt injection directa e indirecta (LLM01-2025, AML.T0051.001); rate limiting e isolamento de chamadas a LLM; aprovação de tool invocations agenticas com escopo limitado (AML.T0086); proveniência de modelos e datasets documentada (AML.T0010, LLM03-2025); arquitectura considera scenarios de model theft (ML05-2023) e training data poisoning (AML.T0020); zonas de confiança incluem componentes AI como participantes distintos (não como bibliotecas opacas).",
+      "domain": "architecture",
+      "evidence_types": [],
+      "name": "Padrões arquitetónicos específicos para sistemas com componentes AI/ML",
+      "requirement_id": "ARC-014",
+      "source_bundle": "04-arquitetura-segura",
+      "source_chapter": 4,
+      "source_file": "04-arquitetura-segura/addon/01-catalogo-requisitos.md",
+      "type": "domain-specific"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "ARC",
+      "description": "Quando o sistema inclui agentes autónomos que invocam *tools* (criar PR, ler segredos, deploy, escrever em sistemas externos), cada agente é tratado como um principal não-humano distinto, com identidade própria (workload identity efémera via OIDC), *scope* mínimo necessário por *tool* e por ambiente, e nunca reutiliza credenciais humanas. Em níveis de autonomia A2+ (ver Cap. 02 — [níveis de autonomia](../../requisitos-seguranca/addon/governanca-automatismos#niveis-autonomia)), a arquitectura inclui adicionalmente: (1) intent declaration estruturada antes de cada *tool call* destrutivo, registada em audit ([REQ-AGN-004](/sbd-toe/sbd-manual/requisitos-seguranca/addon/governanca-automatismos#req-agn)); (2) aprovação humana out-of-band para acções com efeito destrutivo ou em sistemas externos críticos (LLM06-2025 — Excessive Agency); (3) kill-switch operacional que revoga credenciais e termina sessões em segundos ([REQ-AGN-003](/sbd-toe/sbd-manual/requisitos-seguranca/addon/governanca-automatismos#req-agn)); (4) audit completo por tool invocation (timestamp, agent identity, scope, intent declarado, acção real, outcome) integrado com observabilidade do Cap. 12 (AML.M0024 AI Telemetry Logging).",
+      "domain": "architecture",
+      "evidence_types": [],
+      "name": "Agentes AI operam como *principals* isolados com mandate e least privilege",
+      "requirement_id": "ARC-015",
       "source_bundle": "04-arquitetura-segura",
       "source_chapter": 4,
       "source_file": "04-arquitetura-segura/addon/01-catalogo-requisitos.md",
@@ -1484,6 +1518,74 @@
     },
     {
       "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "DEP",
+      "description": "Sistemas com componentes AI/ML têm inventário dedicado de dependências AI: (1) modelos base com versão, hash do artefacto e fonte (model registry, fine-tuning provenance); (2) datasets de treino e fine-tuning com versão, fonte e processo de curadoria; (3) MCP servers e tools expostas a agentes com identificador, versão e scope (AML.T0110 AI Agent Tool Poisoning); (4) prompts embebidos relevantes para comportamento (system prompts, RAG templates) com versão e owner. O inventário é gerado por build e integrado no SBOM principal (DEP-001); incidentes upstream em modelos, datasets ou MCP servers (LLM03-2025 Supply Chain, AML.T0010 AI Supply Chain Compromise) accionam o mesmo processo de triagem de DEP-002/DEP-007.",
+      "domain": "dependencies-sbom-sca",
+      "evidence_types": [],
+      "name": "Inventário e proveniência de dependências AI/ML",
+      "requirement_id": "DEP-011",
+      "source_bundle": "05-dependencias-sbom-sca",
+      "source_chapter": 5,
+      "source_file": "05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
+      "type": "domain-specific"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "DEP",
+      "description": "O inventário AI/ML (DEP-011) é materializado como AI BOM em formato standardizado por *build* — prefere-se CycloneDX 1.6 com extensão ml-bom (publicada em 2024) ou equivalente reconhecido (ML-BOM, AIBOM). O AI BOM é artefacto do *build* (não análise separada), versionado, e ligado ao SBOM principal. Inclui modelos, datasets, MCP servers/tools e prompts embebidos com versão *pinned*, hash, *provider* e licença.",
+      "domain": "dependencies-sbom-sca",
+      "evidence_types": [],
+      "name": "AI BOM gerado por *build* em formato standardizado",
+      "requirement_id": "DEP-012",
+      "source_bundle": "05-dependencias-sbom-sca",
+      "source_chapter": 5,
+      "source_file": "05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
+      "type": "domain-specific"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "DEP",
+      "description": "Modelos AI usados em produção ou em pipeline têm versão fixa explícita — ex.: claude-opus-4-7@sha:… em vez de claude-latest. Ranges semver, *aliases* dinâmicos (latest, stable) e referências sem versão são proibidos em qualquer ambiente que não seja exploratório. Mudança de versão maior do provider exige nova *eval suite* (Cap. 10 §C5) e revisão do *threat model* (Cap. 03 US-11). Mitiga *AI Supply Chain Rug Pull* (AML.T0109).",
+      "domain": "dependencies-sbom-sca",
+      "evidence_types": [],
+      "name": "Versão *pinned* explícita para modelos AI e providers",
+      "requirement_id": "DEP-013",
+      "source_bundle": "05-dependencias-sbom-sca",
+      "source_chapter": 5,
+      "source_file": "05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
+      "type": "domain-specific"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "DEP",
+      "description": "Providers de modelos AI (Anthropic, OpenAI, HuggingFace, providers próprios self-hosted) usados pela organização estão numa lista aprovada com classificação de risco e cláusulas contratuais aplicáveis (cross-link Cap. 14 — contratação de AI providers). Critérios mínimos de aprovação: zero retention para dados sensíveis quando aplicável; localização de processamento conforme RGPD Art. 44–49; auditoria contratualizada; SLA de notificação prévia de mudanças de versão; conformidade declarada com AI Act Art. 53/55 se fornecer GPAI. Lista revista periodicamente conforme nível de criticidade.",
+      "domain": "dependencies-sbom-sca",
+      "evidence_types": [],
+      "name": "Lista de *providers* AI aprovados com classificação de risco",
+      "requirement_id": "DEP-014",
+      "source_bundle": "05-dependencias-sbom-sca",
+      "source_chapter": 5,
+      "source_file": "05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
+      "type": "domain-specific"
+    },
+    {
+      "applicable_levels": {
         "L1": true,
         "L2": true,
         "L3": true
@@ -1783,6 +1885,40 @@
       "evidence_types": [],
       "name": "Deploy progressivo com contenção de impacto para aplicações críticas",
       "requirement_id": "DPL-009",
+      "source_bundle": "11-deploy-seguro",
+      "source_chapter": 11,
+      "source_file": "11-deploy-seguro/addon/00-catalogo-requisitos.md",
+      "type": "domain-specific"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "DPL",
+      "description": "Aplicável quando o sistema inclui agente AI ou modelo AI como dependência *load-bearing*. Quando uma promoção altera versão de modelo, *skill files* ou *system prompts*, a *eval suite* (Cap. 10 §C5) corre como gate obrigatório e o *fail* bloqueia a promoção; existem procedimentos de *rollback* da versão do modelo e do *system prompt*/*skill file* independentes do *rollback* aplicacional; as *release notes* registam versão de modelo, versão de *skill files*, versão da *eval suite* e mandate_ref como evidência arquivada (eval_run_id ligado ao release).",
+      "domain": "secure-deploy",
+      "evidence_types": [],
+      "name": "Release gates para sistemas com agentes AI",
+      "requirement_id": "DPL-010",
+      "source_bundle": "11-deploy-seguro",
+      "source_chapter": 11,
+      "source_file": "11-deploy-seguro/addon/00-catalogo-requisitos.md",
+      "type": "domain-specific"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "category": "DPL",
+      "description": "Aplicável a sistemas com agentes AI. Mudança de versão maior de modelo (provider, novo *fine-tune* ou *system prompt* com impacto material) é promovida via canary — fracção controlada de tráfego durante janela observável, com critérios objetivos de promoção e de rollback automático (taxa de erro, *off-policy events*, latência); um gate automático desce o autonomy_level do agente (ex.: A3 → A2) quando a *eval suite* não confirma o nível pretendido, até resolução.",
+      "domain": "secure-deploy",
+      "evidence_types": [],
+      "name": "Canary e demoção de autonomia no release de modelos",
+      "requirement_id": "DPL-011",
       "source_bundle": "11-deploy-seguro",
       "source_chapter": 11,
       "source_file": "11-deploy-seguro/addon/00-catalogo-requisitos.md",
@@ -2378,6 +2514,40 @@
       "evidence_types": [],
       "name": "Modelo de maturidade activo com evolução medida e planeada",
       "requirement_id": "GOV-012",
+      "source_bundle": "14-governanca-contratacao",
+      "source_chapter": 14,
+      "source_file": "14-governanca-contratacao/addon/00-catalogo-requisitos.md",
+      "type": "domain-specific"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "GOV",
+      "description": "Contractors e terceiros completam preparação técnica estruturada antes de acesso real a sistemas: formação de segurança por perfil (Dev, DevOps, QA, Arquitetura), quiz de compreensão com score mínimo (tipicamente 80%), ambiente sandbox para prática e NDA/confidentiality agreement assinados; o acesso só é concedido após *sign-off* de conclusão validado (Security Champion/AppSec + Tech Lead); o registo é rastreável (GRC/LMS) com datas, scores e validador, e mantido conforme retenção regulatória aplicável (DORA, NIS2). Em L1 é recomendado; em L2/L3 é obrigatório, com quiz validado em L3.",
+      "domain": "governance-and-procurement",
+      "evidence_types": [],
+      "name": "Onboarding técnico e formação obrigatória pré-acesso de terceiros",
+      "requirement_id": "GOV-013",
+      "source_bundle": "14-governanca-contratacao",
+      "source_chapter": 14,
+      "source_file": "14-governanca-contratacao/addon/00-catalogo-requisitos.md",
+      "type": "domain-specific"
+    },
+    {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "category": "GOV",
+      "description": "O acesso de contractors activos a sistemas (repositórios, CI/CD, bases de dados, cloud IAM, VPN) é revisto periodicamente — semestral em L1, trimestral em L2/L3 — validando, por terceiro, que cada acesso permanece necessário ao projeto; acesso excessivo ou obsoleto é removido no próprio dia; a revisão é assinada (Tech Lead + Security Champion), as mudanças ficam em *audit trail* e um relatório consolidado (% mantido / % removido) é entregue. Triggers adicionais: mudança de projeto, incidente.",
+      "domain": "governance-and-procurement",
+      "evidence_types": [],
+      "name": "Revisão periódica de acesso de terceiros (least privilege)",
+      "requirement_id": "GOV-014",
       "source_bundle": "14-governanca-contratacao",
       "source_chapter": 14,
       "source_file": "14-governanca-contratacao/addon/00-catalogo-requisitos.md",
@@ -3184,6 +3354,74 @@
     },
     {
       "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "OPS",
+      "description": "Sistemas com componentes AI/ML em produção (LLMs, modelos preditivos, RAG, agentes autónomos) têm telemetria dedicada: logging completo de inputs e outputs do modelo (com sanitização de PII); logging de tool invocations em agentes com agent identity, scope e contexto (AML.M0024 AI Telemetry Logging); registo de drift de comportamento e degradação de precisão; alertas para anomalias de prompt input (potencial prompt injection); audit trail completo de model versions deployed e dataset versions usados em inferência. Os logs são integrados no SIEM/observability pipeline existente (OPS-004); a deteção de anomalias específicas a AI/ML (drift, prompt injection patterns, exfiltration via tool calls) é tratada em OPS-009 com baselines AI-aware.",
+      "domain": "operations-monitoring",
+      "evidence_types": [],
+      "name": "Observabilidade dedicada a componentes AI/ML em produção",
+      "requirement_id": "OPS-011",
+      "source_bundle": "12-monitorizacao-operacoes",
+      "source_chapter": 12,
+      "source_file": "12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
+      "type": "domain-specific"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "OPS",
+      "description": "Para cada agente AI em nível A1+ (ver [Cap. 02 — A0-A4](../../requisitos-seguranca/addon/governanca-automatismos#niveis-autonomia)) em uso operacional, cada *tool call* gera *audit event* estruturado com timestamp, agent_id, session_id, mandate_ref (Policy 38), autonomy_level, tool, tool_version, args (PII redactada), intent_event_ref ([REQ-AGN-004](/sbd-toe/sbd-manual/requisitos-seguranca/addon/governanca-automatismos#req-agn) em A2+), outcome, external_effect. Eventos integrados no SIEM (OPS-004); divergência entre intent declarado e acção real gera alerta accionável; reúne-se a base para auditoria do mandate_ref e para reconstrução *post-mortem* de qualquer sessão.",
+      "domain": "operations-monitoring",
+      "evidence_types": [],
+      "name": "Audit completo por *tool invocation* de agente AI",
+      "requirement_id": "OPS-012",
+      "source_bundle": "12-monitorizacao-operacoes",
+      "source_chapter": 12,
+      "source_file": "12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
+      "type": "domain-specific"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "OPS",
+      "description": "Por agente e por mandate, define-se *budget* máximo de consumo por janela temporal (tokens, chamadas, custo); cada inferência conta para o orçamento; ao atingir threshold de aviso, alerta vai ao *owner*; ao atingir threshold máximo, sessão pausa ou *kill-switch* é accionado conforme nível de autonomia. Métricas de uso reportadas com cadência da revisão do *mandate*. Detecta *loops* descontrolados, abuso, regressões de eficiência do modelo após *upgrade*.",
+      "domain": "operations-monitoring",
+      "evidence_types": [],
+      "name": "Budget e detecção de *runaway* em consumo de modelo (token spend)",
+      "requirement_id": "OPS-013",
+      "source_bundle": "12-monitorizacao-operacoes",
+      "source_chapter": 12,
+      "source_file": "12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
+      "type": "domain-specific"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "category": "OPS",
+      "description": "Para agentes A2+, mecanismo activo de detecção de tentativas de *jailbreak* (LLM01-2025) e *off-policy actions* — acções fora do *scope* declarado no *mandate*. Sinais incluem: divergência entre intent declarado e acção real (cross-link OPS-012), padrões adversariais conhecidos no input, *tool call* com argumentos materialmente diferentes do esperado, recusas do modelo seguidas de tentativa diferente do utilizador. Eventos accionáveis alimentam IR (OPS-007) e a *eval suite* offline (Cap. 10 §C5). Para sistemas L3 com componente AI, deteção é obrigatória — para A4 com *mandate* assinado, é actualizada com cadência declarada no *mandate*.",
+      "domain": "operations-monitoring",
+      "evidence_types": [],
+      "name": "Detecção de *jailbreak* / *off-policy actions* em produção",
+      "requirement_id": "OPS-014",
+      "source_bundle": "12-monitorizacao-operacoes",
+      "source_chapter": 12,
+      "source_file": "12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
+      "type": "domain-specific"
+    },
+    {
+      "applicable_levels": {
         "L1": true,
         "L2": true,
         "L3": true
@@ -3551,6 +3789,23 @@
       "evidence_types": [],
       "name": "Revisão independente por AppSec antes de go-live em L2 e L3",
       "requirement_id": "THR-007",
+      "source_bundle": "03-threat-modeling",
+      "source_chapter": 3,
+      "source_file": "03-threat-modeling/addon/00-catalogo-requisitos.md",
+      "type": "domain-specific"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "THR",
+      "description": "Sistemas que integram componentes de inteligência artificial ou machine learning (modelos preditivos, LLMs em interface conversacional, sistemas de RAG, agentes autónomos com tool invocation) têm threat model estendido que cobre ameaças adversariais específicas — model poisoning, prompt injection directa e indirecta, training data poisoning, model theft, evasion attacks, AI supply chain compromise — referenciadas a catálogos estabelecidos (MITRE ATLAS, NIST AI 100-2 e2025); o modelo identifica trust boundaries adicionais para training data, model artifacts, inference endpoints e tool invocations; STRIDE ou LINDDUN são complementados (não substituídos) com framing AI/ML conforme aplicável.",
+      "domain": null,
+      "evidence_types": [],
+      "name": "Threat modeling estendido para sistemas com componentes AI/ML",
+      "requirement_id": "THR-008",
       "source_bundle": "03-threat-modeling",
       "source_chapter": 3,
       "source_file": "03-threat-modeling/addon/00-catalogo-requisitos.md",
@@ -3993,6 +4248,23 @@
       "evidence_types": [],
       "name": "Testes automáticos contra entradas maliciosas",
       "requirement_id": "VAL-007",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_chapter": 2,
+      "source_file": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "type": "base"
+    },
+    {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "category": "VAL",
+      "description": "Output é codificado de forma contextual ao destino de renderização (HTML/atributo/JavaScript, queries via prepared statements, comandos shell, logs anti-injection); ausência de concatenação directa em superfícies sensíveis.",
+      "domain": "application-security-requirements",
+      "evidence_types": [],
+      "name": "Codificação/escaping de output em renderização (anti-XSS)",
+      "requirement_id": "VAL-008",
       "source_bundle": "02-requisitos-seguranca",
       "source_chapter": 2,
       "source_file": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",

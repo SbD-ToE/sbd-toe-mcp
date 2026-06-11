@@ -116,10 +116,10 @@
       "description": "Governance Record artifact used as auditable evidence.",
       "evidence": [
         "control CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af references approval_record",
+        "practice 01-classificacao-aplicacoes:producao-e-manutencao-do-inventario-central-com-autoridade-de-aprovacao-proporcional matched alias 'aprovacao'",
         "practice 02-requisitos-seguranca:validacao-e-aprovacao-final matched alias 'aprovacao'",
         "practice 03-threat-modeling:aprovacao-formal-do-threat-model-baseline-e-revisoes matched alias 'aprovacao'",
-        "practice 05-dependencias-sbom-sca:validacao-de-release-go-no-go matched alias 'go no go'",
-        "practice 09-containers-imagens:aprovacao-depreciacao-e-revogacao-de-golden-base-images-catalogo-organizacional matched alias 'aprovacao'"
+        "practice 05-dependencias-sbom-sca:governacao-documentada-de-politica-de-severidade-registries-e-registo-de-aprovacao matched alias 'registo de aprovacao'"
       ],
       "lifecycle_phases": [
         "design",
@@ -299,11 +299,11 @@
       "confidence": null,
       "description": "Build provenance linking commit, pipeline, artifact and deployment context.",
       "evidence": [
+        "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references artifact_provenance",
         "control CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2 references artifact_provenance",
         "control CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af references artifact_provenance",
         "control CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0 references artifact_provenance",
-        "control CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905 references artifact_provenance",
-        "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references artifact_provenance"
+        "control CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905 references artifact_provenance"
       ],
       "lifecycle_phases": [
         "release",
@@ -312,6 +312,7 @@
       "name": "Artifact Provenance",
       "name_en": "Artifact Provenance",
       "produced_by_controls": [
+        "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
         "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
         "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
         "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0",
@@ -342,6 +343,7 @@
         "03-threat-modeling",
         "04-arquitetura-segura",
         "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
         "07-cicd-seguro",
         "08-iac-infraestrutura",
         "09-containers-imagens",
@@ -354,11 +356,11 @@
       "confidence": null,
       "description": "Digital signature proving integrity and origin of the produced artifact.",
       "evidence": [
+        "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references artifact_signature",
         "control CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2 references artifact_signature",
         "control CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af references artifact_signature",
         "control CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0 references artifact_signature",
-        "control CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905 references artifact_signature",
-        "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references artifact_signature"
+        "control CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905 references artifact_signature"
       ],
       "lifecycle_phases": [
         "release",
@@ -367,6 +369,7 @@
       "name": "Artifact Signature",
       "name_en": "Artifact Signature",
       "produced_by_controls": [
+        "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
         "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
         "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
         "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0",
@@ -518,10 +521,10 @@
       "description": "Configuration artifact used as auditable evidence.",
       "evidence": [
         "control CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0 references deployment_plan",
+        "practice 07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21 matched alias 'deploy'",
         "practice 11-deploy-seguro:controlo-de-execucao-com-feature-flags matched alias 'deploy'",
         "practice 11-deploy-seguro:controlo-e-validacao-de-drift-operacional matched alias 'deploy'",
-        "practice 11-deploy-seguro:deploy-apenas-de-artefactos-assinados matched alias 'deploy'",
-        "practice 11-deploy-seguro:deploy-progressivo-com-estrategias-canary-blue-green matched alias 'deploy'"
+        "practice 11-deploy-seguro:credenciais-de-deploy-isoladas-por-aplicacao-e-efemeras matched alias 'deploy'"
       ],
       "lifecycle_phases": [
         "design",
@@ -561,10 +564,10 @@
       "description": "Configuration artifact used as auditable evidence.",
       "evidence": [
         "control CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905 references environment_inventory",
+        "practice 04-arquitetura-segura:segmentacao-de-ambientes-e-validacao-de-topologia-como-codigo-l3 matched alias 'ambientes'",
         "practice 08-iac-infraestrutura:segregacao-de-ambientes-tagging-e-permissoes-minimas matched alias 'ambientes'",
         "practice 11-deploy-seguro:controlo-e-validacao-de-drift-operacional matched alias 'ambientes'",
-        "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['ambientes']",
-        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/arquitetos-software.md matched aliases ['ambientes']"
+        "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['ambientes']"
       ],
       "lifecycle_phases": [
         "design",
@@ -701,10 +704,10 @@
       "description": "Operational Record artifact used as auditable evidence.",
       "evidence": [
         "control CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628 references governance_kpi",
+        "practice 02-requisitos-seguranca:recolha-e-thresholds-dos-indicadores-rqs matched alias 'indicadores'",
         "practice 03-threat-modeling:validacao-de-arquitetura-com-threat-modeling matched alias 'metricas'",
         "practice 06-desenvolvimento-seguro:guidelines-de-desenvolvimento-seguro matched alias 'metricas'",
-        "practice 06-desenvolvimento-seguro:monitorizacao-de-conformidade-e-metricas-de-seguranca matched alias 'metricas'",
-        "practice 07-cicd-seguro:metricas-e-conformidade-organizacional matched alias 'metricas'"
+        "practice 06-desenvolvimento-seguro:monitorizacao-de-conformidade-e-metricas-de-seguranca matched alias 'metricas'"
       ],
       "lifecycle_phases": [
         "operations"
@@ -772,6 +775,7 @@
         "07-cicd-seguro",
         "08-iac-infraestrutura",
         "09-containers-imagens",
+        "10-testes-seguranca",
         "11-deploy-seguro",
         "13-formacao-onboarding",
         "14-governanca-contratacao"
@@ -874,8 +878,8 @@
         "control CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70 references incident_metrics",
         "practice 09-containers-imagens:monitorizacao-e-resposta-a-incidentes-em-runtime matched alias 'incidentes'",
         "practice 11-deploy-seguro:reprodutibilidade-de-incidentes-em-runtime matched alias 'incidentes'",
-        "practice 12-monitorizacao-operacoes:integracao-com-processos-de-resposta-a-incidentes matched alias 'incidentes'",
-        "practice 13-formacao-onboarding:war-room-e-simulacoes-de-incidentes matched alias 'incidentes'"
+        "practice 12-monitorizacao-operacoes:exercicios-de-resposta-a-incidentes-end-to-end matched alias 'incidentes'",
+        "practice 12-monitorizacao-operacoes:integracao-com-processos-de-resposta-a-incidentes matched alias 'incidentes'"
       ],
       "lifecycle_phases": [
         "operations"
@@ -1090,7 +1094,8 @@
         "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4",
         "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
         "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0",
-        "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af"
+        "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905"
       ],
       "validated_by_controls": [
         "CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34"
@@ -1129,9 +1134,9 @@
       "evidence": [
         "control CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905 references policy_report",
         "practice 02-requisitos-seguranca:politica-formacao-e-procedimentos-operacionais matched alias 'politica'",
+        "practice 05-dependencias-sbom-sca:governacao-documentada-de-politica-de-severidade-registries-e-registo-de-aprovacao matched alias 'politica'",
         "practice 07-cicd-seguro:evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao matched alias 'relatorios'",
-        "practice 08-iac-infraestrutura:enforcement-automatico-de-politicas matched alias 'politicas'",
-        "practice 09-containers-imagens:aplicacao-de-politicas-formais-de-seguranca-no-runtime-com-opa-kyverno matched alias 'politicas'"
+        "practice 08-iac-infraestrutura:enforcement-automatico-de-politicas matched alias 'politicas'"
       ],
       "lifecycle_phases": [
         "testing",
@@ -1216,10 +1221,10 @@
       "description": "Attestation artifact used as auditable evidence.",
       "evidence": [
         "control CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34 references release_gate",
+        "practice 01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i matched alias 'gates'",
+        "practice 01-classificacao-aplicacoes:interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao matched alias 'gates'",
         "practice 01-classificacao-aplicacoes:mapeamento-de-ameacas-por-nivel-de-risco matched alias 'gates'",
-        "practice 02-requisitos-seguranca:gates-automaticos-em-ci-cd-para-requisitos-de-seguranca matched alias 'gates'",
-        "practice 03-threat-modeling:gate-de-controlo-de-consistencia-no-ci-cd matched alias 'gate'",
-        "practice 04-arquitetura-segura:gate-arquitetural-antes-do-go-live matched alias 'gate'"
+        "practice 01-classificacao-aplicacoes:producao-e-manutencao-do-inventario-central-com-autoridade-de-aprovacao-proporcional matched alias 'gates'"
       ],
       "lifecycle_phases": [
         "release",
@@ -1421,9 +1426,9 @@
       "evidence": [
         "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references sast_report",
         "practice 06-desenvolvimento-seguro:automatizacao-em-ci-cd-linters-sast matched alias 'linters'",
+        "practice 10-testes-seguranca:perfil-de-regras-sast-versionado-com-baseline-de-falsos-positivos matched alias 'sast'",
         "practice 10-testes-seguranca:sast-obrigatorio-em-pull-request matched alias 'sast'",
-        "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['sast']",
-        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/appsec-engineer.md matched aliases ['linters', 'sast']"
+        "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['sast']"
       ],
       "lifecycle_phases": [
         "testing",
@@ -1470,8 +1475,8 @@
         "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references sbom",
         "control CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2 references sbom",
         "control CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628 references sbom",
-        "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references sbom",
-        "control CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d references sbom"
+        "control CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0 references sbom",
+        "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references sbom"
       ],
       "lifecycle_phases": [
         "build",
@@ -1483,6 +1488,7 @@
         "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
         "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
         "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
+        "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0",
         "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d"
       ],
       "validated_by_controls": [
@@ -1522,8 +1528,8 @@
         "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references sca_report",
         "control CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2 references sca_report",
         "control CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628 references sca_report",
-        "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references sca_report",
-        "control CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d references sca_report"
+        "control CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0 references sca_report",
+        "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references sca_report"
       ],
       "lifecycle_phases": [
         "testing",
@@ -1535,6 +1541,7 @@
         "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
         "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
         "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
+        "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0",
         "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d"
       ],
       "validated_by_controls": [
@@ -1574,11 +1581,11 @@
       "confidence": null,
       "description": "Configuration artifact used as auditable evidence.",
       "evidence": [
+        "control CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2 references secret_config",
         "control CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af references secret_config",
         "control CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9 references secret_config",
         "practice 07-cicd-seguro:gestao-de-segredos matched alias 'segredos'",
-        "practice 08-iac-infraestrutura:gestao-de-segredos-e-identidades-para-iac matched alias 'segredos'",
-        "practice 09-containers-imagens:gestao-de-segredos-fora-da-imagem-com-oidc-e-workload-identity matched alias 'segredos'"
+        "practice 08-iac-infraestrutura:gestao-de-segredos-e-identidades-para-iac matched alias 'segredos'"
       ],
       "lifecycle_phases": [
         "design",
@@ -1587,6 +1594,7 @@
       "name": "Secret Config",
       "name_en": "Secret Config",
       "produced_by_controls": [
+        "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
         "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
         "CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9"
       ],
@@ -1625,8 +1633,8 @@
         "control CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d references signature_attestation",
         "practice 02-requisitos-seguranca:geracao-de-sbom-e-assinatura-de-artefactos-de-build matched alias 'assinatura'",
         "practice 07-cicd-seguro:assinatura-e-proveniencia matched alias 'assinatura'",
-        "practice 08-iac-infraestrutura:assinatura-e-proveniencia-de-artefactos-iac matched alias 'assinatura'",
-        "practice 09-containers-imagens:assinatura-e-verificacao-de-proveniencia-de-imagens-com-cosign-e-rekor matched alias 'assinatura'"
+        "practice 07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20 matched alias 'assinatura'",
+        "practice 08-iac-infraestrutura:assinatura-e-proveniencia-de-artefactos-iac matched alias 'assinatura'"
       ],
       "lifecycle_phases": [
         "release",
@@ -1649,6 +1657,7 @@
       ],
       "category": "governance_record",
       "chapter_occurrences": [
+        "02-requisitos-seguranca",
         "05-dependencias-sbom-sca",
         "09-containers-imagens",
         "10-testes-seguranca",
@@ -1799,9 +1808,9 @@
       "evidence": [
         "control CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf references training_plan",
         "practice 02-requisitos-seguranca:politica-formacao-e-procedimentos-operacionais matched alias 'formacao'",
-        "practice 13-formacao-onboarding:code-clinics-estruturadas-e-recorrentes matched alias 'formacao'",
-        "practice 13-formacao-onboarding:exercicios-praticos-e-simulacoes matched alias 'formacao'",
-        "practice 13-formacao-onboarding:formacao-continua-por-perfil matched alias 'formacao'"
+        "practice 13-formacao-onboarding:acao-corretiva-sobre-desvios-de-kpis matched alias 'formacao'",
+        "practice 13-formacao-onboarding:caminho-de-remediacao-abaixo-do-limiar matched alias 'formacao'",
+        "practice 13-formacao-onboarding:code-clinics-estruturadas-e-recorrentes matched alias 'formacao'"
       ],
       "lifecycle_phases": [
         "testing",

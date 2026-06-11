@@ -1535,10 +1535,27 @@ export function handlePrepareCodegenContext(
 
   const activation = activate(input);
 
-  const estimatedRequirements = estimateV0RequirementCount(
-    input.risk_level,
-    activation.concerns
-  );
+  // (c) The scope gate measures the request's FOCUS, not its full semantic
+  // expansion: explicit concerns when given, else the concerns activated by
+  // deterministic sources (explicit input + direct lexicon task terms). Semantic
+  // intent-keyword/alias expansions still enrich the output context and trace —
+  // they just don't inflate the requirement count and trip decomposition. Falls
+  // back to the full activation when no deterministic concern was resolved.
+  const deterministicConcerns = [
+    ...new Set(
+      activation.trace
+        .filter((entry) => entry.confidence === "deterministic" && CONCERN_LEXICON.has(entry.produced))
+        .map((entry) => entry.produced as Concern)
+    )
+  ];
+  const focusConcerns =
+    input.concerns.length > 0
+      ? input.concerns
+      : deterministicConcerns.length > 0
+        ? deterministicConcerns
+        : activation.concerns;
+
+  const estimatedRequirements = estimateV0RequirementCount(input.risk_level, focusConcerns);
 
   const postGate = gateAfterActivation({
     input,
