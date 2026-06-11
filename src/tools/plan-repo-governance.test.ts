@@ -106,7 +106,8 @@ describe("handlePlanRepoGovernance — pagination", () => {
   it("returns coverage + size_estimate; default page covers every chapter (non-breaking)", () => {
     const result = handlePlanRepoGovernance({ riskLevel: "L2" });
     expect(result.coverage).toBeDefined();
-    expect(typeof result.size_estimate).toBe("number");
+    expect(typeof result.size_estimate.chars).toBe("number");
+    expect(typeof result.size_estimate.approx_tokens).toBe("number");
     expect(result.coverage.returned).toBe(result.byChapter.length);
     expect(result.coverage.returned).toBe(result.coverage.total);
     expect(result.coverage.hasMore).toBe(false);
@@ -120,7 +121,7 @@ describe("handlePlanRepoGovernance — pagination", () => {
     expect(page.coverage.total).toBe(full.coverage.total);
     expect(page.coverage.hasMore).toBe(true);
     expect(page.coverage.nextOffset).toBe(3);
-    expect(page.size_estimate).toBeLessThan(full.size_estimate);
+    expect(page.size_estimate.chars).toBeLessThan(full.size_estimate.chars);
   });
 
   it("is coverage-preserving: paging yields every chapter once, in order", () => {

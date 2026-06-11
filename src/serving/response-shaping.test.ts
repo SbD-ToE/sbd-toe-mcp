@@ -97,14 +97,15 @@ describe("resolveBudget", () => {
 });
 
 describe("estimateSize", () => {
-  it("returns the serialized length", () => {
-    expect(estimateSize([1, 2, 3])).toBe(JSON.stringify([1, 2, 3]).length);
+  it("returns { chars, approx_tokens } matching the contract v1.3 shape", () => {
+    const chars = JSON.stringify([1, 2, 3]).length;
+    expect(estimateSize([1, 2, 3])).toEqual({ chars, approx_tokens: Math.ceil(chars / 4) });
   });
 
-  it("returns 0 for non-serializable input", () => {
+  it("returns 0/0 for non-serializable input", () => {
     const circular: Record<string, unknown> = {};
     circular.self = circular;
-    expect(estimateSize(circular)).toBe(0);
+    expect(estimateSize(circular)).toEqual({ chars: 0, approx_tokens: 0 });
   });
 });
 
@@ -121,7 +122,7 @@ describe("paginate", () => {
       nextOffset: 10,
       hasMore: true,
     });
-    expect(page.size_estimate).toBe(estimateSize(page.items));
+    expect(page.size_estimate).toEqual(estimateSize(page.items));
   });
 
   it("signals exhaustion on the last page", () => {

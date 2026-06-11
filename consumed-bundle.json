@@ -5,10 +5,18 @@
   "consumer_contract_version": "v1.2",
   "substrate_version": "v2-draft",
   "kg_bundle": {
-    "release_tag": null,
+    "release_tag": "kg-v1-cycle-b-run-2-aligned-2026-05-12",
+    "release_commit": "e05f1be",
     "release_sha256": null,
+    "tag_scheme": "cycle-aligned",
     "surface_built_at": "2026-05-11T23:14:46.780944+00:00",
-    "_pending": "Awaiting Codex pin answer (handover 2026-06-11-orchestrator-codex-pontifex-bundle-alignment-codesign.md, ask a): which vX.Y.Z release tag + .sha256 sidecar corresponds to manual c32d1204 (built 2026-05-11). Once provided, fill release_tag/release_sha256 and the verifier will check the bundle against the sidecar."
+    "_pin_source": "Codex pin answer 2026-06-11 (handover 2026-06-11-orchestrator-codex-pontifex-bundle-alignment-codesign.md). Tag verified to exist in sbd-toe-knowledge-graph (-> e05f1be).",
+    "_pending_sha256": "release_sha256 awaits the Codex release .sha256 sidecar (output_policy); held null — never invented. Verifier shape-checks it once set.",
+    "next": {
+      "target_release": "v1.6.0 (tripartição) — consumer_contract v1.3, manual v1.6.0 7068b3d, KG commit 3621e90",
+      "status": "compiled by Codex, NOT yet authorized. Migrate this pin (and the data/ bundle) only when the v1.6.0 tag is authorized — additive contract bump v1.2 -> v1.3, but the bundle swap is gated."
+    },
+    "tag_scheme_codesign": "OPEN (Codex 2026-06-11): dual tag schemes — vX.Y.Z (semver product channel) vs kg-v1-*-aligned (cycle-aligned). Pontifex follows the deliberate `mcp-stable` pointer (Codex-endorsed); the pin records whichever tag that pointer resolves to. Reconciliation of the two schemes is co-design."
   },
   "inputs": {
     "manual": {

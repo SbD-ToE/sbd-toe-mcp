@@ -80,20 +80,19 @@ if (existsSync(join(projectRoot, v1ManifestPath))) {
   notes.push(`${v1ManifestPath} absent — skipped ontology/surface provenance check`);
 }
 
-// --- release tag / sha256 (Codex-owned; pending) ---------------------------
+// --- release tag / sha256 (Codex-owned) ------------------------------------
 const { release_tag: tag, release_sha256: sha } = pin.kg_bundle ?? {};
-if (tag === null || sha === null) {
-  notes.push("kg_bundle.release_tag/release_sha256 still null — pending Codex pin answer (co-design 2026-06-11). Provenance pin is partial until then.");
-} else {
-  if (typeof sha !== "string" || !/^[0-9a-f]{64}$/.test(sha)) {
-    fail(`kg_bundle.release_sha256 must be a 64-hex string when set, got: ${sha}`);
-  }
-  if (typeof tag !== "string" || tag.length === 0) {
-    fail("kg_bundle.release_tag must be a non-empty string when set");
-  }
-  // TODO(once Codex ships the release sidecar): verify the bundle digest
-  // against `<release>.sha256` before treating the pin as fully aligned.
+if (tag === null) {
+  notes.push("kg_bundle.release_tag still null — pending Codex pin answer. Provenance pin is partial.");
+} else if (typeof tag !== "string" || tag.length === 0) {
+  fail("kg_bundle.release_tag must be a non-empty string when set");
+} else if (sha === null) {
+  notes.push(`kg_bundle.release_tag pinned (${tag}); release_sha256 pending the Codex release .sha256 sidecar. Pin is tag-complete, digest-pending.`);
+} else if (typeof sha !== "string" || !/^[0-9a-f]{64}$/.test(sha)) {
+  fail(`kg_bundle.release_sha256 must be a 64-hex string when set, got: ${sha}`);
 }
+// TODO(once Codex ships the release sidecar): verify the bundle digest against
+// `<release>.sha256` before treating the pin as fully aligned (digest-verified).
 
 // --- report ----------------------------------------------------------------
 for (const n of notes) console.error(`[consumed-bundle] note: ${n}`);

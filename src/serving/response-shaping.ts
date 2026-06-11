@@ -122,16 +122,28 @@ export function resolveBudget(
 }
 
 /**
- * Estimated serialized size (in characters) of a value — a cheap proxy for the
- * token/byte cost a consumer pays. Used to populate `size_estimate` so consumers
- * can budget without re-serializing. Non-serializable input yields 0.
+ * Size estimate of a serialized value. Shape matches the consumer contract v1.3
+ * §1.12 (`size_estimate: { chars, approx_tokens }`) so this serving helper speaks
+ * the contract's vocabulary directly when the E5 envelope binds.
  */
-export function estimateSize(value: unknown): number {
+export interface SizeEstimate {
+  chars: number;
+  approx_tokens: number;
+}
+
+/**
+ * Estimated serialized size of a value — a cheap proxy for the token/byte cost a
+ * consumer pays, so it can budget without re-serializing. `approx_tokens` uses
+ * the conventional ~4-chars-per-token heuristic. Non-serializable input yields 0/0.
+ */
+export function estimateSize(value: unknown): SizeEstimate {
+  let chars = 0;
   try {
-    return JSON.stringify(value)?.length ?? 0;
+    chars = JSON.stringify(value)?.length ?? 0;
   } catch {
-    return 0;
+    chars = 0;
   }
+  return { chars, approx_tokens: Math.ceil(chars / 4) };
 }
 
 export interface PageRequest {
@@ -142,12 +154,13 @@ export interface PageRequest {
 }
 
 /**
- * Coverage descriptor for a page. Makes omission explicit and tells the consumer
- * exactly how to retrieve the rest — the contract's coverage-preserving
- * guarantee (E5): the union of all pages walked via `nextOffset` is the full
- * set, with nothing silently dropped.
+ * Pagination cursor for a page. Makes omission explicit and tells the consumer
+ * how to retrieve the rest: walking `nextOffset` yields the full set with nothing
+ * silently dropped (coverage-preserving). Distinct from the contract's
+ * `coverage_map` (v1.3 §1.12) — that is a per-item `{id,label,block,size_estimate,
+ * retrieval_handle}` index over chunk surfaces; this is a generic list cursor.
  */
-export interface CoverageMap {
+export interface PageCoverage {
   /** Total items available across all pages. */
   total: number;
   /** Items returned in this page. */
@@ -162,9 +175,9 @@ export interface CoverageMap {
 
 export interface Page<T> {
   items: T[];
-  coverage: CoverageMap;
-  /** Estimated serialized size (chars) of `items`. */
-  size_estimate: number;
+  coverage: PageCoverage;
+  /** Estimated serialized size of `items` ({ chars, approx_tokens }, contract v1.3 §1.12). */
+  size_estimate: SizeEstimate;
 }
 
 /**

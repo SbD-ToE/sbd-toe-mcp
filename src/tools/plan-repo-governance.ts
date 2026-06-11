@@ -12,7 +12,7 @@
 
 import type { SnapshotCache } from "../backend/semantic-index-gateway.js";
 import { getOntologyData } from "./ontology-loader.js";
-import { paginate, type CoverageMap } from "../serving/response-shaping.js";
+import { paginate, type PageCoverage, type SizeEstimate } from "../serving/response-shaping.js";
 
 const VALID_RISK_LEVELS = ["L1", "L2", "L3"] as const;
 type RiskLevel = (typeof VALID_RISK_LEVELS)[number];
@@ -86,10 +86,10 @@ export interface PlanRepoGovernanceResult {
   riskLevel: string | null;
   totalArtefacts: number;
   byChapter: ArtefactsByChapter[];
-  /** Coverage-preserving page descriptor over `byChapter` (follow `nextOffset`). */
-  coverage: CoverageMap;
-  /** Estimated serialized size (chars) of the returned `byChapter` page. */
-  size_estimate: number;
+  /** Coverage-preserving page cursor over `byChapter` (follow `nextOffset`). */
+  coverage: PageCoverage;
+  /** Estimated serialized size of the returned `byChapter` page ({ chars, approx_tokens }). */
+  size_estimate: SizeEstimate;
   note: string;
 }
 
