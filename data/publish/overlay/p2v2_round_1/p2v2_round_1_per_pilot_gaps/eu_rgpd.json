@@ -1,0 +1,98 @@
+{
+  "item_count": 6,
+  "items": [
+    {
+      "adjunct_candidate": false,
+      "category": "overlay_repair",
+      "evidence": "Iter-1 instance_mapping: normalization_status=mapped, landing_strength=bounded, primary_CO=ACO-SPC-001, practice=ACP-SPC-001, domain_first_resolution=DOMAIN_WINS.",
+      "gap_id": "eu_rgpd__GDPR-ART-5",
+      "iter1_domain_first_resolution": "DOMAIN_WINS",
+      "iter1_landing_strength": "bounded",
+      "iter1_primary_core_anchor_id": "ACO-SPC-001",
+      "justification": "Regulatory article with bounded AppSec Core landing via domain-first resolution. Per DELTA 2026-04-05 §3, regulatory-wave residual is dominated by overlay-repair: the article obligation wraps AppSec semantics already present in Manual but the regulatory→AppSec cross-ref packaging on the overlay side needs calibration (single-CO landing is bounded because the article wraps multi-CO breadth).",
+      "manual_refinement_candidate": true,
+      "source_object_id": "GDPR-ART-5",
+      "source_title": "GDPR Article 5"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "overlay_repair",
+      "evidence": "Iter-1 instance_mapping: normalization_status=mapped, landing_strength=bounded, primary_CO=ACO-SPC-001, practice=ACP-SPC-001, domain_first_resolution=DOMAIN_WINS.",
+      "gap_id": "eu_rgpd__GDPR-ART-25",
+      "iter1_domain_first_resolution": "DOMAIN_WINS",
+      "iter1_landing_strength": "bounded",
+      "iter1_primary_core_anchor_id": "ACO-SPC-001",
+      "justification": "Regulatory article with bounded AppSec Core landing via domain-first resolution. Per DELTA 2026-04-05 §3, regulatory-wave residual is dominated by overlay-repair: the article obligation wraps AppSec semantics already present in Manual but the regulatory→AppSec cross-ref packaging on the overlay side needs calibration (single-CO landing is bounded because the article wraps multi-CO breadth).",
+      "manual_refinement_candidate": true,
+      "source_object_id": "GDPR-ART-25",
+      "source_title": "GDPR Article 25"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "comparison_gap",
+      "evidence": "Iter-1 instance_mapping: normalization_status=mapped, landing_strength=bounded, primary_CO=ACO-TSV-002, practice=ACP-TSV-002, domain_first_resolution=KEYWORD_FALLBACK.",
+      "gap_id": "eu_rgpd__GDPR-ART-28",
+      "iter1_domain_first_resolution": "KEYWORD_FALLBACK",
+      "iter1_landing_strength": "bounded",
+      "iter1_primary_core_anchor_id": "ACO-TSV-002",
+      "justification": "Iter-1 domain-first normalization fell back to keyword resolution (KEYWORD_FALLBACK); domain signal absent or ambiguous. Mapping exists but projection-method confidence is reduced — refinement of the comparison line (not Manual-side, not overlay-side) is the natural repair.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "GDPR-ART-28",
+      "source_title": "GDPR Article 28"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "overlay_repair",
+      "evidence": "Iter-1 instance_mapping: normalization_status=mapped, landing_strength=bounded, primary_CO=ACO-SLG-003, practice=ACP-SLG-003, domain_first_resolution=DOMAIN_WINS.",
+      "gap_id": "eu_rgpd__GDPR-ART-30",
+      "iter1_domain_first_resolution": "DOMAIN_WINS",
+      "iter1_landing_strength": "bounded",
+      "iter1_primary_core_anchor_id": "ACO-SLG-003",
+      "justification": "Regulatory article with bounded AppSec Core landing via domain-first resolution. Per DELTA 2026-04-05 §3, regulatory-wave residual is dominated by overlay-repair: the article obligation wraps AppSec semantics already present in Manual but the regulatory→AppSec cross-ref packaging on the overlay side needs calibration (single-CO landing is bounded because the article wraps multi-CO breadth).",
+      "manual_refinement_candidate": true,
+      "source_object_id": "GDPR-ART-30",
+      "source_title": "GDPR Article 30"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "overlay_repair",
+      "evidence": "Iter-1 instance_mapping: normalization_status=mapped, landing_strength=bounded, primary_CO=ACO-SPC-001, practice=ACP-SPC-001, domain_first_resolution=DOMAIN_WINS.",
+      "gap_id": "eu_rgpd__GDPR-ART-32",
+      "iter1_domain_first_resolution": "DOMAIN_WINS",
+      "iter1_landing_strength": "bounded",
+      "iter1_primary_core_anchor_id": "ACO-SPC-001",
+      "justification": "Regulatory article with bounded AppSec Core landing via domain-first resolution. Per DELTA 2026-04-05 §3, regulatory-wave residual is dominated by overlay-repair: the article obligation wraps AppSec semantics already present in Manual but the regulatory→AppSec cross-ref packaging on the overlay side needs calibration (single-CO landing is bounded because the article wraps multi-CO breadth).",
+      "manual_refinement_candidate": true,
+      "source_object_id": "GDPR-ART-32",
+      "source_title": "GDPR Article 32"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "overlay_repair",
+      "evidence": "Iter-1 instance_mapping: normalization_status=mapped, landing_strength=bounded, primary_CO=ACO-TMR-002, practice=ACP-TMR-002, domain_first_resolution=DOMAIN_WINS.",
+      "gap_id": "eu_rgpd__GDPR-ART-35",
+      "iter1_domain_first_resolution": "DOMAIN_WINS",
+      "iter1_landing_strength": "bounded",
+      "iter1_primary_core_anchor_id": "ACO-TMR-002",
+      "justification": "Regulatory article with bounded AppSec Core landing via domain-first resolution. Per DELTA 2026-04-05 §3, regulatory-wave residual is dominated by overlay-repair: the article obligation wraps AppSec semantics already present in Manual but the regulatory→AppSec cross-ref packaging on the overlay side needs calibration (single-CO landing is bounded because the article wraps multi-CO breadth).",
+      "manual_refinement_candidate": true,
+      "source_object_id": "GDPR-ART-35",
+      "source_title": "GDPR Article 35"
+    }
+  ],
+  "pilot_id": "eu_rgpd",
+  "schema_mode": "block2plus_native",
+  "source_stub_path": "data/eu_rgpd/stubs/manual_gap_analysis.json",
+  "source_stub_sha256": "05a5d38e54fe54d6f8432295832277023fff8b085e511cd268053a0d7b2f23f1",
+  "summary_counts": {
+    "adjunct_creation_candidate": 0,
+    "claim_gap": 0,
+    "comparison_gap": 1,
+    "content_gap": 0,
+    "not_a_gap": 0,
+    "not_in_7cat": 0,
+    "overlay_repair": 5,
+    "scope_boundary": 0,
+    "traceability_repair": 0
+  }
+}

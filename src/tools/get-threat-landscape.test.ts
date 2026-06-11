@@ -167,4 +167,14 @@ describe("handleGetThreatLandscape surface", () => {
       expect(Array.isArray(t.associated_controls)).toBe(true);
     }
   });
+
+  it("surfaces the canonical v1 threat tier with its v1.3 fields (threat_category, mitigation_strength)", () => {
+    // Threats are served from the v1 tier (manual_threat_mitigation.jsonl, contract
+    // v1.3 §1.8) — legacy threats.json is empty by design. The richer fields must
+    // reach the surface, and the tier must not be silently empty.
+    const result = handleGetThreatLandscape({ risk_level: "L2" });
+    expect(result.threats.length).toBeGreaterThan(0);
+    expect(result.threats.some((t) => typeof t.threat_category === "string" && t.threat_category.length > 0)).toBe(true);
+    expect(result.threats.some((t) => typeof t.mitigation_strength === "string" && t.mitigation_strength.length > 0)).toBe(true);
+  });
 });

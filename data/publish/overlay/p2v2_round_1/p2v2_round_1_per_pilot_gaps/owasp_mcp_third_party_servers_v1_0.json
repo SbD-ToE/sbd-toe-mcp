@@ -1,0 +1,103 @@
+{
+  "item_count": 9,
+  "items": [
+    {
+      "adjunct_candidate": false,
+      "category": "not_in_7cat",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_mcp_third_party_servers_v1_0__OWASP-MCP-3P-CONTEXT-USE-CASES",
+      "justification": "Context surface (roles, deployment use cases); not a direct comparison target.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "OWASP-MCP-3P-CONTEXT-USE-CASES"
+    },
+    {
+      "adjunct_candidate": true,
+      "category": "adjunct_creation_candidate",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_mcp_third_party_servers_v1_0__OWASP-MCP-3P-TOOL-POISONING",
+      "justification": "Iter-1 rationale: 'current AppSec Core does not yet project third-party MCP tool transparency and model-visible tool integrity as one clean reusable publication surface'.",
+      "manual_refinement_candidate": false,
+      "note_v1_vs_v0": "Aligns with MCP-OFFICIAL TOOL-DESIGN + MCP-TOP10 MCP03 pressure; consolidated adjunct candidate.",
+      "source_object_id": "OWASP-MCP-3P-TOOL-POISONING"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "comparison_gap",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_mcp_third_party_servers_v1_0__OWASP-MCP-3P-PROMPT-INJECTION",
+      "justification": "Prompt injection adjacent to validation/trust-boundary; agentic interpreter packaging broader than AppSec surface.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "OWASP-MCP-3P-PROMPT-INJECTION"
+    },
+    {
+      "adjunct_candidate": true,
+      "category": "adjunct_creation_candidate",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_mcp_third_party_servers_v1_0__OWASP-MCP-3P-MEMORY-POISONING",
+      "justification": "Iter-1 rationale: 'current core does not yet treat persistent agent memory and attribution semantics as a first-class reusable surface'.",
+      "manual_refinement_candidate": false,
+      "note_v1_vs_v0": "Fresh adjunct candidate (agentic memory) for ACR process.",
+      "source_object_id": "OWASP-MCP-3P-MEMORY-POISONING"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "comparison_gap",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_mcp_third_party_servers_v1_0__OWASP-MCP-3P-TOOL-INTERFERENCE",
+      "justification": "Cross-tool interference adjacent to boundary/access/monitoring; publication line does not express multi-tool context isolation cleanly.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "OWASP-MCP-3P-TOOL-INTERFERENCE"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "comparison_gap",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_mcp_third_party_servers_v1_0__OWASP-MCP-3P-CLIENT-SECURITY-DISCOVERY",
+      "justification": "Client-side discovery/verification/trust-minimization/containment strongly adjacent; projection line too coarse for verifier/consumer-side semantics.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "OWASP-MCP-3P-CLIENT-SECURITY-DISCOVERY"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_mcp_third_party_servers_v1_0__OWASP-MCP-3P-AUTH-AUTHZ-REGISTRATION",
+      "justification": "Landing exists on ACO-IAT-001 with secondary IAT-002/004/006; Manual has content but cross-ref to OWASP MCP 3P auth surface needs exposure.",
+      "manual_refinement_candidate": true,
+      "source_object_id": "OWASP-MCP-3P-AUTH-AUTHZ-REGISTRATION"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_in_7cat",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_mcp_third_party_servers_v1_0__OWASP-MCP-3P-TOOLS-UTILITIES",
+      "justification": "Supporting surface (tools/utilities/sandbox references); not a direct comparison target.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "OWASP-MCP-3P-TOOLS-UTILITIES"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "comparison_gap",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_mcp_third_party_servers_v1_0__OWASP-MCP-3P-GOVERNANCE-REGISTRY",
+      "justification": "Trusted registry/staged rollout/approval records adjacent to supply-chain/telemetry/access-review; comparison line does not express third-party registry workflow cleanly.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "OWASP-MCP-3P-GOVERNANCE-REGISTRY"
+    }
+  ],
+  "pilot_id": "owasp_mcp_third_party_servers_v1_0",
+  "schema_mode": "block1_additive_wrapper",
+  "source_stub_path": "data/owasp_mcp_third_party_servers_v1_0/stubs/manual_gap_analysis.json",
+  "source_stub_sha256": "23884eaa8fd344a5eb96b57a20cf83cb671898660832a154a41953a47aeeb4ab",
+  "summary_counts": {
+    "adjunct_creation_candidate": 2,
+    "claim_gap": 0,
+    "comparison_gap": 4,
+    "content_gap": 0,
+    "not_a_gap": 0,
+    "not_in_7cat": 2,
+    "overlay_repair": 0,
+    "scope_boundary": 0,
+    "traceability_repair": 1
+  }
+}

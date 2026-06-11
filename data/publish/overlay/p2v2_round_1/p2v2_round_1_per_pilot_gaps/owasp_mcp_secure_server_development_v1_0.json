@@ -1,0 +1,120 @@
+{
+  "item_count": 11,
+  "items": [
+    {
+      "adjunct_candidate": false,
+      "category": "scope_boundary",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_mcp_secure_server_development_v1_0__OWASP-MCP-INTRO",
+      "justification": "Framing context for the guide; declared out_of_scope_for_appsec_core by iter-1.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "OWASP-MCP-INTRO"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "scope_boundary",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_mcp_secure_server_development_v1_0__OWASP-MCP-RISK-LANDSCAPE",
+      "justification": "Vulnerability landscape/risk framing; useful context but not a control-objective landing zone; declared out_of_scope_for_appsec_core by iter-1.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "OWASP-MCP-RISK-LANDSCAPE"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_mcp_secure_server_development_v1_0__OWASP-MCP-ARCH",
+      "justification": "Landing on ACO-ATB-007 composite with secondary IAT-004/005 + ITS-007; Manual has content but cross-ref needs exposure; section broader than one atomic objective.",
+      "manual_refinement_candidate": true,
+      "source_object_id": "OWASP-MCP-ARCH"
+    },
+    {
+      "adjunct_candidate": true,
+      "category": "adjunct_creation_candidate",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_mcp_secure_server_development_v1_0__OWASP-MCP-TOOL-DESIGN",
+      "justification": "Iter-1 rationale: 'objective-level method loses important MCP-specific semantics around signed tool manifests, description-vs-behavior control and model-visible tool surface minimization' — explicit ontology-side pressure.",
+      "manual_refinement_candidate": false,
+      "note_v1_vs_v0": "Consolidates with MCP-TOP10 MCP03 + MCP-3P TOOL-POISONING pressure; tool integrity adjunct candidate.",
+      "source_object_id": "OWASP-MCP-TOOL-DESIGN"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_mcp_secure_server_development_v1_0__OWASP-MCP-DATA-VALIDATION",
+      "justification": "Landing on ACO-IVF-007 with secondary IVF-004 + IAT-004; Manual has content; session/resource quota broadens section beyond one objective — cross-ref still traceable.",
+      "manual_refinement_candidate": true,
+      "source_object_id": "OWASP-MCP-DATA-VALIDATION"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "scope_boundary",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_mcp_secure_server_development_v1_0__OWASP-MCP-PROMPT-INJECTION",
+      "justification": "Agentic-model control patterns (prompt-injection resistance, HITL elicitation, context compartmentalization) not yet first-class scope in current AppSec Core v0; declared out_of_scope by iter-1.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "OWASP-MCP-PROMPT-INJECTION"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_mcp_secure_server_development_v1_0__OWASP-MCP-AUTH",
+      "justification": "Lands cleanly on ACO-IAT-007 composite with IAT-001/002/004 + ITS-001; iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "OWASP-MCP-AUTH"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "comparison_gap",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_mcp_secure_server_development_v1_0__OWASP-MCP-DEPLOYMENT",
+      "justification": "Spans secrets/containerization/network restriction/CI-CD/error handling; comparison method cannot yet project deployment surface cleanly without over-flattening.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "OWASP-MCP-DEPLOYMENT"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "comparison_gap",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_mcp_secure_server_development_v1_0__OWASP-MCP-GOVERNANCE",
+      "justification": "Mixes integrity/peer review/auditability/non-human identity governance; objective-only line too coarse for clean coverage/gap.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "OWASP-MCP-GOVERNANCE"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_mcp_secure_server_development_v1_0__OWASP-MCP-CONTINUOUS-VALIDATION",
+      "justification": "Landing on ACO-TSV-007 composite with secondary TSV-002/SLG-005/ATB-004; Manual has content; section crosses slice boundaries — cross-ref still traceable.",
+      "manual_refinement_candidate": true,
+      "source_object_id": "OWASP-MCP-CONTINUOUS-VALIDATION"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_in_7cat",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_mcp_secure_server_development_v1_0__OWASP-MCP-MINIMUM-BAR",
+      "justification": "Derived review checklist summarizing earlier sections; not an independent external control surface.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "OWASP-MCP-MINIMUM-BAR"
+    }
+  ],
+  "pilot_id": "owasp_mcp_secure_server_development_v1_0",
+  "schema_mode": "block1_additive_wrapper",
+  "source_stub_path": "data/owasp_mcp_secure_server_development_v1_0/stubs/manual_gap_analysis.json",
+  "source_stub_sha256": "ea364639a077a44627d620bd82b6701e9f1f1e0c11a13124f75b6c2ea971156d",
+  "summary_counts": {
+    "adjunct_creation_candidate": 1,
+    "claim_gap": 0,
+    "comparison_gap": 2,
+    "content_gap": 0,
+    "not_a_gap": 1,
+    "not_in_7cat": 1,
+    "overlay_repair": 0,
+    "scope_boundary": 3,
+    "traceability_repair": 3
+  }
+}

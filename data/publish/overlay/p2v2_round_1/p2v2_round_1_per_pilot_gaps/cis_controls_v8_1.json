@@ -1,0 +1,200 @@
+{
+  "item_count": 19,
+  "items": [
+    {
+      "adjunct_candidate": false,
+      "category": "",
+      "evidence": "",
+      "gap_id": "",
+      "justification": "",
+      "manual_refinement_candidate": false,
+      "source_object_id": "CIS-CONTEXT-V8_1",
+      "source_title": "CIS Critical Security Controls Version 8.1"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "",
+      "evidence": "",
+      "gap_id": "",
+      "justification": "",
+      "manual_refinement_candidate": false,
+      "source_object_id": "CIS-1",
+      "source_title": "Inventory and Control of Enterprise Assets"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "",
+      "evidence": "",
+      "gap_id": "",
+      "justification": "",
+      "manual_refinement_candidate": false,
+      "source_object_id": "CIS-2",
+      "source_title": "Inventory and Control of Software Assets"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "",
+      "evidence": "",
+      "gap_id": "",
+      "justification": "",
+      "manual_refinement_candidate": false,
+      "source_object_id": "CIS-3",
+      "source_title": "Data Protection"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "",
+      "evidence": "",
+      "gap_id": "",
+      "justification": "",
+      "manual_refinement_candidate": false,
+      "source_object_id": "CIS-4",
+      "source_title": "Secure Configuration of Enterprise Assets and Software"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "",
+      "evidence": "",
+      "gap_id": "",
+      "justification": "",
+      "manual_refinement_candidate": false,
+      "source_object_id": "CIS-5",
+      "source_title": "Account Management"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "",
+      "evidence": "",
+      "gap_id": "",
+      "justification": "",
+      "manual_refinement_candidate": false,
+      "source_object_id": "CIS-6",
+      "source_title": "Access Control Management"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "",
+      "evidence": "",
+      "gap_id": "",
+      "justification": "",
+      "manual_refinement_candidate": false,
+      "source_object_id": "CIS-7",
+      "source_title": "Continuous Vulnerability Management"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "",
+      "evidence": "",
+      "gap_id": "",
+      "justification": "",
+      "manual_refinement_candidate": false,
+      "source_object_id": "CIS-8",
+      "source_title": "Audit Log Management"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "",
+      "evidence": "",
+      "gap_id": "",
+      "justification": "",
+      "manual_refinement_candidate": false,
+      "source_object_id": "CIS-9",
+      "source_title": "Email and Web Browser Protections"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "",
+      "evidence": "",
+      "gap_id": "",
+      "justification": "",
+      "manual_refinement_candidate": false,
+      "source_object_id": "CIS-10",
+      "source_title": "Malware Defenses"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "",
+      "evidence": "",
+      "gap_id": "",
+      "justification": "",
+      "manual_refinement_candidate": false,
+      "source_object_id": "CIS-11",
+      "source_title": "Data Recovery"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "",
+      "evidence": "",
+      "gap_id": "",
+      "justification": "",
+      "manual_refinement_candidate": false,
+      "source_object_id": "CIS-12",
+      "source_title": "Network Infrastructure Management"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "",
+      "evidence": "",
+      "gap_id": "",
+      "justification": "",
+      "manual_refinement_candidate": false,
+      "source_object_id": "CIS-13",
+      "source_title": "Network Monitoring and Defense"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "",
+      "evidence": "",
+      "gap_id": "",
+      "justification": "",
+      "manual_refinement_candidate": false,
+      "source_object_id": "CIS-14",
+      "source_title": "Security Awareness and Skills Training"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "",
+      "evidence": "",
+      "gap_id": "",
+      "justification": "",
+      "manual_refinement_candidate": false,
+      "source_object_id": "CIS-15",
+      "source_title": "Service Provider Management"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "",
+      "evidence": "",
+      "gap_id": "",
+      "justification": "",
+      "manual_refinement_candidate": false,
+      "source_object_id": "CIS-16",
+      "source_title": "Application Software Security"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "",
+      "evidence": "",
+      "gap_id": "",
+      "justification": "",
+      "manual_refinement_candidate": false,
+      "source_object_id": "CIS-17",
+      "source_title": "Incident Response Management"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "",
+      "evidence": "",
+      "gap_id": "",
+      "justification": "",
+      "manual_refinement_candidate": false,
+      "source_object_id": "CIS-18",
+      "source_title": "Penetration Testing"
+    }
+  ],
+  "pilot_id": "cis_controls_v8_1",
+  "schema_mode": "block2plus_native",
+  "source_stub_path": "data/cis_controls_v8_1/stubs/manual_gap_analysis.json",
+  "source_stub_sha256": "2251d73f6ab92ec7a8d03ace43b30442f0ca5e377dec853ad5a4b1e68aa0df55",
+  "summary_counts": {}
+}

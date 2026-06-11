@@ -1,6 +1,6 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 204,
+  "count": 211,
   "entity_type": "Practice",
   "items": [
     {
@@ -654,6 +654,27 @@
       "chapter_id": "03-threat-modeling",
       "confidence": 0.95,
       "evidence": [
+        "practice_id derived deterministically from chapter '03-threat-modeling'",
+        "user story title normalized to 'threat-modeling-para-sistema-com-agente-ai-tool-use-us-11'"
+      ],
+      "id": "03-threat-modeling:threat-modeling-para-sistema-com-agente-ai-tool-use-us-11",
+      "label": "Threat modeling para sistema com agente AI (tool-use) {#us-11}",
+      "normalized_label": "threat-modeling-para-sistema-com-agente-ai-tool-use-us-11",
+      "source_document_ids": [
+        "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle"
+      ],
+      "source_layers": [
+        "operational"
+      ],
+      "source_section_ids": [
+        "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-11-threat-modeling-para-sistema-com-agente-ai-tool-use-us-11"
+      ],
+      "warnings": []
+    },
+    {
+      "chapter_id": "03-threat-modeling",
+      "confidence": 0.95,
+      "evidence": [
         "candidate covers all practice tokens",
         "practice_id derived deterministically from chapter '03-threat-modeling'",
         "summary occurrence linked from 010-sbd-manual/03-threat-modeling/intro.md",
@@ -664,6 +685,7 @@
         "technical_detail occurrence linked from 010-sbd-manual/03-threat-modeling/addon/06-threat-modeling-ci.md",
         "technical_detail occurrence linked from 010-sbd-manual/03-threat-modeling/addon/09-validacao-arquitetura.md",
         "technical_detail occurrence linked from 010-sbd-manual/03-threat-modeling/addon/11-kpis-metricas.md",
+        "technical_detail occurrence linked from 010-sbd-manual/03-threat-modeling/addon/13-linddun-privacidade.md",
         "token overlap: ['arquitetura', 'modeling', 'threat', 'validacao']",
         "token overlap: ['modeling', 'threat', 'validacao']",
         "token overlap: ['modeling', 'threat']",
@@ -680,6 +702,7 @@
         "010-sbd-manual-03-threat-modeling-addon-06-threat-modeling-ci",
         "010-sbd-manual-03-threat-modeling-addon-09-validacao-arquitetura",
         "010-sbd-manual-03-threat-modeling-addon-11-kpis-metricas",
+        "010-sbd-manual-03-threat-modeling-addon-13-linddun-privacidade",
         "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
         "010-sbd-manual-03-threat-modeling-intro"
       ],
@@ -696,6 +719,7 @@
         "010-sbd-manual-03-threat-modeling-addon-06-threat-modeling-ci--threat-modeling-em-ci-cd",
         "010-sbd-manual-03-threat-modeling-addon-09-validacao-arquitetura--integracao-do-threat-modeling-na-validacao-de-arquitetura",
         "010-sbd-manual-03-threat-modeling-addon-11-kpis-metricas--kpis-e-metricas-threat-modeling",
+        "010-sbd-manual-03-threat-modeling-addon-13-linddun-privacidade--linddun-threat-modeling-de-privacidade",
         "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-02-validacao-de-arquitetura-com-threat-modeling",
         "010-sbd-manual-03-threat-modeling-intro--capitulo-3-threat-modeling--2-prescricao-pratica-o-que-quem-como-quando-porque-e-para-que--o-que-deve-ser-feito"
       ],
@@ -932,6 +956,27 @@
       "confidence": 0.95,
       "evidence": [
         "practice_id derived deterministically from chapter '04-arquitetura-segura'",
+        "user story title normalized to 'revisao-de-arquitectura-para-agente-ai-em-a2-us-16'"
+      ],
+      "id": "04-arquitetura-segura:revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
+      "label": "Revisão de arquitectura para agente AI em A2+ {#us-16}",
+      "normalized_label": "revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
+      "source_document_ids": [
+        "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle"
+      ],
+      "source_layers": [
+        "operational"
+      ],
+      "source_section_ids": [
+        "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-16-revisao-de-arquitectura-para-agente-ai-em-a2-us-16"
+      ],
+      "warnings": []
+    },
+    {
+      "chapter_id": "04-arquitetura-segura",
+      "confidence": 0.95,
+      "evidence": [
+        "practice_id derived deterministically from chapter '04-arquitetura-segura'",
         "summary occurrence linked from 010-sbd-manual/04-arquitetura-segura/intro.md",
         "token overlap: ['confianca', 'fronteira']",
         "user story title normalized to 'revisao-de-fronteiras-de-confianca-e-integracoes'"
@@ -1061,6 +1106,27 @@
       ],
       "source_section_ids": [
         "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-07-validacao-arquitetural-automatizavel-no-ci-cd-quando-aplicavel"
+      ],
+      "warnings": []
+    },
+    {
+      "chapter_id": "05-dependencias-sbom-sca",
+      "confidence": 0.95,
+      "evidence": [
+        "practice_id derived deterministically from chapter '05-dependencias-sbom-sca'",
+        "user story title normalized to 'ai-bom-e-gestao-de-providers-de-modelos-ai-us-14'"
+      ],
+      "id": "05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
+      "label": "AI BOM e gestão de *providers* de modelos AI {#us-14}",
+      "normalized_label": "ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
+      "source_document_ids": [
+        "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle"
+      ],
+      "source_layers": [
+        "operational"
+      ],
+      "source_section_ids": [
+        "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-14-ai-bom-e-gestao-de-providers-de-modelos-ai-us-14"
       ],
       "warnings": []
     },
@@ -1693,6 +1759,27 @@
       ],
       "source_section_ids": [
         "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-12-validacoes-locais-obrigatorias-pre-commit"
+      ],
+      "warnings": []
+    },
+    {
+      "chapter_id": "07-cicd-seguro",
+      "confidence": 0.95,
+      "evidence": [
+        "practice_id derived deterministically from chapter '07-cicd-seguro'",
+        "user story title normalized to 'agentes-ai-como-principals-na-pipeline-us-19'"
+      ],
+      "id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline-us-19",
+      "label": "Agentes AI como *principals* na pipeline {#us-19}",
+      "normalized_label": "agentes-ai-como-principals-na-pipeline-us-19",
+      "source_document_ids": [
+        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle"
+      ],
+      "source_layers": [
+        "operational"
+      ],
+      "source_section_ids": [
+        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-19-agentes-ai-como-principals-na-pipeline-us-19"
       ],
       "warnings": []
     },
@@ -3498,6 +3585,27 @@
       "confidence": 0.95,
       "evidence": [
         "practice_id derived deterministically from chapter '11-deploy-seguro'",
+        "user story title normalized to 'release-gates-especificos-para-sistemas-com-agentes-ai-us-18'"
+      ],
+      "id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
+      "label": "Release gates específicos para sistemas com agentes AI {#us-18}",
+      "normalized_label": "release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
+      "source_document_ids": [
+        "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle"
+      ],
+      "source_layers": [
+        "operational"
+      ],
+      "source_section_ids": [
+        "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-18-release-gates-especificos-para-sistemas-com-agentes-ai-us-18"
+      ],
+      "warnings": []
+    },
+    {
+      "chapter_id": "11-deploy-seguro",
+      "confidence": 0.95,
+      "evidence": [
+        "practice_id derived deterministically from chapter '11-deploy-seguro'",
         "technical_detail occurrence linked from 010-sbd-manual/11-deploy-seguro/addon/05-monitorizacao-e-reacao.md",
         "token overlap: ['incidente', 'runtime']",
         "user story title normalized to 'reprodutibilidade-de-incidentes-em-runtime'"
@@ -3921,6 +4029,27 @@
       ],
       "source_section_ids": [
         "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-07-seguranca-e-integridade-de-logs"
+      ],
+      "warnings": []
+    },
+    {
+      "chapter_id": "12-monitorizacao-operacoes",
+      "confidence": 0.95,
+      "evidence": [
+        "practice_id derived deterministically from chapter '12-monitorizacao-operacoes'",
+        "user story title normalized to 'telemetria-de-agentes-ai-em-producao-us-13'"
+      ],
+      "id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao-us-13",
+      "label": "Telemetria de agentes AI em produção {#us-13}",
+      "normalized_label": "telemetria-de-agentes-ai-em-producao-us-13",
+      "source_document_ids": [
+        "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle"
+      ],
+      "source_layers": [
+        "operational"
+      ],
+      "source_section_ids": [
+        "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-13-telemetria-de-agentes-ai-em-producao-us-13"
       ],
       "warnings": []
     },
@@ -4360,6 +4489,27 @@
       ],
       "source_section_ids": [
         "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-11-consolidacao-de-kpis-de-governacao-e-maturidade"
+      ],
+      "warnings": []
+    },
+    {
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.95,
+      "evidence": [
+        "practice_id derived deterministically from chapter '14-governanca-contratacao'",
+        "user story title normalized to 'contratacao-de-provedores-de-modelos-ai-us-21'"
+      ],
+      "id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
+      "label": "Contratação de provedores de modelos AI {#us-21}",
+      "normalized_label": "contratacao-de-provedores-de-modelos-ai-us-21",
+      "source_document_ids": [
+        "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle"
+      ],
+      "source_layers": [
+        "operational"
+      ],
+      "source_section_ids": [
+        "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21"
       ],
       "warnings": []
     },

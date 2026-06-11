@@ -1,0 +1,146 @@
+{
+  "item_count": 14,
+  "items": [
+    {
+      "adjunct_candidate": false,
+      "category": "not_in_7cat",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "mcp_official_security_foundations_2025__MCP-OFFICIAL-FOUNDATIONS",
+      "justification": "Contextual source framing; not a direct comparison object.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "MCP-OFFICIAL-FOUNDATIONS"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "comparison_gap",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "mcp_official_security_foundations_2025__MCP-AUTH-DISCOVERY-METADATA",
+      "justification": "Authorization discovery/metadata trust clearly AppSec-relevant; comparison line not yet precise enough for coverage/absence claim.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "MCP-AUTH-DISCOVERY-METADATA"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "comparison_gap",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "mcp_official_security_foundations_2025__MCP-AUTH-CLIENT-REGISTRATION",
+      "justification": "Client registration/metadata trust remain protocol-shaped; direct comparison needed before stronger coverage claim.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "MCP-AUTH-CLIENT-REGISTRATION"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "mcp_official_security_foundations_2025__MCP-AUTH-SCOPE-NEGOTIATION",
+      "justification": "Landing on ACO-IAT-002 with secondary IAT-004; least-privilege scope supported in substance, but step-up authorization not packaged as one dedicated family — cross-ref exposable.",
+      "manual_refinement_candidate": true,
+      "source_object_id": "MCP-AUTH-SCOPE-NEGOTIATION"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "mcp_official_security_foundations_2025__MCP-AUTH-RESOURCE-AUDIENCE-BINDING",
+      "justification": "Audience binding/resource targeting/token-to-server binding lands cleanly on ACO-IAT-004 with IAT-005; iter-1 covered/ready.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "MCP-AUTH-RESOURCE-AUDIENCE-BINDING"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "mcp_official_security_foundations_2025__MCP-AUTH-TOKEN-VALIDATION",
+      "justification": "Token validation/recipient-only acceptance lands cleanly on ACO-IAT-004 with IAT-005; iter-1 covered/ready.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "MCP-AUTH-TOKEN-VALIDATION"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "mcp_official_security_foundations_2025__MCP-AUTH-ERROR-HANDLING",
+      "justification": "Landing on ACO-IVF-005 with secondary IAT-002; OAuth-specific response patterns more protocol-shaped than publication surface — cross-ref exposable.",
+      "manual_refinement_candidate": true,
+      "source_object_id": "MCP-AUTH-ERROR-HANDLING"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "comparison_gap",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "mcp_official_security_foundations_2025__MCP-AUTH-REDIRECT-CLIENT-METADATA-SECURITY",
+      "justification": "Redirect/PKCE/client-metadata security clearly AppSec-relevant; comparison line does not project cleanly for early coverage classification.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "MCP-AUTH-REDIRECT-CLIENT-METADATA-SECURITY"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "comparison_gap",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "mcp_official_security_foundations_2025__MCP-CONFUSED-DEPUTY",
+      "justification": "Confused-deputy/proxy-consent inside security line; direct comparison needed before stronger conclusions.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "MCP-CONFUSED-DEPUTY"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "mcp_official_security_foundations_2025__MCP-TOKEN-PASSTHROUGH",
+      "justification": "Non-passthrough token handling and downstream boundary preservation land cleanly on ACO-IAT-004 with ITS-001 + IAT-005; iter-1 covered/ready.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "MCP-TOKEN-PASSTHROUGH"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "mcp_official_security_foundations_2025__MCP-SSRF-DISCOVERY",
+      "justification": "Landing on ACO-ITS-004 with secondary IVF-004 + IAT-005; outbound discovery trust not exposed as one clean family — cross-ref exposable.",
+      "manual_refinement_candidate": true,
+      "source_object_id": "MCP-SSRF-DISCOVERY"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "mcp_official_security_foundations_2025__MCP-SESSION-HIJACKING",
+      "justification": "Session binding/verification/non-auth session handling land cleanly on ACO-IAT-004 with IAT-001; iter-1 covered/ready.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "MCP-SESSION-HIJACKING"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "scope_boundary",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "mcp_official_security_foundations_2025__MCP-LOCAL-SERVER-COMPROMISE",
+      "justification": "Local MCP server execution/workstation sandboxing/one-click execution belong to local runtime or endpoint governance; declared out_of_scope_for_appsec_core by iter-1.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "MCP-LOCAL-SERVER-COMPROMISE"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "See iter-1 items[] entry for this source_object_id (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "mcp_official_security_foundations_2025__MCP-SCOPE-MINIMIZATION",
+      "justification": "Landing on ACO-IAT-002 with secondary IAT-006; MCP-specific progressive-elevation wording broader than one row — cross-ref exposable.",
+      "manual_refinement_candidate": true,
+      "source_object_id": "MCP-SCOPE-MINIMIZATION"
+    }
+  ],
+  "pilot_id": "mcp_official_security_foundations_2025",
+  "schema_mode": "block1_additive_wrapper",
+  "source_stub_path": "data/mcp_official_security_foundations_2025/stubs/manual_gap_analysis.json",
+  "source_stub_sha256": "8cbf5e78a833684069993d82ff6dedfe2dce6fb413753efb4261b4e9fcb671eb",
+  "summary_counts": {
+    "adjunct_creation_candidate": 0,
+    "claim_gap": 0,
+    "comparison_gap": 4,
+    "content_gap": 0,
+    "not_a_gap": 4,
+    "not_in_7cat": 1,
+    "overlay_repair": 0,
+    "scope_boundary": 1,
+    "traceability_repair": 4
+  }
+}

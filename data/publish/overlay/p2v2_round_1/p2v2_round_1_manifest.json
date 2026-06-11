@@ -1,0 +1,285 @@
+{
+  "aggregates": {
+    "dsr_history": {
+      "sha256": "f5de3453b895a20282a6309edf277757775aece35864a3e257b5eea100a0333d",
+      "source_path": "data/quality_protocol/DSR-HISTORY/round-1.md",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_dsr_history.md"
+    },
+    "extraction_rule": {
+      "sha256": "716a1f6b414e636b250787f29e6fd5a2c29dfd2c4cb4fd4efa45f7d4af790cc9",
+      "source_path": "method/phase-b-7cat-extraction-rule.md",
+      "target_path": "overlay/p2v2_round_1/phase-b-7cat-extraction-rule.md"
+    },
+    "gap_rollup": {
+      "sha256": "a99573d8e7b576a1b999df053f20db19d5db6e928856a4ae40644b8bcfd69d39",
+      "source_path": "data/p2v2_phase_a_rollups/gap_rollup_round_1.json",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_gap_rollup.json"
+    },
+    "heatmap_csv": {
+      "sha256": "c9669cd8833becdf7d0b3e1e418e8b80160a88fb74392ebfc348016f8f89ec1b",
+      "source_path": "data/p2v2_phase_a_rollups/heatmap_27x10_pressure.csv",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_heatmap_27x10.csv"
+    },
+    "heatmap_json": {
+      "sha256": "3b2e45f68d38130ad4a818af6276ab784a92c81fba709dfb148637d8fa59444d",
+      "source_path": "data/p2v2_phase_a_rollups/heatmap_27x10_pressure.json",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_heatmap_27x10.json"
+    },
+    "heatmap_md": {
+      "sha256": "dfd5542b73b30597ef03eca03885dfb0693ebc8be75028ce3faa5b96016fcb82",
+      "source_path": "data/p2v2_phase_a_rollups/heatmap_27x10_pressure.md",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_heatmap_27x10.md"
+    }
+  },
+  "cross_references": {
+    "codex_tag": "p2v2-kg-input-round-1-2026-04-20",
+    "esi_peer_tag": "p2v2-round-1-closed",
+    "ontology_release": "ontology-v1-release"
+  },
+  "dispatcher_reference": "sbd-ai-runtime/handover/em-curso/2026-04-20-orchestrator-codex-p2v2-kg-input-round-1-dispatch.md",
+  "esi_root": "/Volumes/G-DRIVE/Shared/SecurityByDesign-TheoryOfEverything/ExternalSourcesInventory",
+  "extraction_rule": {
+    "sha256": "716a1f6b414e636b250787f29e6fd5a2c29dfd2c4cb4fd4efa45f7d4af790cc9",
+    "source_path": "method/phase-b-7cat-extraction-rule.md",
+    "target_path": "overlay/p2v2_round_1/phase-b-7cat-extraction-rule.md"
+  },
+  "generated_at": "2026-04-20T23:03:52Z",
+  "generator": "sbdtoe_indexing.workflows.build_p2v2_round_overlay",
+  "pilot_count": 28,
+  "pilot_stubs": [
+    {
+      "item_count": 286,
+      "pilot_id": "asvs_v4_0_2",
+      "schema_mode": "block2plus_native",
+      "source_path": "data/asvs_v4_0_2/stubs/manual_gap_analysis.json",
+      "source_sha256": "5097f526ece08946b47c40bc144a5c344e9ccfab1706ef9ac6d6fd349a28e2fd",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/asvs_v4_0_2.json"
+    },
+    {
+      "item_count": 443,
+      "pilot_id": "asvs_v5_0_0",
+      "schema_mode": "block1_additive_wrapper",
+      "source_path": "data/asvs_v5_0_0/stubs/manual_gap_analysis.json",
+      "source_sha256": "61ada0bdcaed51d385573bee1283acb110a4cbf197354a59f65b6ae0e72564bd",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/asvs_v5_0_0.json"
+    },
+    {
+      "item_count": 559,
+      "pilot_id": "capec_v3_9",
+      "schema_mode": "block2plus_native",
+      "source_path": "data/capec_v3_9/stubs/manual_gap_analysis.json",
+      "source_sha256": "4a1dcceda1a900734cd4be76459cb64062dcb5755589acab6017bddd5cd87ce2",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/capec_v3_9.json"
+    },
+    {
+      "item_count": 19,
+      "pilot_id": "cis_controls_v8_1",
+      "schema_mode": "block2plus_native",
+      "source_path": "data/cis_controls_v8_1/stubs/manual_gap_analysis.json",
+      "source_sha256": "2251d73f6ab92ec7a8d03ace43b30442f0ca5e377dec853ad5a4b1e68aa0df55",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/cis_controls_v8_1.json"
+    },
+    {
+      "item_count": 171,
+      "pilot_id": "cis_controls_v8_1_2",
+      "schema_mode": "block2plus_native",
+      "source_path": "data/cis_controls_v8_1_2/stubs/manual_gap_analysis.json",
+      "source_sha256": "fb41dd7c1d6a9aafbf55c92dc9f1f4b30715e7556f9d68ebd79023c460f1a749",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/cis_controls_v8_1_2.json"
+    },
+    {
+      "item_count": 400,
+      "pilot_id": "cwe_software_development_view_v4_19_1",
+      "schema_mode": "block1_additive_wrapper",
+      "source_path": "data/cwe_software_development_view_v4_19_1/stubs/manual_gap_analysis.json",
+      "source_sha256": "e7d0a83a34c46dfd7111291e43005391b56bc0c1628870fa93db1c8419cbd693",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/cwe_software_development_view_v4_19_1.json"
+    },
+    {
+      "item_count": 6,
+      "pilot_id": "enisa_multilayer_ai_cybersecurity_practices_2023",
+      "schema_mode": "block1_additive_wrapper",
+      "source_path": "data/enisa_multilayer_ai_cybersecurity_practices_2023/stubs/manual_gap_analysis.json",
+      "source_sha256": "3b82d3d6f87c38cd682602af551ef5f01a2336f543a8e5195df16b42f2ac65f4",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/enisa_multilayer_ai_cybersecurity_practices_2023.json"
+    },
+    {
+      "item_count": 9,
+      "pilot_id": "eu_cra",
+      "schema_mode": "block2plus_native",
+      "source_path": "data/eu_cra/stubs/manual_gap_analysis.json",
+      "source_sha256": "0f2474f883a97160f8812c0961f226332541bb25e831063129eff2524cd75934",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/eu_cra.json"
+    },
+    {
+      "item_count": 24,
+      "pilot_id": "eu_dora",
+      "schema_mode": "block2plus_native",
+      "source_path": "data/eu_dora/stubs/manual_gap_analysis.json",
+      "source_sha256": "81ade760cee66782250ecfe91cb814b807dbad380ee014531f442f56429aca85",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/eu_dora.json"
+    },
+    {
+      "item_count": 4,
+      "pilot_id": "eu_nis2",
+      "schema_mode": "block2plus_native",
+      "source_path": "data/eu_nis2/stubs/manual_gap_analysis.json",
+      "source_sha256": "7efa683e6d0f2ea55215185c9c0c711c2574d54330333483fbbe76dcffb7f969",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/eu_nis2.json"
+    },
+    {
+      "item_count": 6,
+      "pilot_id": "eu_rgpd",
+      "schema_mode": "block2plus_native",
+      "source_path": "data/eu_rgpd/stubs/manual_gap_analysis.json",
+      "source_sha256": "05a5d38e54fe54d6f8432295832277023fff8b085e511cd268053a0d7b2f23f1",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/eu_rgpd.json"
+    },
+    {
+      "item_count": 22,
+      "pilot_id": "hipaa_security_rule",
+      "schema_mode": "block2plus_native",
+      "source_path": "data/hipaa_security_rule/stubs/manual_gap_analysis.json",
+      "source_sha256": "57b5b0aa2d9bfad918b1c91f6cbe18239538681aaa445ab92405f59d2afe498d",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/hipaa_security_rule.json"
+    },
+    {
+      "item_count": 14,
+      "pilot_id": "mcp_official_security_foundations_2025",
+      "schema_mode": "block1_additive_wrapper",
+      "source_path": "data/mcp_official_security_foundations_2025/stubs/manual_gap_analysis.json",
+      "source_sha256": "8cbf5e78a833684069993d82ff6dedfe2dce6fb413753efb4261b4e9fcb671eb",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/mcp_official_security_foundations_2025.json"
+    },
+    {
+      "item_count": 1196,
+      "pilot_id": "nist_sp800_53_rev5",
+      "schema_mode": "block2plus_native",
+      "source_path": "data/nist_sp800_53_rev5/stubs/manual_gap_analysis.json",
+      "source_sha256": "9769c587033382f215ef5acbf6918177ff9548539571002a301433322e0043f0",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/nist_sp800_53_rev5.json"
+    },
+    {
+      "item_count": 19,
+      "pilot_id": "owasp_dsomm",
+      "schema_mode": "block1_additive_wrapper",
+      "source_path": "data/owasp_dsomm/stubs/manual_gap_analysis.json",
+      "source_sha256": "0442b476b21a3377e859e11e97bb35972b49657e22694855cd3c4eb287641678",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/owasp_dsomm.json"
+    },
+    {
+      "item_count": 11,
+      "pilot_id": "owasp_mcp_secure_server_development_v1_0",
+      "schema_mode": "block1_additive_wrapper",
+      "source_path": "data/owasp_mcp_secure_server_development_v1_0/stubs/manual_gap_analysis.json",
+      "source_sha256": "ea364639a077a44627d620bd82b6701e9f1f1e0c11a13124f75b6c2ea971156d",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/owasp_mcp_secure_server_development_v1_0.json"
+    },
+    {
+      "item_count": 9,
+      "pilot_id": "owasp_mcp_third_party_servers_v1_0",
+      "schema_mode": "block1_additive_wrapper",
+      "source_path": "data/owasp_mcp_third_party_servers_v1_0/stubs/manual_gap_analysis.json",
+      "source_sha256": "23884eaa8fd344a5eb96b57a20cf83cb671898660832a154a41953a47aeeb4ab",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/owasp_mcp_third_party_servers_v1_0.json"
+    },
+    {
+      "item_count": 11,
+      "pilot_id": "owasp_mcp_top_10_v0_1_2025_beta",
+      "schema_mode": "block1_additive_wrapper",
+      "source_path": "data/owasp_mcp_top_10_v0_1_2025_beta/stubs/manual_gap_analysis.json",
+      "source_sha256": "616bd6b4dcb4fe5de083adcc0550d1fa522e78acf2ede0bc6e1a40c6fb226f94",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/owasp_mcp_top_10_v0_1_2025_beta.json"
+    },
+    {
+      "item_count": 10,
+      "pilot_id": "owasp_proactive_controls_2018",
+      "schema_mode": "block2plus_native",
+      "source_path": "data/owasp_proactive_controls_2018/stubs/manual_gap_analysis.json",
+      "source_sha256": "0225780ae560a48b4e714c7c6ec22b5ffc04299e555cf1695d8226b002bec28f",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/owasp_proactive_controls_2018.json"
+    },
+    {
+      "item_count": 15,
+      "pilot_id": "owasp_samm_v2_1",
+      "schema_mode": "block1_additive_wrapper",
+      "source_path": "data/owasp_samm_v2_1/stubs/manual_gap_analysis.json",
+      "source_sha256": "4243e2a0433f5b36f48b1b2fc3b11e84bd389883100601b981b74b193714b2cf",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/owasp_samm_v2_1.json"
+    },
+    {
+      "item_count": 10,
+      "pilot_id": "owasp_top_10_2021",
+      "schema_mode": "block2plus_native",
+      "source_path": "data/owasp_top_10_2021/stubs/manual_gap_analysis.json",
+      "source_sha256": "41cb0faa145864cdd4edfd1cb379987aca37b989d6a46efae69aa6733babea79",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/owasp_top_10_2021.json"
+    },
+    {
+      "item_count": 217,
+      "pilot_id": "pci_dss_v4_0_1",
+      "schema_mode": "block2plus_native",
+      "source_path": "data/pci_dss_v4_0_1/stubs/manual_gap_analysis.json",
+      "source_sha256": "005f91af0a4d31b9cc60d7c7a410a378df7921a602201159fa3031d01e96a5e4",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/pci_dss_v4_0_1.json"
+    },
+    {
+      "item_count": 28,
+      "pilot_id": "pci_sslc_v1_1",
+      "schema_mode": "block2plus_native",
+      "source_path": "data/pci_sslc_v1_1/stubs/manual_gap_analysis.json",
+      "source_sha256": "4cb7f3005ae63899938a2dc06c8605f7f4dd7bd5701d306e8cbb61181ac87415",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/pci_sslc_v1_1.json"
+    },
+    {
+      "item_count": 29,
+      "pilot_id": "safecode_agile_2012",
+      "schema_mode": "block2plus_native",
+      "source_path": "data/safecode_agile_2012/stubs/manual_gap_analysis.json",
+      "source_sha256": "92e53650a89ea863cf8529026213def551093e491fe7e63d5981f3ac31444b0c",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/safecode_agile_2012.json"
+    },
+    {
+      "item_count": 17,
+      "pilot_id": "safecode_fpssd_2018",
+      "schema_mode": "block2plus_native",
+      "source_path": "data/safecode_fpssd_2018/stubs/manual_gap_analysis.json",
+      "source_sha256": "12d85fff962ba61092b46f85813a5ea31605fcad1e274888e8c57b571c3e7706",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/safecode_fpssd_2018.json"
+    },
+    {
+      "item_count": 12,
+      "pilot_id": "safecode_sic_2010",
+      "schema_mode": "block2plus_native",
+      "source_path": "data/safecode_sic_2010/stubs/manual_gap_analysis.json",
+      "source_sha256": "617d11f5c31d89eef3cb142aa7b0635dd3cda01e037ea07f8ee8db3bcbdc1454",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/safecode_sic_2010.json"
+    },
+    {
+      "item_count": 14,
+      "pilot_id": "slsa_spec_v1_0_build_track",
+      "schema_mode": "block1_additive_wrapper",
+      "source_path": "data/slsa_spec_v1_0_build_track/stubs/manual_gap_analysis.json",
+      "source_sha256": "74a055cb00f28fd08cc21f0098eda8718d3d791cfd450a39346d071b9dd25272",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/slsa_spec_v1_0_build_track.json"
+    },
+    {
+      "item_count": 20,
+      "pilot_id": "ssdf_sp800_218_v1_1",
+      "schema_mode": "block1_additive_wrapper",
+      "source_path": "data/ssdf_sp800_218_v1_1/stubs/manual_gap_analysis.json",
+      "source_sha256": "a7d861db9fc438c1d015159029d876b31c39747ce09533cb529e40b8d92a9767",
+      "target_path": "overlay/p2v2_round_1/p2v2_round_1_per_pilot_gaps/ssdf_sp800_218_v1_1.json"
+    }
+  ],
+  "round": 1,
+  "round_date": "2026-04-20",
+  "schema_mode_breakdown": {
+    "block1_additive_wrapper": 11,
+    "block2plus_native": 17
+  },
+  "total_items": 3581,
+  "warnings": [
+    "pilot_count=28 differs from the 27 referenced in the Orchestrator dispatcher; retaining Cartographer's current directory scope as authoritative per programme-lead authorisation 2026-04-20."
+  ]
+}

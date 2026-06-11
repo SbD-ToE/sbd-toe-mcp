@@ -1,6 +1,6 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 204,
+  "count": 211,
   "entity_type": "UserStory",
   "items": [
     {
@@ -26,7 +26,7 @@
       "role_raw": "Developer / Team Lead",
       "roles_normalized": [
         "developer",
-        "team_lead"
+        "scrum_master"
       ],
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-01-classificacao-inicial-da-aplicacao",
@@ -57,7 +57,7 @@
       "role_raw": "Developer / Team Lead",
       "roles_normalized": [
         "developer",
-        "team_lead"
+        "scrum_master"
       ],
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-02-aplicacao-da-matriz-de-controlo",
@@ -244,7 +244,6 @@
       "role_raw": "Arquitetura/Tech Lead e Scrum Master/Team Lead",
       "roles_normalized": [
         "software_architect",
-        "team_lead",
         "scrum_master"
       ],
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
@@ -422,7 +421,6 @@
       "practice_id": "02-requisitos-seguranca:validacao-e-aprovacao-final",
       "role_raw": "Equipa de Segurança / AppSec",
       "roles_normalized": [
-        "equipa-de-seguranca",
         "appsec"
       ],
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
@@ -461,7 +459,7 @@
       "roles_normalized": [
         "appsec",
         "product_owner",
-        "team_lead"
+        "scrum_master"
       ],
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-08-catalogo-de-requisitos-do-projeto-criacao-e-manutencao",
@@ -499,7 +497,7 @@
       "roles_normalized": [
         "qa",
         "appsec",
-        "tl"
+        "scrum_master"
       ],
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-09-validacao-por-requisito-dominio-req-xxx-evidencia",
@@ -669,7 +667,6 @@
       "role_raw": "Arquitetos de Software e Team Lead / Scrum Master",
       "roles_normalized": [
         "software_architect",
-        "team_lead",
         "scrum_master"
       ],
       "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
@@ -971,7 +968,7 @@
       "practice_id": "03-threat-modeling:aprovacao-formal-do-threat-model-baseline-e-revisoes",
       "role_raw": "Team Lead / Tech Lead e AppSec Engineer",
       "roles_normalized": [
-        "team_lead",
+        "scrum_master",
         "appsec"
       ],
       "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
@@ -1017,6 +1014,40 @@
       "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-10-controlo-de-acesso-classificacao-e-retencao-dos-artefactos-de-threat-modeling",
       "title": "Controlo de acesso, classificação e retenção dos artefactos de Threat Modeling",
       "us_id": "US-10",
+      "warnings": []
+    },
+    {
+      "artifacts": [],
+      "bdd": [
+        "Dado que um agente AI vai operar em A1+ no projecto",
+        "Dado o DFD agentic",
+        "Dado uma subida de nível de autonomia (A1→A2, A2→A3, …) ou alteração da tools_allowlist"
+      ],
+      "benefit": "que as ameaças aplicáveis sejam catalogadas com IDs reais (MITRE ATLAS AML",
+      "chapter_id": "03-threat-modeling",
+      "checklist_items": [],
+      "confidence": 0.9,
+      "context": null,
+      "document_path": "010-sbd-manual/03-threat-modeling/aplicacao-lifecycle.md",
+      "evidence": [
+        "user story heading detected: US-11 - Threat modeling para sistema com agente AI (tool-use) {#us-11}",
+        ":::userstory block extracted",
+        "proportionality table extracted",
+        "sdlc integration table extracted"
+      ],
+      "goal": "executar o [playbook agentic](./addon/metodologias-e-ferramentas#playbook-agentic) sempre que um agente A1+ é introduzido no sistema ou sobe de nível de autonomia",
+      "id": "03-threat-modeling-us-11",
+      "links": [],
+      "practice_id": "03-threat-modeling:threat-modeling-para-sistema-com-agente-ai-tool-use-us-11",
+      "role_raw": "Software Architect e AppSec Engineer",
+      "roles_normalized": [
+        "software_architect",
+        "appsec"
+      ],
+      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-11-threat-modeling-para-sistema-com-agente-ai-tool-use-us-11",
+      "title": "Threat modeling para sistema com agente AI (tool-use) {#us-11}",
+      "us_id": "US-11",
       "warnings": []
     },
     {
@@ -1458,7 +1489,6 @@
       "role_raw": "QA/Test Engineer + AppSec Engineer + Arquitetos de Software",
       "roles_normalized": [
         "qa",
-        "test-engineer",
         "appsec",
         "software_architect"
       ],
@@ -1565,12 +1595,13 @@
         "Rastreabilidade documentada (componente ↔ ameaça ↔ controlo ↔ requisito ARC-XXX)",
         "Evidência arquivada em repositório de arquitetura"
       ],
-      "confidence": 0.8,
+      "confidence": 0.9,
       "context": null,
       "document_path": "010-sbd-manual/04-arquitetura-segura/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-15 - Identificação e governação de componentes não determinísticos",
         ":::userstory block extracted",
+        "proportionality table extracted",
         "sdlc integration table extracted"
       ],
       "goal": "identificar e governar componentes arquiteturais não determinísticos, documentando o seu impacto em segurança, auditoria e controlo",
@@ -1586,6 +1617,39 @@
       "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-15-identificacao-e-governacao-de-componentes-nao-deterministicos",
       "title": "Identificação e governação de componentes não determinísticos",
       "us_id": "US-15",
+      "warnings": []
+    },
+    {
+      "artifacts": [],
+      "bdd": [
+        "Dado que um agente AI vai operar em A2+",
+        "Dado que um item da checklist falha",
+        "Dado que o kill-switch nunca foi exercitado nesta arquitectura"
+      ],
+      "benefit": "evitar que problemas estruturais sejam descobertos só quando já tiveram efeito em produção",
+      "chapter_id": "04-arquitetura-segura",
+      "checklist_items": [],
+      "confidence": 0.8,
+      "context": null,
+      "document_path": "010-sbd-manual/04-arquitetura-segura/aplicacao-lifecycle.md",
+      "evidence": [
+        "user story heading detected: US-16 - Revisão de arquitectura para agente AI em A2+ {#us-16}",
+        ":::userstory block extracted",
+        "sdlc integration table extracted"
+      ],
+      "goal": "validar que a arquitectura do sistema cumpre integralmente [ARC-015](/sbd-toe/sbd-manual/arquitetura-segura/addon/catalogo-requisitos-arquitetura#arc-015) (identidade dedicada, least privilege per-tool, intent declaration, aprovação humana out-of-band, kill-switch exercitado, audit completo por tool invocation) antes de aprovar a operação de um agente AI em A2 ou superior",
+      "id": "04-arquitetura-segura-us-16",
+      "links": [],
+      "practice_id": "04-arquitetura-segura:revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
+      "role_raw": "Software Architect e AppSec Engineer",
+      "roles_normalized": [
+        "software_architect",
+        "appsec"
+      ],
+      "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-16-revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
+      "title": "Revisão de arquitectura para agente AI em A2+ {#us-16}",
+      "us_id": "US-16",
       "warnings": []
     },
     {
@@ -1989,7 +2053,7 @@
       "practice_id": "05-dependencias-sbom-sca:alertas-sobre-vulnerabilidades-em-componentes-usados",
       "role_raw": "Gestor de Aplicação e AppSec",
       "roles_normalized": [
-        "application_manager",
+        "product_owner",
         "appsec"
       ],
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
@@ -2053,12 +2117,13 @@
         "Dependências emergentes sujeitas a revisão/aprovação",
         "Evidência arquivada por release"
       ],
-      "confidence": 0.8,
+      "confidence": 0.9,
       "context": null,
       "document_path": "010-sbd-manual/05-dependencias-sbom-sca/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-13 - Inventário e controlo de dependências emergentes",
         ":::userstory block extracted",
+        "proportionality table extracted",
         "sdlc integration table extracted"
       ],
       "goal": "identificar e controlar dependências emergentes (não explicitamente declaradas)",
@@ -2074,6 +2139,44 @@
       "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-13-inventario-e-controlo-de-dependencias-emergentes",
       "title": "Inventário e controlo de dependências emergentes",
       "us_id": "US-13",
+      "warnings": []
+    },
+    {
+      "artifacts": [],
+      "bdd": [
+        "Dado um build de sistema com componentes AI",
+        "Dado um modelo AI em uso operacional",
+        "Dado que um provider AI muda versão maior do modelo",
+        "Dado que um provider AI não está na lista aprovada"
+      ],
+      "benefit": null,
+      "chapter_id": "05-dependencias-sbom-sca",
+      "checklist_items": [
+        "AI BOM gerado por build em formato standardizado (preferência: CycloneDX 1.6 ml-bom)",
+        "Modelos, datasets, MCP servers/tools, prompts com versão pinned + hash + provider",
+        "Lista de providers AI aprovados versionada em VCS, com classificação de risco",
+        "Cláusulas contratuais aplicáveis registadas por provider (cross-link Cap. 14, Policy 33)",
+        "Gate de CI que falha se: (a) AI BOM não foi gerado, (b) componente usa latest/range, (c) provider não está na lista aprovada",
+        "Processo de triagem DEP-007 estendido a incidentes em modelos/datasets/MCP/prompts (AML.T0010, AML.T0019, AML.T0109, AML.T0110, LLM03-2025)",
+        "Eval suite + threat model corridos em cada mudança de versão maior"
+      ],
+      "confidence": 0.65,
+      "context": null,
+      "document_path": "010-sbd-manual/05-dependencias-sbom-sca/aplicacao-lifecycle.md",
+      "evidence": [
+        "user story heading detected: US-14 - AI BOM e gestão de *providers* de modelos AI {#us-14}",
+        "sdlc integration table extracted"
+      ],
+      "goal": null,
+      "id": "05-dependencias-sbom-sca-us-14",
+      "links": [],
+      "practice_id": "05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
+      "role_raw": null,
+      "roles_normalized": [],
+      "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-14-ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
+      "title": "AI BOM e gestão de *providers* de modelos AI {#us-14}",
+      "us_id": "US-14",
       "warnings": []
     },
     {
@@ -2143,8 +2246,7 @@
       "practice_id": "06-desenvolvimento-seguro:revisao-de-codigo-segura",
       "role_raw": "Scrum Master / Team Lead",
       "roles_normalized": [
-        "scrum_master",
-        "team_lead"
+        "scrum_master"
       ],
       "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-02-revisao-de-codigo-segura",
@@ -2595,7 +2697,6 @@
       "role_raw": "Scrum Master / Team Lead e AppSec Engineer",
       "roles_normalized": [
         "scrum_master",
-        "team_lead",
         "appsec"
       ],
       "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
@@ -3247,12 +3348,13 @@
         "Evidência referenciada (runs, artefactos, relatórios)",
         "Bloqueio a promoções sem registo"
       ],
-      "confidence": 0.7,
+      "confidence": 0.8,
       "context": null,
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-18 - Não-repúdio e ownership de promoções (ações irreversíveis)",
-        ":::userstory block extracted"
+        ":::userstory block extracted",
+        "proportionality table extracted"
       ],
       "goal": "que qualquer promoção para produção tenha owner humano explícito e registo de decisão",
       "id": "07-cicd-seguro-us-18",
@@ -3267,6 +3369,49 @@
       "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-18-nao-repudio-e-ownership-de-promocoes-acoes-irreversiveis",
       "title": "Não-repúdio e ownership de promoções (ações irreversíveis)",
       "us_id": "US-18",
+      "warnings": []
+    },
+    {
+      "artifacts": [],
+      "bdd": [
+        "Dado que um agente AI vai operar no pipeline em nível A1+",
+        "Dado que o agente invoca uma tool destrutiva (destructive/external na allowlist)",
+        "Dado que o kill-switch ([REQ-AGN-003](/sbd-toe/sbd-manual/requisitos-seguranca/addon/governanca-automatismos#req-agn)) é accionado",
+        "Dado que existe divergência entre intent declarado e acção real"
+      ],
+      "benefit": "garantir auditabilidade, revogabilidade e least privilege equivalentes aos runners CI clássicos",
+      "chapter_id": "07-cicd-seguro",
+      "checklist_items": [
+        "Identidade workload dedicada por agente e por ambiente (sem reuso de credenciais humanas nem cross-env)",
+        "Scopes declarados no mandate aplicados na infra (não apenas no documento) — ex.: gh:pr:write mas não gh:repo:delete",
+        "TTL das credenciais ≤ 1h; sem chaves long-lived (cross-link com US-04)",
+        "Audit event por tool invocation com timestamp, agent_id, session_id, mandate_ref, autonomy_level, tool, tool_version, args (PII redactada), intent_event_ref, outcome, external_effect",
+        "Kill-switch operacional: revogação de credenciais + terminação de runtime + isolamento de namespace + alerta on-call",
+        "Kill-switch exercitado em sandbox/staging com cadência conforme nível de autonomia (trimestral A3, mensal A4)",
+        "Secret scanning + diff review sobre skill files / agent files / rules que dirigem o agente (cross-link Policy 15 §2)"
+      ],
+      "confidence": 0.8,
+      "context": null,
+      "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
+      "evidence": [
+        "user story heading detected: US-19 - Agentes AI como *principals* na pipeline {#us-19}",
+        ":::userstory block extracted",
+        "sdlc integration table extracted"
+      ],
+      "goal": "que os agentes AI que operam o pipeline recebam credenciais via workload identity efémera (OIDC) com scopes per-tool e TTL ≤ 1h, e que cada tool invocation gere audit event estruturado",
+      "id": "07-cicd-seguro-us-19",
+      "links": [],
+      "practice_id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline-us-19",
+      "role_raw": "DevOps / SRE e AppSec",
+      "roles_normalized": [
+        "devops",
+        "sre",
+        "appsec"
+      ],
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-19-agentes-ai-como-principals-na-pipeline-us-19",
+      "title": "Agentes AI como *principals* na pipeline {#us-19}",
+      "us_id": "US-19",
       "warnings": []
     },
     {
@@ -3540,7 +3685,7 @@
       "roles_normalized": [
         "grc",
         "compliance",
-        "internal_auditor"
+        "auditor"
       ],
       "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-07-rastreabilidade-ficheiro-recurso-ambiente",
@@ -3763,7 +3908,7 @@
         "grc",
         "compliance",
         "appsec",
-        "internal_auditor"
+        "auditor"
       ],
       "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-13-janela-de-mudanca-e-aprovacoes-por-papel",
@@ -4570,7 +4715,6 @@
       "practice_id": "09-containers-imagens:promocao-por-estagios-com-aprovacao-explicita-e-revalidacao-por-ambiente",
       "role_raw": "Release Manager/DevOps + AppSec",
       "roles_normalized": [
-        "release_manager",
         "devops",
         "appsec"
       ],
@@ -4851,7 +4995,7 @@
       "practice_id": "10-testes-seguranca:criterios-de-release-e-aceitacao-de-risco",
       "role_raw": "Gestão de Produto",
       "roles_normalized": [
-        "product_management"
+        "product_owner"
       ],
       "source_document_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-07-criterios-de-release-e-aceitacao-de-risco",
@@ -5183,8 +5327,7 @@
       "practice_id": "10-testes-seguranca:reprodutibilidade-de-resultados-criticos-de-testes-de-seguranca",
       "role_raw": "QA/Testes",
       "roles_normalized": [
-        "qa",
-        "tester"
+        "qa"
       ],
       "source_document_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--checklist-de-release-v-version--us-15-reprodutibilidade-de-resultados-criticos-de-testes-de-seguranca",
@@ -5337,8 +5480,7 @@
       "practice_id": "11-deploy-seguro:validacao-em-staging-antes-da-promocao",
       "role_raw": "QA/Testes",
       "roles_normalized": [
-        "qa",
-        "tester"
+        "qa"
       ],
       "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-02-validacao-em-staging-antes-da-promocao",
@@ -5444,7 +5586,7 @@
       "practice_id": "11-deploy-seguro:rastreabilidade-end-to-end",
       "role_raw": "Gestão de Produto",
       "roles_normalized": [
-        "product_management"
+        "product_owner"
       ],
       "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-05-rastreabilidade-end-to-end",
@@ -5602,7 +5744,7 @@
       "role_raw": "Dev/Gestão",
       "roles_normalized": [
         "developer",
-        "management"
+        "executive_management"
       ],
       "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-09-versionamento-semantico-e-changelog-tecnico",
@@ -5644,7 +5786,7 @@
       "role_raw": "DevOps/Gestão",
       "roles_normalized": [
         "devops",
-        "management"
+        "executive_management"
       ],
       "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-10-deploy-progressivo-com-estrategias-canary-blue-green",
@@ -5883,6 +6025,41 @@
       "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-17-evidencia-operacional-auditavel",
       "title": "Evidência operacional auditável",
       "us_id": "US-17",
+      "warnings": []
+    },
+    {
+      "artifacts": [],
+      "bdd": [
+        "Dado uma promoção para produção que altera modelo, skill files ou system prompts",
+        "Dado que uma versão de modelo em produção apresenta degradação ([OPS-011](/sbd-toe/sbd-manual/monitorizacao-operacoes/addon/catalogo-requisitos-operacoes) drift, [OPS-014](/sbd-toe/sbd-manual/monitorizacao-operacoes/addon/catalogo-requisitos-operacoes#ops-014) off-policy actions aumentaram, [OPS-013](/sbd-toe/sbd-manual/monitorizacao-operacoes/addon/catalogo-requisitos-operacoes#ops-013) budget overrun)",
+        "Dado uma mudança de versão maior do modelo (provider muda, novo fine-tune, ou novo system prompt com impacto material)",
+        "Dado um mandate de agente (Policy 38) com autonomy_level declarado"
+      ],
+      "benefit": null,
+      "chapter_id": "11-deploy-seguro",
+      "checklist_items": [],
+      "confidence": 0.8,
+      "context": null,
+      "document_path": "010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md",
+      "evidence": [
+        "user story heading detected: US-18 - Release gates específicos para sistemas com agentes AI {#us-18}",
+        ":::userstory block extracted",
+        "sdlc integration table extracted"
+      ],
+      "goal": "que o release de sistemas com agentes AI tenha gates específicos — eval suite como gate; rollback de modelo independente do rollback aplicacional; canary release de versão de modelo — para garantir que mudanças que afectam o comportamento agentic são tão controláveis e reversíveis quanto mudanças de código",
+      "id": "11-deploy-seguro-us-18",
+      "links": [],
+      "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
+      "role_raw": "DevOps / SRE e AppSec",
+      "roles_normalized": [
+        "devops",
+        "sre",
+        "appsec"
+      ],
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-18-release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
+      "title": "Release gates específicos para sistemas com agentes AI {#us-18}",
+      "us_id": "US-18",
       "warnings": []
     },
     {
@@ -6320,12 +6497,13 @@
         "Gaps identificados e plano de remediação criado",
         "Auditorias internas agendadas (anual)"
       ],
-      "confidence": 0.8,
+      "confidence": 0.9,
       "context": "A monitorização não é um exercício técnico isolado: é um requisito regulatório cada vez mais exigente. Deve existir rastreabilidade clara entre controlos técnicos e requisitos regulatórios, com evidência auditável. Contexto. Sem rastreabilidade regulatória, postura de segurança fica desalinhada com conformidade.",
       "document_path": "010-sbd-manual/12-monitorizacao-operacoes/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-12 - Rastreabilidade e Conformidade com Regulações (SSDF, NIS2, ISO 27001)",
         ":::userstory block extracted",
+        "proportionality table extracted",
         "sdlc integration table extracted"
       ],
       "goal": "documentar e demonstrar conformidade entre controlos de monitorização e requisitos regulatórios (SSDF, NIS2, ISO 27001)",
@@ -6341,6 +6519,47 @@
       "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-12-rastreabilidade-e-conformidade-com-regulacoes-ssdf-nis2-iso-27001",
       "title": "Rastreabilidade e Conformidade com Regulações (SSDF, NIS2, ISO 27001)",
       "us_id": "US-12",
+      "warnings": []
+    },
+    {
+      "artifacts": [],
+      "bdd": [
+        "Dado que um agente AI opera no sistema em nível A1+",
+        "Dado que o token spend do agente atinge o threshold de aviso definido no mandate",
+        "Dado que existe divergência material entre intent_event declarado e tool invocation audit event real",
+        "Dado que se detecta padrão de jailbreak ou off-policy action"
+      ],
+      "benefit": null,
+      "chapter_id": "12-monitorizacao-operacoes",
+      "checklist_items": [
+        "Tool invocation audit events a fluir para o SIEM (OPS-004) com schema mínimo de OPS-012",
+        "Budget de token spend declarado por mandate, com thresholds de aviso e máximo",
+        "Detector de divergência intent ↔ acção configurado para todos os agentes A2+",
+        "Corpus de detecção de jailbreak (LLM01-2025) actualizado conforme cadência do mandate",
+        "Sinais OPS-012/013/014 ligados a runbooks IR (US-04 deste capítulo)",
+        "Drift detection da eval suite (Cap. 10 §C5) realimentada por incidentes detectados em produção"
+      ],
+      "confidence": 0.8,
+      "context": null,
+      "document_path": "010-sbd-manual/12-monitorizacao-operacoes/aplicacao-lifecycle.md",
+      "evidence": [
+        "user story heading detected: US-13 - Telemetria de agentes AI em produção {#us-13}",
+        ":::userstory block extracted",
+        "sdlc integration table extracted"
+      ],
+      "goal": "recolher telemetria dedicada de operação de agentes AI em produção — tool invocations com audit completo, token spend com budget enforcement, deteção de jailbreak e off-policy actions — para detectar abuso, runaway loops e acções fora do mandate em tempo útil, antes de impacto material",
+      "id": "12-monitorizacao-operacoes-us-13",
+      "links": [],
+      "practice_id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao-us-13",
+      "role_raw": "Ops / AppSec",
+      "roles_normalized": [
+        "ops",
+        "appsec"
+      ],
+      "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-13-telemetria-de-agentes-ai-em-producao-us-13",
+      "title": "Telemetria de agentes AI em produção {#us-13}",
+      "us_id": "US-13",
       "warnings": []
     },
     {
@@ -6374,7 +6593,7 @@
       "practice_id": "13-formacao-onboarding:onboarding-seguro-obrigatorio",
       "role_raw": "RH/PeopleOps",
       "roles_normalized": [
-        "people_ops"
+        "grc"
       ],
       "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-01-onboarding-seguro-obrigatorio",
@@ -6482,8 +6701,7 @@
       "practice_id": "13-formacao-onboarding:exercicios-praticos-e-simulacoes",
       "role_raw": "QA/Testes",
       "roles_normalized": [
-        "qa",
-        "tester"
+        "qa"
       ],
       "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-04-exercicios-praticos-e-simulacoes",
@@ -6761,7 +6979,6 @@
       "practice_id": "13-formacao-onboarding:validacao-formal-de-onboarding-via-checklist",
       "role_raw": "RH / GRC",
       "roles_normalized": [
-        "people_ops",
         "grc"
       ],
       "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
@@ -6805,7 +7022,7 @@
       "role_raw": "AppSec Engineer / RH",
       "roles_normalized": [
         "appsec",
-        "people_ops"
+        "grc"
       ],
       "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-12-validacao-de-conhecimento-via-quizzes-estruturados",
@@ -6915,7 +7132,7 @@
       "role_raw": "AppSec Engineer / RH",
       "roles_normalized": [
         "appsec",
-        "people_ops"
+        "grc"
       ],
       "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-15-formatos-de-entrega-e-dod-por-formato",
@@ -6977,8 +7194,8 @@
       "practice_id": "14-governanca-contratacao:clausulas-contratuais-de-seguranca",
       "role_raw": "Jurídico/Procurement",
       "roles_normalized": [
-        "legal",
-        "procurement"
+        "grc",
+        "third_party"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--user-stories-normalizadas--us-02-clausulas-contratuais-de-seguranca",
@@ -7068,7 +7285,7 @@
       "practice_id": "14-governanca-contratacao:kpis-de-governacao",
       "role_raw": "Gestão",
       "roles_normalized": [
-        "gestao"
+        "executive_management"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-05-kpis-de-governacao",
@@ -7098,7 +7315,7 @@
       "practice_id": "14-governanca-contratacao:execucao-de-fluxo-formal-de-validacao-de-fornecedores",
       "role_raw": "Procurement Officer",
       "roles_normalized": [
-        "procurement"
+        "third_party"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-06-execucao-de-fluxo-formal-de-validacao-de-fornecedores",
@@ -7160,7 +7377,7 @@
       "roles_normalized": [
         "appsec",
         "developer",
-        "team_lead"
+        "scrum_master"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-08-repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
@@ -7190,8 +7407,7 @@
       "practice_id": "14-governanca-contratacao:designacao-formal-de-owners-de-seguranca-por-aplicacao",
       "role_raw": "Gestão/PMO",
       "roles_normalized": [
-        "management",
-        "pmo"
+        "executive_management"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-09-designacao-formal-de-owners-de-seguranca-por-aplicacao",
@@ -7316,7 +7532,7 @@
       "roles_normalized": [
         "appsec",
         "developer",
-        "team_lead"
+        "scrum_master"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
@@ -7346,7 +7562,7 @@
       "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
       "role_raw": "Procurement Officer + AppSec Engineer",
       "roles_normalized": [
-        "procurement",
+        "third_party",
         "appsec"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
@@ -7378,8 +7594,7 @@
       "role_raw": "Security Champion + HR/Recruiter",
       "roles_normalized": [
         "security_champion",
-        "hr",
-        "recruiter"
+        "grc"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-15-preparacao-tecnica-e-validacao-de-contractors-pre-acesso",
@@ -7410,7 +7625,7 @@
       "role_raw": "CISO + Training Manager",
       "roles_normalized": [
         "ciso",
-        "training-manager"
+        "grc"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-16-trilho-de-formacao-obrigatoria-pre-acesso-contractors",
@@ -7441,8 +7656,8 @@
       "role_raw": "Security Champion + HR + DevOps Lead",
       "roles_normalized": [
         "security_champion",
-        "hr",
-        "devops-lead"
+        "grc",
+        "devops"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-17-offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
@@ -7473,7 +7688,7 @@
       "role_raw": "AppSec Engineer + Security Monitoring Team",
       "roles_normalized": [
         "appsec",
-        "security-monitoring-team"
+        "ops"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-18-monitorizacao-continua-de-conformidade-de-fornecedores-alertas-e-escalacao",
@@ -7504,8 +7719,8 @@
       "role_raw": "Security Champion + Infrastructure/Tech Lead",
       "roles_normalized": [
         "security_champion",
-        "infrastructure",
-        "team_lead"
+        "ops",
+        "scrum_master"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-19-revisao-trimestral-de-acesso-de-contractors-least-privilege",
@@ -7521,12 +7736,13 @@
       "benefit": "informar decisão de re-hire, melhorar programa de preparação, e criar base de dados de avaliação",
       "chapter_id": "14-governanca-contratacao",
       "checklist_items": [],
-      "confidence": 0.7,
+      "confidence": 0.8,
       "context": "Contexto. Contractors terminam projeto sem feedback sobre desempenho de segurança. Sem dados de avaliação, impossível tomar decisão informada sobre re-hire ou referência.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-20 - Feedback Pós-Projeto e Rating de Contractors",
-        ":::userstory block extracted"
+        ":::userstory block extracted",
+        "proportionality table extracted"
       ],
       "goal": "recolher feedback estruturado pós-projeto de contractors sobre compreensão de segurança, incidentes, e recomendações",
       "id": "14-governanca-contratacao-us-20",
@@ -7535,12 +7751,57 @@
       "role_raw": "Security Champion + Tech Lead",
       "roles_normalized": [
         "security_champion",
-        "team_lead"
+        "scrum_master"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-20-feedback-pos-projeto-e-rating-de-contractors",
       "title": "Feedback Pós-Projeto e Rating de Contractors",
       "us_id": "US-20",
+      "warnings": []
+    },
+    {
+      "artifacts": [],
+      "bdd": [
+        "Dado que se pretende adoptar um novo provedor AI para uso operacional",
+        "Dado que o contrato é finalizado",
+        "Dado que o provedor altera modelo de dados (e.g. nova política de training) ou versão maior do modelo"
+      ],
+      "benefit": "que o uso operacional do provedor seja sustentável jurídica e tecnicamente",
+      "chapter_id": "14-governanca-contratacao",
+      "checklist_items": [
+        "Data retention: declarada (preferência zero retention para dados sensíveis); compatível com a classificação de dados que o sistema envia",
+        "Training opt-out: contratualizado quando aplicável; declarado quando \"opt-out por defeito\"",
+        "Localização de processamento: documentada; conforme RGPD Art. 44–49 quando há dados pessoais; cláusulas para international transfers quando aplicável",
+        "Audit rights: acesso contratualizado a logs de inferência ou equivalente quando exigido (típico em L3)",
+        "SLA de notificação prévia de mudanças que alterem comportamento (versão maior do modelo, política de dados, descontinuação)",
+        "SLA de disponibilidade declarado; fallback arquitectónico em caso de outage (cross-link Cap. 04 §AI/ML)",
+        "Conformidade declarada com AI Act Art. 53/55 quando o provedor fornece GPAI",
+        "Conformidade declarada com RGPD Art. 28 (sub-processadores) quando há dados pessoais",
+        "Provedor incluído na lista aprovada ([DEP-014](/sbd-toe/sbd-manual/dependencias-sbom-sca/addon/catalogo-requisitos-dependencias#dep-014)) com risk_classification",
+        "Cláusulas críticas registadas na ficha do provedor; revisão calendarizada"
+      ],
+      "confidence": 0.8,
+      "context": null,
+      "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
+      "evidence": [
+        "user story heading detected: US-21 - Contratação de provedores de modelos AI {#us-21}",
+        ":::userstory block extracted",
+        "sdlc integration table extracted"
+      ],
+      "goal": "que cada contrato com provedor de modelos AI inclua cláusulas mínimas que cubram tratamento de dados, localização, audit rights, notificação de mudanças e conformidade regulatória aplicável",
+      "id": "14-governanca-contratacao-us-21",
+      "links": [],
+      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
+      "role_raw": "GRC / Compliance / Procurement com apoio de Legal",
+      "roles_normalized": [
+        "grc",
+        "compliance",
+        "procurement-com-apoio-de-legal"
+      ],
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
+      "title": "Contratação de provedores de modelos AI {#us-21}",
+      "us_id": "US-21",
       "warnings": []
     }
   ],

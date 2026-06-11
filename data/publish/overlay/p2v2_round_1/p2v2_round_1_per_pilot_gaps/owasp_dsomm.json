@@ -1,0 +1,192 @@
+{
+  "item_count": 19,
+  "items": [
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_dsomm__DSOMM-SUBDIMENSION-BUILD_AND_DEPLOYMENT-BUILD",
+      "justification": "Build lands cleanly on ACO-SCBI-004 with SCBI-006/TSV-004; iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "DSOMM-SUBDIMENSION-BUILD_AND_DEPLOYMENT-BUILD"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_dsomm__DSOMM-SUBDIMENSION-BUILD_AND_DEPLOYMENT-DEPLOYMENT",
+      "justification": "Deployment lands on ACO-RPR-002 with RPR-004/SPC-005/SCBI-006; landing bounded — cross-ref exposable.",
+      "manual_refinement_candidate": true,
+      "source_object_id": "DSOMM-SUBDIMENSION-BUILD_AND_DEPLOYMENT-DEPLOYMENT"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "comparison_gap",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_dsomm__DSOMM-SUBDIMENSION-BUILD_AND_DEPLOYMENT-PATCH_MANAGEMENT",
+      "justification": "Patch Management spans dependency hygiene/deployment lifecycle/attack-surface reduction; objective-level projection too coarse for clean landing.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "DSOMM-SUBDIMENSION-BUILD_AND_DEPLOYMENT-PATCH_MANAGEMENT"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_dsomm__DSOMM-SUBDIMENSION-CULTURE_AND_ORGANIZATION-DESIGN",
+      "justification": "Design lands on ACO-TMR-003 with TMR-002/ATB-005; landing exists — cross-ref exposable.",
+      "manual_refinement_candidate": true,
+      "source_object_id": "DSOMM-SUBDIMENSION-CULTURE_AND_ORGANIZATION-DESIGN"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "scope_boundary",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_dsomm__DSOMM-SUBDIMENSION-CULTURE_AND_ORGANIZATION-EDUCATION_AND_GUIDANCE",
+      "justification": "Education and Guidance is capability-building + organizational enablement; declared out_of_scope by iter-1 (maturity_overlay_reframe).",
+      "manual_refinement_candidate": false,
+      "source_object_id": "DSOMM-SUBDIMENSION-CULTURE_AND_ORGANIZATION-EDUCATION_AND_GUIDANCE"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "comparison_gap",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_dsomm__DSOMM-SUBDIMENSION-CULTURE_AND_ORGANIZATION-PROCESS",
+      "justification": "Process spans release approval/change management/protection-requirement governance; current core line does not capture this organizational process surface cleanly.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "DSOMM-SUBDIMENSION-CULTURE_AND_ORGANIZATION-PROCESS"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_dsomm__DSOMM-SUBDIMENSION-IMPLEMENTATION-APPLICATION_HARDENING",
+      "justification": "Application Hardening lands on validated adjunct ACR-001 (ACO-CBI-001/002/003); landing established, traceability packaging to Manual still needed.",
+      "manual_refinement_candidate": true,
+      "note_v1_vs_v0": "Uses validated adjunct ACR-001 per v1 era.",
+      "source_object_id": "DSOMM-SUBDIMENSION-IMPLEMENTATION-APPLICATION_HARDENING"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_dsomm__DSOMM-SUBDIMENSION-IMPLEMENTATION-DEVELOPMENT_AND_SOURCE_CONTROL",
+      "justification": "Development and Source Control lands on ACO-SCBI-004 with IAT-002/SCBI-003; landing bounded — cross-ref exposable.",
+      "manual_refinement_candidate": true,
+      "source_object_id": "DSOMM-SUBDIMENSION-IMPLEMENTATION-DEVELOPMENT_AND_SOURCE_CONTROL"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "scope_boundary",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_dsomm__DSOMM-SUBDIMENSION-IMPLEMENTATION-INFRASTRUCTURE_HARDENING",
+      "justification": "Infrastructure Hardening is broader platform-hardening, not direct AppSec Core semantics; iter-1 explicitly marks residual_pressure_type=scope_boundary.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "DSOMM-SUBDIMENSION-IMPLEMENTATION-INFRASTRUCTURE_HARDENING"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_dsomm__DSOMM-SUBDIMENSION-INFORMATION_GATHERING-LOGGING",
+      "justification": "Logging lands cleanly on ACO-SLG-007 with SLG-001/005/003; iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "DSOMM-SUBDIMENSION-INFORMATION_GATHERING-LOGGING"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "comparison_gap",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_dsomm__DSOMM-SUBDIMENSION-INFORMATION_GATHERING-MONITORING",
+      "justification": "Monitoring overlaps with observability/rollout visibility but mixes runtime + cost-monitoring semantics outside clean projection.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "DSOMM-SUBDIMENSION-INFORMATION_GATHERING-MONITORING"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "scope_boundary",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_dsomm__DSOMM-SUBDIMENSION-INFORMATION_GATHERING-TEST_KPI",
+      "justification": "Test KPI is measurement + maturity-tracking semantics, not direct domain-control; declared out_of_scope by iter-1 (maturity_overlay_reframe).",
+      "manual_refinement_candidate": false,
+      "source_object_id": "DSOMM-SUBDIMENSION-INFORMATION_GATHERING-TEST_KPI"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_dsomm__DSOMM-SUBDIMENSION-TEST_AND_VERIFICATION-APPLICATION_TESTS",
+      "justification": "Application tests land cleanly on ACO-TSV-005 with TSV-006; iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "DSOMM-SUBDIMENSION-TEST_AND_VERIFICATION-APPLICATION_TESTS"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_dsomm__DSOMM-SUBDIMENSION-TEST_AND_VERIFICATION-CONSOLIDATION",
+      "justification": "Consolidation lands cleanly on ACO-TSV-003 with TSV-002/005; iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "DSOMM-SUBDIMENSION-TEST_AND_VERIFICATION-CONSOLIDATION"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_dsomm__DSOMM-SUBDIMENSION-TEST_AND_VERIFICATION-DYNAMIC_DEPTH_FOR_APPLICATIONS",
+      "justification": "Dynamic depth for applications lands cleanly on ACO-TSV-005 with TSV-006; iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "DSOMM-SUBDIMENSION-TEST_AND_VERIFICATION-DYNAMIC_DEPTH_FOR_APPLICATIONS"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "scope_boundary",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_dsomm__DSOMM-SUBDIMENSION-TEST_AND_VERIFICATION-DYNAMIC_DEPTH_FOR_INFRASTRUCTURE",
+      "justification": "Infrastructure-focused dynamic testing adjacent to empirical validation + segmentation, but AppSec Core does not package infrastructure-runtime testing as clean surface; iter-1 residual_pressure_type=scope_boundary.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "DSOMM-SUBDIMENSION-TEST_AND_VERIFICATION-DYNAMIC_DEPTH_FOR_INFRASTRUCTURE"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_dsomm__DSOMM-SUBDIMENSION-TEST_AND_VERIFICATION-STATIC_DEPTH_FOR_APPLICATIONS",
+      "justification": "Static depth for applications lands cleanly on ACO-TSV-002 with TSV-003/SCBI-002; iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "DSOMM-SUBDIMENSION-TEST_AND_VERIFICATION-STATIC_DEPTH_FOR_APPLICATIONS"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "comparison_gap",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_dsomm__DSOMM-SUBDIMENSION-TEST_AND_VERIFICATION-STATIC_DEPTH_FOR_INFRASTRUCTURE",
+      "justification": "Static depth for infrastructure overlaps with build artifact hygiene/secret leakage/segmentation; projection too compound for one exact landing.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "DSOMM-SUBDIMENSION-TEST_AND_VERIFICATION-STATIC_DEPTH_FOR_INFRASTRUCTURE"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_dsomm__DSOMM-SUBDIMENSION-TEST_AND_VERIFICATION-TEST_INTENSITY",
+      "justification": "Test Intensity lands on ACO-TSV-001 with TSV-006/005; landing bounded — cross-ref exposable.",
+      "manual_refinement_candidate": true,
+      "source_object_id": "DSOMM-SUBDIMENSION-TEST_AND_VERIFICATION-TEST_INTENSITY"
+    }
+  ],
+  "pilot_id": "owasp_dsomm",
+  "schema_mode": "block1_additive_wrapper",
+  "source_stub_path": "data/owasp_dsomm/stubs/manual_gap_analysis.json",
+  "source_stub_sha256": "0442b476b21a3377e859e11e97bb35972b49657e22694855cd3c4eb287641678",
+  "summary_counts": {
+    "adjunct_creation_candidate": 0,
+    "claim_gap": 0,
+    "comparison_gap": 4,
+    "content_gap": 0,
+    "not_a_gap": 6,
+    "not_in_7cat": 0,
+    "overlay_repair": 0,
+    "scope_boundary": 4,
+    "traceability_repair": 5
+  }
+}

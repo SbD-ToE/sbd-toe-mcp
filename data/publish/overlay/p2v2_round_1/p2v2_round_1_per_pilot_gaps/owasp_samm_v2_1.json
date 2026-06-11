@@ -1,0 +1,157 @@
+{
+  "item_count": 15,
+  "items": [
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_samm_v2_1__SAMM-PRACTICE-D_TA",
+      "justification": "Threat Assessment lands cleanly on ACO-TMR-003 with TMR-002/005; iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SAMM-PRACTICE-D_TA"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "scope_boundary",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_samm_v2_1__SAMM-PRACTICE-G_SM",
+      "justification": "Strategy and Metrics is primarily software-security program governance + measurement maturity; declared out_of_scope by iter-1 (editorial_signal=maturity_overlay_reframe).",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SAMM-PRACTICE-G_SM"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_samm_v2_1__SAMM-PRACTICE-I_SB",
+      "justification": "Secure Build lands cleanly on ACO-SCBI-004 with SCBI-003/006; iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SAMM-PRACTICE-I_SB"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "scope_boundary",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_samm_v2_1__SAMM-PRACTICE-O_IM",
+      "justification": "Incident Management is mainly incident-response + operational response governance; declared out_of_scope by iter-1.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SAMM-PRACTICE-O_IM"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_samm_v2_1__SAMM-PRACTICE-V_AA",
+      "justification": "Architecture Assessment lands cleanly on ACO-ATB-005 with ATB-006/TMR-006; iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SAMM-PRACTICE-V_AA"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_samm_v2_1__SAMM-PRACTICE-D_SR",
+      "justification": "Security Requirements lands on validated adjunct ACR-002 (ACO-SRQ-001/002/003); landing established, traceability packaging to Manual still needed.",
+      "manual_refinement_candidate": true,
+      "note_v1_vs_v0": "Uses validated adjunct ACR-002 per v1 era; adjunct anchor materialized from this pressure per DELTA.",
+      "source_object_id": "SAMM-PRACTICE-D_SR"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "scope_boundary",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_samm_v2_1__SAMM-PRACTICE-G_PC",
+      "justification": "Policy and Compliance is regulatory/policy/assurance-program alignment; sits as overlay beside core; declared out_of_scope by iter-1.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SAMM-PRACTICE-G_PC"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_samm_v2_1__SAMM-PRACTICE-I_SD",
+      "justification": "Secure Deployment lands on ACO-RPR-002 with RPR-004/SPC-005/SCBI-006; landing exists, broader than one row — cross-ref exposable.",
+      "manual_refinement_candidate": true,
+      "source_object_id": "SAMM-PRACTICE-I_SD"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_samm_v2_1__SAMM-PRACTICE-O_EM",
+      "justification": "Environment Management lands on validated adjunct ACR-001 (ACO-CBI-001/002/003); landing established, traceability packaging to Manual still needed.",
+      "manual_refinement_candidate": true,
+      "note_v1_vs_v0": "Uses validated adjunct ACR-001 per v1 era; adjunct anchor materialized from this pressure per DELTA.",
+      "source_object_id": "SAMM-PRACTICE-O_EM"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_samm_v2_1__SAMM-PRACTICE-V_RT",
+      "justification": "Requirements-driven Testing lands cleanly on ACO-TSV-001 with TSV-005/TMR-005; iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SAMM-PRACTICE-V_RT"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_samm_v2_1__SAMM-PRACTICE-D_SA",
+      "justification": "Secure Architecture lands on ACO-ATB-007 with ATB-002/TMR-002; architecture slice landing broader than one atomic — cross-ref exposable.",
+      "manual_refinement_candidate": true,
+      "source_object_id": "SAMM-PRACTICE-D_SA"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "scope_boundary",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_samm_v2_1__SAMM-PRACTICE-G_EG",
+      "justification": "Education and Guidance is enablement + capability-building semantics; declared out_of_scope by iter-1 (editorial_signal=maturity_overlay_reframe).",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SAMM-PRACTICE-G_EG"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_samm_v2_1__SAMM-PRACTICE-I_DM",
+      "justification": "Defect Management lands cleanly on ACO-TSV-003 with TMR-004/SLG-007; iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SAMM-PRACTICE-I_DM"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "comparison_gap",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_samm_v2_1__SAMM-PRACTICE-O_OM",
+      "justification": "Operational Management adjacent to logging/release/protected-configuration; objective-level projection too coarse for clean landing without over-collapsing runtime ops.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SAMM-PRACTICE-O_OM"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "See iter-1 items[] entry (rationale + anchors + iter-1 fields preserved).",
+      "gap_id": "owasp_samm_v2_1__SAMM-PRACTICE-V_ST",
+      "justification": "Security Testing lands cleanly on ACO-TSV-007 with TSV-002/005/006; iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SAMM-PRACTICE-V_ST"
+    }
+  ],
+  "pilot_id": "owasp_samm_v2_1",
+  "schema_mode": "block1_additive_wrapper",
+  "source_stub_path": "data/owasp_samm_v2_1/stubs/manual_gap_analysis.json",
+  "source_stub_sha256": "4243e2a0433f5b36f48b1b2fc3b11e84bd389883100601b981b74b193714b2cf",
+  "summary_counts": {
+    "adjunct_creation_candidate": 0,
+    "claim_gap": 0,
+    "comparison_gap": 1,
+    "content_gap": 0,
+    "not_a_gap": 6,
+    "not_in_7cat": 0,
+    "overlay_repair": 0,
+    "scope_boundary": 4,
+    "traceability_repair": 4
+  }
+}

@@ -45,11 +45,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Testar acesso com role de privilégio reduzido a recurso restrito. Confirmar rejeição.",
       "verification_when": null
     },
@@ -96,11 +91,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Auditar permissões de contas de utilizador e serviço. Confirmar ausência de privilégios desnecessários.",
       "verification_when": null
     },
@@ -148,11 +138,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Tentar acesso não autorizado. Confirmar bloqueio e registo com contexto suficiente.",
       "verification_when": null
     },
@@ -198,11 +183,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar separação efectiva de perfis. Confirmar que acções de cada perfil são rastreáveis.",
       "verification_when": null
     },
@@ -248,11 +228,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Testar endpoints sem autenticação/autorização. Confirmar rejeição com código adequado.",
       "verification_when": null
     },
@@ -299,11 +274,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Tentar acesso a dados críticos com role não autorizado. Confirmar bloqueio e log.",
       "verification_when": null
     },
@@ -350,11 +320,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar existência de modelo de permissões revisto e documentado.",
       "verification_when": null
     },
@@ -391,11 +356,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Revogar acesso. Testar imediatamente após revogação. Confirmar falha.",
       "verification_when": null
     },
@@ -442,11 +402,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Testar decisão de acesso com atributos distintos. Confirmar aplicação de política dinâmica.",
       "verification_when": null
     },
@@ -493,11 +448,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar existência de processo de revisão periódica. Confirmar remoção de permissões obsoletas.",
       "verification_when": null
     },
@@ -544,11 +494,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-08"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Testar endpoints sem credenciais. Confirmar rejeição 401/403.",
       "verification_when": null
     },
@@ -585,11 +530,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-08"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Inventariar endpoints expostos em produção. Confirmar ausência de debug ou legacy.",
       "verification_when": null
     },
@@ -635,11 +575,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-08"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Enviar payloads inválidos. Confirmar rejeição com código adequado.",
       "verification_when": null
     },
@@ -686,11 +621,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-08"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Executar burst de chamadas. Confirmar resposta 429 ou bloqueio temporário.",
       "verification_when": null
     },
@@ -736,11 +666,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-08"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar certificados e versão TLS. Confirmar cabeçalhos de segurança activos.",
       "verification_when": null
     },
@@ -787,11 +712,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-08"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar SBOM e dependências documentadas. Confirmar auditoria de vulnerabilidades conhecidas.",
       "verification_when": null
     },
@@ -838,11 +758,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-08"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar logs de chamadas externas. Confirmar presença de dados essenciais.",
       "verification_when": null
     },
@@ -890,11 +805,6 @@
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-03"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Diagrama com zonas assinaladas, justificadas e versionado em repositório",
       "verification_when": "Design inicial; após alteração de topologia ou fronteiras"
     },
@@ -935,11 +845,6 @@
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-03"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Inventário de componentes expostos; cada exposição com controlo associado e justificação técnica documentada",
       "verification_when": "Revisão de arquitectura; auditoria de exposição"
     },
@@ -989,11 +894,6 @@
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-03"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Registo formal de revisão (ata, checklist ou relatório AppSec) com data, participantes e decisões",
       "verification_when": "Antes de release significativo; após alteração estrutural"
     },
@@ -1022,11 +922,6 @@
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-03"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "ADR ou equivalente com contexto, alternativas, decisão tomada, trade-offs aceites e responsável",
       "verification_when": "Sempre que ocorre decisão estrutural com impacto em segurança, isolamento ou dependências"
     },
@@ -1076,11 +971,6 @@
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-03"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Resultado de threat modeling com ameaças identificadas, fluxos cobertos e mitigações registadas; ligado ao diagrama de arquitectura",
       "verification_when": "Design inicial; após alteração significativa de fluxo ou componente"
     },
@@ -1131,11 +1021,6 @@
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-03"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Evidência de isolamento activo (políticas de rede, firewalls lógicos, segmentação de APIs); configuração testável e auditável",
       "verification_when": "Revisão de arquitectura; inspecção de configuração de rede"
     },
@@ -1184,11 +1069,6 @@
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-03"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Repositório de padrões com data de última revisão; evidência de uso de padrão aprovado registada em revisão de arquitectura",
       "verification_when": "Início de projecto; introdução de novo componente estrutural"
     },
@@ -1218,11 +1098,6 @@
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-03"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "DFD com controlos explícitos em cada fronteira de confiança; actualizado e versionado em repositório",
       "verification_when": "Design inicial; após alteração de fluxos de dados"
     },
@@ -1271,11 +1146,6 @@
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-03"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Processo documentado com definição do limiar de \"alteração significativa\"; evidência de revisão executada após a última alteração relevante",
       "verification_when": "Após cada alteração que atinja o limiar definido no processo"
     },
@@ -1324,11 +1194,6 @@
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-03"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Diagrama no repositório com histórico de versões; acessível a equipas relevantes; revisto no período definido",
       "verification_when": "Revisão periódica (pelo menos anual ou por release significativo)"
     },
@@ -1378,11 +1243,6 @@
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-03"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Evidência de segregação de rede, permissões e identidade entre dev, staging e prod; documentada e verificável por auditoria",
       "verification_when": "Revisão de infraestrutura; auditoria de permissões cross-environment"
     },
@@ -1431,11 +1291,6 @@
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-03"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Checklist formal preenchido e assinado por responsável de segurança; registo de aprovação anterior ao deploy em produção",
       "verification_when": "Gate de release para aplicações L3"
     },
@@ -1485,11 +1340,6 @@
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-03"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Job de CI com output de validação de topologia; logs de execução disponíveis; falhas bloqueiam promoção",
       "verification_when": "Por execução de pipeline; revisão periódica de cobertura"
     },
@@ -1526,11 +1376,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Tentar login sem segundo factor. Confirmar rejeição e logs de falha.",
       "verification_when": null
     },
@@ -1576,11 +1421,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Rever política activa. Tentar definir password inválida. Confirmar rejeição.",
       "verification_when": null
     },
@@ -1627,11 +1467,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Simular tentativas repetidas falhadas. Confirmar bloqueio, CAPTCHA ou atraso progressivo.",
       "verification_when": null
     },
@@ -1668,11 +1503,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Efectuar logout. Tentar reutilizar sessão ou token. Confirmar rejeição.",
       "verification_when": null
     },
@@ -1709,11 +1539,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Simular inactividade pelo período configurado. Confirmar expiração e redirect.",
       "verification_when": null
     },
@@ -1760,11 +1585,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Validar hashing com salt. Verificar ausência de credenciais em claro em armazenamento e transmissão.",
       "verification_when": null
     },
@@ -1801,11 +1621,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Simular login federado via SAML/OIDC. Confirmar fluxo completo e logging.",
       "verification_when": null
     },
@@ -1843,11 +1658,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Simular acção sensível. Confirmar exigência de factor adicional.",
       "verification_when": null
     },
@@ -1894,11 +1704,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Tentar alterar credenciais sem reautenticação. Confirmar bloqueio.",
       "verification_when": null
     },
@@ -1945,11 +1750,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Simular login anómalo. Confirmar notificação ao utilizador e registo.",
       "verification_when": null
     },
@@ -1975,11 +1775,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-06"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Tentar aceder a endpoints de debug, tracing ou interfaces admin. Confirmar desactivação ou protecção.",
       "verification_when": null
     },
@@ -2025,11 +1820,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-06"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar separação de ambientes. Confirmar que deploys e testes só ocorrem em ambientes segregados.",
       "verification_when": null
     },
@@ -2077,11 +1867,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-06"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Executar scan de segredos no repositório e no código. Confirmar ausência de hardcoded secrets.",
       "verification_when": null
     },
@@ -2107,11 +1892,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-06"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar que configuração é externa ao código. Confirmar permissões restritivas no repositório de configuração.",
       "verification_when": null
     },
@@ -2158,11 +1938,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-06"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Remover parâmetro obrigatório. Confirmar que arranque falha com erro explícito.",
       "verification_when": null
     },
@@ -2209,11 +1984,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-06"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Rever gestão de segredos. Confirmar uso de cofre e ausência local.",
       "verification_when": null
     },
@@ -2260,11 +2030,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-06"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Alterar configuração crítica fora do processo normal. Confirmar detecção e alerta.",
       "verification_when": null
     },
@@ -2310,11 +2075,6 @@
       "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Definição de pipeline em ficheiros versionados no repositório (YAML, HCL, etc.); alterações sujeitas a pull request com revisão; sem pipelines geridos manualmente fora do controlo de versão.",
       "verification_when": null
     },
@@ -2358,11 +2118,6 @@
       "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Execuções desencadeadas apenas por eventos de fontes autorizadas (branches protegidos, tags assinadas, merges aprovados); execuções originadas em forks externos desactivadas ou mediadas por aprovação manual.",
       "verification_when": null
     },
@@ -2409,11 +2164,6 @@
       "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Segredos injectados via cofre ou variáveis de ambiente protegidas pela plataforma; ausência de segredos em YAML de pipeline, logs ou ficheiros versionados; mascaramento de valores sensíveis activo nos logs.",
       "verification_when": null
     },
@@ -2459,11 +2209,6 @@
       "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Etapas de validação de segurança (SAST, SCA, lint, secrets scan) configuradas como bloqueantes; promoção de artefactos entre ambientes requer aprovação humana explícita para acções irreversíveis; sem bypass automatizado.",
       "verification_when": null
     },
@@ -2509,11 +2254,6 @@
       "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Cada execução identificável por ID único; logs retidos pelo período definido em política; possível reconstruir o que correu, quando, com que inputs, com que resultado e quem aprovou.",
       "verification_when": null
     },
@@ -2550,11 +2290,6 @@
       "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Runners sem acesso directo a dados ou credenciais de produção; execução em ambientes efémeros ou isolados; sem partilha de estado persistente entre jobs de repositórios distintos.",
       "verification_when": null
     },
@@ -2603,11 +2338,6 @@
       "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Artefactos assinados digitalmente ou com hash verificável gerado no momento do build; proveniência (commit SHA, pipeline run ID, build environment) associada ao artefacto e verificável antes de promoção.",
       "verification_when": null
     },
@@ -2653,11 +2383,6 @@
       "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Jobs distintos para as fases de build, test e deploy; sem permissões cruzadas desnecessárias entre stages; identidade e âmbito de credenciais por stage documentados e enforced.",
       "verification_when": null
     },
@@ -2703,11 +2428,6 @@
       "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Tokens e credenciais usados pelo pipeline com âmbito mínimo necessário; rotação periódica definida e evidenciada; sem credenciais partilhadas entre pipelines de aplicações distintas.",
       "verification_when": null
     },
@@ -2754,11 +2474,6 @@
       "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Runners com isolamento forte (containers efémeros, VMs descartáveis); sem acesso ao Docker socket por jobs não privilegiados; sem capacidades de escalonamento de privilégios; logs de tentativas bloqueadas disponíveis.",
       "verification_when": null
     },
@@ -2804,9 +2519,6 @@
       "source_document": "010-sbd-manual/01-classificacao-aplicacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Cada aplicação tem classificação de criticidade formalizada segundo os eixos de exposição, sensibilidade de dados e impacto de incidente; a classificação está documentada, aprovada pelo owner de segurança e registada em inventário ou ferramenta GRC; é utilizada como entrada directa para selecção de controlos e gates de pipeline.",
       "verification_when": null
     },
@@ -2852,9 +2564,6 @@
       "source_document": "010-sbd-manual/01-classificacao-aplicacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "A classificação de cada aplicação é aprovada pela entidade proporcional ao risco: L1 pelo tech lead ou equivalente, L2 pelo AppSec referente da equipa, L3 pelo CISO ou equivalente; a aprovação é documentada, datada e rastreável ao responsável.",
       "verification_when": null
     },
@@ -2901,9 +2610,6 @@
       "source_document": "010-sbd-manual/01-classificacao-aplicacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "O nível de classificação determina o conjunto de controlos base obrigatórios — incluindo gates de CI/CD, requisitos de testes, frequência de revisões e obrigações de monitorização; a activação dos controlos é verificável por rastreabilidade entre a classificação e o pipeline ou backlog actuais.",
       "verification_when": null
     },
@@ -2950,9 +2656,6 @@
       "source_document": "010-sbd-manual/01-classificacao-aplicacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Existem critérios explícitos de reclassificação documentados: novos fluxos de dados sensíveis, integração com sistemas de maior criticidade, exposição a novos contextos regulatórios, incidente de segurança relevante ou mudança de modelo de ameaça; cada critério tem trigger de revisão associado.",
       "verification_when": null
     },
@@ -2998,9 +2701,6 @@
       "source_document": "010-sbd-manual/01-classificacao-aplicacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Aplicações L1 revistas anualmente, L2 semestralmente, L3 trimestralmente; cada revisão produz evidência rastreável com data, revisor e conclusão; em caso de manutenção da classificação, a justificação é documentada; revisão em atraso é tratada como não conformidade activa.",
       "verification_when": null
     },
@@ -3037,9 +2737,6 @@
       "source_document": "010-sbd-manual/01-classificacao-aplicacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Após mudança significativa — nova integração crítica, alteração de exposição, incidente de segurança ou alteração regulatória relevante — a classificação é reavaliada no prazo máximo de 30 dias; a reavaliação é rastreável ao evento que a desencadeou e ao responsável que a conduziu.",
       "verification_when": null
     },
@@ -3086,9 +2783,6 @@
       "source_document": "010-sbd-manual/01-classificacao-aplicacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Quando a classificação resulta em controlos parcialmente aplicados (desvio aceite), o risco residual é documentado com compensação explícita, owner da excepção, prazo de resolução e data de expiração; excepção expirada sem renovação é tratada como não conformidade activa e reportada ao owner de segurança.",
       "verification_when": null
     },
@@ -3135,9 +2829,6 @@
       "source_document": "010-sbd-manual/01-classificacao-aplicacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Existe inventário central ou GRC com registo de cada aplicação, incluindo nível de classificação actual, data de última revisão, owner de segurança e estado de conformidade; o inventário é actualizado após cada alteração de classificação ou transferência de responsabilidade; acessível para auditoria sem preparação manual.",
       "verification_when": null
     },
@@ -3183,11 +2874,6 @@
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Imagens base provenientes de lista de origens aprovadas e mantida; imagens de origem não aprovada rejeitadas em pipeline ou por admission control; decisão de selecção documentada com justificação técnica.",
       "verification_when": null
     },
@@ -3236,11 +2922,6 @@
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Scanner de containers activo em pipeline (ex: Trivy, Grype); CVEs de severidade crítica bloqueiam a promoção da imagem; relatório de scan disponível e ligado ao build.",
       "verification_when": null
     },
@@ -3286,11 +2967,6 @@
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Ausência de binários interactivos (curl, bash, wget, ping) não justificados; imagem distroless, scratch ou alpine como base sempre que possível; verificável por análise de layers do artefacto.",
       "verification_when": null
     },
@@ -3336,11 +3012,6 @@
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Directiva USER com utilizador não-root no Dockerfile ou equivalente; política de admission que rejeita containers a executar como root; evidência de enforcement activo.",
       "verification_when": null
     },
@@ -3367,11 +3038,6 @@
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "readOnlyRootFilesystem: true ou equivalente configurado; volumes com permissão de escrita limitados ao estritamente necessário e explicitamente declarados; verificável por inspecção de configuração.",
       "verification_when": null
     },
@@ -3398,11 +3064,6 @@
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "drop: ALL como padrão com capabilities adicionadas explicitamente e justificadas; seccomp profile activo (runtime default ou personalizado); ausência de --privileged ou hostPID/hostNetwork não justificados.",
       "verification_when": null
     },
@@ -3446,11 +3107,6 @@
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Imagens assinadas (ex: Sigstore/Cosign, Notary v2) antes de publicação em registry; verificação de assinatura enforced por admission controller antes de deploy; imagens sem assinatura válida rejeitadas.",
       "verification_when": null
     },
@@ -3496,11 +3152,6 @@
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "SBOM gerado e anexado a cada imagem publicada no registry; formato CycloneDX ou SPDX; acessível para auditoria e resposta a incidentes sem necessidade de rebuild.",
       "verification_when": null
     },
@@ -3546,11 +3197,6 @@
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Admission controller activo (OPA/Gatekeeper, Kyverno ou equivalente); políticas que bloqueiam containers privilegiados, sem user definido, com host networking ou volumes sensíveis não autorizados; logs de admissão e rejeição disponíveis.",
       "verification_when": null
     },
@@ -3594,11 +3240,6 @@
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Rebuild periódico ou trigger automático por actualização da imagem base para incorporar patches de segurança; imagens com mais de X dias sem rebuild sinalizadas; política de renovação definida, documentada e cumprida.",
       "verification_when": null
     },
@@ -3645,11 +3286,6 @@
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Push e pull requerem autenticação; logs de acesso retidos pelo período definido; publicação em registries públicos requer aprovação explícita; credenciais de registry com âmbito mínimo e rotação definida.",
       "verification_when": null
     },
@@ -3695,11 +3331,6 @@
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Network policies activas por namespace; sem acesso inter-namespace por omissão; workloads críticos em namespaces dedicados com políticas de rede explícitas; evidência de enforcement activo.",
       "verification_when": null
     },
@@ -3745,11 +3376,6 @@
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "SBOM presente e acessível para cada build, em formato CycloneDX ou SPDX; inclui dependências directas e transitivas; artefacto versionado e ligado ao build que o gerou.",
       "verification_when": null
     },
@@ -3797,11 +3423,6 @@
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Scanner SCA activo no CI/CD; política de severidade documentada; CVEs de severidade crítica ou elevada bloqueiam a promoção; relatório de scan disponível por execução.",
       "verification_when": null
     },
@@ -3847,11 +3468,6 @@
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Lockfile presente, versionado e actualizado; ausência de referências sem versão (*, latest, ranges não limitados); integridade verificável por hash (ex: integrity field em npm, --hash em pip).",
       "verification_when": null
     },
@@ -3897,11 +3513,6 @@
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Ausência de bibliotecas de terceiros copiadas directamente para o repositório fora do package manager; verificável por scan de estrutura; processo documentado que o proíbe explicitamente.",
       "verification_when": null
     },
@@ -3947,11 +3558,6 @@
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Lista de registries e repositórios permitidos definida e enforced; downloads de fontes não aprovadas bloqueados em pipeline ou por política de rede; evidência de enforcement activo.",
       "verification_when": null
     },
@@ -3999,11 +3605,6 @@
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Processo documentado de aprovação de novas bibliotecas com critérios mínimos: actividade de manutenção, licença compatível, ausência de CVEs activos, popularidade verificada; registo de aprovação disponível por dependência.",
       "verification_when": null
     },
@@ -4049,11 +3650,6 @@
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "SLA de actualização definido por nível de severidade de CVE (ex: crítico ≤ 48h, elevado ≤ 7 dias, médio ≤ 30 dias); evidência de cumprimento nos ciclos mais recentes; excepções formalizadas quando aplicável.",
       "verification_when": null
     },
@@ -4099,11 +3695,6 @@
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Bot de actualização activo (ex: Dependabot, Renovate); PRs gerados automaticamente com informação de impacto semver, changelogs e testes; intervenção humana obrigatória para breaking changes; PRs não integrados automaticamente sem revisão.",
       "verification_when": null
     },
@@ -4150,11 +3741,6 @@
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Processo definido para detectar dependências introduzidas via tooling, geração de código, pipelines ou runtime loading; fronteiras de inventário documentadas; desvios detectados e tratados.",
       "verification_when": null
     },
@@ -4200,11 +3786,6 @@
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Evidência rastreável desde o componente identificado no SBOM até à CVE associada e à acção tomada (PR de correcção, actualização de versão ou excepção formalizada com justificação e data de revisão).",
       "verification_when": null
     },
@@ -4248,11 +3829,6 @@
       "source_document": "010-sbd-manual/06-desenvolvimento-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Guidelines por linguagem/stack publicadas em repositório versionado; aprovação formal por Gestor Técnico e AppSec documentada; data de última revisão disponível e dentro do período de validade.",
       "verification_when": null
     },
@@ -4300,11 +3876,6 @@
       "source_document": "010-sbd-manual/06-desenvolvimento-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Linter com regras de segurança activo localmente e em pipeline; ruleset versionado no repositório do projecto; tailoring documentado e aprovado; violações de padrões críticos bloqueiam commit ou merge.",
       "verification_when": null
     },
@@ -4348,11 +3919,6 @@
       "source_document": "010-sbd-manual/06-desenvolvimento-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Scanner SAST activo em cada PR ou commit; findings de severidade alta ou crítica bloqueam merge; perfil de regras versionado; baseline de falsos positivos documentada e aprovada por AppSec.",
       "verification_when": null
     },
@@ -4400,11 +3966,6 @@
       "source_document": "010-sbd-manual/06-desenvolvimento-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "PRs com alterações em componentes de segurança, autenticação, autorização ou dados sensíveis sujeitos a revisão com checklist formal; evidência de checklist preenchido disponível por PR.",
       "verification_when": null
     },
@@ -4452,11 +4013,6 @@
       "source_document": "010-sbd-manual/06-desenvolvimento-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Excepções documentadas com: justificação técnica, mitigação definida, aprovação explícita por papel autorizado e prazo de validade; registo de excepções activas revisto periodicamente e disponível para auditoria.",
       "verification_when": null
     },
@@ -4502,11 +4058,6 @@
       "source_document": "010-sbd-manual/06-desenvolvimento-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Código de origem externa (reutilizado, adaptado, gerado por ferramentas de IA) identificado antes de incorporação; política de proveniência documentada; evidência de revisão humana por PR para código de proveniência não interna.",
       "verification_when": null
     },
@@ -4552,11 +4103,6 @@
       "source_document": "010-sbd-manual/06-desenvolvimento-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Política de uso de ferramentas de IA generativa no desenvolvimento documentada, versionada e comunicada à equipa; constrangimentos técnicos (âmbito, validação, aprovação) definidos e verificáveis; sem incorporação automática de sugestões sem revisão explícita.",
       "verification_when": null
     },
@@ -4602,11 +4148,6 @@
       "source_document": "010-sbd-manual/06-desenvolvimento-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Perfis de qualidade (ex: SonarQube Quality Gates) com thresholds mínimos definidos por nível de risco; desvios bloqueam pipeline ou requerem aprovação explícita documentada; perfis versionados.",
       "verification_when": null
     },
@@ -4652,11 +4193,6 @@
       "source_document": "010-sbd-manual/06-desenvolvimento-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Decisões de segurança relevantes e excepções anotadas no código com referência rastreável ao requisito canónico ou decisão documentada (ex: // SEC-L3-VAL-SQLI, @sec:exception:DEV-005); possível auditar a ligação entre código e requisito sem contexto externo.",
       "verification_when": null
     },
@@ -4702,11 +4238,6 @@
       "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-09"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Deploy em produção requer aprovação explícita de papel autorizado; aprovação registada com timestamp e identidade do aprovador; sem promoção automática para produção sem gate de aprovação humana.",
       "verification_when": null
     },
@@ -4755,11 +4286,6 @@
       "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-09"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Artefactos promovidos a produção com assinatura digital ou hash verificado no momento do deploy; proveniência rastreável (commit SHA, pipeline run ID); artefactos sem proveniência verificável rejeitados automaticamente.",
       "verification_when": null
     },
@@ -4805,11 +4331,6 @@
       "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-09"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Gates que verificam ausência de CVEs críticos, testes de segurança passados e ausência de segredos detectados executam antes de cada promoção; falha em qualquer gate bloqueia deploy; evidência de execução disponível por deploy.",
       "verification_when": null
     },
@@ -4856,11 +4377,6 @@
       "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-09"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Cada deploy identificável por ID único com registo de: quem aprovou, o que foi deployed (artefacto + commit SHA), quando, para que ambiente e que gates foram executados; rastreabilidade a partir de incidente até ao commit original.",
       "verification_when": null
     },
@@ -4906,11 +4422,6 @@
       "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-09"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Procedimento de rollback definido, documentado e testado periodicamente (pelo menos uma vez por ciclo de release ou anualmente); tempo máximo de rollback definido e verificado em teste; último teste de rollback com data registada.",
       "verification_when": null
     },
@@ -4957,11 +4468,6 @@
       "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-09"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Credenciais usadas no deploy com âmbito limitado ao necessário e duração mínima (tokens de curta duração preferidos a credenciais permanentes); sem credenciais de deploy partilhadas entre aplicações; logs de uso de credenciais disponíveis.",
       "verification_when": null
     },
@@ -5007,11 +4513,6 @@
       "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-09"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Ambiente de staging com validação funcional e de segurança antes de promoção; critérios de aceitação de staging documentados e evidenciados; staging suficientemente representativo de produção para os fins de validação.",
       "verification_when": null
     },
@@ -5055,11 +4556,6 @@
       "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-09"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Métricas de saúde e alertas activos durante a janela de deploy e no período de observação pós-deploy; período de observação definido por nível de risco; anomalias nesse período disparam rollback automático ou alerta urgente com SLA de resposta.",
       "verification_when": null
     },
@@ -5105,11 +4601,6 @@
       "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-09"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Deploy progressivo implementado para releases de componentes críticos (canary, blue-green, feature flags); thresholds de promoção automática e critérios de rollback definidos; capacidade de contenção sem rollback completo verificável.",
       "verification_when": null
     },
@@ -5146,11 +4637,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Testar acesso a repositório sem autenticação. Confirmar rejeição e logs activos.",
       "verification_when": null
     },
@@ -5197,11 +4683,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar processo de aprovação para publicação pública. Confirmar documentação.",
       "verification_when": null
     },
@@ -5248,11 +4729,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar assinatura ou checksum dos artefactos. Confirmar verificação automatizada.",
       "verification_when": null
     },
@@ -5296,11 +4772,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Confirmar geração e anexação de SBOM por release.",
       "verification_when": null
     },
@@ -5344,11 +4815,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar que apenas utilizadores e automações autorizados acedem a artefactos de produção.",
       "verification_when": null
     },
@@ -5394,11 +4860,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Tentar deploy manual em produção. Confirmar bloqueio.",
       "verification_when": null
     },
@@ -5445,11 +4906,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-01"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar processo de remoção e notificação para artefactos comprometidos.",
       "verification_when": null
     },
@@ -5487,11 +4943,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Provocar erros intencionais. Confirmar que cliente recebe mensagem abstrata sem dados internos.",
       "verification_when": null
     },
@@ -5517,11 +4968,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar todas as superfícies de erro. Confirmar ausência de stack trace ou informação técnica.",
       "verification_when": null
     },
@@ -5545,11 +4991,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Testar recursos existentes e inexistentes. Confirmar respostas de erro idênticas (sem enumeração).",
       "verification_when": null
     },
@@ -5575,11 +5016,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar mensagens em diferentes locales. Confirmar ausência de conteúdo executável.",
       "verification_when": null
     },
@@ -5605,11 +5041,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Rever arquitectura de tratamento de erros. Confirmar centralização.",
       "verification_when": null
     },
@@ -5655,11 +5086,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Executar testes automáticos de cenários de erro. Confirmar que erros são tratados sem fuga.",
       "verification_when": null
     },
@@ -5697,11 +5123,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Rever logs de erro. Confirmar ausência de dados pessoais, tokens ou credenciais.",
       "verification_when": null
     },
@@ -5747,9 +5168,6 @@
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Modelo documentado e aprovado formalmente pela direcção, com papéis, responsabilidades e ciclo de decisão definidos; acessível e comunicado às equipas relevantes; revisto pelo menos anualmente ou após alteração organizacional significativa.",
       "verification_when": null
     },
@@ -5775,9 +5193,6 @@
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Cada aplicação ou projecto tem um owner de segurança formalmente designado e registado; o owner tem competência e autoridade para tomar decisões de segurança no âmbito do projecto; designação actualizada em mudanças de equipa ou responsabilidade.",
       "verification_when": null
     },
@@ -5823,9 +5238,6 @@
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Alçadas de aprovação para decisões de risco, excepções e compensações estão documentadas por nível (L1/L2/L3); a cadeia de autoridade é conhecida pelos decisores; decisões fora de alçada são escaladas de forma definida e rastreável.",
       "verification_when": null
     },
@@ -5871,9 +5283,6 @@
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Existe processo formal de excepções documentado e em uso; toda a não-aplicação de um controlo é registada com justificação, compensação, aprovador e prazo; excepções sem registo são tratadas como não conformidade activa; o processo cobre a cadeia de autoridade completa.",
       "verification_when": null
     },
@@ -5919,9 +5328,6 @@
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Todas as excepções activas têm data de expiração definida; existe mecanismo de alerta antes de expiração; excepções expiradas sem renovação são tratadas como não conformidade; a lista de excepções activas é revista em cada ciclo de auditoria.",
       "verification_when": null
     },
@@ -5967,9 +5373,6 @@
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Contratos com fornecedores, outsourcing e contratados incluem cláusulas de segurança proporcionais ao nível de risco; cláusulas revistas em renovações; evidência de cláusulas aplicadas disponível por contrato activo.",
       "verification_when": null
     },
@@ -6016,9 +5419,6 @@
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Fornecedores com acesso a dados, código ou pipelines são validados com questionário ou checklist antes de onboarding; validação proporcional ao risco (L3: SBOM, SLA de incidentes, direito de auditoria formal); registo de validação retido e rastreável.",
       "verification_when": null
     },
@@ -6066,9 +5466,6 @@
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Existe registo consolidado por aplicação que liga: classificação de risco → requisitos aplicados → excepções aprovadas → fornecedores validados → owner de segurança; registo actualizado em cada release relevante ou mudança de risco; disponível para auditoria.",
       "verification_when": null
     },
@@ -6115,9 +5512,6 @@
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Toda a decisão de risco ou excepção tem artefactos de evidência referenciáveis (ticket, nota, registo GRC, ADR ou equivalente); a cadeia de autoridade - quem pediu, quem avaliou, quem aprovou - é verificável; evidência retida pelo período definido em política.",
       "verification_when": null
     },
@@ -6164,9 +5558,6 @@
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Ciclo de revisão periódica definido por tipo de activo (aplicações L3: trimestral; L2: semestral; fornecedores críticos: anual); revisões produzem evidência rastreável; desvios identificados geram acções correctivas com owner e prazo definidos.",
       "verification_when": null
     },
@@ -6201,9 +5592,6 @@
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "KPIs de governação estão definidos, são recolhidos periodicamente e reportados à gestão; desvios face a thresholds definidos geram acção correctiva; KPIs incluem pelo menos: excepções activas por domínio, % aplicações com owner atribuído, % contratos com cláusulas de segurança.",
       "verification_when": null
     },
@@ -6249,9 +5637,6 @@
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Avaliação de maturidade de segurança activa (SAMM, DSOMM ou equivalente); realizada pelo menos anualmente; resultados documentados com plano de evolução e metas definidas; evolução comparada com ciclo anterior e reportada à gestão.",
       "verification_when": null
     },
@@ -6297,11 +5682,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar lista de ferramentas e IDEs autorizadas e se está actualizada.",
       "verification_when": null
     },
@@ -6336,11 +5716,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar versões de IDEs e ferramentas em uso. Confirmar actualizações aplicadas.",
       "verification_when": null
     },
@@ -6386,11 +5761,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Rever amostras de código gerado. Confirmar existência de processo de revisão antes de integração.",
       "verification_when": null
     },
@@ -6416,11 +5786,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar lista de extensões instaladas. Confirmar que são de fontes reconhecidas.",
       "verification_when": null
     },
@@ -6444,11 +5809,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar permissões concedidas a extensões. Confirmar que apenas as necessárias estão activas.",
       "verification_when": null
     },
@@ -6495,11 +5855,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar controlo sobre uso de ambientes locais. Confirmar existência de logs ou proxy quando aplicável.",
       "verification_when": null
     },
@@ -6537,11 +5892,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-08"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Enviar mensagem malformada a integração. Confirmar rejeição ou tratamento controlado.",
       "verification_when": null
     },
@@ -6587,11 +5937,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-08"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Testar integração sem token ou com token inválido. Confirmar rejeição.",
       "verification_when": null
     },
@@ -6638,11 +5983,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-08"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Interceptar tráfego entre sistemas. Confirmar cifra TLS activa. Verificar versões suportadas.",
       "verification_when": null
     },
@@ -6679,11 +6019,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-08"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Tentar comunicação por protocolo inseguro. Confirmar rejeição ou redirect.",
       "verification_when": null
     },
@@ -6730,11 +6065,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-08"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Enviar mensagem com assinatura inválida ou em falta. Confirmar rejeição e log.",
       "verification_when": null
     },
@@ -6780,11 +6110,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-08"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Enviar mensagem de origem não autorizada. Confirmar rejeição.",
       "verification_when": null
     },
@@ -6831,11 +6156,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-08"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Simular padrão de comunicação anómalo. Confirmar alerta.",
       "verification_when": null
     },
@@ -6870,11 +6190,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-08"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar documentação de integrações e cláusulas de segurança nos contratos.",
       "verification_when": null
     },
@@ -6921,11 +6236,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-10"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Rever configuração de logging. Confirmar cobertura de acessos, alterações e falhas críticas.",
       "verification_when": null
     },
@@ -6962,11 +6272,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-10"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Analisar estrutura de logs. Confirmar presença de quem, quando, o quê e onde em cada entrada.",
       "verification_when": null
     },
@@ -7013,11 +6318,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-10"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Tentar alterar log em disco. Verificar mecanismos de protecção (hash, write-once, syslog remoto).",
       "verification_when": null
     },
@@ -7064,11 +6364,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-10"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Confirmar existência de processo de análise periódica documentado e executado.",
       "verification_when": null
     },
@@ -7116,11 +6411,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-10"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar período de retenção efectivo contra política definida.",
       "verification_when": null
     },
@@ -7158,11 +6448,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-10"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Confirmar envio para agregador central. Verificar configuração de forwarding.",
       "verification_when": null
     },
@@ -7208,11 +6493,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-10"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Gerar evento anómalo. Confirmar disparo de alerta com threshold e canal configurados.",
       "verification_when": null
     },
@@ -7258,11 +6538,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-10"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Desactivar ou bloquear o sistema de logging. Confirmar que falha é detectada e alertada.",
       "verification_when": null
     },
@@ -7309,11 +6584,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-10"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Simular incidente ou revisão forense. Confirmar que logs têm detalhe suficiente para reconstrução.",
       "verification_when": null
     },
@@ -7361,11 +6631,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-10"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar registo de eventos críticos de negócio (transacções, autorizações de alto impacto).",
       "verification_when": null
     },
@@ -7413,11 +6678,6 @@
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-10"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Logs de todos os componentes em produção em formato estruturado (JSON, CEF ou equivalente); persistidos fora da instância (não apenas locais); acessíveis sem acesso directo ao host; cobertura verificável por inventário.",
       "verification_when": null
     },
@@ -7464,11 +6724,6 @@
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-10"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Catálogo de eventos críticos definido por aplicação (autenticação, alteração de permissões, erros de autorização, acessos a dados sensíveis, etc.); evidência de que esses eventos são efectivamente gerados e retidos; revisto com cada release significativo.",
       "verification_when": null
     },
@@ -7515,11 +6770,6 @@
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-10"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Política de retenção documentada por tipo de log e contexto regulatório aplicável; logs retidos pelo período mínimo obrigatório; processo de arquivo e purga documentado e auditável; evidência de cumprimento disponível.",
       "verification_when": null
     },
@@ -7566,11 +6816,6 @@
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-10"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Logs enviados para sistema de monitorização centralizado com ingestion verificável; sem dependência exclusiva de logs locais para análise de segurança; evidência de logs recebidos por fonte; falhas de envio detectadas e alertadas.",
       "verification_when": null
     },
@@ -7607,11 +6852,6 @@
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-10"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Alertas configurados para eventos críticos definidos no OPS-002; thresholds documentados e revistos periodicamente; canal de notificação testado; alertas não silenciados sem justificação.",
       "verification_when": null
     },
@@ -7655,11 +6895,6 @@
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-10"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "SLA de resposta (time-to-acknowledge e time-to-resolve) definido por severidade de alerta; métricas de MTTD e MTTR recolhidas e reportadas periodicamente; desvios ao SLA documentados e tratados.",
       "verification_when": null
     },
@@ -7705,11 +6940,6 @@
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-10"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Runbooks ou playbooks de resposta definidos para tipos de alerta críticos; integração entre sistema de alertas e sistema de gestão de incidentes; evidência de activação em incidente real ou exercício documentado no último ciclo.",
       "verification_when": null
     },
@@ -7735,11 +6965,6 @@
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-10"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Regras de correlação activas no SIEM para eventos distribuídos (ex: acesso + alteração suspeita correlacionados por session ID, IP ou user ID); dashboards ou queries que agregam eventos correlacionados disponíveis; regras documentadas e mantidas.",
       "verification_when": null
     },
@@ -7785,11 +7010,6 @@
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-10"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Mecanismos de deteção baseados em comportamento (UEBA, baselines de actividade) activos para fontes críticas; anomalias comportamentais geram alertas accionáveis; baseline documentada, actualizada periodicamente e com processo de aprovação de desvios.",
       "verification_when": null
     },
@@ -7836,11 +7056,6 @@
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-10"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "MTTD e MTTR medidos, reportados e comparados com ciclos anteriores; cobertura de alertas por tipo de evento mapeada contra o catálogo de ameaças relevantes; revisão periódica de thresholds, regras e cobertura com evidência de melhoria contínua.",
       "verification_when": null
     },
@@ -7867,11 +7082,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-05"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar existência de requisitos de segurança em backlog/documentação.",
       "verification_when": null
     },
@@ -7918,11 +7128,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-05"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar existência de processo de revisão executado e documentado.",
       "verification_when": null
     },
@@ -7969,11 +7174,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-05"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Confirmar mapeamento entre requisitos e nível de criticidade.",
       "verification_when": null
     },
@@ -7999,11 +7199,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-05"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar histórico de alterações ao catálogo do projecto.",
       "verification_when": null
     },
@@ -8051,11 +7246,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-05"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Confirmar que alterações relevantes desencadeiam revisão de threat model.",
       "verification_when": null
     },
@@ -8101,11 +7291,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-05"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar rastreabilidade requisito → ameaça → teste.",
       "verification_when": null
     },
@@ -8152,11 +7337,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-05"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Confirmar existência de ciclos de revisão com equipas.",
       "verification_when": null
     },
@@ -8193,11 +7373,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Simular inactividade pelo período configurado. Confirmar expiração e redirect.",
       "verification_when": null
     },
@@ -8234,11 +7409,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Efectuar logout. Tentar reutilizar token. Alterar password e tentar usar token anterior.",
       "verification_when": null
     },
@@ -8265,11 +7435,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Analisar tokens gerados. Confirmar entropia adequada e ausência de padrão previsível.",
       "verification_when": null
     },
@@ -8295,11 +7460,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Interceptar tráfego com proxy. Confirmar que tokens apenas transitam por TLS. Verificar flags de cookies.",
       "verification_when": null
     },
@@ -8337,11 +7497,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Alterar IP ou user-agent durante sessão activa. Confirmar terminação ou exigência de revalidação.",
       "verification_when": null
     },
@@ -8379,11 +7534,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Revogar sessão via interface de gestão. Testar imediatamente após revogação.",
       "verification_when": null
     },
@@ -8421,11 +7571,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Verificar TTL máximo configurado. Tentar manter sessão para além do limite.",
       "verification_when": null
     },
@@ -8452,11 +7597,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-02"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Inspecionar JWTs. Confirmar claims de âmbito e expiração. Testar token após revogação.",
       "verification_when": null
     },
@@ -8494,11 +7634,6 @@
       "source_document": "010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-05"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Aplicações com classificação L2 ou superior têm threat model formal documentado; o processo é aplicado em novas aplicações antes de go-live e em alterações arquitecturais significativas (novo componente, nova integração externa, nova superfície de exposição); o artefacto é rastreável à versão de arquitectura avaliada.",
       "verification_when": null
     },
@@ -8548,11 +7683,6 @@
       "source_document": "010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-05"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "O threat model inclui Data Flow Diagrams (DFDs) actualizados que reflectem a arquitectura real em produção; trust boundaries são explicitamente marcadas e justificadas; cada fluxo de dados sensíveis identifica origem, destino, canal e nível de confiança; DFDs desactualizados invalidam a validade do threat model.",
       "verification_when": null
     },
@@ -8591,11 +7721,6 @@
       "source_document": "010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-05"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "O processo utiliza uma metodologia estruturada — STRIDE como baseline; LINDDUN em aplicações com fluxos de dados pessoais ou contexto de privacidade; PASTA ou equivalente para contextos de alto risco; a metodologia escolhida é declarada no artefacto, aplicada de forma consistente e cobre no mínimo os elementos críticos identificados nos DFDs.",
       "verification_when": null
     },
@@ -8641,11 +7766,6 @@
       "source_document": "010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-05"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Cada ameaça identificada tem disposição explícita documentada — mitigado, aceite, transferido ou excluído — com justificação racional, controlo ou compensação associado e owner nomeado; ameaças sem disposição declarada são tratadas como lacuna de controlo activa; a lista de ameaças é parte do artefacto de evidência.",
       "verification_when": null
     },
@@ -8692,11 +7812,6 @@
       "source_document": "010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-05"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "As ameaças identificadas com disposição de mitigação geram requisitos de segurança rastreáveis; esses requisitos estão registados no backlog com referência ao threat ID de origem; a validação do requisito em test ou review referencia o threat ID correspondente; a cadeia é verificável sem reconstrução manual.",
       "verification_when": null
     },
@@ -8743,11 +7858,6 @@
       "source_document": "010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-05"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "O threat model tem controlo de versão explícito; é revisto e actualizado no máximo a cada ciclo de release significativo ou no prazo máximo de 30 dias após trigger de mudança (nova integração, alteração de trust boundary, incidente de segurança ou nova ameaça com impacto relevante); a versão do threat model é referenciada nos artefactos de arquitectura e no processo de go-live.",
       "verification_when": null
     },
@@ -8795,11 +7905,6 @@
       "source_document": "010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-05"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Antes de go-live de novas aplicações L2+ ou de alterações arquitecturais com impacto material num sistema L2+, o threat model é revisto por AppSec ou elemento com competência equivalente independente da equipa; a revisão produz evidência (registo, aprovação ou lista de desvios com plano); ausência de revisão bloqueia o go-live.",
       "verification_when": null
     },
@@ -8845,9 +7950,6 @@
       "source_document": "010-sbd-manual/13-formacao-onboarding/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Existem trilhos de formação de segurança definidos por perfil de colaborador (developer, ops, PO, QA, tech lead) e por nível de criticidade do projecto (L1, L2, L3); os trilhos especificam módulos obrigatórios, duração estimada e periodicidade de renovação; os trilhos são documentados e acessíveis.",
       "verification_when": null
     },
@@ -8893,9 +7995,6 @@
       "source_document": "010-sbd-manual/13-formacao-onboarding/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Todo o colaborador com acesso a código, pipelines ou ambientes de produção completa o onboarding de segurança antes de operar de forma autónoma; o onboarding inclui: políticas e boas práticas relevantes ao perfil, manuseamento de segredos, processo de incidentes e controlos básicos de desenvolvimento seguro ou operações seguras conforme o papel.",
       "verification_when": null
     },
@@ -8942,9 +8041,6 @@
       "source_document": "010-sbd-manual/13-formacao-onboarding/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "A conclusão do onboarding é verificada com critério objectivo — quiz, exercício prático ou outra forma de avaliação com taxa de aceitação mínima definida; o resultado é registado e rastreável ao colaborador e à versão do conteúdo administrada; resultados abaixo do limiar têm caminho de remediação definido.",
       "verification_when": null
     },
@@ -8991,9 +8087,6 @@
       "source_document": "010-sbd-manual/13-formacao-onboarding/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "O acesso a repositórios, pipelines de produção ou ambientes classificados como L2+ é condicionado à evidência de onboarding de segurança válido; a condição é verificável — o registo de onboarding é verificado no processo de onboarding de acesso; acesso sem onboarding válido é bloqueado ou escalado ao owner de segurança.",
       "verification_when": null
     },
@@ -9039,9 +8132,6 @@
       "source_document": "010-sbd-manual/13-formacao-onboarding/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Colaboradores em projectos L2+ recebem formação de segurança contínua — no mínimo uma sessão ou módulo relevante por semestre (L2) ou trimestre (L3); a formação contínua cobre evolução de ameaças, novas técnicas de ataque relevantes ao contexto e actualizações de políticas; a participação é registada e rastreável.",
       "verification_when": null
     },
@@ -9088,9 +8178,6 @@
       "source_document": "010-sbd-manual/13-formacao-onboarding/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "O conteúdo de formação e onboarding tem controlo de versão explícito; é revisto e actualizado após incidentes de segurança relevantes, alterações de política ou identificação de novas classes de vulnerabilidades no contexto do projecto; a versão do conteúdo administrada é rastreável ao registo de formação de cada colaborador.",
       "verification_when": null
     },
@@ -9137,9 +8224,6 @@
       "source_document": "010-sbd-manual/13-formacao-onboarding/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Terceiros, contratados e parceiros com acesso a código, pipelines ou dados sensíveis completam um onboarding de segurança equivalente ao dos colaboradores internos, proporcional ao seu perfil de acesso; o processo de validação e registo é o mesmo; ausência de onboarding válido bloqueia o acesso.",
       "verification_when": null
     },
@@ -9185,9 +8269,6 @@
       "source_document": "010-sbd-manual/13-formacao-onboarding/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "Equipas em projectos L3 têm um ou mais Security Champions formalmente designados — com papel documentado, responsabilidades definidas, acesso a recursos AppSec e participação em comunidade de prática ou equivalente; o Champion não substitui o AppSec centralizado, mas amplifica a competência de segurança na equipa; a designação é rastreável e actualizada.",
       "verification_when": null
     },
@@ -9233,9 +8314,6 @@
       "source_document": "010-sbd-manual/13-formacao-onboarding/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [],
-      "v1_slice_resolution_status": "cross_cutting",
       "verification_logic": "KPIs de eficácia formativa são definidos, recolhidos periodicamente e analisados — incluindo pelo menos: % cobertura de onboarding por equipa, taxa de aprovação em validações objectivas, tempo médio de onboarding e taxa de actualização de conteúdo; desvios face a thresholds definidos geram acção correctiva com owner e prazo.",
       "verification_when": null
     },
@@ -9282,11 +8360,6 @@
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-04"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Documento de estratégia com tipologias de teste, frequência, responsáveis e critérios de aceitação por nível de risco; revisto pelo menos anualmente ou após alteração significativa de risco ou arquitectura.",
       "verification_when": null
     },
@@ -9332,11 +8405,6 @@
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-04"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Scanner SAST com perfil de regras documentado e versionado; baseline de falsos positivos aprovada por AppSec; evidência de cobertura de componentes críticos; taxa de falsos positivos revista periodicamente.",
       "verification_when": null
     },
@@ -9380,11 +8448,6 @@
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-04"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "SLA de correcção definido por severidade (ex: crítico ≤ 7 dias, elevado ≤ 30 dias); rastreabilidade finding → ticket → correcção → verificação; findings não resolvidos no SLA com excepção formalizada.",
       "verification_when": null
     },
@@ -9431,11 +8494,6 @@
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-04"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Relatórios de testes de segurança associados ao build que os gerou; reproduzíveis a partir do mesmo estado do código; retidos pelo período definido em política; disponíveis para auditoria sem necessidade de re-execução.",
       "verification_when": null
     },
@@ -9481,11 +8539,6 @@
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-04"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Scanner DAST activo em ambiente de staging representativo de produção; política de findings definida (o que bloqueia vs. o que alerta); evidência de execução por release; ambiente de staging com dados não reais.",
       "verification_when": null
     },
@@ -9531,11 +8584,6 @@
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-04"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Cada vulnerabilidade corrigida origina um teste de regressão que comprova a correcção e previne recorrência; testes de regressão integrados no pipeline; evidência de cobertura disponível.",
       "verification_when": null
     },
@@ -9579,11 +8627,6 @@
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-04"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Critérios de cobertura mínima definidos por nível de risco (ex: componentes de autenticação, autorização, validação de input); cobertura medida e reportada; desvios documentados e tratados.",
       "verification_when": null
     },
@@ -9631,11 +8674,6 @@
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-04"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Pentesting executado com frequência mínima definida por nível de risco (ex: anual para L2, semestral para L3); escopo documentado; relatório com findings, severidade e plano de correcção; correcções verificadas em reteste.",
       "verification_when": null
     },
@@ -9682,11 +8720,6 @@
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-04"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Fuzzing integrado no pipeline ou executado periodicamente para parsers, deserializadores, APIs com input estruturado ou lógica com alta entropia de input; corpus gerido e evidência de execução disponível.",
       "verification_when": null
     },
@@ -9730,11 +8763,6 @@
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-04"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "IAST instrumentado em ambiente de staging para aplicações L3; coverage de fluxos críticos verificada; findings de IAST processados com a mesma política de gestão que outros findings de testes.",
       "verification_when": null
     },
@@ -9780,11 +8808,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Rever código de validação. Enviar inputs inválidos (tipo, tamanho, formato). Confirmar rejeição.",
       "verification_when": null
     },
@@ -9821,11 +8844,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Tentar enviar valores fora da lista permitida. Confirmar rejeição e ausência de tratamento implícito.",
       "verification_when": null
     },
@@ -9860,11 +8878,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Enviar payloads malformados ou com campos em falta. Confirmar rejeição automática.",
       "verification_when": null
     },
@@ -9912,11 +8925,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Rever uso de prepared statements. Executar SAST e testes de injecção SQL.",
       "verification_when": null
     },
@@ -9960,11 +8968,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Testar output em campos renderizados no browser. Confirmar escaping correcto.",
       "verification_when": null
     },
@@ -10002,11 +9005,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Forçar erro de validação. Confirmar que mensagem ao cliente não expõe lógica interna.",
       "verification_when": null
     },
@@ -10053,11 +9051,6 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "v1_objective_references": [],
-      "v1_slice_membership": [
-        "ASC-07"
-      ],
-      "v1_slice_resolution_status": "mapped",
       "verification_logic": "Executar testes automatizados com payloads maliciosos (XSS, SQLi, path traversal).",
       "verification_when": null
     }
@@ -10065,12 +9058,5 @@
   "profiles": [
     "review"
   ],
-  "source_artifact": "data/entities/evidence_patterns.json",
-  "v1_annotation": {
-    "annotated_at": "2026-05-11T06:32:49.690500+00:00",
-    "annotator": "sbdtoe_indexing.workflows.enrich_evidence_patterns_with_v1",
-    "predecessor_sha256": "89305ffcd279bdeb071bad48566cb96d11d524eeafdddd157ce6078bab95e394",
-    "two_ontology_asymmetry_note": "V1 AppSec Core has 0 EvidencePattern instances per consumer_contract.md §1.1; this file remains Manual-ontology-sourced (213 patterns) with V1 slice cross-references as additive enrichment. v1_objective_references is deferred (empty) pending Archon-published pattern-to-objective mapping.",
-    "v1_ontology_anchor": "ontology-v1.1-fair-baseline @ 84fe8bf"
-  }
+  "source_artifact": "data/entities/evidence_patterns.json"
 }

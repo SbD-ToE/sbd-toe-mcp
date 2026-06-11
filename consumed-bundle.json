@@ -1,29 +1,24 @@
 {
-  "_doc": "Pontifex bundle pin (PROGRAMME-PRESERVATION-PROTOCOL §0.6 / AGENTS.md Rule 4). Declares the Codex-published substrate this MCP serves. Values under `inputs` and `kg_surface` are verified against the bundle's own manifests in data/. The KG release tag + sha256 are Codex-owned and PENDING (co-design 2026-06-11) — never invented here. Maintained by scripts/verify-consumed-bundle.mjs (run in `npm run check`).",
+  "_doc": "Pontifex bundle pin (PROGRAMME-PRESERVATION-PROTOCOL §0.6 / AGENTS.md Rule 4). Declares the Codex build artefact this MCP serves. Materialized + maintained by scripts/sync-bundle.mjs (digest-verified against the artefact .sha256), validated by scripts/verify-consumed-bundle.mjs (run in `npm run check`). source: dev-build = cycle snapshot; release = formal vX.Y.Z. release_sha256 is the verified artefact digest — never invented.",
   "pin_version": 1,
   "pinned_at": "2026-06-11",
-  "consumer_contract_version": "v1.2",
+  "consumer_contract_version": "v1.3",
   "substrate_version": "v2-draft",
   "kg_bundle": {
-    "release_tag": "kg-v1-cycle-b-run-2-aligned-2026-05-12",
-    "release_commit": "e05f1be",
-    "release_sha256": null,
+    "release_tag": "kg-v1-manual-v1.6.1-aligned-2026-06-11",
+    "release_sha256": "45754aaa1ca45e246028e9fe8b21dc5b8a83218cddb43a5a7469c1d215d65e1f",
+    "source": "dev-build",
+    "surface_built_at": "2026-06-11T14:13:59.519553+00:00",
     "tag_scheme": "cycle-aligned",
-    "surface_built_at": "2026-05-11T23:14:46.780944+00:00",
-    "_pin_source": "Codex pin answer 2026-06-11 (handover 2026-06-11-orchestrator-codex-pontifex-bundle-alignment-codesign.md). Tag verified to exist in sbd-toe-knowledge-graph (-> e05f1be).",
-    "_pending_sha256": "release_sha256 awaits the Codex release .sha256 sidecar (output_policy); held null — never invented. Verifier shape-checks it once set.",
-    "next": {
-      "target_release": "v1.6.0 (tripartição) — consumer_contract v1.3, manual v1.6.0 7068b3d, KG commit 3621e90",
-      "status": "compiled by Codex, NOT yet authorized. Migrate this pin (and the data/ bundle) only when the v1.6.0 tag is authorized — additive contract bump v1.2 -> v1.3, but the bundle swap is gated."
-    },
-    "tag_scheme_codesign": "OPEN (Codex 2026-06-11): dual tag schemes — vX.Y.Z (semver product channel) vs kg-v1-*-aligned (cycle-aligned). Pontifex follows the deliberate `mcp-stable` pointer (Codex-endorsed); the pin records whichever tag that pointer resolves to. Reconciliation of the two schemes is co-design."
+    "synced_at": "2026-06-11",
+    "artefact": "sbd-toe-knowledge-graph-bundle-kg-v1-manual-v1.6.1-aligned-2026-06-11-snapshot.zip"
   },
   "inputs": {
     "manual": {
-      "repo": "SbD-ToE/sbd-toe-manual",
-      "commit": "c32d1204ff4c4d9dce60251da313496a54fe2fca",
+      "repo": "git@github.com:Shiftleftpt/SbD-ToE-Manual.git",
+      "commit": "54ab4dca48f2117eb91b79a907b26b7b1fa8ccd5",
       "version": "0.1.0",
-      "generated_at": "2026-04-07T12:03:06Z"
+      "generated_at": "2026-06-11T14:13:39Z"
     },
     "ontology": {
       "repo": "SbD-ToE/sbd-toe-ontology",

@@ -1,0 +1,72 @@
+{
+  "item_count": 4,
+  "items": [
+    {
+      "adjunct_candidate": false,
+      "category": "overlay_repair",
+      "evidence": "Iter-1 instance_mapping: normalization_status=mapped, landing_strength=bounded, primary_CO=ACO-TMR-002, practice=ACP-TMR-002, domain_first_resolution=DOMAIN_WINS.",
+      "gap_id": "eu_nis2__NIS2-ART-20",
+      "iter1_domain_first_resolution": "DOMAIN_WINS",
+      "iter1_landing_strength": "bounded",
+      "iter1_primary_core_anchor_id": "ACO-TMR-002",
+      "justification": "Regulatory article with bounded AppSec Core landing via domain-first resolution. Per DELTA 2026-04-05 §3, regulatory-wave residual is dominated by overlay-repair: the article obligation wraps AppSec semantics already present in Manual but the regulatory→AppSec cross-ref packaging on the overlay side needs calibration (single-CO landing is bounded because the article wraps multi-CO breadth).",
+      "manual_refinement_candidate": true,
+      "source_object_id": "NIS2-ART-20",
+      "source_title": "NIS2 Article 20"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "overlay_repair",
+      "evidence": "Iter-1 instance_mapping: normalization_status=mapped, landing_strength=bounded, primary_CO=ACO-ATB-006, practice=ACP-ATB-007, domain_first_resolution=DOMAIN_WINS.",
+      "gap_id": "eu_nis2__NIS2-ART-21",
+      "iter1_domain_first_resolution": "DOMAIN_WINS",
+      "iter1_landing_strength": "bounded",
+      "iter1_primary_core_anchor_id": "ACO-ATB-006",
+      "justification": "Regulatory article with bounded AppSec Core landing via domain-first resolution. Per DELTA 2026-04-05 §3, regulatory-wave residual is dominated by overlay-repair: the article obligation wraps AppSec semantics already present in Manual but the regulatory→AppSec cross-ref packaging on the overlay side needs calibration (single-CO landing is bounded because the article wraps multi-CO breadth).",
+      "manual_refinement_candidate": true,
+      "source_object_id": "NIS2-ART-21",
+      "source_title": "NIS2 Article 21"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "comparison_gap",
+      "evidence": "Iter-1 instance_mapping: normalization_status=mapped, landing_strength=bounded, primary_CO=ACO-TSV-005, practice=ACP-TSV-005, domain_first_resolution=KEYWORD_FALLBACK.",
+      "gap_id": "eu_nis2__NIS2-ART-22",
+      "iter1_domain_first_resolution": "KEYWORD_FALLBACK",
+      "iter1_landing_strength": "bounded",
+      "iter1_primary_core_anchor_id": "ACO-TSV-005",
+      "justification": "Iter-1 domain-first normalization fell back to keyword resolution (KEYWORD_FALLBACK); domain signal absent or ambiguous. Mapping exists but projection-method confidence is reduced — refinement of the comparison line (not Manual-side, not overlay-side) is the natural repair.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "NIS2-ART-22",
+      "source_title": "NIS2 Article 22"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "overlay_repair",
+      "evidence": "Iter-1 instance_mapping: normalization_status=mapped, landing_strength=bounded, primary_CO=ACO-SLG-001, practice=ACP-SLG-001, domain_first_resolution=DOMAIN_WINS.",
+      "gap_id": "eu_nis2__NIS2-ART-23",
+      "iter1_domain_first_resolution": "DOMAIN_WINS",
+      "iter1_landing_strength": "bounded",
+      "iter1_primary_core_anchor_id": "ACO-SLG-001",
+      "justification": "Regulatory article with bounded AppSec Core landing via domain-first resolution. Per DELTA 2026-04-05 §3, regulatory-wave residual is dominated by overlay-repair: the article obligation wraps AppSec semantics already present in Manual but the regulatory→AppSec cross-ref packaging on the overlay side needs calibration (single-CO landing is bounded because the article wraps multi-CO breadth).",
+      "manual_refinement_candidate": true,
+      "source_object_id": "NIS2-ART-23",
+      "source_title": "NIS2 Article 23"
+    }
+  ],
+  "pilot_id": "eu_nis2",
+  "schema_mode": "block2plus_native",
+  "source_stub_path": "data/eu_nis2/stubs/manual_gap_analysis.json",
+  "source_stub_sha256": "7efa683e6d0f2ea55215185c9c0c711c2574d54330333483fbbe76dcffb7f969",
+  "summary_counts": {
+    "adjunct_creation_candidate": 0,
+    "claim_gap": 0,
+    "comparison_gap": 1,
+    "content_gap": 0,
+    "not_a_gap": 0,
+    "not_in_7cat": 0,
+    "overlay_repair": 3,
+    "scope_boundary": 0,
+    "traceability_repair": 0
+  }
+}

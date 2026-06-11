@@ -1,0 +1,204 @@
+{
+  "item_count": 20,
+  "items": [
+    {
+      "adjunct_candidate": true,
+      "category": "adjunct_creation_candidate",
+      "evidence": "v0 lacked a dedicated landing zone; nearest v0 anchors (ACO-TMR-007, ACO-ATB-007) were too broad; ACR-002 manifests the adjunct.",
+      "gap_id": "ssdf_sp800_218_v1_1__PO.1",
+      "justification": "Iter-1 rationale cites absence of clean v0 slice for cross-SDLC security requirements governance; the pressure aligns with ACR-002 (Security Requirements Governance) already materialized in v1 era per DELTA 2026-04-05.",
+      "manual_refinement_candidate": false,
+      "note_v1_vs_v0": "v1 has ACR-002 as promoted adjunct; Round 2 re-mapping (Phase D) should re-assess whether this item can be cleanly landed on ACR-002 — out-of-scope for Phase A.",
+      "source_object_id": "SSDF-PRACTICE-PO.1"
+    },
+    {
+      "adjunct_candidate": true,
+      "category": "adjunct_creation_candidate",
+      "evidence": "v0 has no role/responsibility-specific entity; iter-1 preserved as core_gap rather than forced landing.",
+      "gap_id": "ssdf_sp800_218_v1_1__PO.2",
+      "justification": "Roles/responsibilities semantics intentionally under-modeled in v0; nearest v1 anchors (ACO-TMR-004, ACO-IAT-007) remain too indirect; pressure toward a roles/governance adjunct.",
+      "manual_refinement_candidate": false,
+      "note_v1_vs_v0": "No ACR yet manifests this specific pressure; fresh adjunct candidate for Archon/Orchestrator ACR process.",
+      "source_object_id": "SSDF-PRACTICE-PO.2"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "iter-1 marked editorial_signal=traceability_repair with bounded landing strength.",
+      "gap_id": "ssdf_sp800_218_v1_1__PO.3",
+      "justification": "Landing zone exists on ACO-SCBI-004 (Build Definition And Execution Integrity); Manual has the content but SSDF PO.3 cross-reference surface is not exposed.",
+      "manual_refinement_candidate": true,
+      "source_object_id": "SSDF-PRACTICE-PO.3"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "iter-1 no editorial signal; clean primary anchor.",
+      "gap_id": "ssdf_sp800_218_v1_1__PO.4",
+      "justification": "Lands cleanly on ACO-TSV-001 (Risk-Proportional Security Testing Strategy); iter-1 coverage=covered, landing_strength=strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SSDF-PRACTICE-PO.4"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "iter-1 marked editorial_signal=traceability_repair with bounded landing strength.",
+      "gap_id": "ssdf_sp800_218_v1_1__PO.5",
+      "justification": "Landing on ACO-SCBI-004 with secondary ties to ACO-SCBI-006 + ACO-SPC-007; Manual has content but SSDF PO.5 cross-reference surface is not exposed.",
+      "manual_refinement_candidate": true,
+      "source_object_id": "SSDF-PRACTICE-PO.5"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "iter-1 marked editorial_signal=traceability_repair.",
+      "gap_id": "ssdf_sp800_218_v1_1__PS.1",
+      "justification": "Landing on ACO-IAT-007 (composite) with secondary ACO-SCBI-004; Manual has content; cross-ref surface to SSDF PS.1 needs exposure.",
+      "manual_refinement_candidate": true,
+      "source_object_id": "SSDF-PRACTICE-PS.1"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "iter-1 no editorial signal.",
+      "gap_id": "ssdf_sp800_218_v1_1__PS.2",
+      "justification": "Lands cleanly on ACO-SCBI-006 (Artifact Attestation And Provenance Integrity); iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SSDF-PRACTICE-PS.2"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "iter-1 no editorial signal.",
+      "gap_id": "ssdf_sp800_218_v1_1__PS.3",
+      "justification": "Lands cleanly on ACO-RPR-004 (End-to-End Deployment Traceability); iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SSDF-PRACTICE-PS.3"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "iter-1 marked editorial_signal=traceability_repair.",
+      "gap_id": "ssdf_sp800_218_v1_1__PW.1",
+      "justification": "Landing on ACO-TMR-007 + ACO-ATB-007 (both composite governance entities enriched by ACR-001/002 pressure); Manual has content; cross-ref to SSDF PW.1 needs exposure.",
+      "manual_refinement_candidate": true,
+      "source_object_id": "SSDF-PRACTICE-PW.1"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "iter-1 no editorial signal.",
+      "gap_id": "ssdf_sp800_218_v1_1__PW.2",
+      "justification": "Lands cleanly on ACO-ATB-005 (Architecture Review And Change Trigger Discipline); iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SSDF-PRACTICE-PW.2"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_in_7cat",
+      "evidence": "iter-1 coverage=bridge_only, normalization_status=redirect_inherited, editorial_signal=canon_reconciliation.",
+      "gap_id": "ssdf_sp800_218_v1_1__PW.3",
+      "justification": "SSDF PW.3 is an SSDF-internal redirect surface to PW.4 (third-party software verification). Not a gap against Manual; mapping hygiene artifact. The 7-cat frame does not apply to redirect surfaces.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SSDF-PRACTICE-PW.3"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "iter-1 no editorial signal.",
+      "gap_id": "ssdf_sp800_218_v1_1__PW.4",
+      "justification": "Lands cleanly on ACO-SCBI-003 (Controlled Dependency And Image Sources) with secondary ACO-SCBI-002; iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SSDF-PRACTICE-PW.4"
+    },
+    {
+      "adjunct_candidate": true,
+      "category": "adjunct_creation_candidate",
+      "evidence": "iter-1 rationale: 'AppSec Core v0 does not yet expose a clean generic secure-coding landing zone'; nearest anchors ACO-IVF-007, ACO-ITS-007 are too specific.",
+      "gap_id": "ssdf_sp800_218_v1_1__PW.5",
+      "justification": "'Secure coding practices' is broader than current v0 input-validation + service-integration slices; pressure toward a generic secure-coding adjunct that does not yet exist as an ACR.",
+      "manual_refinement_candidate": false,
+      "note_v1_vs_v0": "No ACR yet manifests this pressure; fresh adjunct candidate for Archon/Orchestrator ACR process.",
+      "source_object_id": "SSDF-PRACTICE-PW.5"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "iter-1 no editorial signal.",
+      "gap_id": "ssdf_sp800_218_v1_1__PW.6",
+      "justification": "Lands cleanly on ACO-SCBI-004 (Build Definition And Execution Integrity); iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SSDF-PRACTICE-PW.6"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "iter-1 no editorial signal.",
+      "gap_id": "ssdf_sp800_218_v1_1__PW.7",
+      "justification": "Lands cleanly on ACO-TSV-002 (Static Analysis Signal Quality And Baseline Governance); iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SSDF-PRACTICE-PW.7"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "iter-1 no editorial signal.",
+      "gap_id": "ssdf_sp800_218_v1_1__PW.8",
+      "justification": "Lands cleanly on ACO-TSV-005 (Staged Dynamic Validation And Release Gate Discipline); iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SSDF-PRACTICE-PW.8"
+    },
+    {
+      "adjunct_candidate": true,
+      "category": "adjunct_creation_candidate",
+      "evidence": "iter-1 rationale: 'Secure-by-default configuration remains broader than the current AppSec Core v0 slices; the nearest architecture and protected-configuration anchors are still too indirect'.",
+      "gap_id": "ssdf_sp800_218_v1_1__PW.9",
+      "justification": "'Secure settings by default' broader than v0 architecture + protected-configuration slices; pressure aligns with ACR-001 (Secure Configuration Baseline Integrity) already materialized in v1 era per DELTA 2026-04-05.",
+      "manual_refinement_candidate": false,
+      "note_v1_vs_v0": "v1 has ACR-001 as promoted adjunct; Round 2 re-mapping (Phase D) should re-assess whether this item can be cleanly landed on ACR-001 — out-of-scope for Phase A.",
+      "source_object_id": "SSDF-PRACTICE-PW.9"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "iter-1 no editorial signal.",
+      "gap_id": "ssdf_sp800_218_v1_1__RV.1",
+      "justification": "Lands cleanly on ACO-TSV-003 (Security Finding Triage And Correction Closure); iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SSDF-PRACTICE-RV.1"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "not_a_gap",
+      "evidence": "iter-1 no editorial signal.",
+      "gap_id": "ssdf_sp800_218_v1_1__RV.2",
+      "justification": "Lands cleanly on ACO-TSV-003 (Security Finding Triage And Correction Closure); iter-1 covered/strong.",
+      "manual_refinement_candidate": false,
+      "source_object_id": "SSDF-PRACTICE-RV.2"
+    },
+    {
+      "adjunct_candidate": false,
+      "category": "traceability_repair",
+      "evidence": "iter-1 marked editorial_signal=traceability_repair with bounded landing strength.",
+      "gap_id": "ssdf_sp800_218_v1_1__RV.3",
+      "justification": "Landing on ACO-TMR-006 with secondary ACO-ATB-005 + ACO-TSV-003; Manual has content; cross-ref to SSDF RV.3 needs exposure.",
+      "manual_refinement_candidate": true,
+      "source_object_id": "SSDF-PRACTICE-RV.3"
+    }
+  ],
+  "pilot_id": "ssdf_sp800_218_v1_1",
+  "schema_mode": "block1_additive_wrapper",
+  "source_stub_path": "data/ssdf_sp800_218_v1_1/stubs/manual_gap_analysis.json",
+  "source_stub_sha256": "a7d861db9fc438c1d015159029d876b31c39747ce09533cb529e40b8d92a9767",
+  "summary_counts": {
+    "adjunct_creation_candidate": 4,
+    "claim_gap": 0,
+    "comparison_gap": 0,
+    "content_gap": 0,
+    "not_a_gap": 10,
+    "not_in_7cat": 1,
+    "overlay_repair": 0,
+    "scope_boundary": 0,
+    "traceability_repair": 5
+  }
+}

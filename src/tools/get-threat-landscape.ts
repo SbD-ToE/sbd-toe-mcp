@@ -261,7 +261,7 @@ export function handleGetThreatLandscape(
       content_type: "derived",
       produced_by: "threat_resolution_pipeline",
       source_data:
-        "runtime/threats.json + runtime/requirement_control_links.json + runtime/antipatterns.json + runtime/antipattern_requirement_links.json + runtime/antipattern_threat_links.json",
+        "runtime/v1/manual_threat_mitigation.jsonl (threat_substantive; legacy runtime/threats.json superseded) + runtime/requirement_control_links.json + runtime/antipatterns.json + runtime/antipattern_requirement_links.json + runtime/antipattern_threat_links.json",
       note:
         "Threat entries are canonical runtime entities. Mitigation and antipattern enrichment are derived structurally from the published deterministic runtime bundle.",
     },
@@ -281,6 +281,8 @@ export function handleGetThreatLandscape(
       ...(threat.how_it_arises ? { how_it_arises: threat.how_it_arises } : {}),
       ...(threat.methodology ? { methodology: threat.methodology } : {}),
       ...(threat.essence ? { essence: threat.essence } : {}),
+      ...(threat.threat_category ? { threat_category: threat.threat_category } : {}),
+      ...(threat.mitigation_strength ? { mitigation_strength: threat.mitigation_strength } : {}),
     })),
   };
 }

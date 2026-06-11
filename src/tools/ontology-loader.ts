@@ -12,7 +12,7 @@
  * retrieval artefacts such as mcp_chunks or vector_chunks.
  */
 
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { parse as parseYaml } from "yaml";
 import { resolveAppPath } from "../config.js";
 
@@ -70,6 +70,10 @@ export interface Threat {
   mitigated_threat_id?: string;
   threat_label_raw?: string;
   associated_controls: string[];
+  /** STRIDE | LINDDUN | PASTA | other — consumer contract v1.3 §1.8 (v1 tier). */
+  threat_category?: string;
+  /** forte | parcial | dependente_de_outros_capitulos — consumer contract v1.3 §1.8. */
+  mitigation_strength?: string;
 }
 
 export interface Practice {
@@ -210,6 +214,22 @@ function loadRuntimeItems(relativePath: string): unknown[] {
   const path = resolveAppPath(relativePath);
   const envelope = JSON.parse(readFileSync(path, "utf-8")) as RuntimeArtifactEnvelope;
   return Array.isArray(envelope.items) ? envelope.items : [];
+}
+
+/**
+ * Load a line-delimited JSON (.jsonl) runtime artefact. The v1 tripartition tier
+ * (consumer contract v1.3 §1.8) ships .jsonl, e.g. manual_threat_mitigation.jsonl.
+ * Returns [] if the file is absent (graceful for partial/older bundles).
+ */
+function loadRuntimeJsonl(relativePath: string): Record<string, unknown>[] {
+  const path = resolveAppPath(relativePath);
+  if (!existsSync(path)) return [];
+  return readFileSync(path, "utf-8")
+    .split("\n")
+    .map((line: string) => line.trim())
+    .filter((line: string) => line.length > 0)
+    .map((line: string) => JSON.parse(line) as Record<string, unknown>)
+    .filter(isRecord);
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -425,26 +445,59 @@ export function getOntologyData(): OntologyData {
     }))
     .filter((item) => item.artifact_type_id.length > 0 && item.requirement_id.length > 0);
 
-  const threats: Threat[] = loadRuntimeItems("data/publish/runtime/threats.json")
-    .filter(isRecord)
+  // Canonical threat surface = the v1 tripartition tier (consumer contract v1.3 §1.8):
+  // the `threat_substantive` records of manual_threat_mitigation.jsonl. The legacy
+  // runtime/threats.json is empty by design (superseded — its Manual-typed parser
+  // does not match the Run-2 canon/50 format; the v1 tier is the live source).
+  // Fall back to threats.json only for older bundles that still populate it.
+  const v1ThreatRows = loadRuntimeJsonl("data/publish/runtime/v1/manual_threat_mitigation.jsonl").filter(
+    (item) => strOf(item, "coverage_status") === "threat_substantive" && strOf(item, "threat_id").length > 0
+  );
+  const threatRows =
+    v1ThreatRows.length > 0
+      ? v1ThreatRows
+      : loadRuntimeItems("data/publish/runtime/threats.json").filter(isRecord);
+
+  const threats: Threat[] = threatRows
     .map((item) => {
-      const id = strOf(item, "mitigated_threat_id");
-      const title = strOf(item, "threat_label_raw");
+      // threat_id (v1) | mitigated_threat_id (legacy); manual_chapter (v1) | chapter_id (legacy);
+      // associated_controls is a single string in v1, an array in legacy.
+      const id = strOf(item, "threat_id") || strOf(item, "mitigated_threat_id");
+      const essence = strOf(item, "essence");
+      const title = essence || strOf(item, "threat_label_raw");
+      const chapter = strOf(item, "chapter_id") || strOf(item, "manual_chapter");
+      const methodology = strOf(item, "methodology") || strOf(item, "methodology_label");
+      const assocStr = strOf(item, "associated_controls");
       return {
         ...(id ? { id, mitigated_threat_id: id } : {}),
         ...(title ? { title, threat_label_raw: title } : {}),
-        ...(strOf(item, "essence") ? { essence: strOf(item, "essence") } : {}),
-        ...(strOf(item, "chapter_id") ? { chapter_id: strOf(item, "chapter_id") } : {}),
+        ...(essence ? { essence } : {}),
+        ...(chapter ? { chapter_id: chapter } : {}),
         ...(strOf(item, "mitigation_summary")
           ? { mitigation_summary: strOf(item, "mitigation_summary") }
           : {}),
         ...(strOf(item, "how_it_arises") ? { how_it_arises: strOf(item, "how_it_arises") } : {}),
-        ...(strOf(item, "methodology") ? { methodology: strOf(item, "methodology") } : {}),
+        ...(methodology ? { methodology } : {}),
+        ...(strOf(item, "threat_category") ? { threat_category: strOf(item, "threat_category") } : {}),
+        ...(strOf(item, "mitigation_strength")
+          ? { mitigation_strength: strOf(item, "mitigation_strength") }
+          : {}),
         canonical_control_ids: arrStr(item, "canonical_control_ids"),
-        associated_controls: arrStr(item, "associated_controls"),
+        associated_controls: assocStr ? [assocStr] : arrStr(item, "associated_controls"),
       };
     })
     .filter((item) => item.id || item.mitigated_threat_id);
+
+  // Anti-silent-0 guard: an empty threat surface is the failure that bit us (a
+  // stale parser returning 0 with no error). Surface it loudly on stderr so it is
+  // never silent again — the protocol reserves stdout for JSON-RPC.
+  if (threats.length === 0) {
+    process.stderr.write(
+      "[ontology-loader] WARNING: threat surface is EMPTY — neither the v1 tier " +
+        "(runtime/v1/manual_threat_mitigation.jsonl, threat_substantive) nor legacy " +
+        "runtime/threats.json yielded threats. The consumed bundle may be incomplete.\n"
+    );
+  }
 
   const evidencePatterns: EvidencePattern[] = loadRuntimeItems("data/publish/runtime/evidence_patterns.json")
     .filter(isRecord)

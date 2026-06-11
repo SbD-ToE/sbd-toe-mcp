@@ -26,7 +26,7 @@
       "source_artifact": "data/entities/canonical_controls.json"
     },
     {
-      "count": 204,
+      "count": 211,
       "entity_type": "Practice",
       "file": "practices.json",
       "name": "practices",
@@ -36,7 +36,7 @@
       "source_artifact": "data/entities/practices.json"
     },
     {
-      "count": 999,
+      "count": 1023,
       "entity_type": "PracticeAssignment",
       "file": "assignments.json",
       "name": "assignments",
@@ -46,7 +46,7 @@
       "source_artifact": "data/entities/practice_assignments.json"
     },
     {
-      "count": 204,
+      "count": 211,
       "entity_type": "UserStory",
       "file": "user_stories.json",
       "name": "user_stories",
@@ -87,7 +87,7 @@
       "source_artifact": "data/entities/artifact_catalog.json"
     },
     {
-      "count": 233,
+      "count": 0,
       "entity_type": "Threat",
       "file": "threats.json",
       "name": "threats",
