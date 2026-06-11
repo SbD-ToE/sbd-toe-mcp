@@ -8,7 +8,7 @@
     { "kind": "file", "path": "data/publish/indexes/chunk_entity_mentions.jsonl" },
     { "kind": "file", "path": "data/publish/indexes/chunk_relation_hints.jsonl" },
     { "kind": "file", "path": "data/publish/indexes/cross_layer_referrals.jsonl", "since": "v1.3", "optional": true },
-    { "kind": "file", "path": "data/publish/sbd-toe-index-compact.json" },
+    { "kind": "file", "path": "data/publish/indexes/bundle_policy_links.jsonl", "since": "v1.3", "optional": true },
     { "kind": "dir", "path": "data/publish/runtime" },
     { "kind": "dir", "path": "data/publish/overlay" },
     { "kind": "file", "path": "data/publish/ontology/appsec-core-ontology.yaml" },
