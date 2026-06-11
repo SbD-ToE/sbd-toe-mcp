@@ -1,6 +1,6 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 213,
+  "count": 223,
   "entity_type": "EvidencePattern",
   "items": [
     {
@@ -242,7 +242,7 @@
       "evidence_type": "log",
       "expected_artifact_type_ids": [
         "ART-log-stream-b67ee06f7e",
-        "ART-validation-evidence-79f6aaf0ec"
+        "ART-operational-evidence-f5e852756f"
       ],
       "expected_artifacts": [
         {
@@ -254,9 +254,9 @@
           ]
         },
         {
-          "artifact_type_id": "ART-validation-evidence-79f6aaf0ec",
+          "artifact_type_id": "ART-operational-evidence-f5e852756f",
           "confidence": 0.54,
-          "name": "Validation Evidence",
+          "name": "Operational Evidence",
           "shared_salient_tokens": [
             "evidencia"
           ]
@@ -589,7 +589,7 @@
       "evidence_type": "log",
       "expected_artifact_type_ids": [
         "ART-log-stream-b67ee06f7e",
-        "ART-validation-evidence-79f6aaf0ec"
+        "ART-operational-evidence-f5e852756f"
       ],
       "expected_artifacts": [
         {
@@ -601,9 +601,9 @@
           ]
         },
         {
-          "artifact_type_id": "ART-validation-evidence-79f6aaf0ec",
+          "artifact_type_id": "ART-operational-evidence-f5e852756f",
           "confidence": 0.54,
-          "name": "Validation Evidence",
+          "name": "Operational Evidence",
           "shared_salient_tokens": [
             "evidencia"
           ]
@@ -1435,7 +1435,7 @@
       "evidence_type": "log",
       "expected_artifact_type_ids": [
         "ART-log-stream-b67ee06f7e",
-        "ART-validation-evidence-79f6aaf0ec"
+        "ART-operational-evidence-f5e852756f"
       ],
       "expected_artifacts": [
         {
@@ -1447,9 +1447,9 @@
           ]
         },
         {
-          "artifact_type_id": "ART-validation-evidence-79f6aaf0ec",
+          "artifact_type_id": "ART-operational-evidence-f5e852756f",
           "confidence": 0.54,
-          "name": "Validation Evidence",
+          "name": "Operational Evidence",
           "shared_salient_tokens": [
             "evidencia"
           ]
@@ -1672,7 +1672,7 @@
       "evidence_type": "log",
       "expected_artifact_type_ids": [
         "ART-log-stream-b67ee06f7e",
-        "ART-validation-evidence-79f6aaf0ec"
+        "ART-operational-evidence-f5e852756f"
       ],
       "expected_artifacts": [
         {
@@ -1684,9 +1684,9 @@
           ]
         },
         {
-          "artifact_type_id": "ART-validation-evidence-79f6aaf0ec",
+          "artifact_type_id": "ART-operational-evidence-f5e852756f",
           "confidence": 0.54,
-          "name": "Validation Evidence",
+          "name": "Operational Evidence",
           "shared_salient_tokens": [
             "evidencia"
           ]
@@ -2934,8 +2934,7 @@
       "evidence_expectation": "Ausência de binários interactivos (curl, bash, wget, ping) não justificados; imagem distroless, scratch ou alpine como base sempre que possível; verificável por análise de layers do artefacto.",
       "evidence_type": "workflow",
       "expected_artifact_type_ids": [
-        "ART-container-image-51e2624252",
-        "ART-dependency-inventory-4ddd43ae4f"
+        "ART-container-image-51e2624252"
       ],
       "expected_artifacts": [
         {
@@ -2944,14 +2943,6 @@
           "name": "Container Image",
           "shared_salient_tokens": [
             "imagem"
-          ]
-        },
-        {
-          "artifact_type_id": "ART-dependency-inventory-4ddd43ae4f",
-          "confidence": 0.64,
-          "name": "Dependency Inventory",
-          "shared_salient_tokens": [
-            "componente"
           ]
         }
       ],
@@ -3299,7 +3290,7 @@
       "evidence_type": "workflow",
       "expected_artifact_type_ids": [
         "ART-policy-report-7e52280504",
-        "ART-operational-evidence-f5e852756f"
+        "ART-validation-evidence-79f6aaf0ec"
       ],
       "expected_artifacts": [
         {
@@ -3311,9 +3302,9 @@
           ]
         },
         {
-          "artifact_type_id": "ART-operational-evidence-f5e852756f",
+          "artifact_type_id": "ART-validation-evidence-79f6aaf0ec",
           "confidence": 0.54,
-          "name": "Operational Evidence",
+          "name": "Validation Evidence",
           "shared_salient_tokens": [
             "evidencia"
           ]
@@ -3787,6 +3778,187 @@
       "source_mode": "explicit",
       "supported_signal_ids": [],
       "verification_logic": "Evidência rastreável desde o componente identificado no SBOM até à CVE associada e à acção tomada (PR de correcção, actualização de versão ou excepção formalizada com justificação e data de revisão).",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Sistemas com componentes AI/ML têm inventário dedicado de dependências AI: (1) modelos base com versão, hash do artefacto e fonte (model registry, fine-tuning provenance); (2) datasets de treino e fine-tuning com versão, fonte e processo de curadoria; (3) MCP servers e tools expostas a agentes com identificador, versão e scope (AML.T0110 AI Agent Tool Poisoning); (4) prompts embebidos relevantes para comportamento (system prompts, RAG templates) com versão e owner. O inventário é gerado por build e integrado no SBOM principal (DEP-001); incidentes upstream em modelos, datasets ou MCP servers (LLM03-2025 Supply Chain, AML.T0010 AI Supply Chain Compromise) accionam o mesmo processo de triagem de DEP-002/DEP-007.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-artifact-provenance-8b1bffca3c",
+        "ART-sbom-ec0b691fce"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-artifact-provenance-8b1bffca3c",
+          "confidence": 0.94,
+          "name": "Artifact Provenance",
+          "shared_salient_tokens": [
+            "build",
+            "proveniencia"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-sbom-ec0b691fce",
+          "confidence": 0.92,
+          "name": "Sbom",
+          "shared_salient_tokens": [
+            "sbom"
+          ]
+        }
+      ],
+      "id": "EP-DEP-011",
+      "maps_to_control_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+      "maps_to_control_name": "Inventário e análise de dependências",
+      "maps_to_requirement_id": "DEP-011",
+      "requirement_category": "DEP",
+      "requirement_name": "Inventário e proveniência de dependências AI/ML",
+      "responsible_roles": [],
+      "risk_level_hint": null,
+      "source_bundle": "05-dependencias-sbom-sca",
+      "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
+      "source_mode": "explicit",
+      "supported_signal_ids": [],
+      "verification_logic": "Sistemas com componentes AI/ML têm inventário dedicado de dependências AI: (1) modelos base com versão, hash do artefacto e fonte (model registry, fine-tuning provenance); (2) datasets de treino e fine-tuning com versão, fonte e processo de curadoria; (3) MCP servers e tools expostas a agentes com identificador, versão e scope (AML.T0110 AI Agent Tool Poisoning); (4) prompts embebidos relevantes para comportamento (system prompts, RAG templates) com versão e owner. O inventário é gerado por build e integrado no SBOM principal (DEP-001); incidentes upstream em modelos, datasets ou MCP servers (LLM03-2025 Supply Chain, AML.T0010 AI Supply Chain Compromise) accionam o mesmo processo de triagem de DEP-002/DEP-007.",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "O inventário AI/ML (DEP-011) é materializado como AI BOM em formato standardizado por *build* — prefere-se CycloneDX 1.6 com extensão ml-bom (publicada em 2024) ou equivalente reconhecido (ML-BOM, AIBOM). O AI BOM é artefacto do *build* (não análise separada), versionado, e ligado ao SBOM principal. Inclui modelos, datasets, MCP servers/tools e prompts embebidos com versão *pinned*, hash, *provider* e licença.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-sbom-ec0b691fce",
+        "ART-artifact-provenance-8b1bffca3c"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-sbom-ec0b691fce",
+          "confidence": 0.92,
+          "name": "Sbom",
+          "shared_salient_tokens": [
+            "sbom"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-artifact-provenance-8b1bffca3c",
+          "confidence": 0.84,
+          "name": "Artifact Provenance",
+          "shared_salient_tokens": [
+            "build"
+          ]
+        }
+      ],
+      "id": "EP-DEP-012",
+      "maps_to_control_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+      "maps_to_control_name": "Inventário e análise de dependências",
+      "maps_to_requirement_id": "DEP-012",
+      "requirement_category": "DEP",
+      "requirement_name": "AI BOM gerado por *build* em formato standardizado",
+      "responsible_roles": [],
+      "risk_level_hint": null,
+      "source_bundle": "05-dependencias-sbom-sca",
+      "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
+      "source_mode": "explicit",
+      "supported_signal_ids": [],
+      "verification_logic": "O inventário AI/ML (DEP-011) é materializado como AI BOM em formato standardizado por *build* — prefere-se CycloneDX 1.6 com extensão ml-bom (publicada em 2024) ou equivalente reconhecido (ML-BOM, AIBOM). O AI BOM é artefacto do *build* (não análise separada), versionado, e ligado ao SBOM principal. Inclui modelos, datasets, MCP servers/tools e prompts embebidos com versão *pinned*, hash, *provider* e licença.",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Modelos AI usados em produção ou em pipeline têm versão fixa explícita — ex.: claude-opus-4-7@sha:… em vez de claude-latest. Ranges semver, *aliases* dinâmicos (latest, stable) e referências sem versão são proibidos em qualquer ambiente que não seja exploratório. Mudança de versão maior do provider exige nova *eval suite* (Cap. 10 §C5) e revisão do *threat model* (Cap. 03 US-11). Mitiga *AI Supply Chain Rug Pull* (AML.T0109).",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-artifact-provenance-8b1bffca3c",
+        "ART-pipeline-config-f8f2ba893d"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-artifact-provenance-8b1bffca3c",
+          "confidence": 0.92,
+          "name": "Artifact Provenance",
+          "shared_salient_tokens": [
+            "pipeline"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-pipeline-config-f8f2ba893d",
+          "confidence": 0.62,
+          "name": "Pipeline Config",
+          "shared_salient_tokens": [
+            "pipeline"
+          ]
+        }
+      ],
+      "id": "EP-DEP-013",
+      "maps_to_control_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+      "maps_to_control_name": "Inventário e análise de dependências",
+      "maps_to_requirement_id": "DEP-013",
+      "requirement_category": "DEP",
+      "requirement_name": "Versão *pinned* explícita para modelos AI e providers",
+      "responsible_roles": [],
+      "risk_level_hint": null,
+      "source_bundle": "05-dependencias-sbom-sca",
+      "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
+      "source_mode": "explicit",
+      "supported_signal_ids": [],
+      "verification_logic": "Modelos AI usados em produção ou em pipeline têm versão fixa explícita — ex.: claude-opus-4-7@sha:… em vez de claude-latest. Ranges semver, *aliases* dinâmicos (latest, stable) e referências sem versão são proibidos em qualquer ambiente que não seja exploratório. Mudança de versão maior do provider exige nova *eval suite* (Cap. 10 §C5) e revisão do *threat model* (Cap. 03 US-11). Mitiga *AI Supply Chain Rug Pull* (AML.T0109).",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Providers de modelos AI (Anthropic, OpenAI, HuggingFace, providers próprios self-hosted) usados pela organização estão numa lista aprovada com classificação de risco e cláusulas contratuais aplicáveis (cross-link Cap. 14 — contratação de AI providers). Critérios mínimos de aprovação: zero retention para dados sensíveis quando aplicável; localização de processamento conforme RGPD Art. 44–49; auditoria contratualizada; SLA de notificação prévia de mudanças de versão; conformidade declarada com AI Act Art. 53/55 se fornecer GPAI. Lista revista periodicamente conforme nível de criticidade.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-approval-record-6fe32eb803",
+        "ART-log-stream-b67ee06f7e"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-approval-record-6fe32eb803",
+          "confidence": 0.68,
+          "name": "Approval Record",
+          "shared_salient_tokens": [
+            "aprovacao"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-log-stream-b67ee06f7e",
+          "confidence": 0.68,
+          "name": "Log Stream",
+          "shared_salient_tokens": [
+            "auditoria"
+          ]
+        }
+      ],
+      "id": "EP-DEP-014",
+      "maps_to_control_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+      "maps_to_control_name": "Inventário e análise de dependências",
+      "maps_to_requirement_id": "DEP-014",
+      "requirement_category": "DEP",
+      "requirement_name": "Lista de *providers* AI aprovados com classificação de risco",
+      "responsible_roles": [],
+      "risk_level_hint": null,
+      "source_bundle": "05-dependencias-sbom-sca",
+      "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
+      "source_mode": "explicit",
+      "supported_signal_ids": [],
+      "verification_logic": "Providers de modelos AI (Anthropic, OpenAI, HuggingFace, providers próprios self-hosted) usados pela organização estão numa lista aprovada com classificação de risco e cláusulas contratuais aplicáveis (cross-link Cap. 14 — contratação de AI providers). Critérios mínimos de aprovação: zero retention para dados sensíveis quando aplicável; localização de processamento conforme RGPD Art. 44–49; auditoria contratualizada; SLA de notificação prévia de mudanças de versão; conformidade declarada com AI Act Art. 53/55 se fornecer GPAI. Lista revista periodicamente conforme nível de criticidade.",
       "verification_when": null
     },
     {
@@ -5729,7 +5901,7 @@
       "evidence_type": "workflow",
       "expected_artifact_type_ids": [
         "ART-log-stream-b67ee06f7e",
-        "ART-review-checklist-de29054201"
+        "ART-operational-evidence-f5e852756f"
       ],
       "expected_artifacts": [
         {
@@ -5741,11 +5913,11 @@
           ]
         },
         {
-          "artifact_type_id": "ART-review-checklist-de29054201",
+          "artifact_type_id": "ART-operational-evidence-f5e852756f",
           "confidence": 0.54,
-          "name": "Review Checklist",
+          "name": "Operational Evidence",
           "shared_salient_tokens": [
-            "revisao"
+            "evidencia"
           ]
         }
       ],
@@ -5867,7 +6039,8 @@
       "evidence_expectation": "Evidência de rejeição. Sem processamento cego de mensagens inválidas.",
       "evidence_type": "workflow",
       "expected_artifact_type_ids": [
-        "ART-validation-evidence-79f6aaf0ec"
+        "ART-validation-evidence-79f6aaf0ec",
+        "ART-operational-evidence-f5e852756f"
       ],
       "expected_artifacts": [
         {
@@ -5877,6 +6050,14 @@
           "shared_salient_tokens": [
             "evidencia",
             "validacao"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-operational-evidence-f5e852756f",
+          "confidence": 0.54,
+          "name": "Operational Evidence",
+          "shared_salient_tokens": [
+            "evidencia"
           ]
         }
       ],
@@ -6286,7 +6467,7 @@
       "evidence_type": "log",
       "expected_artifact_type_ids": [
         "ART-log-stream-b67ee06f7e",
-        "ART-validation-evidence-79f6aaf0ec"
+        "ART-operational-evidence-f5e852756f"
       ],
       "expected_artifacts": [
         {
@@ -6298,9 +6479,9 @@
           ]
         },
         {
-          "artifact_type_id": "ART-validation-evidence-79f6aaf0ec",
+          "artifact_type_id": "ART-operational-evidence-f5e852756f",
           "confidence": 0.54,
-          "name": "Validation Evidence",
+          "name": "Operational Evidence",
           "shared_salient_tokens": [
             "evidencia"
           ]
@@ -7064,6 +7245,190 @@
       "confidence_model": "deterministic",
       "detectable_in": [
         "logs",
+        "ci_cd",
+        "documentation"
+      ],
+      "evidence_expectation": "Sistemas com componentes AI/ML em produção (LLMs, modelos preditivos, RAG, agentes autónomos) têm telemetria dedicada: logging completo de inputs e outputs do modelo (com sanitização de PII); logging de tool invocations em agentes com agent identity, scope e contexto (AML.M0024 AI Telemetry Logging); registo de drift de comportamento e degradação de precisão; alertas para anomalias de prompt input (potencial prompt injection); audit trail completo de model versions deployed e dataset versions usados em inferência. Os logs são integrados no SIEM/observability pipeline existente (OPS-004); a deteção de anomalias específicas a AI/ML (drift, prompt injection patterns, exfiltration via tool calls) é tratada em OPS-009 com baselines AI-aware.",
+      "evidence_type": "log",
+      "expected_artifact_type_ids": [
+        "ART-log-stream-b67ee06f7e",
+        "ART-artifact-provenance-8b1bffca3c"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-log-stream-b67ee06f7e",
+          "confidence": 0.7,
+          "name": "Log Stream",
+          "shared_salient_tokens": [
+            "audit",
+            "log"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-artifact-provenance-8b1bffca3c",
+          "confidence": 0.62,
+          "name": "Artifact Provenance",
+          "shared_salient_tokens": [
+            "pipeline"
+          ]
+        }
+      ],
+      "id": "EP-OPS-011",
+      "maps_to_control_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "maps_to_control_name": "Monitorização e resposta operacional",
+      "maps_to_requirement_id": "OPS-011",
+      "requirement_category": "OPS",
+      "requirement_name": "Observabilidade dedicada a componentes AI/ML em produção",
+      "responsible_roles": [],
+      "risk_level_hint": null,
+      "source_bundle": "12-monitorizacao-operacoes",
+      "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
+      "source_mode": "explicit",
+      "supported_signal_ids": [],
+      "verification_logic": "Sistemas com componentes AI/ML em produção (LLMs, modelos preditivos, RAG, agentes autónomos) têm telemetria dedicada: logging completo de inputs e outputs do modelo (com sanitização de PII); logging de tool invocations em agentes com agent identity, scope e contexto (AML.M0024 AI Telemetry Logging); registo de drift de comportamento e degradação de precisão; alertas para anomalias de prompt input (potencial prompt injection); audit trail completo de model versions deployed e dataset versions usados em inferência. Os logs são integrados no SIEM/observability pipeline existente (OPS-004); a deteção de anomalias específicas a AI/ML (drift, prompt injection patterns, exfiltration via tool calls) é tratada em OPS-009 com baselines AI-aware.",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Para cada agente AI em nível A1+ (ver Cap. 02 — A0-A4) em uso operacional, cada *tool call* gera *audit event* estruturado com timestamp, agent_id, session_id, mandate_ref (Policy 38), autonomy_level, tool, tool_version, args (PII redactada), intent_event_ref (REQ-AGN-004 em A2+), outcome, external_effect. Eventos integrados no SIEM (OPS-004); divergência entre intent declarado e acção real gera alerta accionável; reúne-se a base para auditoria do mandate_ref e para reconstrução *post-mortem* de qualquer sessão.",
+      "evidence_type": "log",
+      "expected_artifact_type_ids": [
+        "ART-log-stream-b67ee06f7e",
+        "ART-alert-policy-c55180d8ab"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-log-stream-b67ee06f7e",
+          "confidence": 0.68,
+          "name": "Log Stream",
+          "shared_salient_tokens": [
+            "audit"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-alert-policy-c55180d8ab",
+          "confidence": 0.54,
+          "name": "Alert Policy",
+          "shared_salient_tokens": [
+            "policy"
+          ]
+        }
+      ],
+      "id": "EP-OPS-012",
+      "maps_to_control_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "maps_to_control_name": "Monitorização e resposta operacional",
+      "maps_to_requirement_id": "OPS-012",
+      "requirement_category": "OPS",
+      "requirement_name": "Audit completo por *tool invocation* de agente AI",
+      "responsible_roles": [],
+      "risk_level_hint": null,
+      "source_bundle": "12-monitorizacao-operacoes",
+      "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
+      "source_mode": "explicit",
+      "supported_signal_ids": [],
+      "verification_logic": "Para cada agente AI em nível A1+ (ver Cap. 02 — A0-A4) em uso operacional, cada *tool call* gera *audit event* estruturado com timestamp, agent_id, session_id, mandate_ref (Policy 38), autonomy_level, tool, tool_version, args (PII redactada), intent_event_ref (REQ-AGN-004 em A2+), outcome, external_effect. Eventos integrados no SIEM (OPS-004); divergência entre intent declarado e acção real gera alerta accionável; reúne-se a base para auditoria do mandate_ref e para reconstrução *post-mortem* de qualquer sessão.",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Por agente e por mandate, define-se *budget* máximo de consumo por janela temporal (tokens, chamadas, custo); cada inferência conta para o orçamento; ao atingir threshold de aviso, alerta vai ao *owner*; ao atingir threshold máximo, sessão pausa ou *kill-switch* é accionado conforme nível de autonomia. Métricas de uso reportadas com cadência da revisão do *mandate*. Detecta *loops* descontrolados, abuso, regressões de eficiência do modelo após *upgrade*.",
+      "evidence_type": "log",
+      "expected_artifact_type_ids": [
+        "ART-alert-policy-c55180d8ab",
+        "ART-governance-kpi-a03cc67a9e"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-alert-policy-c55180d8ab",
+          "confidence": 0.54,
+          "name": "Alert Policy",
+          "shared_salient_tokens": [
+            "alerta"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-governance-kpi-a03cc67a9e",
+          "confidence": 0.54,
+          "name": "Governance Kpi",
+          "shared_salient_tokens": [
+            "metrica"
+          ]
+        }
+      ],
+      "id": "EP-OPS-013",
+      "maps_to_control_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "maps_to_control_name": "Monitorização e resposta operacional",
+      "maps_to_requirement_id": "OPS-013",
+      "requirement_category": "OPS",
+      "requirement_name": "Budget e detecção de *runaway* em consumo de modelo (token spend)",
+      "responsible_roles": [],
+      "risk_level_hint": null,
+      "source_bundle": "12-monitorizacao-operacoes",
+      "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
+      "source_mode": "explicit",
+      "supported_signal_ids": [],
+      "verification_logic": "Por agente e por mandate, define-se *budget* máximo de consumo por janela temporal (tokens, chamadas, custo); cada inferência conta para o orçamento; ao atingir threshold de aviso, alerta vai ao *owner*; ao atingir threshold máximo, sessão pausa ou *kill-switch* é accionado conforme nível de autonomia. Métricas de uso reportadas com cadência da revisão do *mandate*. Detecta *loops* descontrolados, abuso, regressões de eficiência do modelo após *upgrade*.",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd",
+        "documentation"
+      ],
+      "evidence_expectation": "Para agentes A2+, mecanismo activo de detecção de tentativas de *jailbreak* (LLM01-2025) e *off-policy actions* — acções fora do *scope* declarado no *mandate*. Sinais incluem: divergência entre intent declarado e acção real (cross-link OPS-012), padrões adversariais conhecidos no input, *tool call* com argumentos materialmente diferentes do esperado, recusas do modelo seguidas de tentativa diferente do utilizador. Eventos accionáveis alimentam IR (OPS-007) e a *eval suite* offline (Cap. 10 §C5). Para sistemas L3 com componente AI, deteção é obrigatória — para A4 com *mandate* assinado, é actualizada com cadência declarada no *mandate*.",
+      "evidence_type": "log",
+      "expected_artifact_type_ids": [
+        "ART-artifact-signature-1d67811ec5",
+        "ART-signature-attestation-67e300d959"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-artifact-signature-1d67811ec5",
+          "confidence": 0.88,
+          "name": "Artifact Signature",
+          "shared_salient_tokens": [
+            "assinatura"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-signature-attestation-67e300d959",
+          "confidence": 0.88,
+          "name": "Signature Attestation",
+          "shared_salient_tokens": [
+            "assinatura"
+          ]
+        }
+      ],
+      "id": "EP-OPS-014",
+      "maps_to_control_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "maps_to_control_name": "Monitorização e resposta operacional",
+      "maps_to_requirement_id": "OPS-014",
+      "requirement_category": "OPS",
+      "requirement_name": "Detecção de *jailbreak* / *off-policy actions* em produção",
+      "responsible_roles": [],
+      "risk_level_hint": null,
+      "source_bundle": "12-monitorizacao-operacoes",
+      "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
+      "source_mode": "explicit",
+      "supported_signal_ids": [],
+      "verification_logic": "Para agentes A2+, mecanismo activo de detecção de tentativas de *jailbreak* (LLM01-2025) e *off-policy actions* — acções fora do *scope* declarado no *mandate*. Sinais incluem: divergência entre intent declarado e acção real (cross-link OPS-012), padrões adversariais conhecidos no input, *tool call* com argumentos materialmente diferentes do esperado, recusas do modelo seguidas de tentativa diferente do utilizador. Eventos accionáveis alimentam IR (OPS-007) e a *eval suite* offline (Cap. 10 §C5). Para sistemas L3 com componente AI, deteção é obrigatória — para A4 com *mandate* assinado, é actualizada com cadência declarada no *mandate*.",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "logs",
         "ci_cd"
       ],
       "evidence_expectation": "Requisitos marcados e rastreáveis no backlog.",
@@ -7547,9 +7912,18 @@
       "evidence_expectation": "Configuração de TTL. Evidência de expiração forçada.",
       "evidence_type": "workflow",
       "expected_artifact_type_ids": [
+        "ART-operational-evidence-f5e852756f",
         "ART-validation-evidence-79f6aaf0ec"
       ],
       "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-operational-evidence-f5e852756f",
+          "confidence": 0.54,
+          "name": "Operational Evidence",
+          "shared_salient_tokens": [
+            "evidencia"
+          ]
+        },
         {
           "artifact_type_id": "ART-validation-evidence-79f6aaf0ec",
           "confidence": 0.54,
@@ -7906,6 +8280,53 @@
       "source_mode": "explicit",
       "supported_signal_ids": [],
       "verification_logic": "Antes de go-live de novas aplicações L2+ ou de alterações arquitecturais com impacto material num sistema L2+, o threat model é revisto por AppSec ou elemento com competência equivalente independente da equipa; a revisão produz evidência (registo, aprovação ou lista de desvios com plano); ausência de revisão bloqueia o go-live.",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "logs",
+        "ci_cd"
+      ],
+      "evidence_expectation": "Sistemas que integram componentes de inteligência artificial ou machine learning (modelos preditivos, LLMs em interface conversacional, sistemas de RAG, agentes autónomos com tool invocation) têm threat model estendido que cobre ameaças adversariais específicas — model poisoning, prompt injection directa e indirecta, training data poisoning, model theft, evasion attacks, AI supply chain compromise — referenciadas a catálogos estabelecidos (MITRE ATLAS, NIST AI 100-2 e2025); o modelo identifica trust boundaries adicionais para training data, model artifacts, inference endpoints e tool invocations; STRIDE ou LINDDUN são complementados (não substituídos) com framing AI/ML conforme aplicável.",
+      "evidence_type": "log",
+      "expected_artifact_type_ids": [
+        "ART-threat-model-3a09510d13",
+        "ART-data-flow-diagram-5cb5415fa5"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-threat-model-3a09510d13",
+          "confidence": 0.56,
+          "name": "Threat Model",
+          "shared_salient_tokens": [
+            "model",
+            "threat"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-data-flow-diagram-5cb5415fa5",
+          "confidence": 0.54,
+          "name": "Data Flow Diagram",
+          "shared_salient_tokens": [
+            "data"
+          ]
+        }
+      ],
+      "id": "EP-THR-008",
+      "maps_to_control_id": "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0",
+      "maps_to_control_name": "Threat modeling e gestão de risco",
+      "maps_to_requirement_id": "THR-008",
+      "requirement_category": "THR",
+      "requirement_name": "Threat modeling estendido para sistemas com componentes AI/ML",
+      "responsible_roles": [],
+      "risk_level_hint": null,
+      "source_bundle": "03-threat-modeling",
+      "source_document": "010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md",
+      "source_mode": "explicit",
+      "supported_signal_ids": [],
+      "verification_logic": "Sistemas que integram componentes de inteligência artificial ou machine learning (modelos preditivos, LLMs em interface conversacional, sistemas de RAG, agentes autónomos com tool invocation) têm threat model estendido que cobre ameaças adversariais específicas — model poisoning, prompt injection directa e indirecta, training data poisoning, model theft, evasion attacks, AI supply chain compromise — referenciadas a catálogos estabelecidos (MITRE ATLAS, NIST AI 100-2 e2025); o modelo identifica trust boundaries adicionais para training data, model artifacts, inference endpoints e tool invocations; STRIDE ou LINDDUN são complementados (não substituídos) com framing AI/ML conforme aplicável.",
       "verification_when": null
     },
     {
@@ -8931,28 +9352,31 @@
     {
       "authority_class": "normative",
       "confidence_model": "deterministic",
-      "detectable_in": [],
-      "evidence_expectation": "Testes com payloads XSS. Sanitização de output observável.",
-      "evidence_type": "test",
+      "detectable_in": [
+        "logs",
+        "ci_cd"
+      ],
+      "evidence_expectation": "Análise de fluxo de dados com pontos de validação evidenciados. Code review confirma ausência de caminhos não validados.",
+      "evidence_type": "log",
       "expected_artifact_type_ids": [
-        "ART-sca-report-da2c6d2413",
-        "ART-test-report-b11c5dfb8a"
+        "ART-iac-plan-8b3e802ef7",
+        "ART-review-checklist-de29054201"
       ],
       "expected_artifacts": [
         {
-          "artifact_type_id": "ART-sca-report-da2c6d2413",
+          "artifact_type_id": "ART-iac-plan-8b3e802ef7",
           "confidence": 0.54,
-          "name": "Sca Report",
+          "name": "Iac Plan",
           "shared_salient_tokens": [
-            "output"
+            "code"
           ]
         },
         {
-          "artifact_type_id": "ART-test-report-b11c5dfb8a",
+          "artifact_type_id": "ART-review-checklist-de29054201",
           "confidence": 0.54,
-          "name": "Test Report",
+          "name": "Review Checklist",
           "shared_salient_tokens": [
-            "teste"
+            "review"
           ]
         }
       ],
@@ -8968,7 +9392,7 @@
       "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "verification_logic": "Testar output em campos renderizados no browser. Confirmar escaping correcto.",
+      "verification_logic": "Rastrear caminhos entre input layer e lógica de negócio/persistência. Confirmar que validação precede uso interno; identificar caminhos não validados.",
       "verification_when": null
     },
     {
@@ -9052,6 +9476,52 @@
       "source_mode": "explicit",
       "supported_signal_ids": [],
       "verification_logic": "Executar testes automatizados com payloads maliciosos (XSS, SQLi, path traversal).",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "logs",
+        "ci_cd"
+      ],
+      "evidence_expectation": "Testes com payloads XSS/SQLi/log injection. Encoding observável conforme contexto de renderização.",
+      "evidence_type": "log",
+      "expected_artifact_type_ids": [
+        "ART-log-stream-b67ee06f7e",
+        "ART-sca-report-da2c6d2413"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-log-stream-b67ee06f7e",
+          "confidence": 0.68,
+          "name": "Log Stream",
+          "shared_salient_tokens": [
+            "log"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-sca-report-da2c6d2413",
+          "confidence": 0.54,
+          "name": "Sca Report",
+          "shared_salient_tokens": [
+            "output"
+          ]
+        }
+      ],
+      "id": "EP-VAL-008",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_requirement_id": "VAL-008",
+      "requirement_category": "VAL",
+      "requirement_name": "Codificação/escaping de output em renderização (anti-XSS)",
+      "responsible_roles": [],
+      "risk_level_hint": "L1+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md",
+      "source_mode": "explicit",
+      "supported_signal_ids": [],
+      "verification_logic": "Testar output em superfícies renderizadas (HTML, atributo, JS, SQL via prepared statements, shell, logs). Confirmar encoding contextual correcto.",
       "verification_when": null
     }
   ],

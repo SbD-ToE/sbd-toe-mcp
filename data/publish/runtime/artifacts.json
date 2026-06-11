@@ -6,10 +6,11 @@
     {
       "artifact_type_id": "ART-access-review-e0648977e7",
       "canonical_aliases": [
-        "Access Review"
+        "access review"
       ],
       "category": "governance_record",
       "chapter_occurrences": [
+        "04-arquitetura-segura",
         "08-iac-infraestrutura",
         "09-containers-imagens",
         "11-deploy-seguro",
@@ -18,7 +19,8 @@
       "confidence": null,
       "description": "Governance Record artifact used as auditable evidence.",
       "evidence": [
-        "control CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af references access_review"
+        "control CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af references access_review",
+        "corpus document 010-sbd-manual/04-arquitetura-segura/canon/25-rastreabilidade.md matched aliases ['access review']"
       ],
       "lifecycle_phases": [
         "design",
@@ -44,6 +46,7 @@
         "00-fundamentos",
         "01-classificacao-aplicacoes",
         "02-requisitos-seguranca",
+        "03-threat-modeling",
         "04-arquitetura-segura",
         "05-dependencias-sbom-sca",
         "06-desenvolvimento-seguro",
@@ -133,7 +136,7 @@
     {
       "artifact_type_id": "ART-architecture-baseline-57234e937b",
       "canonical_aliases": [
-        "Architecture Baseline"
+        "architecture baseline"
       ],
       "category": "evidence",
       "chapter_occurrences": [
@@ -142,7 +145,8 @@
       "confidence": null,
       "description": "Evidence artifact used as auditable evidence.",
       "evidence": [
-        "control CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4 references architecture_baseline"
+        "control CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4 references architecture_baseline",
+        "corpus document 010-sbd-manual/04-arquitetura-segura/canon/25-rastreabilidade.md matched aliases ['architecture baseline']"
       ],
       "lifecycle_phases": [
         "testing",
@@ -196,10 +200,10 @@
       "description": "Evidence artifact used as auditable evidence.",
       "evidence": [
         "control CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4 references architecture_decision_record",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/04-arquitetura-segura/addon/01-catalogo-requisitos.md matched aliases ['architecture decision record']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/04-arquitetura-segura/addon/06-rastreabilidade.md matched aliases ['architecture decision record']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/04-arquitetura-segura/addon/07-termos-e-glossario-arquitetura.md matched aliases ['architecture decision record']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/04-arquitetura-segura/addon/10-kpis-metricas.md matched aliases ['architecture decision record']"
+        "corpus document 010-sbd-manual/04-arquitetura-segura/addon/01-catalogo-requisitos.md matched aliases ['architecture decision record']",
+        "corpus document 010-sbd-manual/04-arquitetura-segura/addon/06-rastreabilidade.md matched aliases ['architecture decision record']",
+        "corpus document 010-sbd-manual/04-arquitetura-segura/addon/07-termos-e-glossario-arquitetura.md matched aliases ['architecture decision record']",
+        "corpus document 010-sbd-manual/04-arquitetura-segura/addon/10-kpis-metricas.md matched aliases ['architecture decision record']"
       ],
       "lifecycle_phases": [
         "testing",
@@ -242,7 +246,7 @@
     {
       "artifact_type_id": "ART-architecture-review-5bbd6e5876",
       "canonical_aliases": [
-        "Architecture Review"
+        "architecture review"
       ],
       "category": "evidence",
       "chapter_occurrences": [
@@ -251,7 +255,8 @@
       "confidence": null,
       "description": "Evidence artifact used as auditable evidence.",
       "evidence": [
-        "control CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4 references architecture_review"
+        "control CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4 references architecture_review",
+        "corpus document 010-sbd-manual/04-arquitetura-segura/canon/25-rastreabilidade.md matched aliases ['architecture review']"
       ],
       "lifecycle_phases": [
         "testing",
@@ -321,6 +326,7 @@
     {
       "artifact_type_id": "ART-artifact-signature-1d67811ec5",
       "canonical_aliases": [
+        "artifact signature",
         "assinatura",
         "assinatura digital",
         "assinaturas",
@@ -375,6 +381,7 @@
     {
       "artifact_type_id": "ART-container-image-51e2624252",
       "canonical_aliases": [
+        "container image",
         "docker image",
         "imagem",
         "imagens"
@@ -419,6 +426,7 @@
     {
       "artifact_type_id": "ART-data-flow-diagram-5cb5415fa5",
       "canonical_aliases": [
+        "data flow diagram",
         "data flow diagrams"
       ],
       "category": "evidence",
@@ -430,7 +438,8 @@
       "description": "Evidence artifact used as auditable evidence.",
       "evidence": [
         "control CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b references data_flow_diagram",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md matched aliases ['data flow diagrams']"
+        "corpus document 010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md matched aliases ['data flow diagrams']",
+        "corpus document 010-sbd-manual/03-threat-modeling/addon/13-linddun-privacidade.md matched aliases ['data flow diagram', 'data flow diagrams']"
       ],
       "lifecycle_phases": [
         "testing",
@@ -447,6 +456,7 @@
     {
       "artifact_type_id": "ART-dependency-inventory-4ddd43ae4f",
       "canonical_aliases": [
+        "dependency inventory",
         "inventario de componentes",
         "inventario de dependencias"
       ],
@@ -456,7 +466,6 @@
         "02-requisitos-seguranca",
         "04-arquitetura-segura",
         "05-dependencias-sbom-sca",
-        "09-containers-imagens",
         "14-governanca-contratacao"
       ],
       "confidence": null,
@@ -464,9 +473,9 @@
       "evidence": [
         "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references dependency_inventory",
         "practice 05-dependencias-sbom-sca:inventario-e-sbom-por-build matched alias 'inventario de dependencias'",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/baseline.md matched aliases ['inventario de dependencias']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/04-arquitetura-segura/addon/01-catalogo-requisitos.md matched aliases ['inventario de componentes']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md matched aliases ['inventario de componentes']"
+        "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['inventario de dependencias']",
+        "corpus document 010-sbd-manual/04-arquitetura-segura/addon/01-catalogo-requisitos.md matched aliases ['inventario de componentes']",
+        "corpus document 010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md matched aliases ['inventario de componentes']"
       ],
       "lifecycle_phases": [
         "design",
@@ -492,8 +501,10 @@
         "00-fundamentos",
         "01-classificacao-aplicacoes",
         "02-requisitos-seguranca",
+        "03-threat-modeling",
         "04-arquitetura-segura",
         "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
         "07-cicd-seguro",
         "08-iac-infraestrutura",
         "09-containers-imagens",
@@ -552,8 +563,8 @@
         "control CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905 references environment_inventory",
         "practice 08-iac-infraestrutura:segregacao-de-ambientes-tagging-e-permissoes-minimas matched alias 'ambientes'",
         "practice 11-deploy-seguro:controlo-e-validacao-de-drift-operacional matched alias 'ambientes'",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/baseline.md matched aliases ['ambientes']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/roles-responsabilidades/arquitetos-software.md matched aliases ['ambientes']"
+        "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['ambientes']",
+        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/arquitetos-software.md matched aliases ['ambientes']"
       ],
       "lifecycle_phases": [
         "design",
@@ -727,8 +738,8 @@
         "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references guideline_catalog",
         "practice 06-desenvolvimento-seguro:governacao-e-curadoria-de-guidelines matched alias 'guidelines'",
         "practice 06-desenvolvimento-seguro:guidelines-de-desenvolvimento-seguro matched alias 'guidelines'",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/baseline.md matched aliases ['guidelines']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/roles-responsabilidades/appsec-engineer.md matched aliases ['guidelines']"
+        "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['guidelines']",
+        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/appsec-engineer.md matched aliases ['guidelines']"
       ],
       "lifecycle_phases": [
         "design",
@@ -791,6 +802,7 @@
       "canonical_aliases": [
         "binding",
         "bindings",
+        "identity binding",
         "rbac",
         "service account",
         "service accounts"
@@ -803,10 +815,12 @@
         "03-threat-modeling",
         "04-arquitetura-segura",
         "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
         "07-cicd-seguro",
         "08-iac-infraestrutura",
         "09-containers-imagens",
         "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
@@ -816,8 +830,8 @@
         "control CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af references identity_binding",
         "control CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9 references identity_binding",
         "practice 09-containers-imagens:rbac-minimo-e-serviceaccounts-dedicadas matched alias 'rbac'",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/roles-responsabilidades/devops-sre.md matched aliases ['rbac']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/01-classificacao-aplicacoes/addon/06-mapeamento-ameacas-risco.md matched aliases ['rbac']"
+        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/devops-sre.md matched aliases ['rbac']",
+        "corpus document 010-sbd-manual/01-classificacao-aplicacoes/addon/06-mapeamento-ameacas-risco.md matched aliases ['rbac']"
       ],
       "lifecycle_phases": [
         "design",
@@ -887,8 +901,9 @@
       "description": "Evidence artifact used as auditable evidence.",
       "evidence": [
         "control CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b references integration_review",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/04-arquitetura-segura/addon/07-termos-e-glossario-arquitetura.md matched aliases ['integration review']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/04-arquitetura-segura/aplicacao-lifecycle.md matched aliases ['integration review']"
+        "corpus document 010-sbd-manual/04-arquitetura-segura/addon/07-termos-e-glossario-arquitetura.md matched aliases ['integration review']",
+        "corpus document 010-sbd-manual/04-arquitetura-segura/aplicacao-lifecycle.md matched aliases ['integration review']",
+        "corpus document 010-sbd-manual/04-arquitetura-segura/canon/25-rastreabilidade.md matched aliases ['integration review']"
       ],
       "lifecycle_phases": [
         "testing",
@@ -933,8 +948,8 @@
         "control CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70 references log_stream",
         "practice 07-cicd-seguro:contencao-de-contexto-e-higiene-de-logs-outputs matched alias 'logs'",
         "practice 12-monitorizacao-operacoes:seguranca-e-integridade-de-logs matched alias 'logs'",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/baseline.md matched aliases ['logs']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/roles-responsabilidades/developer.md matched aliases ['logs']"
+        "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['logs']",
+        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/developer.md matched aliases ['logs']"
       ],
       "lifecycle_phases": [
         "operations"
@@ -997,12 +1012,11 @@
     {
       "artifact_type_id": "ART-operational-evidence-f5e852756f",
       "canonical_aliases": [
-        "evidencia imutavel",
         "evidencia operacional"
       ],
       "category": "evidence",
       "chapter_occurrences": [
-        "09-containers-imagens",
+        "02-requisitos-seguranca",
         "11-deploy-seguro"
       ],
       "confidence": null,
@@ -1010,8 +1024,9 @@
       "evidence": [
         "control CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0 references operational_evidence",
         "practice 11-deploy-seguro:evidencia-operacional-auditavel matched alias 'evidencia operacional'",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/09-containers-imagens/canon/50-ameacas-mitigadas.md matched aliases ['evidencia imutavel']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md matched aliases ['evidencia operacional']"
+        "corpus document 010-sbd-manual/02-requisitos-seguranca/addon/09-governaca-automatismos.md matched aliases ['evidencia operacional']",
+        "corpus document 010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md matched aliases ['evidencia operacional']",
+        "corpus document 010-sbd-manual/11-deploy-seguro/canon/25-rastreabilidade.md matched aliases ['evidencia operacional']"
       ],
       "lifecycle_phases": [
         "testing",
@@ -1143,6 +1158,7 @@
         "01-classificacao-aplicacoes",
         "02-requisitos-seguranca",
         "03-threat-modeling",
+        "04-arquitetura-segura",
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
@@ -1151,9 +1167,9 @@
       "evidence": [
         "control CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf references quiz_result",
         "practice 13-formacao-onboarding:operacionalizacao-de-formacao-de-terceiros matched alias 'quiz'",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/baseline.md matched aliases ['assessment']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md matched aliases ['quiz']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/01-classificacao-aplicacoes/pre-note.md matched aliases ['assessment']"
+        "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['assessment']",
+        "corpus document 010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md matched aliases ['quiz']",
+        "corpus document 010-sbd-manual/01-classificacao-aplicacoes/pre-note.md matched aliases ['assessment']"
       ],
       "lifecycle_phases": [
         "testing",
@@ -1266,7 +1282,8 @@
     {
       "artifact_type_id": "ART-risk-acceptance-record-ebea5da638",
       "canonical_aliases": [
-        "risco residual"
+        "risco residual",
+        "risk acceptance"
       ],
       "category": "governance_record",
       "chapter_occurrences": [
@@ -1286,9 +1303,9 @@
       "evidence": [
         "control CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0 references risk_acceptance_record",
         "practice 01-classificacao-aplicacoes:analise-de-risco-residual matched alias 'risco residual'",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/roles-responsabilidades/appsec-engineer.md matched aliases ['risco residual']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/roles-responsabilidades/gestao-executiva.md matched aliases ['risco residual']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/roles-responsabilidades/grc-compliance.md matched aliases ['risco residual']"
+        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/appsec-engineer.md matched aliases ['risco residual']",
+        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/gestao-executiva.md matched aliases ['risco residual']",
+        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/grc-compliance.md matched aliases ['risco residual']"
       ],
       "lifecycle_phases": [
         "design",
@@ -1312,7 +1329,6 @@
       "chapter_occurrences": [
         "01-classificacao-aplicacoes",
         "02-requisitos-seguranca",
-        "04-arquitetura-segura",
         "10-testes-seguranca",
         "13-formacao-onboarding"
       ],
@@ -1320,10 +1336,9 @@
       "description": "Evidence artifact used as auditable evidence.",
       "evidence": [
         "control CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29 references risk_matrix",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md matched aliases ['matriz de risco']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/04-arquitetura-segura/canon/50-ameacas-mitigadas.md matched aliases ['matriz de risco']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/10-testes-seguranca/addon/06-cobertura-e-priorizacao.md matched aliases ['matriz de risco']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/13-formacao-onboarding/aplicacao-lifecycle.md matched aliases ['matriz de riscos']"
+        "corpus document 010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md matched aliases ['matriz de risco']",
+        "corpus document 010-sbd-manual/10-testes-seguranca/addon/06-cobertura-e-priorizacao.md matched aliases ['matriz de risco']",
+        "corpus document 010-sbd-manual/13-formacao-onboarding/aplicacao-lifecycle.md matched aliases ['matriz de riscos']"
       ],
       "lifecycle_phases": [
         "testing",
@@ -1348,6 +1363,7 @@
       "chapter_occurrences": [
         "00-fundamentos",
         "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
         "05-dependencias-sbom-sca",
         "07-cicd-seguro",
         "08-iac-infraestrutura",
@@ -1364,7 +1380,7 @@
         "practice 08-iac-infraestrutura:rollback-e-salvaguarda-de-destroy matched alias 'rollback'",
         "practice 11-deploy-seguro:rollback-estruturado-por-tipo-binario-configuracao-bd-infra matched alias 'rollback'",
         "practice 11-deploy-seguro:rollback-rapido-e-testado matched alias 'rollback'",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/roles-responsabilidades/appsec-engineer.md matched aliases ['rollback']"
+        "corpus document 010-sbd-manual/00-fundamentos/canon/25-rastreabilidade.md matched aliases ['rollback']"
       ],
       "lifecycle_phases": [
         "design",
@@ -1382,7 +1398,8 @@
       "artifact_type_id": "ART-sast-report-0358e14566",
       "canonical_aliases": [
         "linters",
-        "sast"
+        "sast",
+        "static analysis"
       ],
       "category": "security_report",
       "chapter_occurrences": [
@@ -1405,8 +1422,8 @@
         "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references sast_report",
         "practice 06-desenvolvimento-seguro:automatizacao-em-ci-cd-linters-sast matched alias 'linters'",
         "practice 10-testes-seguranca:sast-obrigatorio-em-pull-request matched alias 'sast'",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/baseline.md matched aliases ['sast']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/roles-responsabilidades/appsec-engineer.md matched aliases ['linters', 'sast']"
+        "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['sast']",
+        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/appsec-engineer.md matched aliases ['linters', 'sast']"
       ],
       "lifecycle_phases": [
         "testing",
@@ -1434,6 +1451,7 @@
         "00-fundamentos",
         "01-classificacao-aplicacoes",
         "02-requisitos-seguranca",
+        "03-threat-modeling",
         "04-arquitetura-segura",
         "05-dependencias-sbom-sca",
         "06-desenvolvimento-seguro",
@@ -1486,11 +1504,15 @@
         "00-fundamentos",
         "01-classificacao-aplicacoes",
         "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
         "05-dependencias-sbom-sca",
         "06-desenvolvimento-seguro",
         "07-cicd-seguro",
+        "08-iac-infraestrutura",
         "09-containers-imagens",
         "10-testes-seguranca",
+        "12-monitorizacao-operacoes",
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
@@ -1536,6 +1558,8 @@
         "00-fundamentos",
         "01-classificacao-aplicacoes",
         "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
         "05-dependencias-sbom-sca",
         "06-desenvolvimento-seguro",
         "07-cicd-seguro",
@@ -1574,6 +1598,7 @@
       "canonical_aliases": [
         "assinatura",
         "assinaturas",
+        "atestacao",
         "attestation",
         "attestations"
       ],
@@ -1625,7 +1650,7 @@
       "category": "governance_record",
       "chapter_occurrences": [
         "05-dependencias-sbom-sca",
-        "08-iac-infraestrutura",
+        "09-containers-imagens",
         "10-testes-seguranca",
         "13-formacao-onboarding",
         "14-governanca-contratacao"
@@ -1634,10 +1659,10 @@
       "description": "Governance Record artifact used as auditable evidence.",
       "evidence": [
         "control CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628 references supplier_assessment",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/05-dependencias-sbom-sca/addon/01-inventario-sbom.md matched aliases ['fornecedor']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/05-dependencias-sbom-sca/canon/25-rastreabilidade.md matched aliases ['third party']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/08-iac-infraestrutura/canon/25-rastreabilidade.md matched aliases ['third party']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/10-testes-seguranca/addon/14-tlpt-readiness.md matched aliases ['third party']"
+        "corpus document 010-sbd-manual/05-dependencias-sbom-sca/addon/01-inventario-sbom.md matched aliases ['fornecedor']",
+        "corpus document 010-sbd-manual/09-containers-imagens/addon/12-self-hosted-inference.md matched aliases ['third party']",
+        "corpus document 010-sbd-manual/10-testes-seguranca/addon/14-tlpt-readiness.md matched aliases ['third party']",
+        "corpus document 010-sbd-manual/13-formacao-onboarding/addon/11-kpis-metricas.md matched aliases ['fornecedor']"
       ],
       "lifecycle_phases": [
         "design",
@@ -1759,6 +1784,9 @@
         "00-fundamentos",
         "01-classificacao-aplicacoes",
         "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
         "06-desenvolvimento-seguro",
         "07-cicd-seguro",
         "08-iac-infraestrutura",
@@ -1790,7 +1818,7 @@
     {
       "artifact_type_id": "ART-trust-boundary-model-e661186e9f",
       "canonical_aliases": [
-        "Trust Boundary Model"
+        "trust boundary models"
       ],
       "category": "evidence",
       "chapter_occurrences": [
@@ -1799,7 +1827,8 @@
       "confidence": null,
       "description": "Evidence artifact used as auditable evidence.",
       "evidence": [
-        "control CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b references trust_boundary_model"
+        "control CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b references trust_boundary_model",
+        "corpus document 010-sbd-manual/04-arquitetura-segura/canon/25-rastreabilidade.md matched aliases ['trust boundary models']"
       ],
       "lifecycle_phases": [
         "testing",
@@ -1842,9 +1871,9 @@
       "evidence": [
         "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references validation_evidence",
         "practice 06-desenvolvimento-seguro:arquivo-central-de-evidencias-de-validacao matched alias 'evidencias'",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/roles-responsabilidades/auditores.md matched aliases ['evidencias']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/roles-responsabilidades/developer.md matched aliases ['evidencias']",
-        "corpus document /Users/pedrofarinha/Shared-Projs/SecurityByDesign-TheoryOfEverything/SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/roles-responsabilidades/devops-sre.md matched aliases ['evidencias']"
+        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/auditores.md matched aliases ['evidencias']",
+        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/developer.md matched aliases ['evidencias']",
+        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/devops-sre.md matched aliases ['evidencias']"
       ],
       "lifecycle_phases": [
         "testing",

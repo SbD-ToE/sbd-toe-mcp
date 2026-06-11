@@ -6,7 +6,7 @@
   "substrate_version": "v2-draft",
   "kg_bundle": {
     "release_tag": "kg-v1-manual-v1.6.1-aligned-2026-06-11",
-    "release_sha256": "45754aaa1ca45e246028e9fe8b21dc5b8a83218cddb43a5a7469c1d215d65e1f",
+    "release_sha256": "1b601e93dfe3bf91d13ea666e1cbc0dcfb68fbae3fe3b6b129794bf1dd45e9b1",
     "source": "dev-build",
     "surface_built_at": "2026-06-11T14:13:59.519553+00:00",
     "tag_scheme": "cycle-aligned",
