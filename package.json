@@ -75,6 +75,7 @@
     "eval:qualitative": "node scripts/run-qualitative-eval.mjs",
     "eval:qualitative:interactive": "node scripts/run-qualitative-eval.mjs --interactive",
     "lock:graph-runtime": "node scripts/write-graph-runtime-lock.mjs",
+    "sync:bundle": "node scripts/sync-bundle.mjs",
     "package:release": "node scripts/package-release.mjs",
     "prepack": "npm run build",
     "test": "vitest run",
