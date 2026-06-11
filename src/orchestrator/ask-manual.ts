@@ -190,7 +190,15 @@ export async function searchManualQuestion(
   options: { vectorMode?: VectorRecallMode } = {}
 ): Promise<ManualToolResult> {
   const config = getConfig();
-  const prepared = await prepareManualAnsweringContext(question, topK, options);
+  // Bound the debug appendix to the search depth (topK): with debug on, the
+  // unbounded path serialized the full candidate pool (~4k records / ~5MB) into
+  // both debugText and debug.retrieved — the same token-bomb class as inspect.
+  const budget = resolveBudget("diagnostic", topK !== undefined ? { maxRecords: topK } : {});
+  const prepared = await prepareManualAnsweringContext(question, topK, options, {
+    limit: budget.maxRecords,
+    excerptMaxChars: budget.maxExcerptChars,
+  });
+  const boundedRetrieved = boundList(prepared.retrieval.retrieved, budget.maxRecords);
   const text =
     debugOverride ?? config.debugMode
       ? `${prepared.retrievalText}\n\n---\n\n${prepared.debugText}`
@@ -206,7 +214,18 @@ export async function searchManualQuestion(
       backendSnapshot: prepared.retrieval.backendSnapshot,
       prompt: prepared.prompt.fullPrompt,
       selectedCitationIds: prepared.retrieval.selected.map((record) => record.citationId),
-      retrieved: prepared.retrieval.retrieved.map((record) => ({
+      meta: {
+        retrievedTotal: boundedRetrieved.total,
+        retrievedReturned: boundedRetrieved.returned,
+        retrievedTruncated: boundedRetrieved.truncated,
+        retrievedOmitted: boundedRetrieved.omitted,
+        selectedCount: prepared.retrieval.selected.length,
+        excerptMaxChars: budget.maxExcerptChars,
+        note:
+          "Debug retrieved bounded to topK to keep the response within budget; " +
+          "retrievedTotal is the full candidate pool before bounding.",
+      },
+      retrieved: boundedRetrieved.items.map((record) => ({
         citationId: record.citationId,
         source: record.source,
         indexName: record.indexName,
@@ -224,7 +243,7 @@ export async function searchManualQuestion(
         pageLabel: record.pageLabel,
         documentPath: record.documentPath,
         chapterPath: record.chapterPath,
-        excerpt: record.excerpt,
+        excerpt: truncateText(record.excerpt, budget.maxExcerptChars).value,
         traceability: record.traceability
       }))
     }
