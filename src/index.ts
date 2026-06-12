@@ -12,6 +12,7 @@ import {
   searchManualQuestion
 } from "./orchestrator/ask-manual.js";
 import { loadSystemPromptTemplate } from "./prompt/system-prompt.js";
+import { loadBundleProvenance } from "./version-info.js";
 import {
   handleGetSbdToeChapterBrief,
   handleListSbdToeChapters,
@@ -74,6 +75,7 @@ interface PackageMetadata {
   version: string;
   description: string;
 }
+
 
 type JsonRpcMessage =
   | JsonRpcRequest
@@ -1266,7 +1268,7 @@ class McpRuntime {
         {
           uri: "sbd://toe/version",
           name: "SbD-ToE MCP Version",
-          description: "Current version of the running SbD-ToE MCP server (name, version, description).",
+          description: "Version of the running SbD-ToE MCP server (name, version, description) plus the provenance of the served knowledge: manual {version, commit}, kg {release_tag, substrate_version, consumer_contract_version} and ontology {tag, commit}, read from the consumed-bundle pin.",
           mimeType: "application/json"
         },
         {
@@ -1369,10 +1371,16 @@ class McpRuntime {
     if (uri === "sbd://toe/version") {
       try {
         const pkg = loadPackageMetadata();
+        const provenance = loadBundleProvenance();
         const payload = JSON.stringify({
           name: pkg.name,
           version: pkg.version,
-          description: pkg.description
+          description: pkg.description,
+          // Provenance of the served knowledge (from the consumed-bundle.json pin).
+          // Absent if the pin cannot be read; never invented.
+          manual: provenance?.manual,
+          kg: provenance?.kg,
+          ontology: provenance?.ontology
         });
         this.sendResponse(request.id, {
           contents: [{ uri, mimeType: "application/json", text: payload }]

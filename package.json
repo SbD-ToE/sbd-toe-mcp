@@ -1,6 +1,6 @@
 {
   "name": "@shiftleftpt/sbd-toe-mcp",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "license": "Apache-2.0",
   "description": "MCP server for the SbD-ToE (Security by Design — Theory of Everything) security manual — structured tools for Claude, GitHub Copilot and other MCP clients",
   "keywords": [
@@ -65,6 +65,7 @@
     "data/entities/proportionality.json",
     "data/entities/sdlc_integration.json",
     "data/reports/run_manifest.json",
+    "consumed-bundle.json",
     "prompts/",
     "examples/",
     "assets/",
