@@ -69,6 +69,22 @@ function chapterNumber(chapterId: string): number {
   return match?.[1] !== undefined ? Number.parseInt(match[1], 10) : NaN;
 }
 
+/**
+ * Concern → domain-chapter routing for threat selection. Requirements for some
+ * concerns are defined in the requirements chapter (02) while the matching THREATS
+ * live in the domain chapter — e.g. logging requirements are source_chapter 2, but
+ * logging threats are in 12-monitorizacao-operacoes. Maps only the unambiguous
+ * concerns (the concern name is the chapter's own domain) so those threats surface;
+ * ambiguous concerns fall back to the requirement source_chapter.
+ */
+const CONCERN_TO_DOMAIN_CHAPTER: Readonly<Record<string, number>> = {
+  logging: 12,
+  iac: 8,
+  distribution: 11,
+  architecture: 4,
+  requirements: 2
+};
+
 function buildAntipatternIndexes(
   antipatterns: AntiPattern[],
   antipatternRequirementLinks: AntiPatternRequirementLink[],
@@ -124,6 +140,15 @@ export function _resolveThreatLandscape(
       .map((requirement) => requirement.source_chapter)
       .filter((chapter) => !Number.isNaN(chapter))
   );
+  // Route explicit concerns to their domain chapter so the matching threats
+  // surface even when the concern's requirements are defined in chapter 02.
+  const inputConcerns = Array.isArray(args["concerns"])
+    ? (args["concerns"] as unknown[]).filter((c): c is string => typeof c === "string")
+    : [];
+  for (const concern of inputConcerns) {
+    const domainChapter = CONCERN_TO_DOMAIN_CHAPTER[concern];
+    if (domainChapter !== undefined) activeChapterNumbers.add(domainChapter);
+  }
   const activeDomains = new Set(consult.active_domains);
   const activeControls = consult.controls.map((control) => ({
     control_id: control.control_id,

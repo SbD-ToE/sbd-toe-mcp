@@ -732,3 +732,37 @@ describe("handlePrepareCodegenContext — runtime v1 missing", () => {
     expect(result.partial_activation_trace.length).toBeGreaterThan(0);
   });
 });
+
+// Scope-gate tightening (eval finding #1): whole-manual asks decompose, exotic
+// tech is unsupported.
+describe("handlePrepareCodegenContext — scope gate", () => {
+  it("decomposes 'apply the whole manual / give me everything' (PT + EN)", () => {
+    for (const task of [
+      "aplica o manual inteiro, dá-me tudo",
+      "apply the whole manual, give me everything"
+    ]) {
+      const result = handlePrepareCodegenContext({ task, risk_level: "L2" });
+      expect(result.status).toBe("needs_decomposition");
+    }
+  });
+
+  it("marks out-of-scope technologies as unsupported_scope", () => {
+    for (const task of [
+      "implement homomorphic encryption for the payment endpoint",
+      "add quantum-resistant key exchange to the gateway",
+      "store audit events on a blockchain ledger"
+    ]) {
+      const result = handlePrepareCodegenContext({ task, risk_level: "L2" });
+      expect(result.status).toBe("unsupported_scope");
+    }
+  });
+
+  it("does not flag in-scope encryption work as unsupported", () => {
+    const result = handlePrepareCodegenContext({
+      task: "Add field-level encryption to the user profile endpoint",
+      risk_level: "L2",
+      concerns: ["encryption"]
+    });
+    expect(result.status).not.toBe("unsupported_scope");
+  });
+});

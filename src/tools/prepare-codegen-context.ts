@@ -605,8 +605,24 @@ const VAGUE_PATTERNS: ReadonlyArray<{ pattern: RegExp; reason: string }> = [
   {
     pattern: /\bgera(r)? .{0,30}\barquitetura\b.{0,30}\bcompleta\b/i,
     reason: "Geração de arquitectura completa não é uma tarefa de codegen"
+  },
+  {
+    pattern: /\b(whole|entire|complete|todo o|all of the)\b[^.]{0,15}\bmanual\b|\bmanual\b[^.]{0,15}\b(inteiro|completo|todo)\b/i,
+    reason: "Aplicar o manual inteiro é uma meta, não uma tarefa de codegen — decompõe num pedido concreto."
+  },
+  {
+    pattern: /\b(give me everything|d[áa]-?me tudo|quero tudo|aplica tudo)\b/i,
+    reason: "'Dá-me tudo' deve ser decomposto numa superfície técnica concreta (endpoint + fase + 1-3 concerns)."
   }
 ];
+
+/**
+ * Technologies clearly outside the SbD-ToE manual's scope (advanced cryptography /
+ * distributed-ledger / experimental). The grounded codegen has no material for
+ * these, so the request is unsupported rather than decomposable.
+ */
+const UNSUPPORTED_TECH_PATTERN =
+  /\b(homomorphic|quantum[- ]?(resistant|safe)?|post[- ]?quantum|blockchain|smart contract|zero[- ]?knowledge|zk[- ]?(snark|stark|proof)s?|secure multiparty|federated learning)\b/i;
 
 // ---------------------------------------------------------------------------
 // Input normalization
@@ -1006,6 +1022,19 @@ interface GateDecision {
 function gateBeforeActivation(input: NormalizedInput): GateDecision | null {
   const reasons: string[] = [];
   const suggestions: string[] = [];
+
+  if (UNSUPPORTED_TECH_PATTERN.test(input.taskTrimmed)) {
+    return {
+      status: "unsupported_scope",
+      reasons: [
+        "A task refere tecnologia fora do âmbito do manual SbD-ToE (ex.: criptografia homomórfica, quantum/post-quantum, blockchain, zero-knowledge)."
+      ],
+      suggestions: [
+        "O SbD-ToE cobre AppSec geral; para esta tecnologia o codegen grounded não tem material.",
+        "Reformula para uma superfície coberta (auth, validação, secrets, dependências/SBOM, CI/CD, IaC, monitorização)."
+      ]
+    };
+  }
 
   if (input.taskTrimmed.length === 0) {
     reasons.push("Campo `task` está vazio.");
