@@ -168,8 +168,7 @@
       "practice_id": "01-classificacao-aplicacoes:analise-de-risco-residual",
       "role_raw": "GRC/Compliance",
       "roles_normalized": [
-        "grc",
-        "compliance"
+        "grc"
       ],
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-04-analise-de-risco-residual",
@@ -331,8 +330,7 @@
       "practice_id": "01-classificacao-aplicacoes:interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
       "role_raw": "GRC/Compliance",
       "roles_normalized": [
-        "grc",
-        "compliance"
+        "grc"
       ],
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-08-interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
@@ -371,8 +369,7 @@
       "practice_id": "01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
       "role_raw": "GRC/Compliance",
       "roles_normalized": [
-        "grc",
-        "compliance"
+        "grc"
       ],
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-09-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
@@ -409,8 +406,7 @@
       "practice_id": "01-classificacao-aplicacoes:producao-e-manutencao-do-inventario-central-com-autoridade-de-aprovacao-proporcional",
       "role_raw": "GRC/Compliance",
       "roles_normalized": [
-        "grc",
-        "compliance"
+        "grc"
       ],
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-10-producao-e-manutencao-do-inventario-central-com-autoridade-de-aprovacao-proporcional",
@@ -922,8 +918,7 @@
       "roles_normalized": [
         "executive_management",
         "ciso",
-        "grc",
-        "compliance"
+        "grc"
       ],
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-13-politica-formacao-e-procedimentos-operacionais",
@@ -1048,7 +1043,8 @@
       "role_raw": "Arquitetura/DevSecOps",
       "roles_normalized": [
         "software_architect",
-        "devsecops"
+        "devops",
+        "appsec"
       ],
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-16-classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade",
@@ -1086,7 +1082,6 @@
       "role_raw": "GRC/Compliance e Arquitetura",
       "roles_normalized": [
         "grc",
-        "compliance",
         "software_architect"
       ],
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
@@ -1163,7 +1158,6 @@
       "role_raw": "GRC/Compliance e AppSec",
       "roles_normalized": [
         "grc",
-        "compliance",
         "appsec"
       ],
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
@@ -1326,8 +1320,7 @@
       "role_raw": "AppSec Engineer e GRC/Compliance",
       "roles_normalized": [
         "appsec",
-        "grc",
-        "compliance"
+        "grc"
       ],
       "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-04-justificacao-formal-de-risco-aceite",
@@ -3131,7 +3124,7 @@
       "role_raw": "Developer/Lead",
       "roles_normalized": [
         "developer",
-        "lead"
+        "scrum_master"
       ],
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-15-pinning-de-versoes-e-integridade-por-hash",
@@ -4181,8 +4174,7 @@
       "practice_id": "07-cicd-seguro:rastreabilidade-ponta-a-ponta-commitpipelinerelease",
       "role_raw": "GRC / Compliance",
       "roles_normalized": [
-        "grc",
-        "compliance"
+        "grc"
       ],
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-09-rastreabilidade-ponta-a-ponta-commitpipelinerelease",
@@ -4223,8 +4215,7 @@
       "practice_id": "07-cicd-seguro:gestao-de-excecoes-bypass-controlado",
       "role_raw": "GRC / Compliance",
       "roles_normalized": [
-        "grc",
-        "compliance"
+        "grc"
       ],
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-10-gestao-de-excecoes-bypass-controlado",
@@ -4467,8 +4458,7 @@
       "practice_id": "07-cicd-seguro:evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao",
       "role_raw": "GRC / Compliance",
       "roles_normalized": [
-        "grc",
-        "compliance"
+        "grc"
       ],
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-16-evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao",
@@ -5020,8 +5010,7 @@
       "roles_normalized": [
         "devops",
         "sre",
-        "grc",
-        "compliance"
+        "grc"
       ],
       "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-05-rastreabilidade-versionamento-e-naming",
@@ -5111,7 +5100,6 @@
       "role_raw": "GRC / Compliance e Auditores Internos",
       "roles_normalized": [
         "grc",
-        "compliance",
         "auditor"
       ],
       "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
@@ -5358,7 +5346,6 @@
       "role_raw": "GRC / Compliance, AppSec Engineers e Auditores Internos",
       "roles_normalized": [
         "grc",
-        "compliance",
         "appsec",
         "auditor"
       ],
@@ -5397,7 +5384,6 @@
       "role_raw": "GRC / Compliance e AppSec Engineers",
       "roles_normalized": [
         "grc",
-        "compliance",
         "appsec"
       ],
       "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
@@ -5442,7 +5428,6 @@
       "role_raw": "GRC / Compliance e DevOps / SRE",
       "roles_normalized": [
         "grc",
-        "compliance",
         "devops",
         "sre"
       ],
@@ -10766,8 +10751,7 @@
       "role_raw": "GRC / Compliance / Procurement com apoio de Legal",
       "roles_normalized": [
         "grc",
-        "compliance",
-        "procurement-com-apoio-de-legal"
+        "third_party"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
@@ -10807,7 +10791,7 @@
       "role_raw": "GRC / Compliance com apoio de CISO + Direção",
       "roles_normalized": [
         "grc",
-        "compliance-com-apoio-de-ciso",
+        "ciso",
         "direcao"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",

@@ -1,7 +1,7 @@
 {
   "artifact_type": "v1_runtime_surface_manifest",
   "build": {
-    "generated_at": "2026-06-11T22:18:38.723722+00:00",
+    "generated_at": "2026-06-12T00:42:47.162200+00:00",
     "generator": "sbdtoe_indexing.workflows.build_v1_runtime_surface"
   },
   "drift_note": "Counts sourced from slice contracts (authoritative actual). Declared sum from consolidated index. Drift concentrated in working_contract slices (notably ASC-09 RPR); upstream V1 enumeration incomplete in some slices. Flagged for Archon visibility via Step 8 delivery handover.",
@@ -45,7 +45,7 @@
     },
     "manual_threat_mitigation": {
       "path": "v1/manual_threat_mitigation.jsonl",
-      "sha256": "12c92ee143a82a24d95a3ade617827dd87335cec2f464d943f7af9eb04d0fda4"
+      "sha256": "2eb6ed2b16e7f4357bb554349f23487c63a3e3e1cc4cb9d8c6286ea09dbaeb35"
     },
     "mechanisms": {
       "path": "v1/mechanisms.json",

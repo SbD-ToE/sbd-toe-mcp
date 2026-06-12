@@ -24,7 +24,7 @@
       ],
       "lifecycle_phases": [
         "design",
-        "operations"
+        "operate"
       ],
       "name": "Access Review",
       "name_en": "Access Review",
@@ -69,7 +69,7 @@
         "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references alert_policy"
       ],
       "lifecycle_phases": [
-        "operations"
+        "operate"
       ],
       "name": "Alert Policy",
       "name_en": "Alert Policy",
@@ -123,7 +123,7 @@
       ],
       "lifecycle_phases": [
         "design",
-        "operations"
+        "operate"
       ],
       "name": "Approval Record",
       "name_en": "Approval Record",
@@ -149,8 +149,8 @@
         "corpus document 010-sbd-manual/04-arquitetura-segura/canon/25-rastreabilidade.md matched aliases ['architecture baseline']"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Architecture Baseline",
       "name_en": "Architecture Baseline",
@@ -175,8 +175,8 @@
         "control CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4 references architecture_checklist"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Architecture Checklist",
       "name_en": "Architecture Checklist",
@@ -206,8 +206,8 @@
         "corpus document 010-sbd-manual/04-arquitetura-segura/addon/10-kpis-metricas.md matched aliases ['architecture decision record']"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Architecture Decision Record",
       "name_en": "Architecture Decision Record",
@@ -232,8 +232,8 @@
         "control CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b references architecture_diagram"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Architecture Diagram",
       "name_en": "Architecture Diagram",
@@ -259,8 +259,8 @@
         "corpus document 010-sbd-manual/04-arquitetura-segura/canon/25-rastreabilidade.md matched aliases ['architecture review']"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Architecture Review",
       "name_en": "Architecture Review",
@@ -306,8 +306,7 @@
         "control CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905 references artifact_provenance"
       ],
       "lifecycle_phases": [
-        "release",
-        "deployment"
+        "deploy"
       ],
       "name": "Artifact Provenance",
       "name_en": "Artifact Provenance",
@@ -363,8 +362,7 @@
         "control CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905 references artifact_signature"
       ],
       "lifecycle_phases": [
-        "release",
-        "deployment"
+        "deploy"
       ],
       "name": "Artifact Signature",
       "name_en": "Artifact Signature",
@@ -416,7 +414,7 @@
       ],
       "lifecycle_phases": [
         "build",
-        "release"
+        "deploy"
       ],
       "name": "Container Image",
       "name_en": "Container Image",
@@ -445,8 +443,8 @@
         "corpus document 010-sbd-manual/03-threat-modeling/addon/13-linddun-privacidade.md matched aliases ['data flow diagram', 'data flow diagrams']"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Data Flow Diagram",
       "name_en": "Data Flow Diagram",
@@ -482,7 +480,7 @@
       ],
       "lifecycle_phases": [
         "design",
-        "deployment"
+        "deploy"
       ],
       "name": "Dependency Inventory",
       "name_en": "Dependency Inventory",
@@ -528,7 +526,7 @@
       ],
       "lifecycle_phases": [
         "design",
-        "deployment"
+        "deploy"
       ],
       "name": "Deployment Plan",
       "name_en": "Deployment Plan",
@@ -571,7 +569,7 @@
       ],
       "lifecycle_phases": [
         "design",
-        "deployment"
+        "deploy"
       ],
       "name": "Environment Inventory",
       "name_en": "Environment Inventory",
@@ -619,7 +617,7 @@
       ],
       "lifecycle_phases": [
         "design",
-        "operations"
+        "operate"
       ],
       "name": "Exception Record",
       "name_en": "Exception Record",
@@ -661,8 +659,8 @@
         "practice 10-testes-seguranca:gestao-centralizada-de-findings-com-triagem-e-sla matched alias 'findings'"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Finding Register",
       "name_en": "Finding Register",
@@ -710,7 +708,7 @@
         "practice 06-desenvolvimento-seguro:monitorizacao-de-conformidade-e-metricas-de-seguranca matched alias 'metricas'"
       ],
       "lifecycle_phases": [
-        "operations"
+        "operate"
       ],
       "name": "Governance Kpi",
       "name_en": "Governance Kpi",
@@ -746,7 +744,7 @@
       ],
       "lifecycle_phases": [
         "design",
-        "deployment"
+        "deploy"
       ],
       "name": "Guideline Catalog",
       "name_en": "Guideline Catalog",
@@ -791,7 +789,7 @@
       ],
       "lifecycle_phases": [
         "design",
-        "deployment"
+        "deploy"
       ],
       "name": "Iac Plan",
       "name_en": "Iac Plan",
@@ -839,7 +837,7 @@
       ],
       "lifecycle_phases": [
         "design",
-        "deployment"
+        "deploy"
       ],
       "name": "Identity Binding",
       "name_en": "Identity Binding",
@@ -882,7 +880,7 @@
         "practice 12-monitorizacao-operacoes:integracao-com-processos-de-resposta-a-incidentes matched alias 'incidentes'"
       ],
       "lifecycle_phases": [
-        "operations"
+        "operate"
       ],
       "name": "Incident Metrics",
       "name_en": "Incident Metrics",
@@ -910,8 +908,8 @@
         "corpus document 010-sbd-manual/04-arquitetura-segura/canon/25-rastreabilidade.md matched aliases ['integration review']"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Integration Review",
       "name_en": "Integration Review",
@@ -956,7 +954,7 @@
         "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/developer.md matched aliases ['logs']"
       ],
       "lifecycle_phases": [
-        "operations"
+        "operate"
       ],
       "name": "Log Stream",
       "name_en": "Log Stream",
@@ -1002,8 +1000,8 @@
         "practice 10-testes-seguranca:gestao-centralizada-de-findings-com-triagem-e-sla matched alias 'checklist'"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Onboarding Checklist",
       "name_en": "Onboarding Checklist",
@@ -1033,8 +1031,8 @@
         "corpus document 010-sbd-manual/11-deploy-seguro/canon/25-rastreabilidade.md matched aliases ['evidencia operacional']"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Operational Evidence",
       "name_en": "Operational Evidence",
@@ -1084,7 +1082,7 @@
       ],
       "lifecycle_phases": [
         "design",
-        "deployment"
+        "deploy"
       ],
       "name": "Pipeline Config",
       "name_en": "Pipeline Config",
@@ -1139,8 +1137,8 @@
         "practice 08-iac-infraestrutura:enforcement-automatico-de-politicas matched alias 'politicas'"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Policy Report",
       "name_en": "Policy Report",
@@ -1177,8 +1175,8 @@
         "corpus document 010-sbd-manual/01-classificacao-aplicacoes/pre-note.md matched aliases ['assessment']"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Quiz Result",
       "name_en": "Quiz Result",
@@ -1227,8 +1225,7 @@
         "practice 01-classificacao-aplicacoes:producao-e-manutencao-do-inventario-central-com-autoridade-de-aprovacao-proporcional matched alias 'gates'"
       ],
       "lifecycle_phases": [
-        "release",
-        "deployment"
+        "deploy"
       ],
       "name": "Release Gate",
       "name_en": "Release Gate",
@@ -1273,8 +1270,8 @@
         "practice 10-testes-seguranca:gestao-centralizada-de-findings-com-triagem-e-sla matched alias 'checklist'"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Review Checklist",
       "name_en": "Review Checklist",
@@ -1314,7 +1311,7 @@
       ],
       "lifecycle_phases": [
         "design",
-        "operations"
+        "operate"
       ],
       "name": "Risk Acceptance Record",
       "name_en": "Risk Acceptance Record",
@@ -1346,8 +1343,8 @@
         "corpus document 010-sbd-manual/13-formacao-onboarding/aplicacao-lifecycle.md matched aliases ['matriz de riscos']"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Risk Matrix",
       "name_en": "Risk Matrix",
@@ -1389,7 +1386,7 @@
       ],
       "lifecycle_phases": [
         "design",
-        "deployment"
+        "deploy"
       ],
       "name": "Rollback Plan",
       "name_en": "Rollback Plan",
@@ -1431,8 +1428,8 @@
         "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['sast']"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Sast Report",
       "name_en": "Sast Report",
@@ -1480,7 +1477,7 @@
       ],
       "lifecycle_phases": [
         "build",
-        "release"
+        "deploy"
       ],
       "name": "Sbom",
       "name_en": "Sbom",
@@ -1532,8 +1529,8 @@
         "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references sca_report"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Sca Report",
       "name_en": "Sca Report",
@@ -1589,7 +1586,7 @@
       ],
       "lifecycle_phases": [
         "design",
-        "deployment"
+        "deploy"
       ],
       "name": "Secret Config",
       "name_en": "Secret Config",
@@ -1637,8 +1634,7 @@
         "practice 08-iac-infraestrutura:assinatura-e-proveniencia-de-artefactos-iac matched alias 'assinatura'"
       ],
       "lifecycle_phases": [
-        "release",
-        "deployment"
+        "deploy"
       ],
       "name": "Signature Attestation",
       "name_en": "Signature Attestation",
@@ -1675,7 +1671,7 @@
       ],
       "lifecycle_phases": [
         "design",
-        "operations"
+        "operate"
       ],
       "name": "Supplier Assessment",
       "name_en": "Supplier Assessment",
@@ -1719,8 +1715,8 @@
         "practice 07-cicd-seguro:testes-de-seguranca-dinamicos-dast matched alias 'testes'"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Test Report",
       "name_en": "Test Report",
@@ -1770,8 +1766,8 @@
         "practice 03-threat-modeling:atualizacao-do-modelo-apos-alteracao-tecnica matched alias 'threat modeling'"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Threat Model",
       "name_en": "Threat Model",
@@ -1813,8 +1809,8 @@
         "practice 13-formacao-onboarding:code-clinics-estruturadas-e-recorrentes matched alias 'formacao'"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Training Plan",
       "name_en": "Training Plan",
@@ -1840,8 +1836,8 @@
         "corpus document 010-sbd-manual/04-arquitetura-segura/canon/25-rastreabilidade.md matched aliases ['trust boundary models']"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Trust Boundary Model",
       "name_en": "Trust Boundary Model",
@@ -1885,8 +1881,8 @@
         "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/devops-sre.md matched aliases ['evidencias']"
       ],
       "lifecycle_phases": [
-        "testing",
-        "release"
+        "test",
+        "deploy"
       ],
       "name": "Validation Evidence",
       "name_en": "Validation Evidence",

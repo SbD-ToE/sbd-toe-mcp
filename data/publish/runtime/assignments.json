@@ -1,6 +1,6 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 1569,
+  "count": 1521,
   "entity_type": "PracticeAssignment",
   "items": [
     {
@@ -346,63 +346,6 @@
       "warnings": []
     },
     {
-      "action": "registar o risco residual após aplicar os controlos definidos",
-      "artifacts": [],
-      "chapter_id": "01-classificacao-aplicacoes",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-04"
-      ],
-      "id": "01-classificacao-aplicacoes-compliance-l1-us-04",
-      "phase": "unassigned",
-      "practice_id": "01-classificacao-aplicacoes:analise-de-risco-residual",
-      "proportionality": "Opcional (se crítico)",
-      "risk_level": "L1",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-04-analise-de-risco-residual",
-      "user_story_id": "01-classificacao-aplicacoes-us-04",
-      "warnings": []
-    },
-    {
-      "action": "registar o risco residual após aplicar os controlos definidos",
-      "artifacts": [],
-      "chapter_id": "01-classificacao-aplicacoes",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-04"
-      ],
-      "id": "01-classificacao-aplicacoes-compliance-l2-us-04",
-      "phase": "unassigned",
-      "practice_id": "01-classificacao-aplicacoes:analise-de-risco-residual",
-      "proportionality": "Obrigatório",
-      "risk_level": "L2",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-04-analise-de-risco-residual",
-      "user_story_id": "01-classificacao-aplicacoes-us-04",
-      "warnings": []
-    },
-    {
-      "action": "registar o risco residual após aplicar os controlos definidos",
-      "artifacts": [],
-      "chapter_id": "01-classificacao-aplicacoes",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-04"
-      ],
-      "id": "01-classificacao-aplicacoes-compliance-l3-us-04",
-      "phase": "unassigned",
-      "practice_id": "01-classificacao-aplicacoes:analise-de-risco-residual",
-      "proportionality": "Obrigatório",
-      "risk_level": "L3",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-04-analise-de-risco-residual",
-      "user_story_id": "01-classificacao-aplicacoes-us-04",
-      "warnings": []
-    },
-    {
       "action": "validar que os requisitos aplicáveis por nível de risco estão cumpridos antes da entrada em produção",
       "artifacts": [],
       "chapter_id": "01-classificacao-aplicacoes",
@@ -525,7 +468,7 @@
         "practice assignment derived from US-07"
       ],
       "id": "01-classificacao-aplicacoes-appsec-l1-us-07",
-      "phase": "classificacao_design",
+      "phase": "design",
       "practice_id": "01-classificacao-aplicacoes:reforco-de-controlos-por-atributos-do-risco",
       "proportionality": "Obrigatório avaliar; reforça para L2 quando atributo desencadeia",
       "risk_level": "L1",
@@ -544,7 +487,7 @@
         "practice assignment derived from US-07"
       ],
       "id": "01-classificacao-aplicacoes-appsec-l2-us-07",
-      "phase": "classificacao_design",
+      "phase": "design",
       "practice_id": "01-classificacao-aplicacoes:reforco-de-controlos-por-atributos-do-risco",
       "proportionality": "Obrigatório avaliar; reforça para L3 quando atributo desencadeia",
       "risk_level": "L2",
@@ -563,7 +506,7 @@
         "practice assignment derived from US-07"
       ],
       "id": "01-classificacao-aplicacoes-appsec-l3-us-07",
-      "phase": "classificacao_design",
+      "phase": "design",
       "practice_id": "01-classificacao-aplicacoes:reforco-de-controlos-por-atributos-do-risco",
       "proportionality": "Já no topo; atributos exigem controlos mais fortes a montante e evidência reforçada",
       "risk_level": "L3",
@@ -582,7 +525,7 @@
         "practice assignment derived from US-08"
       ],
       "id": "01-classificacao-aplicacoes-grc-l1-us-08",
-      "phase": "validacao_aceitacao_de_risco",
+      "phase": "govern",
       "practice_id": "01-classificacao-aplicacoes:interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
       "proportionality": "Aplicar interdições; aceitação informal só fora das condições interditas",
       "risk_level": "L1",
@@ -601,7 +544,7 @@
         "practice assignment derived from US-08"
       ],
       "id": "01-classificacao-aplicacoes-grc-l2-us-08",
-      "phase": "validacao_aceitacao_de_risco",
+      "phase": "govern",
       "practice_id": "01-classificacao-aplicacoes:interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
       "proportionality": "Interdições obrigatórias; aceitação com validação formal e registo",
       "risk_level": "L2",
@@ -620,68 +563,11 @@
         "practice assignment derived from US-08"
       ],
       "id": "01-classificacao-aplicacoes-grc-l3-us-08",
-      "phase": "validacao_aceitacao_de_risco",
+      "phase": "govern",
       "practice_id": "01-classificacao-aplicacoes:interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
       "proportionality": "Interdições obrigatórias; recusa automática se dependente de mecanismo não-determinístico ou sem revisão humana",
       "risk_level": "L3",
       "role": "grc",
-      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-08-interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
-      "user_story_id": "01-classificacao-aplicacoes-us-08",
-      "warnings": []
-    },
-    {
-      "action": "bloquear qualquer aceitação de risco que recaia numa das situações interditas de automação/apoio à decisão",
-      "artifacts": [],
-      "chapter_id": "01-classificacao-aplicacoes",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-08"
-      ],
-      "id": "01-classificacao-aplicacoes-compliance-l1-us-08",
-      "phase": "validacao_aceitacao_de_risco",
-      "practice_id": "01-classificacao-aplicacoes:interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
-      "proportionality": "Aplicar interdições; aceitação informal só fora das condições interditas",
-      "risk_level": "L1",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-08-interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
-      "user_story_id": "01-classificacao-aplicacoes-us-08",
-      "warnings": []
-    },
-    {
-      "action": "bloquear qualquer aceitação de risco que recaia numa das situações interditas de automação/apoio à decisão",
-      "artifacts": [],
-      "chapter_id": "01-classificacao-aplicacoes",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-08"
-      ],
-      "id": "01-classificacao-aplicacoes-compliance-l2-us-08",
-      "phase": "validacao_aceitacao_de_risco",
-      "practice_id": "01-classificacao-aplicacoes:interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
-      "proportionality": "Interdições obrigatórias; aceitação com validação formal e registo",
-      "risk_level": "L2",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-08-interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
-      "user_story_id": "01-classificacao-aplicacoes-us-08",
-      "warnings": []
-    },
-    {
-      "action": "bloquear qualquer aceitação de risco que recaia numa das situações interditas de automação/apoio à decisão",
-      "artifacts": [],
-      "chapter_id": "01-classificacao-aplicacoes",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-08"
-      ],
-      "id": "01-classificacao-aplicacoes-compliance-l3-us-08",
-      "phase": "validacao_aceitacao_de_risco",
-      "practice_id": "01-classificacao-aplicacoes:interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
-      "proportionality": "Interdições obrigatórias; recusa automática se dependente de mecanismo não-determinístico ou sem revisão humana",
-      "risk_level": "L3",
-      "role": "compliance",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-08-interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
       "user_story_id": "01-classificacao-aplicacoes-us-08",
@@ -696,7 +582,7 @@
         "practice assignment derived from US-09"
       ],
       "id": "01-classificacao-aplicacoes-grc-l1-us-09",
-      "phase": "classificacao_inicial",
+      "phase": "plan",
       "practice_id": "01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
       "proportionality": "Mapeamento direto admissível; confirmação leve",
       "risk_level": "L1",
@@ -715,7 +601,7 @@
         "practice assignment derived from US-09"
       ],
       "id": "01-classificacao-aplicacoes-grc-l2-us-09",
-      "phase": "classificacao_inicial",
+      "phase": "plan",
       "practice_id": "01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
       "proportionality": "Mapeamento confirmado por análise de segurança e registado",
       "risk_level": "L2",
@@ -734,68 +620,11 @@
         "practice assignment derived from US-09"
       ],
       "id": "01-classificacao-aplicacoes-grc-l3-us-09",
-      "phase": "classificacao_inicial",
+      "phase": "plan",
       "practice_id": "01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
       "proportionality": "Confirmação formal por segurança; classificação por componente quando multi-módulo",
       "risk_level": "L3",
       "role": "grc",
-      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-09-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
-      "user_story_id": "01-classificacao-aplicacoes-us-09",
-      "warnings": []
-    },
-    {
-      "action": "adotar a classificação DRP/BIA existente como input e mapeá-la para o nível de risco L1–L3, confirmando o resultado por análise de segurança",
-      "artifacts": [],
-      "chapter_id": "01-classificacao-aplicacoes",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-09"
-      ],
-      "id": "01-classificacao-aplicacoes-compliance-l1-us-09",
-      "phase": "classificacao_inicial",
-      "practice_id": "01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
-      "proportionality": "Mapeamento direto admissível; confirmação leve",
-      "risk_level": "L1",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-09-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
-      "user_story_id": "01-classificacao-aplicacoes-us-09",
-      "warnings": []
-    },
-    {
-      "action": "adotar a classificação DRP/BIA existente como input e mapeá-la para o nível de risco L1–L3, confirmando o resultado por análise de segurança",
-      "artifacts": [],
-      "chapter_id": "01-classificacao-aplicacoes",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-09"
-      ],
-      "id": "01-classificacao-aplicacoes-compliance-l2-us-09",
-      "phase": "classificacao_inicial",
-      "practice_id": "01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
-      "proportionality": "Mapeamento confirmado por análise de segurança e registado",
-      "risk_level": "L2",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-09-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
-      "user_story_id": "01-classificacao-aplicacoes-us-09",
-      "warnings": []
-    },
-    {
-      "action": "adotar a classificação DRP/BIA existente como input e mapeá-la para o nível de risco L1–L3, confirmando o resultado por análise de segurança",
-      "artifacts": [],
-      "chapter_id": "01-classificacao-aplicacoes",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-09"
-      ],
-      "id": "01-classificacao-aplicacoes-compliance-l3-us-09",
-      "phase": "classificacao_inicial",
-      "practice_id": "01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
-      "proportionality": "Confirmação formal por segurança; classificação por componente quando multi-módulo",
-      "risk_level": "L3",
-      "role": "compliance",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-09-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
       "user_story_id": "01-classificacao-aplicacoes-us-09",
@@ -1665,7 +1494,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "02-requisitos-seguranca-developer-l1-us-14",
-      "phase": "pr_mr",
+      "phase": "build",
       "practice_id": "02-requisitos-seguranca:uso-controlado-de-assistentes-automatizados-incluindo-ia-no-desenvolvimento",
       "proportionality": "Recomendado - Revisão humana e SAST básico",
       "risk_level": "L1",
@@ -1684,7 +1513,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "02-requisitos-seguranca-developer-l2-us-14",
-      "phase": "pr_mr",
+      "phase": "build",
       "practice_id": "02-requisitos-seguranca:uso-controlado-de-assistentes-automatizados-incluindo-ia-no-desenvolvimento",
       "proportionality": "Obrigatório - Revisão + SAST/SCA obrigatórios",
       "risk_level": "L2",
@@ -1703,7 +1532,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "02-requisitos-seguranca-developer-l3-us-14",
-      "phase": "pr_mr",
+      "phase": "build",
       "practice_id": "02-requisitos-seguranca:uso-controlado-de-assistentes-automatizados-incluindo-ia-no-desenvolvimento",
       "proportionality": "Obrigatório - Revisão + SAST/SCA + validações reforçadas e AppSec review",
       "risk_level": "L3",
@@ -1779,7 +1608,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "02-requisitos-seguranca-scrum_master-l1-us-14",
-      "phase": "pr_mr",
+      "phase": "build",
       "practice_id": "02-requisitos-seguranca:uso-controlado-de-assistentes-automatizados-incluindo-ia-no-desenvolvimento",
       "proportionality": "Recomendado - Revisão humana e SAST básico",
       "risk_level": "L1",
@@ -1798,7 +1627,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "02-requisitos-seguranca-scrum_master-l2-us-14",
-      "phase": "pr_mr",
+      "phase": "build",
       "practice_id": "02-requisitos-seguranca:uso-controlado-de-assistentes-automatizados-incluindo-ia-no-desenvolvimento",
       "proportionality": "Obrigatório - Revisão + SAST/SCA obrigatórios",
       "risk_level": "L2",
@@ -1817,7 +1646,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "02-requisitos-seguranca-scrum_master-l3-us-14",
-      "phase": "pr_mr",
+      "phase": "build",
       "practice_id": "02-requisitos-seguranca:uso-controlado-de-assistentes-automatizados-incluindo-ia-no-desenvolvimento",
       "proportionality": "Obrigatório - Revisão + SAST/SCA + validações reforçadas e AppSec review",
       "risk_level": "L3",
@@ -1893,7 +1722,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "02-requisitos-seguranca-appsec-l1-us-14",
-      "phase": "pr_mr",
+      "phase": "build",
       "practice_id": "02-requisitos-seguranca:uso-controlado-de-assistentes-automatizados-incluindo-ia-no-desenvolvimento",
       "proportionality": "Recomendado - Revisão humana e SAST básico",
       "risk_level": "L1",
@@ -1912,7 +1741,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "02-requisitos-seguranca-appsec-l2-us-14",
-      "phase": "pr_mr",
+      "phase": "build",
       "practice_id": "02-requisitos-seguranca:uso-controlado-de-assistentes-automatizados-incluindo-ia-no-desenvolvimento",
       "proportionality": "Obrigatório - Revisão + SAST/SCA obrigatórios",
       "risk_level": "L2",
@@ -1931,7 +1760,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "02-requisitos-seguranca-appsec-l3-us-14",
-      "phase": "pr_mr",
+      "phase": "build",
       "practice_id": "02-requisitos-seguranca:uso-controlado-de-assistentes-automatizados-incluindo-ia-no-desenvolvimento",
       "proportionality": "Obrigatório - Revisão + SAST/SCA + validações reforçadas e AppSec review",
       "risk_level": "L3",
@@ -2007,7 +1836,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "02-requisitos-seguranca-appsec-l1-us-15",
-      "phase": "activacao",
+      "phase": "operate",
       "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai-us-15",
       "proportionality": "A1+ - Mandate simples; aprovação por tech lead; A2+ permitido apenas fora de produção",
       "risk_level": "L1",
@@ -2026,7 +1855,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "02-requisitos-seguranca-appsec-l2-us-15",
-      "phase": "activacao",
+      "phase": "operate",
       "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai-us-15",
       "proportionality": "A1+ - Mandate completo; kill-switch exercitado trimestralmente em A3",
       "risk_level": "L2",
@@ -2045,7 +1874,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "02-requisitos-seguranca-appsec-l3-us-15",
-      "phase": "activacao",
+      "phase": "operate",
       "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai-us-15",
       "proportionality": "A1+ - Mandate completo + revisão organizacional trimestral; A4 exige assinatura formal do CISO",
       "risk_level": "L3",
@@ -2121,7 +1950,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "02-requisitos-seguranca-appsec-l1-us-15",
-      "phase": "revogacao",
+      "phase": "operate",
       "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai-us-15",
       "proportionality": "A1+ - Mandate simples; aprovação por tech lead; A2+ permitido apenas fora de produção",
       "risk_level": "L1",
@@ -2140,7 +1969,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "02-requisitos-seguranca-appsec-l2-us-15",
-      "phase": "revogacao",
+      "phase": "operate",
       "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai-us-15",
       "proportionality": "A1+ - Mandate completo; kill-switch exercitado trimestralmente em A3",
       "risk_level": "L2",
@@ -2159,7 +1988,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "02-requisitos-seguranca-appsec-l3-us-15",
-      "phase": "revogacao",
+      "phase": "operate",
       "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai-us-15",
       "proportionality": "A1+ - Mandate completo + revisão organizacional trimestral; A4 exige assinatura formal do CISO",
       "risk_level": "L3",
@@ -2178,7 +2007,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "02-requisitos-seguranca-scrum_master-l1-us-15",
-      "phase": "activacao",
+      "phase": "operate",
       "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai-us-15",
       "proportionality": "A1+ - Mandate simples; aprovação por tech lead; A2+ permitido apenas fora de produção",
       "risk_level": "L1",
@@ -2197,7 +2026,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "02-requisitos-seguranca-scrum_master-l2-us-15",
-      "phase": "activacao",
+      "phase": "operate",
       "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai-us-15",
       "proportionality": "A1+ - Mandate completo; kill-switch exercitado trimestralmente em A3",
       "risk_level": "L2",
@@ -2216,7 +2045,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "02-requisitos-seguranca-scrum_master-l3-us-15",
-      "phase": "activacao",
+      "phase": "operate",
       "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai-us-15",
       "proportionality": "A1+ - Mandate completo + revisão organizacional trimestral; A4 exige assinatura formal do CISO",
       "risk_level": "L3",
@@ -2292,7 +2121,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "02-requisitos-seguranca-scrum_master-l1-us-15",
-      "phase": "revogacao",
+      "phase": "operate",
       "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai-us-15",
       "proportionality": "A1+ - Mandate simples; aprovação por tech lead; A2+ permitido apenas fora de produção",
       "risk_level": "L1",
@@ -2311,7 +2140,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "02-requisitos-seguranca-scrum_master-l2-us-15",
-      "phase": "revogacao",
+      "phase": "operate",
       "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai-us-15",
       "proportionality": "A1+ - Mandate completo; kill-switch exercitado trimestralmente em A3",
       "risk_level": "L2",
@@ -2330,7 +2159,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "02-requisitos-seguranca-scrum_master-l3-us-15",
-      "phase": "revogacao",
+      "phase": "operate",
       "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai-us-15",
       "proportionality": "A1+ - Mandate completo + revisão organizacional trimestral; A4 exige assinatura formal do CISO",
       "risk_level": "L3",
@@ -2349,7 +2178,7 @@
         "practice assignment derived from US-16"
       ],
       "id": "02-requisitos-seguranca-software_architect-l1-us-16",
-      "phase": "design_grooming",
+      "phase": "design",
       "practice_id": "02-requisitos-seguranca:classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade",
       "proportionality": "Tipo declarado nos controlos críticos",
       "risk_level": "L1",
@@ -2368,7 +2197,7 @@
         "practice assignment derived from US-16"
       ],
       "id": "02-requisitos-seguranca-software_architect-l2-us-16",
-      "phase": "design_grooming",
+      "phase": "design",
       "practice_id": "02-requisitos-seguranca:classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade",
       "proportionality": "Tipo declarado em todos os requisitos selecionados",
       "risk_level": "L2",
@@ -2387,7 +2216,7 @@
         "practice assignment derived from US-16"
       ],
       "id": "02-requisitos-seguranca-software_architect-l3-us-16",
-      "phase": "design_grooming",
+      "phase": "design",
       "practice_id": "02-requisitos-seguranca:classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade",
       "proportionality": "Tipo declarado + revisão formal do equilíbrio Prev/Det/Cor por release",
       "risk_level": "L3",
@@ -2405,12 +2234,12 @@
       "evidence": [
         "practice assignment derived from US-16"
       ],
-      "id": "02-requisitos-seguranca-devsecops-l1-us-16",
-      "phase": "design_grooming",
+      "id": "02-requisitos-seguranca-devops-l1-us-16",
+      "phase": "design",
       "practice_id": "02-requisitos-seguranca:classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade",
       "proportionality": "Tipo declarado nos controlos críticos",
       "risk_level": "L1",
-      "role": "devsecops",
+      "role": "devops",
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-16-classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade",
       "user_story_id": "02-requisitos-seguranca-us-16",
@@ -2424,12 +2253,12 @@
       "evidence": [
         "practice assignment derived from US-16"
       ],
-      "id": "02-requisitos-seguranca-devsecops-l2-us-16",
-      "phase": "design_grooming",
+      "id": "02-requisitos-seguranca-devops-l2-us-16",
+      "phase": "design",
       "practice_id": "02-requisitos-seguranca:classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade",
       "proportionality": "Tipo declarado em todos os requisitos selecionados",
       "risk_level": "L2",
-      "role": "devsecops",
+      "role": "devops",
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-16-classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade",
       "user_story_id": "02-requisitos-seguranca-us-16",
@@ -2443,12 +2272,69 @@
       "evidence": [
         "practice assignment derived from US-16"
       ],
-      "id": "02-requisitos-seguranca-devsecops-l3-us-16",
-      "phase": "design_grooming",
+      "id": "02-requisitos-seguranca-devops-l3-us-16",
+      "phase": "design",
       "practice_id": "02-requisitos-seguranca:classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade",
       "proportionality": "Tipo declarado + revisão formal do equilíbrio Prev/Det/Cor por release",
       "risk_level": "L3",
-      "role": "devsecops",
+      "role": "devops",
+      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-16-classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade",
+      "user_story_id": "02-requisitos-seguranca-us-16",
+      "warnings": []
+    },
+    {
+      "action": "classificar cada controlo da matriz de rastreabilidade como Preventivo, Detetivo ou Corretivo",
+      "artifacts": [],
+      "chapter_id": "02-requisitos-seguranca",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-16"
+      ],
+      "id": "02-requisitos-seguranca-appsec-l1-us-16",
+      "phase": "design",
+      "practice_id": "02-requisitos-seguranca:classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade",
+      "proportionality": "Tipo declarado nos controlos críticos",
+      "risk_level": "L1",
+      "role": "appsec",
+      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-16-classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade",
+      "user_story_id": "02-requisitos-seguranca-us-16",
+      "warnings": []
+    },
+    {
+      "action": "classificar cada controlo da matriz de rastreabilidade como Preventivo, Detetivo ou Corretivo",
+      "artifacts": [],
+      "chapter_id": "02-requisitos-seguranca",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-16"
+      ],
+      "id": "02-requisitos-seguranca-appsec-l2-us-16",
+      "phase": "design",
+      "practice_id": "02-requisitos-seguranca:classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade",
+      "proportionality": "Tipo declarado em todos os requisitos selecionados",
+      "risk_level": "L2",
+      "role": "appsec",
+      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-16-classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade",
+      "user_story_id": "02-requisitos-seguranca-us-16",
+      "warnings": []
+    },
+    {
+      "action": "classificar cada controlo da matriz de rastreabilidade como Preventivo, Detetivo ou Corretivo",
+      "artifacts": [],
+      "chapter_id": "02-requisitos-seguranca",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-16"
+      ],
+      "id": "02-requisitos-seguranca-appsec-l3-us-16",
+      "phase": "design",
+      "practice_id": "02-requisitos-seguranca:classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade",
+      "proportionality": "Tipo declarado + revisão formal do equilíbrio Prev/Det/Cor por release",
+      "risk_level": "L3",
+      "role": "appsec",
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-16-classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade",
       "user_story_id": "02-requisitos-seguranca-us-16",
@@ -2463,7 +2349,7 @@
         "practice assignment derived from US-17"
       ],
       "id": "02-requisitos-seguranca-grc-l1-us-17",
-      "phase": "inicio_revisao",
+      "phase": "unassigned",
       "practice_id": "02-requisitos-seguranca:incorporacao-de-restricoes-legais-normativas-e-contratuais",
       "proportionality": "Obrigações legais essenciais identificadas",
       "risk_level": "L1",
@@ -2482,7 +2368,7 @@
         "practice assignment derived from US-17"
       ],
       "id": "02-requisitos-seguranca-grc-l2-us-17",
-      "phase": "inicio_revisao",
+      "phase": "unassigned",
       "practice_id": "02-requisitos-seguranca:incorporacao-de-restricoes-legais-normativas-e-contratuais",
       "proportionality": "Levantamento documentado e mapeado",
       "risk_level": "L2",
@@ -2501,7 +2387,7 @@
         "practice assignment derived from US-17"
       ],
       "id": "02-requisitos-seguranca-grc-l3-us-17",
-      "phase": "inicio_revisao",
+      "phase": "unassigned",
       "practice_id": "02-requisitos-seguranca:incorporacao-de-restricoes-legais-normativas-e-contratuais",
       "proportionality": "Levantamento formal + validação GRC e revisão por alteração de contexto contratual",
       "risk_level": "L3",
@@ -2519,65 +2405,8 @@
       "evidence": [
         "practice assignment derived from US-17"
       ],
-      "id": "02-requisitos-seguranca-compliance-l1-us-17",
-      "phase": "inicio_revisao",
-      "practice_id": "02-requisitos-seguranca:incorporacao-de-restricoes-legais-normativas-e-contratuais",
-      "proportionality": "Obrigações legais essenciais identificadas",
-      "risk_level": "L1",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-17-incorporacao-de-restricoes-legais-normativas-e-contratuais",
-      "user_story_id": "02-requisitos-seguranca-us-17",
-      "warnings": []
-    },
-    {
-      "action": "incorporar as restrições legais, normativas e contratuais aplicáveis na seleção de requisitos",
-      "artifacts": [],
-      "chapter_id": "02-requisitos-seguranca",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-17"
-      ],
-      "id": "02-requisitos-seguranca-compliance-l2-us-17",
-      "phase": "inicio_revisao",
-      "practice_id": "02-requisitos-seguranca:incorporacao-de-restricoes-legais-normativas-e-contratuais",
-      "proportionality": "Levantamento documentado e mapeado",
-      "risk_level": "L2",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-17-incorporacao-de-restricoes-legais-normativas-e-contratuais",
-      "user_story_id": "02-requisitos-seguranca-us-17",
-      "warnings": []
-    },
-    {
-      "action": "incorporar as restrições legais, normativas e contratuais aplicáveis na seleção de requisitos",
-      "artifacts": [],
-      "chapter_id": "02-requisitos-seguranca",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-17"
-      ],
-      "id": "02-requisitos-seguranca-compliance-l3-us-17",
-      "phase": "inicio_revisao",
-      "practice_id": "02-requisitos-seguranca:incorporacao-de-restricoes-legais-normativas-e-contratuais",
-      "proportionality": "Levantamento formal + validação GRC e revisão por alteração de contexto contratual",
-      "risk_level": "L3",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-17-incorporacao-de-restricoes-legais-normativas-e-contratuais",
-      "user_story_id": "02-requisitos-seguranca-us-17",
-      "warnings": []
-    },
-    {
-      "action": "incorporar as restrições legais, normativas e contratuais aplicáveis na seleção de requisitos",
-      "artifacts": [],
-      "chapter_id": "02-requisitos-seguranca",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-17"
-      ],
       "id": "02-requisitos-seguranca-software_architect-l1-us-17",
-      "phase": "inicio_revisao",
+      "phase": "unassigned",
       "practice_id": "02-requisitos-seguranca:incorporacao-de-restricoes-legais-normativas-e-contratuais",
       "proportionality": "Obrigações legais essenciais identificadas",
       "risk_level": "L1",
@@ -2596,7 +2425,7 @@
         "practice assignment derived from US-17"
       ],
       "id": "02-requisitos-seguranca-software_architect-l2-us-17",
-      "phase": "inicio_revisao",
+      "phase": "unassigned",
       "practice_id": "02-requisitos-seguranca:incorporacao-de-restricoes-legais-normativas-e-contratuais",
       "proportionality": "Levantamento documentado e mapeado",
       "risk_level": "L2",
@@ -2615,7 +2444,7 @@
         "practice assignment derived from US-17"
       ],
       "id": "02-requisitos-seguranca-software_architect-l3-us-17",
-      "phase": "inicio_revisao",
+      "phase": "unassigned",
       "practice_id": "02-requisitos-seguranca:incorporacao-de-restricoes-legais-normativas-e-contratuais",
       "proportionality": "Levantamento formal + validação GRC e revisão por alteração de contexto contratual",
       "risk_level": "L3",
@@ -2634,7 +2463,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "02-requisitos-seguranca-appsec-l1-us-18",
-      "phase": "runtime",
+      "phase": "operate",
       "practice_id": "02-requisitos-seguranca:intent-declaration-por-tool-call-destrutivo-de-agente-ai",
       "proportionality": "Não obrigatório (A2+ apenas fora de produção)",
       "risk_level": "L1",
@@ -2653,7 +2482,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "02-requisitos-seguranca-appsec-l2-us-18",
-      "phase": "runtime",
+      "phase": "operate",
       "practice_id": "02-requisitos-seguranca:intent-declaration-por-tool-call-destrutivo-de-agente-ai",
       "proportionality": "Intent declaration obrigatória em A2+",
       "risk_level": "L2",
@@ -2672,7 +2501,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "02-requisitos-seguranca-appsec-l3-us-18",
-      "phase": "runtime",
+      "phase": "operate",
       "practice_id": "02-requisitos-seguranca:intent-declaration-por-tool-call-destrutivo-de-agente-ai",
       "proportionality": "Intent declaration obrigatória + reconciliação auditada por release",
       "risk_level": "L3",
@@ -2691,7 +2520,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "02-requisitos-seguranca-scrum_master-l1-us-18",
-      "phase": "runtime",
+      "phase": "operate",
       "practice_id": "02-requisitos-seguranca:intent-declaration-por-tool-call-destrutivo-de-agente-ai",
       "proportionality": "Não obrigatório (A2+ apenas fora de produção)",
       "risk_level": "L1",
@@ -2710,7 +2539,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "02-requisitos-seguranca-scrum_master-l2-us-18",
-      "phase": "runtime",
+      "phase": "operate",
       "practice_id": "02-requisitos-seguranca:intent-declaration-por-tool-call-destrutivo-de-agente-ai",
       "proportionality": "Intent declaration obrigatória em A2+",
       "risk_level": "L2",
@@ -2729,7 +2558,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "02-requisitos-seguranca-scrum_master-l3-us-18",
-      "phase": "runtime",
+      "phase": "operate",
       "practice_id": "02-requisitos-seguranca:intent-declaration-por-tool-call-destrutivo-de-agente-ai",
       "proportionality": "Intent declaration obrigatória + reconciliação auditada por release",
       "risk_level": "L3",
@@ -2748,7 +2577,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "02-requisitos-seguranca-grc-l1-us-19",
-      "phase": "governanca_release",
+      "phase": "govern",
       "practice_id": "02-requisitos-seguranca:recolha-e-thresholds-dos-indicadores-rqs",
       "proportionality": "RQS-K01/K02/K06 nos thresholds L1",
       "risk_level": "L1",
@@ -2767,7 +2596,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "02-requisitos-seguranca-grc-l2-us-19",
-      "phase": "governanca_release",
+      "phase": "govern",
       "practice_id": "02-requisitos-seguranca:recolha-e-thresholds-dos-indicadores-rqs",
       "proportionality": "RQS-K01–K06 nos thresholds L2",
       "risk_level": "L2",
@@ -2786,7 +2615,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "02-requisitos-seguranca-grc-l3-us-19",
-      "phase": "governanca_release",
+      "phase": "govern",
       "practice_id": "02-requisitos-seguranca:recolha-e-thresholds-dos-indicadores-rqs",
       "proportionality": "RQS-K01–K06 nos thresholds L3 + revisão formal de desvios",
       "risk_level": "L3",
@@ -2804,65 +2633,8 @@
       "evidence": [
         "practice assignment derived from US-19"
       ],
-      "id": "02-requisitos-seguranca-compliance-l1-us-19",
-      "phase": "governanca_release",
-      "practice_id": "02-requisitos-seguranca:recolha-e-thresholds-dos-indicadores-rqs",
-      "proportionality": "RQS-K01/K02/K06 nos thresholds L1",
-      "risk_level": "L1",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-19-recolha-e-thresholds-dos-indicadores-rqs",
-      "user_story_id": "02-requisitos-seguranca-us-19",
-      "warnings": []
-    },
-    {
-      "action": "recolher os indicadores RQS e compará-los aos thresholds do nível de risco",
-      "artifacts": [],
-      "chapter_id": "02-requisitos-seguranca",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-19"
-      ],
-      "id": "02-requisitos-seguranca-compliance-l2-us-19",
-      "phase": "governanca_release",
-      "practice_id": "02-requisitos-seguranca:recolha-e-thresholds-dos-indicadores-rqs",
-      "proportionality": "RQS-K01–K06 nos thresholds L2",
-      "risk_level": "L2",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-19-recolha-e-thresholds-dos-indicadores-rqs",
-      "user_story_id": "02-requisitos-seguranca-us-19",
-      "warnings": []
-    },
-    {
-      "action": "recolher os indicadores RQS e compará-los aos thresholds do nível de risco",
-      "artifacts": [],
-      "chapter_id": "02-requisitos-seguranca",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-19"
-      ],
-      "id": "02-requisitos-seguranca-compliance-l3-us-19",
-      "phase": "governanca_release",
-      "practice_id": "02-requisitos-seguranca:recolha-e-thresholds-dos-indicadores-rqs",
-      "proportionality": "RQS-K01–K06 nos thresholds L3 + revisão formal de desvios",
-      "risk_level": "L3",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-19-recolha-e-thresholds-dos-indicadores-rqs",
-      "user_story_id": "02-requisitos-seguranca-us-19",
-      "warnings": []
-    },
-    {
-      "action": "recolher os indicadores RQS e compará-los aos thresholds do nível de risco",
-      "artifacts": [],
-      "chapter_id": "02-requisitos-seguranca",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-19"
-      ],
       "id": "02-requisitos-seguranca-appsec-l1-us-19",
-      "phase": "governanca_release",
+      "phase": "govern",
       "practice_id": "02-requisitos-seguranca:recolha-e-thresholds-dos-indicadores-rqs",
       "proportionality": "RQS-K01/K02/K06 nos thresholds L1",
       "risk_level": "L1",
@@ -2881,7 +2653,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "02-requisitos-seguranca-appsec-l2-us-19",
-      "phase": "governanca_release",
+      "phase": "govern",
       "practice_id": "02-requisitos-seguranca:recolha-e-thresholds-dos-indicadores-rqs",
       "proportionality": "RQS-K01–K06 nos thresholds L2",
       "risk_level": "L2",
@@ -2900,7 +2672,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "02-requisitos-seguranca-appsec-l3-us-19",
-      "phase": "governanca_release",
+      "phase": "govern",
       "practice_id": "02-requisitos-seguranca:recolha-e-thresholds-dos-indicadores-rqs",
       "proportionality": "RQS-K01–K06 nos thresholds L3 + revisão formal de desvios",
       "risk_level": "L3",
@@ -3418,63 +3190,6 @@
       "proportionality": "Obrigatório - Documentação formal + mitigação compensatória",
       "risk_level": "L3",
       "role": "grc",
-      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-04-justificacao-formal-de-risco-aceite",
-      "user_story_id": "03-threat-modeling-us-04",
-      "warnings": []
-    },
-    {
-      "action": "documentar e aprovar formalmente riscos residuais identificados no threat modeling",
-      "artifacts": [],
-      "chapter_id": "03-threat-modeling",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-04"
-      ],
-      "id": "03-threat-modeling-compliance-l1-us-04",
-      "phase": "plan",
-      "practice_id": "03-threat-modeling:justificacao-formal-de-risco-aceite",
-      "proportionality": "Opcional - Aceitação informal",
-      "risk_level": "L1",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-04-justificacao-formal-de-risco-aceite",
-      "user_story_id": "03-threat-modeling-us-04",
-      "warnings": []
-    },
-    {
-      "action": "documentar e aprovar formalmente riscos residuais identificados no threat modeling",
-      "artifacts": [],
-      "chapter_id": "03-threat-modeling",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-04"
-      ],
-      "id": "03-threat-modeling-compliance-l2-us-04",
-      "phase": "plan",
-      "practice_id": "03-threat-modeling:justificacao-formal-de-risco-aceite",
-      "proportionality": "Obrigatório - Documentação formal",
-      "risk_level": "L2",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-04-justificacao-formal-de-risco-aceite",
-      "user_story_id": "03-threat-modeling-us-04",
-      "warnings": []
-    },
-    {
-      "action": "documentar e aprovar formalmente riscos residuais identificados no threat modeling",
-      "artifacts": [],
-      "chapter_id": "03-threat-modeling",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-04"
-      ],
-      "id": "03-threat-modeling-compliance-l3-us-04",
-      "phase": "plan",
-      "practice_id": "03-threat-modeling:justificacao-formal-de-risco-aceite",
-      "proportionality": "Obrigatório - Documentação formal + mitigação compensatória",
-      "risk_level": "L3",
-      "role": "compliance",
       "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-04-justificacao-formal-de-risco-aceite",
       "user_story_id": "03-threat-modeling-us-04",
@@ -4743,7 +4458,7 @@
         "practice assignment derived from US-12"
       ],
       "id": "03-threat-modeling-software_architect-l1-us-12",
-      "phase": "alteracao",
+      "phase": "unassigned",
       "practice_id": "03-threat-modeling:threat-modeling-estendido-para-componentes-ai-ml-nao-agentic",
       "proportionality": "Recomendado: triagem por OWASP LLM/ML Top 10",
       "risk_level": "L1",
@@ -4762,7 +4477,7 @@
         "practice assignment derived from US-12"
       ],
       "id": "03-threat-modeling-software_architect-l2-us-12",
-      "phase": "alteracao",
+      "phase": "unassigned",
       "practice_id": "03-threat-modeling:threat-modeling-estendido-para-componentes-ai-ml-nao-agentic",
       "proportionality": "Obrigatório: framing AI/ML completo + boundaries + mitigações ancoradas",
       "risk_level": "L2",
@@ -4781,7 +4496,7 @@
         "practice assignment derived from US-12"
       ],
       "id": "03-threat-modeling-software_architect-l3-us-12",
-      "phase": "alteracao",
+      "phase": "unassigned",
       "practice_id": "03-threat-modeling:threat-modeling-estendido-para-componentes-ai-ml-nao-agentic",
       "proportionality": "Obrigatório: framing completo + adversary capabilities (NIST AI 100-2) + revisão appsec independente",
       "risk_level": "L3",
@@ -4857,7 +4572,7 @@
         "practice assignment derived from US-12"
       ],
       "id": "03-threat-modeling-appsec-l1-us-12",
-      "phase": "alteracao",
+      "phase": "unassigned",
       "practice_id": "03-threat-modeling:threat-modeling-estendido-para-componentes-ai-ml-nao-agentic",
       "proportionality": "Recomendado: triagem por OWASP LLM/ML Top 10",
       "risk_level": "L1",
@@ -4876,7 +4591,7 @@
         "practice assignment derived from US-12"
       ],
       "id": "03-threat-modeling-appsec-l2-us-12",
-      "phase": "alteracao",
+      "phase": "unassigned",
       "practice_id": "03-threat-modeling:threat-modeling-estendido-para-componentes-ai-ml-nao-agentic",
       "proportionality": "Obrigatório: framing AI/ML completo + boundaries + mitigações ancoradas",
       "risk_level": "L2",
@@ -4895,7 +4610,7 @@
         "practice assignment derived from US-12"
       ],
       "id": "03-threat-modeling-appsec-l3-us-12",
-      "phase": "alteracao",
+      "phase": "unassigned",
       "practice_id": "03-threat-modeling:threat-modeling-estendido-para-componentes-ai-ml-nao-agentic",
       "proportionality": "Obrigatório: framing completo + adversary capabilities (NIST AI 100-2) + revisão appsec independente",
       "risk_level": "L3",
@@ -4914,7 +4629,7 @@
         "practice assignment derived from US-13"
       ],
       "id": "03-threat-modeling-appsec-l1-us-13",
-      "phase": "requisitos_threat_modeling",
+      "phase": "design",
       "practice_id": "03-threat-modeling:derivacao-de-abuse-misuse-cases-para-o-backlog",
       "proportionality": "Não aplicável",
       "risk_level": "L1",
@@ -4933,7 +4648,7 @@
         "practice assignment derived from US-13"
       ],
       "id": "03-threat-modeling-appsec-l2-us-13",
-      "phase": "requisitos_threat_modeling",
+      "phase": "design",
       "practice_id": "03-threat-modeling:derivacao-de-abuse-misuse-cases-para-o-backlog",
       "proportionality": "Obrigatório: workshop em fluxos críticos + integração no backlog",
       "risk_level": "L2",
@@ -4952,7 +4667,7 @@
         "practice assignment derived from US-13"
       ],
       "id": "03-threat-modeling-appsec-l3-us-13",
-      "phase": "requisitos_threat_modeling",
+      "phase": "design",
       "practice_id": "03-threat-modeling:derivacao-de-abuse-misuse-cases-para-o-backlog",
       "proportionality": "Obrigatório: workshop sistemático + cobertura por fluxo + rastreabilidade a testes",
       "risk_level": "L3",
@@ -4971,7 +4686,7 @@
         "practice assignment derived from US-13"
       ],
       "id": "03-threat-modeling-product_owner-l1-us-13",
-      "phase": "requisitos_threat_modeling",
+      "phase": "design",
       "practice_id": "03-threat-modeling:derivacao-de-abuse-misuse-cases-para-o-backlog",
       "proportionality": "Não aplicável",
       "risk_level": "L1",
@@ -4990,7 +4705,7 @@
         "practice assignment derived from US-13"
       ],
       "id": "03-threat-modeling-product_owner-l2-us-13",
-      "phase": "requisitos_threat_modeling",
+      "phase": "design",
       "practice_id": "03-threat-modeling:derivacao-de-abuse-misuse-cases-para-o-backlog",
       "proportionality": "Obrigatório: workshop em fluxos críticos + integração no backlog",
       "risk_level": "L2",
@@ -5009,7 +4724,7 @@
         "practice assignment derived from US-13"
       ],
       "id": "03-threat-modeling-product_owner-l3-us-13",
-      "phase": "requisitos_threat_modeling",
+      "phase": "design",
       "practice_id": "03-threat-modeling:derivacao-de-abuse-misuse-cases-para-o-backlog",
       "proportionality": "Obrigatório: workshop sistemático + cobertura por fluxo + rastreabilidade a testes",
       "risk_level": "L3",
@@ -5028,7 +4743,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "03-threat-modeling-appsec-l1-us-14",
-      "phase": "pre_go_live",
+      "phase": "deploy",
       "practice_id": "03-threat-modeling:revisao-independente-em-l2-e-pasta-em-alto-risco",
       "proportionality": "Não aplicável",
       "risk_level": "L1",
@@ -5047,7 +4762,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "03-threat-modeling-appsec-l2-us-14",
-      "phase": "pre_go_live",
+      "phase": "deploy",
       "practice_id": "03-threat-modeling:revisao-independente-em-l2-e-pasta-em-alto-risco",
       "proportionality": "Revisão independente obrigatória antes de go-live; PASTA opcional",
       "risk_level": "L2",
@@ -5066,7 +4781,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "03-threat-modeling-appsec-l3-us-14",
-      "phase": "pre_go_live",
+      "phase": "deploy",
       "practice_id": "03-threat-modeling:revisao-independente-em-l2-e-pasta-em-alto-risco",
       "proportionality": "Revisão independente obrigatória + PASTA (ou equivalente) com rastreio formal",
       "risk_level": "L3",
@@ -5142,7 +4857,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "03-threat-modeling-scrum_master-l1-us-14",
-      "phase": "pre_go_live",
+      "phase": "deploy",
       "practice_id": "03-threat-modeling:revisao-independente-em-l2-e-pasta-em-alto-risco",
       "proportionality": "Não aplicável",
       "risk_level": "L1",
@@ -5161,7 +4876,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "03-threat-modeling-scrum_master-l2-us-14",
-      "phase": "pre_go_live",
+      "phase": "deploy",
       "practice_id": "03-threat-modeling:revisao-independente-em-l2-e-pasta-em-alto-risco",
       "proportionality": "Revisão independente obrigatória antes de go-live; PASTA opcional",
       "risk_level": "L2",
@@ -5180,7 +4895,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "03-threat-modeling-scrum_master-l3-us-14",
-      "phase": "pre_go_live",
+      "phase": "deploy",
       "practice_id": "03-threat-modeling:revisao-independente-em-l2-e-pasta-em-alto-risco",
       "proportionality": "Revisão independente obrigatória + PASTA (ou equivalente) com rastreio formal",
       "risk_level": "L3",
@@ -5256,7 +4971,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "03-threat-modeling-appsec-l1-us-15",
-      "phase": "threat_modeling",
+      "phase": "design",
       "practice_id": "03-threat-modeling:tratamento-explicito-dos-riscos-de-processo-do-threat-modeling",
       "proportionality": "Nota informal de assunções",
       "risk_level": "L1",
@@ -5275,7 +4990,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "03-threat-modeling-appsec-l2-us-15",
-      "phase": "threat_modeling",
+      "phase": "design",
       "practice_id": "03-threat-modeling:tratamento-explicito-dos-riscos-de-processo-do-threat-modeling",
       "proportionality": "Assunções e limites documentados; separação apoio/decisão",
       "risk_level": "L2",
@@ -5294,7 +5009,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "03-threat-modeling-appsec-l3-us-15",
-      "phase": "threat_modeling",
+      "phase": "design",
       "practice_id": "03-threat-modeling:tratamento-explicito-dos-riscos-de-processo-do-threat-modeling",
       "proportionality": "Tratamento formal dos riscos de processo + revisão independente da cobertura",
       "risk_level": "L3",
@@ -5313,7 +5028,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "03-threat-modeling-software_architect-l1-us-15",
-      "phase": "threat_modeling",
+      "phase": "design",
       "practice_id": "03-threat-modeling:tratamento-explicito-dos-riscos-de-processo-do-threat-modeling",
       "proportionality": "Nota informal de assunções",
       "risk_level": "L1",
@@ -5332,7 +5047,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "03-threat-modeling-software_architect-l2-us-15",
-      "phase": "threat_modeling",
+      "phase": "design",
       "practice_id": "03-threat-modeling:tratamento-explicito-dos-riscos-de-processo-do-threat-modeling",
       "proportionality": "Assunções e limites documentados; separação apoio/decisão",
       "risk_level": "L2",
@@ -5351,7 +5066,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "03-threat-modeling-software_architect-l3-us-15",
-      "phase": "threat_modeling",
+      "phase": "design",
       "practice_id": "03-threat-modeling:tratamento-explicito-dos-riscos-de-processo-do-threat-modeling",
       "proportionality": "Tratamento formal dos riscos de processo + revisão independente da cobertura",
       "risk_level": "L3",
@@ -7023,7 +6738,7 @@
         "practice assignment derived from US-16"
       ],
       "id": "04-arquitetura-segura-software_architect-l1-us-16",
-      "phase": "revisao_periodica",
+      "phase": "govern",
       "practice_id": "04-arquitetura-segura:revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
       "proportionality": "A2+ tipicamente fora de produção; revisão simplificada quando aplicável - Checklist [ARC-015](/sbd-toe/sbd-manual/arquitetura-segura/addon/catalogo-requisitos-arquitetura#arc-015) essencial; kill-switch exercitado anualmente",
       "risk_level": "L1",
@@ -7042,7 +6757,7 @@
         "practice assignment derived from US-16"
       ],
       "id": "04-arquitetura-segura-software_architect-l2-us-16",
-      "phase": "revisao_periodica",
+      "phase": "govern",
       "practice_id": "04-arquitetura-segura:revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
       "proportionality": "Obrigatório para A2+ - Checklist [ARC-015](/sbd-toe/sbd-manual/arquitetura-segura/addon/catalogo-requisitos-arquitetura#arc-015) completa; kill-switch exercitado trimestralmente (A3)",
       "risk_level": "L2",
@@ -7061,7 +6776,7 @@
         "practice assignment derived from US-16"
       ],
       "id": "04-arquitetura-segura-software_architect-l3-us-16",
-      "phase": "revisao_periodica",
+      "phase": "govern",
       "practice_id": "04-arquitetura-segura:revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
       "proportionality": "Obrigatório para A2+; A3/A4 com revisão appsec independente - Checklist [ARC-015](/sbd-toe/sbd-manual/arquitetura-segura/addon/catalogo-requisitos-arquitetura#arc-015) completa + revisão independente; A4 com assinatura formal do CISO no mandate; kill-switch exercitado mensalmente (A4)",
       "risk_level": "L3",
@@ -7194,7 +6909,7 @@
         "practice assignment derived from US-16"
       ],
       "id": "04-arquitetura-segura-appsec-l1-us-16",
-      "phase": "revisao_periodica",
+      "phase": "govern",
       "practice_id": "04-arquitetura-segura:revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
       "proportionality": "A2+ tipicamente fora de produção; revisão simplificada quando aplicável - Checklist [ARC-015](/sbd-toe/sbd-manual/arquitetura-segura/addon/catalogo-requisitos-arquitetura#arc-015) essencial; kill-switch exercitado anualmente",
       "risk_level": "L1",
@@ -7213,7 +6928,7 @@
         "practice assignment derived from US-16"
       ],
       "id": "04-arquitetura-segura-appsec-l2-us-16",
-      "phase": "revisao_periodica",
+      "phase": "govern",
       "practice_id": "04-arquitetura-segura:revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
       "proportionality": "Obrigatório para A2+ - Checklist [ARC-015](/sbd-toe/sbd-manual/arquitetura-segura/addon/catalogo-requisitos-arquitetura#arc-015) completa; kill-switch exercitado trimestralmente (A3)",
       "risk_level": "L2",
@@ -7232,7 +6947,7 @@
         "practice assignment derived from US-16"
       ],
       "id": "04-arquitetura-segura-appsec-l3-us-16",
-      "phase": "revisao_periodica",
+      "phase": "govern",
       "practice_id": "04-arquitetura-segura:revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
       "proportionality": "Obrigatório para A2+; A3/A4 com revisão appsec independente - Checklist [ARC-015](/sbd-toe/sbd-manual/arquitetura-segura/addon/catalogo-requisitos-arquitetura#arc-015) completa + revisão independente; A4 com assinatura formal do CISO no mandate; kill-switch exercitado mensalmente (A4)",
       "risk_level": "L3",
@@ -8733,7 +8448,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "05-dependencias-sbom-sca-unassigned-l1-us-14",
-      "phase": "aprovacao_de_provider",
+      "phase": "govern",
       "practice_id": "05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
       "proportionality": "Recomendado - AI BOM em formato simples; lista de providers conhecida",
       "risk_level": "L1",
@@ -8752,7 +8467,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "05-dependencias-sbom-sca-unassigned-l2-us-14",
-      "phase": "aprovacao_de_provider",
+      "phase": "govern",
       "practice_id": "05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
       "proportionality": "Obrigatório - AI BOM em formato standard; providers aprovados; gate de CI",
       "risk_level": "L2",
@@ -8771,7 +8486,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "05-dependencias-sbom-sca-unassigned-l3-us-14",
-      "phase": "aprovacao_de_provider",
+      "phase": "govern",
       "practice_id": "05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
       "proportionality": "Obrigatório - AI BOM standard + revisão GRC dos providers; cláusulas contratuais detalhadas (data retention, audit rights, localização); cross-link com cross-check AI Act",
       "risk_level": "L3",
@@ -8790,7 +8505,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "05-dependencias-sbom-sca-unassigned-l1-us-14",
-      "phase": "mudanca_de_versao",
+      "phase": "deploy",
       "practice_id": "05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
       "proportionality": "Recomendado - AI BOM em formato simples; lista de providers conhecida",
       "risk_level": "L1",
@@ -8809,7 +8524,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "05-dependencias-sbom-sca-unassigned-l2-us-14",
-      "phase": "mudanca_de_versao",
+      "phase": "deploy",
       "practice_id": "05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
       "proportionality": "Obrigatório - AI BOM em formato standard; providers aprovados; gate de CI",
       "risk_level": "L2",
@@ -8828,7 +8543,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "05-dependencias-sbom-sca-unassigned-l3-us-14",
-      "phase": "mudanca_de_versao",
+      "phase": "deploy",
       "practice_id": "05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
       "proportionality": "Obrigatório - AI BOM standard + revisão GRC dos providers; cláusulas contratuais detalhadas (data retention, audit rights, localização); cross-link com cross-check AI Act",
       "risk_level": "L3",
@@ -8960,12 +8675,12 @@
       "evidence": [
         "practice assignment derived from US-15"
       ],
-      "id": "05-dependencias-sbom-sca-lead-l1-us-15",
+      "id": "05-dependencias-sbom-sca-scrum_master-l1-us-15",
       "phase": "develop",
       "practice_id": "05-dependencias-sbom-sca:pinning-de-versoes-e-integridade-por-hash",
       "proportionality": "Lockfile presente; pinning recomendado",
       "risk_level": "L1",
-      "role": "lead",
+      "role": "scrum_master",
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-15-pinning-de-versoes-e-integridade-por-hash",
       "user_story_id": "05-dependencias-sbom-sca-us-15",
@@ -8979,12 +8694,12 @@
       "evidence": [
         "practice assignment derived from US-15"
       ],
-      "id": "05-dependencias-sbom-sca-lead-l2-us-15",
+      "id": "05-dependencias-sbom-sca-scrum_master-l2-us-15",
       "phase": "develop",
       "practice_id": "05-dependencias-sbom-sca:pinning-de-versoes-e-integridade-por-hash",
       "proportionality": "Lockfile obrigatório + verificação de hash",
       "risk_level": "L2",
-      "role": "lead",
+      "role": "scrum_master",
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-15-pinning-de-versoes-e-integridade-por-hash",
       "user_story_id": "05-dependencias-sbom-sca-us-15",
@@ -8998,12 +8713,12 @@
       "evidence": [
         "practice assignment derived from US-15"
       ],
-      "id": "05-dependencias-sbom-sca-lead-l3-us-15",
+      "id": "05-dependencias-sbom-sca-scrum_master-l3-us-15",
       "phase": "develop",
       "practice_id": "05-dependencias-sbom-sca:pinning-de-versoes-e-integridade-por-hash",
       "proportionality": "Lockfile + hash + proveniência verificada (attestation) e gate bloqueante",
       "risk_level": "L3",
-      "role": "lead",
+      "role": "scrum_master",
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-15-pinning-de-versoes-e-integridade-por-hash",
       "user_story_id": "05-dependencias-sbom-sca-us-15",
@@ -9017,12 +8732,12 @@
       "evidence": [
         "practice assignment derived from US-15"
       ],
-      "id": "05-dependencias-sbom-sca-lead-l1-us-15",
+      "id": "05-dependencias-sbom-sca-scrum_master-l1-us-15",
       "phase": "build",
       "practice_id": "05-dependencias-sbom-sca:pinning-de-versoes-e-integridade-por-hash",
       "proportionality": "Lockfile presente; pinning recomendado",
       "risk_level": "L1",
-      "role": "lead",
+      "role": "scrum_master",
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-15-pinning-de-versoes-e-integridade-por-hash",
       "user_story_id": "05-dependencias-sbom-sca-us-15",
@@ -9036,12 +8751,12 @@
       "evidence": [
         "practice assignment derived from US-15"
       ],
-      "id": "05-dependencias-sbom-sca-lead-l2-us-15",
+      "id": "05-dependencias-sbom-sca-scrum_master-l2-us-15",
       "phase": "build",
       "practice_id": "05-dependencias-sbom-sca:pinning-de-versoes-e-integridade-por-hash",
       "proportionality": "Lockfile obrigatório + verificação de hash",
       "risk_level": "L2",
-      "role": "lead",
+      "role": "scrum_master",
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-15-pinning-de-versoes-e-integridade-por-hash",
       "user_story_id": "05-dependencias-sbom-sca-us-15",
@@ -9055,12 +8770,12 @@
       "evidence": [
         "practice assignment derived from US-15"
       ],
-      "id": "05-dependencias-sbom-sca-lead-l3-us-15",
+      "id": "05-dependencias-sbom-sca-scrum_master-l3-us-15",
       "phase": "build",
       "practice_id": "05-dependencias-sbom-sca:pinning-de-versoes-e-integridade-por-hash",
       "proportionality": "Lockfile + hash + proveniência verificada (attestation) e gate bloqueante",
       "risk_level": "L3",
-      "role": "lead",
+      "role": "scrum_master",
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-15-pinning-de-versoes-e-integridade-por-hash",
       "user_story_id": "05-dependencias-sbom-sca-us-15",
@@ -10044,7 +9759,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "06-desenvolvimento-seguro-scrum_master-l1-us-14",
-      "phase": "governacao_trimestral",
+      "phase": "govern",
       "practice_id": "06-desenvolvimento-seguro:monitorizacao-de-conformidade-e-metricas-de-seguranca",
       "proportionality": "Recomendado - Métricas básicas (cobertura SAST, exceções)",
       "risk_level": "L1",
@@ -10063,7 +9778,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "06-desenvolvimento-seguro-scrum_master-l2-us-14",
-      "phase": "governacao_trimestral",
+      "phase": "govern",
       "practice_id": "06-desenvolvimento-seguro:monitorizacao-de-conformidade-e-metricas-de-seguranca",
       "proportionality": "Obrigatório - Dashboard com alertas para desvios",
       "risk_level": "L2",
@@ -10082,7 +9797,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "06-desenvolvimento-seguro-scrum_master-l3-us-14",
-      "phase": "governacao_trimestral",
+      "phase": "govern",
       "practice_id": "06-desenvolvimento-seguro:monitorizacao-de-conformidade-e-metricas-de-seguranca",
       "proportionality": "Obrigatório - Dashboard contínuo + auditoria automática + SLA de remediação",
       "risk_level": "L3",
@@ -10101,7 +9816,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "06-desenvolvimento-seguro-appsec-l1-us-14",
-      "phase": "governacao_trimestral",
+      "phase": "govern",
       "practice_id": "06-desenvolvimento-seguro:monitorizacao-de-conformidade-e-metricas-de-seguranca",
       "proportionality": "Recomendado - Métricas básicas (cobertura SAST, exceções)",
       "risk_level": "L1",
@@ -10120,7 +9835,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "06-desenvolvimento-seguro-appsec-l2-us-14",
-      "phase": "governacao_trimestral",
+      "phase": "govern",
       "practice_id": "06-desenvolvimento-seguro:monitorizacao-de-conformidade-e-metricas-de-seguranca",
       "proportionality": "Obrigatório - Dashboard com alertas para desvios",
       "risk_level": "L2",
@@ -10139,7 +9854,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "06-desenvolvimento-seguro-appsec-l3-us-14",
-      "phase": "governacao_trimestral",
+      "phase": "govern",
       "practice_id": "06-desenvolvimento-seguro:monitorizacao-de-conformidade-e-metricas-de-seguranca",
       "proportionality": "Obrigatório - Dashboard contínuo + auditoria automática + SLA de remediação",
       "risk_level": "L3",
@@ -10948,63 +10663,6 @@
       "warnings": []
     },
     {
-      "action": "rastrear commit→pipeline→release",
-      "artifacts": [],
-      "chapter_id": "07-cicd-seguro",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-09"
-      ],
-      "id": "07-cicd-seguro-compliance-l1-us-09",
-      "phase": "unassigned",
-      "practice_id": "07-cicd-seguro:rastreabilidade-ponta-a-ponta-commitpipelinerelease",
-      "proportionality": "Obrigatório - Logs básicos armazenados 30 dias",
-      "risk_level": "L1",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-09-rastreabilidade-ponta-a-ponta-commitpipelinerelease",
-      "user_story_id": "07-cicd-seguro-us-09",
-      "warnings": []
-    },
-    {
-      "action": "rastrear commit→pipeline→release",
-      "artifacts": [],
-      "chapter_id": "07-cicd-seguro",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-09"
-      ],
-      "id": "07-cicd-seguro-compliance-l2-us-09",
-      "phase": "unassigned",
-      "practice_id": "07-cicd-seguro:rastreabilidade-ponta-a-ponta-commitpipelinerelease",
-      "proportionality": "Obrigatório - Retenção 90 dias + correlação commit-build",
-      "risk_level": "L2",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-09-rastreabilidade-ponta-a-ponta-commitpipelinerelease",
-      "user_story_id": "07-cicd-seguro-us-09",
-      "warnings": []
-    },
-    {
-      "action": "rastrear commit→pipeline→release",
-      "artifacts": [],
-      "chapter_id": "07-cicd-seguro",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-09"
-      ],
-      "id": "07-cicd-seguro-compliance-l3-us-09",
-      "phase": "unassigned",
-      "practice_id": "07-cicd-seguro:rastreabilidade-ponta-a-ponta-commitpipelinerelease",
-      "proportionality": "Obrigatório - Retenção ≥1 ano + exportação imutável + auditoria reforçada",
-      "risk_level": "L3",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-09-rastreabilidade-ponta-a-ponta-commitpipelinerelease",
-      "user_story_id": "07-cicd-seguro-us-09",
-      "warnings": []
-    },
-    {
       "action": "exceções registadas, aprovadas e temporárias",
       "artifacts": [],
       "chapter_id": "07-cicd-seguro",
@@ -11056,63 +10714,6 @@
       "proportionality": "Obrigatório - Revisão frequente + auditoria obrigatória",
       "risk_level": "L3",
       "role": "grc",
-      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-10-gestao-de-excecoes-bypass-controlado",
-      "user_story_id": "07-cicd-seguro-us-10",
-      "warnings": []
-    },
-    {
-      "action": "exceções registadas, aprovadas e temporárias",
-      "artifacts": [],
-      "chapter_id": "07-cicd-seguro",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-10"
-      ],
-      "id": "07-cicd-seguro-compliance-l1-us-10",
-      "phase": "unassigned",
-      "practice_id": "07-cicd-seguro:gestao-de-excecoes-bypass-controlado",
-      "proportionality": "Obrigatório - Registo simples com aprovação única",
-      "risk_level": "L1",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-10-gestao-de-excecoes-bypass-controlado",
-      "user_story_id": "07-cicd-seguro-us-10",
-      "warnings": []
-    },
-    {
-      "action": "exceções registadas, aprovadas e temporárias",
-      "artifacts": [],
-      "chapter_id": "07-cicd-seguro",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-10"
-      ],
-      "id": "07-cicd-seguro-compliance-l2-us-10",
-      "phase": "unassigned",
-      "practice_id": "07-cicd-seguro:gestao-de-excecoes-bypass-controlado",
-      "proportionality": "Obrigatório - Aprovação dupla e prazo máximo (ex.: 60 dias)",
-      "risk_level": "L2",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-10-gestao-de-excecoes-bypass-controlado",
-      "user_story_id": "07-cicd-seguro-us-10",
-      "warnings": []
-    },
-    {
-      "action": "exceções registadas, aprovadas e temporárias",
-      "artifacts": [],
-      "chapter_id": "07-cicd-seguro",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-10"
-      ],
-      "id": "07-cicd-seguro-compliance-l3-us-10",
-      "phase": "unassigned",
-      "practice_id": "07-cicd-seguro:gestao-de-excecoes-bypass-controlado",
-      "proportionality": "Obrigatório - Revisão frequente + auditoria obrigatória",
-      "risk_level": "L3",
-      "role": "compliance",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-10-gestao-de-excecoes-bypass-controlado",
       "user_story_id": "07-cicd-seguro-us-10",
@@ -11632,63 +11233,6 @@
       "warnings": []
     },
     {
-      "action": "que qualquer evidência de controlo em CI/CD seja baseada em execução observável (logs, exit codes, artefactos)",
-      "artifacts": [],
-      "chapter_id": "07-cicd-seguro",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-16"
-      ],
-      "id": "07-cicd-seguro-compliance-l1-us-16",
-      "phase": "unassigned",
-      "practice_id": "07-cicd-seguro:evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao",
-      "proportionality": "Obrigatório - Evidência mínima por execução",
-      "risk_level": "L1",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-16-evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao",
-      "user_story_id": "07-cicd-seguro-us-16",
-      "warnings": []
-    },
-    {
-      "action": "que qualquer evidência de controlo em CI/CD seja baseada em execução observável (logs, exit codes, artefactos)",
-      "artifacts": [],
-      "chapter_id": "07-cicd-seguro",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-16"
-      ],
-      "id": "07-cicd-seguro-compliance-l2-us-16",
-      "phase": "unassigned",
-      "practice_id": "07-cicd-seguro:evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao",
-      "proportionality": "Obrigatório - Evidência obrigatória + retenção reforçada",
-      "risk_level": "L2",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-16-evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao",
-      "user_story_id": "07-cicd-seguro-us-16",
-      "warnings": []
-    },
-    {
-      "action": "que qualquer evidência de controlo em CI/CD seja baseada em execução observável (logs, exit codes, artefactos)",
-      "artifacts": [],
-      "chapter_id": "07-cicd-seguro",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-16"
-      ],
-      "id": "07-cicd-seguro-compliance-l3-us-16",
-      "phase": "unassigned",
-      "practice_id": "07-cicd-seguro:evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao",
-      "proportionality": "Obrigatório - Evidência obrigatória + export imutável e auditoria",
-      "risk_level": "L3",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-16-evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao",
-      "user_story_id": "07-cicd-seguro-us-16",
-      "warnings": []
-    },
-    {
       "action": "que logs e outputs do pipeline sejam minimizados e higienizados",
       "artifacts": [],
       "chapter_id": "07-cicd-seguro",
@@ -11925,7 +11469,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "07-cicd-seguro-devops-l1-us-19",
-      "phase": "onboarding_do_agente",
+      "phase": "govern",
       "practice_id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline-us-19",
       "proportionality": "Sim para A1+ - OIDC obrigatório; A2+ tipicamente fora de produção",
       "risk_level": "L1",
@@ -11944,7 +11488,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "07-cicd-seguro-devops-l2-us-19",
-      "phase": "onboarding_do_agente",
+      "phase": "govern",
       "practice_id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline-us-19",
       "proportionality": "Sim para A1+ - OIDC + audit completo + intent events em A2+; kill-switch exercitado trimestralmente em A3",
       "risk_level": "L2",
@@ -11963,7 +11507,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "07-cicd-seguro-devops-l3-us-19",
-      "phase": "onboarding_do_agente",
+      "phase": "govern",
       "practice_id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline-us-19",
       "proportionality": "Sim para A1+ - OIDC + audit completo + intent events em A2+ + kill-switch exercitado mensalmente em A4; revisão appsec independente",
       "risk_level": "L3",
@@ -12096,7 +11640,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "07-cicd-seguro-sre-l1-us-19",
-      "phase": "onboarding_do_agente",
+      "phase": "govern",
       "practice_id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline-us-19",
       "proportionality": "Sim para A1+ - OIDC obrigatório; A2+ tipicamente fora de produção",
       "risk_level": "L1",
@@ -12115,7 +11659,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "07-cicd-seguro-sre-l2-us-19",
-      "phase": "onboarding_do_agente",
+      "phase": "govern",
       "practice_id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline-us-19",
       "proportionality": "Sim para A1+ - OIDC + audit completo + intent events em A2+; kill-switch exercitado trimestralmente em A3",
       "risk_level": "L2",
@@ -12134,7 +11678,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "07-cicd-seguro-sre-l3-us-19",
-      "phase": "onboarding_do_agente",
+      "phase": "govern",
       "practice_id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline-us-19",
       "proportionality": "Sim para A1+ - OIDC + audit completo + intent events em A2+ + kill-switch exercitado mensalmente em A4; revisão appsec independente",
       "risk_level": "L3",
@@ -12267,7 +11811,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "07-cicd-seguro-appsec-l1-us-19",
-      "phase": "onboarding_do_agente",
+      "phase": "govern",
       "practice_id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline-us-19",
       "proportionality": "Sim para A1+ - OIDC obrigatório; A2+ tipicamente fora de produção",
       "risk_level": "L1",
@@ -12286,7 +11830,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "07-cicd-seguro-appsec-l2-us-19",
-      "phase": "onboarding_do_agente",
+      "phase": "govern",
       "practice_id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline-us-19",
       "proportionality": "Sim para A1+ - OIDC + audit completo + intent events em A2+; kill-switch exercitado trimestralmente em A3",
       "risk_level": "L2",
@@ -12305,7 +11849,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "07-cicd-seguro-appsec-l3-us-19",
-      "phase": "onboarding_do_agente",
+      "phase": "govern",
       "practice_id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline-us-19",
       "proportionality": "Sim para A1+ - OIDC + audit completo + intent events em A2+ + kill-switch exercitado mensalmente em A4; revisão appsec independente",
       "risk_level": "L3",
@@ -12438,7 +11982,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "07-cicd-seguro-devops-l1-us-20",
-      "phase": "onboarding_offboarding",
+      "phase": "govern",
       "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
       "proportionality": "Identidade empresarial no SCM; RBAC básico por projeto",
       "risk_level": "L1",
@@ -12457,7 +12001,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "07-cicd-seguro-devops-l2-us-20",
-      "phase": "onboarding_offboarding",
+      "phase": "govern",
       "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
       "proportionality": "RBAC granular por branch; assinatura de tags recomendada",
       "risk_level": "L2",
@@ -12476,7 +12020,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "07-cicd-seguro-devops-l3-us-20",
-      "phase": "onboarding_offboarding",
+      "phase": "govern",
       "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
       "proportionality": "RBAC granular + assinatura de commits e tags obrigatória e verificada no pipeline",
       "risk_level": "L3",
@@ -12495,7 +12039,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "07-cicd-seguro-devops-l1-us-20",
-      "phase": "promocao",
+      "phase": "deploy",
       "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
       "proportionality": "Identidade empresarial no SCM; RBAC básico por projeto",
       "risk_level": "L1",
@@ -12514,7 +12058,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "07-cicd-seguro-devops-l2-us-20",
-      "phase": "promocao",
+      "phase": "deploy",
       "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
       "proportionality": "RBAC granular por branch; assinatura de tags recomendada",
       "risk_level": "L2",
@@ -12533,7 +12077,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "07-cicd-seguro-devops-l3-us-20",
-      "phase": "promocao",
+      "phase": "deploy",
       "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
       "proportionality": "RBAC granular + assinatura de commits e tags obrigatória e verificada no pipeline",
       "risk_level": "L3",
@@ -12609,7 +12153,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "07-cicd-seguro-sre-l1-us-20",
-      "phase": "onboarding_offboarding",
+      "phase": "govern",
       "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
       "proportionality": "Identidade empresarial no SCM; RBAC básico por projeto",
       "risk_level": "L1",
@@ -12628,7 +12172,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "07-cicd-seguro-sre-l2-us-20",
-      "phase": "onboarding_offboarding",
+      "phase": "govern",
       "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
       "proportionality": "RBAC granular por branch; assinatura de tags recomendada",
       "risk_level": "L2",
@@ -12647,7 +12191,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "07-cicd-seguro-sre-l3-us-20",
-      "phase": "onboarding_offboarding",
+      "phase": "govern",
       "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
       "proportionality": "RBAC granular + assinatura de commits e tags obrigatória e verificada no pipeline",
       "risk_level": "L3",
@@ -12666,7 +12210,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "07-cicd-seguro-sre-l1-us-20",
-      "phase": "promocao",
+      "phase": "deploy",
       "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
       "proportionality": "Identidade empresarial no SCM; RBAC básico por projeto",
       "risk_level": "L1",
@@ -12685,7 +12229,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "07-cicd-seguro-sre-l2-us-20",
-      "phase": "promocao",
+      "phase": "deploy",
       "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
       "proportionality": "RBAC granular por branch; assinatura de tags recomendada",
       "risk_level": "L2",
@@ -12704,7 +12248,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "07-cicd-seguro-sre-l3-us-20",
-      "phase": "promocao",
+      "phase": "deploy",
       "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
       "proportionality": "RBAC granular + assinatura de commits e tags obrigatória e verificada no pipeline",
       "risk_level": "L3",
@@ -12780,7 +12324,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "07-cicd-seguro-appsec-l1-us-20",
-      "phase": "onboarding_offboarding",
+      "phase": "govern",
       "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
       "proportionality": "Identidade empresarial no SCM; RBAC básico por projeto",
       "risk_level": "L1",
@@ -12799,7 +12343,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "07-cicd-seguro-appsec-l2-us-20",
-      "phase": "onboarding_offboarding",
+      "phase": "govern",
       "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
       "proportionality": "RBAC granular por branch; assinatura de tags recomendada",
       "risk_level": "L2",
@@ -12818,7 +12362,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "07-cicd-seguro-appsec-l3-us-20",
-      "phase": "onboarding_offboarding",
+      "phase": "govern",
       "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
       "proportionality": "RBAC granular + assinatura de commits e tags obrigatória e verificada no pipeline",
       "risk_level": "L3",
@@ -12837,7 +12381,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "07-cicd-seguro-appsec-l1-us-20",
-      "phase": "promocao",
+      "phase": "deploy",
       "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
       "proportionality": "Identidade empresarial no SCM; RBAC básico por projeto",
       "risk_level": "L1",
@@ -12856,7 +12400,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "07-cicd-seguro-appsec-l2-us-20",
-      "phase": "promocao",
+      "phase": "deploy",
       "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
       "proportionality": "RBAC granular por branch; assinatura de tags recomendada",
       "risk_level": "L2",
@@ -12875,7 +12419,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "07-cicd-seguro-appsec-l3-us-20",
-      "phase": "promocao",
+      "phase": "deploy",
       "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
       "proportionality": "RBAC granular + assinatura de commits e tags obrigatória e verificada no pipeline",
       "risk_level": "L3",
@@ -12951,7 +12495,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "07-cicd-seguro-devops-l1-us-21",
-      "phase": "criacao_refactor",
+      "phase": "develop",
       "practice_id": "07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21",
       "proportionality": "Fases logicamente distintas; templates versionados",
       "risk_level": "L1",
@@ -12970,7 +12514,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "07-cicd-seguro-devops-l2-us-21",
-      "phase": "criacao_refactor",
+      "phase": "develop",
       "practice_id": "07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21",
       "proportionality": "CI/CD separados + âmbito de credenciais por stage",
       "risk_level": "L2",
@@ -12989,7 +12533,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "07-cicd-seguro-devops-l3-us-21",
-      "phase": "criacao_refactor",
+      "phase": "develop",
       "practice_id": "07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21",
       "proportionality": "Separação reforçada com identidades dedicadas por stage e ausência verificada de permissões cruzadas",
       "risk_level": "L3",
@@ -13122,7 +12666,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "07-cicd-seguro-sre-l1-us-21",
-      "phase": "criacao_refactor",
+      "phase": "develop",
       "practice_id": "07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21",
       "proportionality": "Fases logicamente distintas; templates versionados",
       "risk_level": "L1",
@@ -13141,7 +12685,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "07-cicd-seguro-sre-l2-us-21",
-      "phase": "criacao_refactor",
+      "phase": "develop",
       "practice_id": "07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21",
       "proportionality": "CI/CD separados + âmbito de credenciais por stage",
       "risk_level": "L2",
@@ -13160,7 +12704,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "07-cicd-seguro-sre-l3-us-21",
-      "phase": "criacao_refactor",
+      "phase": "develop",
       "practice_id": "07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21",
       "proportionality": "Separação reforçada com identidades dedicadas por stage e ausência verificada de permissões cruzadas",
       "risk_level": "L3",
@@ -13293,7 +12837,7 @@
         "practice assignment derived from US-22"
       ],
       "id": "07-cicd-seguro-devops-l1-us-22",
-      "phase": "provisionamento",
+      "phase": "deploy",
       "practice_id": "07-cicd-seguro:protecao-contra-escalonamento-de-privilegios-em-runners-us-22",
       "proportionality": "Hardening base; sem privilégios desnecessários",
       "risk_level": "L1",
@@ -13312,7 +12856,7 @@
         "practice assignment derived from US-22"
       ],
       "id": "07-cicd-seguro-devops-l2-us-22",
-      "phase": "provisionamento",
+      "phase": "deploy",
       "practice_id": "07-cicd-seguro:protecao-contra-escalonamento-de-privilegios-em-runners-us-22",
       "proportionality": "Runners segregados sem socket exposto a jobs não privilegiados",
       "risk_level": "L2",
@@ -13331,7 +12875,7 @@
         "practice assignment derived from US-22"
       ],
       "id": "07-cicd-seguro-devops-l3-us-22",
-      "phase": "provisionamento",
+      "phase": "deploy",
       "practice_id": "07-cicd-seguro:protecao-contra-escalonamento-de-privilegios-em-runners-us-22",
       "proportionality": "Isolamento forte (efémero/descartável) + interdição de privesc + logs de bloqueio verificados",
       "risk_level": "L3",
@@ -13464,7 +13008,7 @@
         "practice assignment derived from US-22"
       ],
       "id": "07-cicd-seguro-sre-l1-us-22",
-      "phase": "provisionamento",
+      "phase": "deploy",
       "practice_id": "07-cicd-seguro:protecao-contra-escalonamento-de-privilegios-em-runners-us-22",
       "proportionality": "Hardening base; sem privilégios desnecessários",
       "risk_level": "L1",
@@ -13483,7 +13027,7 @@
         "practice assignment derived from US-22"
       ],
       "id": "07-cicd-seguro-sre-l2-us-22",
-      "phase": "provisionamento",
+      "phase": "deploy",
       "practice_id": "07-cicd-seguro:protecao-contra-escalonamento-de-privilegios-em-runners-us-22",
       "proportionality": "Runners segregados sem socket exposto a jobs não privilegiados",
       "risk_level": "L2",
@@ -13502,7 +13046,7 @@
         "practice assignment derived from US-22"
       ],
       "id": "07-cicd-seguro-sre-l3-us-22",
-      "phase": "provisionamento",
+      "phase": "deploy",
       "practice_id": "07-cicd-seguro:protecao-contra-escalonamento-de-privilegios-em-runners-us-22",
       "proportionality": "Isolamento forte (efémero/descartável) + interdição de privesc + logs de bloqueio verificados",
       "risk_level": "L3",
@@ -14425,63 +13969,6 @@
       "warnings": []
     },
     {
-      "action": "histórico completo de alterações com naming conventions, tags git e releases versionadas",
-      "artifacts": [],
-      "chapter_id": "08-iac-infraestrutura",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-05"
-      ],
-      "id": "08-iac-infraestrutura-compliance-l1-us-05",
-      "phase": "unassigned",
-      "practice_id": "08-iac-infraestrutura:rastreabilidade-versionamento-e-naming",
-      "proportionality": "Recomendado - Naming simples + git básico",
-      "risk_level": "L1",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-05-rastreabilidade-versionamento-e-naming",
-      "user_story_id": "08-iac-infraestrutura-us-05",
-      "warnings": []
-    },
-    {
-      "action": "histórico completo de alterações com naming conventions, tags git e releases versionadas",
-      "artifacts": [],
-      "chapter_id": "08-iac-infraestrutura",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-05"
-      ],
-      "id": "08-iac-infraestrutura-compliance-l2-us-05",
-      "phase": "unassigned",
-      "practice_id": "08-iac-infraestrutura:rastreabilidade-versionamento-e-naming",
-      "proportionality": "Obrigatório - Naming + convenções commit + tagging",
-      "risk_level": "L2",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-05-rastreabilidade-versionamento-e-naming",
-      "user_story_id": "08-iac-infraestrutura-us-05",
-      "warnings": []
-    },
-    {
-      "action": "histórico completo de alterações com naming conventions, tags git e releases versionadas",
-      "artifacts": [],
-      "chapter_id": "08-iac-infraestrutura",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-05"
-      ],
-      "id": "08-iac-infraestrutura-compliance-l3-us-05",
-      "phase": "unassigned",
-      "practice_id": "08-iac-infraestrutura:rastreabilidade-versionamento-e-naming",
-      "proportionality": "Obrigatório - Naming + convenções + tagging semântico + CHANGELOG",
-      "risk_level": "L3",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-05-rastreabilidade-versionamento-e-naming",
-      "user_story_id": "08-iac-infraestrutura-us-05",
-      "warnings": []
-    },
-    {
       "action": "aprovação formal de terraform plan em PR antes de apply",
       "artifacts": [],
       "chapter_id": "08-iac-infraestrutura",
@@ -14704,63 +14191,6 @@
       "proportionality": "Obrigatório - Metadata + tags + dashboard automático de rastreabilidade",
       "risk_level": "L3",
       "role": "grc",
-      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-07-rastreabilidade-ficheiro-recurso-ambiente",
-      "user_story_id": "08-iac-infraestrutura-us-07",
-      "warnings": []
-    },
-    {
-      "action": "mapeamento documentado de ficheiro IaC → recurso → ambiente",
-      "artifacts": [],
-      "chapter_id": "08-iac-infraestrutura",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-07"
-      ],
-      "id": "08-iac-infraestrutura-compliance-l1-us-07",
-      "phase": "unassigned",
-      "practice_id": "08-iac-infraestrutura:rastreabilidade-ficheiro-recurso-ambiente",
-      "proportionality": "Recomendado - Metadata em locals",
-      "risk_level": "L1",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-07-rastreabilidade-ficheiro-recurso-ambiente",
-      "user_story_id": "08-iac-infraestrutura-us-07",
-      "warnings": []
-    },
-    {
-      "action": "mapeamento documentado de ficheiro IaC → recurso → ambiente",
-      "artifacts": [],
-      "chapter_id": "08-iac-infraestrutura",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-07"
-      ],
-      "id": "08-iac-infraestrutura-compliance-l2-us-07",
-      "phase": "unassigned",
-      "practice_id": "08-iac-infraestrutura:rastreabilidade-ficheiro-recurso-ambiente",
-      "proportionality": "Obrigatório - Metadata + tags + documentação",
-      "risk_level": "L2",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-07-rastreabilidade-ficheiro-recurso-ambiente",
-      "user_story_id": "08-iac-infraestrutura-us-07",
-      "warnings": []
-    },
-    {
-      "action": "mapeamento documentado de ficheiro IaC → recurso → ambiente",
-      "artifacts": [],
-      "chapter_id": "08-iac-infraestrutura",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-07"
-      ],
-      "id": "08-iac-infraestrutura-compliance-l3-us-07",
-      "phase": "unassigned",
-      "practice_id": "08-iac-infraestrutura:rastreabilidade-ficheiro-recurso-ambiente",
-      "proportionality": "Obrigatório - Metadata + tags + dashboard automático de rastreabilidade",
-      "risk_level": "L3",
-      "role": "compliance",
       "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-07-rastreabilidade-ficheiro-recurso-ambiente",
       "user_story_id": "08-iac-infraestrutura-us-07",
@@ -15686,63 +15116,6 @@
       "evidence": [
         "practice assignment derived from US-13"
       ],
-      "id": "08-iac-infraestrutura-compliance-l1-us-13",
-      "phase": "unassigned",
-      "practice_id": "08-iac-infraestrutura:janela-de-mudanca-e-aprovacoes-por-papel",
-      "proportionality": "Opcional - Aprovação simples",
-      "risk_level": "L1",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-13-janela-de-mudanca-e-aprovacoes-por-papel",
-      "user_story_id": "08-iac-infraestrutura-us-13",
-      "warnings": []
-    },
-    {
-      "action": "janelas de mudança definidas e aprovações por papel antes do apply em prod",
-      "artifacts": [],
-      "chapter_id": "08-iac-infraestrutura",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-13"
-      ],
-      "id": "08-iac-infraestrutura-compliance-l2-us-13",
-      "phase": "unassigned",
-      "practice_id": "08-iac-infraestrutura:janela-de-mudanca-e-aprovacoes-por-papel",
-      "proportionality": "Obrigatório - Aprov. PO + AppSec",
-      "risk_level": "L2",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-13-janela-de-mudanca-e-aprovacoes-por-papel",
-      "user_story_id": "08-iac-infraestrutura-us-13",
-      "warnings": []
-    },
-    {
-      "action": "janelas de mudança definidas e aprovações por papel antes do apply em prod",
-      "artifacts": [],
-      "chapter_id": "08-iac-infraestrutura",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-13"
-      ],
-      "id": "08-iac-infraestrutura-compliance-l3-us-13",
-      "phase": "unassigned",
-      "practice_id": "08-iac-infraestrutura:janela-de-mudanca-e-aprovacoes-por-papel",
-      "proportionality": "Obrigatório - Aprov. PO + AppSec + GRC",
-      "risk_level": "L3",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-13-janela-de-mudanca-e-aprovacoes-por-papel",
-      "user_story_id": "08-iac-infraestrutura-us-13",
-      "warnings": []
-    },
-    {
-      "action": "janelas de mudança definidas e aprovações por papel antes do apply em prod",
-      "artifacts": [],
-      "chapter_id": "08-iac-infraestrutura",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-13"
-      ],
       "id": "08-iac-infraestrutura-appsec-l1-us-13",
       "phase": "unassigned",
       "practice_id": "08-iac-infraestrutura:janela-de-mudanca-e-aprovacoes-por-papel",
@@ -15901,63 +15274,6 @@
       "proportionality": "Obrigatório - SoD + dupla aprovação + janela de mudança + auditoria reforçada",
       "risk_level": "L3",
       "role": "grc",
-      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-15-separacao-de-funcoes-sod-e-controlo-de-execucao-de-apply",
-      "user_story_id": "08-iac-infraestrutura-us-15",
-      "warnings": []
-    },
-    {
-      "action": "impor separação de funções e controlo de execução de apply",
-      "artifacts": [],
-      "chapter_id": "08-iac-infraestrutura",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-15"
-      ],
-      "id": "08-iac-infraestrutura-compliance-l1-us-15",
-      "phase": "unassigned",
-      "practice_id": "08-iac-infraestrutura:separacao-de-funcoes-sod-e-controlo-de-execucao-de-apply",
-      "proportionality": "Recomendado - Aprovação simples",
-      "risk_level": "L1",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-15-separacao-de-funcoes-sod-e-controlo-de-execucao-de-apply",
-      "user_story_id": "08-iac-infraestrutura-us-15",
-      "warnings": []
-    },
-    {
-      "action": "impor separação de funções e controlo de execução de apply",
-      "artifacts": [],
-      "chapter_id": "08-iac-infraestrutura",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-15"
-      ],
-      "id": "08-iac-infraestrutura-compliance-l2-us-15",
-      "phase": "unassigned",
-      "practice_id": "08-iac-infraestrutura:separacao-de-funcoes-sod-e-controlo-de-execucao-de-apply",
-      "proportionality": "Obrigatório - Aprovação 2nd reviewer + RBAC",
-      "risk_level": "L2",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-15-separacao-de-funcoes-sod-e-controlo-de-execucao-de-apply",
-      "user_story_id": "08-iac-infraestrutura-us-15",
-      "warnings": []
-    },
-    {
-      "action": "impor separação de funções e controlo de execução de apply",
-      "artifacts": [],
-      "chapter_id": "08-iac-infraestrutura",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-15"
-      ],
-      "id": "08-iac-infraestrutura-compliance-l3-us-15",
-      "phase": "unassigned",
-      "practice_id": "08-iac-infraestrutura:separacao-de-funcoes-sod-e-controlo-de-execucao-de-apply",
-      "proportionality": "Obrigatório - SoD + dupla aprovação + janela de mudança + auditoria reforçada",
-      "risk_level": "L3",
-      "role": "compliance",
       "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-15-separacao-de-funcoes-sod-e-controlo-de-execucao-de-apply",
       "user_story_id": "08-iac-infraestrutura-us-15",
@@ -16428,7 +15744,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "08-iac-infraestrutura-devops-l1-us-18",
-      "phase": "deploy_operacao",
+      "phase": "deploy",
       "practice_id": "08-iac-infraestrutura:proibicao-de-apply-manual-local-fora-do-pipeline",
       "proportionality": "Política documentada + apply via pipeline em prod",
       "risk_level": "L1",
@@ -16447,7 +15763,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "08-iac-infraestrutura-devops-l2-us-18",
-      "phase": "deploy_operacao",
+      "phase": "deploy",
       "practice_id": "08-iac-infraestrutura:proibicao-de-apply-manual-local-fora-do-pipeline",
       "proportionality": "Bloqueio técnico (sem credenciais locais) em staging/prod",
       "risk_level": "L2",
@@ -16466,7 +15782,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "08-iac-infraestrutura-devops-l3-us-18",
-      "phase": "deploy_operacao",
+      "phase": "deploy",
       "practice_id": "08-iac-infraestrutura:proibicao-de-apply-manual-local-fora-do-pipeline",
       "proportionality": "Bloqueio técnico em todos os ambientes + auditoria de tentativas e break-glass registado",
       "risk_level": "L3",
@@ -16542,7 +15858,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "08-iac-infraestrutura-sre-l1-us-18",
-      "phase": "deploy_operacao",
+      "phase": "deploy",
       "practice_id": "08-iac-infraestrutura:proibicao-de-apply-manual-local-fora-do-pipeline",
       "proportionality": "Política documentada + apply via pipeline em prod",
       "risk_level": "L1",
@@ -16561,7 +15877,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "08-iac-infraestrutura-sre-l2-us-18",
-      "phase": "deploy_operacao",
+      "phase": "deploy",
       "practice_id": "08-iac-infraestrutura:proibicao-de-apply-manual-local-fora-do-pipeline",
       "proportionality": "Bloqueio técnico (sem credenciais locais) em staging/prod",
       "risk_level": "L2",
@@ -16580,7 +15896,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "08-iac-infraestrutura-sre-l3-us-18",
-      "phase": "deploy_operacao",
+      "phase": "deploy",
       "practice_id": "08-iac-infraestrutura:proibicao-de-apply-manual-local-fora-do-pipeline",
       "proportionality": "Bloqueio técnico em todos os ambientes + auditoria de tentativas e break-glass registado",
       "risk_level": "L3",
@@ -16656,7 +15972,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "08-iac-infraestrutura-appsec-l1-us-18",
-      "phase": "deploy_operacao",
+      "phase": "deploy",
       "practice_id": "08-iac-infraestrutura:proibicao-de-apply-manual-local-fora-do-pipeline",
       "proportionality": "Política documentada + apply via pipeline em prod",
       "risk_level": "L1",
@@ -16675,7 +15991,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "08-iac-infraestrutura-appsec-l2-us-18",
-      "phase": "deploy_operacao",
+      "phase": "deploy",
       "practice_id": "08-iac-infraestrutura:proibicao-de-apply-manual-local-fora-do-pipeline",
       "proportionality": "Bloqueio técnico (sem credenciais locais) em staging/prod",
       "risk_level": "L2",
@@ -16694,7 +16010,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "08-iac-infraestrutura-appsec-l3-us-18",
-      "phase": "deploy_operacao",
+      "phase": "deploy",
       "practice_id": "08-iac-infraestrutura:proibicao-de-apply-manual-local-fora-do-pipeline",
       "proportionality": "Bloqueio técnico em todos os ambientes + auditoria de tentativas e break-glass registado",
       "risk_level": "L3",
@@ -16770,7 +16086,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "08-iac-infraestrutura-appsec-l1-us-19",
-      "phase": "desenvolvimento_revisao",
+      "phase": "develop",
       "practice_id": "08-iac-infraestrutura:reabertura-da-revisao-de-hardening-por-integridade-do-baseline",
       "proportionality": "Revisão manual registada quando módulo/policy/template muda",
       "risk_level": "L1",
@@ -16789,7 +16105,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "08-iac-infraestrutura-appsec-l2-us-19",
-      "phase": "desenvolvimento_revisao",
+      "phase": "develop",
       "practice_id": "08-iac-infraestrutura:reabertura-da-revisao-de-hardening-por-integridade-do-baseline",
       "proportionality": "Gate no pipeline marca eventos de baseline + revisão obrigatória antes de apply",
       "risk_level": "L2",
@@ -16808,7 +16124,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "08-iac-infraestrutura-appsec-l3-us-19",
-      "phase": "desenvolvimento_revisao",
+      "phase": "develop",
       "practice_id": "08-iac-infraestrutura:reabertura-da-revisao-de-hardening-por-integridade-do-baseline",
       "proportionality": "Revisão formal com owner + revisão periódica de templates/módulos + drift confirmado como falha de segurança bloqueante",
       "risk_level": "L3",
@@ -16941,7 +16257,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "08-iac-infraestrutura-devops-l1-us-19",
-      "phase": "desenvolvimento_revisao",
+      "phase": "develop",
       "practice_id": "08-iac-infraestrutura:reabertura-da-revisao-de-hardening-por-integridade-do-baseline",
       "proportionality": "Revisão manual registada quando módulo/policy/template muda",
       "risk_level": "L1",
@@ -16960,7 +16276,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "08-iac-infraestrutura-devops-l2-us-19",
-      "phase": "desenvolvimento_revisao",
+      "phase": "develop",
       "practice_id": "08-iac-infraestrutura:reabertura-da-revisao-de-hardening-por-integridade-do-baseline",
       "proportionality": "Gate no pipeline marca eventos de baseline + revisão obrigatória antes de apply",
       "risk_level": "L2",
@@ -16979,7 +16295,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "08-iac-infraestrutura-devops-l3-us-19",
-      "phase": "desenvolvimento_revisao",
+      "phase": "develop",
       "practice_id": "08-iac-infraestrutura:reabertura-da-revisao-de-hardening-por-integridade-do-baseline",
       "proportionality": "Revisão formal com owner + revisão periódica de templates/módulos + drift confirmado como falha de segurança bloqueante",
       "risk_level": "L3",
@@ -17112,7 +16428,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "08-iac-infraestrutura-sre-l1-us-19",
-      "phase": "desenvolvimento_revisao",
+      "phase": "develop",
       "practice_id": "08-iac-infraestrutura:reabertura-da-revisao-de-hardening-por-integridade-do-baseline",
       "proportionality": "Revisão manual registada quando módulo/policy/template muda",
       "risk_level": "L1",
@@ -17131,7 +16447,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "08-iac-infraestrutura-sre-l2-us-19",
-      "phase": "desenvolvimento_revisao",
+      "phase": "develop",
       "practice_id": "08-iac-infraestrutura:reabertura-da-revisao-de-hardening-por-integridade-do-baseline",
       "proportionality": "Gate no pipeline marca eventos de baseline + revisão obrigatória antes de apply",
       "risk_level": "L2",
@@ -17150,7 +16466,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "08-iac-infraestrutura-sre-l3-us-19",
-      "phase": "desenvolvimento_revisao",
+      "phase": "develop",
       "practice_id": "08-iac-infraestrutura:reabertura-da-revisao-de-hardening-por-integridade-do-baseline",
       "proportionality": "Revisão formal com owner + revisão periódica de templates/módulos + drift confirmado como falha de segurança bloqueante",
       "risk_level": "L3",
@@ -18537,7 +17853,7 @@
         "practice assignment derived from US-17"
       ],
       "id": "09-containers-imagens-appsec-l1-us-17",
-      "phase": "ci_cd_release",
+      "phase": "deploy",
       "practice_id": "09-containers-imagens:excecoes-temporarias-a-findings-policies-com-ttl-compensacoes-e-revalidacao",
       "proportionality": "Recomendado - Exceções registadas, TTL opcional mas incentivado",
       "risk_level": "L1",
@@ -18556,7 +17872,7 @@
         "practice assignment derived from US-17"
       ],
       "id": "09-containers-imagens-appsec-l2-us-17",
-      "phase": "ci_cd_release",
+      "phase": "deploy",
       "practice_id": "09-containers-imagens:excecoes-temporarias-a-findings-policies-com-ttl-compensacoes-e-revalidacao",
       "proportionality": "Obrigatório - TTL obrigatório + compensações mínimas + revisão mensal",
       "risk_level": "L2",
@@ -18575,7 +17891,7 @@
         "practice assignment derived from US-17"
       ],
       "id": "09-containers-imagens-appsec-l3-us-17",
-      "phase": "ci_cd_release",
+      "phase": "deploy",
       "practice_id": "09-containers-imagens:excecoes-temporarias-a-findings-policies-com-ttl-compensacoes-e-revalidacao",
       "proportionality": "Obrigatório - TTL curto + compensações reforçadas + revisão semanal/mensal + auditoria",
       "risk_level": "L3",
@@ -18594,7 +17910,7 @@
         "practice assignment derived from US-17"
       ],
       "id": "09-containers-imagens-grc-l1-us-17",
-      "phase": "ci_cd_release",
+      "phase": "deploy",
       "practice_id": "09-containers-imagens:excecoes-temporarias-a-findings-policies-com-ttl-compensacoes-e-revalidacao",
       "proportionality": "Recomendado - Exceções registadas, TTL opcional mas incentivado",
       "risk_level": "L1",
@@ -18613,7 +17929,7 @@
         "practice assignment derived from US-17"
       ],
       "id": "09-containers-imagens-grc-l2-us-17",
-      "phase": "ci_cd_release",
+      "phase": "deploy",
       "practice_id": "09-containers-imagens:excecoes-temporarias-a-findings-policies-com-ttl-compensacoes-e-revalidacao",
       "proportionality": "Obrigatório - TTL obrigatório + compensações mínimas + revisão mensal",
       "risk_level": "L2",
@@ -18632,7 +17948,7 @@
         "practice assignment derived from US-17"
       ],
       "id": "09-containers-imagens-grc-l3-us-17",
-      "phase": "ci_cd_release",
+      "phase": "deploy",
       "practice_id": "09-containers-imagens:excecoes-temporarias-a-findings-policies-com-ttl-compensacoes-e-revalidacao",
       "proportionality": "Obrigatório - TTL curto + compensações reforçadas + revisão semanal/mensal + auditoria",
       "risk_level": "L3",
@@ -18651,7 +17967,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "09-containers-imagens-ops-l1-us-18",
-      "phase": "build_provisionamento",
+      "phase": "build",
       "practice_id": "09-containers-imagens:pesos-de-modelo-ai-self-hosted-tratados-como-ativo-critico",
       "proportionality": "Encriptação e hash recomendados; acesso restrito básico",
       "risk_level": "L1",
@@ -18670,7 +17986,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "09-containers-imagens-ops-l2-us-18",
-      "phase": "build_provisionamento",
+      "phase": "build",
       "practice_id": "09-containers-imagens:pesos-de-modelo-ai-self-hosted-tratados-como-ativo-critico",
       "proportionality": "Encriptação at-rest + hash no startup obrigatórios; acesso por service account",
       "risk_level": "L2",
@@ -18689,7 +18005,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "09-containers-imagens-ops-l3-us-18",
-      "phase": "build_provisionamento",
+      "phase": "build",
       "practice_id": "09-containers-imagens:pesos-de-modelo-ai-self-hosted-tratados-como-ativo-critico",
       "proportionality": "Tudo de L2 + auditoria de download obrigatória + revogação rápida de acesso",
       "risk_level": "L3",
@@ -18765,7 +18081,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "09-containers-imagens-appsec-l1-us-18",
-      "phase": "build_provisionamento",
+      "phase": "build",
       "practice_id": "09-containers-imagens:pesos-de-modelo-ai-self-hosted-tratados-como-ativo-critico",
       "proportionality": "Encriptação e hash recomendados; acesso restrito básico",
       "risk_level": "L1",
@@ -18784,7 +18100,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "09-containers-imagens-appsec-l2-us-18",
-      "phase": "build_provisionamento",
+      "phase": "build",
       "practice_id": "09-containers-imagens:pesos-de-modelo-ai-self-hosted-tratados-como-ativo-critico",
       "proportionality": "Encriptação at-rest + hash no startup obrigatórios; acesso por service account",
       "risk_level": "L2",
@@ -18803,7 +18119,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "09-containers-imagens-appsec-l3-us-18",
-      "phase": "build_provisionamento",
+      "phase": "build",
       "practice_id": "09-containers-imagens:pesos-de-modelo-ai-self-hosted-tratados-como-ativo-critico",
       "proportionality": "Tudo de L2 + auditoria de download obrigatória + revogação rápida de acesso",
       "risk_level": "L3",
@@ -19392,7 +18708,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "09-containers-imagens-devops-l1-us-21",
-      "phase": "ops",
+      "phase": "operate",
       "practice_id": "09-containers-imagens:perfis-seccomp-apparmor-e-verificacao-de-drift-de-hardening",
       "proportionality": "Seccomp default recomendado; drift ad-hoc",
       "risk_level": "L1",
@@ -19411,7 +18727,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "09-containers-imagens-devops-l2-us-21",
-      "phase": "ops",
+      "phase": "operate",
       "practice_id": "09-containers-imagens:perfis-seccomp-apparmor-e-verificacao-de-drift-de-hardening",
       "proportionality": "Seccomp obrigatório + bloqueio de privilégio + verificação de drift",
       "risk_level": "L2",
@@ -19430,7 +18746,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "09-containers-imagens-devops-l3-us-21",
-      "phase": "ops",
+      "phase": "operate",
       "practice_id": "09-containers-imagens:perfis-seccomp-apparmor-e-verificacao-de-drift-de-hardening",
       "proportionality": "Tudo de L2 + perfis personalizados + verificação de drift contínua/automatizada",
       "risk_level": "L3",
@@ -19506,7 +18822,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "09-containers-imagens-appsec-l1-us-21",
-      "phase": "ops",
+      "phase": "operate",
       "practice_id": "09-containers-imagens:perfis-seccomp-apparmor-e-verificacao-de-drift-de-hardening",
       "proportionality": "Seccomp default recomendado; drift ad-hoc",
       "risk_level": "L1",
@@ -19525,7 +18841,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "09-containers-imagens-appsec-l2-us-21",
-      "phase": "ops",
+      "phase": "operate",
       "practice_id": "09-containers-imagens:perfis-seccomp-apparmor-e-verificacao-de-drift-de-hardening",
       "proportionality": "Seccomp obrigatório + bloqueio de privilégio + verificação de drift",
       "risk_level": "L2",
@@ -19544,7 +18860,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "09-containers-imagens-appsec-l3-us-21",
-      "phase": "ops",
+      "phase": "operate",
       "practice_id": "09-containers-imagens:perfis-seccomp-apparmor-e-verificacao-de-drift-de-hardening",
       "proportionality": "Tudo de L2 + perfis personalizados + verificação de drift contínua/automatizada",
       "risk_level": "L3",
@@ -20703,7 +20019,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "10-testes-seguranca-devops-l1-us-19",
-      "phase": "continua",
+      "phase": "operate",
       "practice_id": "10-testes-seguranca:protecao-dos-ativos-do-processo-de-teste",
       "proportionality": "Sem dados reais; masking básico de segredos",
       "risk_level": "L1",
@@ -20722,7 +20038,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "10-testes-seguranca-devops-l2-us-19",
-      "phase": "continua",
+      "phase": "operate",
       "practice_id": "10-testes-seguranca:protecao-dos-ativos-do-processo-de-teste",
       "proportionality": "+ contas técnicas dedicadas com rotação; egress restrito",
       "risk_level": "L2",
@@ -20741,7 +20057,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "10-testes-seguranca-devops-l3-us-19",
-      "phase": "continua",
+      "phase": "operate",
       "practice_id": "10-testes-seguranca:protecao-dos-ativos-do-processo-de-teste",
       "proportionality": "+ segregação completa de ambiente, exceções de dados reais com dupla aprovação e auditoria",
       "risk_level": "L3",
@@ -20817,7 +20133,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "10-testes-seguranca-appsec-l1-us-19",
-      "phase": "continua",
+      "phase": "operate",
       "practice_id": "10-testes-seguranca:protecao-dos-ativos-do-processo-de-teste",
       "proportionality": "Sem dados reais; masking básico de segredos",
       "risk_level": "L1",
@@ -20836,7 +20152,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "10-testes-seguranca-appsec-l2-us-19",
-      "phase": "continua",
+      "phase": "operate",
       "practice_id": "10-testes-seguranca:protecao-dos-ativos-do-processo-de-teste",
       "proportionality": "+ contas técnicas dedicadas com rotação; egress restrito",
       "risk_level": "L2",
@@ -20855,7 +20171,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "10-testes-seguranca-appsec-l3-us-19",
-      "phase": "continua",
+      "phase": "operate",
       "practice_id": "10-testes-seguranca:protecao-dos-ativos-do-processo-de-teste",
       "proportionality": "+ segregação completa de ambiente, exceções de dados reais com dupla aprovação e auditoria",
       "risk_level": "L3",
@@ -20874,7 +20190,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "10-testes-seguranca-appsec-l1-us-20",
-      "phase": "continua",
+      "phase": "operate",
       "practice_id": "10-testes-seguranca:kpis-de-eficacia-do-programa-de-testes",
       "proportionality": "TST-K01/K03/K05 com thresholds L1",
       "risk_level": "L1",
@@ -20893,7 +20209,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "10-testes-seguranca-appsec-l2-us-20",
-      "phase": "continua",
+      "phase": "operate",
       "practice_id": "10-testes-seguranca:kpis-de-eficacia-do-programa-de-testes",
       "proportionality": "+ TST-K02/K04/K07; revisão trimestral",
       "risk_level": "L2",
@@ -20912,7 +20228,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "10-testes-seguranca-appsec-l3-us-20",
-      "phase": "continua",
+      "phase": "operate",
       "practice_id": "10-testes-seguranca:kpis-de-eficacia-do-programa-de-testes",
       "proportionality": "+ TST-K06; revisão mensal e reporte à governação",
       "risk_level": "L3",
@@ -22413,7 +21729,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-devops-l1-us-18",
-      "phase": "pre_promocao",
+      "phase": "deploy",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Recomendado - Eval gate simples; rollback de modelo pode partilhar pipeline com aplicação",
       "risk_level": "L1",
@@ -22432,7 +21748,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-devops-l2-us-18",
-      "phase": "pre_promocao",
+      "phase": "deploy",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Sim para A1+ - Eval gate completo; rollback de modelo independente documentado; canary recomendado",
       "risk_level": "L2",
@@ -22451,7 +21767,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-devops-l3-us-18",
-      "phase": "pre_promocao",
+      "phase": "deploy",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Sim para A1+ - Eval gate completo + canary obrigatório em mudança de versão maior + auditoria do eval_run_id",
       "risk_level": "L3",
@@ -22470,7 +21786,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-devops-l1-us-18",
-      "phase": "promocao",
+      "phase": "deploy",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Recomendado - Eval gate simples; rollback de modelo pode partilhar pipeline com aplicação",
       "risk_level": "L1",
@@ -22489,7 +21805,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-devops-l2-us-18",
-      "phase": "promocao",
+      "phase": "deploy",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Sim para A1+ - Eval gate completo; rollback de modelo independente documentado; canary recomendado",
       "risk_level": "L2",
@@ -22508,7 +21824,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-devops-l3-us-18",
-      "phase": "promocao",
+      "phase": "deploy",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Sim para A1+ - Eval gate completo + canary obrigatório em mudança de versão maior + auditoria do eval_run_id",
       "risk_level": "L3",
@@ -22527,7 +21843,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-devops-l1-us-18",
-      "phase": "degradacao_em_producao",
+      "phase": "operate",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Recomendado - Eval gate simples; rollback de modelo pode partilhar pipeline com aplicação",
       "risk_level": "L1",
@@ -22546,7 +21862,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-devops-l2-us-18",
-      "phase": "degradacao_em_producao",
+      "phase": "operate",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Sim para A1+ - Eval gate completo; rollback de modelo independente documentado; canary recomendado",
       "risk_level": "L2",
@@ -22565,7 +21881,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-devops-l3-us-18",
-      "phase": "degradacao_em_producao",
+      "phase": "operate",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Sim para A1+ - Eval gate completo + canary obrigatório em mudança de versão maior + auditoria do eval_run_id",
       "risk_level": "L3",
@@ -22641,7 +21957,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-sre-l1-us-18",
-      "phase": "pre_promocao",
+      "phase": "deploy",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Recomendado - Eval gate simples; rollback de modelo pode partilhar pipeline com aplicação",
       "risk_level": "L1",
@@ -22660,7 +21976,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-sre-l2-us-18",
-      "phase": "pre_promocao",
+      "phase": "deploy",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Sim para A1+ - Eval gate completo; rollback de modelo independente documentado; canary recomendado",
       "risk_level": "L2",
@@ -22679,7 +21995,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-sre-l3-us-18",
-      "phase": "pre_promocao",
+      "phase": "deploy",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Sim para A1+ - Eval gate completo + canary obrigatório em mudança de versão maior + auditoria do eval_run_id",
       "risk_level": "L3",
@@ -22698,7 +22014,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-sre-l1-us-18",
-      "phase": "promocao",
+      "phase": "deploy",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Recomendado - Eval gate simples; rollback de modelo pode partilhar pipeline com aplicação",
       "risk_level": "L1",
@@ -22717,7 +22033,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-sre-l2-us-18",
-      "phase": "promocao",
+      "phase": "deploy",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Sim para A1+ - Eval gate completo; rollback de modelo independente documentado; canary recomendado",
       "risk_level": "L2",
@@ -22736,7 +22052,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-sre-l3-us-18",
-      "phase": "promocao",
+      "phase": "deploy",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Sim para A1+ - Eval gate completo + canary obrigatório em mudança de versão maior + auditoria do eval_run_id",
       "risk_level": "L3",
@@ -22755,7 +22071,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-sre-l1-us-18",
-      "phase": "degradacao_em_producao",
+      "phase": "operate",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Recomendado - Eval gate simples; rollback de modelo pode partilhar pipeline com aplicação",
       "risk_level": "L1",
@@ -22774,7 +22090,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-sre-l2-us-18",
-      "phase": "degradacao_em_producao",
+      "phase": "operate",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Sim para A1+ - Eval gate completo; rollback de modelo independente documentado; canary recomendado",
       "risk_level": "L2",
@@ -22793,7 +22109,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-sre-l3-us-18",
-      "phase": "degradacao_em_producao",
+      "phase": "operate",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Sim para A1+ - Eval gate completo + canary obrigatório em mudança de versão maior + auditoria do eval_run_id",
       "risk_level": "L3",
@@ -22869,7 +22185,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-appsec-l1-us-18",
-      "phase": "pre_promocao",
+      "phase": "deploy",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Recomendado - Eval gate simples; rollback de modelo pode partilhar pipeline com aplicação",
       "risk_level": "L1",
@@ -22888,7 +22204,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-appsec-l2-us-18",
-      "phase": "pre_promocao",
+      "phase": "deploy",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Sim para A1+ - Eval gate completo; rollback de modelo independente documentado; canary recomendado",
       "risk_level": "L2",
@@ -22907,7 +22223,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-appsec-l3-us-18",
-      "phase": "pre_promocao",
+      "phase": "deploy",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Sim para A1+ - Eval gate completo + canary obrigatório em mudança de versão maior + auditoria do eval_run_id",
       "risk_level": "L3",
@@ -22926,7 +22242,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-appsec-l1-us-18",
-      "phase": "promocao",
+      "phase": "deploy",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Recomendado - Eval gate simples; rollback de modelo pode partilhar pipeline com aplicação",
       "risk_level": "L1",
@@ -22945,7 +22261,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-appsec-l2-us-18",
-      "phase": "promocao",
+      "phase": "deploy",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Sim para A1+ - Eval gate completo; rollback de modelo independente documentado; canary recomendado",
       "risk_level": "L2",
@@ -22964,7 +22280,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-appsec-l3-us-18",
-      "phase": "promocao",
+      "phase": "deploy",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Sim para A1+ - Eval gate completo + canary obrigatório em mudança de versão maior + auditoria do eval_run_id",
       "risk_level": "L3",
@@ -22983,7 +22299,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-appsec-l1-us-18",
-      "phase": "degradacao_em_producao",
+      "phase": "operate",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Recomendado - Eval gate simples; rollback de modelo pode partilhar pipeline com aplicação",
       "risk_level": "L1",
@@ -23002,7 +22318,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-appsec-l2-us-18",
-      "phase": "degradacao_em_producao",
+      "phase": "operate",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Sim para A1+ - Eval gate completo; rollback de modelo independente documentado; canary recomendado",
       "risk_level": "L2",
@@ -23021,7 +22337,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "11-deploy-seguro-appsec-l3-us-18",
-      "phase": "degradacao_em_producao",
+      "phase": "operate",
       "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
       "proportionality": "Sim para A1+ - Eval gate completo + canary obrigatório em mudança de versão maior + auditoria do eval_run_id",
       "risk_level": "L3",
@@ -24294,7 +23610,7 @@
         "practice assignment derived from US-13"
       ],
       "id": "12-monitorizacao-operacoes-ops-l1-us-13",
-      "phase": "onboarding_do_agente",
+      "phase": "govern",
       "practice_id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao-us-13",
       "proportionality": "Recomendado para A1+; obrigatório se agente em produção - OPS-012 essencial; OPS-013 com budget simples; OPS-014 não-obrigatório",
       "risk_level": "L1",
@@ -24313,7 +23629,7 @@
         "practice assignment derived from US-13"
       ],
       "id": "12-monitorizacao-operacoes-ops-l2-us-13",
-      "phase": "onboarding_do_agente",
+      "phase": "govern",
       "practice_id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao-us-13",
       "proportionality": "Sim para A1+ - OPS-012 + OPS-013 obrigatórios; OPS-014 recomendado",
       "risk_level": "L2",
@@ -24332,7 +23648,7 @@
         "practice assignment derived from US-13"
       ],
       "id": "12-monitorizacao-operacoes-ops-l3-us-13",
-      "phase": "onboarding_do_agente",
+      "phase": "govern",
       "practice_id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao-us-13",
       "proportionality": "Sim para A1+ - OPS-012 + OPS-013 + OPS-014 obrigatórios; A4 com revisão trimestral do corpus de detecção",
       "risk_level": "L3",
@@ -24522,7 +23838,7 @@
         "practice assignment derived from US-13"
       ],
       "id": "12-monitorizacao-operacoes-appsec-l1-us-13",
-      "phase": "onboarding_do_agente",
+      "phase": "govern",
       "practice_id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao-us-13",
       "proportionality": "Recomendado para A1+; obrigatório se agente em produção - OPS-012 essencial; OPS-013 com budget simples; OPS-014 não-obrigatório",
       "risk_level": "L1",
@@ -24541,7 +23857,7 @@
         "practice assignment derived from US-13"
       ],
       "id": "12-monitorizacao-operacoes-appsec-l2-us-13",
-      "phase": "onboarding_do_agente",
+      "phase": "govern",
       "practice_id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao-us-13",
       "proportionality": "Sim para A1+ - OPS-012 + OPS-013 obrigatórios; OPS-014 recomendado",
       "risk_level": "L2",
@@ -24560,7 +23876,7 @@
         "practice assignment derived from US-13"
       ],
       "id": "12-monitorizacao-operacoes-appsec-l3-us-13",
-      "phase": "onboarding_do_agente",
+      "phase": "govern",
       "practice_id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao-us-13",
       "proportionality": "Sim para A1+ - OPS-012 + OPS-013 + OPS-014 obrigatórios; A4 com revisão trimestral do corpus de detecção",
       "risk_level": "L3",
@@ -24750,7 +24066,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "12-monitorizacao-operacoes-devops-l1-us-14",
-      "phase": "desenvolvimento_operacoes",
+      "phase": "develop",
       "practice_id": "12-monitorizacao-operacoes:nao-logging-de-secrets-e-gestao-de-excecoes-operacionais",
       "proportionality": "Redacção básica de credenciais",
       "risk_level": "L1",
@@ -24769,7 +24085,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "12-monitorizacao-operacoes-devops-l2-us-14",
-      "phase": "desenvolvimento_operacoes",
+      "phase": "develop",
       "practice_id": "12-monitorizacao-operacoes:nao-logging-de-secrets-e-gestao-de-excecoes-operacionais",
       "proportionality": "Redacção + exceções formais (máx 6 meses)",
       "risk_level": "L2",
@@ -24788,7 +24104,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "12-monitorizacao-operacoes-devops-l3-us-14",
-      "phase": "desenvolvimento_operacoes",
+      "phase": "develop",
       "practice_id": "12-monitorizacao-operacoes:nao-logging-de-secrets-e-gestao-de-excecoes-operacionais",
       "proportionality": "Redacção verificada por amostragem + exceções (máx 3 meses) + reavaliação pré-expiração",
       "risk_level": "L3",
@@ -24807,7 +24123,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "12-monitorizacao-operacoes-appsec-l1-us-14",
-      "phase": "desenvolvimento_operacoes",
+      "phase": "develop",
       "practice_id": "12-monitorizacao-operacoes:nao-logging-de-secrets-e-gestao-de-excecoes-operacionais",
       "proportionality": "Redacção básica de credenciais",
       "risk_level": "L1",
@@ -24826,7 +24142,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "12-monitorizacao-operacoes-appsec-l2-us-14",
-      "phase": "desenvolvimento_operacoes",
+      "phase": "develop",
       "practice_id": "12-monitorizacao-operacoes:nao-logging-de-secrets-e-gestao-de-excecoes-operacionais",
       "proportionality": "Redacção + exceções formais (máx 6 meses)",
       "risk_level": "L2",
@@ -24845,7 +24161,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "12-monitorizacao-operacoes-appsec-l3-us-14",
-      "phase": "desenvolvimento_operacoes",
+      "phase": "develop",
       "practice_id": "12-monitorizacao-operacoes:nao-logging-de-secrets-e-gestao-de-excecoes-operacionais",
       "proportionality": "Redacção verificada por amostragem + exceções (máx 3 meses) + reavaliação pré-expiração",
       "risk_level": "L3",
@@ -26859,7 +26175,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "13-formacao-onboarding-appsec-l1-us-19",
-      "phase": "onboarding_ciclo_continuo",
+      "phase": "govern",
       "practice_id": "13-formacao-onboarding:formacao-em-uso-seguro-de-ia-e-tooling",
       "proportionality": "Microlearning de princípios (assistir vs. decidir)",
       "risk_level": "L1",
@@ -26878,7 +26194,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "13-formacao-onboarding-appsec-l2-us-19",
-      "phase": "onboarding_ciclo_continuo",
+      "phase": "govern",
       "practice_id": "13-formacao-onboarding:formacao-em-uso-seguro-de-ia-e-tooling",
       "proportionality": "Módulo por perfil + labs + quiz (≥ semestral)",
       "risk_level": "L2",
@@ -26897,7 +26213,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "13-formacao-onboarding-appsec-l3-us-19",
-      "phase": "onboarding_ciclo_continuo",
+      "phase": "govern",
       "practice_id": "13-formacao-onboarding:formacao-em-uso-seguro-de-ia-e-tooling",
       "proportionality": "Módulo por perfil + labs avançados + validação adaptativa (≥ trimestral)",
       "risk_level": "L3",
@@ -26916,7 +26232,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "13-formacao-onboarding-grc-l1-us-19",
-      "phase": "onboarding_ciclo_continuo",
+      "phase": "govern",
       "practice_id": "13-formacao-onboarding:formacao-em-uso-seguro-de-ia-e-tooling",
       "proportionality": "Microlearning de princípios (assistir vs. decidir)",
       "risk_level": "L1",
@@ -26935,7 +26251,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "13-formacao-onboarding-grc-l2-us-19",
-      "phase": "onboarding_ciclo_continuo",
+      "phase": "govern",
       "practice_id": "13-formacao-onboarding:formacao-em-uso-seguro-de-ia-e-tooling",
       "proportionality": "Módulo por perfil + labs + quiz (≥ semestral)",
       "risk_level": "L2",
@@ -26954,7 +26270,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "13-formacao-onboarding-grc-l3-us-19",
-      "phase": "onboarding_ciclo_continuo",
+      "phase": "govern",
       "practice_id": "13-formacao-onboarding:formacao-em-uso-seguro-de-ia-e-tooling",
       "proportionality": "Módulo por perfil + labs avançados + validação adaptativa (≥ trimestral)",
       "risk_level": "L3",
@@ -29139,7 +28455,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "14-governanca-contratacao-grc-l1-us-21",
-      "phase": "pre_onboarding",
+      "phase": "govern",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Recomendado - Cláusulas mínimas: localização + zero retention para dados sensíveis",
       "risk_level": "L1",
@@ -29158,7 +28474,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "14-governanca-contratacao-grc-l2-us-21",
-      "phase": "pre_onboarding",
+      "phase": "govern",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Obrigatório - Cláusulas detalhadas: retention, opt-out, localização, SLA, audit rights básico",
       "risk_level": "L2",
@@ -29177,7 +28493,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "14-governanca-contratacao-grc-l3-us-21",
-      "phase": "pre_onboarding",
+      "phase": "govern",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Obrigatório - Cláusulas detalhadas + audit rights operacionais + AI Act Art. 53/55 quando GPAI; revisão Legal obrigatória",
       "risk_level": "L3",
@@ -29253,7 +28569,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "14-governanca-contratacao-grc-l1-us-21",
-      "phase": "revisao_periodica",
+      "phase": "govern",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Recomendado - Cláusulas mínimas: localização + zero retention para dados sensíveis",
       "risk_level": "L1",
@@ -29272,7 +28588,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "14-governanca-contratacao-grc-l2-us-21",
-      "phase": "revisao_periodica",
+      "phase": "govern",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Obrigatório - Cláusulas detalhadas: retention, opt-out, localização, SLA, audit rights básico",
       "risk_level": "L2",
@@ -29291,7 +28607,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "14-governanca-contratacao-grc-l3-us-21",
-      "phase": "revisao_periodica",
+      "phase": "govern",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Obrigatório - Cláusulas detalhadas + audit rights operacionais + AI Act Art. 53/55 quando GPAI; revisão Legal obrigatória",
       "risk_level": "L3",
@@ -29310,7 +28626,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "14-governanca-contratacao-grc-l1-us-21",
-      "phase": "descontinuacao",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Recomendado - Cláusulas mínimas: localização + zero retention para dados sensíveis",
       "risk_level": "L1",
@@ -29329,7 +28645,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "14-governanca-contratacao-grc-l2-us-21",
-      "phase": "descontinuacao",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Obrigatório - Cláusulas detalhadas: retention, opt-out, localização, SLA, audit rights básico",
       "risk_level": "L2",
@@ -29348,7 +28664,7 @@
         "practice assignment derived from US-21"
       ],
       "id": "14-governanca-contratacao-grc-l3-us-21",
-      "phase": "descontinuacao",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Obrigatório - Cláusulas detalhadas + audit rights operacionais + AI Act Art. 53/55 quando GPAI; revisão Legal obrigatória",
       "risk_level": "L3",
@@ -29366,12 +28682,12 @@
       "evidence": [
         "practice assignment derived from US-21"
       ],
-      "id": "14-governanca-contratacao-compliance-l1-us-21",
-      "phase": "pre_onboarding",
+      "id": "14-governanca-contratacao-third_party-l1-us-21",
+      "phase": "govern",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Recomendado - Cláusulas mínimas: localização + zero retention para dados sensíveis",
       "risk_level": "L1",
-      "role": "compliance",
+      "role": "third_party",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
       "user_story_id": "14-governanca-contratacao-us-21",
@@ -29385,12 +28701,12 @@
       "evidence": [
         "practice assignment derived from US-21"
       ],
-      "id": "14-governanca-contratacao-compliance-l2-us-21",
-      "phase": "pre_onboarding",
+      "id": "14-governanca-contratacao-third_party-l2-us-21",
+      "phase": "govern",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Obrigatório - Cláusulas detalhadas: retention, opt-out, localização, SLA, audit rights básico",
       "risk_level": "L2",
-      "role": "compliance",
+      "role": "third_party",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
       "user_story_id": "14-governanca-contratacao-us-21",
@@ -29404,12 +28720,12 @@
       "evidence": [
         "practice assignment derived from US-21"
       ],
-      "id": "14-governanca-contratacao-compliance-l3-us-21",
-      "phase": "pre_onboarding",
+      "id": "14-governanca-contratacao-third_party-l3-us-21",
+      "phase": "govern",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Obrigatório - Cláusulas detalhadas + audit rights operacionais + AI Act Art. 53/55 quando GPAI; revisão Legal obrigatória",
       "risk_level": "L3",
-      "role": "compliance",
+      "role": "third_party",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
       "user_story_id": "14-governanca-contratacao-us-21",
@@ -29423,12 +28739,12 @@
       "evidence": [
         "practice assignment derived from US-21"
       ],
-      "id": "14-governanca-contratacao-compliance-l1-us-21",
+      "id": "14-governanca-contratacao-third_party-l1-us-21",
       "phase": "operate",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Recomendado - Cláusulas mínimas: localização + zero retention para dados sensíveis",
       "risk_level": "L1",
-      "role": "compliance",
+      "role": "third_party",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
       "user_story_id": "14-governanca-contratacao-us-21",
@@ -29442,12 +28758,12 @@
       "evidence": [
         "practice assignment derived from US-21"
       ],
-      "id": "14-governanca-contratacao-compliance-l2-us-21",
+      "id": "14-governanca-contratacao-third_party-l2-us-21",
       "phase": "operate",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Obrigatório - Cláusulas detalhadas: retention, opt-out, localização, SLA, audit rights básico",
       "risk_level": "L2",
-      "role": "compliance",
+      "role": "third_party",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
       "user_story_id": "14-governanca-contratacao-us-21",
@@ -29461,12 +28777,12 @@
       "evidence": [
         "practice assignment derived from US-21"
       ],
-      "id": "14-governanca-contratacao-compliance-l3-us-21",
+      "id": "14-governanca-contratacao-third_party-l3-us-21",
       "phase": "operate",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Obrigatório - Cláusulas detalhadas + audit rights operacionais + AI Act Art. 53/55 quando GPAI; revisão Legal obrigatória",
       "risk_level": "L3",
-      "role": "compliance",
+      "role": "third_party",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
       "user_story_id": "14-governanca-contratacao-us-21",
@@ -29480,12 +28796,12 @@
       "evidence": [
         "practice assignment derived from US-21"
       ],
-      "id": "14-governanca-contratacao-compliance-l1-us-21",
-      "phase": "revisao_periodica",
+      "id": "14-governanca-contratacao-third_party-l1-us-21",
+      "phase": "govern",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Recomendado - Cláusulas mínimas: localização + zero retention para dados sensíveis",
       "risk_level": "L1",
-      "role": "compliance",
+      "role": "third_party",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
       "user_story_id": "14-governanca-contratacao-us-21",
@@ -29499,12 +28815,12 @@
       "evidence": [
         "practice assignment derived from US-21"
       ],
-      "id": "14-governanca-contratacao-compliance-l2-us-21",
-      "phase": "revisao_periodica",
+      "id": "14-governanca-contratacao-third_party-l2-us-21",
+      "phase": "govern",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Obrigatório - Cláusulas detalhadas: retention, opt-out, localização, SLA, audit rights básico",
       "risk_level": "L2",
-      "role": "compliance",
+      "role": "third_party",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
       "user_story_id": "14-governanca-contratacao-us-21",
@@ -29518,12 +28834,12 @@
       "evidence": [
         "practice assignment derived from US-21"
       ],
-      "id": "14-governanca-contratacao-compliance-l3-us-21",
-      "phase": "revisao_periodica",
+      "id": "14-governanca-contratacao-third_party-l3-us-21",
+      "phase": "govern",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Obrigatório - Cláusulas detalhadas + audit rights operacionais + AI Act Art. 53/55 quando GPAI; revisão Legal obrigatória",
       "risk_level": "L3",
-      "role": "compliance",
+      "role": "third_party",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
       "user_story_id": "14-governanca-contratacao-us-21",
@@ -29537,126 +28853,12 @@
       "evidence": [
         "practice assignment derived from US-21"
       ],
-      "id": "14-governanca-contratacao-compliance-l1-us-21",
-      "phase": "descontinuacao",
-      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
-      "proportionality": "Recomendado - Cláusulas mínimas: localização + zero retention para dados sensíveis",
-      "risk_level": "L1",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
-      "user_story_id": "14-governanca-contratacao-us-21",
-      "warnings": []
-    },
-    {
-      "action": "que cada contrato com provedor de modelos AI inclua cláusulas mínimas que cubram tratamento de dados, localização, audit rights, notificação de mudanças e conformidade regulatória aplicável",
-      "artifacts": [],
-      "chapter_id": "14-governanca-contratacao",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-21"
-      ],
-      "id": "14-governanca-contratacao-compliance-l2-us-21",
-      "phase": "descontinuacao",
-      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
-      "proportionality": "Obrigatório - Cláusulas detalhadas: retention, opt-out, localização, SLA, audit rights básico",
-      "risk_level": "L2",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
-      "user_story_id": "14-governanca-contratacao-us-21",
-      "warnings": []
-    },
-    {
-      "action": "que cada contrato com provedor de modelos AI inclua cláusulas mínimas que cubram tratamento de dados, localização, audit rights, notificação de mudanças e conformidade regulatória aplicável",
-      "artifacts": [],
-      "chapter_id": "14-governanca-contratacao",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-21"
-      ],
-      "id": "14-governanca-contratacao-compliance-l3-us-21",
-      "phase": "descontinuacao",
-      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
-      "proportionality": "Obrigatório - Cláusulas detalhadas + audit rights operacionais + AI Act Art. 53/55 quando GPAI; revisão Legal obrigatória",
-      "risk_level": "L3",
-      "role": "compliance",
-      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
-      "user_story_id": "14-governanca-contratacao-us-21",
-      "warnings": []
-    },
-    {
-      "action": "que cada contrato com provedor de modelos AI inclua cláusulas mínimas que cubram tratamento de dados, localização, audit rights, notificação de mudanças e conformidade regulatória aplicável",
-      "artifacts": [],
-      "chapter_id": "14-governanca-contratacao",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-21"
-      ],
-      "id": "14-governanca-contratacao-procurement-com-apoio-de-legal-l1-us-21",
-      "phase": "pre_onboarding",
-      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
-      "proportionality": "Recomendado - Cláusulas mínimas: localização + zero retention para dados sensíveis",
-      "risk_level": "L1",
-      "role": "procurement-com-apoio-de-legal",
-      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
-      "user_story_id": "14-governanca-contratacao-us-21",
-      "warnings": []
-    },
-    {
-      "action": "que cada contrato com provedor de modelos AI inclua cláusulas mínimas que cubram tratamento de dados, localização, audit rights, notificação de mudanças e conformidade regulatória aplicável",
-      "artifacts": [],
-      "chapter_id": "14-governanca-contratacao",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-21"
-      ],
-      "id": "14-governanca-contratacao-procurement-com-apoio-de-legal-l2-us-21",
-      "phase": "pre_onboarding",
-      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
-      "proportionality": "Obrigatório - Cláusulas detalhadas: retention, opt-out, localização, SLA, audit rights básico",
-      "risk_level": "L2",
-      "role": "procurement-com-apoio-de-legal",
-      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
-      "user_story_id": "14-governanca-contratacao-us-21",
-      "warnings": []
-    },
-    {
-      "action": "que cada contrato com provedor de modelos AI inclua cláusulas mínimas que cubram tratamento de dados, localização, audit rights, notificação de mudanças e conformidade regulatória aplicável",
-      "artifacts": [],
-      "chapter_id": "14-governanca-contratacao",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-21"
-      ],
-      "id": "14-governanca-contratacao-procurement-com-apoio-de-legal-l3-us-21",
-      "phase": "pre_onboarding",
-      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
-      "proportionality": "Obrigatório - Cláusulas detalhadas + audit rights operacionais + AI Act Art. 53/55 quando GPAI; revisão Legal obrigatória",
-      "risk_level": "L3",
-      "role": "procurement-com-apoio-de-legal",
-      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
-      "user_story_id": "14-governanca-contratacao-us-21",
-      "warnings": []
-    },
-    {
-      "action": "que cada contrato com provedor de modelos AI inclua cláusulas mínimas que cubram tratamento de dados, localização, audit rights, notificação de mudanças e conformidade regulatória aplicável",
-      "artifacts": [],
-      "chapter_id": "14-governanca-contratacao",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-21"
-      ],
-      "id": "14-governanca-contratacao-procurement-com-apoio-de-legal-l1-us-21",
+      "id": "14-governanca-contratacao-third_party-l1-us-21",
       "phase": "operate",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Recomendado - Cláusulas mínimas: localização + zero retention para dados sensíveis",
       "risk_level": "L1",
-      "role": "procurement-com-apoio-de-legal",
+      "role": "third_party",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
       "user_story_id": "14-governanca-contratacao-us-21",
@@ -29670,12 +28872,12 @@
       "evidence": [
         "practice assignment derived from US-21"
       ],
-      "id": "14-governanca-contratacao-procurement-com-apoio-de-legal-l2-us-21",
+      "id": "14-governanca-contratacao-third_party-l2-us-21",
       "phase": "operate",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Obrigatório - Cláusulas detalhadas: retention, opt-out, localização, SLA, audit rights básico",
       "risk_level": "L2",
-      "role": "procurement-com-apoio-de-legal",
+      "role": "third_party",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
       "user_story_id": "14-governanca-contratacao-us-21",
@@ -29689,126 +28891,12 @@
       "evidence": [
         "practice assignment derived from US-21"
       ],
-      "id": "14-governanca-contratacao-procurement-com-apoio-de-legal-l3-us-21",
+      "id": "14-governanca-contratacao-third_party-l3-us-21",
       "phase": "operate",
       "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
       "proportionality": "Obrigatório - Cláusulas detalhadas + audit rights operacionais + AI Act Art. 53/55 quando GPAI; revisão Legal obrigatória",
       "risk_level": "L3",
-      "role": "procurement-com-apoio-de-legal",
-      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
-      "user_story_id": "14-governanca-contratacao-us-21",
-      "warnings": []
-    },
-    {
-      "action": "que cada contrato com provedor de modelos AI inclua cláusulas mínimas que cubram tratamento de dados, localização, audit rights, notificação de mudanças e conformidade regulatória aplicável",
-      "artifacts": [],
-      "chapter_id": "14-governanca-contratacao",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-21"
-      ],
-      "id": "14-governanca-contratacao-procurement-com-apoio-de-legal-l1-us-21",
-      "phase": "revisao_periodica",
-      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
-      "proportionality": "Recomendado - Cláusulas mínimas: localização + zero retention para dados sensíveis",
-      "risk_level": "L1",
-      "role": "procurement-com-apoio-de-legal",
-      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
-      "user_story_id": "14-governanca-contratacao-us-21",
-      "warnings": []
-    },
-    {
-      "action": "que cada contrato com provedor de modelos AI inclua cláusulas mínimas que cubram tratamento de dados, localização, audit rights, notificação de mudanças e conformidade regulatória aplicável",
-      "artifacts": [],
-      "chapter_id": "14-governanca-contratacao",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-21"
-      ],
-      "id": "14-governanca-contratacao-procurement-com-apoio-de-legal-l2-us-21",
-      "phase": "revisao_periodica",
-      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
-      "proportionality": "Obrigatório - Cláusulas detalhadas: retention, opt-out, localização, SLA, audit rights básico",
-      "risk_level": "L2",
-      "role": "procurement-com-apoio-de-legal",
-      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
-      "user_story_id": "14-governanca-contratacao-us-21",
-      "warnings": []
-    },
-    {
-      "action": "que cada contrato com provedor de modelos AI inclua cláusulas mínimas que cubram tratamento de dados, localização, audit rights, notificação de mudanças e conformidade regulatória aplicável",
-      "artifacts": [],
-      "chapter_id": "14-governanca-contratacao",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-21"
-      ],
-      "id": "14-governanca-contratacao-procurement-com-apoio-de-legal-l3-us-21",
-      "phase": "revisao_periodica",
-      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
-      "proportionality": "Obrigatório - Cláusulas detalhadas + audit rights operacionais + AI Act Art. 53/55 quando GPAI; revisão Legal obrigatória",
-      "risk_level": "L3",
-      "role": "procurement-com-apoio-de-legal",
-      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
-      "user_story_id": "14-governanca-contratacao-us-21",
-      "warnings": []
-    },
-    {
-      "action": "que cada contrato com provedor de modelos AI inclua cláusulas mínimas que cubram tratamento de dados, localização, audit rights, notificação de mudanças e conformidade regulatória aplicável",
-      "artifacts": [],
-      "chapter_id": "14-governanca-contratacao",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-21"
-      ],
-      "id": "14-governanca-contratacao-procurement-com-apoio-de-legal-l1-us-21",
-      "phase": "descontinuacao",
-      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
-      "proportionality": "Recomendado - Cláusulas mínimas: localização + zero retention para dados sensíveis",
-      "risk_level": "L1",
-      "role": "procurement-com-apoio-de-legal",
-      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
-      "user_story_id": "14-governanca-contratacao-us-21",
-      "warnings": []
-    },
-    {
-      "action": "que cada contrato com provedor de modelos AI inclua cláusulas mínimas que cubram tratamento de dados, localização, audit rights, notificação de mudanças e conformidade regulatória aplicável",
-      "artifacts": [],
-      "chapter_id": "14-governanca-contratacao",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-21"
-      ],
-      "id": "14-governanca-contratacao-procurement-com-apoio-de-legal-l2-us-21",
-      "phase": "descontinuacao",
-      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
-      "proportionality": "Obrigatório - Cláusulas detalhadas: retention, opt-out, localização, SLA, audit rights básico",
-      "risk_level": "L2",
-      "role": "procurement-com-apoio-de-legal",
-      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
-      "user_story_id": "14-governanca-contratacao-us-21",
-      "warnings": []
-    },
-    {
-      "action": "que cada contrato com provedor de modelos AI inclua cláusulas mínimas que cubram tratamento de dados, localização, audit rights, notificação de mudanças e conformidade regulatória aplicável",
-      "artifacts": [],
-      "chapter_id": "14-governanca-contratacao",
-      "confidence": 0.86,
-      "evidence": [
-        "practice assignment derived from US-21"
-      ],
-      "id": "14-governanca-contratacao-procurement-com-apoio-de-legal-l3-us-21",
-      "phase": "descontinuacao",
-      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
-      "proportionality": "Obrigatório - Cláusulas detalhadas + audit rights operacionais + AI Act Art. 53/55 quando GPAI; revisão Legal obrigatória",
-      "risk_level": "L3",
-      "role": "procurement-com-apoio-de-legal",
+      "role": "third_party",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
       "user_story_id": "14-governanca-contratacao-us-21",

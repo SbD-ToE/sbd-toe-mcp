@@ -42,8 +42,8 @@
         "tags normalizadas"
       ],
       "applicable_lifecycle_phases": [
-        "implementation",
-        "review"
+        "develop",
+        "test"
       ],
       "artifact_types": [
         "alert_policy",
@@ -175,7 +175,7 @@
       ],
       "applicable_lifecycle_phases": [
         "build",
-        "release"
+        "deploy"
       ],
       "artifact_types": [
         "artifact_provenance",
@@ -291,10 +291,9 @@
         "Validação arquitetural automatizável no CI/CD (quando aplicável)"
       ],
       "applicable_lifecycle_phases": [
-        "deployment",
         "design",
-        "release",
-        "review"
+        "test",
+        "deploy"
       ],
       "artifact_types": [
         "architecture_baseline",
@@ -394,8 +393,8 @@
       ],
       "applicable_lifecycle_phases": [
         "design",
-        "implementation",
-        "operations"
+        "develop",
+        "operate"
       ],
       "artifact_types": [
         "onboarding_checklist",
@@ -525,7 +524,7 @@
       ],
       "applicable_lifecycle_phases": [
         "design",
-        "release"
+        "deploy"
       ],
       "artifact_types": [
         "pipeline_config",
@@ -634,7 +633,7 @@
       ],
       "applicable_lifecycle_phases": [
         "design",
-        "operations"
+        "operate"
       ],
       "artifact_types": [
         "alert_policy",
@@ -729,7 +728,7 @@
       ],
       "applicable_lifecycle_phases": [
         "design",
-        "implementation"
+        "develop"
       ],
       "artifact_types": [
         "pipeline_config",
@@ -859,11 +858,11 @@
         "Versionamento semântico e *changelog* técnico"
       ],
       "applicable_lifecycle_phases": [
-        "build",
-        "deployment",
         "design",
-        "implementation",
-        "operations"
+        "develop",
+        "build",
+        "deploy",
+        "operate"
       ],
       "artifact_types": [
         "access_review",
@@ -1010,8 +1009,8 @@
         "Validações técnicas pré-deploy com *gates* condicionais"
       ],
       "applicable_lifecycle_phases": [
-        "deployment",
-        "operations"
+        "deploy",
+        "operate"
       ],
       "artifact_types": [
         "alert_policy",
@@ -1091,8 +1090,8 @@
         "Validações automáticas integradas"
       ],
       "applicable_lifecycle_phases": [
-        "deployment",
-        "design"
+        "design",
+        "deploy"
       ],
       "artifact_types": [
         "artifact_provenance",
@@ -1165,11 +1164,10 @@
         "Segmentação de ambientes e validação de topologia como código (L3)"
       ],
       "applicable_lifecycle_phases": [
-        "deployment",
         "design",
-        "implementation",
-        "release",
-        "review"
+        "develop",
+        "test",
+        "deploy"
       ],
       "artifact_types": [
         "architecture_diagram",
@@ -1228,7 +1226,7 @@
         "Validação e *Tuning* de Alertas"
       ],
       "applicable_lifecycle_phases": [
-        "operations"
+        "operate"
       ],
       "artifact_types": [
         "alert_policy",
@@ -1312,9 +1310,8 @@
       ],
       "applicable_lifecycle_phases": [
         "build",
-        "deployment",
-        "operations",
-        "release"
+        "deploy",
+        "operate"
       ],
       "artifact_types": [
         "identity_binding",
@@ -1384,7 +1381,7 @@
       ],
       "applicable_lifecycle_phases": [
         "build",
-        "release"
+        "deploy"
       ],
       "artifact_types": [
         "alert_policy",
@@ -1478,8 +1475,8 @@
       ],
       "applicable_lifecycle_phases": [
         "build",
-        "deployment",
-        "operations"
+        "deploy",
+        "operate"
       ],
       "artifact_types": [
         "alert_policy",
@@ -1566,8 +1563,8 @@
         "Validação humana da interpretação final dos resultados"
       ],
       "applicable_lifecycle_phases": [
-        "release",
-        "testing"
+        "test",
+        "deploy"
       ],
       "artifact_types": [
         "finding_register",
