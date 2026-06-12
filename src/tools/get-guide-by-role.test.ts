@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { _resolveGuideByRole } from "./get-guide-by-role.js";
+import { _resolveGuideByRole, handleGetGuideByRole } from "./get-guide-by-role.js";
 import type { OntologyData } from "./ontology-loader.js";
 
 // ---------------------------------------------------------------------------
@@ -119,5 +119,69 @@ describe("_resolveGuideByRole", () => {
     const result = _resolveGuideByRole({ risk_level: "L1" }, makeOntologyData());
     expect(typeof result.meta.note).toBe("string");
     expect(result.meta.note.length).toBeGreaterThan(0);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Consumer-side role aliases (serving brief #6)
+// ---------------------------------------------------------------------------
+
+describe("consumer role aliases", () => {
+  function dataWithAppsec(): OntologyData {
+    return makeOntologyData({
+      roles: [
+        { role_id: "appsec-engineer", aliases: ["appsec"], canonical: true, source: "00" },
+      ],
+      assignments: [
+        { id: "01-chap-appsec-l1-us01", chapter_id: "01", practice_id: "01:practice-a", role: "appsec-engineer", phase: "design", risk_level: "L1", action: "Threat model", artifacts: [] },
+      ],
+    });
+  }
+
+  it("maps a natural name with one unambiguous home to its canonical role", () => {
+    for (const name of ["security-engineer", "application-security-engineer", "sec-engineer"]) {
+      const result = _resolveGuideByRole({ risk_level: "L1", role: name }, dataWithAppsec());
+      expect(result.canonicalRole).toBe("appsec-engineer");
+      expect(result.assignments).toHaveLength(1);
+    }
+  });
+
+  it("leaves an unmapped natural name untouched (no invented routing)", () => {
+    // devsecops is deliberately NOT aliased — it is cross-cutting in the substrate.
+    const result = _resolveGuideByRole({ risk_level: "L1", role: "devsecops" }, dataWithAppsec());
+    expect(result.canonicalRole).toBe("devsecops");
+    expect(result.assignments).toHaveLength(0);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Role aggregation + detail-on-demand (serving brief #2) — against real bundle
+// ---------------------------------------------------------------------------
+
+describe("handleGetGuideByRole role_checklist", () => {
+  it("aggregates the role's user stories with their DoD only when include_detail", () => {
+    const withDetail = handleGetGuideByRole({ risk_level: "L2", role: "developer", include_detail: true });
+    expect(Array.isArray(withDetail.role_checklist)).toBe(true);
+    expect((withDetail.role_checklist ?? []).length).toBeGreaterThan(0);
+    // entries carry the DoD checklist and proportionality (the "what must role X fulfil" answer)
+    const populated = (withDetail.role_checklist ?? []).filter((e) => e.checklist_items.length > 0);
+    expect(populated.length).toBeGreaterThan(0);
+    // aggregation is de-duplicated by user story id
+    const ids = (withDetail.role_checklist ?? []).map((e) => e.id ?? e.us_id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("omits role_checklist (and heavy US detail) by default", () => {
+    const noDetail = handleGetGuideByRole({ risk_level: "L2", role: "developer" });
+    expect(noDetail.role_checklist).toBeUndefined();
+    expect(noDetail.assignments.every((a) => a.user_story?.checklist_items === undefined)).toBe(true);
+  });
+
+  it("surfaces per-assignment DoD detail with include_detail", () => {
+    const withDetail = handleGetGuideByRole({ risk_level: "L2", role: "developer", include_detail: true });
+    const detailed = withDetail.assignments.some(
+      (a) => (a.user_story?.checklist_items?.length ?? 0) > 0
+    );
+    expect(detailed).toBe(true);
   });
 });

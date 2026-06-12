@@ -828,7 +828,7 @@ class McpRuntime {
           description:
             "Returns runtime-grounded practices, assignments and user stories for a given risk level, " +
             "optionally filtered by role and/or lifecycle phase. " +
-            "Roles are resolved via canonical aliases (e.g. 'dev' → 'developer', 'appsec' → 'security-champion'). " +
+            "Roles are resolved via canonical aliases (e.g. 'appsec' → 'appsec-engineer', 'sre' → 'devops-sre', 'security-engineer' → 'appsec-engineer'). " +
             "Results grouped by role and phase. All data from the published SbD-ToE deterministic runtime bundle — nothing is invented.",
           inputSchema: {
             type: "object",
@@ -845,6 +845,10 @@ class McpRuntime {
               phase: {
                 type: "string",
                 description: "Lifecycle phase to filter by (e.g. 'design', 'implement', 'test', 'operate')."
+              },
+              include_detail: {
+                type: "boolean",
+                description: "When true and a role is given, surfaces each user story's full Definition-of-Done detail (checklist_items, BDD, proportionality, sdlc_integration) and returns role_checklist — the aggregated DoD checklist of the role's user stories in one response. Off by default (heavier payload)."
               }
             },
             required: ["risk_level"],
