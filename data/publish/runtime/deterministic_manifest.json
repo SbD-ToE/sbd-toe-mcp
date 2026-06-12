@@ -36,7 +36,7 @@
       "source_artifact": "data/entities/practices.json"
     },
     {
-      "count": 1521,
+      "count": 1296,
       "entity_type": "PracticeAssignment",
       "file": "assignments.json",
       "name": "assignments",

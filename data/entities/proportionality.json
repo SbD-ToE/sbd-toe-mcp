@@ -1,6 +1,6 @@
 {
   "agent": "lifecycle_extractor",
-  "generated_at": "2026-06-12T00:42:22Z",
+  "generated_at": "2026-06-12T03:02:41Z",
   "items": [
     {
       "L1": "Obrigatório - Classificação simplificada, apenas eixos principais",
@@ -255,7 +255,7 @@
       "warnings": []
     },
     {
-      "L1": "A1+ - Mandate simples; aprovação por tech lead; A2+ permitido apenas fora de produção",
+      "L1": "A1+ - Mandate simples; aprovação por Scrum Master / Team Lead; A2+ permitido apenas fora de produção",
       "L2": "A1+ - Mandate completo; kill-switch exercitado trimestralmente em A3",
       "L3": "A1+ - Mandate completo + revisão organizacional trimestral; A4 exige assinatura formal do CISO",
       "confidence": 0.93,
@@ -425,7 +425,7 @@
     {
       "L1": "Opcional - Checklist simplificada",
       "L2": "Obrigatório - Análise formal de privacidade",
-      "L3": "Obrigatório - LINDDUN completo + validação independente (DPO)",
+      "L3": "Obrigatório - LINDDUN completo + validação independente (GRC / Compliance (DPO))",
       "confidence": 0.93,
       "evidence": [
         "proportionality extracted for US-08"
@@ -438,7 +438,7 @@
     },
     {
       "L1": "Opcional - Aprovação leve (registo simples)",
-      "L2": "Obrigatório - Aprovação formal por TL + AppSec",
+      "L2": "Obrigatório - Aprovação formal por Scrum Master / Team Lead + AppSec Engineer",
       "L3": "Obrigatório - Aprovação formal + revisão independente (segregação)",
       "confidence": 0.93,
       "evidence": [
@@ -3083,10 +3083,10 @@
       "warnings": []
     }
   ],
-  "run_id": "20260612T004222Z",
+  "run_id": "20260612T030241Z",
   "source": {
     "branch": "HEAD",
-    "commit_sha": "c5a7a348d317a37900fb4d0b60716804793495e3",
+    "commit_sha": "09b20f6fd2714a44b974d4ba38612f4dfdc73c11",
     "corpus_root": "manuals_src/docs/sbd-toe",
     "repo_url": "git@github.com:Shiftleftpt/SbD-ToE-Manual.git"
   },
@@ -3095,7 +3095,7 @@
     "processed_files": 253,
     "processed_sections": 2560,
     "skipped": 0,
-    "warnings": 55
+    "warnings": 53
   },
   "summary": {
     "proportionality_rows": 220
@@ -3127,7 +3127,6 @@
     "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-05 missing proportionality table",
     "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-06 missing proportionality table",
     "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-07 missing proportionality table",
-    "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-08 role drift detected for 'PenTester'",
     "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-08 missing proportionality table",
     "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-10 missing proportionality table",
     "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-11 missing proportionality table",
@@ -3144,7 +3143,6 @@
     "010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md:US-20 missing proportionality table",
     "010-sbd-manual/12-monitorizacao-operacoes/aplicacao-lifecycle.md:US-18 missing proportionality table",
     "010-sbd-manual/13-formacao-onboarding/aplicacao-lifecycle.md:US-20 missing proportionality table",
-    "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md:US-22 role drift detected for 'GRC / Compliance com apoio de CISO + Direção'",
     "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md:US-22 missing proportionality table",
     "Ambiguous practice match for 'Usar o Modelo de Classificação;' in 010-sbd-manual/01-classificacao-aplicacoes/intro.md: 01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i=0.33, 01-classificacao-aplicacoes:classificacao-inicial-da-aplicacao=0.33",
     "Ambiguous practice match for 'e critérios de validação' in 010-sbd-manual/03-threat-modeling/intro.md: 03-threat-modeling:validacao-de-impacto-no-negocio=0.52, 03-threat-modeling:validacao-de-arquitetura-com-threat-modeling=0.45",
