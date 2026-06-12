@@ -305,7 +305,8 @@ describe("handleGetSbdToeChapterBrief", () => {
     ) as { found: boolean; id: string; title: string };
     expect(result.found).toBe(true);
     expect(result.id).toBe("01-classificacao-aplicacoes");
-    expect(result.title).toBe("Cap. 01");
+    // title prefers the clean readable title over the raw bundle title.
+    expect(result.title).toBe("Classificação de Aplicações");
   });
 
   it("finds chapter by objectID field", () => {

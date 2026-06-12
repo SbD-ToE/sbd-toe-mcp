@@ -363,7 +363,9 @@ export function handleGetSbdToeChapterBrief(
     return {
       id: chapterId,
       found: true,
-      title: getStr(found, "title") ?? chapterId,
+      // Prefer the clean readable title over the canonical one, which can carry
+      // editorial noise ("Nota Canónica…") — consistent with list_chapters.
+      title: READABLE_TITLES[chapterId] ?? getStr(found, "title") ?? chapterId,
       ...(objective !== undefined ? { objective } : {}),
       ...(phases.length > 0 ? { phases } : {}),
       ...(artifacts.length > 0 ? { artifacts } : {})
@@ -416,7 +418,7 @@ export function handleGetSbdToeChapterBrief(
   return {
     id: chapterId,
     found: true,
-    title: (bundle ? getStr(bundle, "title") : undefined) ?? READABLE_TITLES[chapterId] ?? chapterId,
+    title: READABLE_TITLES[chapterId] ?? (bundle ? getStr(bundle, "title") : undefined) ?? chapterId,
     ...(objective !== undefined ? { objective } : {}),
     ...(roles.length > 0 ? { role: roles } : {}),
     ...(phases.length > 0 ? { phases } : {}),

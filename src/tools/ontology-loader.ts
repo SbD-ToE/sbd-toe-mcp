@@ -106,6 +106,7 @@ export interface UserStory {
   risk_levels?: string[];
   acceptance_criteria?: string;
   bdd?: string[];
+  checklist_items?: string[];
   goal?: string;
   summary?: string;
   document_path?: string;
@@ -392,6 +393,7 @@ export function getOntologyData(): OntologyData {
         ? { acceptance_criteria: strOf(item, "acceptance_criteria") }
         : {}),
       bdd: arrStr(item, "bdd"),
+      checklist_items: arrStr(item, "checklist_items"),
       ...(strOf(item, "goal") ? { goal: strOf(item, "goal") } : {}),
       ...(strOf(item, "summary") ? { summary: strOf(item, "summary") } : {}),
       ...(strOf(item, "document_path") ? { document_path: strOf(item, "document_path") } : {}),
