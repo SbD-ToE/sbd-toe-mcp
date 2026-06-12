@@ -17,6 +17,8 @@
     { "kind": "file", "path": "data/publish/overlay/framework_overlay_index.json" },
     { "kind": "file", "path": "data/publish/ontology/appsec-core-ontology.yaml" },
     { "kind": "file", "path": "data/publish/ontology/sbdtoe-ontology.yaml" },
+    { "kind": "file", "path": "data/entities/proportionality.json", "since": "v1.6.2", "optional": true },
+    { "kind": "file", "path": "data/entities/sdlc_integration.json", "since": "v1.6.2", "optional": true },
     { "kind": "file", "path": "data/reports/run_manifest.json" }
   ]
 }

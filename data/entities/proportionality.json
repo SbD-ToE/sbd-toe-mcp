@@ -1,0 +1,3161 @@
+{
+  "agent": "lifecycle_extractor",
+  "generated_at": "2026-06-12T00:42:22Z",
+  "items": [
+    {
+      "L1": "Obrigatório - Classificação simplificada, apenas eixos principais",
+      "L2": "Obrigatório - Classificação completa com validação formal por AppSec Engineer",
+      "L3": "Obrigatório - Classificação formal, validada e aprovada por AppSec Engineer + GRC/Compliance",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-01"
+      ],
+      "practice_id": "01-classificacao-aplicacoes:classificacao-inicial-da-aplicacao",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-01-classificacao-inicial-da-aplicacao",
+      "user_story_id": "01-classificacao-aplicacoes-us-01",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Aplicar controlos mínimos",
+      "L2": "Obrigatório - Controlos completos com rastreamento obrigatório",
+      "L3": "Obrigatório - Controlos completos + reforçados + validação por AppSec",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-02"
+      ],
+      "practice_id": "01-classificacao-aplicacoes:aplicacao-da-matriz-de-controlo",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-02-aplicacao-da-matriz-de-controlo",
+      "user_story_id": "01-classificacao-aplicacoes-us-02",
+      "warnings": []
+    },
+    {
+      "L1": "Sim (por alteração relevante)",
+      "L2": "Obrigatório",
+      "L3": "Obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-03"
+      ],
+      "practice_id": "01-classificacao-aplicacoes:revisao-por-alteracao-relevante-event-based",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-03-revisao-por-alteracao-relevante-event-based",
+      "user_story_id": "01-classificacao-aplicacoes-us-03",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional (se crítico)",
+      "L2": "Obrigatório",
+      "L3": "Obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-04"
+      ],
+      "practice_id": "01-classificacao-aplicacoes:analise-de-risco-residual",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-04-analise-de-risco-residual",
+      "user_story_id": "01-classificacao-aplicacoes-us-04",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado",
+      "L2": "Recomendado (obrigatório)",
+      "L3": "Obrigatório (formal + assinatura)",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-05"
+      ],
+      "practice_id": "01-classificacao-aplicacoes:validacao-antes-do-go-live",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-05-validacao-antes-do-go-live",
+      "user_story_id": "01-classificacao-aplicacoes-us-05",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional (STRIDE básico)",
+      "L2": "Recomendado (STRIDE completo)",
+      "L3": "Obrigatório (STRIDE + MITRE ATT&CK)",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-06"
+      ],
+      "practice_id": "01-classificacao-aplicacoes:mapeamento-de-ameacas-por-nivel-de-risco",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-06-mapeamento-de-ameacas-por-nivel-de-risco",
+      "user_story_id": "01-classificacao-aplicacoes-us-06",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório avaliar; reforça para L2 quando atributo desencadeia",
+      "L2": "Obrigatório avaliar; reforça para L3 quando atributo desencadeia",
+      "L3": "Já no topo; atributos exigem controlos mais fortes a montante e evidência reforçada",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-07"
+      ],
+      "practice_id": "01-classificacao-aplicacoes:reforco-de-controlos-por-atributos-do-risco",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-07-reforco-de-controlos-por-atributos-do-risco",
+      "user_story_id": "01-classificacao-aplicacoes-us-07",
+      "warnings": []
+    },
+    {
+      "L1": "Aplicar interdições; aceitação informal só fora das condições interditas",
+      "L2": "Interdições obrigatórias; aceitação com validação formal e registo",
+      "L3": "Interdições obrigatórias; recusa automática se dependente de mecanismo não-determinístico ou sem revisão humana",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-08"
+      ],
+      "practice_id": "01-classificacao-aplicacoes:interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-08-interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
+      "user_story_id": "01-classificacao-aplicacoes-us-08",
+      "warnings": []
+    },
+    {
+      "L1": "Mapeamento direto admissível; confirmação leve",
+      "L2": "Mapeamento confirmado por análise de segurança e registado",
+      "L3": "Confirmação formal por segurança; classificação por componente quando multi-módulo",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-09"
+      ],
+      "practice_id": "01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-09-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
+      "user_story_id": "01-classificacao-aplicacoes-us-09",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Subconjunto essencial",
+      "L2": "Obrigatório - Catálogo completo aplicável a L2",
+      "L3": "Obrigatório - Catálogo completo aplicável a L3 + reforços",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-01"
+      ],
+      "practice_id": "02-requisitos-seguranca:selecao-de-requisitos-por-criticidade",
+      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-01-selecao-de-requisitos-por-criticidade",
+      "user_story_id": "02-requisitos-seguranca-us-01",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Apenas requisitos críticos",
+      "L2": "Obrigatório - Cobertura total dos requisitos selecionados",
+      "L3": "Obrigatório - Cobertura total + rastreabilidade reforçada",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-04"
+      ],
+      "practice_id": "02-requisitos-seguranca:rastreabilidade-de-requisitos",
+      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-04-rastreabilidade-de-requisitos",
+      "user_story_id": "02-requisitos-seguranca-us-04",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Para requisitos críticos",
+      "L2": "Obrigatório - Para todos os requisitos selecionados",
+      "L3": "Obrigatório - Para todos + validação reforçada",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-05"
+      ],
+      "practice_id": "02-requisitos-seguranca:definicao-de-criterios-de-validacao",
+      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-05-definicao-de-criterios-de-validacao",
+      "user_story_id": "02-requisitos-seguranca-us-05",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Validação básica dos requisitos críticos",
+      "L2": "Obrigatório - Cobertura integral dos requisitos selecionados",
+      "L3": "Obrigatório - Cobertura integral + revisão independente",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-06"
+      ],
+      "practice_id": "02-requisitos-seguranca:validacao-de-cobertura-de-testes",
+      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-06-validacao-de-cobertura-de-testes",
+      "user_story_id": "02-requisitos-seguranca-us-06",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Revisão simplificada",
+      "L2": "Obrigatório - Revisão formal",
+      "L3": "Obrigatório - Revisão formal + mitigação exigida",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-07"
+      ],
+      "practice_id": "02-requisitos-seguranca:validacao-e-aprovacao-final",
+      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-07-validacao-e-aprovacao-final",
+      "user_story_id": "02-requisitos-seguranca-us-07",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Subconjunto essencial pré-aprovado",
+      "L2": "Obrigatório - Catálogo completo aplicável a L2",
+      "L3": "Obrigatório - Catálogo aplicável a L3 + reforços relevantes",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-08"
+      ],
+      "practice_id": "02-requisitos-seguranca:catalogo-de-requisitos-do-projeto-criacao-e-manutencao",
+      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-08-catalogo-de-requisitos-do-projeto-criacao-e-manutencao",
+      "user_story_id": "02-requisitos-seguranca-us-08",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Cobertura mínima dos requisitos críticos",
+      "L2": "Obrigatório - Cobertura integral dos requisitos selecionados",
+      "L3": "Obrigatório - Cobertura integral + revisão independente e gates automáticos",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-09"
+      ],
+      "practice_id": "02-requisitos-seguranca:validacao-por-requisito-dominio-req-xxx-evidencia",
+      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-09-validacao-por-requisito-dominio-req-xxx-evidencia",
+      "user_story_id": "02-requisitos-seguranca-us-09",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - SAST básico; SCA recomendado",
+      "L2": "Obrigatório - SAST + SCA obrigatórios; limiares configurados",
+      "L3": "Obrigatório - SAST + SCA + DAST; gates rigorosos; SBOM + assinatura obrigatórios",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-10"
+      ],
+      "practice_id": "02-requisitos-seguranca:gates-automaticos-em-ci-cd-para-requisitos-de-seguranca",
+      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-10-gates-automaticos-em-ci-cd-para-requisitos-de-seguranca",
+      "user_story_id": "02-requisitos-seguranca-us-10",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Revisão humana e SAST básico",
+      "L2": "Obrigatório - Revisão + SAST/SCA obrigatórios",
+      "L3": "Obrigatório - Revisão + SAST/SCA + validações reforçadas e AppSec review",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-14"
+      ],
+      "practice_id": "02-requisitos-seguranca:uso-controlado-de-assistentes-automatizados-incluindo-ia-no-desenvolvimento",
+      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-14-uso-controlado-de-assistentes-automatizados-incluindo-ia-no-desenvolvimento",
+      "user_story_id": "02-requisitos-seguranca-us-14",
+      "warnings": []
+    },
+    {
+      "L1": "A1+ - Mandate simples; aprovação por tech lead; A2+ permitido apenas fora de produção",
+      "L2": "A1+ - Mandate completo; kill-switch exercitado trimestralmente em A3",
+      "L3": "A1+ - Mandate completo + revisão organizacional trimestral; A4 exige assinatura formal do CISO",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-15"
+      ],
+      "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai-us-15",
+      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-15-classificacao-e-registo-do-mandate-de-agente-ai-us-15",
+      "user_story_id": "02-requisitos-seguranca-us-15",
+      "warnings": []
+    },
+    {
+      "L1": "Tipo declarado nos controlos críticos",
+      "L2": "Tipo declarado em todos os requisitos selecionados",
+      "L3": "Tipo declarado + revisão formal do equilíbrio Prev/Det/Cor por release",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-16"
+      ],
+      "practice_id": "02-requisitos-seguranca:classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade",
+      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-16-classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade",
+      "user_story_id": "02-requisitos-seguranca-us-16",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigações legais essenciais identificadas",
+      "L2": "Levantamento documentado e mapeado",
+      "L3": "Levantamento formal + validação GRC e revisão por alteração de contexto contratual",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-17"
+      ],
+      "practice_id": "02-requisitos-seguranca:incorporacao-de-restricoes-legais-normativas-e-contratuais",
+      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-17-incorporacao-de-restricoes-legais-normativas-e-contratuais",
+      "user_story_id": "02-requisitos-seguranca-us-17",
+      "warnings": []
+    },
+    {
+      "L1": "Não obrigatório (A2+ apenas fora de produção)",
+      "L2": "Intent declaration obrigatória em A2+",
+      "L3": "Intent declaration obrigatória + reconciliação auditada por release",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-18"
+      ],
+      "practice_id": "02-requisitos-seguranca:intent-declaration-por-tool-call-destrutivo-de-agente-ai",
+      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-18-intent-declaration-por-tool-call-destrutivo-de-agente-ai",
+      "user_story_id": "02-requisitos-seguranca-us-18",
+      "warnings": []
+    },
+    {
+      "L1": "RQS-K01/K02/K06 nos thresholds L1",
+      "L2": "RQS-K01–K06 nos thresholds L2",
+      "L3": "RQS-K01–K06 nos thresholds L3 + revisão formal de desvios",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-19"
+      ],
+      "practice_id": "02-requisitos-seguranca:recolha-e-thresholds-dos-indicadores-rqs",
+      "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-19-recolha-e-thresholds-dos-indicadores-rqs",
+      "user_story_id": "02-requisitos-seguranca-us-19",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Checklist simplificada",
+      "L2": "Obrigatório - Modelos formais com STRIDE",
+      "L3": "Obrigatório - Modelos completos com STRIDE/LINDDUN/PASTA",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-01"
+      ],
+      "practice_id": "03-threat-modeling:criacao-do-modelo-de-ameaca",
+      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-01-criacao-do-modelo-de-ameaca",
+      "user_story_id": "03-threat-modeling-us-01",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Revisão simplificada",
+      "L2": "Obrigatório - Revisão da arquitetura com threat modeling",
+      "L3": "Obrigatório - Revisão detalhada + validação independente",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-02"
+      ],
+      "practice_id": "03-threat-modeling:validacao-de-arquitetura-com-threat-modeling",
+      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-02-validacao-de-arquitetura-com-threat-modeling",
+      "user_story_id": "03-threat-modeling-us-02",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Apenas integrações externas",
+      "L2": "Obrigatório - Todas as mudanças críticas",
+      "L3": "Obrigatório - Qualquer alteração da arquitetura",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-03"
+      ],
+      "practice_id": "03-threat-modeling:atualizacao-do-modelo-apos-alteracao-tecnica",
+      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-03-atualizacao-do-modelo-apos-alteracao-tecnica",
+      "user_story_id": "03-threat-modeling-us-03",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Aceitação informal",
+      "L2": "Obrigatório - Documentação formal",
+      "L3": "Obrigatório - Documentação formal + mitigação compensatória",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-04"
+      ],
+      "practice_id": "03-threat-modeling:justificacao-formal-de-risco-aceite",
+      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-04-justificacao-formal-de-risco-aceite",
+      "user_story_id": "03-threat-modeling-us-04",
+      "warnings": []
+    },
+    {
+      "L1": "Não - Apenas revisão manual em releases maiores",
+      "L2": "Obrigatório - Gate não-bloqueante com alerta e obrigação de revisão",
+      "L3": "Obrigatório - Gate bloqueante com exceções formais e prazo",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-05"
+      ],
+      "practice_id": "03-threat-modeling:gate-de-controlo-de-consistencia-no-ci-cd",
+      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-05-gate-de-controlo-de-consistencia-no-ci-cd",
+      "user_story_id": "03-threat-modeling-us-05",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Avaliação simplificada",
+      "L2": "Obrigatório - Análise de impacto formal",
+      "L3": "Obrigatório - Análise formal + revisão executiva",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-06"
+      ],
+      "practice_id": "03-threat-modeling:validacao-de-impacto-no-negocio",
+      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-06-validacao-de-impacto-no-negocio",
+      "user_story_id": "03-threat-modeling-us-06",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Revisão simplificada",
+      "L2": "Obrigatório - Revisão formal com diffs",
+      "L3": "Obrigatório - Revisão formal + revisão independente",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-07"
+      ],
+      "practice_id": "03-threat-modeling:reutilizacao-controlada-e-revisao-de-modelos-anteriores",
+      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-07-reutilizacao-controlada-e-revisao-de-modelos-anteriores",
+      "user_story_id": "03-threat-modeling-us-07",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Checklist simplificada",
+      "L2": "Obrigatório - Análise formal de privacidade",
+      "L3": "Obrigatório - LINDDUN completo + validação independente (DPO)",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-08"
+      ],
+      "practice_id": "03-threat-modeling:aplicacao-linddun-quando-existir-tratamento-de-dados-pessoais-novo",
+      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-08-aplicacao-linddun-quando-existir-tratamento-de-dados-pessoais-novo",
+      "user_story_id": "03-threat-modeling-us-08",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Aprovação leve (registo simples)",
+      "L2": "Obrigatório - Aprovação formal por TL + AppSec",
+      "L3": "Obrigatório - Aprovação formal + revisão independente (segregação)",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-09"
+      ],
+      "practice_id": "03-threat-modeling:aprovacao-formal-do-threat-model-baseline-e-revisoes",
+      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-09-aprovacao-formal-do-threat-model-baseline-e-revisoes",
+      "user_story_id": "03-threat-modeling-us-09",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Controlo básico e armazenamento interno",
+      "L2": "Obrigatório - Controlo formal + rastreio de alterações",
+      "L3": "Obrigatório - Controlo reforçado + segregação e auditoria",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-10"
+      ],
+      "practice_id": "03-threat-modeling:controlo-de-acesso-classificacao-e-retencao-dos-artefactos-de-threat-modeling",
+      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-10-controlo-de-acesso-classificacao-e-retencao-dos-artefactos-de-threat-modeling",
+      "user_story_id": "03-threat-modeling-us-10",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado para A1; obrigatório para A2+ - DFD simplificado + threat library curta (Top 3–5 threats)",
+      "L2": "Obrigatório para A1+ - DFD completo + threat library completa do playbook + mitigations ancoradas",
+      "L3": "Obrigatório para A1+ - DFD completo + threat library + revisão appsec independente + cruzamento com cross-check AI Act quando aplicável",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-11"
+      ],
+      "practice_id": "03-threat-modeling:threat-modeling-para-sistema-com-agente-ai-tool-use-us-11",
+      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-11-threat-modeling-para-sistema-com-agente-ai-tool-use-us-11",
+      "user_story_id": "03-threat-modeling-us-11",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado: triagem por OWASP LLM/ML Top 10",
+      "L2": "Obrigatório: framing AI/ML completo + boundaries + mitigações ancoradas",
+      "L3": "Obrigatório: framing completo + adversary capabilities (NIST AI 100-2) + revisão appsec independente",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-12"
+      ],
+      "practice_id": "03-threat-modeling:threat-modeling-estendido-para-componentes-ai-ml-nao-agentic",
+      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-12-threat-modeling-estendido-para-componentes-ai-ml-nao-agentic",
+      "user_story_id": "03-threat-modeling-us-12",
+      "warnings": []
+    },
+    {
+      "L1": "Não aplicável",
+      "L2": "Obrigatório: workshop em fluxos críticos + integração no backlog",
+      "L3": "Obrigatório: workshop sistemático + cobertura por fluxo + rastreabilidade a testes",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-13"
+      ],
+      "practice_id": "03-threat-modeling:derivacao-de-abuse-misuse-cases-para-o-backlog",
+      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-13-derivacao-de-abuse-misuse-cases-para-o-backlog",
+      "user_story_id": "03-threat-modeling-us-13",
+      "warnings": []
+    },
+    {
+      "L1": "Não aplicável",
+      "L2": "Revisão independente obrigatória antes de go-live; PASTA opcional",
+      "L3": "Revisão independente obrigatória + PASTA (ou equivalente) com rastreio formal",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-14"
+      ],
+      "practice_id": "03-threat-modeling:revisao-independente-em-l2-e-pasta-em-alto-risco",
+      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-14-revisao-independente-em-l2-e-pasta-em-alto-risco",
+      "user_story_id": "03-threat-modeling-us-14",
+      "warnings": []
+    },
+    {
+      "L1": "Nota informal de assunções",
+      "L2": "Assunções e limites documentados; separação apoio/decisão",
+      "L3": "Tratamento formal dos riscos de processo + revisão independente da cobertura",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-15"
+      ],
+      "practice_id": "03-threat-modeling:tratamento-explicito-dos-riscos-de-processo-do-threat-modeling",
+      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-15-tratamento-explicito-dos-riscos-de-processo-do-threat-modeling",
+      "user_story_id": "03-threat-modeling-us-15",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Princípios mínimos e baseline simplificada",
+      "L2": "Obrigatório - Princípios completos e baseline formal",
+      "L3": "Obrigatório - Princípios completos + revisão independente",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-01"
+      ],
+      "practice_id": "04-arquitetura-segura:definicao-de-principios-e-baseline-de-arquitetura-segura",
+      "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-01-definicao-de-principios-e-baseline-de-arquitetura-segura",
+      "user_story_id": "04-arquitetura-segura-us-01",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Ficha simplificada e controlos essenciais",
+      "L2": "Obrigatório - Ficha detalhada + rastreabilidade mínima",
+      "L3": "Obrigatório - Ficha completa + revisão independente + evidência reforçada",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-02"
+      ],
+      "practice_id": "04-arquitetura-segura:ficha-de-solucao-com-controlos-e-rastreabilidade-arquitetural",
+      "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-02-ficha-de-solucao-com-controlos-e-rastreabilidade-arquitetural",
+      "user_story_id": "04-arquitetura-segura-us-02",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Revisão simplificada",
+      "L2": "Obrigatório - Revisão formal",
+      "L3": "Obrigatório - Revisão formal + segregação de funções (revisão independente)",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-03"
+      ],
+      "practice_id": "04-arquitetura-segura:revisao-formal-do-design-arquitetural",
+      "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-03-revisao-formal-do-design-arquitetural",
+      "user_story_id": "04-arquitetura-segura-us-03",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Apenas ADR de alto impacto",
+      "L2": "Obrigatório - ADR para decisões significativas",
+      "L3": "Obrigatório - ADR para todas as decisões relevantes + revisão independente",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-04"
+      ],
+      "practice_id": "04-arquitetura-segura:gestao-de-decisoes-arquiteturais-adr",
+      "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-04-gestao-de-decisoes-arquiteturais-adr",
+      "user_story_id": "04-arquitetura-segura-us-04",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Âmbito reduzido (integrações críticas)",
+      "L2": "Obrigatório - Âmbito completo",
+      "L3": "Obrigatório - Âmbito completo + validações reforçadas (conforme risco)",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-05"
+      ],
+      "practice_id": "04-arquitetura-segura:revisao-de-fronteiras-de-confianca-e-integracoes",
+      "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-05-revisao-de-fronteiras-de-confianca-e-integracoes",
+      "user_story_id": "04-arquitetura-segura-us-05",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Apenas alterações estruturais relevantes",
+      "L2": "Obrigatório - Todas as alterações significativas",
+      "L3": "Obrigatório - Todas + revisão independente quando aplicável",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-06"
+      ],
+      "practice_id": "04-arquitetura-segura:atualizacao-da-baseline-apos-alteracao-arquitetural-significativa",
+      "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-06-atualizacao-da-baseline-apos-alteracao-arquitetural-significativa",
+      "user_story_id": "04-arquitetura-segura-us-06",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Alertas e evidência básica",
+      "L2": "Obrigatório - Evidência formal + bloqueio de desconformidades críticas",
+      "L3": "Obrigatório - Evidência completa + regras de bloqueio reforçadas + auditoria centralizada",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-07"
+      ],
+      "practice_id": "04-arquitetura-segura:validacao-arquitetural-automatizavel-no-ci-cd-quando-aplicavel",
+      "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-07-validacao-arquitetural-automatizavel-no-ci-cd-quando-aplicavel",
+      "user_story_id": "04-arquitetura-segura-us-07",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Apenas impactos críticos",
+      "L2": "Obrigatório - Avaliação formal",
+      "L3": "Obrigatório - Avaliação formal + validação executiva quando aplicável",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-08"
+      ],
+      "practice_id": "04-arquitetura-segura:avaliacao-de-impacto-no-negocio-e-priorizacao-de-trade-offs",
+      "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-08-avaliacao-de-impacto-no-negocio-e-priorizacao-de-trade-offs",
+      "user_story_id": "04-arquitetura-segura-us-08",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Modelo simplificado quando aplicável",
+      "L2": "Obrigatório - Modelo completo",
+      "L3": "Obrigatório - Modelo detalhado + revisão independente quando aplicável",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-09"
+      ],
+      "practice_id": "04-arquitetura-segura:sincronizacao-threat-modeling-arquitetura",
+      "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-09-sincronizacao-threat-modeling-arquitetura",
+      "user_story_id": "04-arquitetura-segura-us-09",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Processo simplificado",
+      "L2": "Obrigatório - Processo formal",
+      "L3": "Obrigatório - Governação reforçada + auditoria",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-10"
+      ],
+      "practice_id": "04-arquitetura-segura:gestao-de-excecoes-arquiteturais-com-controlos-compensatorios",
+      "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-10-gestao-de-excecoes-arquiteturais-com-controlos-compensatorios",
+      "user_story_id": "04-arquitetura-segura-us-10",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Subconjunto mínimo de triggers",
+      "L2": "Obrigatório - Conjunto completo",
+      "L3": "Obrigatório - Conjunto completo + deteção/alertas quando viável",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-11"
+      ],
+      "practice_id": "04-arquitetura-segura:triggers-de-arquitetura-viva-e-disciplina-de-revisao",
+      "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-11-triggers-de-arquitetura-viva-e-disciplina-de-revisao",
+      "user_story_id": "04-arquitetura-segura-us-11",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Checklist simplificada",
+      "L2": "Obrigatório - Checklist formal",
+      "L3": "Obrigatório - Checklist completa + revisão independente quando aplicável",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-12"
+      ],
+      "practice_id": "04-arquitetura-segura:gate-arquitetural-antes-do-go-live",
+      "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-12-gate-arquitetural-antes-do-go-live",
+      "user_story_id": "04-arquitetura-segura-us-12",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Catálogo reduzido",
+      "L2": "Obrigatório - Catálogo formal com padrões principais",
+      "L3": "Obrigatório - Catálogo completo e evolução contínua",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-13"
+      ],
+      "practice_id": "04-arquitetura-segura:catalogo-de-padroes-de-arquitetura-segura-reutilizacao-governada",
+      "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-13-catalogo-de-padroes-de-arquitetura-segura-reutilizacao-governada",
+      "user_story_id": "04-arquitetura-segura-us-13",
+      "warnings": []
+    },
+    {
+      "L1": "Não - -",
+      "L2": "Recomendado - Revisão peer reforçada",
+      "L3": "Obrigatório - Processo formal e auditável",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-14"
+      ],
+      "practice_id": "04-arquitetura-segura:revisao-formal-de-arquitetura-para-l3-governacao-reforcada",
+      "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-14-revisao-formal-de-arquitetura-para-l3-governacao-reforcada",
+      "user_story_id": "04-arquitetura-segura-us-14",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Identificação simples e nota de impacto",
+      "L2": "Obrigatório - Identificação formal e controlos definidos",
+      "L3": "Obrigatório - Governação completa, isolamento explícito e validação independente",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-15"
+      ],
+      "practice_id": "04-arquitetura-segura:identificacao-e-governacao-de-componentes-nao-deterministicos",
+      "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-15-identificacao-e-governacao-de-componentes-nao-deterministicos",
+      "user_story_id": "04-arquitetura-segura-us-15",
+      "warnings": []
+    },
+    {
+      "L1": "A2+ tipicamente fora de produção; revisão simplificada quando aplicável - Checklist [ARC-015](/sbd-toe/sbd-manual/arquitetura-segura/addon/catalogo-requisitos-arquitetura#arc-015) essencial; kill-switch exercitado anualmente",
+      "L2": "Obrigatório para A2+ - Checklist [ARC-015](/sbd-toe/sbd-manual/arquitetura-segura/addon/catalogo-requisitos-arquitetura#arc-015) completa; kill-switch exercitado trimestralmente (A3)",
+      "L3": "Obrigatório para A2+; A3/A4 com revisão appsec independente - Checklist [ARC-015](/sbd-toe/sbd-manual/arquitetura-segura/addon/catalogo-requisitos-arquitetura#arc-015) completa + revisão independente; A4 com assinatura formal do CISO no mandate; kill-switch exercitado mensalmente (A4)",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-16"
+      ],
+      "practice_id": "04-arquitetura-segura:revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
+      "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-16-revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
+      "user_story_id": "04-arquitetura-segura-us-16",
+      "warnings": []
+    },
+    {
+      "L1": "Não obrigatório",
+      "L2": "Recomendado: segregação documentada de ambientes",
+      "L3": "Obrigatório: segregação de rede/permissões/identidade verificável + validação de topologia como código em CI/CD com bloqueio de promoção (ARC-011, ARC-013)",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-17"
+      ],
+      "practice_id": "04-arquitetura-segura:segmentacao-de-ambientes-e-validacao-de-topologia-como-codigo-l3",
+      "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-17-segmentacao-de-ambientes-e-validacao-de-topologia-como-codigo-l3",
+      "user_story_id": "04-arquitetura-segura-us-17",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Aprovação simplificada",
+      "L2": "Obrigatório - Validação formal + licença",
+      "L3": "Obrigatório - Revisão AppSec + proveniência",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-01"
+      ],
+      "practice_id": "05-dependencias-sbom-sca:gestao-de-dependencias-seguras",
+      "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-01-gestao-de-dependencias-seguras",
+      "user_story_id": "05-dependencias-sbom-sca-us-01",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - SBOM básico",
+      "L2": "Obrigatório - SBOM completo, incluído na release",
+      "L3": "Obrigatório - SBOM assinado + verificação de integridade",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-02"
+      ],
+      "practice_id": "05-dependencias-sbom-sca:sbom-em-cada-build",
+      "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-02-sbom-em-cada-build",
+      "user_story_id": "05-dependencias-sbom-sca-us-02",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Justificação simples",
+      "L2": "Obrigatório - Revisão periódica (30–90 dias)",
+      "L3": "Obrigatório - Validação executiva + métricas de risco",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-04"
+      ],
+      "practice_id": "05-dependencias-sbom-sca:excecoes-a-cves-formais-e-temporarias",
+      "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-04-excecoes-a-cves-formais-e-temporarias",
+      "user_story_id": "05-dependencias-sbom-sca-us-04",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Decisão simples",
+      "L2": "Obrigatório - Revisão formal",
+      "L3": "Obrigatório - Revisão formal + AppSec envolvido",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-05"
+      ],
+      "practice_id": "05-dependencias-sbom-sca:validacao-de-release-go-no-go",
+      "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-05-validacao-de-release-go-no-go",
+      "user_story_id": "05-dependencias-sbom-sca-us-05",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Recomendado",
+      "L2": "Obrigatório - Obrigatório",
+      "L3": "Obrigatório - Obrigatório + assinatura/verificação de pacotes",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-06"
+      ],
+      "practice_id": "05-dependencias-sbom-sca:repositorios-internos-como-fonte-unica",
+      "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-06-repositorios-internos-como-fonte-unica",
+      "user_story_id": "05-dependencias-sbom-sca-us-06",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Política documentada",
+      "L2": "Obrigatório - Auditorias periódicas",
+      "L3": "Obrigatório - Enforcement automático em CI/CD",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-07"
+      ],
+      "practice_id": "05-dependencias-sbom-sca:proibir-bibliotecas-copiadas-manualmente",
+      "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-07-proibir-bibliotecas-copiadas-manualmente",
+      "user_story_id": "05-dependencias-sbom-sca-us-07",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Política documentada; auditoria manual mensal",
+      "L2": "Obrigatório - Scanner automático quinzenal; alerta em pipeline",
+      "L3": "Obrigatório - Scanner automático semanal; bloqueio em CI/CD",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-09"
+      ],
+      "practice_id": "05-dependencias-sbom-sca:auditoria-periodica-de-bibliotecas-copiadas-manualmente",
+      "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-09-auditoria-periodica-de-bibliotecas-copiadas-manualmente",
+      "user_story_id": "05-dependencias-sbom-sca-us-09",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - SBOM por build e associação básica por imagem.",
+      "L2": "Obrigatório - Attestations + labels por ambiente, deteção de drift básica.",
+      "L3": "Obrigatório - Drift contínuo + bloqueio de execuções não atestadas.",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-10"
+      ],
+      "practice_id": "05-dependencias-sbom-sca:inventario-e-sbom-por-build",
+      "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-10-inventario-e-sbom-por-build",
+      "user_story_id": "05-dependencias-sbom-sca-us-10",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - 5 dias úteis",
+      "L2": "Obrigatório - 2 dias úteis",
+      "L3": "Obrigatório - 1 dia útil",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-11"
+      ],
+      "practice_id": "05-dependencias-sbom-sca:alertas-sobre-vulnerabilidades-em-componentes-usados",
+      "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-11-alertas-sobre-vulnerabilidades-em-componentes-usados",
+      "user_story_id": "05-dependencias-sbom-sca-us-11",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Validação manual, ad hoc",
+      "L2": "Obrigatório - Automática com alerta; bloqueio para GPL/AGPL",
+      "L3": "Obrigatório - Automática com bloqueio; exceções requerem aprovação formal",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-12"
+      ],
+      "practice_id": "05-dependencias-sbom-sca:validacao-automatica-de-compatibilidade-de-licencas",
+      "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-12-validacao-automatica-de-compatibilidade-de-licencas",
+      "user_story_id": "05-dependencias-sbom-sca-us-12",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Análise manual pontual",
+      "L2": "Obrigatório - Deteção automática de delta",
+      "L3": "Obrigatório - Gate automático + aprovação formal",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-13"
+      ],
+      "practice_id": "05-dependencias-sbom-sca:inventario-e-controlo-de-dependencias-emergentes",
+      "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-13-inventario-e-controlo-de-dependencias-emergentes",
+      "user_story_id": "05-dependencias-sbom-sca-us-13",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - AI BOM em formato simples; lista de providers conhecida",
+      "L2": "Obrigatório - AI BOM em formato standard; providers aprovados; gate de CI",
+      "L3": "Obrigatório - AI BOM standard + revisão GRC dos providers; cláusulas contratuais detalhadas (data retention, audit rights, localização); cross-link com cross-check AI Act",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-14"
+      ],
+      "practice_id": "05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
+      "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-14-ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
+      "user_story_id": "05-dependencias-sbom-sca-us-14",
+      "warnings": []
+    },
+    {
+      "L1": "Lockfile presente; pinning recomendado",
+      "L2": "Lockfile obrigatório + verificação de hash",
+      "L3": "Lockfile + hash + proveniência verificada (attestation) e gate bloqueante",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-15"
+      ],
+      "practice_id": "05-dependencias-sbom-sca:pinning-de-versoes-e-integridade-por-hash",
+      "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-15-pinning-de-versoes-e-integridade-por-hash",
+      "user_story_id": "05-dependencias-sbom-sca-us-15",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Regras upstream com ajustes mínimos",
+      "L2": "Obrigatório - Conjunto organizacional curado",
+      "L3": "Obrigatório - Auditoria periódica e policy-as-code",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-01"
+      ],
+      "practice_id": "06-desenvolvimento-seguro:guidelines-de-desenvolvimento-seguro",
+      "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-01-guidelines-de-desenvolvimento-seguro",
+      "user_story_id": "06-desenvolvimento-seguro-us-01",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Checklist básica",
+      "L2": "Obrigatório - Checklist completa + dupla revisão",
+      "L3": "Obrigatório - Revisão dedicada com foco em segurança (inclui AppSec Engineer quando aplicável)",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-02"
+      ],
+      "practice_id": "06-desenvolvimento-seguro:revisao-de-codigo-segura",
+      "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-02-revisao-de-codigo-segura",
+      "user_story_id": "06-desenvolvimento-seguro-us-02",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Aprovação simplificada",
+      "L2": "Obrigatório - Aprovação formal + proveniência registada",
+      "L3": "Obrigatório - Política de pinning/lockfile obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-03"
+      ],
+      "practice_id": "06-desenvolvimento-seguro:gestao-de-dependencias-no-codigo",
+      "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-03-gestao-de-dependencias-no-codigo",
+      "user_story_id": "06-desenvolvimento-seguro-us-03",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Linters básicos + SAST leve",
+      "L2": "Obrigatório - SAST completo + gating de severidade",
+      "L3": "Obrigatório - SAST + validações adicionais (IaC/DAST)",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-04"
+      ],
+      "practice_id": "06-desenvolvimento-seguro:automatizacao-em-ci-cd-linters-sast",
+      "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-04-automatizacao-em-ci-cd-linters-sast",
+      "user_story_id": "06-desenvolvimento-seguro-us-04",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Exceções simples e raras",
+      "L2": "Obrigatório - Revalidação por sprint",
+      "L3": "Obrigatório - Aprovação executiva + plano compensatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-05"
+      ],
+      "practice_id": "06-desenvolvimento-seguro:gestao-de-excecoes-tecnicas",
+      "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-05-gestao-de-excecoes-tecnicas",
+      "user_story_id": "06-desenvolvimento-seguro-us-05",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Registo simples",
+      "L2": "Obrigatório - Registo + revisão técnica + constrangimentos obrigatórios",
+      "L3": "Obrigatório - Revisão formal + validações adicionais + evidência reforçada",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-06"
+      ],
+      "practice_id": "06-desenvolvimento-seguro:uso-validado-de-genia",
+      "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-06-uso-validado-de-genia",
+      "user_story_id": "06-desenvolvimento-seguro-us-06",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Uso de regras upstream default",
+      "L2": "Obrigatório - Curadoria organizacional obrigatória",
+      "L3": "Obrigatório - Policy-as-code + distribuição controlada",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-07"
+      ],
+      "practice_id": "06-desenvolvimento-seguro:governacao-e-curadoria-de-guidelines",
+      "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-07-governacao-e-curadoria-de-guidelines",
+      "user_story_id": "06-desenvolvimento-seguro-us-07",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Apenas em módulos críticos",
+      "L2": "Obrigatório - Todas as validações de segurança",
+      "L3": "Obrigatório - Anotações + validação automática",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-08"
+      ],
+      "practice_id": "06-desenvolvimento-seguro:rastreabilidade-com-anotacoes-de-seguranca",
+      "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-08-rastreabilidade-com-anotacoes-de-seguranca",
+      "user_story_id": "06-desenvolvimento-seguro-us-08",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Gate básico (SAST + SBOM + checklist)",
+      "L2": "Obrigatório - Gate reforçado com política de exceções",
+      "L3": "Obrigatório - Policy-as-code e dupla aprovação formal",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-09"
+      ],
+      "practice_id": "06-desenvolvimento-seguro:gate-de-seguranca-pre-release",
+      "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-09-gate-de-seguranca-pre-release",
+      "user_story_id": "06-desenvolvimento-seguro-us-09",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Perfil com linters + SAST leve + checklist básica",
+      "L2": "Obrigatório - Perfil com SAST completo + thresholds + dupla revisão quando aplicável",
+      "L3": "Obrigatório - Perfil com policy-as-code + gates reforçados + retenção auditável",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-10"
+      ],
+      "practice_id": "06-desenvolvimento-seguro:perfis-de-validacao-por-nivel-de-risco-l1l3",
+      "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-10-perfis-de-validacao-por-nivel-de-risco-l1l3",
+      "user_story_id": "06-desenvolvimento-seguro-us-10",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Retenção mínima e export básico",
+      "L2": "Obrigatório - Export assinado + índice por componente",
+      "L3": "Obrigatório - Armazenamento imutável e verificação periódica de integridade",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-11"
+      ],
+      "practice_id": "06-desenvolvimento-seguro:arquivo-central-de-evidencias-de-validacao",
+      "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-11-arquivo-central-de-evidencias-de-validacao",
+      "user_story_id": "06-desenvolvimento-seguro-us-11",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Linters básicos (style, typos)",
+      "L2": "Obrigatório - Linters obrigatórios + secrets scanning",
+      "L3": "Obrigatório - Pre-commit + SAST leve local + validação de padrões",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-12"
+      ],
+      "practice_id": "06-desenvolvimento-seguro:validacoes-locais-obrigatorias-pre-commit",
+      "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-12-validacoes-locais-obrigatorias-pre-commit",
+      "user_story_id": "06-desenvolvimento-seguro-us-12",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Deteção de padrões críticos apenas (eval, exec)",
+      "L2": "Obrigatório - Deteção expandida (críticos + high: SQL, XSS)",
+      "L3": "Obrigatório - Deteção completa + contexto e reforço educativo",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-13"
+      ],
+      "practice_id": "06-desenvolvimento-seguro:validacao-de-padroes-perigosos-e-anti-patterns",
+      "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-13-validacao-de-padroes-perigosos-e-anti-patterns",
+      "user_story_id": "06-desenvolvimento-seguro-us-13",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Métricas básicas (cobertura SAST, exceções)",
+      "L2": "Obrigatório - Dashboard com alertas para desvios",
+      "L3": "Obrigatório - Dashboard contínuo + auditoria automática + SLA de remediação",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-14"
+      ],
+      "practice_id": "06-desenvolvimento-seguro:monitorizacao-de-conformidade-e-metricas-de-seguranca",
+      "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-14-monitorizacao-de-conformidade-e-metricas-de-seguranca",
+      "user_story_id": "06-desenvolvimento-seguro-us-14",
+      "warnings": []
+    },
+    {
+      "L1": "Prompts/rules versionados + code review; schema declarado e validado lado-servidor",
+      "L2": "+ secret scanning estendido, inventário com owner, validação semântica per-action",
+      "L3": "+ drift detection automático, tool definitions canónicas e telemetria de schema para post-mortem",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-15"
+      ],
+      "practice_id": "06-desenvolvimento-seguro:prompts-e-outputs-de-genai-sob-disciplina-de-codigo",
+      "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-15-prompts-e-outputs-de-genai-sob-disciplina-de-codigo",
+      "user_story_id": "06-desenvolvimento-seguro-us-15",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Revisão simples e build check obrigatório",
+      "L2": "Obrigatório - Revisor técnico + validação de segurança ativa",
+      "L3": "Obrigatório - Revisão dupla (code owner + AppSec) e bloqueio em falhas High",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-01"
+      ],
+      "practice_id": "07-cicd-seguro:gestao-segura-de-codigo-fonte",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-01-gestao-segura-de-codigo-fonte",
+      "user_story_id": "07-cicd-seguro-us-01",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Versão única do pipeline com aprovação manual",
+      "L2": "Obrigatório - Versionamento e revisão obrigatória",
+      "L3": "Obrigatório - Controlo de alterações assinado e validação reforçada de proveniência",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-02"
+      ],
+      "practice_id": "07-cicd-seguro:design-seguro-dos-pipelines-versionamento-determinismo-e-revisao",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-02-design-seguro-dos-pipelines-versionamento-determinismo-e-revisao",
+      "user_story_id": "07-cicd-seguro-us-02",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Validação base (SAST, secrets)",
+      "L2": "Obrigatório - Inclusão de IaC e análise de dependências",
+      "L3": "Obrigatório - Validação completa incluindo containers e SBOM",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-03"
+      ],
+      "practice_id": "07-cicd-seguro:scanners-integrados-validacao-empirica-obrigatoria",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-03-scanners-integrados-validacao-empirica-obrigatoria",
+      "user_story_id": "07-cicd-seguro-us-03",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Segredos armazenados encriptados + masking",
+      "L2": "Obrigatório - OIDC implementado com TTL controlado",
+      "L3": "Obrigatório - Tokens efémeros automáticos e rotação frequente",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-04"
+      ],
+      "practice_id": "07-cicd-seguro:gestao-de-segredos",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-04-gestao-de-segredos",
+      "user_story_id": "07-cicd-seguro-us-04",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Runners partilhados com limites e hardening",
+      "L2": "Obrigatório - Segregação de runners por projeto",
+      "L3": "Obrigatório - Runners efémeros + rede isolada + destruição automática",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-05"
+      ],
+      "practice_id": "07-cicd-seguro:isolamento-de-runners",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-05-isolamento-de-runners",
+      "user_story_id": "07-cicd-seguro-us-05",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Assinatura recomendada + verificação manual em releases",
+      "L2": "Obrigatório - Assinatura automática + verificação obrigatória",
+      "L3": "Obrigatório - Bloqueio automático + validações reforçadas de proveniência",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-06"
+      ],
+      "practice_id": "07-cicd-seguro:assinatura-e-proveniencia",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-06-assinatura-e-proveniencia",
+      "user_story_id": "07-cicd-seguro-us-06",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Bloqueio apenas em Critical",
+      "L2": "Obrigatório - Bloqueio High/Critical + aprovação AppSec para exceções",
+      "L3": "Obrigatório - Bloqueio automático + governança reforçada (incl. GRC em exceções)",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-07"
+      ],
+      "practice_id": "07-cicd-seguro:gates-por-risco-separacao-sinal-decisao",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-07-gates-por-risco-separacao-sinal-decisao",
+      "user_story_id": "07-cicd-seguro-us-07",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Scans de imagens base periódicos",
+      "L2": "Obrigatório - SBOM obrigatório + validação de base images",
+      "L3": "Obrigatório - Scans contínuos + correlação de CVEs + bloqueios em risco crítico",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-08"
+      ],
+      "practice_id": "07-cicd-seguro:cobertura-ampliada-containers-e-sbom",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-08-cobertura-ampliada-containers-e-sbom",
+      "user_story_id": "07-cicd-seguro-us-08",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Logs básicos armazenados 30 dias",
+      "L2": "Obrigatório - Retenção 90 dias + correlação commit-build",
+      "L3": "Obrigatório - Retenção ≥1 ano + exportação imutável + auditoria reforçada",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-09"
+      ],
+      "practice_id": "07-cicd-seguro:rastreabilidade-ponta-a-ponta-commitpipelinerelease",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-09-rastreabilidade-ponta-a-ponta-commitpipelinerelease",
+      "user_story_id": "07-cicd-seguro-us-09",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Registo simples com aprovação única",
+      "L2": "Obrigatório - Aprovação dupla e prazo máximo (ex.: 60 dias)",
+      "L3": "Obrigatório - Revisão frequente + auditoria obrigatória",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-10"
+      ],
+      "practice_id": "07-cicd-seguro:gestao-de-excecoes-bypass-controlado",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-10-gestao-de-excecoes-bypass-controlado",
+      "user_story_id": "07-cicd-seguro-us-10",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - DAST manual periódico",
+      "L2": "Obrigatório - DAST em staging pré-release",
+      "L3": "Obrigatório - DAST contínuo + bloqueio automático + revalidação pós-correção",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-11"
+      ],
+      "practice_id": "07-cicd-seguro:testes-de-seguranca-dinamicos-dast",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-11-testes-de-seguranca-dinamicos-dast",
+      "user_story_id": "07-cicd-seguro-us-11",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Relatórios manuais periódicos",
+      "L2": "Obrigatório - Dashboard com KPIs principais, atualizado diariamente",
+      "L3": "Obrigatório - Dashboard quase em tempo real + alertas automáticos",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-12"
+      ],
+      "practice_id": "07-cicd-seguro:metricas-e-conformidade-organizacional",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-12-metricas-e-conformidade-organizacional",
+      "user_story_id": "07-cicd-seguro-us-12",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Validação manual periódica",
+      "L2": "Obrigatório - Validação automática no pull com logs",
+      "L3": "Obrigatório - Validação + assinatura + alertas automáticos em drift/vulnerabilidade",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-13"
+      ],
+      "practice_id": "07-cicd-seguro:validacao-de-integridade-de-imagens-base",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-13-validacao-de-integridade-de-imagens-base",
+      "user_story_id": "07-cicd-seguro-us-13",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Reprodutibilidade “boa-fé” com logging suficiente",
+      "L2": "Obrigatório - Reprodutibilidade como requisito; validação periódica",
+      "L3": "Obrigatório - Reprodutibilidade obrigatória + auditoria reforçada e retenção prolongada",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-14"
+      ],
+      "practice_id": "07-cicd-seguro:reprodutibilidade-e-determinismo-do-pipeline",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-14-reprodutibilidade-e-determinismo-do-pipeline",
+      "user_story_id": "07-cicd-seguro-us-14",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Aprovação nominal para produção",
+      "L2": "Obrigatório - Aprovação nominal + regra de separação de funções",
+      "L3": "Obrigatório - Aprovação nominal + auditoria reforçada + regra estrACI (approval control integrity)",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-15"
+      ],
+      "practice_id": "07-cicd-seguro:separacao-formal-entre-sinal-automatico-e-decisao-de-promocao",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-15-separacao-formal-entre-sinal-automatico-e-decisao-de-promocao",
+      "user_story_id": "07-cicd-seguro-us-15",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Evidência mínima por execução",
+      "L2": "Obrigatório - Evidência obrigatória + retenção reforçada",
+      "L3": "Obrigatório - Evidência obrigatória + export imutável e auditoria",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-16"
+      ],
+      "practice_id": "07-cicd-seguro:evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-16-evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao",
+      "user_story_id": "07-cicd-seguro-us-16",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Masking básico + revisão pontual",
+      "L2": "Obrigatório - Masking + controlo formal de debug",
+      "L3": "Obrigatório - Controlo formal + auditoria + retenção e export conforme exigência",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-17"
+      ],
+      "practice_id": "07-cicd-seguro:contencao-de-contexto-e-higiene-de-logs-outputs",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-17-contencao-de-contexto-e-higiene-de-logs-outputs",
+      "user_story_id": "07-cicd-seguro-us-17",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Aprovação nominal para produção",
+      "L2": "Obrigatório - Aprovação nominal + separação de funções",
+      "L3": "Obrigatório - Aprovação nominal + auditoria reforçada e retenção prolongada",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-18"
+      ],
+      "practice_id": "07-cicd-seguro:nao-repudio-e-ownership-de-promocoes-acoes-irreversiveis",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-18-nao-repudio-e-ownership-de-promocoes-acoes-irreversiveis",
+      "user_story_id": "07-cicd-seguro-us-18",
+      "warnings": []
+    },
+    {
+      "L1": "Sim para A1+ - OIDC obrigatório; A2+ tipicamente fora de produção",
+      "L2": "Sim para A1+ - OIDC + audit completo + intent events em A2+; kill-switch exercitado trimestralmente em A3",
+      "L3": "Sim para A1+ - OIDC + audit completo + intent events em A2+ + kill-switch exercitado mensalmente em A4; revisão appsec independente",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-19"
+      ],
+      "practice_id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline-us-19",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-19-agentes-ai-como-principals-na-pipeline-us-19",
+      "user_story_id": "07-cicd-seguro-us-19",
+      "warnings": []
+    },
+    {
+      "L1": "Identidade empresarial no SCM; RBAC básico por projeto",
+      "L2": "RBAC granular por branch; assinatura de tags recomendada",
+      "L3": "RBAC granular + assinatura de commits e tags obrigatória e verificada no pipeline",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-20"
+      ],
+      "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-20-identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
+      "user_story_id": "07-cicd-seguro-us-20",
+      "warnings": []
+    },
+    {
+      "L1": "Fases logicamente distintas; templates versionados",
+      "L2": "CI/CD separados + âmbito de credenciais por stage",
+      "L3": "Separação reforçada com identidades dedicadas por stage e ausência verificada de permissões cruzadas",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-21"
+      ],
+      "practice_id": "07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-21-separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21",
+      "user_story_id": "07-cicd-seguro-us-21",
+      "warnings": []
+    },
+    {
+      "L1": "Hardening base; sem privilégios desnecessários",
+      "L2": "Runners segregados sem socket exposto a jobs não privilegiados",
+      "L3": "Isolamento forte (efémero/descartável) + interdição de privesc + logs de bloqueio verificados",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-22"
+      ],
+      "practice_id": "07-cicd-seguro:protecao-contra-escalonamento-de-privilegios-em-runners-us-22",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-22-protecao-contra-escalonamento-de-privilegios-em-runners-us-22",
+      "user_story_id": "07-cicd-seguro-us-22",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Backend remoto + locking básico",
+      "L2": "Obrigatório - Backend + locking + encriptação KMS",
+      "L3": "Obrigatório - Backend + locking + encriptação + MFA + auditoria",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-01"
+      ],
+      "practice_id": "08-iac-infraestrutura:backend-remoto-locking-e-rastreabilidade",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-01-backend-remoto-locking-e-rastreabilidade",
+      "user_story_id": "08-iac-infraestrutura-us-01",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Segregação mínima + tags básicas",
+      "L2": "Obrigatório - Segregação + tags completas + validação de permissões",
+      "L3": "Obrigatório - Segregação + tags + permissões mínimas + enforcement em OPA",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-02"
+      ],
+      "practice_id": "08-iac-infraestrutura:segregacao-de-ambientes-tagging-e-permissoes-minimas",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-02-segregacao-de-ambientes-tagging-e-permissoes-minimas",
+      "user_story_id": "08-iac-infraestrutura-us-02",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Linters + aviso",
+      "L2": "Obrigatório - Linters + scanners + bloqueio severo",
+      "L3": "Obrigatório - Linters + scanners + policies + cobertura 100%",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-03"
+      ],
+      "practice_id": "08-iac-infraestrutura:validacoes-automaticas-integradas",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-03-validacoes-automaticas-integradas",
+      "user_story_id": "08-iac-infraestrutura-us-03",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Whitelist simples + versionamento + pinning",
+      "L2": "Obrigatório - Whitelist + validação automática + SBOM + digest verificado",
+      "L3": "Obrigatório - Whitelist + validação + SBOM + attestation e revisão AppSec; denylist ativa",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-04"
+      ],
+      "practice_id": "08-iac-infraestrutura:governanca-e-origem-confiavel-de-modulos",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-04-governanca-e-origem-confiavel-de-modulos",
+      "user_story_id": "08-iac-infraestrutura-us-04",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Naming simples + git básico",
+      "L2": "Obrigatório - Naming + convenções commit + tagging",
+      "L3": "Obrigatório - Naming + convenções + tagging semântico + CHANGELOG",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-05"
+      ],
+      "practice_id": "08-iac-infraestrutura:rastreabilidade-versionamento-e-naming",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-05-rastreabilidade-versionamento-e-naming",
+      "user_story_id": "08-iac-infraestrutura-us-05",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Plan anexado em PR",
+      "L2": "Obrigatório - Plan + aprovação simples",
+      "L3": "Obrigatório - Plan + dupla aprovação + janela de mudança",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-06"
+      ],
+      "practice_id": "08-iac-infraestrutura:revisao-formal-de-plan-antes-de-apply",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-06-revisao-formal-de-plan-antes-de-apply",
+      "user_story_id": "08-iac-infraestrutura-us-06",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Metadata em locals",
+      "L2": "Obrigatório - Metadata + tags + documentação",
+      "L3": "Obrigatório - Metadata + tags + dashboard automático de rastreabilidade",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-07"
+      ],
+      "practice_id": "08-iac-infraestrutura:rastreabilidade-ficheiro-recurso-ambiente",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-07-rastreabilidade-ficheiro-recurso-ambiente",
+      "user_story_id": "08-iac-infraestrutura-us-07",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Validação básica em pipeline",
+      "L2": "Obrigatório - OPA/Rego com enforcement, logs de bloqueios",
+      "L3": "Obrigatório - OPA/Rego + exceções formais + métricas + revisão trimestral",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-08"
+      ],
+      "practice_id": "08-iac-infraestrutura:enforcement-automatico-de-politicas",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-08-enforcement-automatico-de-politicas",
+      "user_story_id": "08-iac-infraestrutura-us-08",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Assinatura de plan",
+      "L2": "Obrigatório - Assinatura + verificação automática",
+      "L3": "Obrigatório - Assinatura + attestation e gate bloqueante",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-09"
+      ],
+      "practice_id": "08-iac-infraestrutura:assinatura-e-proveniencia-de-artefactos-iac",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-09-assinatura-e-proveniencia-de-artefactos-iac",
+      "user_story_id": "08-iac-infraestrutura-us-09",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Segredos cifrados e rotacionados",
+      "L2": "Obrigatório - OIDC obrigatório com TTL curto",
+      "L3": "Obrigatório - OIDC + Just-In-Time + break-glass auditado",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-10"
+      ],
+      "practice_id": "08-iac-infraestrutura:gestao-de-segredos-e-identidades-para-iac",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-10-gestao-de-segredos-e-identidades-para-iac",
+      "user_story_id": "08-iac-infraestrutura-us-10",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Auditoria mensal",
+      "L2": "Obrigatório - Quinzenal + alertas",
+      "L3": "Obrigatório - Semanal + gate para drift crítico",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-11"
+      ],
+      "practice_id": "08-iac-infraestrutura:detecao-e-correcao-de-drift",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-11-detecao-e-correcao-de-drift",
+      "user_story_id": "08-iac-infraestrutura-us-11",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Rollback manual documentado",
+      "L2": "Obrigatório - Snapshots automáticos",
+      "L3": "Obrigatório - Rollback automatizado e kill-switch",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-12"
+      ],
+      "practice_id": "08-iac-infraestrutura:rollback-e-salvaguarda-de-destroy",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-12-rollback-e-salvaguarda-de-destroy",
+      "user_story_id": "08-iac-infraestrutura-us-12",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Aprovação simples",
+      "L2": "Obrigatório - Aprov. PO + AppSec",
+      "L3": "Obrigatório - Aprov. PO + AppSec + GRC",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-13"
+      ],
+      "practice_id": "08-iac-infraestrutura:janela-de-mudanca-e-aprovacoes-por-papel",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-13-janela-de-mudanca-e-aprovacoes-por-papel",
+      "user_story_id": "08-iac-infraestrutura-us-13",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Aprovação simples",
+      "L2": "Obrigatório - Aprovação 2nd reviewer + RBAC",
+      "L3": "Obrigatório - SoD + dupla aprovação + janela de mudança + auditoria reforçada",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-15"
+      ],
+      "practice_id": "08-iac-infraestrutura:separacao-de-funcoes-sod-e-controlo-de-execucao-de-apply",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-15-separacao-de-funcoes-sod-e-controlo-de-execucao-de-apply",
+      "user_story_id": "08-iac-infraestrutura-us-15",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Secret scanning + boas práticas",
+      "L2": "Obrigatório - Redaction automática + políticas de publicação",
+      "L3": "Obrigatório - Redaction + classificação de outputs + controlos reforçados em integrações",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-16"
+      ],
+      "practice_id": "08-iac-infraestrutura:minimizacao-de-contexto-e-protecao-de-informacao-sensivel-em-iac",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-16-minimizacao-de-contexto-e-protecao-de-informacao-sensivel-em-iac",
+      "user_story_id": "08-iac-infraestrutura-us-16",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Pinning básico",
+      "L2": "Obrigatório - Pinning + registo de versões efetivas",
+      "L3": "Obrigatório - Pinning + reexecução/verificação + revisão reforçada de upgrades",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-17"
+      ],
+      "practice_id": "08-iac-infraestrutura:determinismo-e-reprodutibilidade-do-plan",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-17-determinismo-e-reprodutibilidade-do-plan",
+      "user_story_id": "08-iac-infraestrutura-us-17",
+      "warnings": []
+    },
+    {
+      "L1": "Política documentada + apply via pipeline em prod",
+      "L2": "Bloqueio técnico (sem credenciais locais) em staging/prod",
+      "L3": "Bloqueio técnico em todos os ambientes + auditoria de tentativas e break-glass registado",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-18"
+      ],
+      "practice_id": "08-iac-infraestrutura:proibicao-de-apply-manual-local-fora-do-pipeline",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-18-proibicao-de-apply-manual-local-fora-do-pipeline",
+      "user_story_id": "08-iac-infraestrutura-us-18",
+      "warnings": []
+    },
+    {
+      "L1": "Revisão manual registada quando módulo/policy/template muda",
+      "L2": "Gate no pipeline marca eventos de baseline + revisão obrigatória antes de apply",
+      "L3": "Revisão formal com owner + revisão periódica de templates/módulos + drift confirmado como falha de segurança bloqueante",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-19"
+      ],
+      "practice_id": "08-iac-infraestrutura:reabertura-da-revisao-de-hardening-por-integridade-do-baseline",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-19-reabertura-da-revisao-de-hardening-por-integridade-do-baseline",
+      "user_story_id": "08-iac-infraestrutura-us-19",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Imagens oficiais com versão (não latest)",
+      "L2": "Obrigatório - Digest fixo + validação Hadolint + sem ferramentas interativas",
+      "L3": "Obrigatório - Digest fixo + Hadolint + multi-stage + Distroless + scanner integrado na build",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-01"
+      ],
+      "practice_id": "09-containers-imagens:construcao-de-imagens-a-partir-de-bases-seguras-minimalistas-e-pinned-por-digest",
+      "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-01-construcao-de-imagens-a-partir-de-bases-seguras-minimalistas-e-pinned-por-digest",
+      "user_story_id": "09-containers-imagens-us-01",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - Aviso de Critical + Medium",
+      "L2": "Obrigatório - Bloqueio de High/Critical",
+      "L3": "Obrigatório - Bloqueio de Medium+",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-02"
+      ],
+      "practice_id": "09-containers-imagens:validacao-automatica-de-vulnerabilidades-em-imagens-no-pipeline-ci-cd",
+      "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-02-validacao-automatica-de-vulnerabilidades-em-imagens-no-pipeline-ci-cd",
+      "user_story_id": "09-containers-imagens-us-02",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Assinatura opcional, aviso se não assinada",
+      "L2": "Recomendado - Assinatura recomendada, verificação em Admission Control",
+      "L3": "Obrigatório - Assinatura obrigatória, verificação bloqueante",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-03"
+      ],
+      "practice_id": "09-containers-imagens:assinatura-e-verificacao-de-proveniencia-de-imagens-com-cosign-e-rekor",
+      "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-03-assinatura-e-verificacao-de-proveniencia-de-imagens-com-cosign-e-rekor",
+      "user_story_id": "09-containers-imagens-us-03",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Validação básica (non-root) em modo audit",
+      "L2": "Obrigatório - Policies restritivas em modo enforce",
+      "L3": "Obrigatório - Policies completas + auditoria detalhada + revisão periódica",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-04"
+      ],
+      "practice_id": "09-containers-imagens:aplicacao-de-politicas-formais-de-seguranca-no-runtime-com-opa-kyverno",
+      "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-04-aplicacao-de-politicas-formais-de-seguranca-no-runtime-com-opa-kyverno",
+      "user_story_id": "09-containers-imagens-us-04",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Monitorização básica, alertas críticos",
+      "L2": "Obrigatório - Alertas críticos configurados, playbook documentado",
+      "L3": "Obrigatório - Cobertura total, resposta automática, investigação correlacionada",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-05"
+      ],
+      "practice_id": "09-containers-imagens:monitorizacao-e-resposta-a-incidentes-em-runtime",
+      "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-05-monitorizacao-e-resposta-a-incidentes-em-runtime",
+      "user_story_id": "09-containers-imagens-us-05",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - SBOM básico, formato Syft JSON",
+      "L2": "Obrigatório - SBOM completo em CycloneDX, retenção 1 ano",
+      "L3": "Obrigatório - SBOM em CycloneDX, integração com proveniência (assinado), retenção 2+ anos",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-06"
+      ],
+      "practice_id": "09-containers-imagens:geracao-e-rastreabilidade-de-sbom-em-imagens",
+      "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-06-geracao-e-rastreabilidade-de-sbom-em-imagens",
+      "user_story_id": "09-containers-imagens-us-06",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Aviso para registries não confiáveis",
+      "L2": "Obrigatório - Allowlist com bloqueio por origem, digest recomendado",
+      "L3": "Obrigatório - Allowlist restritivo + digest-only obrigatório + assinatura verificada",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-07"
+      ],
+      "practice_id": "09-containers-imagens:governacao-de-registries-com-allowlist-e-digest-only",
+      "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-07-governacao-de-registries-com-allowlist-e-digest-only",
+      "user_story_id": "09-containers-imagens-us-07",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Secret scanning, credenciais não em env vars",
+      "L2": "Obrigatório - Secret scanning obrigatório, OIDC com TTL curto",
+      "L3": "Obrigatório - Secret scanning + OIDC + rotação automática + auditoria contínua",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-08"
+      ],
+      "practice_id": "09-containers-imagens:gestao-de-segredos-fora-da-imagem-com-oidc-e-workload-identity",
+      "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-08-gestao-de-segredos-fora-da-imagem-com-oidc-e-workload-identity",
+      "user_story_id": "09-containers-imagens-us-08",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - SA dedicadas, permissões razoáveis",
+      "L2": "Obrigatório - SA dedicada obrigatória, RBAC mínimo validado",
+      "L3": "Obrigatório - SA dedicada + RBAC mínimo + revisão periódica + no wildcard permissions",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-09"
+      ],
+      "practice_id": "09-containers-imagens:rbac-minimo-e-serviceaccounts-dedicadas",
+      "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-09-rbac-minimo-e-serviceaccounts-dedicadas",
+      "user_story_id": "09-containers-imagens-us-09",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Logging básico, sem alertas automáticos",
+      "L2": "Obrigatório - Logging + alertas para críticos",
+      "L3": "Obrigatório - Logging + alertas + dashboard + revisão mensal",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-13"
+      ],
+      "practice_id": "09-containers-imagens:enforcement-centralizado-e-auditavel-de-politicas-no-runtime",
+      "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-13-enforcement-centralizado-e-auditavel-de-politicas-no-runtime",
+      "user_story_id": "09-containers-imagens-us-13",
+      "warnings": []
+    },
+    {
+      "L1": "Não - Opcional, investigativo",
+      "L2": "Recomendado - Para workloads sensíveis",
+      "L3": "Obrigatório - Para workloads críticas (pagamentos, dados sensíveis, PII)",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-14"
+      ],
+      "practice_id": "09-containers-imagens:sandboxing-avancado-com-gvisor-kata-para-workloads-criticas",
+      "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-14-sandboxing-avancado-com-gvisor-kata-para-workloads-criticas",
+      "user_story_id": "09-containers-imagens-us-14",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Catálogo simples + revisão ad-hoc",
+      "L2": "Obrigatório - Aprovação formal + revisão trimestral + depreciação com prazos",
+      "L3": "Obrigatório - Aprovação formal + revisão mensal/event-driven + revogação rápida bloqueante",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-15"
+      ],
+      "practice_id": "09-containers-imagens:aprovacao-depreciacao-e-revogacao-de-golden-base-images-catalogo-organizacional",
+      "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-15-aprovacao-depreciacao-e-revogacao-de-golden-base-images-catalogo-organizacional",
+      "user_story_id": "09-containers-imagens-us-15",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Promoção automatizada com logging e rastreabilidade",
+      "L2": "Obrigatório - Aprovação explícita + revalidação mínima por ambiente",
+      "L3": "Obrigatório - Aprovação explícita + revalidação reforçada + TTL curto + auditoria",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-16"
+      ],
+      "practice_id": "09-containers-imagens:promocao-por-estagios-com-aprovacao-explicita-e-revalidacao-por-ambiente",
+      "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-16-promocao-por-estagios-com-aprovacao-explicita-e-revalidacao-por-ambiente",
+      "user_story_id": "09-containers-imagens-us-16",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Exceções registadas, TTL opcional mas incentivado",
+      "L2": "Obrigatório - TTL obrigatório + compensações mínimas + revisão mensal",
+      "L3": "Obrigatório - TTL curto + compensações reforçadas + revisão semanal/mensal + auditoria",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-17"
+      ],
+      "practice_id": "09-containers-imagens:excecoes-temporarias-a-findings-policies-com-ttl-compensacoes-e-revalidacao",
+      "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-17-excecoes-temporarias-a-findings-policies-com-ttl-compensacoes-e-revalidacao",
+      "user_story_id": "09-containers-imagens-us-17",
+      "warnings": []
+    },
+    {
+      "L1": "Encriptação e hash recomendados; acesso restrito básico",
+      "L2": "Encriptação at-rest + hash no startup obrigatórios; acesso por service account",
+      "L3": "Tudo de L2 + auditoria de download obrigatória + revogação rápida de acesso",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-18"
+      ],
+      "practice_id": "09-containers-imagens:pesos-de-modelo-ai-self-hosted-tratados-como-ativo-critico",
+      "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-18-pesos-de-modelo-ai-self-hosted-tratados-como-ativo-critico",
+      "user_story_id": "09-containers-imagens-us-18",
+      "warnings": []
+    },
+    {
+      "L1": "Isolamento não exigido; limites de recursos recomendados",
+      "L2": "Hard ou process-level isolation recomendado; separação de nós + limites obrigatórios",
+      "L3": "Hard isolation obrigatório quando workloads sensíveis partilham hardware; separação total",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-19"
+      ],
+      "practice_id": "09-containers-imagens:isolamento-de-gpu-e-separacao-de-workloads-de-inferencia-sensiveis",
+      "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-19-isolamento-de-gpu-e-separacao-de-workloads-de-inferencia-sensiveis",
+      "user_story_id": "09-containers-imagens-us-19",
+      "warnings": []
+    },
+    {
+      "L1": "Autenticação sempre obrigatória; container hardening e limites recomendados",
+      "L2": "Container hardening + network policy + rate limit/max_tokens + pinning/SCA obrigatórios",
+      "L3": "Tudo de L2 + auditoria por principal reforçada e revisão periódica",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-20"
+      ],
+      "practice_id": "09-containers-imagens:hardening-da-api-e-do-container-de-inferencia-ai",
+      "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-20-hardening-da-api-e-do-container-de-inferencia-ai",
+      "user_story_id": "09-containers-imagens-us-20",
+      "warnings": []
+    },
+    {
+      "L1": "Seccomp default recomendado; drift ad-hoc",
+      "L2": "Seccomp obrigatório + bloqueio de privilégio + verificação de drift",
+      "L3": "Tudo de L2 + perfis personalizados + verificação de drift contínua/automatizada",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-21"
+      ],
+      "practice_id": "09-containers-imagens:perfis-seccomp-apparmor-e-verificacao-de-drift-de-hardening",
+      "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-21-perfis-seccomp-apparmor-e-verificacao-de-drift-de-hardening",
+      "user_story_id": "09-containers-imagens-us-21",
+      "warnings": []
+    },
+    {
+      "L1": "Obrigatório - SAST + checklist",
+      "L2": "Obrigatório - + DAST autenticado",
+      "L3": "Obrigatório - + fuzzing/IAST + PenTest",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-01"
+      ],
+      "practice_id": "10-testes-seguranca:estrategia-formal-de-testes-por-aplicacao",
+      "source_document_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-01-estrategia-formal-de-testes-por-aplicacao",
+      "user_story_id": "10-testes-seguranca-us-01",
+      "warnings": []
+    },
+    {
+      "L1": "Não - Opcional, investigativo",
+      "L2": "Recomendado - Em endpoints críticos (autenticação, pagamento)",
+      "L3": "Obrigatório - Cobertura total + correlação com DAST",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-09"
+      ],
+      "practice_id": "10-testes-seguranca:iast-com-instrumentacao-em-staging",
+      "source_document_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--checklist-de-release-v-version--us-09-iast-com-instrumentacao-em-staging",
+      "user_story_id": "10-testes-seguranca-us-09",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Checklist simplificado para CRITICAL apenas, sem SLA rígido",
+      "L2": "Obrigatório - Checklist C1 obrigatório para CRITICAL+HIGH, template T1, decisores definidos, SLA 4h HIGH",
+      "L3": "Obrigatório - Checklist C1 para todos findings ≥MEDIUM, template T1+T2, escalação formal, SLA 2h CRITICAL",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-12"
+      ],
+      "practice_id": "10-testes-seguranca:decisao-assistida-para-findings-de-testes-de-seguranca",
+      "source_document_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--checklist-de-release-v-version--us-12-decisao-assistida-para-findings-de-testes-de-seguranca",
+      "user_story_id": "10-testes-seguranca-us-12",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional - Testes para CRITICAL apenas, sem exigência de tempo-validação",
+      "L2": "Obrigatório - Testes T1-T5 para CRITICAL+HIGH, template S1 obrigatório, métricas FP <30%, tempo <4h",
+      "L3": "Obrigatório - Testes T1-T5 para todos findings ≥MEDIUM, template S1+S2, métricas FP <20%, FN <5%, tempo <2h",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-13"
+      ],
+      "practice_id": "10-testes-seguranca:validacao-empirica-de-exploitabilidade-de-findings",
+      "source_document_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--checklist-de-release-v-version--us-13-validacao-empirica-de-exploitabilidade-de-findings",
+      "user_story_id": "10-testes-seguranca-us-13",
+      "warnings": []
+    },
+    {
+      "L1": "Perfil versionado; baseline para CRITICAL",
+      "L2": "+ baseline para CRITICAL/HIGH; revisão trimestral da taxa de FP",
+      "L3": "+ revisão mensal; supressões com dupla validação e expiração",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-18"
+      ],
+      "practice_id": "10-testes-seguranca:perfil-de-regras-sast-versionado-com-baseline-de-falsos-positivos",
+      "source_document_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--checklist-de-release-v-version--us-18-perfil-de-regras-sast-versionado-com-baseline-de-falsos-positivos",
+      "user_story_id": "10-testes-seguranca-us-18",
+      "warnings": []
+    },
+    {
+      "L1": "Sem dados reais; masking básico de segredos",
+      "L2": "+ contas técnicas dedicadas com rotação; egress restrito",
+      "L3": "+ segregação completa de ambiente, exceções de dados reais com dupla aprovação e auditoria",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-19"
+      ],
+      "practice_id": "10-testes-seguranca:protecao-dos-ativos-do-processo-de-teste",
+      "source_document_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--checklist-de-release-v-version--us-19-protecao-dos-ativos-do-processo-de-teste",
+      "user_story_id": "10-testes-seguranca-us-19",
+      "warnings": []
+    },
+    {
+      "L1": "TST-K01/K03/K05 com thresholds L1",
+      "L2": "+ TST-K02/K04/K07; revisão trimestral",
+      "L3": "+ TST-K06; revisão mensal e reporte à governação",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-20"
+      ],
+      "practice_id": "10-testes-seguranca:kpis-de-eficacia-do-programa-de-testes",
+      "source_document_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--checklist-de-release-v-version--us-20-kpis-de-eficacia-do-programa-de-testes",
+      "user_story_id": "10-testes-seguranca-us-20",
+      "warnings": []
+    },
+    {
+      "L1": "Política C1–C4; eval suite recomendada (A1)",
+      "L2": "C1–C4 obrigatórios; eval suite como gate para agentes A2+",
+      "L3": "+ red-team manual periódico, drift em janelas curtas e telemetria de produção (A4)",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-21"
+      ],
+      "practice_id": "10-testes-seguranca:governacao-do-uso-de-ia-em-testes-e-eval-suites-para-agentes",
+      "source_document_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--checklist-de-release-v-version--us-21-governacao-do-uso-de-ia-em-testes-e-eval-suites-para-agentes",
+      "user_story_id": "10-testes-seguranca-us-21",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado",
+      "L2": "Obrigatório",
+      "L3": "Obrigatório + rejeição automática",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-01"
+      ],
+      "practice_id": "11-deploy-seguro:deploy-apenas-de-artefactos-assinados",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-01-deploy-apenas-de-artefactos-assinados",
+      "user_story_id": "11-deploy-seguro-us-01",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional",
+      "L2": "Recomendado",
+      "L3": "Obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-02"
+      ],
+      "practice_id": "11-deploy-seguro:validacao-em-staging-antes-da-promocao",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-02-validacao-em-staging-antes-da-promocao",
+      "user_story_id": "11-deploy-seguro-us-02",
+      "warnings": []
+    },
+    {
+      "L1": "Aviso",
+      "L2": "Bloqueio High/Critical",
+      "L3": "Bloqueio Medium+",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-03"
+      ],
+      "practice_id": "11-deploy-seguro:gates-de-aprovacao-no-deploy",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-03-gates-de-aprovacao-no-deploy",
+      "user_story_id": "11-deploy-seguro-us-03",
+      "warnings": []
+    },
+    {
+      "L1": "Manual",
+      "L2": "Automatizado",
+      "L3": "Automatizado + testado periodicamente",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-04"
+      ],
+      "practice_id": "11-deploy-seguro:rollback-rapido-e-testado",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-04-rollback-rapido-e-testado",
+      "user_story_id": "11-deploy-seguro-us-04",
+      "warnings": []
+    },
+    {
+      "L1": "Básica",
+      "L2": "Completa",
+      "L3": "Completa + auditoria contínua",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-05"
+      ],
+      "practice_id": "11-deploy-seguro:rastreabilidade-end-to-end",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-05-rastreabilidade-end-to-end",
+      "user_story_id": "11-deploy-seguro-us-05",
+      "warnings": []
+    },
+    {
+      "L1": "Básica",
+      "L2": "Crítica",
+      "L3": "Completa + resposta automática",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-06"
+      ],
+      "practice_id": "11-deploy-seguro:monitorizacao-pos-deploy",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-06-monitorizacao-pos-deploy",
+      "user_story_id": "11-deploy-seguro-us-06",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional",
+      "L2": "Recomendado",
+      "L3": "Obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-07"
+      ],
+      "practice_id": "11-deploy-seguro:controlo-de-execucao-com-feature-flags",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-07-controlo-de-execucao-com-feature-flags",
+      "user_story_id": "11-deploy-seguro-us-07",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado",
+      "L2": "Obrigatório",
+      "L3": "Obrigatório + rotação automática",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-08"
+      ],
+      "practice_id": "11-deploy-seguro:gestao-segura-de-segredos-no-deploy",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-08-gestao-segura-de-segredos-no-deploy",
+      "user_story_id": "11-deploy-seguro-us-08",
+      "warnings": []
+    },
+    {
+      "L1": "Básico",
+      "L2": "Completo + segurança",
+      "L3": "Completo + segurança + compatibilidade",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-09"
+      ],
+      "practice_id": "11-deploy-seguro:versionamento-semantico-e-changelog-tecnico",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-09-versionamento-semantico-e-changelog-tecnico",
+      "user_story_id": "11-deploy-seguro-us-09",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado (manual por etapas)",
+      "L2": "Automatizado com métricas",
+      "L3": "Automatizado + rollback por threshold",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-10"
+      ],
+      "practice_id": "11-deploy-seguro:deploy-progressivo-com-estrategias-canary-blue-green",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-10-deploy-progressivo-com-estrategias-canary-blue-green",
+      "user_story_id": "11-deploy-seguro-us-10",
+      "warnings": []
+    },
+    {
+      "L1": "SAST + aviso",
+      "L2": "SAST + DAST + bloqueio High/Critical",
+      "L3": "SAST + DAST + bloqueio Medium+",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-11"
+      ],
+      "practice_id": "11-deploy-seguro:validacoes-tecnicas-pre-deploy-com-gates-condicionais",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-11-validacoes-tecnicas-pre-deploy-com-gates-condicionais",
+      "user_story_id": "11-deploy-seguro-us-11",
+      "warnings": []
+    },
+    {
+      "L1": "Manual documentado",
+      "L2": "Automatizado (binário + config)",
+      "L3": "Automatizado todos os tipos + testado",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-12"
+      ],
+      "practice_id": "11-deploy-seguro:rollback-estruturado-por-tipo-binario-configuracao-bd-infra",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-12-rollback-estruturado-por-tipo-binario-configuracao-bd-infra",
+      "user_story_id": "11-deploy-seguro-us-12",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Eval gate simples; rollback de modelo pode partilhar pipeline com aplicação",
+      "L2": "Sim para A1+ - Eval gate completo; rollback de modelo independente documentado; canary recomendado",
+      "L3": "Sim para A1+ - Eval gate completo + canary obrigatório em mudança de versão maior + auditoria do eval_run_id",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-18"
+      ],
+      "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-18-release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
+      "user_story_id": "11-deploy-seguro-us-18",
+      "warnings": []
+    },
+    {
+      "L1": "Âmbito mínimo documentado; sem partilha entre apps",
+      "L2": "OIDC/workload identity (tokens efémeros); isolamento por app",
+      "L3": "OIDC obrigatório + auditoria periódica de âmbito e logs de uso",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-19"
+      ],
+      "practice_id": "11-deploy-seguro:credenciais-de-deploy-isoladas-por-aplicacao-e-efemeras",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-19-credenciais-de-deploy-isoladas-por-aplicacao-e-efemeras",
+      "user_story_id": "11-deploy-seguro-us-19",
+      "warnings": []
+    },
+    {
+      "L1": "Básico",
+      "L2": "Estruturado",
+      "L3": "Estruturado + correlação em SIEM",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-01"
+      ],
+      "practice_id": "12-monitorizacao-operacoes:logging-estruturado-e-centralizado",
+      "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-01-logging-estruturado-e-centralizado",
+      "user_story_id": "12-monitorizacao-operacoes-us-01",
+      "warnings": []
+    },
+    {
+      "L1": "Básico",
+      "L2": "Definição parcial",
+      "L3": "Definição completa + revisão trimestral",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-02"
+      ],
+      "practice_id": "12-monitorizacao-operacoes:definicao-de-eventos-e-metricas-criticas",
+      "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-02-definicao-de-eventos-e-metricas-criticas",
+      "user_story_id": "12-monitorizacao-operacoes-us-02",
+      "warnings": []
+    },
+    {
+      "L1": "Aviso",
+      "L2": "SLA crítico",
+      "L3": "SLA crítico + automação",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-03"
+      ],
+      "practice_id": "12-monitorizacao-operacoes:alertas-com-slas-definidos",
+      "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-03-alertas-com-slas-definidos",
+      "user_story_id": "12-monitorizacao-operacoes-us-03",
+      "warnings": []
+    },
+    {
+      "L1": "Manual",
+      "L2": "Playbooks definidos",
+      "L3": "Playbooks automatizados",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-04"
+      ],
+      "practice_id": "12-monitorizacao-operacoes:integracao-com-processos-de-resposta-a-incidentes",
+      "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-04-integracao-com-processos-de-resposta-a-incidentes",
+      "user_story_id": "12-monitorizacao-operacoes-us-04",
+      "warnings": []
+    },
+    {
+      "L1": "Básico",
+      "L2": "Métricas calculadas",
+      "L3": "Métricas + metas definidas",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-05"
+      ],
+      "practice_id": "12-monitorizacao-operacoes:metricas-de-eficacia-mttd-mttr",
+      "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-05-metricas-de-eficacia-mttd-mttr",
+      "user_story_id": "12-monitorizacao-operacoes-us-05",
+      "warnings": []
+    },
+    {
+      "L1": "Básico (técnica)",
+      "L2": "Técnica + segurança",
+      "L3": "Completo (técnica, segurança, negócio, conformidade, CI/CD)",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-06"
+      ],
+      "practice_id": "12-monitorizacao-operacoes:classificacao-e-cobertura-de-dominios-de-monitorizacao",
+      "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-06-classificacao-e-cobertura-de-dominios-de-monitorizacao",
+      "user_story_id": "12-monitorizacao-operacoes-us-06",
+      "warnings": []
+    },
+    {
+      "L1": "Local (sem retenção)",
+      "L2": "WORM + 90d",
+      "L3": "WORM + 180d + integridade verificável",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-07"
+      ],
+      "practice_id": "12-monitorizacao-operacoes:seguranca-e-integridade-de-logs",
+      "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-07-seguranca-e-integridade-de-logs",
+      "user_story_id": "12-monitorizacao-operacoes-us-07",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional",
+      "L2": "Obrigatório",
+      "L3": "Obrigatório + normalização ECS completa",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-08"
+      ],
+      "practice_id": "12-monitorizacao-operacoes:integracao-com-siem-e-normalizacao-de-eventos",
+      "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-08-integracao-com-siem-e-normalizacao-de-eventos",
+      "user_story_id": "12-monitorizacao-operacoes-us-08",
+      "warnings": []
+    },
+    {
+      "L1": "Não aplicável",
+      "L2": "Opcional",
+      "L3": "Obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-09"
+      ],
+      "practice_id": "12-monitorizacao-operacoes:correlacao-de-eventos-e-detecao-comportamental",
+      "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-09-correlacao-de-eventos-e-detecao-comportamental",
+      "user_story_id": "12-monitorizacao-operacoes-us-09",
+      "warnings": []
+    },
+    {
+      "L1": "Manual ocasional",
+      "L2": "Validação periódica",
+      "L3": "Validação contínua + automação",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-10"
+      ],
+      "practice_id": "12-monitorizacao-operacoes:validacao-e-tuning-de-alertas",
+      "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-10-validacao-e-tuning-de-alertas",
+      "user_story_id": "12-monitorizacao-operacoes-us-10",
+      "warnings": []
+    },
+    {
+      "L1": "Logging local + mapeamento de domínios básico",
+      "L2": "Matriz aplicada; SIEM e alertas implementados",
+      "L3": "Matriz aplicada + revisão contínua com métricas",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-11"
+      ],
+      "practice_id": "12-monitorizacao-operacoes:proporcionalidade-de-controlos-por-risco-l1l3-e-dominios",
+      "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-11-proporcionalidade-de-controlos-por-risco-l1l3-e-dominios",
+      "user_story_id": "12-monitorizacao-operacoes-us-11",
+      "warnings": []
+    },
+    {
+      "L1": "Mapeamento básico",
+      "L2": "Mapeamento + evidência documentada",
+      "L3": "Mapeamento + evidência + métricas + auditoria contínua",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-12"
+      ],
+      "practice_id": "12-monitorizacao-operacoes:rastreabilidade-e-conformidade-com-regulacoes-ssdf-nis2-iso-27001",
+      "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-12-rastreabilidade-e-conformidade-com-regulacoes-ssdf-nis2-iso-27001",
+      "user_story_id": "12-monitorizacao-operacoes-us-12",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado para A1+; obrigatório se agente em produção - OPS-012 essencial; OPS-013 com budget simples; OPS-014 não-obrigatório",
+      "L2": "Sim para A1+ - OPS-012 + OPS-013 obrigatórios; OPS-014 recomendado",
+      "L3": "Sim para A1+ - OPS-012 + OPS-013 + OPS-014 obrigatórios; A4 com revisão trimestral do corpus de detecção",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-13"
+      ],
+      "practice_id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao-us-13",
+      "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-13-telemetria-de-agentes-ai-em-producao-us-13",
+      "user_story_id": "12-monitorizacao-operacoes-us-13",
+      "warnings": []
+    },
+    {
+      "L1": "Redacção básica de credenciais",
+      "L2": "Redacção + exceções formais (máx 6 meses)",
+      "L3": "Redacção verificada por amostragem + exceções (máx 3 meses) + reavaliação pré-expiração",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-14"
+      ],
+      "practice_id": "12-monitorizacao-operacoes:nao-logging-de-secrets-e-gestao-de-excecoes-operacionais",
+      "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-14-nao-logging-de-secrets-e-gestao-de-excecoes-operacionais",
+      "user_story_id": "12-monitorizacao-operacoes-us-14",
+      "warnings": []
+    },
+    {
+      "L1": "Verificação manual de fontes",
+      "L2": "Alerta de falha de ingestão + dashboard básico",
+      "L3": "Deteção por baseline + dashboards completos de cobertura/latência",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-15"
+      ],
+      "practice_id": "12-monitorizacao-operacoes:detecao-de-falha-de-ingestao-e-dashboards-operacionais",
+      "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-15-detecao-de-falha-de-ingestao-e-dashboards-operacionais",
+      "user_story_id": "12-monitorizacao-operacoes-us-15",
+      "warnings": []
+    },
+    {
+      "L1": "Não aplicável",
+      "L2": "Mapeamento ATT&CK das regras críticas + KEV na priorização",
+      "L3": "Cobertura ATT&CK completa + EPSS/KEV com revisão contínua",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-16"
+      ],
+      "practice_id": "12-monitorizacao-operacoes:cobertura-att-ck-e-priorizacao-epss-kev",
+      "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-16-cobertura-att-ck-e-priorizacao-epss-kev",
+      "user_story_id": "12-monitorizacao-operacoes-us-16",
+      "warnings": []
+    },
+    {
+      "L1": "Walkthrough manual ocasional",
+      "L2": "Exercício anual de playbooks críticos",
+      "L3": "Exercícios periódicos end-to-end + medição de MTTR e melhoria contínua",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-17"
+      ],
+      "practice_id": "12-monitorizacao-operacoes:exercicios-de-resposta-a-incidentes-end-to-end",
+      "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-17-exercicios-de-resposta-a-incidentes-end-to-end",
+      "user_story_id": "12-monitorizacao-operacoes-us-17",
+      "warnings": []
+    },
+    {
+      "L1": "Básico",
+      "L2": "Obrigatório",
+      "L3": "Obrigatório + avaliação prática",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-01"
+      ],
+      "practice_id": "13-formacao-onboarding:onboarding-seguro-obrigatorio",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-01-onboarding-seguro-obrigatorio",
+      "user_story_id": "13-formacao-onboarding-us-01",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado anual",
+      "L2": "Obrigatório semestral",
+      "L3": "Obrigatório trimestral",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-02"
+      ],
+      "practice_id": "13-formacao-onboarding:formacao-continua-por-perfil",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-02-formacao-continua-por-perfil",
+      "user_story_id": "13-formacao-onboarding-us-02",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional",
+      "L2": "Recomendado",
+      "L3": "Obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-03"
+      ],
+      "practice_id": "13-formacao-onboarding:programa-de-security-champions",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-03-programa-de-security-champions",
+      "user_story_id": "13-formacao-onboarding-us-03",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional",
+      "L2": "Recomendado",
+      "L3": "Obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-04"
+      ],
+      "practice_id": "13-formacao-onboarding:exercicios-praticos-e-simulacoes",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-04-exercicios-praticos-e-simulacoes",
+      "user_story_id": "13-formacao-onboarding-us-04",
+      "warnings": []
+    },
+    {
+      "L1": "Básico",
+      "L2": "KPIs anuais",
+      "L3": "KPIs trimestrais com metas",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-05"
+      ],
+      "practice_id": "13-formacao-onboarding:medicao-de-eficacia-da-formacao",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-05-medicao-de-eficacia-da-formacao",
+      "user_story_id": "13-formacao-onboarding-us-05",
+      "warnings": []
+    },
+    {
+      "L1": "Ocasional (mensal)",
+      "L2": "Recorrente (quinzenal)",
+      "L3": "Recorrente + rotativo (semanal)",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-06"
+      ],
+      "practice_id": "13-formacao-onboarding:code-clinics-estruturadas-e-recorrentes",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-06-code-clinics-estruturadas-e-recorrentes",
+      "user_story_id": "13-formacao-onboarding-us-06",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional / ad-hoc",
+      "L2": "Recomendado por épico",
+      "L3": "Obrigatório antes de design finalizador",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-07"
+      ],
+      "practice_id": "13-formacao-onboarding:threat-modeling-peer-led-e-rotativo",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-07-threat-modeling-peer-led-e-rotativo",
+      "user_story_id": "13-formacao-onboarding-us-07",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado anual",
+      "L2": "Trimestral",
+      "L3": "Trimestral + rotativo por ameaça",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-08"
+      ],
+      "practice_id": "13-formacao-onboarding:war-room-e-simulacoes-de-incidentes",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-08-war-room-e-simulacoes-de-incidentes",
+      "user_story_id": "13-formacao-onboarding-us-08",
+      "warnings": []
+    },
+    {
+      "L1": "Ocasional",
+      "L2": "Anual",
+      "L3": "Anual + contínua por trigger",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-09"
+      ],
+      "practice_id": "13-formacao-onboarding:manutencao-e-atualizacao-de-trilhos-formativos",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-09-manutencao-e-atualizacao-de-trilhos-formativos",
+      "user_story_id": "13-formacao-onboarding-us-09",
+      "warnings": []
+    },
+    {
+      "L1": "Trilho básico (conteúdos essenciais)",
+      "L2": "Trilho intermédio (conteúdos obrigatórios + labs)",
+      "L3": "Trilho avançado (conteúdos completos + simulações + auditoria contínua)",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-10"
+      ],
+      "practice_id": "13-formacao-onboarding:trilhos-formativos-proporcionais-por-risco-l1l3",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-10-trilhos-formativos-proporcionais-por-risco-l1l3",
+      "user_story_id": "13-formacao-onboarding-us-10",
+      "warnings": []
+    },
+    {
+      "L1": "Básico (função)",
+      "L2": "Estruturado (função + risco)",
+      "L3": "Estruturado + auditoria periódica",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-11"
+      ],
+      "practice_id": "13-formacao-onboarding:validacao-formal-de-onboarding-via-checklist",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-11-validacao-formal-de-onboarding-via-checklist",
+      "user_story_id": "13-formacao-onboarding-us-11",
+      "warnings": []
+    },
+    {
+      "L1": "Pontual (onboarding)",
+      "L2": "Periódica (anual)",
+      "L3": "Periódica + adaptativa (por trigger)",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-12"
+      ],
+      "practice_id": "13-formacao-onboarding:validacao-de-conhecimento-via-quizzes-estruturados",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-12-validacao-de-conhecimento-via-quizzes-estruturados",
+      "user_story_id": "13-formacao-onboarding-us-12",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado",
+      "L2": "Obrigatório",
+      "L3": "Obrigatório + anual",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-13"
+      ],
+      "practice_id": "13-formacao-onboarding:operacionalizacao-de-formacao-de-terceiros",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-13-operacionalizacao-de-formacao-de-terceiros",
+      "user_story_id": "13-formacao-onboarding-us-13",
+      "warnings": []
+    },
+    {
+      "L1": "KPIs anuais",
+      "L2": "KPIs trimestrais com metas",
+      "L3": "KPIs trimestrais + metas por trilho e auditoria prática",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-14"
+      ],
+      "practice_id": "13-formacao-onboarding:kpis-de-capacitacao-e-reporte-grc",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-14-kpis-de-capacitacao-e-reporte-grc",
+      "user_story_id": "13-formacao-onboarding-us-14",
+      "warnings": []
+    },
+    {
+      "L1": "Formatos básicos (microlearning)",
+      "L2": "Labs e quizzes estructurados",
+      "L3": "Labs com scoring + simulações + auditoria",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-15"
+      ],
+      "practice_id": "13-formacao-onboarding:formatos-de-entrega-e-dod-por-formato",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-15-formatos-de-entrega-e-dod-por-formato",
+      "user_story_id": "13-formacao-onboarding-us-15",
+      "warnings": []
+    },
+    {
+      "L1": "Reformação informal + nova tentativa",
+      "L2": "Plano de remediação documentado + bloqueio de acesso",
+      "L3": "Plano formal + limite de tentativas + escalonamento a AppSec e auditoria",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-16"
+      ],
+      "practice_id": "13-formacao-onboarding:caminho-de-remediacao-abaixo-do-limiar",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-16-caminho-de-remediacao-abaixo-do-limiar",
+      "user_story_id": "13-formacao-onboarding-us-16",
+      "warnings": []
+    },
+    {
+      "L1": "Termo simples + registo",
+      "L2": "Termo por perfil + arquivo rastreável",
+      "L3": "Termo por perfil + vinculação contratual + auditoria periódica",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-17"
+      ],
+      "practice_id": "13-formacao-onboarding:termo-de-responsabilidade-de-terceiros",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-17-termo-de-responsabilidade-de-terceiros",
+      "user_story_id": "13-formacao-onboarding-us-17",
+      "warnings": []
+    },
+    {
+      "L1": "Revisão informal de desvios",
+      "L2": "Ação corretiva com owner e prazo registados",
+      "L3": "Ação corretiva + seguimento até fecho + reporte e auditoria",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-18"
+      ],
+      "practice_id": "13-formacao-onboarding:acao-corretiva-sobre-desvios-de-kpis",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-18-acao-corretiva-sobre-desvios-de-kpis",
+      "user_story_id": "13-formacao-onboarding-us-18",
+      "warnings": []
+    },
+    {
+      "L1": "Microlearning de princípios (assistir vs. decidir)",
+      "L2": "Módulo por perfil + labs + quiz (≥ semestral)",
+      "L3": "Módulo por perfil + labs avançados + validação adaptativa (≥ trimestral)",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-19"
+      ],
+      "practice_id": "13-formacao-onboarding:formacao-em-uso-seguro-de-ia-e-tooling",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-19-formacao-em-uso-seguro-de-ia-e-tooling",
+      "user_story_id": "13-formacao-onboarding-us-19",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional",
+      "L2": "Recomendado",
+      "L3": "Obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-01"
+      ],
+      "practice_id": "14-governanca-contratacao:processo-formal-de-excecoes-com-alcadas-por-nivel-de-risco",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--user-stories-normalizadas--us-01-processo-formal-de-excecoes-com-alcadas-por-nivel-de-risco",
+      "user_story_id": "14-governanca-contratacao-us-01",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado",
+      "L2": "Obrigatório",
+      "L3": "Obrigatório + auditorias",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-02"
+      ],
+      "practice_id": "14-governanca-contratacao:clausulas-contratuais-de-seguranca",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--user-stories-normalizadas--us-02-clausulas-contratuais-de-seguranca",
+      "user_story_id": "14-governanca-contratacao-us-02",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional",
+      "L2": "Recomendado",
+      "L3": "Obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-03"
+      ],
+      "practice_id": "14-governanca-contratacao:validacao-continua-de-fornecedores",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--user-stories-normalizadas--us-03-validacao-continua-de-fornecedores",
+      "user_story_id": "14-governanca-contratacao-us-03",
+      "warnings": []
+    },
+    {
+      "L1": "Básico",
+      "L2": "Recomendado",
+      "L3": "Obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-04"
+      ],
+      "practice_id": "14-governanca-contratacao:rastreabilidade-organizacional",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--user-stories-normalizadas--us-04-rastreabilidade-organizacional",
+      "user_story_id": "14-governanca-contratacao-us-04",
+      "warnings": []
+    },
+    {
+      "L1": "Básico",
+      "L2": "Recomendado",
+      "L3": "Obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-05"
+      ],
+      "practice_id": "14-governanca-contratacao:kpis-de-governacao",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-05-kpis-de-governacao",
+      "user_story_id": "14-governanca-contratacao-us-05",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional",
+      "L2": "Recomendado",
+      "L3": "Obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-06"
+      ],
+      "practice_id": "14-governanca-contratacao:execucao-de-fluxo-formal-de-validacao-de-fornecedores",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-06-execucao-de-fluxo-formal-de-validacao-de-fornecedores",
+      "user_story_id": "14-governanca-contratacao-us-06",
+      "warnings": []
+    },
+    {
+      "L1": "Básico",
+      "L2": "Recomendado",
+      "L3": "Obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-07"
+      ],
+      "practice_id": "14-governanca-contratacao:ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-07-ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
+      "user_story_id": "14-governanca-contratacao-us-07",
+      "warnings": []
+    },
+    {
+      "L1": "Básico",
+      "L2": "Recomendado",
+      "L3": "Obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-08"
+      ],
+      "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-08-repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "user_story_id": "14-governanca-contratacao-us-08",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado",
+      "L2": "Obrigatório",
+      "L3": "Obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-09"
+      ],
+      "practice_id": "14-governanca-contratacao:designacao-formal-de-owners-de-seguranca-por-aplicacao",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-09-designacao-formal-de-owners-de-seguranca-por-aplicacao",
+      "user_story_id": "14-governanca-contratacao-us-09",
+      "warnings": []
+    },
+    {
+      "L1": "Anual",
+      "L2": "Semestral",
+      "L3": "Trimestral",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-10"
+      ],
+      "practice_id": "14-governanca-contratacao:validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-10-validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "user_story_id": "14-governanca-contratacao-us-10",
+      "warnings": []
+    },
+    {
+      "L1": "Básico",
+      "L2": "Recomendado",
+      "L3": "Obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-11"
+      ],
+      "practice_id": "14-governanca-contratacao:consolidacao-de-kpis-de-governacao-e-maturidade",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-11-consolidacao-de-kpis-de-governacao-e-maturidade",
+      "user_story_id": "14-governanca-contratacao-us-11",
+      "warnings": []
+    },
+    {
+      "L1": "Básico",
+      "L2": "Recomendado",
+      "L3": "Obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-12"
+      ],
+      "practice_id": "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-12-formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "user_story_id": "14-governanca-contratacao-us-12",
+      "warnings": []
+    },
+    {
+      "L1": "Básico",
+      "L2": "Recomendado",
+      "L3": "Obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-13"
+      ],
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "L1": "Anual",
+      "L2": "Semestral",
+      "L3": "Trimestral / evento crítico",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-14"
+      ],
+      "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-14-reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "user_story_id": "14-governanca-contratacao-us-14",
+      "warnings": []
+    },
+    {
+      "L1": "Básico",
+      "L2": "Recomendado",
+      "L3": "Obrigatório + quiz validado",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-15"
+      ],
+      "practice_id": "14-governanca-contratacao:preparacao-tecnica-e-validacao-de-contractors-pre-acesso",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-15-preparacao-tecnica-e-validacao-de-contractors-pre-acesso",
+      "user_story_id": "14-governanca-contratacao-us-15",
+      "warnings": []
+    },
+    {
+      "L1": "Básico",
+      "L2": "Obrigatório",
+      "L3": "Obrigatório + 80% score requerido",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-16"
+      ],
+      "practice_id": "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-16-trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "user_story_id": "14-governanca-contratacao-us-16",
+      "warnings": []
+    },
+    {
+      "L1": "Básico",
+      "L2": "Obrigatório",
+      "L3": "Obrigatório + audit trail",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-17"
+      ],
+      "practice_id": "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-17-offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "user_story_id": "14-governanca-contratacao-us-17",
+      "warnings": []
+    },
+    {
+      "L1": "Não",
+      "L2": "Recomendado",
+      "L3": "Obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-18"
+      ],
+      "practice_id": "14-governanca-contratacao:monitorizacao-continua-de-conformidade-de-fornecedores-alertas-e-escalacao",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-18-monitorizacao-continua-de-conformidade-de-fornecedores-alertas-e-escalacao",
+      "user_story_id": "14-governanca-contratacao-us-18",
+      "warnings": []
+    },
+    {
+      "L1": "Semestral",
+      "L2": "Trimestral",
+      "L3": "Trimestral",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-19"
+      ],
+      "practice_id": "14-governanca-contratacao:revisao-trimestral-de-acesso-de-contractors-least-privilege",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-19-revisao-trimestral-de-acesso-de-contractors-least-privilege",
+      "user_story_id": "14-governanca-contratacao-us-19",
+      "warnings": []
+    },
+    {
+      "L1": "Opcional",
+      "L2": "Recomendado",
+      "L3": "Obrigatório",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-20"
+      ],
+      "practice_id": "14-governanca-contratacao:feedback-pos-projeto-e-rating-de-contractors",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-20-feedback-pos-projeto-e-rating-de-contractors",
+      "user_story_id": "14-governanca-contratacao-us-20",
+      "warnings": []
+    },
+    {
+      "L1": "Recomendado - Cláusulas mínimas: localização + zero retention para dados sensíveis",
+      "L2": "Obrigatório - Cláusulas detalhadas: retention, opt-out, localização, SLA, audit rights básico",
+      "L3": "Obrigatório - Cláusulas detalhadas + audit rights operacionais + AI Act Art. 53/55 quando GPAI; revisão Legal obrigatória",
+      "confidence": 0.93,
+      "evidence": [
+        "proportionality extracted for US-21"
+      ],
+      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
+      "user_story_id": "14-governanca-contratacao-us-21",
+      "warnings": []
+    }
+  ],
+  "run_id": "20260612T004222Z",
+  "source": {
+    "branch": "HEAD",
+    "commit_sha": "c5a7a348d317a37900fb4d0b60716804793495e3",
+    "corpus_root": "manuals_src/docs/sbd-toe",
+    "repo_url": "git@github.com:Shiftleftpt/SbD-ToE-Manual.git"
+  },
+  "stats": {
+    "errors": 0,
+    "processed_files": 253,
+    "processed_sections": 2560,
+    "skipped": 0,
+    "warnings": 55
+  },
+  "summary": {
+    "proportionality_rows": 220
+  },
+  "version": "0.1.0",
+  "warnings": [
+    "010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md:US-10 missing proportionality table",
+    "010-sbd-manual/02-requisitos-seguranca/aplicacao-lifecycle.md:US-02 missing proportionality table",
+    "010-sbd-manual/02-requisitos-seguranca/aplicacao-lifecycle.md:US-03 role drift detected for 'Developer (proponente) e GRC/Compliance (regista)'",
+    "010-sbd-manual/02-requisitos-seguranca/aplicacao-lifecycle.md:US-03 missing proportionality table",
+    "010-sbd-manual/02-requisitos-seguranca/aplicacao-lifecycle.md:US-11 missing proportionality table",
+    "010-sbd-manual/02-requisitos-seguranca/aplicacao-lifecycle.md:US-12 missing proportionality table",
+    "010-sbd-manual/02-requisitos-seguranca/aplicacao-lifecycle.md:US-13 missing proportionality table",
+    "010-sbd-manual/04-arquitetura-segura/aplicacao-lifecycle.md:US-18 missing proportionality table",
+    "010-sbd-manual/05-dependencias-sbom-sca/aplicacao-lifecycle.md:US-03 missing proportionality table",
+    "010-sbd-manual/05-dependencias-sbom-sca/aplicacao-lifecycle.md:US-08 missing proportionality table",
+    "010-sbd-manual/05-dependencias-sbom-sca/aplicacao-lifecycle.md:US-14 missing story role",
+    "010-sbd-manual/05-dependencias-sbom-sca/aplicacao-lifecycle.md:US-16 missing proportionality table",
+    "010-sbd-manual/06-desenvolvimento-seguro/aplicacao-lifecycle.md:US-16 missing proportionality table",
+    "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md:US-23 missing proportionality table",
+    "010-sbd-manual/08-iac-infraestrutura/aplicacao-lifecycle.md:US-14 missing proportionality table",
+    "010-sbd-manual/09-containers-imagens/aplicacao-lifecycle.md:US-10 missing proportionality table",
+    "010-sbd-manual/09-containers-imagens/aplicacao-lifecycle.md:US-11 missing proportionality table",
+    "010-sbd-manual/09-containers-imagens/aplicacao-lifecycle.md:US-12 missing proportionality table",
+    "010-sbd-manual/09-containers-imagens/aplicacao-lifecycle.md:US-22 missing proportionality table",
+    "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-02 missing proportionality table",
+    "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-03 missing proportionality table",
+    "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-04 missing proportionality table",
+    "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-05 missing proportionality table",
+    "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-06 missing proportionality table",
+    "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-07 missing proportionality table",
+    "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-08 role drift detected for 'PenTester'",
+    "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-08 missing proportionality table",
+    "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-10 missing proportionality table",
+    "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-11 missing proportionality table",
+    "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-14 missing proportionality table",
+    "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-15 missing proportionality table",
+    "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-16 missing proportionality table",
+    "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-17 missing proportionality table",
+    "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md:US-22 missing proportionality table",
+    "010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md:US-13 missing proportionality table",
+    "010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md:US-14 missing proportionality table",
+    "010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md:US-15 missing proportionality table",
+    "010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md:US-16 missing proportionality table",
+    "010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md:US-17 missing proportionality table",
+    "010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md:US-20 missing proportionality table",
+    "010-sbd-manual/12-monitorizacao-operacoes/aplicacao-lifecycle.md:US-18 missing proportionality table",
+    "010-sbd-manual/13-formacao-onboarding/aplicacao-lifecycle.md:US-20 missing proportionality table",
+    "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md:US-22 role drift detected for 'GRC / Compliance com apoio de CISO + Direção'",
+    "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md:US-22 missing proportionality table",
+    "Ambiguous practice match for 'Usar o Modelo de Classificação;' in 010-sbd-manual/01-classificacao-aplicacoes/intro.md: 01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i=0.33, 01-classificacao-aplicacoes:classificacao-inicial-da-aplicacao=0.33",
+    "Ambiguous practice match for 'e critérios de validação' in 010-sbd-manual/03-threat-modeling/intro.md: 03-threat-modeling:validacao-de-impacto-no-negocio=0.52, 03-threat-modeling:validacao-de-arquitetura-com-threat-modeling=0.45",
+    "Ambiguous practice match for 'Validar o modelo de ameaças como parte da revisão de arquitetura' in 010-sbd-manual/03-threat-modeling/intro.md: 03-threat-modeling:criacao-do-modelo-de-ameaca=0.40, 03-threat-modeling:reutilizacao-controlada-e-revisao-de-modelos-anteriores=0.33",
+    "Ambiguous practice match for 'SBOM' in 010-sbd-manual/05-dependencias-sbom-sca/intro.md: 05-dependencias-sbom-sca:inventario-e-sbom-por-build=0.82, 05-dependencias-sbom-sca:sbom-em-cada-build=0.82",
+    "Ambiguous practice match for 'Remover bibliotecas copiadas manualmente e substituí-las por dependências declaradas.' in 010-sbd-manual/05-dependencias-sbom-sca/intro.md: 05-dependencias-sbom-sca:proibir-bibliotecas-copiadas-manualmente=0.50, 05-dependencias-sbom-sca:auditoria-periodica-de-bibliotecas-copiadas-manualmente=0.46",
+    "Ambiguous practice match for 'Segurança de Dependências' in 010-sbd-manual/06-desenvolvimento-seguro/addon/03-seguranca-dependencias.md: 06-desenvolvimento-seguro:gestao-de-dependencias-no-codigo=0.52, 06-desenvolvimento-seguro:rastreabilidade-com-anotacoes-de-seguranca=0.52",
+    "Ambiguous practice match for 'Uso de GenIA no Desenvolvimento Seguro' in 010-sbd-manual/06-desenvolvimento-seguro/addon/10-genia-e-seguranca.md: 06-desenvolvimento-seguro:guidelines-de-desenvolvimento-seguro=0.57, 06-desenvolvimento-seguro:uso-validado-de-genia=0.57",
+    "Ambiguous practice match for 'Impor gates de promoção configurados por classificação de risco (L1, L2, L3), mantendo separação explícita entre sinal automático e decisão de promoção.' in 010-sbd-manual/07-cicd-seguro/intro.md: 07-cicd-seguro:gates-por-risco-separacao-sinal-decisao=0.58, 07-cicd-seguro:separacao-formal-entre-sinal-automatico-e-decisao-de-promocao=0.52",
+    "Ambiguous practice match for 'rastreabilidade completa' in 010-sbd-manual/08-iac-infraestrutura/intro.md: 08-iac-infraestrutura:rastreabilidade-versionamento-e-naming=0.52, 08-iac-infraestrutura:backend-remoto-locking-e-rastreabilidade=0.45",
+    "Ambiguous practice match for 'Enforcement Técnico de Políticas no Runtime com OPA e Kyverno' in 010-sbd-manual/09-containers-imagens/addon/05-policies-runtime-opa.md: 09-containers-imagens:aplicacao-de-politicas-formais-de-seguranca-no-runtime-com-opa-kyverno=0.62, 09-containers-imagens:enforcement-centralizado-e-auditavel-de-politicas-no-runtime=0.55",
+    "Ambiguous practice match for 'Gestão de Findings de Segurança' in 010-sbd-manual/10-testes-seguranca/addon/08-gestao-findings.md: 10-testes-seguranca:decisao-assistida-para-findings-de-testes-de-seguranca=0.50, 10-testes-seguranca:gestao-centralizada-de-findings-com-triagem-e-sla=0.50"
+  ]
+}

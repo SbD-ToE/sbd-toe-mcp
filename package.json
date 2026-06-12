@@ -62,6 +62,8 @@
     "data/publish/sbd-toe-index-compact.json",
     "data/publish/ontology/appsec-core-ontology.yaml",
     "data/publish/ontology/sbdtoe-ontology.yaml",
+    "data/entities/proportionality.json",
+    "data/entities/sdlc_integration.json",
     "data/reports/run_manifest.json",
     "prompts/",
     "examples/",

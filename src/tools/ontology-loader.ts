@@ -110,6 +110,15 @@ export interface UserStory {
   goal?: string;
   summary?: string;
   document_path?: string;
+  /** Joined from proportionality.json (by user_story_id) — L1/L2/L3 expectation. */
+  proportionality?: { L1?: string; L2?: string; L3?: string };
+  /** Joined from sdlc_integration.json (by user_story_id) — phase/trigger/responsible/SLA. */
+  sdlc_integration?: Array<{
+    phase?: string;
+    trigger?: string;
+    responsible?: string;
+    sla?: string;
+  }>;
 }
 
 export interface Artifact {
@@ -215,6 +224,11 @@ function loadRuntimeItems(relativePath: string): unknown[] {
   const path = resolveAppPath(relativePath);
   const envelope = JSON.parse(readFileSync(path, "utf-8")) as RuntimeArtifactEnvelope;
   return Array.isArray(envelope.items) ? envelope.items : [];
+}
+
+/** Like loadRuntimeItems but returns [] when the file is absent (optional side-files). */
+function loadRuntimeItemsOptional(relativePath: string): unknown[] {
+  return existsSync(resolveAppPath(relativePath)) ? loadRuntimeItems(relativePath) : [];
 }
 
 /**
@@ -399,6 +413,43 @@ export function getOntologyData(): OntologyData {
       ...(strOf(item, "document_path") ? { document_path: strOf(item, "document_path") } : {}),
     }))
     .filter((item) => item.title.length > 0);
+
+  // Detail-on-demand join (consumer contract §"Serving — detail level"): enrich each
+  // US with its proportionality (L1-L3) and SDLC integration, keyed by user_story_id.
+  // The cheap index (guide-by-role stub) drops these via its own projection; only the
+  // resolve/detail path surfaces them.
+  const proportionalityByUs = new Map<string, { L1?: string; L2?: string; L3?: string }>();
+  for (const item of loadRuntimeItemsOptional("data/entities/proportionality.json").filter(isRecord)) {
+    const usId = strOf(item, "user_story_id");
+    if (!usId) continue;
+    proportionalityByUs.set(usId, {
+      ...(strOf(item, "L1") ? { L1: strOf(item, "L1") } : {}),
+      ...(strOf(item, "L2") ? { L2: strOf(item, "L2") } : {}),
+      ...(strOf(item, "L3") ? { L3: strOf(item, "L3") } : {})
+    });
+  }
+  const sdlcByUs = new Map<string, NonNullable<UserStory["sdlc_integration"]>>();
+  for (const item of loadRuntimeItemsOptional("data/entities/sdlc_integration.json").filter(isRecord)) {
+    const usId = strOf(item, "user_story_id");
+    if (!usId) continue;
+    const list = sdlcByUs.get(usId) ?? [];
+    const phase = strOf(item, "phase_normalized") || strOf(item, "phase");
+    const responsible = strOf(item, "responsible_normalized") || strOf(item, "responsible");
+    list.push({
+      ...(phase ? { phase } : {}),
+      ...(strOf(item, "trigger") ? { trigger: strOf(item, "trigger") } : {}),
+      ...(responsible ? { responsible } : {}),
+      ...(strOf(item, "sla") ? { sla: strOf(item, "sla") } : {})
+    });
+    sdlcByUs.set(usId, list);
+  }
+  for (const us of userStories) {
+    if (!us.id) continue;
+    const prop = proportionalityByUs.get(us.id);
+    if (prop && Object.keys(prop).length > 0) us.proportionality = prop;
+    const sdlc = sdlcByUs.get(us.id);
+    if (sdlc && sdlc.length > 0) us.sdlc_integration = sdlc;
+  }
 
   const roles: CanonicalRole[] = loadRuntimeItems("data/publish/runtime/roles.json")
     .filter(isRecord)
