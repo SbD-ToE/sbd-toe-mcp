@@ -185,3 +185,39 @@ describe("handleGetGuideByRole role_checklist", () => {
     expect(detailed).toBe(true);
   });
 });
+
+// Level ladder — proportionality-driven narrowing (serving fix, brief #3a)
+describe("get_guide_by_role — level sharpening", () => {
+  it("L1 narrows the role's user stories vs L3 (the ladder sharpens)", () => {
+    for (const role of ["devops-sre", "qa", "appsec-engineer"]) {
+      const l1 = handleGetGuideByRole({ risk_level: "L1", role, include_detail: true });
+      const l3 = handleGetGuideByRole({ risk_level: "L3", role, include_detail: true });
+      const n1 = (l1.role_checklist ?? []).length;
+      const n3 = (l3.role_checklist ?? []).length;
+      expect(n1, `${role}: L1 should not exceed L3`).toBeLessThanOrEqual(n3);
+      expect(n1, `${role}: L1 should be non-empty`).toBeGreaterThan(0);
+    }
+    // At least one role must genuinely narrow (proof the filter bites, not a no-op).
+    const dsL1 = handleGetGuideByRole({ risk_level: "L1", role: "devops-sre", include_detail: true });
+    const dsL3 = handleGetGuideByRole({ risk_level: "L3", role: "devops-sre", include_detail: true });
+    expect((dsL1.role_checklist ?? []).length).toBeLessThan((dsL3.role_checklist ?? []).length);
+  });
+
+  it("surfaces the level-specific obligation (proportionality_level)", () => {
+    const r = handleGetGuideByRole({ risk_level: "L1", role: "devops-sre", include_detail: true });
+    const withLevel = (r.role_checklist ?? []).filter((e) => typeof e.proportionality_level === "string");
+    expect(withLevel.length).toBeGreaterThan(0);
+  });
+
+  it("never surfaces a non-applicable obligation at the served level", () => {
+    const NON_APPLICABLE = /^\s*(não\s+aplicável|não\s+obrigatório|não|n\/a)\b/i;
+    for (const L of ["L1", "L2", "L3"] as const) {
+      const r = handleGetGuideByRole({ risk_level: L, role: "appsec-engineer", include_detail: true });
+      for (const e of r.role_checklist ?? []) {
+        if (e.proportionality_level) {
+          expect(NON_APPLICABLE.test(e.proportionality_level), `${L} ${e.us_id}: ${e.proportionality_level}`).toBe(false);
+        }
+      }
+    }
+  });
+});

@@ -49,6 +49,19 @@ function applyConsumerAlias(roleArg: string): string {
   return CONSUMER_ROLE_ALIASES[normalizeToken(roleArg)] ?? roleArg;
 }
 
+/**
+ * Whether an assignment applies at its (level-tagged) risk level, read from the
+ * level-specific `proportionality` string. The substrate replicates every
+ * assignment across L1/L2/L3; the proportionality is what sharpens the ladder —
+ * obligations like "Não", "Não aplicável", "Não obrigatório", "N/A" mean the US
+ * does not apply at that level. Absent proportionality → applicable (don't drop).
+ */
+const NON_APPLICABLE_OBLIGATION = /^\s*(não\s+aplicável|não\s+obrigatório|não|n\/a)\b/i;
+function isApplicableAtLevel(proportionality: string | undefined): boolean {
+  if (!proportionality) return true;
+  return !NON_APPLICABLE_OBLIGATION.test(proportionality);
+}
+
 export interface AssignmentWithStory extends PracticeAssignment {
   practice?: Practice;
   user_story?: UserStory;
@@ -76,6 +89,8 @@ export interface AssignmentSlim {
     checklist_items?: string[];
     bdd?: string[];
     proportionality?: UserStory["proportionality"];
+    /** Level-specific obligation for the requested risk level (from the assignment). */
+    proportionality_level?: string;
     sdlc_integration?: UserStory["sdlc_integration"];
   };
 }
@@ -88,6 +103,8 @@ export interface RoleChecklistEntry {
   chapter_id?: string;
   checklist_items: string[];
   proportionality?: UserStory["proportionality"];
+  /** Level-specific obligation for the requested risk level (from the assignment). */
+  proportionality_level?: string;
 }
 
 export interface GetGuideByRoleResult {
@@ -176,7 +193,12 @@ export function _resolveGuideByRole(
   );
   const practiceById = new Map(practices.map((practice) => [practice.id, practice]));
 
-  let scopedAssignments = allAssignments.filter((assignment) => assignment.risk_level === riskLevel);
+  // Filter by level (substrate replicates assignments across L1/L2/L3) AND drop
+  // the ones the level-specific proportionality marks non-applicable — this is the
+  // ladder sharpening: L1 omits what only applies higher up (serving fix, brief #3a).
+  let scopedAssignments = allAssignments.filter(
+    (assignment) => assignment.risk_level === riskLevel && isApplicableAtLevel(assignment.proportionality)
+  );
   if (activePracticeIds.size > 0) {
     scopedAssignments = scopedAssignments.filter((assignment) =>
       activePracticeIds.has(assignment.practice_id)
@@ -272,6 +294,8 @@ function slimAssignment(assignment: AssignmentWithStory, includeDetail: boolean)
       title: us.title,
       ...(us.goal ? { goal: us.goal } : {}),
       ...(us.acceptance_criteria ? { acceptance_criteria: us.acceptance_criteria } : {}),
+      // Level-specific obligation (always — it is the cheap, sharp ladder signal).
+      ...(assignment.proportionality ? { proportionality_level: assignment.proportionality } : {}),
       // Detail mode: surface the DoD + join so the agent gets the full story in one pass.
       ...(includeDetail && us.checklist_items && us.checklist_items.length > 0
         ? { checklist_items: us.checklist_items }
@@ -321,6 +345,7 @@ export function handleGetGuideByRole(
         ...(us.chapter_id ? { chapter_id: us.chapter_id } : {}),
         checklist_items: us.checklist_items ?? [],
         ...(us.proportionality ? { proportionality: us.proportionality } : {}),
+        ...(assignment.proportionality ? { proportionality_level: assignment.proportionality } : {}),
       });
     }
   }

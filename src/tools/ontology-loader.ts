@@ -93,6 +93,8 @@ export interface PracticeAssignment {
   action: string;
   artifacts: string[];
   user_story_id?: string;
+  /** Level-specific proportionality string (the assignment is risk-level-tagged). */
+  proportionality?: string;
 }
 
 export interface UserStory {
@@ -275,7 +277,7 @@ function normalizeKey(value: string): string {
   return value.toLowerCase().trim().replace(/[\s/]+/g, "-").replace(/_/g, "-");
 }
 
-function chapterNumber(chapterId: string): number {
+export function chapterNumber(chapterId: string): number {
   const match = /^(\d+)/.exec(chapterId);
   return match?.[1] !== undefined ? Number.parseInt(match[1], 10) : NaN;
 }
@@ -389,6 +391,7 @@ export function getOntologyData(): OntologyData {
       action: strOf(item, "action"),
       artifacts: arrStr(item, "artifacts"),
       ...(strOf(item, "user_story_id") ? { user_story_id: strOf(item, "user_story_id") } : {}),
+      ...(strOf(item, "proportionality") ? { proportionality: strOf(item, "proportionality") } : {}),
     }))
     .filter((item) => item.id.length > 0);
 

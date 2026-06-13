@@ -137,3 +137,21 @@ describe("handlePlanRepoGovernance — pagination", () => {
     expect(collected).toEqual(all);
   });
 });
+
+// Requirement-first applicability ladder (serving fix, brief #3b) — ontology path.
+describe("handlePlanRepoGovernance — requirement-first ladder", () => {
+  it("excludes a chapter with no L1 requirements (ch03 threat-modeling) from L1", () => {
+    // ch03 has 0 requirements applicable at L1 in the substrate → must not appear at L1.
+    const l1 = handlePlanRepoGovernance({ riskLevel: "L1" }).byChapter.map((c) => c.chapterId);
+    const l3 = handlePlanRepoGovernance({ riskLevel: "L3" }).byChapter.map((c) => c.chapterId);
+    expect(l1).not.toContain("03-threat-modeling");
+    expect(l3).toContain("03-threat-modeling");
+  });
+
+  it("L1 artefact set is a non-strict subset of L3 (ladder never adds going down)", () => {
+    const l1 = handlePlanRepoGovernance({ riskLevel: "L1" }).totalArtefacts;
+    const l3 = handlePlanRepoGovernance({ riskLevel: "L3" }).totalArtefacts;
+    expect(l1).toBeLessThanOrEqual(l3);
+    expect(l1).toBeGreaterThan(0);
+  });
+});
