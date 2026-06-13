@@ -155,11 +155,20 @@ Canonical role IDs (pass exact or common alias — resolved automatically):
 Use when the user wants to configure their AI client to use SbD-ToE natively.
 
 ```
-generate_sbd_toe_skill  ← returns canonical skill/instructions content from sbd://toe/agent-guide
+generate_sbd_toe_skill  ← no args: canonical skill/instructions content from sbd://toe/agent-guide
                            save to the appropriate file for the client:
                            Claude Code  → .claude/skills/sbd-toe.md
                            GitHub Copilot → .github/copilot-instructions.md
                            Cursor       → .cursorrules
+
+generate_sbd_toe_skill(role, format, flavour)  ← per-role configuration (RF-S)
+                           role=<canonical role or alias>  (devops-sre, developer, qa, appsec, …)
+                           format=skill     → role-specialised guidance file
+                           format=subagent  → installable agent definition (.claude/agents/sbd-<role>.md)
+                             flavour=harnessed → grants mcp__sbd-toe__* (queries the manual live)
+                             flavour=skilled   → embeds the frozen slice, no MCP tools (offline)
+                           Use this to answer "configure yourself/this agent for role X".
+                           Also exposed as resources sbd://toe/skill/{role} and sbd://toe/subagent/{role}.
 ```
 
 ---

@@ -425,7 +425,9 @@ class McpRuntime {
         "\n" +
         "Then run setup_sbd_toe_agent(riskLevel, projectRole) for risk-level specific active chapters.\n" +
         "\n" +
-        "To create a skill or instructions file for an AI client, use generate_sbd_toe_skill(clientType)."
+        "To create a skill or instructions file for an AI client, use generate_sbd_toe_skill(clientType).\n" +
+        "For a per-role configuration, use generate_sbd_toe_skill(role, format=skill|subagent, flavour=harnessed|skilled) " +
+        "— or read resource sbd://toe/skill/{role} / sbd://toe/subagent/{role}."
     });
   }
 
@@ -657,14 +659,52 @@ class McpRuntime {
           title: "Generate SbD-ToE Skill Content",
           description:
             "Use this tool when asked to 'create a skill for SbD-ToE', 'set up instructions', " +
-            "'configure this client to use SbD-ToE', or 'integrate SbD-ToE'. " +
-            "Returns the canonical skill content from sbd://toe/agent-guide. " +
-            "Save the returned content to the appropriate skill/instructions file for your client " +
-            "(e.g. .claude/skills/sbd-toe.md, .github/copilot-instructions.md, .cursorrules). " +
-            "No parameters required.",
+            "'configure this client/agent to use SbD-ToE', 'configure yourself for role X', or 'integrate SbD-ToE'. " +
+            "Without arguments returns the canonical skill content from sbd://toe/agent-guide. " +
+            "With role= returns a role-specialised skill (format=skill) or an installable sub-agent " +
+            "definition (format=subagent) grounded on the role's manual slice — flavour=harnessed grants " +
+            "the mcp__sbd-toe__* tools (queries live); flavour=skilled embeds the frozen slice with no MCP tools. " +
+            "Save the returned content to suggested_path (or the client equivalent).",
           inputSchema: {
             type: "object",
-            properties: {},
+            properties: {
+              role: {
+                type: "string",
+                description:
+                  "Canonical role_id or natural alias (e.g. devops-sre, sre, developer, appsec, qa). " +
+                  "Unknown roles error with the canonical list — nothing is invented."
+              },
+              risk_level: {
+                type: "string",
+                enum: ["L1", "L2", "L3"],
+                description: "Risk level the skill is scoped to. Default L2."
+              },
+              format: {
+                type: "string",
+                enum: ["skill", "subagent"],
+                description: "skill = role-specialised guidance file (default); subagent = installable agent definition."
+              },
+              flavour: {
+                type: "string",
+                enum: ["harnessed", "skilled"],
+                description:
+                  "Subagent flavour. harnessed (default) grants mcp__sbd-toe__* and queries live; " +
+                  "skilled embeds the frozen skill and carries no MCP tools."
+              },
+              include_detail: {
+                type: "boolean",
+                description:
+                  "Embed the full DoD checklist items in the slice (heavy payload — coverage declares the size). Default false: titles + counts."
+              },
+              phase: {
+                type: "string",
+                description: "Optional lifecycle phase to narrow the slice (canonical resolution as in get_guide_by_role)."
+              },
+              clientType: {
+                type: "string",
+                description: "Optional client hint (claude, copilot, cursor) — affects suggested_path only."
+              }
+            },
             required: [],
             additionalProperties: false
           },
@@ -1266,6 +1306,22 @@ class McpRuntime {
           mimeType: "application/yaml"
         },
         {
+          uri: "sbd://toe/skill/{role}",
+          name: "SbD-ToE Role Skill",
+          description:
+            "Role-specialised SbD-ToE skill for a canonical role (default risk L2) — the role's manual " +
+            "slice as installable skill content. Same output as generate_sbd_toe_skill(role, format=skill).",
+          mimeType: "text/markdown"
+        },
+        {
+          uri: "sbd://toe/subagent/{role}",
+          name: "SbD-ToE Role Sub-agent Definition",
+          description:
+            "Installable sub-agent definition for a canonical role (default risk L2, harnessed flavour — " +
+            "grants mcp__sbd-toe__* tools). Same output as generate_sbd_toe_skill(role, format=subagent).",
+          mimeType: "text/markdown"
+        },
+        {
           uri: "sbd://toe/version",
           name: "SbD-ToE MCP Version",
           description: "Version of the running SbD-ToE MCP server (name, version, description) plus the provenance of the served knowledge: manual {version, commit}, kg {release_tag, substrate_version, consumer_contract_version} and ontology {tag, commit}, read from the consumed-bundle pin.",
@@ -1306,6 +1362,23 @@ class McpRuntime {
       this.sendResponse(request.id, {
         contents: [{ uri, mimeType: "application/json", text: JSON.stringify(data, null, 2) }]
       });
+      return;
+    }
+
+    const roleSkillMatch = /^\/\/toe\/(skill|subagent)\/([^/]+)$/.exec(
+      uri.startsWith("sbd:") ? uri.slice(4) : ""
+    );
+    if (roleSkillMatch !== null) {
+      const format = roleSkillMatch[1] === "subagent" ? "subagent" : "skill";
+      const role = decodeURIComponent(roleSkillMatch[2] ?? "");
+      try {
+        const result = handleGenerateSbdToeSkill({ role, format });
+        this.sendResponse(request.id, {
+          contents: [{ uri, mimeType: "text/markdown", text: result.content }]
+        });
+      } catch (error) {
+        this.sendError(request.id, -32602, error instanceof Error ? error.message : "Could not generate role skill.");
+      }
       return;
     }
 
@@ -1703,7 +1776,7 @@ class McpRuntime {
           return;
         }
         case "generate_sbd_toe_skill": {
-          const result = handleGenerateSbdToeSkill();
+          const result = handleGenerateSbdToeSkill(args);
           this.sendResponse(request.id, {
             content: [{ type: "text", text: JSON.stringify(result) }]
           });
