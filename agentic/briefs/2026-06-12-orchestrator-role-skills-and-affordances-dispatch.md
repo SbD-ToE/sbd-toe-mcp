@@ -45,6 +45,50 @@ well and appropriately** — and serve the per-role skills that make that real.
   returns an installable definition whose embedded guidance matches
   `get_guide_by_role("devops-sre", include_detail=true)`.
 
+### Stage 1 — verification findings (Orchestrator, live MCP, 2026-06-13)
+
+Verified the delivered RF-S against the reconnected server (0.9.1). **All passed**:
+version provenance (manual + kg v1.6.4 + ontology), harnessed/skilled flavours
+(skilled carries no `mcp__sbd-toe__*` ✅), aliases (`sre`→`devops-sre`), resources
+`sbd://toe/{skill,subagent}/{role}`, guard-rail (`pentester` → error listing the 13),
+coverage-preserving block + `meta{coverage,provenance}`. Strong — the generated
+skills even carry the **correct ID convention** (debunk `CTRL-<chapter>-<number>`),
+i.e. more correct than the mini-site.
+
+**One bug to fix (Stage 1 polish): `risk_level` is cosmetic in the role-skill projection.**
+
+- The param is accepted, defaults to L2, and is reflected in `description` / slice
+  header / `meta.risk_level` — but it **does not filter the slice**. `qa` and
+  `devops-sre` return **identical** coverage at L1 = L2 = L3
+  (`devops-sre` = 12 chapters / 103 assignments / 75 US / 376 checklist at all levels).
+- Proof: the **L1** `devops-sre` slice includes a user story the manual tags **(L3)** —
+  `04-arquitetura-segura · US-17 — Segmentação … como código **(L3)**`.
+- Per the manual model the slice should **grow with level** (L2 unlocks ch.06/11, L3
+  unlocks ch.13). Constant slice + L3 items in an L1 skill is wrong.
+- **Likely root:** the `get_guide_by_role` pipeline (which the projection reuses)
+  does not filter assignments by `risk_level`. **Codex to confirm** whether
+  assignments carry `applicable_levels` gating that isn't being applied; **Pontifex**
+  applies the level filter in the projection (and, if relevant, in `get_guide_by_role`).
+- Does not block the capability; fix as Stage 1 polish.
+
+**UPDATE (2026-06-13, after Codex A+B):** the *data* side is resolved — the
+`applicable_levels` ladder was authoritative all along (boolean map, not a list:
+118 L1L2L3 / 108 L2L3 / 25 L3, cumulative; `consult` honours it). Codex also
+propagated derived levels to controls/artifacts (provenance-marked). So the residual
+is **purely serving**, two pieces:
+  1. **`get_guide_by_role` / the role-skill projection** does not filter the
+     assignments/US slice by `risk_level` (US/assignments aren't level-scoped) — that
+     is why the RF-S skill slice is identical across L1/L2/L3. Pontifex: filter the
+     slice by the level of the requirements/controls the US map to, **or** stop
+     labelling `risk_level` on a role-scoped (not level-scoped) skill.
+  2. **`fix plan_sbd_toe_repo_governance`** (level-flat: returns all 379 artefacts as
+     `[L1,L2,L3]`). Data is now ready. Per the matrix §7: **filter by
+     `requirements.applicable_levels` FIRST** (requirement-grained — the sharp ladder);
+     control/artifact derived levels are a **conservative-floor secondary** (they wash
+     to coarse). Requirement-grained audit precision is the design conclusion.
+  3. Served effect of the level fixes needs the **next recompile** (governed: Manual
+     pin + programme-lead auth) — not a blocker you action, but the gate where it lands.
+
 ### ▶ Stage 2 — Formalise the interaction protocol (co-design)
 
 The realisation: this is **one communication protocol over the MCP channel** (MCP =
