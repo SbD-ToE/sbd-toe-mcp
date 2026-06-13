@@ -21,6 +21,7 @@ import {
 } from "./tools/structured-tools.js";
 import { handleGenerateSbdToeSkill } from "./tools/generate-sbd-toe-skill.js";
 import { handleMapSbdToeReviewScope } from "./tools/map-review-scope.js";
+import { handleMapRegulatoryActivation } from "./tools/map-regulatory-activation.js";
 import { handlePlanRepoGovernance } from "./tools/plan-repo-governance.js";
 import { handleConsultSecurityRequirements } from "./tools/consult-security-requirements.js";
 import { handleGetThreatLandscape } from "./tools/get-threat-landscape.js";
@@ -746,6 +747,29 @@ class McpRuntime {
               }
             },
             required: ["changedFiles", "riskLevel"],
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
+          name: "map_sbd_toe_regulatory_activation",
+          title: "Map SbD-ToE Regulatory Activation",
+          description:
+            "Regulatory lens (reverse of provenance): given a framework (DORA, NIS2, CRA, RGPD), " +
+            "returns which SbD-ToE manual areas/chapters it activates, grouped with mapping + obligation " +
+            "counts per chapter (coverage-preserving — never a blind dump). Data from the published overlay " +
+            "mappings; nothing invented. Use to answer 'framework X → what do I need to implement?'.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              framework: {
+                type: "string",
+                description: "Framework short code or id (DORA, NIS2, CRA, RGPD; or EXT-DORA …)."
+              },
+              offset: { type: "number", description: "Coverage-preserving page offset over activated areas." },
+              limit: { type: "number", description: "Max activated areas per page (follow coverage.nextOffset)." }
+            },
+            required: ["framework"],
             additionalProperties: false
           },
           annotations: { readOnlyHint: true }
@@ -1791,6 +1815,20 @@ class McpRuntime {
         }
         case "map_sbd_toe_review_scope": {
           const result = handleMapSbdToeReviewScope(args);
+          this.sendResponse(request.id, {
+            content: [{ type: "text", text: JSON.stringify(result) }]
+          });
+          await this.log("info", {
+            event_type: "tool.call",
+            outcome: "succeeded",
+            duration_ms: Date.now() - startedAt,
+            ...metadata,
+            message: "Tool invocation completed"
+          });
+          return;
+        }
+        case "map_sbd_toe_regulatory_activation": {
+          const result = handleMapRegulatoryActivation(args);
           this.sendResponse(request.id, {
             content: [{ type: "text", text: JSON.stringify(result) }]
           });
