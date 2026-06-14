@@ -54,7 +54,7 @@ Every tool response is one object:
 | 2 | Two-band response | the envelope above (`data` ⟂ `next`) | **THIS SPEC** |
 | 3 | Coverage-preserving | `coverage` block whenever a set is bounded; never silent | EXISTS (2 tools) → universal |
 | 4 | Epistemic labels | `provenance.content_type` ∈ {canonical, derived, inferred} | EXISTS (6) → universal |
-| 5 | Grounded affordances | `next[]` references real tools/entities; ≤3 ranked | Stage 3 (RF-H) |
+| 5 | Grounded affordances | `next[]` references real tools/entities; ≤3 ranked | **DONE (Stage 3)** — greenfield tools emit it natively; legacy tools retrofitted via `src/serving/affordances.ts` (deterministic, pure-of-response). Remaining sliver: search/answer/inspect (retrieval-debug). |
 | 6 | Role-aware serving | RF-S projection (`generate_sbd_toe_skill(role,...)`) | **DONE (Stage 1)** |
 | 7 | Cross-check ≠ compliance | regulatory overlay labelled advisory in `data`/`provenance` | EXISTS |
 | 8 | Determinism | same input → same output; `next` ranking is a **pure function** of `data` | EXISTS; constrains Stage 3 |

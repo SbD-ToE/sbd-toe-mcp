@@ -4,6 +4,12 @@ import { retrievePublishedContext } from "../backend/semantic-index-gateway.js";
 import { resolveAppPath } from "../config.js";
 import type { LooseRecord } from "../types.js";
 import { getOntologyData } from "./ontology-loader.js";
+import {
+  listChaptersAffordances,
+  queryEntitiesAffordances,
+  chapterBriefAffordances,
+  mapApplicabilityAffordances
+} from "../serving/affordances.js";
 
 const VALID_RISK_LEVELS = ["L1", "L2", "L3"] as const;
 type RiskLevel = (typeof VALID_RISK_LEVELS)[number];
@@ -143,7 +149,11 @@ function summarizeChunkText(text: string | undefined): string | undefined {
   return compact.length > 0 ? compact : undefined;
 }
 
-export function handleListSbdToeChapters(
+export function handleListSbdToeChapters(args: Record<string, unknown>, cache?: SnapshotCache): unknown {
+  return { ...(handleListSbdToeChaptersCore(args, cache) as Record<string, unknown>), next: listChaptersAffordances() };
+}
+
+function handleListSbdToeChaptersCore(
   args: Record<string, unknown>,
   cache?: SnapshotCache
 ): unknown {
@@ -246,6 +256,13 @@ export async function handleQuerySbdToeEntities(
   args: Record<string, unknown>,
   cache?: SnapshotCache
 ): Promise<unknown> {
+  return { ...((await handleQuerySbdToeEntitiesCore(args, cache)) as Record<string, unknown>), next: queryEntitiesAffordances() };
+}
+
+async function handleQuerySbdToeEntitiesCore(
+  args: Record<string, unknown>,
+  cache?: SnapshotCache
+): Promise<unknown> {
   void cache;
 
   const query = args["query"];
@@ -323,7 +340,12 @@ export async function handleQuerySbdToeEntities(
   return { entities, total: results.length };
 }
 
-export function handleGetSbdToeChapterBrief(
+export function handleGetSbdToeChapterBrief(args: Record<string, unknown>, cache?: SnapshotCache): unknown {
+  const chapterId = typeof args["chapterId"] === "string" ? args["chapterId"] : undefined;
+  return { ...(handleGetSbdToeChapterBriefCore(args, cache) as Record<string, unknown>), next: chapterBriefAffordances(chapterId) };
+}
+
+function handleGetSbdToeChapterBriefCore(
   args: Record<string, unknown>,
   cache?: SnapshotCache
 ): unknown {
@@ -536,7 +558,12 @@ function buildActivatedBundles(
   return { foundationBundles, domainBundles, operationalBundles };
 }
 
-export function handleMapSbdToeApplicability(
+export function handleMapSbdToeApplicability(args: Record<string, unknown>, cache?: SnapshotCache): unknown {
+  const riskLevel = typeof args["riskLevel"] === "string" ? args["riskLevel"] : undefined;
+  return { ...(handleMapSbdToeApplicabilityCore(args, cache) as Record<string, unknown>), next: mapApplicabilityAffordances(riskLevel) };
+}
+
+function handleMapSbdToeApplicabilityCore(
   args: Record<string, unknown>,
   cache?: SnapshotCache
 ): unknown {

@@ -22,6 +22,8 @@ import { resolveAppPath } from "../config.js";
 import { getOntologyData } from "./ontology-loader.js";
 import { handleGetGuideByRole, type GetGuideByRoleOutput, type RoleChecklistEntry } from "./get-guide-by-role.js";
 import { handleListSbdToeChapters } from "./structured-tools.js";
+import type { Affordance } from "../serving/protocol-envelope.js";
+import { generateSkillAffordances } from "../serving/affordances.js";
 
 const VALID_FORMATS = ["skill", "subagent"] as const;
 const VALID_FLAVOURS = ["harnessed", "skilled"] as const;
@@ -51,6 +53,8 @@ export interface GenerateSkillCoverage {
 
 export interface GenerateSkillOutput {
   content: string;
+  /** RF-H advisory band — adjacent tools the caller likely needs next. */
+  next?: Affordance[];
   suggested_path?: string;
   meta?: {
     role: string;
@@ -274,7 +278,7 @@ export function handleGenerateSbdToeSkill(args: Record<string, unknown> = {}): G
       `<!-- SbD-ToE skill content — source: sbd://toe/agent-guide (@shiftleftpt/sbd-toe-mcp) -->\n` +
       `<!-- Re-run generate_sbd_toe_skill to refresh. -->\n\n` +
       readAgentGuide();
-    return { content };
+    return { content, next: generateSkillAffordances() };
   }
 
   const riskLevel = typeof args["risk_level"] === "string" ? args["risk_level"] : "L2";

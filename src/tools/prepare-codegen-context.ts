@@ -55,6 +55,8 @@ import {
   resolveRegulatoryFramework
 } from "./regulatory-overlay-loader.js";
 import { expandQueryWithAliases } from "../backend/semantic-index-gateway.js";
+import type { Affordance } from "../serving/protocol-envelope.js";
+import { prepareCodegenAffordances } from "../serving/affordances.js";
 
 // ---------------------------------------------------------------------------
 // Public types
@@ -291,6 +293,8 @@ export interface SecurityRationaleTemplate {
 
 export interface PrepareCodegenContextResultReady {
   status: "ready_for_codegen";
+  /** RF-H advisory band — adjacent tools the caller likely needs next. */
+  next?: Affordance[];
   mode: CodegenMode;
   input_echo: Required<Pick<PrepareCodegenContextInput, "task">> &
     Omit<PrepareCodegenContextInput, "task">;
@@ -316,6 +320,8 @@ export interface PrepareCodegenContextResultReady {
 
 export interface PrepareCodegenContextResultBlocked {
   status: "needs_clarification" | "needs_decomposition" | "unsupported_scope";
+  /** RF-H advisory band — adjacent tools the caller likely needs next. */
+  next?: Affordance[];
   mode: CodegenMode;
   input_echo: Required<Pick<PrepareCodegenContextInput, "task">> &
     Omit<PrepareCodegenContextInput, "task">;
@@ -1545,6 +1551,14 @@ function blocked(
 }
 
 export function handlePrepareCodegenContext(
+  raw: PrepareCodegenContextInput
+): PrepareCodegenContextResult {
+  // RF-H: append the advisory band (status-aware, pure) around the deterministic result.
+  const result = prepareCodegenContextCore(raw);
+  return { ...result, next: prepareCodegenAffordances(result.status) };
+}
+
+function prepareCodegenContextCore(
   raw: PrepareCodegenContextInput
 ): PrepareCodegenContextResult {
   const input = normalizeInput(raw);

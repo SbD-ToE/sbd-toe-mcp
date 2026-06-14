@@ -14,6 +14,8 @@
 import type { Practice, PracticeAssignment, UserStory } from "./ontology-loader.js";
 import { getOntologyData, resolvePhaseId, resolveRoleId } from "./ontology-loader.js";
 import { _resolveConsultResult } from "./consult-security-requirements.js";
+import type { Affordance } from "../serving/protocol-envelope.js";
+import { guideByRoleAffordances } from "../serving/affordances.js";
 
 const VALID_RISK_LEVELS = ["L1", "L2", "L3"] as const;
 type RiskLevel = (typeof VALID_RISK_LEVELS)[number];
@@ -153,6 +155,8 @@ export interface GetGuideByRoleOutput {
     knownPhases: string[];
     note: string;
   };
+  /** RF-H advisory band — adjacent tools the caller likely needs next. */
+  next: Affordance[];
 }
 
 export function _resolveGuideByRole(
@@ -374,5 +378,6 @@ export function handleGetGuideByRole(
         ? full.meta.note
         : `${full.meta.note} No role/phase filter — assignments omitted. Specify role= or phase= for details.`,
     },
+    next: guideByRoleAffordances(full.risk_level, full.canonicalRole),
   };
 }

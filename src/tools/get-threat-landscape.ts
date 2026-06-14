@@ -23,6 +23,8 @@ import {
   resolveThreatChapterNumber
 } from "./ontology-loader.js";
 import { _resolveConsultResult } from "./consult-security-requirements.js";
+import type { Affordance } from "../serving/protocol-envelope.js";
+import { threatLandscapeAffordances } from "../serving/affordances.js";
 
 export interface MitigatingControl {
   control_id: string;
@@ -62,6 +64,8 @@ export interface GetThreatLandscapeResult {
     concernsApplied: string[] | null;
     note: string;
   };
+  /** RF-H advisory band — adjacent tools the caller likely needs next (advisory; set by the handler). */
+  next?: Affordance[];
 }
 
 function chapterNumber(chapterId: string): number {
@@ -309,5 +313,6 @@ export function handleGetThreatLandscape(
       ...(threat.threat_category ? { threat_category: threat.threat_category } : {}),
       ...(threat.mitigation_strength ? { mitigation_strength: threat.mitigation_strength } : {}),
     })),
+    next: threatLandscapeAffordances(full.risk_level, full.meta.concernsApplied ?? undefined),
   };
 }

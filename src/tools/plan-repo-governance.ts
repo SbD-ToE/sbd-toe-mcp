@@ -13,6 +13,8 @@
 import type { SnapshotCache } from "../backend/semantic-index-gateway.js";
 import { chapterNumber, getOntologyData, type Requirement } from "./ontology-loader.js";
 import { paginate, type PageCoverage, type SizeEstimate } from "../serving/response-shaping.js";
+import type { Affordance } from "../serving/protocol-envelope.js";
+import { planRepoGovernanceAffordances } from "../serving/affordances.js";
 
 const VALID_RISK_LEVELS = ["L1", "L2", "L3"] as const;
 type RiskLevel = (typeof VALID_RISK_LEVELS)[number];
@@ -75,6 +77,8 @@ export interface PlanRepoGovernanceResult {
   /** Estimated serialized size of the returned `byChapter` page ({ chars, approx_tokens }). */
   size_estimate: SizeEstimate;
   note: string;
+  /** RF-H advisory band — adjacent tools the caller likely needs next. */
+  next: Affordance[];
 }
 
 export function handlePlanRepoGovernance(
@@ -187,6 +191,7 @@ export function handlePlanRepoGovernance(
       "Artefacts sourced from the published SbD-ToE runtime and manual chapter applicability model. " +
       "The manual does not provide document templates — if a template is needed, " +
       "ask the LLM to generate one based on the artefact description. " +
-      "byChapter is coverage-preserving paginated — follow coverage.nextOffset to page."
+      "byChapter is coverage-preserving paginated — follow coverage.nextOffset to page.",
+    next: planRepoGovernanceAffordances(riskLevel)
   };
 }

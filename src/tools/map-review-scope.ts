@@ -1,3 +1,6 @@
+import type { Affordance } from "../serving/protocol-envelope.js";
+import { reviewScopeAffordances } from "../serving/affordances.js";
+
 const VALID_RISK_LEVELS = ["L1", "L2", "L3"] as const;
 type RiskLevel = (typeof VALID_RISK_LEVELS)[number];
 
@@ -276,6 +279,8 @@ interface MapReviewScopeResult {
   bundlesToReview: BundleToReview[];
   pathMapping: PathMappingEntry[];
   nextSteps: string[];
+  /** RF-H advisory band — adjacent tools (distinct from nextSteps, which is human guidance). */
+  next: Affordance[];
 }
 
 // ---------------------------------------------------------------------------
@@ -480,5 +485,5 @@ export function handleMapSbdToeReviewScope(
     `Usar get_sbd_toe_chapter_brief(chapterId) para obter detalhe de cada bundle activado.`
   );
 
-  return { bundlesToReview, pathMapping, nextSteps };
+  return { bundlesToReview, pathMapping, nextSteps, next: reviewScopeAffordances(riskLevel) };
 }
