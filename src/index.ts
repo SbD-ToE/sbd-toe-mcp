@@ -22,6 +22,9 @@ import {
 import { handleGenerateSbdToeSkill } from "./tools/generate-sbd-toe-skill.js";
 import { handleMapSbdToeReviewScope } from "./tools/map-review-scope.js";
 import { handleMapRegulatoryActivation } from "./tools/map-regulatory-activation.js";
+import { handleGetChapterImplementationChecklist } from "./tools/get-chapter-implementation-checklist.js";
+import { handleGetOperatingModel } from "./tools/get-operating-model.js";
+import { handlePlanRollout } from "./tools/plan-rollout.js";
 import { handlePlanRepoGovernance } from "./tools/plan-repo-governance.js";
 import { handleConsultSecurityRequirements } from "./tools/consult-security-requirements.js";
 import { handleGetThreatLandscape } from "./tools/get-threat-landscape.js";
@@ -747,6 +750,66 @@ class McpRuntime {
               }
             },
             required: ["changedFiles", "riskLevel"],
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
+          name: "get_sbd_toe_chapter_implementation_checklist",
+          title: "Get SbD-ToE Chapter Implementation Checklist",
+          description:
+            "The canon/20 'how to implement chapter NN' checklist — retrieval-grounded prose from the " +
+            "implementation profile (the operational 'Aplicação no Ciclo de Vida' guidance). Use to answer " +
+            "'how do I implement chapter NN / this area?'. Coverage-preserving; cites chunk ids; nothing invented. " +
+            "For the level-sharp structured Definition-of-Done use get_guide_by_role(include_detail=true).",
+          inputSchema: {
+            type: "object",
+            properties: {
+              chapter: { type: "string", description: "Chapter id (08-iac-infraestrutura) or number (8)." },
+              risk_level: { type: "string", enum: ["L1", "L2", "L3"], description: "Informational; the level-sharp DoD is in get_guide_by_role." },
+              offset: { type: "number" },
+              limit: { type: "number" }
+            },
+            required: ["chapter"],
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
+          name: "get_sbd_toe_operating_model",
+          title: "Get SbD-ToE Operating Model",
+          description:
+            "The operating model — RACI, decision-rights, governance cadences, org-model — from the rollout " +
+            "playbook (implementation profile). Retrieval-grounded prose; coverage-preserving; nothing invented. " +
+            "Use to answer 'who is responsible / how do we govern the SbD rollout?'.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              orgScope: { type: "string", description: "Optional filter (e.g. an org example/tier keyword)." },
+              offset: { type: "number" },
+              limit: { type: "number" }
+            },
+            required: [],
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
+          name: "plan_sbd_toe_rollout",
+          title: "Plan SbD-ToE Rollout (MVP)",
+          description:
+            "A phased rollout roadmap: the canonical lifecycle phases (phase-order) mapped to manual chapters. " +
+            "MVP — phase-ordered, the dependency DAG is deferred (declared, not faked). Grounded in the published " +
+            "runtime; nothing invented. Use to answer 'in what order do we roll out SbD?'.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              orgProfile: { type: "string", description: "Optional org profile hint (informational in the MVP)." },
+              horizon: { type: "number", description: "Optional cap on how many phases the roadmap spans." },
+              offset: { type: "number" },
+              limit: { type: "number" }
+            },
+            required: [],
             additionalProperties: false
           },
           annotations: { readOnlyHint: true }
@@ -1815,6 +1878,48 @@ class McpRuntime {
         }
         case "map_sbd_toe_review_scope": {
           const result = handleMapSbdToeReviewScope(args);
+          this.sendResponse(request.id, {
+            content: [{ type: "text", text: JSON.stringify(result) }]
+          });
+          await this.log("info", {
+            event_type: "tool.call",
+            outcome: "succeeded",
+            duration_ms: Date.now() - startedAt,
+            ...metadata,
+            message: "Tool invocation completed"
+          });
+          return;
+        }
+        case "get_sbd_toe_chapter_implementation_checklist": {
+          const result = handleGetChapterImplementationChecklist(args);
+          this.sendResponse(request.id, {
+            content: [{ type: "text", text: JSON.stringify(result) }]
+          });
+          await this.log("info", {
+            event_type: "tool.call",
+            outcome: "succeeded",
+            duration_ms: Date.now() - startedAt,
+            ...metadata,
+            message: "Tool invocation completed"
+          });
+          return;
+        }
+        case "get_sbd_toe_operating_model": {
+          const result = handleGetOperatingModel(args);
+          this.sendResponse(request.id, {
+            content: [{ type: "text", text: JSON.stringify(result) }]
+          });
+          await this.log("info", {
+            event_type: "tool.call",
+            outcome: "succeeded",
+            duration_ms: Date.now() - startedAt,
+            ...metadata,
+            message: "Tool invocation completed"
+          });
+          return;
+        }
+        case "plan_sbd_toe_rollout": {
+          const result = handlePlanRollout(args);
           this.sendResponse(request.id, {
             content: [{ type: "text", text: JSON.stringify(result) }]
           });

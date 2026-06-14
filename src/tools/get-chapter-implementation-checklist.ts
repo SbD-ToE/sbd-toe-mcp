@@ -1,0 +1,132 @@
+/**
+ * get_sbd_toe_chapter_implementation_checklist
+ *
+ * The canon/20 "how to implement chapter NN" checklist — retrieval-grounded prose
+ * from the manual's chunk layer (`chunk_kind: checklist_section`, the
+ * 'aplicacao-lifecycle' canon), the artefact the demotion masked and amendment 0005
+ * re-promoted. Implementation-view family; serves NOW via profile/chunks (v1.4).
+ *
+ * Grounding: every item is a published chunk (chunk_id + source path); nothing
+ * invented. The structured, level-sharp Definition-of-Done lives in
+ * get_guide_by_role(include_detail) — surfaced as a `next` affordance.
+ *
+ * Contract: agentic/em-curso/2026-06-14-pontifex-implementation-view-tool-contracts-v0.1.md
+ */
+
+import {
+  filterChunks,
+  resolveChapterBundle,
+  chapterBundleIds,
+  type ManualChunk
+} from "../serving/chunk-index.js";
+import { paginate, type PageCoverage } from "../serving/response-shaping.js";
+import { boundAffordances, type ProtocolEnvelope } from "../serving/protocol-envelope.js";
+
+const VALID_RISK = ["L1", "L2", "L3"];
+
+export interface ChecklistItem {
+  chunk_id: string;
+  title: string;
+  section_path: string;
+  source_path?: string;
+  text: string;
+}
+
+export interface ChapterChecklistData {
+  chapter: string;
+  risk_level?: string;
+  items: ChecklistItem[];
+  totals: { items: number };
+}
+
+function toItem(c: ManualChunk): ChecklistItem {
+  return {
+    chunk_id: c.chunk_id,
+    title: c.title,
+    section_path: c.section_path,
+    ...(c.traceability?.source_path ? { source_path: c.traceability.source_path } : {}),
+    text: c.text
+  };
+}
+
+export function handleGetChapterImplementationChecklist(
+  args: Record<string, unknown>
+): ProtocolEnvelope<ChapterChecklistData> {
+  const chapterArg = typeof args["chapter"] === "string" ? args["chapter"] : "";
+  if (!chapterArg.trim()) {
+    throw Object.assign(new Error('The "chapter" argument is required.'), {
+      rpcError: { code: -32602, message: 'Missing "chapter"' }
+    });
+  }
+  const bundle = resolveChapterBundle(chapterArg);
+  if (!bundle) {
+    throw Object.assign(
+      new Error(`Unknown chapter: "${chapterArg}". Known chapters: ${chapterBundleIds().join(", ")}.`),
+      { rpcError: { code: -32602, message: `Unknown chapter: "${chapterArg}"` } }
+    );
+  }
+
+  const riskArg = typeof args["risk_level"] === "string" ? args["risk_level"] : undefined;
+  if (riskArg !== undefined && !VALID_RISK.includes(riskArg)) {
+    throw new Error(`Invalid risk_level: "${riskArg}". Allowed: L1, L2, L3.`);
+  }
+
+  // Primary: the canon/20 checklist sections; fall back to the chapter's
+  // implementation-profile narrative if the chapter has no checklist section.
+  let chunks = filterChunks({ bundle_id: bundle, chunk_kinds: ["checklist_section"] });
+  let kind: "checklist_section" | "implementation_narrative" = "checklist_section";
+  if (chunks.length === 0) {
+    chunks = filterChunks({ bundle_id: bundle, profile: "implementation" });
+    kind = "implementation_narrative";
+  }
+
+  const offsetArg = args["offset"];
+  const limitArg = args["limit"];
+  const page = paginate(
+    chunks,
+    {
+      offset: typeof offsetArg === "number" ? offsetArg : undefined,
+      limit: typeof limitArg === "number" ? limitArg : 20
+    },
+    chunks.length || 1
+  );
+
+  const coverage: PageCoverage & { items: number; source: string } = {
+    ...page.coverage,
+    items: chunks.length,
+    source: kind
+  };
+
+  const roleHint = riskArg ? `risk_level="${riskArg}", ` : "";
+  return {
+    data: {
+      chapter: bundle,
+      ...(riskArg ? { risk_level: riskArg } : {}),
+      items: page.items.map(toItem),
+      totals: { items: chunks.length }
+    },
+    provenance: {
+      content_type: "canonical",
+      produced_by: "implementation_checklist_projection",
+      source_data: `data/publish/indexes/mcp_chunks.jsonl (chunk_kind=${kind}, bundle=${bundle})`,
+      note:
+        "Retrieval-grounded canon/20 implementation checklist (prose). Each item is a " +
+        "published chunk; nothing invented. The level-sharp structured DoD is in get_guide_by_role."
+    },
+    coverage,
+    next: boundAffordances([
+      {
+        intent: "get the level-sharp structured Definition-of-Done for this chapter's role",
+        tool: "get_guide_by_role",
+        with: `${roleHint}role=<chapter role>, include_detail=true`,
+        kind: "structural"
+      },
+      {
+        intent: "get the security requirements behind these implementation steps",
+        tool: "consult_security_requirements",
+        with: "risk_level + concerns from this chapter",
+        kind: "semantic"
+      }
+    ])
+  };
+}

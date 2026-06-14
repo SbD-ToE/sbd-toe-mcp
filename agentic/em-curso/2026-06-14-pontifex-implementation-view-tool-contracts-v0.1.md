@@ -4,8 +4,13 @@
 **Owner:** Pontifex (`sbd-toe-mcp-poc`) · **For:** Orchestrator + programme-lead ratification
 **Seed:** `DevelopmentGovernance/docs/mcp-value-stream-capability-map.md` §"Implementation-view
 tool family" (confirmed 2026-06-13). Ratified front (value-stream amendment).
-**Status:** SPEC ONLY. **Execution gated on the recompile** (rebuilt bundle with the
-implementation/rollout profiles + Codex facets). What lands now: these contracts.
+**Status:** UPDATED 2026-06-14 after the recompile (`kg-v1-manual-v1.6.4-aligned-2026-06-14`,
+contract v1.4). The content tools landed as **retrieval-grounded via profile/chunks**
+(ratified intent: promote = chunk-classification, prose reference) — **DELIVERED**:
+`get_sbd_toe_chapter_implementation_checklist`, `get_sbd_toe_operating_model`,
+`plan_sbd_toe_rollout` (MVP), plus `map_sbd_toe_regulatory_activation` (earlier).
+**Still gated:** `assess_sbd_toe_implementation` — awaits structured KPIs OPS-Kxx +
+`thresholds_by_level` (2nd Codex pass; not in this bundle).
 
 > I own the per-tool wire contracts (agentic model; done = the acceptance suite proves
 > it). This doc fixes the contracts so implementation is mechanical once the bundle ships.
