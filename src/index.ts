@@ -26,6 +26,7 @@ import { handleGetChapterImplementationChecklist } from "./tools/get-chapter-imp
 import { handleGetOperatingModel } from "./tools/get-operating-model.js";
 import { handlePlanRollout } from "./tools/plan-rollout.js";
 import { handleAssessImplementation } from "./tools/assess-implementation.js";
+import { handleGetVerificationMatrix } from "./tools/get-verification-matrix.js";
 import { handlePlanRepoGovernance } from "./tools/plan-repo-governance.js";
 import { handleConsultSecurityRequirements } from "./tools/consult-security-requirements.js";
 import { handleGetThreatLandscape } from "./tools/get-threat-landscape.js";
@@ -791,6 +792,26 @@ class McpRuntime {
               limit: { type: "number" }
             },
             required: [],
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
+          name: "get_sbd_toe_verification_matrix",
+          title: "Get SbD-ToE Verification Matrix",
+          description:
+            "The EXPECTED side of verification: per requirement/control at a risk level, the validation method " +
+            "+ expected evidence + EvidencePattern reference (the 223 published patterns). The deterministic " +
+            "complement of the auditor's expectation and the test-plan. Cited per row; coverage-preserving — " +
+            "declares the requirements with no EvidencePattern. Use to answer 'how do I prove chapter/level X?'.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              risk_level: { type: "string", enum: ["L1", "L2", "L3"], description: "Risk level (filters via the pattern's risk_level_hint; unhinted patterns apply broadly)." },
+              offset: { type: "number" },
+              limit: { type: "number" }
+            },
+            required: ["risk_level"],
             additionalProperties: false
           },
           annotations: { readOnlyHint: true }
@@ -1930,6 +1951,20 @@ class McpRuntime {
         }
         case "get_sbd_toe_operating_model": {
           const result = handleGetOperatingModel(args);
+          this.sendResponse(request.id, {
+            content: [{ type: "text", text: JSON.stringify(result) }]
+          });
+          await this.log("info", {
+            event_type: "tool.call",
+            outcome: "succeeded",
+            duration_ms: Date.now() - startedAt,
+            ...metadata,
+            message: "Tool invocation completed"
+          });
+          return;
+        }
+        case "get_sbd_toe_verification_matrix": {
+          const result = handleGetVerificationMatrix(args);
           this.sendResponse(request.id, {
             content: [{ type: "text", text: JSON.stringify(result) }]
           });

@@ -14,6 +14,15 @@ contract v1.4). The content tools landed as **retrieval-grounded via profile/chu
 DELIVERED** (stateless self-report; tracked = Premium, not built). **The whole
 Implementation-view family is now served.** Nothing gated.
 
+**Added 2026-06-14 — `get_sbd_toe_verification_matrix(risk_level)`** (audit lens, AC-36):
+the EXPECTED side of verification — per requirement/control, validation method
+(`verification_logic`) + expected evidence (`evidence_expectation`) + EvidencePattern
+ref, from the 223 published EvidencePatterns (structured; not gated). Triage: core
+fields 223/223 structured (built), but `risk_level_hint` sparse (128 null → level is a
+hint, unhinted flagged) and 28 level-applicable requirements have no EvidencePattern
+(DECLARED gap, routed to Codex for verification-reference structuring à la metrics.json).
+Cited per row; coverage-preserving. The deterministic complement of sbd-auditor + test-plan.
+
 > I own the per-tool wire contracts (agentic model; done = the acceptance suite proves
 > it). This doc fixes the contracts so implementation is mechanical once the bundle ships.
 
