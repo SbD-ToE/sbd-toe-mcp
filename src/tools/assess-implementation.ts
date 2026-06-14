@@ -35,6 +35,8 @@ interface MetricRecord {
   metric_id: string;
   label: string;
   chapter_id?: string;
+  source_document_id?: string;
+  source_file?: string;
   thresholds_by_level_parsed?: Record<string, ParsedThreshold | null>;
 }
 
@@ -76,6 +78,8 @@ export interface KpiResult {
   operator?: string;
   value?: number;
   status: KpiStatus;
+  /** Source citation — the published KPI catalog document the threshold is grounded in. */
+  source?: { document_id?: string; source_file?: string };
 }
 
 export interface AssessData {
@@ -117,6 +121,13 @@ export function handleAssessImplementation(args: Record<string, unknown>): Proto
     if (!t) continue; // threshold null / "-" → not applicable at this level (out of scope)
 
     const chapter = m.chapter_id ? resolveChapterBundle(m.chapter_id) ?? m.chapter_id : undefined;
+    const source =
+      m.source_document_id || m.source_file
+        ? {
+            ...(m.source_document_id ? { document_id: m.source_document_id } : {}),
+            ...(m.source_file ? { source_file: m.source_file } : {})
+          }
+        : undefined;
     const base: KpiResult = {
       metric_id: m.metric_id,
       label: m.label,
@@ -124,7 +135,8 @@ export function handleAssessImplementation(args: Record<string, unknown>): Proto
       ...(t.raw ? { threshold_raw: t.raw } : {}),
       threshold_value: t.value,
       operator: t.operator,
-      status: "not_reported"
+      status: "not_reported",
+      ...(source ? { source } : {})
     };
 
     if (!submitted.has(m.metric_id)) {
@@ -171,10 +183,14 @@ export function handleAssessImplementation(args: Record<string, unknown>): Proto
     provenance: {
       content_type: "derived",
       produced_by: "implementation_assessment_self_report",
-      source_data: "data/publish/runtime/metrics.json (thresholds_by_level_parsed) + submitted kpi_values",
+      source_data:
+        "Published KPI catalog (implementation/consult profile, '| ID | L1 | L2 | L3 |' tables) — " +
+        "structured via runtime/metrics.json (thresholds_by_level_parsed); each KPI cites its source " +
+        "document (per_kpi[].source). Compared to the submitted kpi_values.",
       note:
-        "Stateless self-report (OSS): submitted values compared to published per-level thresholds; " +
-        "nothing persisted, nothing invented. A KPI with a threshold but no value is not_reported (never a pass). " +
+        "Stateless self-report (OSS): submitted values compared to the published per-level thresholds; " +
+        "thresholds are retrieval-grounded in the KPI catalog and cited, never invented; nothing persisted. " +
+        "A KPI with a threshold but no value is not_reported (never a pass). " +
         "Tracked/observed progress over time is the Premium state layer, not this tool."
     },
     next: boundAffordances([

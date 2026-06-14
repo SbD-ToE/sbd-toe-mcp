@@ -55,6 +55,13 @@ describe("assess_sbd_toe_implementation", () => {
     expect((r.next ?? []).length).toBeLessThanOrEqual(3);
   });
 
+  it("cites the KPI catalog source per KPI (retrieval-grounded, never invented)", () => {
+    const r = handleAssessImplementation({ risk_level: "L2", kpi_values: { "ARC-K01": 85 } });
+    const arc = r.data.per_kpi.find((k) => k.metric_id === "ARC-K01");
+    expect(arc?.source?.source_file).toContain("kpis-metricas");
+    expect(r.provenance.source_data.toLowerCase()).toContain("catalog");
+  });
+
   it("validates risk_level and kpi_values shape", () => {
     expect(() => handleAssessImplementation({ risk_level: "L9", kpi_values: {} })).toThrowError(/risk_level/);
     expect(() => handleAssessImplementation({ risk_level: "L2", kpi_values: [] })).toThrowError(/kpi_values/);
