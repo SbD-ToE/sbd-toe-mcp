@@ -4,6 +4,19 @@
   "entity_type": "Artifact",
   "items": [
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-access-review-e0648977e7",
       "canonical_aliases": [
         "access review"
@@ -35,6 +48,24 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 6,
+        "source_control_ids": [
+          "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+          "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
+          "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0",
+          "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+          "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+          "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-alert-policy-c55180d8ab",
       "canonical_aliases": [
         "alertas",
@@ -86,6 +117,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-approval-record-6fe32eb803",
       "canonical_aliases": [
         "approval",
@@ -134,6 +178,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-architecture-baseline-57234e937b",
       "canonical_aliases": [
         "architecture baseline"
@@ -161,6 +218,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-architecture-checklist-abc8e3982a",
       "canonical_aliases": [
         "Architecture Checklist"
@@ -187,6 +257,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-architecture-decision-record-504be0e5f1",
       "canonical_aliases": [
         "architecture decision record",
@@ -218,6 +301,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-architecture-diagram-d7bc383218",
       "canonical_aliases": [
         "Architecture Diagram"
@@ -244,6 +340,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-architecture-review-5bbd6e5876",
       "canonical_aliases": [
         "architecture review"
@@ -271,6 +380,25 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 7,
+        "source_control_ids": [
+          "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+          "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
+          "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+          "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0",
+          "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+          "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+          "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-artifact-provenance-8b1bffca3c",
       "canonical_aliases": [
         "provenance",
@@ -324,6 +452,25 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 7,
+        "source_control_ids": [
+          "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+          "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
+          "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+          "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0",
+          "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+          "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+          "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-artifact-signature-1d67811ec5",
       "canonical_aliases": [
         "artifact signature",
@@ -380,6 +527,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-container-image-51e2624252",
       "canonical_aliases": [
         "container image",
@@ -425,6 +585,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-data-flow-diagram-5cb5415fa5",
       "canonical_aliases": [
         "data flow diagram",
@@ -455,6 +628,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-dependency-inventory-4ddd43ae4f",
       "canonical_aliases": [
         "dependency inventory",
@@ -491,6 +677,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-deployment-plan-945b804751",
       "canonical_aliases": [
         "deploy",
@@ -537,6 +736,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-environment-inventory-154c4568fd",
       "canonical_aliases": [
         "ambientes"
@@ -580,6 +792,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-exception-record-7dd76e5b70",
       "canonical_aliases": [
         "excecao",
@@ -628,6 +853,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-finding-register-b39d52b4e7",
       "canonical_aliases": [
         "finding",
@@ -671,6 +909,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-governance-kpi-a03cc67a9e",
       "canonical_aliases": [
         "governance kpis",
@@ -719,6 +970,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-guideline-catalog-5e53974142",
       "canonical_aliases": [
         "guideline",
@@ -755,6 +1019,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-iac-plan-8b3e802ef7",
       "canonical_aliases": [
         "iac",
@@ -800,6 +1077,20 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 2,
+        "source_control_ids": [
+          "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+          "CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-identity-binding-f96a2a528c",
       "canonical_aliases": [
         "binding",
@@ -849,6 +1140,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-incident-metrics-946f5d7447",
       "canonical_aliases": [
         "incidentes"
@@ -891,6 +1195,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-integration-review-179347cc14",
       "canonical_aliases": [
         "integration review"
@@ -920,6 +1237,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-log-stream-b67ee06f7e",
       "canonical_aliases": [
         "audit logs",
@@ -965,6 +1295,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-onboarding-checklist-3f28bb1e95",
       "canonical_aliases": [
         "checklist",
@@ -1012,6 +1355,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-operational-evidence-f5e852756f",
       "canonical_aliases": [
         "evidencia operacional"
@@ -1043,6 +1399,26 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 8,
+        "source_control_ids": [
+          "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+          "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
+          "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4",
+          "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+          "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0",
+          "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+          "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+          "CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-pipeline-config-f8f2ba893d",
       "canonical_aliases": [
         "ci cd",
@@ -1101,6 +1477,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-policy-report-7e52280504",
       "canonical_aliases": [
         "compliance report",
@@ -1149,6 +1538,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-quiz-result-f93b4a0252",
       "canonical_aliases": [
         "assessment",
@@ -1187,6 +1589,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-release-gate-57ec988cdb",
       "canonical_aliases": [
         "aprovacao de release",
@@ -1236,6 +1651,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-review-checklist-de29054201",
       "canonical_aliases": [
         "checklist",
@@ -1282,6 +1710,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-risk-acceptance-record-ebea5da638",
       "canonical_aliases": [
         "risco residual",
@@ -1322,6 +1763,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-risk-matrix-6dafdd25fc",
       "canonical_aliases": [
         "matriz de risco",
@@ -1355,6 +1809,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-rollback-plan-4fbad982bb",
       "canonical_aliases": [
         "plano de rollback",
@@ -1397,6 +1864,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-sast-report-0358e14566",
       "canonical_aliases": [
         "linters",
@@ -1440,6 +1920,24 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 6,
+        "source_control_ids": [
+          "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+          "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
+          "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
+          "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0",
+          "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+          "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-sbom-ec0b691fce",
       "canonical_aliases": [
         "bill of materials",
@@ -1494,6 +1992,24 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 6,
+        "source_control_ids": [
+          "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+          "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
+          "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
+          "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0",
+          "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+          "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-sca-report-da2c6d2413",
       "canonical_aliases": [
         "cve scan",
@@ -1547,6 +2063,21 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 3,
+        "source_control_ids": [
+          "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
+          "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+          "CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-secret-config-a2bbf228fe",
       "canonical_aliases": [
         "secret",
@@ -1599,6 +2130,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-signature-attestation-67e300d959",
       "canonical_aliases": [
         "assinatura",
@@ -1645,6 +2189,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-supplier-assessment-43fc2de564",
       "canonical_aliases": [
         "due diligence",
@@ -1682,6 +2239,21 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 3,
+        "source_control_ids": [
+          "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+          "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
+          "CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-test-report-b11c5dfb8a",
       "canonical_aliases": [
         "scan report",
@@ -1730,6 +2302,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-threat-model-3a09510d13",
       "canonical_aliases": [
         "ameacas",
@@ -1778,6 +2363,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-training-plan-e44b3c44f1",
       "canonical_aliases": [
         "formacao",
@@ -1821,6 +2419,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-trust-boundary-model-e661186e9f",
       "canonical_aliases": [
         "trust boundary models"
@@ -1848,6 +2459,19 @@
       "warnings": []
     },
     {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "mode": "derived",
+        "n_controls": 1,
+        "source_control_ids": [
+          "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460"
+        ],
+        "via": "produced_by_controls|validated_by_controls"
+      },
       "artifact_type_id": "ART-validation-evidence-79f6aaf0ec",
       "canonical_aliases": [
         "evidencia de validacao",

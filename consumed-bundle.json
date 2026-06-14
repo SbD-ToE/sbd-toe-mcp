@@ -2,16 +2,16 @@
   "_doc": "Pontifex bundle pin (PROGRAMME-PRESERVATION-PROTOCOL §0.6 / AGENTS.md Rule 4). Declares the Codex build artefact this MCP serves. Materialized + maintained by scripts/sync-bundle.mjs (digest-verified against the artefact .sha256), validated by scripts/verify-consumed-bundle.mjs (run in `npm run check`). source: dev-build = cycle snapshot; release = formal vX.Y.Z. release_sha256 is the verified artefact digest — never invented.",
   "pin_version": 1,
   "pinned_at": "2026-06-11",
-  "consumer_contract_version": "v1.3",
+  "consumer_contract_version": "v1.4",
   "substrate_version": "v2-draft",
   "kg_bundle": {
-    "release_tag": "kg-v1-manual-v1.6.4-aligned-2026-06-12",
-    "release_sha256": "080155dc3e2132282dd9690b784e3af138f8baafee42e1055c4ed63abf28b463",
+    "release_tag": "kg-v1-manual-v1.6.4-aligned-2026-06-14",
+    "release_sha256": "47d07d3b96481c5c74bb5b5bc1b98c77d19c04328b846f01ac74aef052c39198",
     "source": "dev-build",
     "surface_built_at": "2026-06-12T03:03:05.664902+00:00",
     "tag_scheme": "cycle-aligned",
-    "synced_at": "2026-06-12",
-    "artefact": "sbd-toe-knowledge-graph-bundle-kg-v1-manual-v1.6.4-aligned-2026-06-12-snapshot.zip"
+    "synced_at": "2026-06-14",
+    "artefact": "sbd-toe-knowledge-graph-bundle-kg-v1-manual-v1.6.4-aligned-2026-06-14-snapshot.zip"
   },
   "inputs": {
     "manual": {

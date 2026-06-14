@@ -41,6 +41,79 @@
         "critérios de aceitação claros",
         "tags normalizadas"
       ],
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "min_link_confidence": 0.84,
+        "mode": "derived",
+        "n_links": 60,
+        "source_requirement_ids": [
+          "API-001",
+          "API-002",
+          "API-003",
+          "API-004",
+          "API-005",
+          "API-007",
+          "AUT-002",
+          "AUT-004",
+          "AUT-008",
+          "CFG-002",
+          "CFG-003",
+          "CFG-004",
+          "CFG-005",
+          "DEV-001",
+          "DEV-002",
+          "DEV-003",
+          "DEV-004",
+          "DEV-005",
+          "DEV-006",
+          "DEV-007",
+          "DEV-008",
+          "DEV-009",
+          "DST-001",
+          "ENC-001",
+          "ENC-002",
+          "ENC-003",
+          "ENC-004",
+          "ENC-005",
+          "ENC-006",
+          "ENC-007",
+          "ENC-008",
+          "ENC-009",
+          "ERR-001",
+          "ERR-002",
+          "ERR-003",
+          "ERR-004",
+          "ERR-005",
+          "ERR-006",
+          "ERR-007",
+          "IDE-001",
+          "IDE-002",
+          "IDE-003",
+          "IDE-004",
+          "IDE-005",
+          "IDE-006",
+          "INT-001",
+          "INT-002",
+          "INT-003",
+          "INT-004",
+          "INT-005",
+          "INT-006",
+          "INT-007",
+          "INT-008",
+          "VAL-001",
+          "VAL-002",
+          "VAL-003",
+          "VAL-004",
+          "VAL-005",
+          "VAL-006",
+          "VAL-007"
+        ],
+        "via": "requirement_control_links"
+      },
       "applicable_lifecycle_phases": [
         "develop",
         "test"
@@ -173,6 +246,28 @@
         "Validação de integridade de imagens base",
         "Versionamento de pipelines em repositórios Git com revisão por PR"
       ],
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "min_link_confidence": 0.87,
+        "mode": "derived",
+        "n_links": 9,
+        "source_requirement_ids": [
+          "CIC-001",
+          "CIC-002",
+          "CIC-004",
+          "CIC-005",
+          "CIC-006",
+          "CIC-007",
+          "CIC-008",
+          "CIC-009",
+          "CIC-010"
+        ],
+        "via": "requirement_control_links"
+      },
       "applicable_lifecycle_phases": [
         "build",
         "deploy"
@@ -290,6 +385,28 @@
         "Validar arquitetura antes de go-live e em alterações significativas",
         "Validação arquitetural automatizável no CI/CD (quando aplicável)"
       ],
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "min_link_confidence": 0.84,
+        "mode": "derived",
+        "n_links": 9,
+        "source_requirement_ids": [
+          "ARC-002",
+          "ARC-003",
+          "ARC-004",
+          "ARC-005",
+          "ARC-007",
+          "ARC-009",
+          "ARC-010",
+          "ARC-012",
+          "ARC-013"
+        ],
+        "via": "requirement_control_links"
+      },
       "applicable_lifecycle_phases": [
         "design",
         "test",
@@ -391,6 +508,38 @@
         "Validação de Conhecimento via Quizzes Estruturados",
         "War Room e Simulações de Incidentes"
       ],
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "min_link_confidence": 0.84,
+        "mode": "derived",
+        "n_links": 19,
+        "source_requirement_ids": [
+          "AUT-001",
+          "AUT-003",
+          "AUT-005",
+          "AUT-006",
+          "AUT-009",
+          "AUT-010",
+          "REQ-001",
+          "REQ-002",
+          "REQ-004",
+          "REQ-005",
+          "TRN-001",
+          "TRN-002",
+          "TRN-003",
+          "TRN-004",
+          "TRN-005",
+          "TRN-006",
+          "TRN-007",
+          "TRN-008",
+          "TRN-009"
+        ],
+        "via": "requirement_control_links"
+      },
       "applicable_lifecycle_phases": [
         "design",
         "develop",
@@ -522,6 +671,35 @@
         "avaliar o seu impacto nos atributos do risco",
         "rastreabilidade sistemática"
       ],
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "min_link_confidence": 0.87,
+        "mode": "derived",
+        "n_links": 16,
+        "source_requirement_ids": [
+          "AUT-007",
+          "CFG-001",
+          "CFG-006",
+          "CLA-001",
+          "CLA-002",
+          "CLA-003",
+          "CLA-004",
+          "CLA-005",
+          "CLA-006",
+          "CLA-007",
+          "CLA-008",
+          "INT-008",
+          "REQ-003",
+          "REQ-005",
+          "REQ-006",
+          "REQ-007"
+        ],
+        "via": "requirement_control_links"
+      },
       "applicable_lifecycle_phases": [
         "design",
         "deploy"
@@ -631,6 +809,27 @@
         "Reavaliação contínua e rotação de fornecedores pós-onboarding",
         "Validação contínua de fornecedores"
       ],
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "min_link_confidence": 0.87,
+        "mode": "derived",
+        "n_links": 8,
+        "source_requirement_ids": [
+          "GOV-001",
+          "GOV-004",
+          "GOV-005",
+          "GOV-006",
+          "GOV-007",
+          "GOV-010",
+          "GOV-011",
+          "GOV-012"
+        ],
+        "via": "requirement_control_links"
+      },
       "applicable_lifecycle_phases": [
         "design",
         "operate"
@@ -726,6 +925,26 @@
         "Validação de impacto no negócio",
         "Validação e Evidência no Threat Modeling"
       ],
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "min_link_confidence": 0.98,
+        "mode": "derived",
+        "n_links": 7,
+        "source_requirement_ids": [
+          "THR-001",
+          "THR-002",
+          "THR-003",
+          "THR-004",
+          "THR-005",
+          "THR-006",
+          "THR-007"
+        ],
+        "via": "requirement_control_links"
+      },
       "applicable_lifecycle_phases": [
         "design",
         "develop"
@@ -857,6 +1076,53 @@
         "Validação periódica de aplicações (ciclo de conformidade)",
         "Versionamento semântico e *changelog* técnico"
       ],
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "min_link_confidence": 0.54,
+        "mode": "derived",
+        "n_links": 34,
+        "source_requirement_ids": [
+          "ACC-001",
+          "ACC-002",
+          "ACC-003",
+          "ACC-004",
+          "ACC-005",
+          "ACC-006",
+          "ACC-007",
+          "ACC-008",
+          "ACC-009",
+          "ACC-010",
+          "CNT-001",
+          "CNT-002",
+          "CNT-003",
+          "CNT-004",
+          "CNT-005",
+          "CNT-006",
+          "CNT-009",
+          "CNT-010",
+          "CNT-011",
+          "CNT-012",
+          "GOV-002",
+          "GOV-003",
+          "GOV-006",
+          "GOV-008",
+          "GOV-009",
+          "GOV-010",
+          "SES-001",
+          "SES-002",
+          "SES-003",
+          "SES-004",
+          "SES-005",
+          "SES-006",
+          "SES-007",
+          "SES-008"
+        ],
+        "via": "requirement_control_links"
+      },
       "applicable_lifecycle_phases": [
         "design",
         "develop",
@@ -1008,6 +1274,28 @@
         "Validações de Segurança antes de Deploy",
         "Validações técnicas pré-deploy com *gates* condicionais"
       ],
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "min_link_confidence": 0.87,
+        "mode": "derived",
+        "n_links": 9,
+        "source_requirement_ids": [
+          "DPL-001",
+          "DPL-002",
+          "DPL-003",
+          "DPL-004",
+          "DPL-005",
+          "DPL-006",
+          "DPL-007",
+          "DPL-008",
+          "DPL-009"
+        ],
+        "via": "requirement_control_links"
+      },
       "applicable_lifecycle_phases": [
         "deploy",
         "operate"
@@ -1089,6 +1377,37 @@
         "Validações automáticas e bloqueantes (lint, segurança, policies) antes de qualquer apply",
         "Validações automáticas integradas"
       ],
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "min_link_confidence": 0.84,
+        "mode": "derived",
+        "n_links": 18,
+        "source_requirement_ids": [
+          "CFG-002",
+          "CFG-007",
+          "DST-002",
+          "DST-005",
+          "DST-006",
+          "IAC-001",
+          "IAC-002",
+          "IAC-003",
+          "IAC-004",
+          "IAC-005",
+          "IAC-006",
+          "IAC-007",
+          "IAC-008",
+          "IAC-009",
+          "IAC-010",
+          "IAC-011",
+          "IAC-012",
+          "IAC-013"
+        ],
+        "via": "requirement_control_links"
+      },
       "applicable_lifecycle_phases": [
         "design",
         "deploy"
@@ -1163,6 +1482,23 @@
         "Revisão de fronteiras de confiança e integrações",
         "Segmentação de ambientes e validação de topologia como código (L3)"
       ],
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "min_link_confidence": 0.876,
+        "mode": "derived",
+        "n_links": 4,
+        "source_requirement_ids": [
+          "ARC-001",
+          "ARC-006",
+          "ARC-008",
+          "ARC-011"
+        ],
+        "via": "requirement_control_links"
+      },
       "applicable_lifecycle_phases": [
         "design",
         "develop",
@@ -1225,6 +1561,39 @@
         "Telemetria de agentes AI em produção {#us-13}",
         "Validação e *Tuning* de Alertas"
       ],
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "min_link_confidence": 0.54,
+        "mode": "derived",
+        "n_links": 20,
+        "source_requirement_ids": [
+          "LOG-001",
+          "LOG-002",
+          "LOG-003",
+          "LOG-004",
+          "LOG-005",
+          "LOG-006",
+          "LOG-007",
+          "LOG-008",
+          "LOG-009",
+          "LOG-010",
+          "OPS-001",
+          "OPS-002",
+          "OPS-003",
+          "OPS-004",
+          "OPS-005",
+          "OPS-006",
+          "OPS-007",
+          "OPS-008",
+          "OPS-009",
+          "OPS-010"
+        ],
+        "via": "requirement_control_links"
+      },
       "applicable_lifecycle_phases": [
         "operate"
       ],
@@ -1308,6 +1677,21 @@
         "Gestão segura de segredos no *deploy*",
         "Proibir segredos estáticos"
       ],
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "min_link_confidence": 0.7338,
+        "mode": "derived",
+        "n_links": 2,
+        "source_requirement_ids": [
+          "CFG-006",
+          "CIC-003"
+        ],
+        "via": "requirement_control_links"
+      },
       "applicable_lifecycle_phases": [
         "build",
         "deploy",
@@ -1379,6 +1763,33 @@
         "bots de atualização",
         "exceções"
       ],
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "min_link_confidence": 0.87,
+        "mode": "derived",
+        "n_links": 14,
+        "source_requirement_ids": [
+          "API-006",
+          "DEP-001",
+          "DEP-002",
+          "DEP-003",
+          "DEP-004",
+          "DEP-005",
+          "DEP-006",
+          "DEP-007",
+          "DEP-008",
+          "DEP-009",
+          "DEP-010",
+          "DST-003",
+          "DST-004",
+          "DST-007"
+        ],
+        "via": "requirement_control_links"
+      },
       "applicable_lifecycle_phases": [
         "build",
         "deploy"
@@ -1473,6 +1884,22 @@
         "SBOM de Containers e Rastreabilidade de Runtime",
         "Segmentação de Rede e NetworkPolicy"
       ],
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "min_link_confidence": 0.9016,
+        "mode": "derived",
+        "n_links": 3,
+        "source_requirement_ids": [
+          "CNT-007",
+          "CNT-008",
+          "CNT-010"
+        ],
+        "via": "requirement_control_links"
+      },
       "applicable_lifecycle_phases": [
         "build",
         "deploy",
@@ -1562,6 +1989,29 @@
         "Validação de Regressões de Segurança",
         "Validação humana da interpretação final dos resultados"
       ],
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "min_link_confidence": 0.98,
+        "mode": "derived",
+        "n_links": 10,
+        "source_requirement_ids": [
+          "TST-001",
+          "TST-002",
+          "TST-003",
+          "TST-004",
+          "TST-005",
+          "TST-006",
+          "TST-007",
+          "TST-008",
+          "TST-009",
+          "TST-010"
+        ],
+        "via": "requirement_control_links"
+      },
       "applicable_lifecycle_phases": [
         "test",
         "deploy"
