@@ -31,7 +31,8 @@
     "overlay/overlay_mappings.jsonl",
     "overlay/framework_overlay_index.json",
     "bundle_policy_links.jsonl",
-    "cross_layer_referrals.jsonl"
+    "cross_layer_referrals.jsonl",
+    "runtime/metrics.json"
   ],
   "builders": [
     "build-ontology-discovery",
@@ -67,9 +68,10 @@
     "runtime_artifact_requirements": 45,
     "runtime_artifacts": 45,
     "runtime_assignments": 1296,
-    "runtime_bundle_artifacts": 18,
+    "runtime_bundle_artifacts": 19,
     "runtime_controls": 16,
     "runtime_evidence_patterns": 223,
+    "runtime_metrics": 99,
     "runtime_phases": 8,
     "runtime_practices": 260,
     "runtime_requirement_control_links": 242,

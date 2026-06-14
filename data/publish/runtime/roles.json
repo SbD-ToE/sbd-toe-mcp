@@ -5,10 +5,7 @@
   "items": [
     {
       "aliases": [
-        "developer",
-        "scrum_master",
-        "software_architect",
-        "team_lead"
+        "developer"
       ],
       "canonical": true,
       "role_id": "developer",
@@ -17,6 +14,7 @@
     {
       "aliases": [
         "auditor",
+        "auditores",
         "internal_auditor"
       ],
       "canonical": true,
@@ -24,14 +22,18 @@
       "source": "00-fundamentos/roles-responsabilidades"
     },
     {
-      "aliases": [],
+      "aliases": [
+        "arquitetos-software",
+        "software_architect"
+      ],
       "canonical": true,
       "role_id": "arquitetos-software",
       "source": "00-fundamentos/roles-responsabilidades"
     },
     {
       "aliases": [
-        "appsec"
+        "appsec",
+        "appsec-engineer"
       ],
       "canonical": true,
       "role_id": "appsec-engineer",
@@ -39,8 +41,7 @@
     },
     {
       "aliases": [
-        "security-champions",
-        "security-monitoring-team",
+        "security-champion",
         "security_champion"
       ],
       "canonical": true,
@@ -48,14 +49,17 @@
       "source": "00-fundamentos/roles-responsabilidades"
     },
     {
-      "aliases": [],
+      "aliases": [
+        "scrum-master",
+        "scrum_master",
+        "team_lead"
+      ],
       "canonical": true,
       "role_id": "scrum-master",
       "source": "00-fundamentos/roles-responsabilidades"
     },
     {
       "aliases": [
-        "product_owner",
         "qa",
         "tester"
       ],
@@ -64,13 +68,22 @@
       "source": "00-fundamentos/roles-responsabilidades"
     },
     {
-      "aliases": [],
+      "aliases": [
+        "application_manager",
+        "product-owner",
+        "product_management",
+        "product_owner"
+      ],
       "canonical": true,
       "role_id": "product-owner",
       "source": "00-fundamentos/roles-responsabilidades"
     },
     {
-      "aliases": [],
+      "aliases": [
+        "incident_response",
+        "operacoes",
+        "ops"
+      ],
       "canonical": true,
       "role_id": "operacoes",
       "source": "00-fundamentos/roles-responsabilidades"
@@ -78,7 +91,8 @@
     {
       "aliases": [
         "compliance",
-        "grc"
+        "grc",
+        "grc-compliance"
       ],
       "canonical": true,
       "role_id": "grc-compliance",
@@ -88,7 +102,9 @@
       "aliases": [
         "ciso",
         "executive_management",
-        "gestao"
+        "gestao-executiva",
+        "management",
+        "pmo"
       ],
       "canonical": true,
       "role_id": "gestao-executiva",
@@ -96,7 +112,7 @@
     },
     {
       "aliases": [
-        "ir",
+        "fornecedores-terceiros",
         "third_party"
       ],
       "canonical": true,
@@ -106,10 +122,8 @@
     {
       "aliases": [
         "devops",
-        "devops-automatico-se-via-dependabot",
-        "devops-bloqueio",
-        "devops-lead",
-        "ops",
+        "devops-sre",
+        "release_manager",
         "sre"
       ],
       "canonical": true,

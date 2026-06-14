@@ -130,6 +130,18 @@
       "source_artifact": "data/publish/semantic/requirement_control_links.jsonl"
     },
     {
+      "count": 99,
+      "entity_type": "Metric",
+      "file": "metrics.json",
+      "name": "metrics",
+      "profiles": [
+        "consult",
+        "review",
+        "implementation"
+      ],
+      "source_artifact": "data/publish/indexes/metric_catalog.jsonl"
+    },
+    {
       "count": 23,
       "entity_type": "Signal",
       "file": "signals.json",
@@ -223,7 +235,8 @@
         "evidence_patterns.json",
         "signals.json",
         "signal_evidence_links.json",
-        "requirement_control_links.json"
+        "requirement_control_links.json",
+        "metrics.json"
       ]
     },
     "threats": {
