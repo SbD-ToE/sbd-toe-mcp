@@ -9,8 +9,10 @@ contract v1.4). The content tools landed as **retrieval-grounded via profile/chu
 (ratified intent: promote = chunk-classification, prose reference) — **DELIVERED**:
 `get_sbd_toe_chapter_implementation_checklist`, `get_sbd_toe_operating_model`,
 `plan_sbd_toe_rollout` (MVP), plus `map_sbd_toe_regulatory_activation` (earlier).
-**Still gated:** `assess_sbd_toe_implementation` — awaits structured KPIs OPS-Kxx +
-`thresholds_by_level` (2nd Codex pass; not in this bundle).
+**2nd Codex pass (`kg-v1-manual-v1.6.4-aligned-2026-06-14-r2`, contract v1.5)** shipped
+`runtime/metrics.json` (99 KPIs, `thresholds_by_level_parsed`) → **`assess_sbd_toe_implementation`
+DELIVERED** (stateless self-report; tracked = Premium, not built). **The whole
+Implementation-view family is now served.** Nothing gated.
 
 > I own the per-tool wire contracts (agentic model; done = the acceptance suite proves
 > it). This doc fixes the contracts so implementation is mechanical once the bundle ships.

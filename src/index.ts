@@ -25,6 +25,7 @@ import { handleMapRegulatoryActivation } from "./tools/map-regulatory-activation
 import { handleGetChapterImplementationChecklist } from "./tools/get-chapter-implementation-checklist.js";
 import { handleGetOperatingModel } from "./tools/get-operating-model.js";
 import { handlePlanRollout } from "./tools/plan-rollout.js";
+import { handleAssessImplementation } from "./tools/assess-implementation.js";
 import { handlePlanRepoGovernance } from "./tools/plan-repo-governance.js";
 import { handleConsultSecurityRequirements } from "./tools/consult-security-requirements.js";
 import { handleGetThreatLandscape } from "./tools/get-threat-landscape.js";
@@ -790,6 +791,29 @@ class McpRuntime {
               limit: { type: "number" }
             },
             required: [],
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
+          name: "assess_sbd_toe_implementation",
+          title: "Assess SbD-ToE Implementation",
+          description:
+            "Progress / 'how implemented am I': compares submitted KPI values against the published per-level " +
+            "thresholds (metrics.json) → posture (below/at/above) + gaps per KPI. Stateless self-report — values " +
+            "in, posture out, nothing stored; thresholds never invented; an applicable KPI with no value is " +
+            "not_reported (never a pass). Use to answer 'am I compliant at L2 / where are my gaps?'.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              kpi_values: {
+                type: "object",
+                description: "Map of metric_id → numeric value (e.g. {\"ARC-K01\": 85}). Non-numeric values ignored.",
+                additionalProperties: { type: "number" }
+              },
+              risk_level: { type: "string", enum: ["L1", "L2", "L3"], description: "Target/'compliant' band." }
+            },
+            required: ["kpi_values", "risk_level"],
             additionalProperties: false
           },
           annotations: { readOnlyHint: true }
@@ -1906,6 +1930,20 @@ class McpRuntime {
         }
         case "get_sbd_toe_operating_model": {
           const result = handleGetOperatingModel(args);
+          this.sendResponse(request.id, {
+            content: [{ type: "text", text: JSON.stringify(result) }]
+          });
+          await this.log("info", {
+            event_type: "tool.call",
+            outcome: "succeeded",
+            duration_ms: Date.now() - startedAt,
+            ...metadata,
+            message: "Tool invocation completed"
+          });
+          return;
+        }
+        case "assess_sbd_toe_implementation": {
+          const result = handleAssessImplementation(args);
           this.sendResponse(request.id, {
             content: [{ type: "text", text: JSON.stringify(result) }]
           });
