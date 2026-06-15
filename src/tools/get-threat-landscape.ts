@@ -134,25 +134,6 @@ export function _resolveThreatLandscape(
   const activeRequirementIds = new Set(
     consult.requirements.map((requirement) => requirement.requirement_id)
   );
-  const activeBundles = new Set(
-    consult.requirements
-      .map((requirement) => resolveRequirementBundle(requirement))
-      .filter((bundle): bundle is string => typeof bundle === "string" && bundle.length > 0)
-  );
-  const activeChapterNumbers = new Set<number>(
-    consult.requirements
-      .map((requirement) => requirement.source_chapter)
-      .filter((chapter) => !Number.isNaN(chapter))
-  );
-  // Route explicit concerns to their domain chapter so the matching threats
-  // surface even when the concern's requirements are defined in chapter 02.
-  const inputConcerns = Array.isArray(args["concerns"])
-    ? (args["concerns"] as unknown[]).filter((c): c is string => typeof c === "string")
-    : [];
-  for (const concern of inputConcerns) {
-    const domainChapter = CONCERN_TO_DOMAIN_CHAPTER[concern];
-    if (domainChapter !== undefined) activeChapterNumbers.add(domainChapter);
-  }
   const activeDomains = new Set(consult.active_domains);
   const activeControls = consult.controls.map((control) => ({
     control_id: control.control_id,
@@ -161,6 +142,48 @@ export function _resolveThreatLandscape(
     chapter_ids: control.chapter_ids ?? [],
   }));
   const activeControlIds = new Set(activeControls.map((control) => control.control_id));
+
+  const inputConcerns = Array.isArray(args["concerns"])
+    ? (args["concerns"] as unknown[]).filter((c): c is string => typeof c === "string")
+    : [];
+  const hasConcerns = inputConcerns.length > 0;
+
+  // Threat routing is by THREAT DOMAIN, not by the requirements catalog's source
+  // chapter. Base concerns (auth/encryption/validation/access/session) all have their
+  // requirements catalogued in chapter 02, so routing by source_chapter collapsed every
+  // base concern onto ch.02 — surfacing the requirements-process meta-threats
+  // (MT-021..038) instead of the domain threats. We route by the concern's domain
+  // (CONCERN_TO_DOMAIN_CHAPTER) and by the chapters the resolved CONTROLS live in.
+  const activeChapterNumbers = new Set<number>();
+  const activeBundles = new Set<string>();
+  for (const concern of inputConcerns) {
+    const domainChapter = CONCERN_TO_DOMAIN_CHAPTER[concern];
+    if (domainChapter !== undefined) activeChapterNumbers.add(domainChapter);
+  }
+  for (const control of activeControls) {
+    for (const chapterId of control.chapter_ids) {
+      activeBundles.add(chapterId);
+      const num = chapterNumber(chapterId);
+      if (!Number.isNaN(num)) activeChapterNumbers.add(num);
+    }
+  }
+  // With no concern filter the caller wants the full landscape — fall back to every
+  // applicable requirement's chapter/bundle (broad, spans all domains, not just ch.02).
+  if (!hasConcerns) {
+    for (const requirement of consult.requirements) {
+      if (!Number.isNaN(requirement.source_chapter)) activeChapterNumbers.add(requirement.source_chapter);
+      const bundle = resolveRequirementBundle(requirement);
+      if (typeof bundle === "string" && bundle.length > 0) activeBundles.add(bundle);
+    }
+  }
+  // Chapter 02 (requisitos-seguranca) holds the requirements-process meta-threats.
+  // Surface them only when the caller explicitly targets requirements — never as a
+  // side effect of a base/domain concern whose controls happen to be catalogued there.
+  const wantsRequirements = !hasConcerns || inputConcerns.includes("requirements");
+  if (!wantsRequirements) {
+    activeChapterNumbers.delete(2);
+    activeBundles.delete("02-requisitos-seguranca");
+  }
 
   const controlsByChapter = new Map<string, MitigatingControl[]>();
   for (const control of activeControls) {

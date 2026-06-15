@@ -85,15 +85,35 @@ describe("_resolveThreatLandscape", () => {
     expect(result.meta.activeChapters).toContain("12");
   });
 
-  it("concerns filter narrows active chapters", () => {
+  it("concern filter routes by the control's domain chapter, not the requirement's source chapter", () => {
+    // auth's requirement is catalogued in ch.02 but its control lives in the domain
+    // chapter (ch.04). The concern must surface the DOMAIN threat (ch.04), and must NOT
+    // collapse onto ch.02's requirements-process meta-threats. Bug fix 2026-06-15.
+    const data = makeOntologyData({
+      controls: [
+        { control_id: "CTRL-MON", name: "Monitoring", domain: "monitoring", control_type: "detective", abstraction_level: "operational", applicable_lifecycle_phases: [], chapter_ids: ["12-monitorizacao-operacoes"] },
+        { control_id: "CTRL-AUTH", name: "Identity", domain: "identity", control_type: "preventive", abstraction_level: "technical", applicable_lifecycle_phases: [], source_practice_ids: [], chapter_ids: ["04-arquitetura-segura"] }
+      ],
+      threats: [
+        { mitigated_threat_id: "MT-001", threat_label_raw: "Log bypass", chapter_id: "12-monitorizacao-operacoes", associated_controls: [], confidence: 0.9 },
+        { mitigated_threat_id: "MT-002", threat_label_raw: "Requirements-process meta-threat", chapter_id: "02-requisitos-seguranca", associated_controls: [], confidence: 0.8 },
+        { mitigated_threat_id: "MT-004", threat_label_raw: "Auth bypass (domain)", chapter_id: "04-arquitetura-segura", associated_controls: [], confidence: 0.85 }
+      ]
+    });
+    const result = _resolveThreatLandscape({ risk_level: "L2", concerns: ["auth"] }, data);
+    const ids = result.threats.map((t) => t.mitigated_threat_id);
+    expect(ids).toContain("MT-004"); // domain threat (ch.04, where the control lives)
+    expect(ids).not.toContain("MT-002"); // ch.02 process meta-threat must NOT collapse in
+    expect(ids).not.toContain("MT-001"); // ch.12 not in auth scope
+  });
+
+  it("keeps the requirements-process meta-threats for the explicit 'requirements' concern", () => {
     const result = _resolveThreatLandscape(
-      { risk_level: "L2", concerns: ["auth"] },
+      { risk_level: "L2", concerns: ["requirements"] },
       makeOntologyData()
     );
-    // Only AUT-001 (chapter 2) is in scope
-    const ids = result.threats.map((t) => t.mitigated_threat_id);
-    expect(ids).toContain("MT-002");
-    expect(ids).not.toContain("MT-001"); // chapter 12 not in auth scope
+    // 'requirements' maps to ch.02 explicitly → its meta-threats are in scope.
+    expect(result.meta.activeChapters).toContain("2");
   });
 
   it("returns risk_level in output", () => {
@@ -176,5 +196,25 @@ describe("handleGetThreatLandscape surface", () => {
     expect(result.threats.length).toBeGreaterThan(0);
     expect(result.threats.some((t) => typeof t.threat_category === "string" && t.threat_category.length > 0)).toBe(true);
     expect(result.threats.some((t) => typeof t.mitigation_strength === "string" && t.mitigation_strength.length > 0)).toBe(true);
+  });
+
+  // Regression (real bundle): base/domain concerns must surface DOMAIN threats, not the
+  // chapter-02 requirements-process meta-threats (MT-021..038). Bug fix 2026-06-15.
+  it("does NOT collapse a base concern onto the ch.02 requirements-process meta-threats", () => {
+    const META = /^MT-0(2[1-9]|3[0-8])$/; // MT-021..038
+    for (const concern of ["encryption", "validation", "auth"]) {
+      const r = handleGetThreatLandscape({ risk_level: "L2", concerns: [concern] });
+      expect(r.threats.length, `${concern} should surface domain threats`).toBeGreaterThan(0);
+      expect(
+        r.threats.every((t) => !META.test(t.id ?? "")),
+        `${concern} must not return ch.02 meta-threats`
+      ).toBe(true);
+      expect(r.meta.activeBundles).not.toContain("02-requisitos-seguranca");
+    }
+  });
+
+  it("still surfaces ch.02 meta-threats for the explicit 'requirements' concern", () => {
+    const r = handleGetThreatLandscape({ risk_level: "L2", concerns: ["requirements"] });
+    expect(r.meta.activeBundles).toContain("02-requisitos-seguranca");
   });
 });

@@ -166,7 +166,11 @@ describe("qualitative eval smoke", () => {
       concerns: ["auth"]
     });
 
-    expect(threats.meta.activeBundles).toContain("02-requisitos-seguranca");
+    // Bug fix 2026-06-15: a domain concern routes by the threat domain, NOT the
+    // requirements catalog's ch.02 — it must NOT collapse onto ch.02's
+    // requirements-process meta-threats.
+    expect(threats.meta.activeBundles).not.toContain("02-requisitos-seguranca");
+    expect(threats.meta.activeBundles.length).toBeGreaterThan(0);
     expect(threats.meta.concernsApplied).toEqual(["auth"]);
     expect(threats.threats.length).toBeGreaterThan(0);
     expect(
