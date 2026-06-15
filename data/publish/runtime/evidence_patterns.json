@@ -1,6 +1,6 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 223,
+  "count": 251,
   "entity_type": "EvidencePattern",
   "items": [
     {
@@ -800,7 +800,7 @@
       "responsible_roles": [
         "Arquitecto técnico"
       ],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "04-arquitetura-segura",
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
@@ -840,7 +840,7 @@
         "AppSec",
         "Arquitecto"
       ],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "04-arquitetura-segura",
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
@@ -889,7 +889,7 @@
       "responsible_roles": [
         "AppSec"
       ],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "04-arquitetura-segura",
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
@@ -917,7 +917,7 @@
       "responsible_roles": [
         "Arquitecto técnico"
       ],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "04-arquitetura-segura",
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
@@ -966,7 +966,7 @@
         "AppSec",
         "Arquitecto"
       ],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "04-arquitetura-segura",
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
@@ -1016,7 +1016,7 @@
         "AppSec",
         "DevSecOps"
       ],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "04-arquitetura-segura",
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
@@ -1064,7 +1064,7 @@
       "responsible_roles": [
         "Equipa de arquitectura"
       ],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "04-arquitetura-segura",
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
@@ -1093,7 +1093,7 @@
         "AppSec",
         "Arquitecto"
       ],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "04-arquitetura-segura",
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
@@ -1141,7 +1141,7 @@
         "Arquitecto",
         "PO"
       ],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "04-arquitetura-segura",
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
@@ -1189,7 +1189,7 @@
         "Arquitecto",
         "DevOps"
       ],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "04-arquitetura-segura",
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
@@ -1238,7 +1238,7 @@
         "AppSec",
         "Engenharia de plataforma"
       ],
-      "risk_level_hint": null,
+      "risk_level_hint": "L3",
       "source_bundle": "04-arquitetura-segura",
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
@@ -1286,7 +1286,7 @@
         "AppSec",
         "Responsável de segurança"
       ],
-      "risk_level_hint": null,
+      "risk_level_hint": "L3",
       "source_bundle": "04-arquitetura-segura",
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
@@ -1335,13 +1335,106 @@
         "Arquitecto",
         "DevSecOps"
       ],
-      "risk_level_hint": null,
+      "risk_level_hint": "L3",
       "source_bundle": "04-arquitetura-segura",
       "source_document": "010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
       "verification_logic": "Job de CI com output de validação de topologia; logs de execução disponíveis; falhas bloqueiam promoção",
       "verification_when": "Por execução de pipeline; revisão periódica de cobertura"
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd",
+        "documentation"
+      ],
+      "evidence_expectation": "Sistemas que integram componentes AI/ML (LLMs, modelos preditivos, RAG, agentes autónomos) têm padrões arquitetónicos dedicados: trust boundaries explícitas entre training data / model artifacts / inference endpoints / tool invocations agenticas; controlos de input sanitization e output filtering específicos para prompt injection directa e indirecta (LLM01-2025, AML.T0051.001); rate limiting e isolamento de chamadas a LLM; aprovação de tool invocations agenticas com escopo limitado (AML.T0086); proveniência de modelos e datasets documentada (AML.T0010, LLM03-2025); arquitectura considera scenarios de model theft (ML05-2023) e training data poisoning (AML.T0020); zonas de confiança incluem componentes AI como participantes distintos (não como bibliotecas opacas).",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-release-gate-57ec988cdb",
+        "ART-artifact-provenance-8b1bffca3c"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-release-gate-57ec988cdb",
+          "confidence": 0.9,
+          "name": "Release Gate",
+          "shared_salient_tokens": [
+            "aprovacao"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-artifact-provenance-8b1bffca3c",
+          "confidence": 0.88,
+          "name": "Artifact Provenance",
+          "shared_salient_tokens": [
+            "proveniencia"
+          ]
+        }
+      ],
+      "id": "EP-ARC-014",
+      "maps_to_control_id": null,
+      "maps_to_control_name": "",
+      "maps_to_requirement_id": "ARC-014",
+      "requirement_category": "ARC",
+      "requirement_name": "Padrões arquitetónicos específicos para sistemas com componentes AI/ML",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "04-arquitetura-segura",
+      "source_document": "04-arquitetura-segura/addon/01-catalogo-requisitos.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "logs",
+        "ci_cd"
+      ],
+      "evidence_expectation": "Quando o sistema inclui agentes autónomos que invocam *tools* (criar PR, ler segredos, deploy, escrever em sistemas externos), cada agente é tratado como um principal não-humano distinto, com identidade própria (workload identity efémera via OIDC), *scope* mínimo necessário por *tool* e por ambiente, e nunca reutiliza credenciais humanas. Em níveis de autonomia A2+ (ver Cap. 02 — níveis de autonomia), a arquitectura inclui adicionalmente: (1) intent declaration estruturada antes de cada *tool call* destrutivo, registada em audit (REQ-AGN-004); (2) aprovação humana out-of-band para acções com efeito destrutivo ou em sistemas externos críticos (LLM06-2025 — Excessive Agency); (3) kill-switch operacional que revoga credenciais e termina sessões em segundos (REQ-AGN-003); (4) audit completo por tool invocation (timestamp, agent identity, scope, intent declarado, acção real, outcome) integrado com observabilidade do Cap. 12 (AML.M0024 AI Telemetry Logging).",
+      "evidence_type": "log",
+      "expected_artifact_type_ids": [
+        "ART-log-stream-b67ee06f7e",
+        "ART-approval-record-6fe32eb803"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-log-stream-b67ee06f7e",
+          "confidence": 0.7,
+          "name": "Log Stream",
+          "shared_salient_tokens": [
+            "audit",
+            "log"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-approval-record-6fe32eb803",
+          "confidence": 0.68,
+          "name": "Approval Record",
+          "shared_salient_tokens": [
+            "aprovacao"
+          ]
+        }
+      ],
+      "id": "EP-ARC-015",
+      "maps_to_control_id": null,
+      "maps_to_control_name": "",
+      "maps_to_requirement_id": "ARC-015",
+      "requirement_category": "ARC",
+      "requirement_name": "Agentes AI operam como *principals* isolados com mandate e least privilege",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "04-arquitetura-segura",
+      "source_document": "04-arquitetura-segura/addon/01-catalogo-requisitos.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
     },
     {
       "authority_class": "normative",
@@ -2070,7 +2163,7 @@
       "requirement_category": "CIC",
       "requirement_name": "Pipelines como código, versionados e sujeitos a revisão",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "07-cicd-seguro",
       "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2113,7 +2206,7 @@
       "requirement_category": "CIC",
       "requirement_name": "Triggers controlados e restritos a fontes autorizadas",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "07-cicd-seguro",
       "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2159,7 +2252,7 @@
       "requirement_category": "CIC",
       "requirement_name": "Gestão segura de segredos no pipeline",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "07-cicd-seguro",
       "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2204,7 +2297,7 @@
       "requirement_category": "CIC",
       "requirement_name": "Gates de segurança obrigatórios antes de promoção entre ambientes",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "07-cicd-seguro",
       "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2249,7 +2342,7 @@
       "requirement_category": "CIC",
       "requirement_name": "Rastreabilidade completa de cada execução de pipeline",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "07-cicd-seguro",
       "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2285,7 +2378,7 @@
       "requirement_category": "CIC",
       "requirement_name": "Isolamento de runners e ambientes de execução",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "07-cicd-seguro",
       "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2333,7 +2426,7 @@
       "requirement_category": "CIC",
       "requirement_name": "Integridade e proveniência verificável dos artefactos produzidos",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "07-cicd-seguro",
       "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2378,7 +2471,7 @@
       "requirement_category": "CIC",
       "requirement_name": "Separação de responsabilidades entre build, test e deploy",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "07-cicd-seguro",
       "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2423,7 +2516,7 @@
       "requirement_category": "CIC",
       "requirement_name": "Credenciais do pipeline com âmbito mínimo e rotação definida",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "07-cicd-seguro",
       "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2469,7 +2562,7 @@
       "requirement_category": "CIC",
       "requirement_name": "Protecção contra execução de código não autorizado em runners",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L3",
       "source_bundle": "07-cicd-seguro",
       "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2514,7 +2607,7 @@
       "requirement_category": "CLA",
       "requirement_name": "Classificação formal segundo o modelo de eixos de risco",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "01-classificacao-aplicacoes",
       "source_document": "010-sbd-manual/01-classificacao-aplicacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2559,7 +2652,7 @@
       "requirement_category": "CLA",
       "requirement_name": "Aprovação proporcional ao nível de risco atribuído",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "01-classificacao-aplicacoes",
       "source_document": "010-sbd-manual/01-classificacao-aplicacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2605,7 +2698,7 @@
       "requirement_category": "CLA",
       "requirement_name": "Activação de controlos base determinada pela classificação",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "01-classificacao-aplicacoes",
       "source_document": "010-sbd-manual/01-classificacao-aplicacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2651,7 +2744,7 @@
       "requirement_category": "CLA",
       "requirement_name": "Critérios de reclassificação documentados e monitorizados",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "01-classificacao-aplicacoes",
       "source_document": "010-sbd-manual/01-classificacao-aplicacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2696,7 +2789,7 @@
       "requirement_category": "CLA",
       "requirement_name": "Ciclo periódico de revisão de classificação diferenciado por nível",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "01-classificacao-aplicacoes",
       "source_document": "010-sbd-manual/01-classificacao-aplicacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2732,7 +2825,7 @@
       "requirement_category": "CLA",
       "requirement_name": "Reavaliação de classificação após evento de mudança significativa",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "01-classificacao-aplicacoes",
       "source_document": "010-sbd-manual/01-classificacao-aplicacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2778,7 +2871,7 @@
       "requirement_category": "CLA",
       "requirement_name": "Risco residual com compensação formalizada, owner e TTL",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "01-classificacao-aplicacoes",
       "source_document": "010-sbd-manual/01-classificacao-aplicacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2824,7 +2917,7 @@
       "requirement_category": "CLA",
       "requirement_name": "Inventário de aplicações actualizado e acessível para auditoria",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "01-classificacao-aplicacoes",
       "source_document": "010-sbd-manual/01-classificacao-aplicacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2869,7 +2962,7 @@
       "requirement_category": "CNT",
       "requirement_name": "Imagens base de origem confiável e aprovada",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "09-containers-imagens",
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2917,7 +3010,7 @@
       "requirement_category": "CNT",
       "requirement_name": "Scanning de vulnerabilidades em imagens no CI/CD",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "09-containers-imagens",
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2953,7 +3046,7 @@
       "requirement_category": "CNT",
       "requirement_name": "Imagens minimalistas - ausência de componentes não necessários",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "09-containers-imagens",
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -2998,7 +3091,7 @@
       "requirement_category": "CNT",
       "requirement_name": "Execução como utilizador não-root",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "09-containers-imagens",
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3024,7 +3117,7 @@
       "requirement_category": "CNT",
       "requirement_name": "Sistema de ficheiros em modo de leitura em runtime",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "09-containers-imagens",
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3050,7 +3143,7 @@
       "requirement_category": "CNT",
       "requirement_name": "Restrição de capabilities do kernel e perfis de syscall",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "09-containers-imagens",
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3093,7 +3186,7 @@
       "requirement_category": "CNT",
       "requirement_name": "Assinatura e verificação de proveniência de imagens",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "09-containers-imagens",
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3138,7 +3231,7 @@
       "requirement_category": "CNT",
       "requirement_name": "SBOM por imagem publicada",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "09-containers-imagens",
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3183,7 +3276,7 @@
       "requirement_category": "CNT",
       "requirement_name": "Políticas de admission control activas",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "09-containers-imagens",
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3226,7 +3319,7 @@
       "requirement_category": "CNT",
       "requirement_name": "Renovação periódica de imagens base",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "09-containers-imagens",
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3272,7 +3365,7 @@
       "requirement_category": "CNT",
       "requirement_name": "Acesso ao registry com autenticação e rastreabilidade",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "09-containers-imagens",
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3317,7 +3410,7 @@
       "requirement_category": "CNT",
       "requirement_name": "Isolamento de namespace e políticas de rede em Kubernetes",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L3",
       "source_bundle": "09-containers-imagens",
       "source_document": "010-sbd-manual/09-containers-imagens/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3362,7 +3455,7 @@
       "requirement_category": "DEP",
       "requirement_name": "SBOM gerado por build, em formato standardizado",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "05-dependencias-sbom-sca",
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3409,7 +3502,7 @@
       "requirement_category": "DEP",
       "requirement_name": "SCA integrado em pipeline com bloqueio por política de severidade",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "05-dependencias-sbom-sca",
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3454,7 +3547,7 @@
       "requirement_category": "DEP",
       "requirement_name": "Versões de dependências fixas e auditáveis",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "05-dependencias-sbom-sca",
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3499,7 +3592,7 @@
       "requirement_category": "DEP",
       "requirement_name": "Proibição de dependências introduzidas por cópia manual",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "05-dependencias-sbom-sca",
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3544,7 +3637,7 @@
       "requirement_category": "DEP",
       "requirement_name": "Registries e repositórios de origem controlados",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "05-dependencias-sbom-sca",
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3591,7 +3684,7 @@
       "requirement_category": "DEP",
       "requirement_name": "Aprovação formal para introdução de novas dependências",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "05-dependencias-sbom-sca",
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3636,7 +3729,7 @@
       "requirement_category": "DEP",
       "requirement_name": "Política de actualização com SLA definido por severidade",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "05-dependencias-sbom-sca",
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3681,7 +3774,7 @@
       "requirement_category": "DEP",
       "requirement_name": "Actualização automatizada com análise de impacto",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "05-dependencias-sbom-sca",
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3727,7 +3820,7 @@
       "requirement_category": "DEP",
       "requirement_name": "Detecção de dependências não-intencionais ou emergentes",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L3",
       "source_bundle": "05-dependencias-sbom-sca",
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3772,7 +3865,7 @@
       "requirement_category": "DEP",
       "requirement_name": "Rastreabilidade SBOM → vulnerabilidade → correcção",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "05-dependencias-sbom-sca",
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3812,13 +3905,13 @@
         }
       ],
       "id": "EP-DEP-011",
-      "maps_to_control_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
-      "maps_to_control_name": "Inventário e análise de dependências",
+      "maps_to_control_id": null,
+      "maps_to_control_name": "",
       "maps_to_requirement_id": "DEP-011",
       "requirement_category": "DEP",
       "requirement_name": "Inventário e proveniência de dependências AI/ML",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "05-dependencias-sbom-sca",
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3857,13 +3950,13 @@
         }
       ],
       "id": "EP-DEP-012",
-      "maps_to_control_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
-      "maps_to_control_name": "Inventário e análise de dependências",
+      "maps_to_control_id": null,
+      "maps_to_control_name": "",
       "maps_to_requirement_id": "DEP-012",
       "requirement_category": "DEP",
       "requirement_name": "AI BOM gerado por *build* em formato standardizado",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "05-dependencias-sbom-sca",
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3902,13 +3995,13 @@
         }
       ],
       "id": "EP-DEP-013",
-      "maps_to_control_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
-      "maps_to_control_name": "Inventário e análise de dependências",
+      "maps_to_control_id": null,
+      "maps_to_control_name": "",
       "maps_to_requirement_id": "DEP-013",
       "requirement_category": "DEP",
       "requirement_name": "Versão *pinned* explícita para modelos AI e providers",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "05-dependencias-sbom-sca",
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3947,13 +4040,13 @@
         }
       ],
       "id": "EP-DEP-014",
-      "maps_to_control_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
-      "maps_to_control_name": "Inventário e análise de dependências",
+      "maps_to_control_id": null,
+      "maps_to_control_name": "",
       "maps_to_requirement_id": "DEP-014",
       "requirement_category": "DEP",
       "requirement_name": "Lista de *providers* AI aprovados com classificação de risco",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "05-dependencias-sbom-sca",
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -3996,7 +4089,7 @@
       "requirement_category": "DEV",
       "requirement_name": "Guidelines de código seguro versionadas e aprovadas por stack",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "06-desenvolvimento-seguro",
       "source_document": "010-sbd-manual/06-desenvolvimento-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -4043,7 +4136,7 @@
       "requirement_category": "DEV",
       "requirement_name": "Linters e rulesets de segurança configurados e enforced",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "06-desenvolvimento-seguro",
       "source_document": "010-sbd-manual/06-desenvolvimento-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -4086,7 +4179,7 @@
       "requirement_category": "DEV",
       "requirement_name": "Análise estática (SAST) integrada como gate de integração",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "06-desenvolvimento-seguro",
       "source_document": "010-sbd-manual/06-desenvolvimento-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -4133,7 +4226,7 @@
       "requirement_category": "DEV",
       "requirement_name": "Revisão de código com checklist de segurança em componentes críticos",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "06-desenvolvimento-seguro",
       "source_document": "010-sbd-manual/06-desenvolvimento-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -4180,7 +4273,7 @@
       "requirement_category": "DEV",
       "requirement_name": "Gestão formal de excepções técnicas e desvios a guidelines",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "06-desenvolvimento-seguro",
       "source_document": "010-sbd-manual/06-desenvolvimento-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -4225,7 +4318,7 @@
       "requirement_category": "DEV",
       "requirement_name": "Proveniência do código incorporado identificada e controlada",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "06-desenvolvimento-seguro",
       "source_document": "010-sbd-manual/06-desenvolvimento-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -4270,7 +4363,7 @@
       "requirement_category": "DEV",
       "requirement_name": "Constrangimentos técnicos explícitos para código gerado por IA",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "06-desenvolvimento-seguro",
       "source_document": "010-sbd-manual/06-desenvolvimento-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -4315,7 +4408,7 @@
       "requirement_category": "DEV",
       "requirement_name": "Perfis de qualidade com thresholds mínimos de segurança por nível de risco",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "06-desenvolvimento-seguro",
       "source_document": "010-sbd-manual/06-desenvolvimento-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -4360,7 +4453,7 @@
       "requirement_category": "DEV",
       "requirement_name": "Anotações de segurança rastreáveis no código e nos testes",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L3",
       "source_bundle": "06-desenvolvimento-seguro",
       "source_document": "010-sbd-manual/06-desenvolvimento-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -4405,7 +4498,7 @@
       "requirement_category": "DPL",
       "requirement_name": "Aprovação formal obrigatória antes de deploy em produção",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "11-deploy-seguro",
       "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -4453,7 +4546,7 @@
       "requirement_category": "DPL",
       "requirement_name": "Promoção apenas de artefactos com proveniência verificada",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "11-deploy-seguro",
       "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -4498,7 +4591,7 @@
       "requirement_category": "DPL",
       "requirement_name": "Gates automáticos de segurança como condição de promoção",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "11-deploy-seguro",
       "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -4544,7 +4637,7 @@
       "requirement_category": "DPL",
       "requirement_name": "Rastreabilidade end-to-end de cada deploy",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "11-deploy-seguro",
       "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -4589,7 +4682,7 @@
       "requirement_category": "DPL",
       "requirement_name": "Rollback configurado, testado e com SLA definido",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "11-deploy-seguro",
       "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -4635,7 +4728,7 @@
       "requirement_category": "DPL",
       "requirement_name": "Credenciais de deploy com âmbito mínimo e vida curta",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "11-deploy-seguro",
       "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -4680,7 +4773,7 @@
       "requirement_category": "DPL",
       "requirement_name": "Validação em staging antes de promoção a produção",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "11-deploy-seguro",
       "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -4723,7 +4816,7 @@
       "requirement_category": "DPL",
       "requirement_name": "Monitorização activa durante e após deploy",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "11-deploy-seguro",
       "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -4768,12 +4861,104 @@
       "requirement_category": "DPL",
       "requirement_name": "Deploy progressivo com contenção de impacto para aplicações críticas",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L3",
       "source_bundle": "11-deploy-seguro",
       "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
       "verification_logic": "Deploy progressivo implementado para releases de componentes críticos (canary, blue-green, feature flags); thresholds de promoção automática e critérios de rollback definidos; capacidade de contenção sem rollback completo verificável.",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Aplicável quando o sistema inclui agente AI ou modelo AI como dependência *load-bearing*. Quando uma promoção altera versão de modelo, *skill files* ou *system prompts*, a *eval suite* (Cap. 10 §C5) corre como gate obrigatório e o *fail* bloqueia a promoção; existem procedimentos de *rollback* da versão do modelo e do *system prompt*/*skill file* independentes do *rollback* aplicacional; as *release notes* registam versão de modelo, versão de *skill files*, versão da *eval suite* e mandate_ref como evidência arquivada (eval_run_id ligado ao release).",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-release-gate-57ec988cdb",
+        "ART-container-image-51e2624252"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-release-gate-57ec988cdb",
+          "confidence": 0.7,
+          "name": "Release Gate",
+          "shared_salient_tokens": [
+            "gate",
+            "release"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-container-image-51e2624252",
+          "confidence": 0.54,
+          "name": "Container Image",
+          "shared_salient_tokens": [
+            "release"
+          ]
+        }
+      ],
+      "id": "EP-DPL-010",
+      "maps_to_control_id": null,
+      "maps_to_control_name": "",
+      "maps_to_requirement_id": "DPL-010",
+      "requirement_category": "DPL",
+      "requirement_name": "Release gates para sistemas com agentes AI",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "11-deploy-seguro",
+      "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
+      "source_mode": "explicit",
+      "supported_signal_ids": [],
+      "verification_logic": "Aplicável quando o sistema inclui agente AI ou modelo AI como dependência *load-bearing*. Quando uma promoção altera versão de modelo, *skill files* ou *system prompts*, a *eval suite* (Cap. 10 §C5) corre como gate obrigatório e o *fail* bloqueia a promoção; existem procedimentos de *rollback* da versão do modelo e do *system prompt*/*skill file* independentes do *rollback* aplicacional; as *release notes* registam versão de modelo, versão de *skill files*, versão da *eval suite* e mandate_ref como evidência arquivada (eval_run_id ligado ao release).",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Aplicável a sistemas com agentes AI. Mudança de versão maior de modelo (provider, novo *fine-tune* ou *system prompt* com impacto material) é promovida via canary — fracção controlada de tráfego durante janela observável, com critérios objetivos de promoção e de rollback automático (taxa de erro, *off-policy events*, latência); um gate automático desce o autonomy_level do agente (ex.: A3 → A2) quando a *eval suite* não confirma o nível pretendido, até resolução.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-release-gate-57ec988cdb",
+        "ART-container-image-51e2624252"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-release-gate-57ec988cdb",
+          "confidence": 0.7,
+          "name": "Release Gate",
+          "shared_salient_tokens": [
+            "gate",
+            "release"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-container-image-51e2624252",
+          "confidence": 0.54,
+          "name": "Container Image",
+          "shared_salient_tokens": [
+            "release"
+          ]
+        }
+      ],
+      "id": "EP-DPL-011",
+      "maps_to_control_id": null,
+      "maps_to_control_name": "",
+      "maps_to_requirement_id": "DPL-011",
+      "requirement_category": "DPL",
+      "requirement_name": "Canary e demoção de autonomia no release de modelos",
+      "responsible_roles": [],
+      "risk_level_hint": "L3",
+      "source_bundle": "11-deploy-seguro",
+      "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
+      "source_mode": "explicit",
+      "supported_signal_ids": [],
+      "verification_logic": "Aplicável a sistemas com agentes AI. Mudança de versão maior de modelo (provider, novo *fine-tune* ou *system prompt* com impacto material) é promovida via canary — fracção controlada de tráfego durante janela observável, com critérios objetivos de promoção e de rollback automático (taxa de erro, *off-policy events*, latência); um gate automático desce o autonomy_level do agente (ex.: A3 → A2) quando a *eval suite* não confirma o nível pretendido, até resolução.",
       "verification_when": null
     },
     {
@@ -5085,6 +5270,370 @@
       "authority_class": "normative",
       "confidence_model": "deterministic",
       "detectable_in": [
+        "config"
+      ],
+      "evidence_expectation": "Toda a comunicação entre cliente e servidor e entre serviços internos usa TLS com versão mínima definida; versões inseguras (TLS 1.0, 1.1, SSLv3) desactivadas e verificáveis por configuração.",
+      "evidence_type": "config",
+      "expected_artifact_type_ids": [],
+      "expected_artifacts": [],
+      "id": "EP-ENC-001",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_requirement_id": "ENC-001",
+      "requirement_category": "ENC",
+      "requirement_name": "Encriptação de todas as comunicações em trânsito",
+      "responsible_roles": [],
+      "risk_level_hint": "L1+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Dados classificados como sensíveis (PII, credenciais, dados financeiros) encriptados em armazenamento persistente; chaves de encriptação geridas separadamente dos dados; evidência de aplicação a todos os datastores relevantes.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-operational-evidence-f5e852756f",
+        "ART-validation-evidence-79f6aaf0ec"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-operational-evidence-f5e852756f",
+          "confidence": 0.54,
+          "name": "Operational Evidence",
+          "shared_salient_tokens": [
+            "evidencia"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-validation-evidence-79f6aaf0ec",
+          "confidence": 0.54,
+          "name": "Validation Evidence",
+          "shared_salient_tokens": [
+            "evidencia"
+          ]
+        }
+      ],
+      "id": "EP-ENC-002",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_requirement_id": "ENC-002",
+      "requirement_category": "ENC",
+      "requirement_name": "Encriptação de dados sensíveis em repouso",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [],
+      "evidence_expectation": "Apenas algoritmos aprovados e tamanhos de chave adequados em uso (ex: AES-256, RSA ≥ 2048, curvas elípticas aprovadas); algoritmos fracos ou deprecados (MD5, SHA-1 para integridade, DES) ausentes; lista de primitivas aprovadas documentada.",
+      "evidence_type": "artifact",
+      "expected_artifact_type_ids": [
+        "ART-approval-record-6fe32eb803",
+        "ART-release-gate-57ec988cdb"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-approval-record-6fe32eb803",
+          "confidence": 0.68,
+          "name": "Approval Record",
+          "shared_salient_tokens": [
+            "aprovacao"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-release-gate-57ec988cdb",
+          "confidence": 0.68,
+          "name": "Release Gate",
+          "shared_salient_tokens": [
+            "aprovacao"
+          ]
+        }
+      ],
+      "id": "EP-ENC-003",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_requirement_id": "ENC-003",
+      "requirement_category": "ENC",
+      "requirement_name": "Algoritmos e configurações criptográficas robustas",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Passwords armazenadas com algoritmo adaptativo resistente a força bruta (bcrypt, Argon2, PBKDF2); factor de custo configurado e revisto periodicamente; ausência de hashing estático ou reversível confirmada.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [],
+      "expected_artifacts": [],
+      "id": "EP-ENC-004",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_requirement_id": "ENC-004",
+      "requirement_category": "ENC",
+      "requirement_name": "Hashing adaptativo de passwords",
+      "responsible_roles": [],
+      "risk_level_hint": "L1+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "logs"
+      ],
+      "evidence_expectation": "Passwords, tokens, números de cartão, dados pessoais sensíveis não aparecem em claro em logs, respostas de erro ou outputs de debugging; cobertura verificada por análise de logs e teste.",
+      "evidence_type": "log",
+      "expected_artifact_type_ids": [
+        "ART-log-stream-b67ee06f7e",
+        "ART-sca-report-da2c6d2413"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-log-stream-b67ee06f7e",
+          "confidence": 0.68,
+          "name": "Log Stream",
+          "shared_salient_tokens": [
+            "log"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-sca-report-da2c6d2413",
+          "confidence": 0.54,
+          "name": "Sca Report",
+          "shared_salient_tokens": [
+            "output"
+          ]
+        }
+      ],
+      "id": "EP-ENC-005",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_requirement_id": "ENC-005",
+      "requirement_category": "ENC",
+      "requirement_name": "Mascaramento de dados sensíveis em logs, outputs e respostas API",
+      "responsible_roles": [],
+      "risk_level_hint": "L1+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Ferramenta de detecção de segredos activa no pipeline (ex: truffleHog, gitleaks, detect-secrets); commits com segredos detectados bloqueados ou alertados; sem segredos em claro no histórico do repositório.",
+      "evidence_type": "log",
+      "expected_artifact_type_ids": [
+        "ART-artifact-provenance-8b1bffca3c",
+        "ART-pipeline-config-f8f2ba893d"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-artifact-provenance-8b1bffca3c",
+          "confidence": 0.94,
+          "name": "Artifact Provenance",
+          "shared_salient_tokens": [
+            "commit",
+            "pipeline"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-pipeline-config-f8f2ba893d",
+          "confidence": 0.62,
+          "name": "Pipeline Config",
+          "shared_salient_tokens": [
+            "pipeline"
+          ]
+        }
+      ],
+      "id": "EP-ENC-006",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_requirement_id": "ENC-006",
+      "requirement_category": "ENC",
+      "requirement_name": "Detecção e prevenção de segredos expostos em repositórios",
+      "responsible_roles": [],
+      "risk_level_hint": "L1+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Política de rotação definida por tipo de segredo; rotação executada nos prazos definidos; evidência de rotação auditável; ausência de chaves sem data de expiração para material crítico.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-policy-report-7e52280504",
+        "ART-operational-evidence-f5e852756f"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-policy-report-7e52280504",
+          "confidence": 0.64,
+          "name": "Policy Report",
+          "shared_salient_tokens": [
+            "politica"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-operational-evidence-f5e852756f",
+          "confidence": 0.54,
+          "name": "Operational Evidence",
+          "shared_salient_tokens": [
+            "evidencia"
+          ]
+        }
+      ],
+      "id": "EP-ENC-007",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_requirement_id": "ENC-007",
+      "requirement_category": "ENC",
+      "requirement_name": "Rotação periódica de chaves e segredos",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "config"
+      ],
+      "evidence_expectation": "Respostas com dados sensíveis incluem cabeçalhos que inibem caching (Cache-Control: no-store, etc.); configuração verificável por análise de headers em ambiente de teste.",
+      "evidence_type": "config",
+      "expected_artifact_type_ids": [
+        "ART-environment-inventory-154c4568fd",
+        "ART-test-report-b11c5dfb8a"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-environment-inventory-154c4568fd",
+          "confidence": 0.54,
+          "name": "Environment Inventory",
+          "shared_salient_tokens": [
+            "ambiente"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-test-report-b11c5dfb8a",
+          "confidence": 0.54,
+          "name": "Test Report",
+          "shared_salient_tokens": [
+            "teste"
+          ]
+        }
+      ],
+      "id": "EP-ENC-008",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_requirement_id": "ENC-008",
+      "requirement_category": "ENC",
+      "requirement_name": "Prevenção de caching de dados sensíveis no cliente",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Dados críticos com mecanismo de verificação de integridade (MACs, assinaturas, checksums); adulterações detectadas e registadas; cobertura aplicada a dados com impacto de negócio ou regulatório.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-artifact-signature-1d67811ec5",
+        "ART-signature-attestation-67e300d959"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-artifact-signature-1d67811ec5",
+          "confidence": 0.88,
+          "name": "Artifact Signature",
+          "shared_salient_tokens": [
+            "assinatura"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-signature-attestation-67e300d959",
+          "confidence": 0.88,
+          "name": "Signature Attestation",
+          "shared_salient_tokens": [
+            "assinatura"
+          ]
+        }
+      ],
+      "id": "EP-ENC-009",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_requirement_id": "ENC-009",
+      "requirement_category": "ENC",
+      "requirement_name": "Integridade verificável de dados críticos",
+      "responsible_roles": [],
+      "risk_level_hint": "L3",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
         "logs",
         "ci_cd"
       ],
@@ -5335,7 +5884,7 @@
       "requirement_category": "GOV",
       "requirement_name": "Modelo formal de governação de segurança aprovado",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "14-governanca-contratacao",
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -5360,7 +5909,7 @@
       "requirement_category": "GOV",
       "requirement_name": "Ownership de segurança atribuído por aplicação ou projecto",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "14-governanca-contratacao",
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -5405,7 +5954,7 @@
       "requirement_category": "GOV",
       "requirement_name": "Alçadas de aprovação definidas e conhecidas por nível de risco",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "14-governanca-contratacao",
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -5450,7 +5999,7 @@
       "requirement_category": "GOV",
       "requirement_name": "Processo formal de gestão de excepções activo",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "14-governanca-contratacao",
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -5495,7 +6044,7 @@
       "requirement_category": "GOV",
       "requirement_name": "Excepções com validade, monitorização e revalidação obrigatória",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "14-governanca-contratacao",
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -5540,7 +6089,7 @@
       "requirement_category": "GOV",
       "requirement_name": "Cláusulas de segurança proporcionais ao risco em contratos com terceiros",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "14-governanca-contratacao",
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -5586,7 +6135,7 @@
       "requirement_category": "GOV",
       "requirement_name": "Validação formal de fornecedores antes de onboarding",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "14-governanca-contratacao",
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -5633,7 +6182,7 @@
       "requirement_category": "GOV",
       "requirement_name": "Rastreabilidade organizacional de decisões de segurança por aplicação",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "14-governanca-contratacao",
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -5679,7 +6228,7 @@
       "requirement_category": "GOV",
       "requirement_name": "Evidência de decisões rastreável, referenciável e retida",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "14-governanca-contratacao",
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -5725,7 +6274,7 @@
       "requirement_category": "GOV",
       "requirement_name": "Ciclo de validação contínua e revisão periódica de conformidade",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "14-governanca-contratacao",
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -5759,7 +6308,7 @@
       "requirement_category": "GOV",
       "requirement_name": "KPIs de governação definidos, recolhidos e reportados",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "14-governanca-contratacao",
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -5804,12 +6353,659 @@
       "requirement_category": "GOV",
       "requirement_name": "Modelo de maturidade activo com evolução medida e planeada",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L3",
       "source_bundle": "14-governanca-contratacao",
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
       "verification_logic": "Avaliação de maturidade de segurança activa (SAMM, DSOMM ou equivalente); realizada pelo menos anualmente; resultados documentados com plano de evolução e metas definidas; evolução comparada com ciclo anterior e reportada à gestão.",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "documentation"
+      ],
+      "evidence_expectation": "Contractors e terceiros completam preparação técnica estruturada antes de acesso real a sistemas: formação de segurança por perfil (Dev, DevOps, QA, Arquitetura), quiz de compreensão com score mínimo (tipicamente 80%), ambiente sandbox para prática e NDA/confidentiality agreement assinados; o acesso só é concedido após *sign-off* de conclusão validado (Security Champion/AppSec + Tech Lead); o registo é rastreável (GRC/LMS) com datas, scores e validador, e mantido conforme retenção regulatória aplicável (DORA, NIS2). Em L1 é recomendado; em L2/L3 é obrigatório, com quiz validado em L3.",
+      "evidence_type": "document",
+      "expected_artifact_type_ids": [
+        "ART-artifact-signature-1d67811ec5",
+        "ART-signature-attestation-67e300d959"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-artifact-signature-1d67811ec5",
+          "confidence": 0.88,
+          "name": "Artifact Signature",
+          "shared_salient_tokens": [
+            "assinatura"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-signature-attestation-67e300d959",
+          "confidence": 0.88,
+          "name": "Signature Attestation",
+          "shared_salient_tokens": [
+            "assinatura"
+          ]
+        }
+      ],
+      "id": "EP-GOV-013",
+      "maps_to_control_id": null,
+      "maps_to_control_name": "",
+      "maps_to_requirement_id": "GOV-013",
+      "requirement_category": "GOV",
+      "requirement_name": "Onboarding técnico e formação obrigatória pré-acesso de terceiros",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "14-governanca-contratacao",
+      "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
+      "source_mode": "explicit",
+      "supported_signal_ids": [],
+      "verification_logic": "Contractors e terceiros completam preparação técnica estruturada antes de acesso real a sistemas: formação de segurança por perfil (Dev, DevOps, QA, Arquitetura), quiz de compreensão com score mínimo (tipicamente 80%), ambiente sandbox para prática e NDA/confidentiality agreement assinados; o acesso só é concedido após *sign-off* de conclusão validado (Security Champion/AppSec + Tech Lead); o registo é rastreável (GRC/LMS) com datas, scores e validador, e mantido conforme retenção regulatória aplicável (DORA, NIS2). Em L1 é recomendado; em L2/L3 é obrigatório, com quiz validado em L3.",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd",
+        "documentation"
+      ],
+      "evidence_expectation": "O acesso de contractors activos a sistemas (repositórios, CI/CD, bases de dados, cloud IAM, VPN) é revisto periodicamente — semestral em L1, trimestral em L2/L3 — validando, por terceiro, que cada acesso permanece necessário ao projeto; acesso excessivo ou obsoleto é removido no próprio dia; a revisão é assinada (Tech Lead + Security Champion), as mudanças ficam em *audit trail* e um relatório consolidado (% mantido / % removido) é entregue. Triggers adicionais: mudança de projeto, incidente.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-artifact-signature-1d67811ec5",
+        "ART-signature-attestation-67e300d959"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-artifact-signature-1d67811ec5",
+          "confidence": 0.88,
+          "name": "Artifact Signature",
+          "shared_salient_tokens": [
+            "assinatura"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-signature-attestation-67e300d959",
+          "confidence": 0.88,
+          "name": "Signature Attestation",
+          "shared_salient_tokens": [
+            "assinatura"
+          ]
+        }
+      ],
+      "id": "EP-GOV-014",
+      "maps_to_control_id": null,
+      "maps_to_control_name": "",
+      "maps_to_requirement_id": "GOV-014",
+      "requirement_category": "GOV",
+      "requirement_name": "Revisão periódica de acesso de terceiros (least privilege)",
+      "responsible_roles": [],
+      "risk_level_hint": "L1+",
+      "source_bundle": "14-governanca-contratacao",
+      "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
+      "source_mode": "explicit",
+      "supported_signal_ids": [],
+      "verification_logic": "O acesso de contractors activos a sistemas (repositórios, CI/CD, bases de dados, cloud IAM, VPN) é revisto periodicamente — semestral em L1, trimestral em L2/L3 — validando, por terceiro, que cada acesso permanece necessário ao projeto; acesso excessivo ou obsoleto é removido no próprio dia; a revisão é assinada (Tech Lead + Security Champion), as mudanças ficam em *audit trail* e um relatório consolidado (% mantido / % removido) é entregue. Triggers adicionais: mudança de projeto, incidente.",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "logs"
+      ],
+      "evidence_expectation": "backend configurado com autenticação e locking; tentativa de apply concorrente resulta em bloqueio; logs de lock disponíveis.",
+      "evidence_type": "log",
+      "expected_artifact_type_ids": [
+        "ART-log-stream-b67ee06f7e"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-log-stream-b67ee06f7e",
+          "confidence": 0.68,
+          "name": "Log Stream",
+          "shared_salient_tokens": [
+            "log"
+          ]
+        }
+      ],
+      "id": "EP-IAC-001",
+      "maps_to_control_id": "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+      "maps_to_control_name": "Infraestrutura como código governada",
+      "maps_to_requirement_id": "IAC-001",
+      "requirement_category": "IAC",
+      "requirement_name": "Backend remoto autenticado com locking activo",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "08-iac-infraestrutura",
+      "source_document": "08-iac-infraestrutura/addon/08-matriz-requisitos-iac.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Configurações de dev, staging e prod distintas, versionadas em directórios ou workspaces separados; deploy não pode cruzar ambientes sem aprovação explícita.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-approval-record-6fe32eb803",
+        "ART-release-gate-57ec988cdb"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-approval-record-6fe32eb803",
+          "confidence": 0.68,
+          "name": "Approval Record",
+          "shared_salient_tokens": [
+            "aprovacao"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-release-gate-57ec988cdb",
+          "confidence": 0.68,
+          "name": "Release Gate",
+          "shared_salient_tokens": [
+            "aprovacao"
+          ]
+        }
+      ],
+      "id": "EP-IAC-002",
+      "maps_to_control_id": "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+      "maps_to_control_name": "Infraestrutura como código governada",
+      "maps_to_requirement_id": "IAC-002",
+      "requirement_category": "IAC",
+      "requirement_name": "Ambientes segregados e versionados",
+      "responsible_roles": [],
+      "risk_level_hint": "L1+",
+      "source_bundle": "08-iac-infraestrutura",
+      "source_document": "08-iac-infraestrutura/addon/08-matriz-requisitos-iac.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Pipeline com etapas de lint, análise de segurança (ex: tfsec, checkov) e validação de política; falha em qualquer etapa bloqueia o apply.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-policy-report-7e52280504",
+        "ART-artifact-provenance-8b1bffca3c"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-policy-report-7e52280504",
+          "confidence": 0.64,
+          "name": "Policy Report",
+          "shared_salient_tokens": [
+            "politica"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-artifact-provenance-8b1bffca3c",
+          "confidence": 0.62,
+          "name": "Artifact Provenance",
+          "shared_salient_tokens": [
+            "pipeline"
+          ]
+        }
+      ],
+      "id": "EP-IAC-003",
+      "maps_to_control_id": "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+      "maps_to_control_name": "Infraestrutura como código governada",
+      "maps_to_requirement_id": "IAC-003",
+      "requirement_category": "IAC",
+      "requirement_name": "Validações automáticas obrigatórias em pipeline",
+      "responsible_roles": [],
+      "risk_level_hint": "L1+",
+      "source_bundle": "08-iac-infraestrutura",
+      "source_document": "08-iac-infraestrutura/addon/08-matriz-requisitos-iac.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Referências de módulos com versão semântica fixa ou hash; ausência de referências sem versão (latest, master, HEAD); origem documentada.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [],
+      "expected_artifacts": [],
+      "id": "EP-IAC-004",
+      "maps_to_control_id": "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+      "maps_to_control_name": "Infraestrutura como código governada",
+      "maps_to_requirement_id": "IAC-004",
+      "requirement_category": "IAC",
+      "requirement_name": "Módulos reutilizados com origem confiável e versão imutável",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "08-iac-infraestrutura",
+      "source_document": "08-iac-infraestrutura/addon/08-matriz-requisitos-iac.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Repositório Git com histórico intacto, tags semânticas por release e notas de versão; sem squash obrigatório em branches principais.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-container-image-51e2624252",
+        "ART-pipeline-config-f8f2ba893d"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-container-image-51e2624252",
+          "confidence": 0.54,
+          "name": "Container Image",
+          "shared_salient_tokens": [
+            "release"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-pipeline-config-f8f2ba893d",
+          "confidence": 0.54,
+          "name": "Pipeline Config",
+          "shared_salient_tokens": [
+            "release"
+          ]
+        }
+      ],
+      "id": "EP-IAC-005",
+      "maps_to_control_id": "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+      "maps_to_control_name": "Infraestrutura como código governada",
+      "maps_to_requirement_id": "IAC-005",
+      "requirement_category": "IAC",
+      "requirement_name": "Histórico completo com versionamento, tags e releases",
+      "responsible_roles": [],
+      "risk_level_hint": "L1+",
+      "source_bundle": "08-iac-infraestrutura",
+      "source_document": "08-iac-infraestrutura/addon/08-matriz-requisitos-iac.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [],
+      "evidence_expectation": "Linter ou política automática que valida convenções de nomes e tags obrigatórias; recursos sem tags de identificação obrigatórias são rejeitados.",
+      "evidence_type": "artifact",
+      "expected_artifact_type_ids": [
+        "ART-policy-report-7e52280504",
+        "ART-sast-report-0358e14566"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-policy-report-7e52280504",
+          "confidence": 0.64,
+          "name": "Policy Report",
+          "shared_salient_tokens": [
+            "politica"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-sast-report-0358e14566",
+          "confidence": 0.54,
+          "name": "Sast Report",
+          "shared_salient_tokens": [
+            "linter"
+          ]
+        }
+      ],
+      "id": "EP-IAC-006",
+      "maps_to_control_id": "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+      "maps_to_control_name": "Infraestrutura como código governada",
+      "maps_to_requirement_id": "IAC-006",
+      "requirement_category": "IAC",
+      "requirement_name": "Convenções formais de naming, tagging e layout",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "08-iac-infraestrutura",
+      "source_document": "08-iac-infraestrutura/addon/08-matriz-requisitos-iac.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "PR com output de plan anexado e revisível; aprovação registada antes de apply; evidência de que o apply ocorreu após aprovação e sobre o mesmo plan.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-approval-record-6fe32eb803",
+        "ART-release-gate-57ec988cdb"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-approval-record-6fe32eb803",
+          "confidence": 0.68,
+          "name": "Approval Record",
+          "shared_salient_tokens": [
+            "aprovacao"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-release-gate-57ec988cdb",
+          "confidence": 0.68,
+          "name": "Release Gate",
+          "shared_salient_tokens": [
+            "aprovacao"
+          ]
+        }
+      ],
+      "id": "EP-IAC-007",
+      "maps_to_control_id": "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+      "maps_to_control_name": "Infraestrutura como código governada",
+      "maps_to_requirement_id": "IAC-007",
+      "requirement_category": "IAC",
+      "requirement_name": "Plan rastreável e aprovado antes de qualquer apply",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "08-iac-infraestrutura",
+      "source_document": "08-iac-infraestrutura/addon/08-matriz-requisitos-iac.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Possível identificar, para qualquer recurso provisionado, o ficheiro IaC de origem, o ambiente e o pipeline que o criou; evidência disponível em auditoria.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-log-stream-b67ee06f7e",
+        "ART-artifact-provenance-8b1bffca3c"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-log-stream-b67ee06f7e",
+          "confidence": 0.68,
+          "name": "Log Stream",
+          "shared_salient_tokens": [
+            "auditoria"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-artifact-provenance-8b1bffca3c",
+          "confidence": 0.62,
+          "name": "Artifact Provenance",
+          "shared_salient_tokens": [
+            "pipeline"
+          ]
+        }
+      ],
+      "id": "EP-IAC-008",
+      "maps_to_control_id": "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+      "maps_to_control_name": "Infraestrutura como código governada",
+      "maps_to_requirement_id": "IAC-008",
+      "requirement_category": "IAC",
+      "requirement_name": "Rastreabilidade ficheiro → recurso → ambiente",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "08-iac-infraestrutura",
+      "source_document": "08-iac-infraestrutura/addon/08-matriz-requisitos-iac.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "logs",
+        "ci_cd"
+      ],
+      "evidence_expectation": "Regras de política (ex: OPA/Rego, Sentinel) activas no pipeline; logs de bloqueio por violação de política disponíveis; política versionada com o código.",
+      "evidence_type": "log",
+      "expected_artifact_type_ids": [
+        "ART-log-stream-b67ee06f7e",
+        "ART-policy-report-7e52280504"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-log-stream-b67ee06f7e",
+          "confidence": 0.68,
+          "name": "Log Stream",
+          "shared_salient_tokens": [
+            "log"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-policy-report-7e52280504",
+          "confidence": 0.64,
+          "name": "Policy Report",
+          "shared_salient_tokens": [
+            "politica"
+          ]
+        }
+      ],
+      "id": "EP-IAC-009",
+      "maps_to_control_id": "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+      "maps_to_control_name": "Infraestrutura como código governada",
+      "maps_to_requirement_id": "IAC-009",
+      "requirement_category": "IAC",
+      "requirement_name": "Enforcement automático de políticas em pipeline",
+      "responsible_roles": [],
+      "risk_level_hint": "L3",
+      "source_bundle": "08-iac-infraestrutura",
+      "source_document": "08-iac-infraestrutura/addon/08-matriz-requisitos-iac.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [],
+      "evidence_expectation": "Plans e manifests armazenados com hash verificável; integridade confirmada antes do apply; artefactos não reutilizáveis entre ambientes distintos.",
+      "evidence_type": "artifact",
+      "expected_artifact_type_ids": [
+        "ART-deployment-plan-945b804751",
+        "ART-environment-inventory-154c4568fd"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-deployment-plan-945b804751",
+          "confidence": 0.54,
+          "name": "Deployment Plan",
+          "shared_salient_tokens": [
+            "plan"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-environment-inventory-154c4568fd",
+          "confidence": 0.54,
+          "name": "Environment Inventory",
+          "shared_salient_tokens": [
+            "ambiente"
+          ]
+        }
+      ],
+      "id": "EP-IAC-010",
+      "maps_to_control_id": "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+      "maps_to_control_name": "Infraestrutura como código governada",
+      "maps_to_requirement_id": "IAC-010",
+      "requirement_category": "IAC",
+      "requirement_name": "Artefactos de plan e manifests versionados e com hash",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "08-iac-infraestrutura",
+      "source_document": "08-iac-infraestrutura/addon/08-matriz-requisitos-iac.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Ausência de segredos em código, variáveis de ambiente não protegidas ou ficheiros versionados; integração com cofre de segredos (Vault, KMS, OIDC) verificável; scan automatizado de segredos no pipeline.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-sca-report-da2c6d2413",
+        "ART-test-report-b11c5dfb8a"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-sca-report-da2c6d2413",
+          "confidence": 0.88,
+          "name": "Sca Report",
+          "shared_salient_tokens": [
+            "scan"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-test-report-b11c5dfb8a",
+          "confidence": 0.76,
+          "name": "Test Report",
+          "shared_salient_tokens": [
+            "scan"
+          ]
+        }
+      ],
+      "id": "EP-IAC-011",
+      "maps_to_control_id": "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+      "maps_to_control_name": "Infraestrutura como código governada",
+      "maps_to_requirement_id": "IAC-011",
+      "requirement_category": "IAC",
+      "requirement_name": "Gestão segura de segredos - proibição de hardcoding",
+      "responsible_roles": [],
+      "risk_level_hint": "L1+",
+      "source_bundle": "08-iac-infraestrutura",
+      "source_document": "08-iac-infraestrutura/addon/08-matriz-requisitos-iac.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd",
+        "documentation"
+      ],
+      "evidence_expectation": "Relatórios periódicos de drift disponíveis; alertas activos para divergência entre estado definido em IaC e estado real da infraestrutura.",
+      "evidence_type": "log",
+      "expected_artifact_type_ids": [
+        "ART-alert-policy-c55180d8ab",
+        "ART-policy-report-7e52280504"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-alert-policy-c55180d8ab",
+          "confidence": 0.54,
+          "name": "Alert Policy",
+          "shared_salient_tokens": [
+            "alerta"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-policy-report-7e52280504",
+          "confidence": 0.54,
+          "name": "Policy Report",
+          "shared_salient_tokens": [
+            "relatorio"
+          ]
+        }
+      ],
+      "id": "EP-IAC-012",
+      "maps_to_control_id": "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+      "maps_to_control_name": "Infraestrutura como código governada",
+      "maps_to_requirement_id": "IAC-012",
+      "requirement_category": "IAC",
+      "requirement_name": "Detecção automatizada de drift entre IaC e estado real",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "08-iac-infraestrutura",
+      "source_document": "08-iac-infraestrutura/addon/08-matriz-requisitos-iac.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd",
+        "documentation"
+      ],
+      "evidence_expectation": "Registos de revisão com data, responsável e findings; ciclo de revisão definido e evidência de cumprimento; módulos obsoletos ou com vulnerabilidades conhecidas retirados de serviço.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-sca-report-da2c6d2413",
+        "ART-finding-register-b39d52b4e7"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-sca-report-da2c6d2413",
+          "confidence": 0.88,
+          "name": "Sca Report",
+          "shared_salient_tokens": [
+            "vulnerabilidade"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-finding-register-b39d52b4e7",
+          "confidence": 0.56,
+          "name": "Finding Register",
+          "shared_salient_tokens": [
+            "finding",
+            "registo"
+          ]
+        }
+      ],
+      "id": "EP-IAC-013",
+      "maps_to_control_id": "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+      "maps_to_control_name": "Infraestrutura como código governada",
+      "maps_to_requirement_id": "IAC-013",
+      "requirement_category": "IAC",
+      "requirement_name": "Revisão periódica formal de módulos e templates",
+      "responsible_roles": [],
+      "risk_level_hint": "L3",
+      "source_bundle": "08-iac-infraestrutura",
+      "source_document": "08-iac-infraestrutura/addon/08-matriz-requisitos-iac.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
       "verification_when": null
     },
     {
@@ -6854,7 +8050,7 @@
       "requirement_category": "OPS",
       "requirement_name": "Logging estruturado e persistente para todos os componentes em produção",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "12-monitorizacao-operacoes",
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -6900,7 +8096,7 @@
       "requirement_category": "OPS",
       "requirement_name": "Catálogo de eventos críticos de segurança definido e verificado",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "12-monitorizacao-operacoes",
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -6946,7 +8142,7 @@
       "requirement_category": "OPS",
       "requirement_name": "Retenção de logs conforme política e requisitos regulatórios",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "12-monitorizacao-operacoes",
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -6992,7 +8188,7 @@
       "requirement_category": "OPS",
       "requirement_name": "Centralização de logs em sistema SIEM ou equivalente",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "12-monitorizacao-operacoes",
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -7028,7 +8224,7 @@
       "requirement_category": "OPS",
       "requirement_name": "Alertas automáticos para eventos de segurança críticos",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "12-monitorizacao-operacoes",
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -7071,7 +8267,7 @@
       "requirement_category": "OPS",
       "requirement_name": "SLA de resposta a alertas definido e medido",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "12-monitorizacao-operacoes",
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -7116,7 +8312,7 @@
       "requirement_category": "OPS",
       "requirement_name": "Integração com processo formal de resposta a incidentes",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "12-monitorizacao-operacoes",
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -7141,7 +8337,7 @@
       "requirement_category": "OPS",
       "requirement_name": "Correlação de eventos entre múltiplas fontes",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L3",
       "source_bundle": "12-monitorizacao-operacoes",
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -7186,7 +8382,7 @@
       "requirement_category": "OPS",
       "requirement_name": "Deteção comportamental e baseline de actividade normal",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L3",
       "source_bundle": "12-monitorizacao-operacoes",
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -7232,7 +8428,7 @@
       "requirement_category": "OPS",
       "requirement_name": "Métricas de eficácia da monitorização medidas e revistas",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L3",
       "source_bundle": "12-monitorizacao-operacoes",
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -7274,13 +8470,13 @@
         }
       ],
       "id": "EP-OPS-011",
-      "maps_to_control_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
-      "maps_to_control_name": "Monitorização e resposta operacional",
+      "maps_to_control_id": null,
+      "maps_to_control_name": "",
       "maps_to_requirement_id": "OPS-011",
       "requirement_category": "OPS",
       "requirement_name": "Observabilidade dedicada a componentes AI/ML em produção",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "12-monitorizacao-operacoes",
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -7319,13 +8515,13 @@
         }
       ],
       "id": "EP-OPS-012",
-      "maps_to_control_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
-      "maps_to_control_name": "Monitorização e resposta operacional",
+      "maps_to_control_id": null,
+      "maps_to_control_name": "",
       "maps_to_requirement_id": "OPS-012",
       "requirement_category": "OPS",
       "requirement_name": "Audit completo por *tool invocation* de agente AI",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "12-monitorizacao-operacoes",
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -7364,13 +8560,13 @@
         }
       ],
       "id": "EP-OPS-013",
-      "maps_to_control_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
-      "maps_to_control_name": "Monitorização e resposta operacional",
+      "maps_to_control_id": null,
+      "maps_to_control_name": "",
       "maps_to_requirement_id": "OPS-013",
       "requirement_category": "OPS",
       "requirement_name": "Budget e detecção de *runaway* em consumo de modelo (token spend)",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "12-monitorizacao-operacoes",
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -7410,13 +8606,13 @@
         }
       ],
       "id": "EP-OPS-014",
-      "maps_to_control_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
-      "maps_to_control_name": "Monitorização e resposta operacional",
+      "maps_to_control_id": null,
+      "maps_to_control_name": "",
       "maps_to_requirement_id": "OPS-014",
       "requirement_category": "OPS",
       "requirement_name": "Detecção de *jailbreak* / *off-policy actions* em produção",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L3",
       "source_bundle": "12-monitorizacao-operacoes",
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8003,7 +9199,7 @@
       "requirement_category": "THR",
       "requirement_name": "Threat modeling formal em aplicações L2+ e alterações arquitecturais significativas",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "03-threat-modeling",
       "source_document": "010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8052,7 +9248,7 @@
       "requirement_category": "THR",
       "requirement_name": "Arquitectura actual representada com DFDs e trust boundaries explícitos",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "03-threat-modeling",
       "source_document": "010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8090,7 +9286,7 @@
       "requirement_category": "THR",
       "requirement_name": "Metodologia estruturada aplicada com cobertura mínima garantida",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "03-threat-modeling",
       "source_document": "010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8135,7 +9331,7 @@
       "requirement_category": "THR",
       "requirement_name": "Disposição formal de cada ameaça identificada com owner",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "03-threat-modeling",
       "source_document": "010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8181,7 +9377,7 @@
       "requirement_category": "THR",
       "requirement_name": "Rastreabilidade ameaça → requisito → backlog → validação",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "03-threat-modeling",
       "source_document": "010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8227,7 +9423,7 @@
       "requirement_category": "THR",
       "requirement_name": "Threat model versionado e actualizado dentro do ciclo ou após trigger",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "03-threat-modeling",
       "source_document": "010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8274,7 +9470,7 @@
       "requirement_category": "THR",
       "requirement_name": "Revisão independente por AppSec antes de go-live em L2 e L3",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "03-threat-modeling",
       "source_document": "010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8315,13 +9511,13 @@
         }
       ],
       "id": "EP-THR-008",
-      "maps_to_control_id": "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0",
-      "maps_to_control_name": "Threat modeling e gestão de risco",
+      "maps_to_control_id": null,
+      "maps_to_control_name": "",
       "maps_to_requirement_id": "THR-008",
       "requirement_category": "THR",
       "requirement_name": "Threat modeling estendido para sistemas com componentes AI/ML",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "03-threat-modeling",
       "source_document": "010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8366,7 +9562,7 @@
       "requirement_category": "TRN",
       "requirement_name": "Trilhos de formação de segurança definidos por perfil e nível de criticidade",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "13-formacao-onboarding",
       "source_document": "010-sbd-manual/13-formacao-onboarding/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8411,7 +9607,7 @@
       "requirement_category": "TRN",
       "requirement_name": "Onboarding de segurança obrigatório antes de trabalho autónomo",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "13-formacao-onboarding",
       "source_document": "010-sbd-manual/13-formacao-onboarding/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8457,7 +9653,7 @@
       "requirement_category": "TRN",
       "requirement_name": "Validação objectiva do onboarding com critério de aceitação definido",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "13-formacao-onboarding",
       "source_document": "010-sbd-manual/13-formacao-onboarding/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8503,7 +9699,7 @@
       "requirement_category": "TRN",
       "requirement_name": "Acesso a ambientes críticos condicionado a onboarding validado",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "13-formacao-onboarding",
       "source_document": "010-sbd-manual/13-formacao-onboarding/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8548,7 +9744,7 @@
       "requirement_category": "TRN",
       "requirement_name": "Formação de segurança contínua para equipas em projectos L2 e L3",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "13-formacao-onboarding",
       "source_document": "010-sbd-manual/13-formacao-onboarding/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8594,7 +9790,7 @@
       "requirement_category": "TRN",
       "requirement_name": "Conteúdo formativo versionado e actualizado após triggers definidos",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "13-formacao-onboarding",
       "source_document": "010-sbd-manual/13-formacao-onboarding/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8640,7 +9836,7 @@
       "requirement_category": "TRN",
       "requirement_name": "Onboarding de segurança equivalente para terceiros e contratados",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "13-formacao-onboarding",
       "source_document": "010-sbd-manual/13-formacao-onboarding/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8685,7 +9881,7 @@
       "requirement_category": "TRN",
       "requirement_name": "Programa formal de Security Champions em equipas L3",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L3",
       "source_bundle": "13-formacao-onboarding",
       "source_document": "010-sbd-manual/13-formacao-onboarding/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8730,7 +9926,7 @@
       "requirement_category": "TRN",
       "requirement_name": "KPIs de formação definidos, recolhidos e accionados",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "13-formacao-onboarding",
       "source_document": "010-sbd-manual/13-formacao-onboarding/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8776,7 +9972,7 @@
       "requirement_category": "TST",
       "requirement_name": "Estratégia formal de testes de segurança por nível de risco",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "10-testes-seguranca",
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8821,7 +10017,7 @@
       "requirement_category": "TST",
       "requirement_name": "SAST com perfil de cobertura gerido e baseline de falsos positivos",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "10-testes-seguranca",
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8864,7 +10060,7 @@
       "requirement_category": "TST",
       "requirement_name": "Gestão formal de findings com SLA de correcção por severidade",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "10-testes-seguranca",
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8910,7 +10106,7 @@
       "requirement_category": "TST",
       "requirement_name": "Evidência de testes reproduzível, auditável e ligada ao build",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L1+",
       "source_bundle": "10-testes-seguranca",
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -8955,7 +10151,7 @@
       "requirement_category": "TST",
       "requirement_name": "DAST integrado em ambiente de staging antes de promoção",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "10-testes-seguranca",
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -9000,7 +10196,7 @@
       "requirement_category": "TST",
       "requirement_name": "Testes de regressão de segurança para vulnerabilidades corrigidas",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "10-testes-seguranca",
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -9043,7 +10239,7 @@
       "requirement_category": "TST",
       "requirement_name": "Thresholds mínimos de cobertura de testes de segurança por risco",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "10-testes-seguranca",
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -9090,7 +10286,7 @@
       "requirement_category": "TST",
       "requirement_name": "Testes de penetração periódicos com escopo e metodologia definidos",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L2+",
       "source_bundle": "10-testes-seguranca",
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -9136,7 +10332,7 @@
       "requirement_category": "TST",
       "requirement_name": "Fuzzing sistemático em componentes de processamento de input complexo",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L3",
       "source_bundle": "10-testes-seguranca",
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -9179,7 +10375,7 @@
       "requirement_category": "TST",
       "requirement_name": "IAST em ambiente de staging para validação comportamental em runtime",
       "responsible_roles": [],
-      "risk_level_hint": null,
+      "risk_level_hint": "L3",
       "source_bundle": "10-testes-seguranca",
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
@@ -9510,8 +10706,8 @@
         }
       ],
       "id": "EP-VAL-008",
-      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
-      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_control_id": null,
+      "maps_to_control_name": "",
       "maps_to_requirement_id": "VAL-008",
       "requirement_category": "VAL",
       "requirement_name": "Codificação/escaping de output em renderização (anti-XSS)",

@@ -97,7 +97,7 @@
       "source_artifact": "data/entities/mitigated_threats.json"
     },
     {
-      "count": 223,
+      "count": 251,
       "entity_type": "EvidencePattern",
       "file": "evidence_patterns.json",
       "name": "evidence_patterns",

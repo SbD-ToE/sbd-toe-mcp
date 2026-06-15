@@ -24,17 +24,24 @@ describe("get_sbd_toe_verification_matrix", () => {
     expect(l1).toBeGreaterThan(0);
   });
 
-  it("declares the requirement→EvidencePattern coverage gap (never silently complete)", () => {
+  it("declares the requirement→EvidencePattern coverage (gap count present, never silent)", () => {
     const r = handleGetVerificationMatrix({ risk_level: "L3" });
-    expect(r.data.coverage_gaps.requirements_without_evidence_pattern).toBeGreaterThan(0);
+    // The gap is always DECLARED as a number + sample (coverage-preserving). With the
+    // 06-15 bundle (EvidencePatterns 251/251) it is now 0 — full coverage; a future
+    // regression would surface as >0 here rather than being hidden.
+    expect(typeof r.data.coverage_gaps.requirements_without_evidence_pattern).toBe("number");
+    expect(r.data.coverage_gaps.requirements_without_evidence_pattern).toBe(0);
     expect(Array.isArray(r.data.coverage_gaps.sample)).toBe(true);
     expect(r.data.coverage_gaps.note.toLowerCase()).toContain("codex");
   });
 
-  it("flags unhinted patterns (risk_level_hint sparse) rather than hiding them", () => {
+  it("reports the unhinted-pattern count (level filter authoritative when 0)", () => {
     const r = handleGetVerificationMatrix({ risk_level: "L1" });
-    expect(r.data.totals.unhinted).toBeGreaterThan(0);
-    expect(r.data.rows.some((row) => row.level_hint === "unhinted")).toBe(true);
+    // risk_level_hint is now complete (06-15 backfill) → 0 unhinted, level filter
+    // authoritative; the per-row level_hint field still tracks the source.
+    expect(typeof r.data.totals.unhinted).toBe("number");
+    expect(r.data.totals.unhinted).toBe(0);
+    expect(r.data.rows.every((row) => row.level_hint === "level-hinted")).toBe(true);
     expect(r.provenance.note.toLowerCase()).toContain("hint");
   });
 
