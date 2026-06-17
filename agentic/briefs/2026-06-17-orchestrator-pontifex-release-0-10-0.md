@@ -1,6 +1,13 @@
 # Brief — Pontifex: release-prep `@shiftleftpt/sbd-toe-mcp@0.10.0`
 
 **De:** Orchestrator · **Para:** Pontifex (MCP-serving) · **Data:** 2026-06-17
+
+> **Revisões 2026-06-17 (re-ler estes pontos):**
+> 1. **Passo 3 (re-pin)** — alvo moveu-se: pina o bundle formal mais recente (manual `v1.6.4`,
+>    contract `v1.7`, ex-dev-build 06-17), NÃO o 06-15/v1.6. O bump de contract v1.6→v1.7 dispara
+>    a *alignment policy* (fetch+verify+validar+smoke).
+> 2. **Serving fix `assess`** (token-bomb 76k) entra na 0.10.0 — `limit`+`coverage{...}`. (Já feito por ti: commit `96b55e1`.)
+> 3. **Bloqueio de proveniência + ADOÇÃO/ATESTAÇÃO** (secções no fim) — tu validas/atestas; o publish é auth do programme-lead.
 **Decisão do programme-lead:** publicar **minor `0.10.0`** (não patch — há tools novas + schema
 novo) e **publicar ANTES** de atualizar o mini-site. O publish npm em si (auth) é do programme-lead;
 o Pontifex prepara a release até ao ponto de "pronto a publicar".
@@ -19,9 +26,12 @@ Desde o `0.9.0` publicado entraram **7 tools novas** (`get_sbd_toe_chapter_imple
    confirmar que tudo o que vai em `0.10.0` está merged/incluído; se #34 ainda aberto, é o
    conteúdo desta release.
 2. **Bump de versão → `0.10.0`** no `package.json` e onde o servidor reporta a sua versão.
-3. **Pin do bundle**: garantir que o pacote publica o bundle `kg-v1-manual-v1.6.4-aligned-2026-06-15`
-   (sha `caa8cfef…`, `consumer_contract_version` v1.6); o resource `sbd://toe/version` tem de
-   refletir release_tag + sha + contract + servidor `0.10.0` corretos pós-publish.
+3. **Pin do bundle — ALVO MOVEU-SE (verify-live do Manual, 2026-06-17):** o servidor fresco já reporta
+   `manual v1.6.4` (fix de proveniência do Codex landou — já não `0.1.0`), kg `…aligned-2026-06-17`,
+   **contract `v1.7`** (era v1.6). Pina o **bundle verificado mais recente** (06-17/v1.7), NÃO o 06-15.
+   ⚠️ O **bump de contract v1.6→v1.7** dispara a *alignment policy* do pin: fetch + verify sha256 +
+   validar contract version + acceptance-suite smoke ANTES de pinar (não é auto-follow). Confirma que
+   o `sbd://toe/version` reflete release_tag + sha + contract + manual-tag + servidor `0.10.0` pós-pin.
 4. **Decisão sobre o bug `get_threat_landscape`** (concern-routing base→cap.02): se o fix estiver
    pronto e smoke-validado, **incluir** em `0.10.0`; senão, **enviar `0.10.0` com a limitação
    documentada** e o fix em `0.10.1`. Recomendação do Orchestrator: não atrasar a release pelas
@@ -66,7 +76,16 @@ decidiu que **és tu (Pontifex real) a fechar a camada durável e a atestar**.
 > **re-sincronizas o pin** (sha-verificado) e confirmas o `version`. **Só depois** segues os passos
 > abaixo. A 0.10.0 NÃO publica com o placeholder.
 
-Faz (após o desbloqueio de proveniência acima):
+> 🔧 **SERVING FIX pré-publish — `assess` token-bomb (decidido 2026-06-17):** o
+> `assess_sbd_toe_implementation` devolve **todos os KPIs aplicáveis ao nível** (92 a L2), não só
+> os reportados — invariante `not_reported≠pass`/coverage-preserving — mas **sem paginação** → ~76k
+> chars, estoura o budget por-tool. É a mesma classe dos token-bombs já corrigidos
+> (`inspect_retrieval`, `repo_governance`). Adicionar o envelope que as irmãs já têm:
+> `limit` + `coverage{total,returned,hasMore,nextOffset}`. Entra na **0.10.0** (estreia pública do
+> assess; tem de sair com a mesma disciplina das outras 6 tools novas). Smoke pós-fix: `assess(limit=N)`
+> devolve N + `hasMore`, sem nunca perder KPIs em silêncio.
+
+Faz (após o desbloqueio de proveniência + o serving fix acima):
 
 1. **Valida a proposta** — `git diff` da working-tree; confirma o bump `package.json`/`package-lock` → `0.10.0` e o pin `consumed-bundle.json` (sha caa8cfef, contract v1.6) intacto. Rejeita/corrige o que não subscreveres.
 2. **Build/test** — `npm run check && npm run build && npm test` (o sub-agente não pôde correr — Bash negado). Reporta verde/vermelho.

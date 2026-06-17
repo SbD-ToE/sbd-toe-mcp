@@ -67,4 +67,35 @@ describe("assess_sbd_toe_implementation", () => {
     expect(() => handleAssessImplementation({ risk_level: "L2", kpi_values: [] })).toThrowError(/kpi_values/);
     expect(() => handleAssessImplementation({ risk_level: "L2" })).toThrowError(/kpi_values/);
   });
+
+  // Coverage-preserving pagination (the per_kpi list must never be an unbounded dump).
+  it("paginates per_kpi with a bounded default + coverage cursor; totals stay whole", () => {
+    const r = handleAssessImplementation({ risk_level: "L2", kpi_values: {} });
+    expect(r.coverage).toBeDefined();
+    const cov = r.coverage as { total: number; returned: number; nextOffset: number | null; hasMore: boolean };
+    // default page is bounded (agentic budget = 15), not the full applicable set.
+    expect(r.data.per_kpi.length).toBeLessThanOrEqual(15);
+    expect(cov.total).toBe(r.data.totals.applicable); // full extent declared
+    expect(cov.total).toBeGreaterThan(r.data.per_kpi.length); // many KPIs → more than one page
+    expect(cov.hasMore).toBe(true);
+    expect(cov.returned).toBe(r.data.per_kpi.length);
+    expect(r.data.gaps.length).toBe(r.data.gaps_returned);
+    expect(r.data.gaps_returned).toBeLessThanOrEqual(r.data.totals.gaps); // gaps bounded, full count in totals
+  });
+
+  it("walking coverage.nextOffset yields every per_kpi once (nothing dropped)", () => {
+    const seen: string[] = [];
+    let offset: number | null = 0;
+    let total = 0;
+    let guard = 0;
+    while (offset !== null && guard++ < 100) {
+      const r = handleAssessImplementation({ risk_level: "L3", kpi_values: {}, offset, limit: 20 });
+      const cov = r.coverage as { total: number; nextOffset: number | null };
+      total = cov.total;
+      seen.push(...r.data.per_kpi.map((k) => k.metric_id));
+      offset = cov.nextOffset;
+    }
+    expect(seen.length).toBe(total);
+    expect(new Set(seen).size).toBe(total); // no duplicates, no omissions
+  });
 });

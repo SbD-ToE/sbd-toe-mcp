@@ -7,11 +7,16 @@
  * bundle is the KG BUILD OUTPUT (release_bundle.py), not the git tree — generated
  * artefacts (chunks, indexes) only exist in the built artefact. So this fetches a
  * built artefact + verifies its sha256 before materializing. Dual-source:
- *   --archive <zip>   dev-build / release tarball on disk (+ <zip>.sha256 sidecar)
- *   (release URL fetch can be added later; the digest-verify contract is identical)
+ *   --archive <zip>          dev-build snapshot on disk (+ <zip>.sha256 sidecar)
+ *   --from-release <tag>     FORMAL release: fetch the bundle + .sha256 assets from the
+ *                            KG GitHub Release via `gh` (immutable, verifiable); pins
+ *                            source=release + the release ref. --repo defaults to
+ *                            Shiftleftpt/sbd-toe-knowledge-graph.
+ * The digest-verify contract is identical for both.
  *
  * Usage:
  *   node scripts/sync-bundle.mjs --archive <zip> --tag <kg-tag> [--source dev-build|release] [--dry-run]
+ *   node scripts/sync-bundle.mjs --from-release <tag> [--repo <owner/name>] [--tag <pin-tag>] [--dry-run]
  *
  * Always verifies sha256 against the sidecar (or --sha256). Materializes only the
  * bundle-files.json entries (no dynamic traversal). Refreshes consumed-bundle.json
@@ -32,11 +37,40 @@ const flag = (n) => argv.includes(n);
 const opt = (n) => { const i = argv.indexOf(n); return i >= 0 && i + 1 < argv.length ? argv[i + 1] : undefined; };
 const die = (m) => { console.error(`✗ ${m}`); process.exit(1); };
 
-const archive = opt("--archive");
-const tag = opt("--tag");
-const source = opt("--source") ?? "dev-build";
+let archive = opt("--archive");
+let tag = opt("--tag");
+let source = opt("--source") ?? "dev-build";
 const dryRun = flag("--dry-run");
-if (!archive) die("missing --archive <zip>");
+
+// --- 0. (optional) fetch from a GitHub Release — the FORMAL release channel ---
+// `--from-release <tag>` downloads the release's bundle + .sha256 assets from the KG
+// repo (immutable, verifiable) instead of consuming a local dev zip. Records the pin
+// with source=release + the release ref. The digest-verify below is identical.
+let releaseRef;
+let downloadDir;
+const fromRelease = opt("--from-release");
+if (fromRelease) {
+  const repo = opt("--repo") ?? "Shiftleftpt/sbd-toe-knowledge-graph";
+  source = "release";
+  tag = tag ?? fromRelease;
+  releaseRef = `${repo}@${fromRelease}`;
+  downloadDir = mkdtempSync(path.join(tmpdir(), "sbd-release-"));
+  console.error(`• fetching GitHub Release ${releaseRef} …`);
+  try {
+    execFileSync(
+      "gh",
+      ["release", "download", fromRelease, "--repo", repo, "--pattern", "*.zip", "--pattern", "*.sha256", "--dir", downloadDir],
+      { stdio: "inherit" }
+    );
+  } catch {
+    die(`gh release download failed for ${releaseRef} (check gh auth + that the release exists)`);
+  }
+  const zips = readdirSync(downloadDir).filter((f) => f.endsWith(".zip"));
+  if (zips.length !== 1) die(`expected exactly one .zip asset in release ${fromRelease}, found ${zips.length}`);
+  archive = path.join(downloadDir, zips[0]);
+}
+
+if (!archive) die("missing --archive <zip> (or --from-release <tag>)");
 if (!tag) die("missing --tag <kg-tag> (exact tag for the pin)");
 if (!existsSync(archive)) die(`archive not found: ${archive}`);
 
@@ -143,6 +177,7 @@ try {
     release_tag: tag,
     release_sha256: sha,
     source,
+    ...(releaseRef ? { release_ref: releaseRef } : {}),
     surface_built_at: v1?.build?.generated_at ?? null,
     tag_scheme: /^v\d/.test(tag) ? "semver" : "cycle-aligned",
     synced_at: new Date().toISOString().slice(0, 10),
@@ -174,4 +209,5 @@ try {
   console.error(`\n✓ synced to ${tag}. Run \`npm run check && npm test\` as the smoke-test before committing.`);
 } finally {
   rmSync(staging, { recursive: true, force: true });
+  if (downloadDir) rmSync(downloadDir, { recursive: true, force: true });
 }

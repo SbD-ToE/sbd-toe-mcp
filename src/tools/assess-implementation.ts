@@ -18,6 +18,7 @@
 import { readFileSync } from "node:fs";
 import { resolveAppPath } from "../config.js";
 import { resolveChapterBundle } from "../serving/chunk-index.js";
+import { paginate } from "../serving/response-shaping.js";
 import { boundAffordances, type ProtocolEnvelope } from "../serving/protocol-envelope.js";
 
 const VALID_RISK = ["L1", "L2", "L3"] as const;
@@ -88,9 +89,14 @@ export interface AssessData {
   per_kpi: KpiResult[];
   gaps: KpiResult[];
   totals: { applicable: number; meets: number; gaps: number; not_reported: number };
+  /** Count of gaps actually returned in `gaps` (≤ totals.gaps — page per_kpi for the rest). */
+  gaps_returned: number;
   unknown_metrics: string[];
   mode: "self_report_stateless";
 }
+
+// Gaps shown first by actionability: failing thresholds, then non-comparable, then unreported.
+const GAP_SEVERITY: Record<KpiStatus, number> = { below: 0, not_comparable: 1, not_reported: 2, meets: 3 };
 
 export function handleAssessImplementation(args: Record<string, unknown>): ProtocolEnvelope<AssessData> {
   const riskArg = args["risk_level"];
@@ -170,16 +176,32 @@ export function handleAssessImplementation(args: Record<string, unknown>): Proto
 
   const unknownMetrics = [...submitted.keys()].filter((id) => !knownIds.has(id));
 
+  // Coverage-preserving pagination: posture + totals are computed over the FULL set
+  // (the extent is always declared); only the per_kpi body is a bounded page. gaps is a
+  // bounded, severity-first highlight — totals.gaps is the true count; walk per_kpi
+  // (coverage.nextOffset, filter status!==meets) for the rest. (default page = agentic budget.)
+  const offsetArg = args["offset"];
+  const limitArg = args["limit"];
+  const page = paginate<KpiResult>(perKpi, {
+    offset: typeof offsetArg === "number" ? offsetArg : undefined,
+    limit: typeof limitArg === "number" ? limitArg : undefined
+  });
+  const boundedGaps = [...gaps]
+    .sort((a, b) => GAP_SEVERITY[a.status] - GAP_SEVERITY[b.status])
+    .slice(0, page.coverage.returned || gaps.length);
+
   return {
     data: {
       risk_level: riskLevel,
       posture,
-      per_kpi: perKpi,
-      gaps,
+      per_kpi: page.items,
+      gaps: boundedGaps,
       totals: { applicable, meets, gaps: gaps.length, not_reported: notReported },
+      gaps_returned: boundedGaps.length,
       unknown_metrics: unknownMetrics,
       mode: "self_report_stateless"
     },
+    coverage: page.coverage,
     provenance: {
       content_type: "derived",
       produced_by: "implementation_assessment_self_report",
