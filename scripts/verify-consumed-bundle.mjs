@@ -50,11 +50,20 @@ const runManifestPath = "data/reports/run_manifest.json";
 if (existsSync(join(projectRoot, runManifestPath))) {
   const rm = read(runManifestPath);
   const m = pin.inputs?.manual ?? {};
-  if (m.commit !== rm.commit_sha) {
-    fail(`manual.commit drift: pin=${m.commit} bundle=${rm.commit_sha}`);
+  // Manual provenance lives in run_manifest.manual (the REAL Manual tag/version);
+  // the top-level version/tool_version is the KG compiler version. Fall back to
+  // top-level for older bundles that predate the `manual` sub-object.
+  const rmManual = rm.manual && typeof rm.manual === "object" ? rm.manual : {};
+  const bundleCommit = rmManual.commit ?? rm.commit_sha;
+  const bundleVersion = rmManual.version ?? rm.version;
+  if (m.commit !== bundleCommit) {
+    fail(`manual.commit drift: pin=${m.commit} bundle=${bundleCommit}`);
   }
-  if (m.version !== rm.version) {
-    fail(`manual.version drift: pin=${m.version} bundle=${rm.version}`);
+  if (m.version !== bundleVersion) {
+    fail(`manual.version drift: pin=${m.version} bundle=${bundleVersion}`);
+  }
+  if (rmManual.tag && m.tag !== rmManual.tag) {
+    fail(`manual.tag drift: pin=${m.tag} bundle=${rmManual.tag}`);
   }
 } else {
   notes.push(`${runManifestPath} absent — skipped manual provenance check`);

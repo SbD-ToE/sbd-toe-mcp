@@ -148,8 +148,18 @@ try {
     synced_at: new Date().toISOString().slice(0, 10),
     artefact: path.basename(archive),
   };
+  // Manual provenance: read the run_manifest's `manual` sub-object (the REAL Manual
+  // tag/version, e.g. v1.6.4), NOT the top-level `version`/`tool_version` (those are the
+  // KG compiler version). Fall back to top-level for older bundles that lack `manual`.
+  const rmManual = rm.manual && typeof rm.manual === "object" ? rm.manual : {};
   pin.inputs = {
-    manual: { repo: rm.repo_url?.replace("https://github.com/", ""), commit: rm.commit_sha, version: rm.version, generated_at: rm.generated_at },
+    manual: {
+      repo: rmManual.repo ?? rm.repo_url?.replace("https://github.com/", ""),
+      commit: rmManual.commit ?? rm.commit_sha,
+      tag: rmManual.tag ?? null,
+      version: rmManual.version ?? rm.version,
+      generated_at: rmManual.generated_at ?? rm.generated_at,
+    },
     ontology: {
       repo: ontologySrc.authoritative_repo ?? pin.inputs?.ontology?.repo ?? null,
       tag: v1?.ontology_anchor?.tag ?? null,

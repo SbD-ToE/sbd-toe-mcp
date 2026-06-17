@@ -2,22 +2,23 @@
   "_doc": "Pontifex bundle pin (PROGRAMME-PRESERVATION-PROTOCOL §0.6 / AGENTS.md Rule 4). Declares the Codex build artefact this MCP serves. Materialized + maintained by scripts/sync-bundle.mjs (digest-verified against the artefact .sha256), validated by scripts/verify-consumed-bundle.mjs (run in `npm run check`). source: dev-build = cycle snapshot; release = formal vX.Y.Z. release_sha256 is the verified artefact digest — never invented.",
   "pin_version": 1,
   "pinned_at": "2026-06-11",
-  "consumer_contract_version": "v1.6",
+  "consumer_contract_version": "v1.7",
   "substrate_version": "v2-draft",
   "kg_bundle": {
-    "release_tag": "kg-v1-manual-v1.6.4-aligned-2026-06-15",
-    "release_sha256": "caa8cfef5318aaac324fcedce2490cd76ef450b724ec2579224d27afce74d6b2",
+    "release_tag": "kg-v1-manual-v1.6.4-aligned-2026-06-17",
+    "release_sha256": "4500c709294d619110b6187c3e24b21c92fd986ec19e4e919afca19eee919919",
     "source": "dev-build",
     "surface_built_at": "2026-06-12T03:03:05.664902+00:00",
     "tag_scheme": "cycle-aligned",
-    "synced_at": "2026-06-15",
-    "artefact": "sbd-toe-knowledge-graph-bundle-kg-v1-manual-v1.6.4-aligned-2026-06-15-snapshot.zip"
+    "synced_at": "2026-06-17",
+    "artefact": "sbd-toe-knowledge-graph-bundle-kg-v1-manual-v1.6.4-aligned-2026-06-17-snapshot.zip"
   },
   "inputs": {
     "manual": {
-      "repo": "git@github.com:Shiftleftpt/SbD-ToE-Manual.git",
+      "repo": "Shiftleftpt/SbD-ToE-Manual",
       "commit": "09b20f6fd2714a44b974d4ba38612f4dfdc73c11",
-      "version": "0.1.0",
+      "tag": "v1.6.4",
+      "version": "1.6.4",
       "generated_at": "2026-06-12T03:02:41Z"
     },
     "ontology": {

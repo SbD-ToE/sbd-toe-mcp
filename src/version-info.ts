@@ -12,7 +12,7 @@ import { readFileSync } from "node:fs";
 import { resolveAppPath } from "./config.js";
 
 export interface BundleProvenance {
-  manual: { version?: string | undefined; commit?: string | undefined; generated_at?: string | undefined };
+  manual: { tag?: string | undefined; version?: string | undefined; commit?: string | undefined; generated_at?: string | undefined };
   kg: {
     release_tag?: string | undefined;
     sha256?: string | undefined;
@@ -28,7 +28,7 @@ interface ConsumedBundlePin {
   substrate_version?: string;
   kg_bundle?: { release_tag?: string; release_sha256?: string; source?: string; surface_built_at?: string };
   inputs?: {
-    manual?: { version?: string; commit?: string; generated_at?: string };
+    manual?: { tag?: string; version?: string; commit?: string; generated_at?: string };
     ontology?: { tag?: string; commit?: string };
   };
 }
@@ -50,6 +50,7 @@ export function loadBundleProvenance(): BundleProvenance | undefined {
 
   const value: BundleProvenance = {
     manual: {
+      tag: pin.inputs?.manual?.tag,
       version: pin.inputs?.manual?.version,
       commit: pin.inputs?.manual?.commit,
       generated_at: pin.inputs?.manual?.generated_at
