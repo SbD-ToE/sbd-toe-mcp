@@ -151,5 +151,13 @@ Validei e **adotei** esta proposta. Resultados (Bash disponível, o sub-agente n
   contract v1.7, threat fixed). O DRAFT fica como histórico (superseded).
 - **AI Act:** não indexado neste bundle — confirmado.
 
-**Estado:** pronto a publicar. Falta só a **auth do `npm publish`** (programme-lead).
-Mantenho em `em-curso/` até o publish; movo para `done/` quando publicado.
+**Estado:** ✅ **PUBLICADO (2026-06-18).** `@shiftleftpt/sbd-toe-mcp@0.10.0` live no npm
+(registry `version 0.10.0`, `dist-tags.latest 0.10.0`; tarball 5.1 MB / 49 MB unpacked /
+161 files; KG embebido). Tag de release `v0.10.0` = `fadf5f6` (origin). Publish feito pela
+conta `pedrofarinha` (read-write em @shiftleftpt) com 2FA via web-auth. Atestação fechada;
+movido `em-curso/ → done/`.
+
+**Follow-ups (0.10.1, não-bloqueantes):** `surface-smoke.test.ts` automatizado (os 255 TCs
+do doc continuam spec/manual; o âncora 21/21 é o gate) + uniformizar o canal de erro
+(`rpcError`→JSON-RPC vs throw→`result.isError`). Handoff ao Manual: refresh do mini-site
+(AI Act **não** indexado no bundle v1.5.0).
