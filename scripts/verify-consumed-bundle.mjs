@@ -90,7 +90,7 @@ if (existsSync(join(projectRoot, v1ManifestPath))) {
 }
 
 // --- release tag / sha256 (Codex-owned) ------------------------------------
-const { release_tag: tag, release_sha256: sha } = pin.kg_bundle ?? {};
+const { release_tag: tag, release_sha256: sha, source } = pin.kg_bundle ?? {};
 if (tag === null) {
   notes.push("kg_bundle.release_tag still null — pending Codex pin answer. Provenance pin is partial.");
 } else if (typeof tag !== "string" || tag.length === 0) {
@@ -110,4 +110,10 @@ if (errors.length > 0) {
   console.error(`\n❌ consumed-bundle.json is out of sync with the shipped substrate (${errors.length} issue(s)).`);
   process.exit(1);
 }
-console.error("✅ consumed-bundle.json pin matches the shipped substrate (release tag/sha256 pending Codex).");
+const provenanceNote =
+  source === "release" && typeof sha === "string" && /^[0-9a-f]{64}$/.test(sha)
+    ? `formal release ${tag}, sha256 verified`
+    : sha === null
+      ? `${tag ?? "untagged"} pinned, digest pending`
+      : `dev-build ${tag}, sha256 verified`;
+console.error(`✅ consumed-bundle.json pin matches the shipped substrate (${provenanceNote}).`);

@@ -15,8 +15,9 @@ review_status: pending-human-review
 advisory band retrofitted onto the legacy tools. Additive / backward-compatible on the
 existing tools' core contract ⇒ minor.
 
-Served bundle: `kg-v1-manual-v1.6.4-aligned-2026-06-17` (sha256 `4500c709…9919`,
-`consumer_contract_version` v1.7, **Manual v1.6.4** @ `09b20f6f`, ontology
+Served bundle: **formal KG release `v1.5.0`** (GitHub Release
+`Shiftleftpt/sbd-toe-knowledge-graph@v1.5.0`, sha256 `feaa0155…7294`,
+`consumer_contract_version` v1.8, **Manual v1.6.4** @ `09b20f6f`, ontology
 `ontology-v1.1-fair-baseline`).
 
 ### Added — Implementation view ("how do I run this" family)
@@ -102,8 +103,11 @@ Together with `get_guide_by_role` these are the implementation view: what to do 
   **Manual `tag`/`version` (real — v1.6.4, read from `run_manifest.manual`, not the KG
   compiler version)**, KG `release_tag` + sha256 + `consumer_contract_version`, and
   ontology tag/commit — read live from the `consumed-bundle.json` pin, never invented.
-- Pin: `consumed-bundle.json` → `kg-v1-manual-v1.6.4-aligned-2026-06-17`, sha256
-  `4500c709294d619110b6187c3e24b21c92fd986ec19e4e919afca19eee919919`, contract v1.7.
+- Pin: `consumed-bundle.json` → **formal release `v1.5.0`** (`source: release`,
+  `release_ref: Shiftleftpt/sbd-toe-knowledge-graph@v1.5.0`), sha256
+  `feaa0155b64d78fe529d805c6e17430fb3ce9fe1c5b5900eb6e267e2fa077294`, contract v1.8 —
+  fetched + digest-verified from the GitHub Release (`sync-bundle --from-release`), not a
+  local dev snapshot.
 
 ### Notes
 
