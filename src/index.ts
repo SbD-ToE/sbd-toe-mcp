@@ -832,7 +832,9 @@ class McpRuntime {
                 description: "Map of metric_id → numeric value (e.g. {\"ARC-K01\": 85}). Non-numeric values ignored.",
                 additionalProperties: { type: "number" }
               },
-              risk_level: { type: "string", enum: ["L1", "L2", "L3"], description: "Target/'compliant' band." }
+              risk_level: { type: "string", enum: ["L1", "L2", "L3"], description: "Target/'compliant' band." },
+              offset: { type: "number", description: "Coverage-preserving page offset over per_kpi." },
+              limit: { type: "number", description: "Max per_kpi rows per page (default 15; follow coverage.nextOffset)." }
             },
             required: ["kpi_values", "risk_level"],
             additionalProperties: false
