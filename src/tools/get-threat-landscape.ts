@@ -23,6 +23,8 @@ import {
   resolveThreatChapterNumber
 } from "./ontology-loader.js";
 import { _resolveConsultResult } from "./consult-security-requirements.js";
+import type { Affordance } from "../serving/protocol-envelope.js";
+import { threatLandscapeAffordances } from "../serving/affordances.js";
 
 export interface MitigatingControl {
   control_id: string;
@@ -62,12 +64,30 @@ export interface GetThreatLandscapeResult {
     concernsApplied: string[] | null;
     note: string;
   };
+  /** RF-H advisory band — adjacent tools the caller likely needs next (advisory; set by the handler). */
+  next?: Affordance[];
 }
 
 function chapterNumber(chapterId: string): number {
   const match = /^(\d+)/.exec(chapterId);
   return match?.[1] !== undefined ? Number.parseInt(match[1], 10) : NaN;
 }
+
+/**
+ * Concern → domain-chapter routing for threat selection. Requirements for some
+ * concerns are defined in the requirements chapter (02) while the matching THREATS
+ * live in the domain chapter — e.g. logging requirements are source_chapter 2, but
+ * logging threats are in 12-monitorizacao-operacoes. Maps only the unambiguous
+ * concerns (the concern name is the chapter's own domain) so those threats surface;
+ * ambiguous concerns fall back to the requirement source_chapter.
+ */
+const CONCERN_TO_DOMAIN_CHAPTER: Readonly<Record<string, number>> = {
+  logging: 12,
+  iac: 8,
+  distribution: 11,
+  architecture: 4,
+  requirements: 2
+};
 
 function buildAntipatternIndexes(
   antipatterns: AntiPattern[],
@@ -114,16 +134,6 @@ export function _resolveThreatLandscape(
   const activeRequirementIds = new Set(
     consult.requirements.map((requirement) => requirement.requirement_id)
   );
-  const activeBundles = new Set(
-    consult.requirements
-      .map((requirement) => resolveRequirementBundle(requirement))
-      .filter((bundle): bundle is string => typeof bundle === "string" && bundle.length > 0)
-  );
-  const activeChapterNumbers = new Set<number>(
-    consult.requirements
-      .map((requirement) => requirement.source_chapter)
-      .filter((chapter) => !Number.isNaN(chapter))
-  );
   const activeDomains = new Set(consult.active_domains);
   const activeControls = consult.controls.map((control) => ({
     control_id: control.control_id,
@@ -132,6 +142,48 @@ export function _resolveThreatLandscape(
     chapter_ids: control.chapter_ids ?? [],
   }));
   const activeControlIds = new Set(activeControls.map((control) => control.control_id));
+
+  const inputConcerns = Array.isArray(args["concerns"])
+    ? (args["concerns"] as unknown[]).filter((c): c is string => typeof c === "string")
+    : [];
+  const hasConcerns = inputConcerns.length > 0;
+
+  // Threat routing is by THREAT DOMAIN, not by the requirements catalog's source
+  // chapter. Base concerns (auth/encryption/validation/access/session) all have their
+  // requirements catalogued in chapter 02, so routing by source_chapter collapsed every
+  // base concern onto ch.02 — surfacing the requirements-process meta-threats
+  // (MT-021..038) instead of the domain threats. We route by the concern's domain
+  // (CONCERN_TO_DOMAIN_CHAPTER) and by the chapters the resolved CONTROLS live in.
+  const activeChapterNumbers = new Set<number>();
+  const activeBundles = new Set<string>();
+  for (const concern of inputConcerns) {
+    const domainChapter = CONCERN_TO_DOMAIN_CHAPTER[concern];
+    if (domainChapter !== undefined) activeChapterNumbers.add(domainChapter);
+  }
+  for (const control of activeControls) {
+    for (const chapterId of control.chapter_ids) {
+      activeBundles.add(chapterId);
+      const num = chapterNumber(chapterId);
+      if (!Number.isNaN(num)) activeChapterNumbers.add(num);
+    }
+  }
+  // With no concern filter the caller wants the full landscape — fall back to every
+  // applicable requirement's chapter/bundle (broad, spans all domains, not just ch.02).
+  if (!hasConcerns) {
+    for (const requirement of consult.requirements) {
+      if (!Number.isNaN(requirement.source_chapter)) activeChapterNumbers.add(requirement.source_chapter);
+      const bundle = resolveRequirementBundle(requirement);
+      if (typeof bundle === "string" && bundle.length > 0) activeBundles.add(bundle);
+    }
+  }
+  // Chapter 02 (requisitos-seguranca) holds the requirements-process meta-threats.
+  // Surface them only when the caller explicitly targets requirements — never as a
+  // side effect of a base/domain concern whose controls happen to be catalogued there.
+  const wantsRequirements = !hasConcerns || inputConcerns.includes("requirements");
+  if (!wantsRequirements) {
+    activeChapterNumbers.delete(2);
+    activeBundles.delete("02-requisitos-seguranca");
+  }
 
   const controlsByChapter = new Map<string, MitigatingControl[]>();
   for (const control of activeControls) {
@@ -261,7 +313,7 @@ export function handleGetThreatLandscape(
       content_type: "derived",
       produced_by: "threat_resolution_pipeline",
       source_data:
-        "runtime/threats.json + runtime/requirement_control_links.json + runtime/antipatterns.json + runtime/antipattern_requirement_links.json + runtime/antipattern_threat_links.json",
+        "runtime/v1/manual_threat_mitigation.jsonl (threat_substantive; legacy runtime/threats.json superseded) + runtime/requirement_control_links.json + runtime/antipatterns.json + runtime/antipattern_requirement_links.json + runtime/antipattern_threat_links.json",
       note:
         "Threat entries are canonical runtime entities. Mitigation and antipattern enrichment are derived structurally from the published deterministic runtime bundle.",
     },
@@ -271,13 +323,19 @@ export function handleGetThreatLandscape(
       mitigation_confidence: threat.mitigation_confidence,
       mitigated_by: threat.mitigated_by,
       related_antipatterns: threat.related_antipatterns,
-      associated_controls: [],
+      // Surface the threat's own associated_controls carried by the substrate
+      // (runtime/threats.json). Previously hardcoded to [] — a serving-layer
+      // drop, not absent data. Pontifex serves what the bundle carries.
+      associated_controls: threat.associated_controls ?? [],
       ...(threat.mitigated_threat_id ? { mitigated_threat_id: threat.mitigated_threat_id } : {}),
       ...(threat.chapter_id ? { chapter_id: threat.chapter_id } : {}),
       ...(threat.mitigation_summary ? { mitigation_summary: threat.mitigation_summary } : {}),
       ...(threat.how_it_arises ? { how_it_arises: threat.how_it_arises } : {}),
       ...(threat.methodology ? { methodology: threat.methodology } : {}),
       ...(threat.essence ? { essence: threat.essence } : {}),
+      ...(threat.threat_category ? { threat_category: threat.threat_category } : {}),
+      ...(threat.mitigation_strength ? { mitigation_strength: threat.mitigation_strength } : {}),
     })),
+    next: threatLandscapeAffordances(full.risk_level, full.meta.concernsApplied ?? undefined),
   };
 }

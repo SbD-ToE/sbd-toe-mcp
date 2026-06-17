@@ -122,7 +122,7 @@ Canonical role IDs (pass exact or common alias — resolved automatically):
 
 `developer` · `appsec` · `devops` · `grc` · `qa` · `security_champion` · `software_architect`
 · `product_owner` · `scrum_master` · `team_lead` · `ciso` · `executive_management`
-· `ops` · `pentester` · `compliance` · `auditor` · `ir` · `sre`
+· `ops` · `compliance` · `auditor` · `ir` · `sre`
 
 #### Interpreting tool output
 
@@ -155,11 +155,20 @@ Canonical role IDs (pass exact or common alias — resolved automatically):
 Use when the user wants to configure their AI client to use SbD-ToE natively.
 
 ```
-generate_sbd_toe_skill  ← returns canonical skill/instructions content from sbd://toe/agent-guide
+generate_sbd_toe_skill  ← no args: canonical skill/instructions content from sbd://toe/agent-guide
                            save to the appropriate file for the client:
                            Claude Code  → .claude/skills/sbd-toe.md
                            GitHub Copilot → .github/copilot-instructions.md
                            Cursor       → .cursorrules
+
+generate_sbd_toe_skill(role, format, flavour)  ← per-role configuration (RF-S)
+                           role=<canonical role or alias>  (devops-sre, developer, qa, appsec, …)
+                           format=skill     → role-specialised guidance file
+                           format=subagent  → installable agent definition (.claude/agents/sbd-<role>.md)
+                             flavour=harnessed → grants mcp__sbd-toe__* (queries the manual live)
+                             flavour=skilled   → embeds the frozen slice, no MCP tools (offline)
+                           Use this to answer "configure yourself/this agent for role X".
+                           Also exposed as resources sbd://toe/skill/{role} and sbd://toe/subagent/{role}.
 ```
 
 ---
@@ -296,6 +305,8 @@ Always distinguish between:
 
 ## Identifier conventions
 
-- **Artefacts**: `ART-<chapterId>-<name>` — use `get_sbd_toe_chapter_brief` to list `artifact_ids`
-- **Controls**: `CTRL-<chapter>-<number>` — use `query_sbd_toe_entities(query="CTRL-06", entityType="control")`
+- **Controls**: `CTRL-<domain>-<slug>-<hash>` (e.g. `CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4`). There is **no** `CTRL-<chapter>-<number>` form.
+- **Threats**: `MT-<number>` (e.g. `MT-001`)
+- **Artefacts**: `ART-<…>` — use `get_sbd_toe_chapter_brief` to list a chapter's `artifact_ids`
+- **Looking up by id:** pass the exact id to `query_sbd_toe_entities(query="<id>")` — it resolves the entity directly (`match: "exact_id"`). A guessed token like `"CTRL-06"` is **not** an id and falls back to semantic search. For structured filtering by type, use `resolve_entities(record_type, filters)`.
 - Always cite identifiers when presenting manual-grounded answers

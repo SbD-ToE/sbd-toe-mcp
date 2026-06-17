@@ -13,6 +13,7 @@
       "description": "Requirements gathering, classification, planning",
       "label": "Planning & Requirements",
       "manual_chapter": 1,
+      "order": 1,
       "phase_id": "plan",
       "source": "s6-consolidation"
     },
@@ -26,6 +27,7 @@
       "description": "Threat modeling, architecture design, security design",
       "label": "Design & Architecture",
       "manual_chapter": 3,
+      "order": 2,
       "phase_id": "design",
       "source": "s6-consolidation"
     },
@@ -39,6 +41,7 @@
       "description": "Secure coding, dependency management, code review",
       "label": "Development",
       "manual_chapter": 5,
+      "order": 3,
       "phase_id": "develop",
       "source": "s6-consolidation"
     },
@@ -53,6 +56,7 @@
       "description": "CI/CD pipelines, IaC, containerization",
       "label": "Build & CI/CD",
       "manual_chapter": 7,
+      "order": 4,
       "phase_id": "build",
       "source": "s6-consolidation"
     },
@@ -67,6 +71,7 @@
       "description": "Security testing, QA, validation, staging",
       "label": "Testing & Validation",
       "manual_chapter": 10,
+      "order": 5,
       "phase_id": "test",
       "source": "s6-consolidation"
     },
@@ -81,6 +86,7 @@
       "description": "Release management, deployment to production",
       "label": "Deployment & Release",
       "manual_chapter": 11,
+      "order": 6,
       "phase_id": "deploy",
       "source": "s6-consolidation"
     },
@@ -95,6 +101,7 @@
       "description": "Operations, monitoring, patching, incident response",
       "label": "Operations & Monitoring",
       "manual_chapter": 12,
+      "order": 7,
       "phase_id": "operate",
       "source": "s6-consolidation"
     },
@@ -110,6 +117,7 @@
       "description": "Governance, compliance, audit, training, offboarding",
       "label": "Governance & Audit",
       "manual_chapter": 14,
+      "order": 8,
       "phase_id": "govern",
       "source": "s6-consolidation"
     }

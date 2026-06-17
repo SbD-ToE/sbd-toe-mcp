@@ -73,7 +73,6 @@ const SOURCE_PREFIX: Record<RetrievalSource, string> = {
 
 export interface EnrichedFields {
   readonly aliases_pt_en?: readonly string[] | undefined;
-  readonly intent_topics?: readonly string[] | undefined;
   readonly canonical_control_ids?: readonly string[] | undefined;
   readonly artifact_ids?: readonly string[] | undefined;
   readonly authority_level?: string | undefined;
@@ -128,7 +127,6 @@ export function buildEnrichedLookup(payload: SnapshotPayload): EnrichedLookup {
     }
     map.set(id, {
       aliases_pt_en: extractStringArray(item.aliases_pt_en),
-      intent_topics: extractStringArray(item.intent_topics),
       canonical_control_ids: extractStringArray(item.canonical_control_ids),
       artifact_ids: extractStringArray(item.artifact_ids),
       authority_level:
@@ -526,24 +524,6 @@ export function computeIntentScore(
 ): number {
   let boost = 0;
 
-  if (record.intent_topics && record.intent_topics.length > 0) {
-    for (const topic of record.intent_topics) {
-      const topicNormalized = normalizeForSearch(topic);
-      if (intent === "repo_bootstrap" && topicNormalized.includes("bootstrap")) {
-        boost += 3;
-      }
-      if (intent === "dependency_governance" && (topicNormalized.includes("depend") || topicNormalized.includes("sbom") || topicNormalized.includes("sca"))) {
-        boost += 3;
-      }
-      if (intent === "ci_cd_gates" && (topicNormalized.includes("pipeline") || topicNormalized.includes("ci") || topicNormalized.includes("gate"))) {
-        boost += 3;
-      }
-      if (intent === "review_scope" && topicNormalized.includes("review")) {
-        boost += 2;
-      }
-    }
-  }
-
   if (record.aliases_pt_en && record.aliases_pt_en.length > 0) {
     for (const alias of record.aliases_pt_en) {
       const aliasNormalized = normalizeForSearch(alias);
@@ -771,7 +751,6 @@ export function normalizeHit(
     documentTitle: firstString(hit, DOCUMENT_TITLE_KEYS),
     tags: stringList(hit, TAG_KEYS),
     aliases_pt_en: enriched?.aliases_pt_en,
-    intent_topics: enriched?.intent_topics,
     canonical_control_ids: enriched?.canonical_control_ids,
     artifact_ids: enriched?.artifact_ids,
     authority_level: enriched?.authority_level,

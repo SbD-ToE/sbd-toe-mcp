@@ -1,7 +1,7 @@
 {
   "artifacts": [
     {
-      "count": 235,
+      "count": 251,
       "entity_type": "Requirement",
       "file": "requirements.json",
       "name": "requirements",
@@ -26,7 +26,7 @@
       "source_artifact": "data/entities/canonical_controls.json"
     },
     {
-      "count": 204,
+      "count": 260,
       "entity_type": "Practice",
       "file": "practices.json",
       "name": "practices",
@@ -36,7 +36,7 @@
       "source_artifact": "data/entities/practices.json"
     },
     {
-      "count": 999,
+      "count": 1296,
       "entity_type": "PracticeAssignment",
       "file": "assignments.json",
       "name": "assignments",
@@ -46,7 +46,7 @@
       "source_artifact": "data/entities/practice_assignments.json"
     },
     {
-      "count": 204,
+      "count": 260,
       "entity_type": "UserStory",
       "file": "user_stories.json",
       "name": "user_stories",
@@ -87,7 +87,7 @@
       "source_artifact": "data/entities/artifact_catalog.json"
     },
     {
-      "count": 233,
+      "count": 0,
       "entity_type": "Threat",
       "file": "threats.json",
       "name": "threats",
@@ -97,7 +97,7 @@
       "source_artifact": "data/entities/mitigated_threats.json"
     },
     {
-      "count": 213,
+      "count": 251,
       "entity_type": "EvidencePattern",
       "file": "evidence_patterns.json",
       "name": "evidence_patterns",
@@ -128,6 +128,18 @@
         "threats"
       ],
       "source_artifact": "data/publish/semantic/requirement_control_links.jsonl"
+    },
+    {
+      "count": 99,
+      "entity_type": "Metric",
+      "file": "metrics.json",
+      "name": "metrics",
+      "profiles": [
+        "consult",
+        "review",
+        "implementation"
+      ],
+      "source_artifact": "data/publish/indexes/metric_catalog.jsonl"
     },
     {
       "count": 23,
@@ -223,7 +235,8 @@
         "evidence_patterns.json",
         "signals.json",
         "signal_evidence_links.json",
-        "requirement_control_links.json"
+        "requirement_control_links.json",
+        "metrics.json"
       ]
     },
     "threats": {

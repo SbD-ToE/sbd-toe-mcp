@@ -55,6 +55,13 @@ const REQUIRED_PATHS = [
   "prompts/sbd-toe-grounded-codegen.md"
 ];
 
+// Specific data/entities/ side-files the serving layer consumes (US-detail join);
+// allowed despite the blanket data/entities/ ban on raw entity dumps.
+const ALLOWED_DESPITE_PREFIX = [
+  "data/entities/proportionality.json",
+  "data/entities/sdlc_integration.json"
+];
+
 const BANNED_PREFIXES = [
   "data/entities/",
   "data/publish/algolia_",
@@ -106,8 +113,9 @@ async function main() {
 
     const bannedMatches = files.filter(
       (filePath) =>
-        BANNED_PATHS.includes(filePath) ||
-        BANNED_PREFIXES.some((prefix) => filePath.startsWith(prefix))
+        !ALLOWED_DESPITE_PREFIX.includes(filePath) &&
+        (BANNED_PATHS.includes(filePath) ||
+          BANNED_PREFIXES.some((prefix) => filePath.startsWith(prefix)))
     );
     if (bannedMatches.length > 0) {
       throw new Error(`npm package contains banned paths: ${bannedMatches.join(", ")}`);

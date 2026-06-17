@@ -37,6 +37,8 @@ import {
   type RegulatoryOverlayData,
   type RegulatoryPlaybook
 } from "./regulatory-overlay-loader.js";
+import type { Affordance } from "../serving/protocol-envelope.js";
+import { resolveEntitiesAffordances } from "../serving/affordances.js";
 
 const DEFAULT_LIMIT = 50;
 const MAX_LIMIT = 200;
@@ -70,6 +72,8 @@ export interface ResolveEntitiesResult {
     filtersApplied: Record<string, unknown>;
     note: string;
   };
+  /** RF-H advisory band — adjacent tools the caller likely needs next (advisory; may be absent). */
+  next?: Affordance[];
 }
 
 type RuntimeV0RecordType =
@@ -375,7 +379,12 @@ function emptyOverlayResult(
   };
 }
 
-export function handleResolveEntities(
+export function handleResolveEntities(args: Record<string, unknown>): ResolveEntitiesResult {
+  // RF-H: append the advisory band around the deterministic resolution (pure, ≤3).
+  return { ...resolveEntitiesCore(args), next: resolveEntitiesAffordances() };
+}
+
+function resolveEntitiesCore(
   args: Record<string, unknown>
 ): ResolveEntitiesResult {
   const recordType = args["record_type"];

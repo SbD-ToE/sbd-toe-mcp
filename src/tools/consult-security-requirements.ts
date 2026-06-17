@@ -20,6 +20,8 @@ import type {
   RequirementControlLink
 } from "./ontology-loader.js";
 import { getOntologyData } from "./ontology-loader.js";
+import type { Affordance } from "../serving/protocol-envelope.js";
+import { consultAffordances } from "../serving/affordances.js";
 
 const VALID_RISK_LEVELS = ["L1", "L2", "L3"] as const;
 type RiskLevel = (typeof VALID_RISK_LEVELS)[number];
@@ -109,6 +111,8 @@ export interface ConsultSecurityRequirementsOutput {
     concernsApplied: string[] | null;
     note: string;
   };
+  /** RF-H advisory band — adjacent tools the caller likely needs next. */
+  next: Affordance[];
 }
 
 function pushArtifactCandidate(
@@ -407,5 +411,6 @@ export function handleConsultSecurityRequirements(
     })),
     rule_trace: full.rule_trace,
     meta: full.meta,
+    next: consultAffordances(full.risk_level, full.meta.concernsApplied ?? undefined),
   };
 }

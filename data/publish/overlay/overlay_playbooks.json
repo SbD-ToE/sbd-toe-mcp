@@ -233,6 +233,24 @@
         "EXT-CRA",
         "EXT-RGPD"
       ],
+      "playbook_id": "OVR-EXEMPLO-PLAYBOOK-exemplo-agentic-sdlc",
+      "playbook_kind": "illustrative_example",
+      "source_bundle_id": "exemplo-playbook",
+      "source_document_id": "002-cross-check-normativo-exemplo-playbook-05-exemplo-agentic-sdlc",
+      "source_path": "002-cross-check-normativo/exemplo-playbook/05-exemplo-agentic-sdlc.md",
+      "title": "Exemplo: Agentic SDLC ponta-a-ponta"
+    },
+    {
+      "adoption_status": "example_only",
+      "applicability_scope": "multi_framework_support",
+      "authority_class": "illustrative_overlay",
+      "curation_status": "illustrative_example",
+      "framework_ids": [
+        "EXT-DORA",
+        "EXT-NIS2",
+        "EXT-CRA",
+        "EXT-RGPD"
+      ],
       "playbook_id": "OVR-EXEMPLO-PLAYBOOK-indice",
       "playbook_kind": "illustrative_index",
       "source_bundle_id": "exemplo-playbook",

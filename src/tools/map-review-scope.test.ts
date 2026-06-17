@@ -245,3 +245,65 @@ describe("handleMapSbdToeReviewScope — diffSummary", () => {
     ).not.toThrow();
   });
 });
+
+// ---------------------------------------------------------------------------
+// Container / IaC / Python / CI / env coverage (Wave 1 item 2)
+// Previously these fell to the 01+02 guardrail; chapters 08/09 never fired.
+// ---------------------------------------------------------------------------
+
+describe("handleMapSbdToeReviewScope — extended path coverage", () => {
+  function bundlesFor(file: string): string[] {
+    return bundleIds(call({ changedFiles: [file], riskLevel: "L1" }));
+  }
+
+  it("maps container files to 09-containers-imagens", () => {
+    for (const f of ["Dockerfile", "Dockerfile.prod", "Containerfile", "docker-compose.yml", "compose.yaml", ".dockerignore"]) {
+      expect(bundlesFor(f)).toContain("09-containers-imagens");
+    }
+  });
+
+  it("maps k8s / helm paths to 09-containers-imagens", () => {
+    for (const f of ["k8s/deployment.yaml", "kubernetes/svc.yaml", "helm/Chart.yaml", "charts/app/values.yaml"]) {
+      expect(bundlesFor(f)).toContain("09-containers-imagens");
+    }
+  });
+
+  it("maps Terraform / Bicep to 08-iac-infraestrutura", () => {
+    for (const f of ["main.tf", "infra/vpc.tf", "vars.tfvars", "infra/main.bicep"]) {
+      expect(bundlesFor(f)).toContain("08-iac-infraestrutura");
+    }
+  });
+
+  it("maps Python dependency manifests to 05-dependencias-sbom-sca", () => {
+    for (const f of ["requirements.txt", "requirements-dev.txt", "Pipfile", "pyproject.toml", "poetry.lock", "setup.py"]) {
+      expect(bundlesFor(f)).toContain("05-dependencias-sbom-sca");
+    }
+  });
+
+  it("maps non-GitHub CI to 07-cicd-seguro (and 10/11, mirroring workflows)", () => {
+    for (const f of [".gitlab-ci.yml", "Jenkinsfile", ".circleci/config.yml", "azure-pipelines.yml"]) {
+      const bundles = bundlesFor(f);
+      expect(bundles).toContain("07-cicd-seguro");
+      expect(bundles).toContain("10-testes-seguranca");
+      expect(bundles).toContain("11-deploy-seguro");
+    }
+  });
+
+  it("maps env/secrets files to 06-desenvolvimento-seguro", () => {
+    for (const f of [".env", ".env.production"]) {
+      expect(bundlesFor(f)).toContain("06-desenvolvimento-seguro");
+    }
+  });
+
+  it("no longer dumps container/IaC files into the 01+02 guardrail", () => {
+    const result = call({
+      changedFiles: ["Dockerfile", "infra/main.tf", "requirements.txt", ".gitlab-ci.yml"],
+      riskLevel: "L2",
+    });
+    const guardrail = result.pathMapping.find((p) => p.pattern.includes("Guardrail"));
+    expect(guardrail).toBeUndefined();
+    expect(bundleIds(result)).toEqual(
+      expect.arrayContaining(["05-dependencias-sbom-sca", "08-iac-infraestrutura", "09-containers-imagens", "07-cicd-seguro"])
+    );
+  });
+});

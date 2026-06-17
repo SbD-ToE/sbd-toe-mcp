@@ -12,6 +12,7 @@ import {
   searchManualQuestion
 } from "./orchestrator/ask-manual.js";
 import { loadSystemPromptTemplate } from "./prompt/system-prompt.js";
+import { loadBundleProvenance } from "./version-info.js";
 import {
   handleGetSbdToeChapterBrief,
   handleListSbdToeChapters,
@@ -20,6 +21,12 @@ import {
 } from "./tools/structured-tools.js";
 import { handleGenerateSbdToeSkill } from "./tools/generate-sbd-toe-skill.js";
 import { handleMapSbdToeReviewScope } from "./tools/map-review-scope.js";
+import { handleMapRegulatoryActivation } from "./tools/map-regulatory-activation.js";
+import { handleGetChapterImplementationChecklist } from "./tools/get-chapter-implementation-checklist.js";
+import { handleGetOperatingModel } from "./tools/get-operating-model.js";
+import { handlePlanRollout } from "./tools/plan-rollout.js";
+import { handleAssessImplementation } from "./tools/assess-implementation.js";
+import { handleGetVerificationMatrix } from "./tools/get-verification-matrix.js";
 import { handlePlanRepoGovernance } from "./tools/plan-repo-governance.js";
 import { handleConsultSecurityRequirements } from "./tools/consult-security-requirements.js";
 import { handleGetThreatLandscape } from "./tools/get-threat-landscape.js";
@@ -74,6 +81,7 @@ interface PackageMetadata {
   version: string;
   description: string;
 }
+
 
 type JsonRpcMessage =
   | JsonRpcRequest
@@ -423,7 +431,9 @@ class McpRuntime {
         "\n" +
         "Then run setup_sbd_toe_agent(riskLevel, projectRole) for risk-level specific active chapters.\n" +
         "\n" +
-        "To create a skill or instructions file for an AI client, use generate_sbd_toe_skill(clientType)."
+        "To create a skill or instructions file for an AI client, use generate_sbd_toe_skill(clientType).\n" +
+        "For a per-role configuration, use generate_sbd_toe_skill(role, format=skill|subagent, flavour=harnessed|skilled) " +
+        "— or read resource sbd://toe/skill/{role} / sbd://toe/subagent/{role}."
     });
   }
 
@@ -569,7 +579,8 @@ class McpRuntime {
         {
           name: "list_sbd_toe_chapters",
           title: "List SbD-ToE Chapters",
-          description: "Lists SbD-ToE manual chapters with id, title and applicability.",
+          description:
+            "Lists SbD-ToE manual chapters with id, canonical title, a clean readableTitle for display, and per-risk-level applicability (L1/L2/L3) plus minLevel.",
           inputSchema: {
             type: "object",
             properties: {
@@ -605,7 +616,7 @@ class McpRuntime {
           name: "get_sbd_toe_chapter_brief",
           title: "Get SbD-ToE Chapter Brief",
           description:
-            "Returns an operational summary of a chapter: role, phases, artefacts, intent_topics.",
+            "Returns an operational summary of a chapter: title, objective, role, phases, artefacts (fields are present when the substrate carries them).",
           inputSchema: {
             type: "object",
             properties: {
@@ -632,6 +643,16 @@ class McpRuntime {
                 type: "string",
                 enum: ["L1", "L2", "L3"],
                 description: "Optional. If provided, only artefacts applicable at this risk level are returned."
+              },
+              offset: {
+                type: "integer",
+                minimum: 0,
+                description: "Optional. 0-based chapter offset for coverage-preserving pagination of byChapter. Follow `coverage.nextOffset` to page; default covers all chapters."
+              },
+              limit: {
+                type: "integer",
+                minimum: 1,
+                description: "Optional. Max chapters per page. Use with `offset` to keep the response within a size budget; see `coverage` and `size_estimate` in the result."
               }
             },
             required: [],
@@ -644,14 +665,52 @@ class McpRuntime {
           title: "Generate SbD-ToE Skill Content",
           description:
             "Use this tool when asked to 'create a skill for SbD-ToE', 'set up instructions', " +
-            "'configure this client to use SbD-ToE', or 'integrate SbD-ToE'. " +
-            "Returns the canonical skill content from sbd://toe/agent-guide. " +
-            "Save the returned content to the appropriate skill/instructions file for your client " +
-            "(e.g. .claude/skills/sbd-toe.md, .github/copilot-instructions.md, .cursorrules). " +
-            "No parameters required.",
+            "'configure this client/agent to use SbD-ToE', 'configure yourself for role X', or 'integrate SbD-ToE'. " +
+            "Without arguments returns the canonical skill content from sbd://toe/agent-guide. " +
+            "With role= returns a role-specialised skill (format=skill) or an installable sub-agent " +
+            "definition (format=subagent) grounded on the role's manual slice — flavour=harnessed grants " +
+            "the mcp__sbd-toe__* tools (queries live); flavour=skilled embeds the frozen slice with no MCP tools. " +
+            "Save the returned content to suggested_path (or the client equivalent).",
           inputSchema: {
             type: "object",
-            properties: {},
+            properties: {
+              role: {
+                type: "string",
+                description:
+                  "Canonical role_id or natural alias (e.g. devops-sre, sre, developer, appsec, qa). " +
+                  "Unknown roles error with the canonical list — nothing is invented."
+              },
+              risk_level: {
+                type: "string",
+                enum: ["L1", "L2", "L3"],
+                description: "Risk level the skill is scoped to. Default L2."
+              },
+              format: {
+                type: "string",
+                enum: ["skill", "subagent"],
+                description: "skill = role-specialised guidance file (default); subagent = installable agent definition."
+              },
+              flavour: {
+                type: "string",
+                enum: ["harnessed", "skilled"],
+                description:
+                  "Subagent flavour. harnessed (default) grants mcp__sbd-toe__* and queries live; " +
+                  "skilled embeds the frozen skill and carries no MCP tools."
+              },
+              include_detail: {
+                type: "boolean",
+                description:
+                  "Embed the full DoD checklist items in the slice (heavy payload — coverage declares the size). Default false: titles + counts."
+              },
+              phase: {
+                type: "string",
+                description: "Optional lifecycle phase to narrow the slice (canonical resolution as in get_guide_by_role)."
+              },
+              clientType: {
+                type: "string",
+                description: "Optional client hint (claude, copilot, cursor) — affects suggested_path only."
+              }
+            },
             required: [],
             additionalProperties: false
           },
@@ -698,6 +757,132 @@ class McpRuntime {
           annotations: { readOnlyHint: true }
         },
         {
+          name: "get_sbd_toe_chapter_implementation_checklist",
+          title: "Get SbD-ToE Chapter Implementation Checklist",
+          description:
+            "The canon/20 'how to implement chapter NN' checklist — retrieval-grounded prose from the " +
+            "implementation profile (the operational 'Aplicação no Ciclo de Vida' guidance). Use to answer " +
+            "'how do I implement chapter NN / this area?'. Coverage-preserving; cites chunk ids; nothing invented. " +
+            "For the level-sharp structured Definition-of-Done use get_guide_by_role(include_detail=true).",
+          inputSchema: {
+            type: "object",
+            properties: {
+              chapter: { type: "string", description: "Chapter id (08-iac-infraestrutura) or number (8)." },
+              risk_level: { type: "string", enum: ["L1", "L2", "L3"], description: "Informational; the level-sharp DoD is in get_guide_by_role." },
+              offset: { type: "number" },
+              limit: { type: "number" }
+            },
+            required: ["chapter"],
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
+          name: "get_sbd_toe_operating_model",
+          title: "Get SbD-ToE Operating Model",
+          description:
+            "The operating model — RACI, decision-rights, governance cadences, org-model — from the rollout " +
+            "playbook (implementation profile). Retrieval-grounded prose; coverage-preserving; nothing invented. " +
+            "Use to answer 'who is responsible / how do we govern the SbD rollout?'.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              orgScope: { type: "string", description: "Optional filter (e.g. an org example/tier keyword)." },
+              offset: { type: "number" },
+              limit: { type: "number" }
+            },
+            required: [],
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
+          name: "get_sbd_toe_verification_matrix",
+          title: "Get SbD-ToE Verification Matrix",
+          description:
+            "The EXPECTED side of verification: per requirement/control at a risk level, the validation method " +
+            "+ expected evidence + EvidencePattern reference (the 223 published patterns). The deterministic " +
+            "complement of the auditor's expectation and the test-plan. Cited per row; coverage-preserving — " +
+            "declares the requirements with no EvidencePattern. Use to answer 'how do I prove chapter/level X?'.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              risk_level: { type: "string", enum: ["L1", "L2", "L3"], description: "Risk level (filters via the pattern's risk_level_hint; unhinted patterns apply broadly)." },
+              offset: { type: "number" },
+              limit: { type: "number" }
+            },
+            required: ["risk_level"],
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
+          name: "assess_sbd_toe_implementation",
+          title: "Assess SbD-ToE Implementation",
+          description:
+            "Progress / 'how implemented am I': compares submitted KPI values against the published per-level " +
+            "thresholds (metrics.json) → posture (below/at/above) + gaps per KPI. Stateless self-report — values " +
+            "in, posture out, nothing stored; thresholds never invented; an applicable KPI with no value is " +
+            "not_reported (never a pass). Use to answer 'am I compliant at L2 / where are my gaps?'.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              kpi_values: {
+                type: "object",
+                description: "Map of metric_id → numeric value (e.g. {\"ARC-K01\": 85}). Non-numeric values ignored.",
+                additionalProperties: { type: "number" }
+              },
+              risk_level: { type: "string", enum: ["L1", "L2", "L3"], description: "Target/'compliant' band." }
+            },
+            required: ["kpi_values", "risk_level"],
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
+          name: "plan_sbd_toe_rollout",
+          title: "Plan SbD-ToE Rollout (MVP)",
+          description:
+            "A phased rollout roadmap: the canonical lifecycle phases (phase-order) mapped to manual chapters. " +
+            "MVP — phase-ordered, the dependency DAG is deferred (declared, not faked). Grounded in the published " +
+            "runtime; nothing invented. Use to answer 'in what order do we roll out SbD?'.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              orgProfile: { type: "string", description: "Optional org profile hint (informational in the MVP)." },
+              horizon: { type: "number", description: "Optional cap on how many phases the roadmap spans." },
+              offset: { type: "number" },
+              limit: { type: "number" }
+            },
+            required: [],
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
+          name: "map_sbd_toe_regulatory_activation",
+          title: "Map SbD-ToE Regulatory Activation",
+          description:
+            "Regulatory lens (reverse of provenance): given a framework (DORA, NIS2, CRA, RGPD), " +
+            "returns which SbD-ToE manual areas/chapters it activates, grouped with mapping + obligation " +
+            "counts per chapter (coverage-preserving — never a blind dump). Data from the published overlay " +
+            "mappings; nothing invented. Use to answer 'framework X → what do I need to implement?'.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              framework: {
+                type: "string",
+                description: "Framework short code or id (DORA, NIS2, CRA, RGPD; or EXT-DORA …)."
+              },
+              offset: { type: "number", description: "Coverage-preserving page offset over activated areas." },
+              limit: { type: "number", description: "Max activated areas per page (follow coverage.nextOffset)." }
+            },
+            required: ["framework"],
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
           name: "map_sbd_toe_applicability",
           title: "Map SbD-ToE Applicability",
           description:
@@ -721,16 +906,19 @@ class McpRuntime {
               },
               hasPersonalData: {
                 type: "boolean",
-                description: "Does the project process personal data?"
+                description:
+                  "Does the project process personal data? Informational only — does not affect the returned scope (chapter/control activation derives from riskLevel and technologies)."
               },
               isPublicFacing: {
                 type: "boolean",
-                description: "Does the project have public-facing exposure?"
+                description:
+                  "Does the project have public-facing exposure? Informational only — does not affect the returned scope (chapter/control activation derives from riskLevel and technologies)."
               },
               projectRole: {
                 type: "string",
                 enum: ["developer", "architect", "security", "devops", "manager"],
-                description: "User role in the project."
+                description:
+                  "User role in the project. Informational only — does not affect the returned scope."
               }
             },
             required: ["riskLevel"],
@@ -814,7 +1002,7 @@ class McpRuntime {
           description:
             "Returns runtime-grounded practices, assignments and user stories for a given risk level, " +
             "optionally filtered by role and/or lifecycle phase. " +
-            "Roles are resolved via canonical aliases (e.g. 'dev' → 'developer', 'appsec' → 'security-champion'). " +
+            "Roles are resolved via canonical aliases (e.g. 'appsec' → 'appsec-engineer', 'sre' → 'devops-sre', 'security-engineer' → 'appsec-engineer'). " +
             "Results grouped by role and phase. All data from the published SbD-ToE deterministic runtime bundle — nothing is invented.",
           inputSchema: {
             type: "object",
@@ -831,6 +1019,10 @@ class McpRuntime {
               phase: {
                 type: "string",
                 description: "Lifecycle phase to filter by (e.g. 'design', 'implement', 'test', 'operate')."
+              },
+              include_detail: {
+                type: "boolean",
+                description: "When true and a role is given, surfaces each user story's full Definition-of-Done detail (checklist_items, BDD, proportionality, sdlc_integration) and returns role_checklist — the aggregated DoD checklist of the role's user stories in one response. Off by default (heavier payload)."
               }
             },
             required: ["risk_level"],
@@ -1246,9 +1438,25 @@ class McpRuntime {
           mimeType: "application/yaml"
         },
         {
+          uri: "sbd://toe/skill/{role}",
+          name: "SbD-ToE Role Skill",
+          description:
+            "Role-specialised SbD-ToE skill for a canonical role (default risk L2) — the role's manual " +
+            "slice as installable skill content. Same output as generate_sbd_toe_skill(role, format=skill).",
+          mimeType: "text/markdown"
+        },
+        {
+          uri: "sbd://toe/subagent/{role}",
+          name: "SbD-ToE Role Sub-agent Definition",
+          description:
+            "Installable sub-agent definition for a canonical role (default risk L2, harnessed flavour — " +
+            "grants mcp__sbd-toe__* tools). Same output as generate_sbd_toe_skill(role, format=subagent).",
+          mimeType: "text/markdown"
+        },
+        {
           uri: "sbd://toe/version",
           name: "SbD-ToE MCP Version",
-          description: "Current version of the running SbD-ToE MCP server (name, version, description).",
+          description: "Version of the running SbD-ToE MCP server (name, version, description) plus the provenance of the served knowledge: manual {version, commit}, kg {release_tag, substrate_version, consumer_contract_version} and ontology {tag, commit}, read from the consumed-bundle pin.",
           mimeType: "application/json"
         },
         {
@@ -1286,6 +1494,23 @@ class McpRuntime {
       this.sendResponse(request.id, {
         contents: [{ uri, mimeType: "application/json", text: JSON.stringify(data, null, 2) }]
       });
+      return;
+    }
+
+    const roleSkillMatch = /^\/\/toe\/(skill|subagent)\/([^/]+)$/.exec(
+      uri.startsWith("sbd:") ? uri.slice(4) : ""
+    );
+    if (roleSkillMatch !== null) {
+      const format = roleSkillMatch[1] === "subagent" ? "subagent" : "skill";
+      const role = decodeURIComponent(roleSkillMatch[2] ?? "");
+      try {
+        const result = handleGenerateSbdToeSkill({ role, format });
+        this.sendResponse(request.id, {
+          contents: [{ uri, mimeType: "text/markdown", text: result.content }]
+        });
+      } catch (error) {
+        this.sendError(request.id, -32602, error instanceof Error ? error.message : "Could not generate role skill.");
+      }
       return;
     }
 
@@ -1351,10 +1576,16 @@ class McpRuntime {
     if (uri === "sbd://toe/version") {
       try {
         const pkg = loadPackageMetadata();
+        const provenance = loadBundleProvenance();
         const payload = JSON.stringify({
           name: pkg.name,
           version: pkg.version,
-          description: pkg.description
+          description: pkg.description,
+          // Provenance of the served knowledge (from the consumed-bundle.json pin).
+          // Absent if the pin cannot be read; never invented.
+          manual: provenance?.manual,
+          kg: provenance?.kg,
+          ontology: provenance?.ontology
         });
         this.sendResponse(request.id, {
           contents: [{ uri, mimeType: "application/json", text: payload }]
@@ -1677,7 +1908,7 @@ class McpRuntime {
           return;
         }
         case "generate_sbd_toe_skill": {
-          const result = handleGenerateSbdToeSkill();
+          const result = handleGenerateSbdToeSkill(args);
           this.sendResponse(request.id, {
             content: [{ type: "text", text: JSON.stringify(result) }]
           });
@@ -1692,6 +1923,90 @@ class McpRuntime {
         }
         case "map_sbd_toe_review_scope": {
           const result = handleMapSbdToeReviewScope(args);
+          this.sendResponse(request.id, {
+            content: [{ type: "text", text: JSON.stringify(result) }]
+          });
+          await this.log("info", {
+            event_type: "tool.call",
+            outcome: "succeeded",
+            duration_ms: Date.now() - startedAt,
+            ...metadata,
+            message: "Tool invocation completed"
+          });
+          return;
+        }
+        case "get_sbd_toe_chapter_implementation_checklist": {
+          const result = handleGetChapterImplementationChecklist(args);
+          this.sendResponse(request.id, {
+            content: [{ type: "text", text: JSON.stringify(result) }]
+          });
+          await this.log("info", {
+            event_type: "tool.call",
+            outcome: "succeeded",
+            duration_ms: Date.now() - startedAt,
+            ...metadata,
+            message: "Tool invocation completed"
+          });
+          return;
+        }
+        case "get_sbd_toe_operating_model": {
+          const result = handleGetOperatingModel(args);
+          this.sendResponse(request.id, {
+            content: [{ type: "text", text: JSON.stringify(result) }]
+          });
+          await this.log("info", {
+            event_type: "tool.call",
+            outcome: "succeeded",
+            duration_ms: Date.now() - startedAt,
+            ...metadata,
+            message: "Tool invocation completed"
+          });
+          return;
+        }
+        case "get_sbd_toe_verification_matrix": {
+          const result = handleGetVerificationMatrix(args);
+          this.sendResponse(request.id, {
+            content: [{ type: "text", text: JSON.stringify(result) }]
+          });
+          await this.log("info", {
+            event_type: "tool.call",
+            outcome: "succeeded",
+            duration_ms: Date.now() - startedAt,
+            ...metadata,
+            message: "Tool invocation completed"
+          });
+          return;
+        }
+        case "assess_sbd_toe_implementation": {
+          const result = handleAssessImplementation(args);
+          this.sendResponse(request.id, {
+            content: [{ type: "text", text: JSON.stringify(result) }]
+          });
+          await this.log("info", {
+            event_type: "tool.call",
+            outcome: "succeeded",
+            duration_ms: Date.now() - startedAt,
+            ...metadata,
+            message: "Tool invocation completed"
+          });
+          return;
+        }
+        case "plan_sbd_toe_rollout": {
+          const result = handlePlanRollout(args);
+          this.sendResponse(request.id, {
+            content: [{ type: "text", text: JSON.stringify(result) }]
+          });
+          await this.log("info", {
+            event_type: "tool.call",
+            outcome: "succeeded",
+            duration_ms: Date.now() - startedAt,
+            ...metadata,
+            message: "Tool invocation completed"
+          });
+          return;
+        }
+        case "map_sbd_toe_regulatory_activation": {
+          const result = handleMapRegulatoryActivation(args);
           this.sendResponse(request.id, {
             content: [{ type: "text", text: JSON.stringify(result) }]
           });

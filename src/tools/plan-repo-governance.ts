@@ -11,60 +11,47 @@
  */
 
 import type { SnapshotCache } from "../backend/semantic-index-gateway.js";
-import { getOntologyData } from "./ontology-loader.js";
+import { chapterNumber, getOntologyData, type Requirement } from "./ontology-loader.js";
+import { paginate, type PageCoverage, type SizeEstimate } from "../serving/response-shaping.js";
+import type { Affordance } from "../serving/protocol-envelope.js";
+import { planRepoGovernanceAffordances } from "../serving/affordances.js";
 
 const VALID_RISK_LEVELS = ["L1", "L2", "L3"] as const;
 type RiskLevel = (typeof VALID_RISK_LEVELS)[number];
 
-const ACTIVE_CHAPTERS_BY_RISK: Record<RiskLevel, string[]> = {
-  L1: [
-    "00-fundamentos",
-    "01-classificacao-aplicacoes",
-    "02-requisitos-seguranca",
-    "03-threat-modeling",
-    "04-arquitetura-segura",
-    "05-dependencias-sbom-sca",
-    "07-cicd-seguro",
-    "08-iac-infraestrutura",
-    "09-containers-imagens",
-    "10-testes-seguranca",
-    "12-monitorizacao-operacoes",
-    "14-governanca-contratacao"
-  ],
-  L2: [
-    "00-fundamentos",
-    "01-classificacao-aplicacoes",
-    "02-requisitos-seguranca",
-    "03-threat-modeling",
-    "04-arquitetura-segura",
-    "05-dependencias-sbom-sca",
-    "06-desenvolvimento-seguro",
-    "07-cicd-seguro",
-    "08-iac-infraestrutura",
-    "09-containers-imagens",
-    "10-testes-seguranca",
-    "11-deploy-seguro",
-    "12-monitorizacao-operacoes",
-    "14-governanca-contratacao"
-  ],
-  L3: [
-    "00-fundamentos",
-    "01-classificacao-aplicacoes",
-    "02-requisitos-seguranca",
-    "03-threat-modeling",
-    "04-arquitetura-segura",
-    "05-dependencias-sbom-sca",
-    "06-desenvolvimento-seguro",
-    "07-cicd-seguro",
-    "08-iac-infraestrutura",
-    "09-containers-imagens",
-    "10-testes-seguranca",
-    "11-deploy-seguro",
-    "12-monitorizacao-operacoes",
-    "13-formacao-onboarding",
-    "14-governanca-contratacao"
-  ]
-};
+/**
+ * Requirement-first applicability ladder (serving fix, brief #3b). A chapter's
+ * active risk levels are derived from the requirements that actually apply there
+ * (`requirements.applicable_levels`, the sharp ladder) — NOT a hardcoded chapter
+ * on/off table. Controls/artefacts are the floor: an artefact rides the levels at
+ * which its chapter carries an applicable requirement; a chapter with no
+ * requirements at all stays floor-present at every level (baseline, not sharpened).
+ */
+function activeLevelsByChapter(requirements: readonly Requirement[]): Map<number, Set<RiskLevel>> {
+  const byChapter = new Map<number, Set<RiskLevel>>();
+  for (const req of requirements) {
+    if (Number.isNaN(req.source_chapter)) continue;
+    const set = byChapter.get(req.source_chapter) ?? new Set<RiskLevel>();
+    for (const level of VALID_RISK_LEVELS) {
+      if (req.applicable_levels[level]) set.add(level);
+    }
+    byChapter.set(req.source_chapter, set);
+  }
+  return byChapter;
+}
+
+function chapterActiveLevels(
+  chapterId: string,
+  ladder: Map<number, Set<RiskLevel>>
+): RiskLevel[] {
+  const num = chapterNumber(chapterId);
+  const fromRequirements = Number.isNaN(num) ? undefined : ladder.get(num);
+  // Floor: a chapter without requirements is baseline-present at every level.
+  if (fromRequirements === undefined || fromRequirements.size === 0) {
+    return [...VALID_RISK_LEVELS];
+  }
+  return VALID_RISK_LEVELS.filter((level) => fromRequirements.has(level));
+}
 
 function isValidRiskLevel(value: unknown): value is RiskLevel {
   return typeof value === "string" && (VALID_RISK_LEVELS as readonly string[]).includes(value);
@@ -85,7 +72,13 @@ export interface PlanRepoGovernanceResult {
   riskLevel: string | null;
   totalArtefacts: number;
   byChapter: ArtefactsByChapter[];
+  /** Coverage-preserving page cursor over `byChapter` (follow `nextOffset`). */
+  coverage: PageCoverage;
+  /** Estimated serialized size of the returned `byChapter` page ({ chars, approx_tokens }). */
+  size_estimate: SizeEstimate;
   note: string;
+  /** RF-H advisory band — adjacent tools the caller likely needs next. */
+  next: Affordance[];
 }
 
 export function handlePlanRepoGovernance(
@@ -135,11 +128,10 @@ export function handlePlanRepoGovernance(
     }
   } else {
     const ontology = getOntologyData();
+    const ladder = activeLevelsByChapter(ontology.requirements ?? []);
     for (const artifactRequirement of ontology.artifactRequirements ?? []) {
       for (const chapterId of artifactRequirement.chapter_ids ?? []) {
-        const chapterRiskLevels = VALID_RISK_LEVELS.filter((level) =>
-          ACTIVE_CHAPTERS_BY_RISK[level].includes(chapterId)
-        );
+        const chapterRiskLevels = chapterActiveLevels(chapterId, ladder);
         const key = `${chapterId}::${artifactRequirement.artifact_type_id}`;
         if (!artMap.has(key)) {
           artMap.set(key, {
@@ -175,13 +167,31 @@ export function handlePlanRepoGovernance(
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([chapterId, arts]) => ({ chapterId, artefacts: arts }));
 
+  // Coverage-preserving pagination over byChapter. Opt-in: without offset/limit
+  // the default page covers every chapter (non-breaking), but `coverage` and
+  // `size_estimate` are always returned so consumers can budget and page.
+  const offsetArg = args["offset"];
+  const limitArg = args["limit"];
+  const page = paginate(
+    byChapter,
+    {
+      offset: typeof offsetArg === "number" ? offsetArg : undefined,
+      limit: typeof limitArg === "number" ? limitArg : undefined,
+    },
+    byChapter.length || 1
+  );
+
   return {
     riskLevel,
     totalArtefacts: artefacts.length,
-    byChapter,
+    byChapter: page.items,
+    coverage: page.coverage,
+    size_estimate: page.size_estimate,
     note:
       "Artefacts sourced from the published SbD-ToE runtime and manual chapter applicability model. " +
       "The manual does not provide document templates — if a template is needed, " +
-      "ask the LLM to generate one based on the artefact description."
+      "ask the LLM to generate one based on the artefact description. " +
+      "byChapter is coverage-preserving paginated — follow coverage.nextOffset to page.",
+    next: planRepoGovernanceAffordances(riskLevel)
   };
 }

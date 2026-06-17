@@ -305,7 +305,8 @@ describe("handleGetSbdToeChapterBrief", () => {
     ) as { found: boolean; id: string; title: string };
     expect(result.found).toBe(true);
     expect(result.id).toBe("01-classificacao-aplicacoes");
-    expect(result.title).toBe("Cap. 01");
+    // title prefers the clean readable title over the raw bundle title.
+    expect(result.title).toBe("Classificação de Aplicações");
   });
 
   it("finds chapter by objectID field", () => {
@@ -336,32 +337,6 @@ describe("handleGetSbdToeChapterBrief", () => {
     expect(result.objective).toBe("Summary of Cap. 01");
   });
 
-  it("uses enriched lookup for intent_topics when available", () => {
-    const objectID = "entity::chapter_bundle::01-cap::bundle";
-    const item = {
-      objectID,
-      entity_type: "chapter_bundle",
-      chapter_id: "01-cap",
-      title: "Cap. 01",
-      risk_levels: [],
-      summary: "Test summary",
-      related_phases: [],
-      artifact_ids: []
-    };
-    const enrichedLookup = new Map([
-      [objectID, { intent_topics: ["bootstrap", "classification"] as readonly string[] }]
-    ]);
-    const cache: SnapshotCache = {
-      docs: { items: [] },
-      entities: { items: [item as never] },
-      docsEnrichedLookup: new Map(),
-      entitiesEnrichedLookup: enrichedLookup
-    };
-    const result = handleGetSbdToeChapterBrief({ chapterId: "01-cap" }, cache) as {
-      intent_topics?: string[];
-    };
-    expect(result.intent_topics).toEqual(["bootstrap", "classification"]);
-  });
 });
 
 // --- list_sbd_toe_chapters — readableTitle ---
@@ -625,5 +600,125 @@ describe("handleMapSbdToeApplicability — activatedBundles", () => {
     expect(result.active).toContain("01-cap");
     expect(result.conditional).toEqual([]);
     expect(result.activatedBundles.foundationBundles).toHaveLength(3);
+  });
+});
+
+// --- list_sbd_toe_chapters — applicability/minLevel (Wave 1 item 9) ---
+
+describe("handleListSbdToeChapters — applicability", () => {
+  type Chapter = {
+    id: string;
+    title: string;
+    readableTitle: string;
+    applicability: { L1: boolean; L2: boolean; L3: boolean };
+    minLevel: "L1" | "L2" | "L3" | null;
+  };
+
+  function listAll(): Chapter[] {
+    // No cache → real-chapter path driven by ACTIVE_CHAPTERS_BY_RISK.
+    return (handleListSbdToeChapters({}) as { chapters: Chapter[] }).chapters;
+  }
+
+  it("exposes applicability + minLevel on every chapter (the promised-but-missing fields)", () => {
+    for (const c of listAll()) {
+      expect(c.applicability).toBeDefined();
+      expect(typeof c.applicability.L1).toBe("boolean");
+      expect(["L1", "L2", "L3", null]).toContain(c.minLevel);
+    }
+  });
+
+  it("derives minLevel from the lowest active risk level", () => {
+    const byId = new Map(listAll().map((c) => [c.id, c]));
+    // Foundation chapter active at every level.
+    expect(byId.get("02-requisitos-seguranca")?.minLevel).toBe("L1");
+    // Secure-development activates at L2 (not L1).
+    expect(byId.get("06-desenvolvimento-seguro")?.applicability.L1).toBe(false);
+    expect(byId.get("06-desenvolvimento-seguro")?.minLevel).toBe("L2");
+    // Training/onboarding is L3-only.
+    expect(byId.get("13-formacao-onboarding")?.applicability).toEqual({ L1: false, L2: false, L3: true });
+    expect(byId.get("13-formacao-onboarding")?.minLevel).toBe("L3");
+  });
+
+  it("keeps readableTitle clean even when the canonical title carries editorial noise", () => {
+    const tm = listAll().find((c) => c.id === "03-threat-modeling");
+    expect(tm?.readableTitle).toBe("Threat Modeling");
+    // canonical title may carry a "Capítulo 3 - " prefix; readableTitle must not.
+    expect(tm?.readableTitle).not.toMatch(/Cap[íi]tulo/i);
+  });
+});
+
+// --- query_entities exact-id lookup (Wave 1 item 3) ---
+// Before this fix, an exact id (CTRL-<domain>-<slug>-<hash>) returned 0 from the
+// semantic search; now it resolves directly from the entity index.
+describe("handleQuerySbdToeEntities — exact id lookup", () => {
+  it("resolves a real control id directly with match=exact_id", async () => {
+    const { getOntologyData } = await import("./ontology-loader.js");
+    const realId = getOntologyData().controls[0]?.control_id;
+    expect(typeof realId).toBe("string");
+
+    const result = (await handleQuerySbdToeEntities({ query: realId as string })) as {
+      total: number;
+      match?: string;
+      entities: Array<Record<string, unknown>>;
+    };
+    expect(result.total).toBe(1);
+    expect(result.match).toBe("exact_id");
+    expect(result.entities[0]?.control_id).toBe(realId);
+    expect(result.entities[0]?.entity_type).toBe("control");
+  });
+
+  it("does not exact-match a guessed/partial token", async () => {
+    // 'CTRL-06' is not a real id → no exact match (falls through to semantic).
+    const result = (await handleQuerySbdToeEntities({ query: "CTRL-06" })) as { match?: string };
+    expect(result.match).toBeUndefined();
+  });
+});
+
+// --- map_applicability: conditional populated by context (Wave 1 item 7) ---
+// conditional was hardcoded [] (dead) while context activation lived only in
+// activatedBundles. Now active = risk baseline, conditional = technology overlay.
+describe("handleMapSbdToeApplicability — conditional model", () => {
+  type Result = {
+    active: string[];
+    conditional: Array<{ chapterId: string; reason: string }>;
+    activatedBundles: unknown;
+  };
+
+  it("is empty when no technologies are supplied", () => {
+    const result = handleMapSbdToeApplicability({ riskLevel: "L2" }) as Result;
+    expect(result.conditional).toEqual([]);
+  });
+
+  it("is populated by technologies, distinct from the risk-baseline active set", () => {
+    const result = handleMapSbdToeApplicability({
+      riskLevel: "L2",
+      technologies: ["containers", "iac", "ci-cd", "monitoring"],
+    }) as Result;
+    const ids = result.conditional.map((c) => c.chapterId);
+    expect(ids).toEqual(expect.arrayContaining(["08-iac-infraestrutura", "09-containers-imagens", "07-cicd-seguro"]));
+    expect(new Set(ids).size).toBe(ids.length); // deduped
+    for (const c of result.conditional) {
+      expect(c.reason.toLowerCase()).toContain("technologies inclui");
+    }
+    // active stays the risk baseline (unchanged by technologies).
+    const baseline = handleMapSbdToeApplicability({ riskLevel: "L2" }) as Result;
+    expect(result.active).toEqual(baseline.active);
+  });
+});
+
+// --- get_chapter_brief: surface role (Wave 1 item 8 serve-side) ---
+// The description promised role + intent_topics but the output carried neither.
+// role is derived from assignments; intent_topics is absent from the v1.6.x
+// substrate (description corrected to not over-promise).
+describe("handleGetSbdToeChapterBrief — role", () => {
+  it("surfaces the distinct roles of a chapter from assignments", () => {
+    const result = handleGetSbdToeChapterBrief({ chapterId: "02-requisitos-seguranca" }) as {
+      found: boolean;
+      role?: string[];
+    };
+    expect(result.found).toBe(true);
+    expect(Array.isArray(result.role)).toBe(true);
+    expect((result.role ?? []).length).toBeGreaterThan(0);
+    expect(result.role).toEqual([...(result.role ?? [])].sort()); // deduped + sorted
   });
 });

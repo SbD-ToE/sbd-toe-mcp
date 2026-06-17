@@ -82,43 +82,33 @@
     },
     {
       "applicability_scope": "framework_specific",
-      "citation": "16",
+      "citation": "17–23",
       "framework_id": "EXT-DORA",
       "normative_strength": "curated",
-      "obligation_id": "EXT-DORA-OBL-16",
+      "obligation_id": "EXT-DORA-OBL-17-23",
       "obligation_kind": "article",
-      "title": "Partilha de Ameaças",
-      "topic": "Partilha de Ameaças"
+      "title": "Gestão, classificação e reporte de incidentes TIC",
+      "topic": "Gestão, classificação e reporte de incidentes TIC"
     },
     {
       "applicability_scope": "framework_specific",
-      "citation": "18",
+      "citation": "24–27",
       "framework_id": "EXT-DORA",
       "normative_strength": "curated",
-      "obligation_id": "EXT-DORA-OBL-18",
+      "obligation_id": "EXT-DORA-OBL-24-27",
       "obligation_kind": "article",
-      "title": "Reporte de Incidentes",
-      "topic": "Reporte de Incidentes"
+      "title": "Programa de testes de resiliência digital e TLPT",
+      "topic": "Programa de testes de resiliência digital e TLPT"
     },
     {
       "applicability_scope": "framework_specific",
-      "citation": "19–20",
+      "citation": "28–30",
       "framework_id": "EXT-DORA",
       "normative_strength": "curated",
-      "obligation_id": "EXT-DORA-OBL-19-20",
+      "obligation_id": "EXT-DORA-OBL-28-30",
       "obligation_kind": "article",
-      "title": "Testes de Resiliência",
-      "topic": "Testes de Resiliência"
-    },
-    {
-      "applicability_scope": "framework_specific",
-      "citation": "26–28",
-      "framework_id": "EXT-DORA",
-      "normative_strength": "curated",
-      "obligation_id": "EXT-DORA-OBL-26-28",
-      "obligation_kind": "article",
-      "title": "Gestão de Fornecedores",
-      "topic": "Gestão de Fornecedores"
+      "title": "Gestão de risco de terceiros TIC",
+      "topic": "Gestão de risco de terceiros TIC"
     },
     {
       "applicability_scope": "framework_specific",
@@ -127,8 +117,28 @@
       "normative_strength": "curated",
       "obligation_id": "EXT-DORA-OBL-5",
       "obligation_kind": "article",
-      "title": "Gestão de Risco TIC",
-      "topic": "Gestão de Risco TIC"
+      "title": "Governação e responsabilidade do órgão de gestão",
+      "topic": "Governação e responsabilidade do órgão de gestão"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "6",
+      "framework_id": "EXT-DORA",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-DORA-OBL-6",
+      "obligation_kind": "article",
+      "title": "Framework de gestão de risco TIC",
+      "topic": "Framework de gestão de risco TIC"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "8–15",
+      "framework_id": "EXT-DORA",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-DORA-OBL-8-15",
+      "obligation_kind": "article",
+      "title": "Proteção, prevenção, deteção, resposta, recuperação, aprendizagem e comunicação",
+      "topic": "Proteção, prevenção, deteção, resposta, recuperação, aprendizagem e comunicação"
     },
     {
       "applicability_scope": "framework_specific",

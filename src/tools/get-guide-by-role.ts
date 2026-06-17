@@ -14,6 +14,8 @@
 import type { Practice, PracticeAssignment, UserStory } from "./ontology-loader.js";
 import { getOntologyData, resolvePhaseId, resolveRoleId } from "./ontology-loader.js";
 import { _resolveConsultResult } from "./consult-security-requirements.js";
+import type { Affordance } from "../serving/protocol-envelope.js";
+import { guideByRoleAffordances } from "../serving/affordances.js";
 
 const VALID_RISK_LEVELS = ["L1", "L2", "L3"] as const;
 type RiskLevel = (typeof VALID_RISK_LEVELS)[number];
@@ -24,6 +26,42 @@ function isValidRiskLevel(v: unknown): v is RiskLevel {
 
 function normalizeToken(value: string): string {
   return value.toLowerCase().trim().replace(/[\s/]+/g, "-").replace(/_/g, "-");
+}
+
+/**
+ * Consumer-side role aliases (serving brief #6): natural names an agent reaches for,
+ * mapped to the canonical role_id ONLY where there is a single, unambiguous content
+ * home. This is a serving-layer convenience and is intentionally NOT merged into the
+ * KG role.aliases (that data is the producer's). Names whose content home is ambiguous
+ * or sparse in the substrate are deliberately left out and routed to Codex as
+ * data-quality items rather than papered over here:
+ *   - devsecops  — cross-cutting (developer + appsec-engineer + devops-sre); not one role
+ *   - architect  — substrate split (software_architect→developer vs empty arquitetos-software)
+ *   - product-manager — product_owner appears under both `qa` and `product-owner`
+ *   - training-manager / pentester / security — no canonical content home
+ */
+const CONSUMER_ROLE_ALIASES: Record<string, string> = {
+  "security-engineer": "appsec-engineer",
+  "application-security-engineer": "appsec-engineer",
+  "sec-engineer": "appsec-engineer",
+  "appsec-eng": "appsec-engineer",
+};
+
+function applyConsumerAlias(roleArg: string): string {
+  return CONSUMER_ROLE_ALIASES[normalizeToken(roleArg)] ?? roleArg;
+}
+
+/**
+ * Whether an assignment applies at its (level-tagged) risk level, read from the
+ * level-specific `proportionality` string. The substrate replicates every
+ * assignment across L1/L2/L3; the proportionality is what sharpens the ladder —
+ * obligations like "Não", "Não aplicável", "Não obrigatório", "N/A" mean the US
+ * does not apply at that level. Absent proportionality → applicable (don't drop).
+ */
+const NON_APPLICABLE_OBLIGATION = /^\s*(não\s+aplicável|não\s+obrigatório|não|n\/a)\b/i;
+function isApplicableAtLevel(proportionality: string | undefined): boolean {
+  if (!proportionality) return true;
+  return !NON_APPLICABLE_OBLIGATION.test(proportionality);
 }
 
 export interface AssignmentWithStory extends PracticeAssignment {
@@ -49,7 +87,26 @@ export interface AssignmentSlim {
     title: string;
     goal?: string;
     acceptance_criteria?: string;
+    // Present only in detail mode (include_detail=true) — the US DoD + join.
+    checklist_items?: string[];
+    bdd?: string[];
+    proportionality?: UserStory["proportionality"];
+    /** Level-specific obligation for the requested risk level (from the assignment). */
+    proportionality_level?: string;
+    sdlc_integration?: UserStory["sdlc_integration"];
   };
+}
+
+/** Aggregated DoD view of a role's user stories — the "what must role X fulfil" answer. */
+export interface RoleChecklistEntry {
+  id?: string;
+  us_id?: string;
+  title: string;
+  chapter_id?: string;
+  checklist_items: string[];
+  proportionality?: UserStory["proportionality"];
+  /** Level-specific obligation for the requested risk level (from the assignment). */
+  proportionality_level?: string;
 }
 
 export interface GetGuideByRoleResult {
@@ -86,6 +143,8 @@ export interface GetGuideByRoleOutput {
   phaseFilter: string | null;
   canonicalPhase: string | null;
   assignments: AssignmentSlim[];
+  /** Aggregated DoD checklist of the role's user stories — present only with include_detail + a role filter. */
+  role_checklist?: RoleChecklistEntry[];
   role_summary: Record<string, number>;
   phase_summary: Record<string, number>;
   meta: {
@@ -96,6 +155,8 @@ export interface GetGuideByRoleOutput {
     knownPhases: string[];
     note: string;
   };
+  /** RF-H advisory band — adjacent tools the caller likely needs next. */
+  next: Affordance[];
 }
 
 export function _resolveGuideByRole(
@@ -123,7 +184,7 @@ export function _resolveGuideByRole(
 
   const roleArg = typeof args["role"] === "string" ? args["role"].trim() : null;
   const canonicalRole = roleArg
-    ? resolveRoleId(roleArg, roles) ?? normalizeToken(roleArg)
+    ? resolveRoleId(applyConsumerAlias(roleArg), roles) ?? normalizeToken(roleArg)
     : null;
 
   const phaseArg = typeof args["phase"] === "string" ? args["phase"].trim() : null;
@@ -136,7 +197,12 @@ export function _resolveGuideByRole(
   );
   const practiceById = new Map(practices.map((practice) => [practice.id, practice]));
 
-  let scopedAssignments = allAssignments.filter((assignment) => assignment.risk_level === riskLevel);
+  // Filter by level (substrate replicates assignments across L1/L2/L3) AND drop
+  // the ones the level-specific proportionality marks non-applicable — this is the
+  // ladder sharpening: L1 omits what only applies higher up (serving fix, brief #3a).
+  let scopedAssignments = allAssignments.filter(
+    (assignment) => assignment.risk_level === riskLevel && isApplicableAtLevel(assignment.proportionality)
+  );
   if (activePracticeIds.size > 0) {
     scopedAssignments = scopedAssignments.filter((assignment) =>
       activePracticeIds.has(assignment.practice_id)
@@ -211,7 +277,7 @@ export function _resolveGuideByRole(
   };
 }
 
-function slimAssignment(assignment: AssignmentWithStory): AssignmentSlim {
+function slimAssignment(assignment: AssignmentWithStory, includeDetail: boolean): AssignmentSlim {
   const slim: AssignmentSlim = {
     id: assignment.id,
     chapter_id: assignment.chapter_id,
@@ -226,13 +292,21 @@ function slimAssignment(assignment: AssignmentWithStory): AssignmentSlim {
   };
 
   if (assignment.user_story) {
+    const us = assignment.user_story;
     slim.user_story = {
-      ...(assignment.user_story.us_id ? { us_id: assignment.user_story.us_id } : {}),
-      title: assignment.user_story.title,
-      ...(assignment.user_story.goal ? { goal: assignment.user_story.goal } : {}),
-      ...(assignment.user_story.acceptance_criteria
-        ? { acceptance_criteria: assignment.user_story.acceptance_criteria }
+      ...(us.us_id ? { us_id: us.us_id } : {}),
+      title: us.title,
+      ...(us.goal ? { goal: us.goal } : {}),
+      ...(us.acceptance_criteria ? { acceptance_criteria: us.acceptance_criteria } : {}),
+      // Level-specific obligation (always — it is the cheap, sharp ladder signal).
+      ...(assignment.proportionality ? { proportionality_level: assignment.proportionality } : {}),
+      // Detail mode: surface the DoD + join so the agent gets the full story in one pass.
+      ...(includeDetail && us.checklist_items && us.checklist_items.length > 0
+        ? { checklist_items: us.checklist_items }
         : {}),
+      ...(includeDetail && us.bdd && us.bdd.length > 0 ? { bdd: us.bdd } : {}),
+      ...(includeDetail && us.proportionality ? { proportionality: us.proportionality } : {}),
+      ...(includeDetail && us.sdlc_integration ? { sdlc_integration: us.sdlc_integration } : {}),
     };
   }
 
@@ -244,6 +318,7 @@ export function handleGetGuideByRole(
 ): GetGuideByRoleOutput {
   const full = _resolveGuideByRole(args, getOntologyData());
   const hasFilter = full.roleFilter !== null || full.phaseFilter !== null;
+  const includeDetail = args["include_detail"] === true;
 
   const role_summary: Record<string, number> = {};
   const phase_summary: Record<string, number> = {};
@@ -253,6 +328,30 @@ export function handleGetGuideByRole(
   }
   for (const [phase, items] of Object.entries(full.by_phase)) {
     phase_summary[phase] = items.length;
+  }
+
+  // Role aggregation (consumer brief #2): the role's distinct user stories with their
+  // DoD checklist — the "what must role X fulfil, in one request" answer. Only when a
+  // role is filtered and detail is requested (it carries the heavy per-US content).
+  let role_checklist: RoleChecklistEntry[] | undefined;
+  if (includeDetail && full.roleFilter !== null) {
+    const seen = new Set<string>();
+    role_checklist = [];
+    for (const assignment of full.assignments) {
+      const us = assignment.user_story;
+      const key = us?.id ?? us?.us_id;
+      if (!us || !key || seen.has(key)) continue;
+      seen.add(key);
+      role_checklist.push({
+        ...(us.id ? { id: us.id } : {}),
+        ...(us.us_id ? { us_id: us.us_id } : {}),
+        title: us.title,
+        ...(us.chapter_id ? { chapter_id: us.chapter_id } : {}),
+        checklist_items: us.checklist_items ?? [],
+        ...(us.proportionality ? { proportionality: us.proportionality } : {}),
+        ...(assignment.proportionality ? { proportionality_level: assignment.proportionality } : {}),
+      });
+    }
   }
 
   return {
@@ -269,7 +368,8 @@ export function handleGetGuideByRole(
     canonicalRole: full.canonicalRole,
     phaseFilter: full.phaseFilter,
     canonicalPhase: full.canonicalPhase,
-    assignments: hasFilter ? full.assignments.map(slimAssignment) : [],
+    assignments: hasFilter ? full.assignments.map((a) => slimAssignment(a, includeDetail)) : [],
+    ...(role_checklist ? { role_checklist } : {}),
     role_summary,
     phase_summary,
     meta: {
@@ -278,5 +378,6 @@ export function handleGetGuideByRole(
         ? full.meta.note
         : `${full.meta.note} No role/phase filter — assignments omitted. Specify role= or phase= for details.`,
     },
+    next: guideByRoleAffordances(full.risk_level, full.canonicalRole),
   };
 }

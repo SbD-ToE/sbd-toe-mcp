@@ -4,6 +4,12 @@ import { retrievePublishedContext } from "../backend/semantic-index-gateway.js";
 import { resolveAppPath } from "../config.js";
 import type { LooseRecord } from "../types.js";
 import { getOntologyData } from "./ontology-loader.js";
+import {
+  listChaptersAffordances,
+  queryEntitiesAffordances,
+  chapterBriefAffordances,
+  mapApplicabilityAffordances
+} from "../serving/affordances.js";
 
 const VALID_RISK_LEVELS = ["L1", "L2", "L3"] as const;
 type RiskLevel = (typeof VALID_RISK_LEVELS)[number];
@@ -59,6 +65,30 @@ const ACTIVE_CHAPTERS_BY_RISK: Record<RiskLevel, string[]> = {
   ],
   L3: Object.keys(READABLE_TITLES),
 };
+
+const RISK_ORDER: readonly RiskLevel[] = ["L1", "L2", "L3"];
+
+interface ChapterApplicability {
+  applicability: { L1: boolean; L2: boolean; L3: boolean };
+  minLevel: RiskLevel | null;
+}
+
+/**
+ * Per-risk-level applicability for a chapter, derived from ACTIVE_CHAPTERS_BY_RISK.
+ * `minLevel` is the lowest level at which the chapter activates (null if never).
+ * Bundle-independent — driven by the in-code risk model, not the runtime bundle.
+ */
+function chapterApplicability(chapterId: string): ChapterApplicability {
+  const applicability = {
+    L1: ACTIVE_CHAPTERS_BY_RISK.L1.includes(chapterId),
+    L2: ACTIVE_CHAPTERS_BY_RISK.L2.includes(chapterId),
+    L3: ACTIVE_CHAPTERS_BY_RISK.L3.includes(chapterId),
+  };
+  return {
+    applicability,
+    minLevel: RISK_ORDER.find((level) => applicability[level]) ?? null,
+  };
+}
 
 let cachedBundleCatalog: LooseRecord[] | undefined;
 let cachedMcpChunks: LooseRecord[] | undefined;
@@ -119,7 +149,11 @@ function summarizeChunkText(text: string | undefined): string | undefined {
   return compact.length > 0 ? compact : undefined;
 }
 
-export function handleListSbdToeChapters(
+export function handleListSbdToeChapters(args: Record<string, unknown>, cache?: SnapshotCache): unknown {
+  return { ...(handleListSbdToeChaptersCore(args, cache) as Record<string, unknown>), next: listChaptersAffordances() };
+}
+
+function handleListSbdToeChaptersCore(
   args: Record<string, unknown>,
   cache?: SnapshotCache
 ): unknown {
@@ -134,7 +168,9 @@ export function handleListSbdToeChapters(
   if (hasProvidedCache(cache)) {
     const items = getEntityItems(cache);
     const seen = new Set<string>();
-    const chapters: Array<{ id: string; title: string; readableTitle: string }> = [];
+    const chapters: Array<
+      { id: string; title: string; readableTitle: string } & ChapterApplicability
+    > = [];
 
     for (const item of items) {
       const oid = getStr(item, "objectID") ?? "";
@@ -159,7 +195,12 @@ export function handleListSbdToeChapters(
 
       seen.add(id);
       const title = getStr(item, "title") ?? id;
-      chapters.push({ id, title, readableTitle: READABLE_TITLES[id] ?? title });
+      chapters.push({
+        id,
+        title,
+        readableTitle: READABLE_TITLES[id] ?? title,
+        ...chapterApplicability(id),
+      });
     }
 
     return { chapters };
@@ -177,13 +218,48 @@ export function handleListSbdToeChapters(
 
   const chapters = chapterIds.map((id) => {
     const title = titleByChapter.get(id) ?? READABLE_TITLES[id] ?? id;
-    return { id, title, readableTitle: READABLE_TITLES[id] ?? title };
+    return {
+      id,
+      title,
+      readableTitle: READABLE_TITLES[id] ?? title,
+      ...chapterApplicability(id),
+    };
   });
 
   return { chapters };
 }
 
+/**
+ * Exact entity-ID lookup across the runtime entity indexes. query_entities is a
+ * semantic search over chunks, so an exact id (e.g. CTRL-<domain>-<slug>-<hash>)
+ * never matches and returns 0. This resolves a real id directly from the entity
+ * index before falling back to semantic search. Returns undefined when the query
+ * is not an exact id (then the caller runs the semantic path).
+ */
+function exactEntityLookup(query: string): Record<string, unknown> | undefined {
+  const od = getOntologyData();
+  const collections: Array<[string, ReadonlyArray<Record<string, unknown>>, string]> = [
+    ["control", od.controls as unknown as Record<string, unknown>[], "control_id"],
+    ["requirement", od.requirements as unknown as Record<string, unknown>[], "requirement_id"],
+    ["threat", od.threats as unknown as Record<string, unknown>[], "id"],
+    ["artifact", (od.artifacts ?? []) as unknown as Record<string, unknown>[], "artifact_type_id"],
+    ["role", od.roles as unknown as Record<string, unknown>[], "role_id"],
+  ];
+  for (const [entityType, items, idField] of collections) {
+    const match = items.find((item) => item[idField] === query);
+    if (match) return { entity_type: entityType, ...match };
+  }
+  return undefined;
+}
+
 export async function handleQuerySbdToeEntities(
+  args: Record<string, unknown>,
+  cache?: SnapshotCache
+): Promise<unknown> {
+  return { ...((await handleQuerySbdToeEntitiesCore(args, cache)) as Record<string, unknown>), next: queryEntitiesAffordances() };
+}
+
+async function handleQuerySbdToeEntitiesCore(
   args: Record<string, unknown>,
   cache?: SnapshotCache
 ): Promise<unknown> {
@@ -194,6 +270,13 @@ export async function handleQuerySbdToeEntities(
     throw new Error(
       'O argumento "query" é obrigatório e deve ter entre 1 e 200 caracteres.'
     );
+  }
+
+  // Exact entity-id lookup first: a real id resolves deterministically from the
+  // entity index instead of returning 0 from the semantic search over chunks.
+  const exact = exactEntityLookup(query);
+  if (exact) {
+    return { entities: [exact], total: 1, match: "exact_id" };
   }
 
   const topKArg = args["topK"];
@@ -257,7 +340,12 @@ export async function handleQuerySbdToeEntities(
   return { entities, total: results.length };
 }
 
-export function handleGetSbdToeChapterBrief(
+export function handleGetSbdToeChapterBrief(args: Record<string, unknown>, cache?: SnapshotCache): unknown {
+  const chapterId = typeof args["chapterId"] === "string" ? args["chapterId"] : undefined;
+  return { ...(handleGetSbdToeChapterBriefCore(args, cache) as Record<string, unknown>), next: chapterBriefAffordances(chapterId) };
+}
+
+function handleGetSbdToeChapterBriefCore(
   args: Record<string, unknown>,
   cache?: SnapshotCache
 ): unknown {
@@ -288,9 +376,6 @@ export function handleGetSbdToeChapterBrief(
     const enriched = oid !== undefined ? enrichedLookup.get(oid) : undefined;
 
     const phases = getStrArr(found, "related_phases");
-    const intentTopics = enriched?.intent_topics
-      ? [...enriched.intent_topics]
-      : getStrArr(found, "intent_topics");
     const artifacts = enriched?.artifact_ids
       ? [...enriched.artifact_ids]
       : getStrArr(found, "artifact_ids");
@@ -300,11 +385,12 @@ export function handleGetSbdToeChapterBrief(
     return {
       id: chapterId,
       found: true,
-      title: getStr(found, "title") ?? chapterId,
+      // Prefer the clean readable title over the canonical one, which can carry
+      // editorial noise ("Nota Canónica…") — consistent with list_chapters.
+      title: READABLE_TITLES[chapterId] ?? getStr(found, "title") ?? chapterId,
       ...(objective !== undefined ? { objective } : {}),
       ...(phases.length > 0 ? { phases } : {}),
-      ...(artifacts.length > 0 ? { artifacts } : {}),
-      ...(intentTopics.length > 0 ? { intent_topics: intentTopics } : {})
+      ...(artifacts.length > 0 ? { artifacts } : {})
     };
   }
 
@@ -319,6 +405,13 @@ export function handleGetSbdToeChapterBrief(
       ontology.assignments
         .filter((assignment) => assignment.chapter_id === chapterId && assignment.phase.length > 0)
         .map((assignment) => assignment.phase)
+    )
+  ).sort();
+  const roles = Array.from(
+    new Set(
+      ontology.assignments
+        .filter((assignment) => assignment.chapter_id === chapterId && assignment.role.length > 0)
+        .map((assignment) => assignment.role)
     )
   ).sort();
   const artifacts = Array.from(
@@ -347,8 +440,9 @@ export function handleGetSbdToeChapterBrief(
   return {
     id: chapterId,
     found: true,
-    title: (bundle ? getStr(bundle, "title") : undefined) ?? READABLE_TITLES[chapterId] ?? chapterId,
+    title: READABLE_TITLES[chapterId] ?? (bundle ? getStr(bundle, "title") : undefined) ?? chapterId,
     ...(objective !== undefined ? { objective } : {}),
+    ...(roles.length > 0 ? { role: roles } : {}),
     ...(phases.length > 0 ? { phases } : {}),
     ...(artifacts.length > 0 ? { artifacts } : {})
   };
@@ -464,7 +558,12 @@ function buildActivatedBundles(
   return { foundationBundles, domainBundles, operationalBundles };
 }
 
-export function handleMapSbdToeApplicability(
+export function handleMapSbdToeApplicability(args: Record<string, unknown>, cache?: SnapshotCache): unknown {
+  const riskLevel = typeof args["riskLevel"] === "string" ? args["riskLevel"] : undefined;
+  return { ...(handleMapSbdToeApplicabilityCore(args, cache) as Record<string, unknown>), next: mapApplicabilityAffordances(riskLevel) };
+}
+
+function handleMapSbdToeApplicabilityCore(
   args: Record<string, unknown>,
   cache?: SnapshotCache
 ): unknown {
@@ -554,10 +653,32 @@ export function handleMapSbdToeApplicability(
     });
   }
 
+  // conditional = chapters activated by the provided CONTEXT (technologies),
+  // beyond the risk baseline. Previously hardcoded [] (a dead field while the
+  // context activation lived only in activatedBundles). Now derived from the
+  // technology-driven bundles, so the model is coherent: `active` is the risk
+  // baseline, `conditional` is the context overlay, `activatedBundles` is the
+  // full structured view. Empty when no technologies are supplied.
+  const conditionalSeen = new Set<string>();
+  const conditional: Array<{ chapterId: string; reason: string }> = [];
+  for (const bundle of [
+    ...activatedBundles.foundationBundles,
+    ...activatedBundles.domainBundles,
+    ...activatedBundles.operationalBundles
+  ]) {
+    if (
+      bundle.reason.toLowerCase().includes("technologies inclui") &&
+      !conditionalSeen.has(bundle.chapterId)
+    ) {
+      conditionalSeen.add(bundle.chapterId);
+      conditional.push({ chapterId: bundle.chapterId, reason: bundle.reason });
+    }
+  }
+
   return {
     riskLevel,
     active,
-    conditional: [],
+    conditional,
     excluded,
     activatedBundles
   };

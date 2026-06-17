@@ -55,6 +55,8 @@ import {
   resolveRegulatoryFramework
 } from "./regulatory-overlay-loader.js";
 import { expandQueryWithAliases } from "../backend/semantic-index-gateway.js";
+import type { Affordance } from "../serving/protocol-envelope.js";
+import { prepareCodegenAffordances } from "../serving/affordances.js";
 
 // ---------------------------------------------------------------------------
 // Public types
@@ -291,6 +293,8 @@ export interface SecurityRationaleTemplate {
 
 export interface PrepareCodegenContextResultReady {
   status: "ready_for_codegen";
+  /** RF-H advisory band — adjacent tools the caller likely needs next. */
+  next?: Affordance[];
   mode: CodegenMode;
   input_echo: Required<Pick<PrepareCodegenContextInput, "task">> &
     Omit<PrepareCodegenContextInput, "task">;
@@ -316,6 +320,8 @@ export interface PrepareCodegenContextResultReady {
 
 export interface PrepareCodegenContextResultBlocked {
   status: "needs_clarification" | "needs_decomposition" | "unsupported_scope";
+  /** RF-H advisory band — adjacent tools the caller likely needs next. */
+  next?: Affordance[];
   mode: CodegenMode;
   input_echo: Required<Pick<PrepareCodegenContextInput, "task">> &
     Omit<PrepareCodegenContextInput, "task">;
@@ -605,8 +611,24 @@ const VAGUE_PATTERNS: ReadonlyArray<{ pattern: RegExp; reason: string }> = [
   {
     pattern: /\bgera(r)? .{0,30}\barquitetura\b.{0,30}\bcompleta\b/i,
     reason: "Geração de arquitectura completa não é uma tarefa de codegen"
+  },
+  {
+    pattern: /\b(whole|entire|complete|todo o|all of the)\b[^.]{0,15}\bmanual\b|\bmanual\b[^.]{0,15}\b(inteiro|completo|todo)\b/i,
+    reason: "Aplicar o manual inteiro é uma meta, não uma tarefa de codegen — decompõe num pedido concreto."
+  },
+  {
+    pattern: /\b(give me everything|d[áa]-?me tudo|quero tudo|aplica tudo)\b/i,
+    reason: "'Dá-me tudo' deve ser decomposto numa superfície técnica concreta (endpoint + fase + 1-3 concerns)."
   }
 ];
+
+/**
+ * Technologies clearly outside the SbD-ToE manual's scope (advanced cryptography /
+ * distributed-ledger / experimental). The grounded codegen has no material for
+ * these, so the request is unsupported rather than decomposable.
+ */
+const UNSUPPORTED_TECH_PATTERN =
+  /\b(homomorphic|quantum[- ]?(resistant|safe)?|post[- ]?quantum|blockchain|smart contract|zero[- ]?knowledge|zk[- ]?(snark|stark|proof)s?|secure multiparty|federated learning)\b/i;
 
 // ---------------------------------------------------------------------------
 // Input normalization
@@ -1006,6 +1028,19 @@ interface GateDecision {
 function gateBeforeActivation(input: NormalizedInput): GateDecision | null {
   const reasons: string[] = [];
   const suggestions: string[] = [];
+
+  if (UNSUPPORTED_TECH_PATTERN.test(input.taskTrimmed)) {
+    return {
+      status: "unsupported_scope",
+      reasons: [
+        "A task refere tecnologia fora do âmbito do manual SbD-ToE (ex.: criptografia homomórfica, quantum/post-quantum, blockchain, zero-knowledge)."
+      ],
+      suggestions: [
+        "O SbD-ToE cobre AppSec geral; para esta tecnologia o codegen grounded não tem material.",
+        "Reformula para uma superfície coberta (auth, validação, secrets, dependências/SBOM, CI/CD, IaC, monitorização)."
+      ]
+    };
+  }
 
   if (input.taskTrimmed.length === 0) {
     reasons.push("Campo `task` está vazio.");
@@ -1518,6 +1553,14 @@ function blocked(
 export function handlePrepareCodegenContext(
   raw: PrepareCodegenContextInput
 ): PrepareCodegenContextResult {
+  // RF-H: append the advisory band (status-aware, pure) around the deterministic result.
+  const result = prepareCodegenContextCore(raw);
+  return { ...result, next: prepareCodegenAffordances(result.status) };
+}
+
+function prepareCodegenContextCore(
+  raw: PrepareCodegenContextInput
+): PrepareCodegenContextResult {
   const input = normalizeInput(raw);
 
   const preGate = gateBeforeActivation(input);
@@ -1535,10 +1578,27 @@ export function handlePrepareCodegenContext(
 
   const activation = activate(input);
 
-  const estimatedRequirements = estimateV0RequirementCount(
-    input.risk_level,
-    activation.concerns
-  );
+  // (c) The scope gate measures the request's FOCUS, not its full semantic
+  // expansion: explicit concerns when given, else the concerns activated by
+  // deterministic sources (explicit input + direct lexicon task terms). Semantic
+  // intent-keyword/alias expansions still enrich the output context and trace —
+  // they just don't inflate the requirement count and trip decomposition. Falls
+  // back to the full activation when no deterministic concern was resolved.
+  const deterministicConcerns = [
+    ...new Set(
+      activation.trace
+        .filter((entry) => entry.confidence === "deterministic" && CONCERN_LEXICON.has(entry.produced))
+        .map((entry) => entry.produced as Concern)
+    )
+  ];
+  const focusConcerns =
+    input.concerns.length > 0
+      ? input.concerns
+      : deterministicConcerns.length > 0
+        ? deterministicConcerns
+        : activation.concerns;
+
+  const estimatedRequirements = estimateV0RequirementCount(input.risk_level, focusConcerns);
 
   const postGate = gateAfterActivation({
     input,

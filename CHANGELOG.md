@@ -1,13 +1,113 @@
 ---
 ai_assisted: true
-model: Claude Opus 4.7
-date: 2026-05-21
+model: Claude Opus 4.8 (1M context)
+date: 2026-06-17
 purpose: documentation
-reasoning: Changelog for v0.9.0 — AppSec Core v1 + regulatory overlay + grounded codegen tool.
+reasoning: Changelog for v0.10.0 — implementation view (4 faces) + verification matrix (251 EPs first-class) + regulatory overlay tool + RF-S role-skills + two-band `next` protocol; folded from the reviewed release-notes draft. Manual provenance corrected to real v1.6.4. v0.9.0 entry below.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.10.0 — 2026-06-17
+
+**Minor** bump: 7 new tools + a changed `generate_sbd_toe_skill` schema + a `next`
+advisory band retrofitted onto the legacy tools. Additive / backward-compatible on the
+existing tools' core contract ⇒ minor.
+
+Served bundle: `kg-v1-manual-v1.6.4-aligned-2026-06-17` (sha256 `4500c709…9919`,
+`consumer_contract_version` v1.7, **Manual v1.6.4** @ `09b20f6f`, ontology
+`ontology-v1.1-fair-baseline`).
+
+### Added — Implementation view ("how do I run this" family)
+
+- **`get_sbd_toe_chapter_implementation_checklist`** — retrieval-grounded canon/20
+  "how to implement chapter NN" guidance; coverage-preserving, cites chunk ids.
+- **`get_sbd_toe_operating_model`** — RACI / decision-rights / governance cadences /
+  org-model from the rollout playbook; retrieval-grounded prose.
+- **`plan_sbd_toe_rollout`** — phased rollout roadmap: the 8 canonical lifecycle phases
+  mapped to manual chapters. Phase-ordered MVP; the dependency DAG is declared-deferred.
+- **`assess_sbd_toe_implementation`** — stateless KPI self-report vs published per-level
+  thresholds (`metrics.json`) → posture + gaps. An applicable KPI with no value is
+  `not_reported`, never a pass; thresholds cited, never invented.
+
+Together with `get_guide_by_role` these are the implementation view: what to do (role/DoD)
+· how to implement (checklist) · who governs (operating model) · in what order (rollout)
+· how compliant am I (assess).
+
+### Added — Verification reference
+
+- **`get_sbd_toe_verification_matrix`** — the EXPECTED side of verification: per
+  requirement/control at a risk level, the validation method + expected evidence +
+  EvidencePattern reference, cited per row. EvidencePatterns are first-class published
+  entities — full coverage (L1 118, L2 226, L3 251 requirements covered; 0 gaps,
+  0 unhinted). Coverage-preserving.
+
+### Added — Regulatory lens
+
+- **`map_sbd_toe_regulatory_activation`** — reverse-of-provenance lens: framework
+  (DORA / NIS2 / CRA / RGPD) → which manual chapters it activates, grouped with mapping +
+  obligation counts (coverage-preserving). DORA: 14 chapters, 1430 mappings.
+
+### Added — Manual answering
+
+- **`answer_sbd_toe_manual`** — retrieves grounded manual context and requests the final
+  answer from the client's model via MCP sampling; falls back to formatted retrieval when
+  the client lacks sampling support.
+
+### Changed — Role-skill / sub-agent serving (RF-S)
+
+- **`generate_sbd_toe_skill` schema extended**: `role`, `format` (`skill` | `subagent`),
+  `flavour` (`harnessed` | `skilled`), `risk_level`, `phase`, `include_detail`.
+  - **harnessed** sub-agent grants `mcp__sbd-toe__*` (queries live; embedded slice = index).
+  - **skilled** sub-agent carries no MCP tools, embeds the frozen slice (DoD inline).
+  - Coverage is declared (chapters / assignments / user stories / checklist items).
+- New resources `sbd://toe/skill/{role}` and `sbd://toe/subagent/{role}`.
+
+### Changed — Protocol envelope (`next` advisory band, RF-H)
+
+- Tool responses carry a two-band **`next`** advisory band — ≤3 adjacent tools the caller
+  likely needs next, each `kind: "semantic" | "structural"`, referencing only real
+  tools/resources. Emitted by all new tools and retrofitted onto the legacy tools
+  (`consult_security_requirements`, `get_threat_landscape`, `list_sbd_toe_chapters`,
+  `map_sbd_toe_applicability`, `get_sbd_toe_chapter_brief`, `resolve_entities`,
+  `plan_sbd_toe_repo_governance`, `map_sbd_toe_review_scope`, `generate_sbd_toe_skill`).
+  Advisory only — never changes a tool's primary result shape.
+
+### Fixed
+
+- **`get_threat_landscape` base-concern routing** — base concerns
+  (`auth` / `access` / `encryption` / `validation` / `session`) previously collapsed onto
+  chapter 02 (their requirements' catalog home), surfacing the requirements-process
+  meta-threats (`MT-021…038`) instead of the domain threats. Now routed by the concern's
+  domain (`CONCERN_TO_DOMAIN_CHAPTER` + the resolved controls' chapters); chapter 02 is
+  surfaced only for the explicit `requirements` concern. (`auth` → 144 domain threats,
+  no `MT-021…038`.)
+- `get_guide_by_role` now sharpens user stories by risk level via the assignment's
+  proportionality (L1 ⊂ L3), and surfaces the level-specific obligation.
+- `plan_sbd_toe_repo_governance` filters requirement-first (`applicable_levels`) instead
+  of a hardcoded chapter table; control/artifact = floor.
+- `map_sbd_toe_review_scope` path table extended beyond GitHub (containers/k8s/helm → 09,
+  Terraform/Bicep → 08, Python deps → 05, CI → 07/10/11, `.env` → 06); unmapped paths
+  fall to the foundation guardrail via an explicit pattern.
+- `get_threat_landscape` passes through the substrate's `associated_controls`
+  (previously hard-coded `[]`).
+- `inspect_sbd_toe_retrieval` / response shaping: consumer-aware bounding, honours `topK`
+  (≈17 MB → ≈50 KB at `topK=5`); no silent truncation.
+- `list_sbd_toe_chapters` returns per-level `applicability {L1,L2,L3}` + `minLevel`.
+
+### Provenance
+
+- `sbd://toe/version` now exposes the served knowledge provenance: server version,
+  **Manual `tag`/`version` (real — v1.6.4, read from `run_manifest.manual`, not the KG
+  compiler version)**, KG `release_tag` + sha256 + `consumer_contract_version`, and
+  ontology tag/commit — read live from the `consumed-bundle.json` pin, never invented.
+- Pin: `consumed-bundle.json` → `kg-v1-manual-v1.6.4-aligned-2026-06-17`, sha256
+  `4500c709294d619110b6187c3e24b21c92fd986ec19e4e919afca19eee919919`, contract v1.7.
+
+### Notes
+
+- AI Act cross-check is **not** indexed in this bundle (RGPD / NIS2 / DORA / CRA are).
 
 ## 0.9.0 — 2026-05-21
 
