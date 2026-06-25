@@ -1,0 +1,21 @@
+{
+  "name": "sbd-toe",
+  "owner": {
+    "name": "Pedro Farinha",
+    "email": "pedro.farinha@shiftleft.pt"
+  },
+  "metadata": {
+    "description": "SbD-ToE / AppSec Core marketplace — grounded retrieval MCP for Security-by-Design.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "sbd-toe",
+      "source": "./sbd-toe-plugin",
+      "description": "Ontology-grounded retrieval MCP server for the SbD-ToE manual + AppSec Core knowledge graph. Wraps the standard @shiftleftpt/sbd-toe-mcp server with zero-config install.",
+      "version": "0.1.0",
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/SbD-ToE/sbd-toe-mcp#readme"
+    }
+  ]
+}

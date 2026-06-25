@@ -24,6 +24,11 @@ const PRIVATE_PATH_SCAN_GLOBS = [
 
 const REQUIRED_PATHS = [
   "dist/index.js",
+  // Imported by dist/index.js at startup; its omission from the `files`
+  // allowlist broke 0.9.0/0.10.0 (ERR_MODULE_NOT_FOUND on clean install).
+  // Kept here so any future drop of it fails CI rather than the user's install.
+  "dist/version-info.js",
+  "dist/config.js",
   "dist/tools/prepare-codegen-context.js",
   "dist/tools/g2-runtime-loader.js",
   "dist/tools/regulatory-overlay-loader.js",

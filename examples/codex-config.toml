@@ -1,0 +1,19 @@
+# SbD-ToE MCP — OpenAI Codex CLI configuration
+#
+# The Claude plugin format (.claude-plugin/, /plugin install) is Claude-only.
+# The MCP server itself is standard and works with any MCP client, including
+# Codex. Codex uses TOML config, not .mcp.json.
+#
+# Option A — CLI (interactive, first-time setup):
+#   codex mcp add sbd-toe -- npx -y @shiftleftpt/sbd-toe-mcp@0.10.1
+#
+# Option B — edit config directly (scriptable / reproducible):
+#   append the block below to ~/.codex/config.toml
+#   (or a project-scoped .codex/config.toml in a trusted project)
+
+[mcp_servers.sbd-toe]
+command = "npx"
+args = ["-y", "@shiftleftpt/sbd-toe-mcp@0.10.1"]
+
+# Until 0.10.1 is published to npm, use the last known-good version 0.7.7:
+#   args = ["-y", "@shiftleftpt/sbd-toe-mcp@0.7.7"]

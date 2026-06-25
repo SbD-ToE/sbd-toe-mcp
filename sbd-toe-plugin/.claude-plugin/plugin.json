@@ -1,0 +1,14 @@
+{
+  "name": "sbd-toe",
+  "version": "0.1.0",
+  "description": "SbD-ToE / AppSec Core — ontology-grounded retrieval MCP server (search the manual, list chapters, generate skills, plan repo governance, role guides). Distribution wrapper only; the MCP server is the standard @shiftleftpt/sbd-toe-mcp.",
+  "author": {
+    "name": "Pedro Farinha",
+    "email": "pedro.farinha@shiftleft.pt",
+    "url": "https://orcid.org/0009-0001-0569-9020"
+  },
+  "homepage": "https://github.com/SbD-ToE/sbd-toe-mcp#readme",
+  "repository": "https://github.com/SbD-ToE/sbd-toe-mcp",
+  "license": "Apache-2.0",
+  "keywords": ["mcp", "security", "sbd", "toe", "appsec", "devsecops"]
+}
