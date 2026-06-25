@@ -90,8 +90,11 @@ jobs:
             echo "❌ .env file detected in tracked files — remove it immediately"
             exit 1
           fi
-          if git ls-files | grep -E '(^|/)\.mcp\.json$'; then
-            echo "❌ .mcp.json detected in tracked files — contains local paths, should not be committed"
+          # .mcp.json files typically hold local dev paths and must not be committed.
+          # Exception: sbd-toe-plugin/.mcp.json is the Claude Code plugin's server
+          # definition — npx-based, no local paths, a distribution artifact.
+          if git ls-files | grep -E '(^|/)\.mcp\.json$' | grep -vxF 'sbd-toe-plugin/.mcp.json'; then
+            echo "❌ unexpected .mcp.json in tracked files — contains local paths, should not be committed"
             exit 1
           fi
           echo "✅ No sensitive files detected"
