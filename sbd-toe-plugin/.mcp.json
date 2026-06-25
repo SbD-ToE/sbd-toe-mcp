@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "sbd-toe": {
+      "command": "npx",
+      "args": ["-y", "@shiftleftpt/sbd-toe-mcp@0.10.1"]
+    }
+  }
+}

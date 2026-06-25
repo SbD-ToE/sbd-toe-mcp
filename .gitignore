@@ -19,5 +19,9 @@ data/upstream/backend-checkout.json
 # (scripts/package-release-lib.mjs)
 .vscode/*
 !.vscode/mcp.json
+
+# sbd-toe-plugin/.mcp.json fica trackeado: é a definição do servidor MCP do
+# plugin Claude Code (artefacto de distribuição, não config local)
+!sbd-toe-plugin/.mcp.json
 GITHUB-CONFIG.md
 NEXT-STEPS.md

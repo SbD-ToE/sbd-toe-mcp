@@ -1,13 +1,53 @@
 ---
 ai_assisted: true
 model: Claude Opus 4.8 (1M context)
-date: 2026-06-17
+date: 2026-06-25
 purpose: documentation
-reasoning: Changelog for v0.10.0 — implementation view (4 faces) + verification matrix (251 EPs first-class) + regulatory overlay tool + RF-S role-skills + two-band `next` protocol; folded from the reviewed release-notes draft. Manual provenance corrected to real v1.6.4. v0.9.0 entry below.
+reasoning: v0.10.1 — packaging fix (restore `dist/version-info.*` to the npm tarball; fixes ERR_MODULE_NOT_FOUND on clean install of 0.9.0/0.10.0) + repository relocation to SbD-ToE/sbd-toe-mcp. v0.10.0 and earlier entries below.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.10.1 — 2026-06-25
+
+**Patch** — packaging, distribution, and repository-metadata changes only. No
+functional, API, or served-bundle changes; the MCP tool surface is identical to
+0.10.0.
+
+### Fixed
+
+- **Broken npm tarball on clean install (`ERR_MODULE_NOT_FOUND`).** The `files`
+  allowlist in `package.json` enumerated `dist/` outputs file-by-file and omitted
+  `dist/version-info.js` (plus its `.d.ts` / `.js.map`), which `dist/index.js`
+  imports. As a result `0.9.0` and `0.10.0` failed to start from a clean
+  `npx -y @shiftleftpt/sbd-toe-mcp` pull (the file was only present in cached
+  builds). Added the three `dist/version-info.*` entries to `files`; verified via
+  `npm pack` that the tarball now contains them. `0.7.7` was unaffected and
+  remained the last known-good published version.
+
+### Changed
+
+- Repository relocated to `github.com/SbD-ToE/sbd-toe-mcp` (was
+  `Shiftleftpt/sbd-toe-mcp-poc`). Updated `repository`/`homepage`/`bugs` in
+  `package.json`, the GitHub Releases link in `README.md`, and
+  `repository-code`/`url` in `CITATION.cff`. The npm package name
+  (`@shiftleftpt/sbd-toe-mcp`) is unchanged.
+
+### Added
+
+- **Distribution wrappers (zero-config install).** A Claude Code plugin
+  (`sbd-toe-plugin/` + `.claude-plugin/marketplace.json`) and an OpenAI Codex CLI
+  config example (`examples/codex-config.toml`). These wrap the standard,
+  unchanged `@shiftleftpt/sbd-toe-mcp` server — no new server code, no change to
+  the served bundle or tool surface.
+- **`FREEZE-REGISTRY.md`** at the repo root, satisfying
+  `PROGRAMME-PRESERVATION-PROTOCOL.md` §5 (the file was previously absent).
+  AI-prepared skeleton, pending human verification; unverified tag→event mappings
+  are marked `TODO — verify`, and no hashes/DOIs/tags were invented.
+
+> Note: published `0.10.0` is immutable per `PROGRAMME-PRESERVATION-PROTOCOL.md`
+> (Principle 1 / Rule 3); this is a fix-forward patch, not a republish of 0.10.0.
 
 ## 0.10.0 — 2026-06-17
 

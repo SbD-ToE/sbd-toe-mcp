@@ -8,8 +8,8 @@ authors:
     affiliation: "Independent Researcher / Shiftleft - Secure Software Engineering, Lda."
     email: "pedro.farinha@shiftleft.pt"
     orcid: "https://orcid.org/0009-0001-0569-9020"
-repository-code: "https://github.com/Shiftleftpt/sbd-toe-mcp-poc"
-url: "https://github.com/Shiftleftpt/sbd-toe-mcp-poc"
+repository-code: "https://github.com/SbD-ToE/sbd-toe-mcp"
+url: "https://github.com/SbD-ToE/sbd-toe-mcp"
 identifiers:
   # --- OSF: full project deposit (bundle + screencast + manifest + SHASUMS in one place) ---
   - type: doi

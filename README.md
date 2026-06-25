@@ -180,7 +180,7 @@ npx -y @shiftleftpt/sbd-toe-mcp
 
 For environments without npm/npx:
 
-1. Download `sbd-toe-mcp-vX.Y.Z-bundle.zip` from [GitHub Releases](https://github.com/Shiftleftpt/sbd-toe-mcp-poc/releases).
+1. Download `sbd-toe-mcp-vX.Y.Z-bundle.zip` from [GitHub Releases](https://github.com/SbD-ToE/sbd-toe-mcp/releases).
 2. Extract the archive.
 3. Point your MCP client to the extracted `dist/index.js`:
    ```json
