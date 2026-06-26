@@ -29,13 +29,20 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
-      - name: Validate stable tag format
+      - name: Validate tag format
+        id: tagcheck
         shell: bash
         run: |
           set -euo pipefail
-          if [[ ! "${GITHUB_REF_NAME}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "Error: stable npm publish only accepts tags in the form vX.Y.Z"
-            echo "Use the preview bundle workflow for development or prerelease builds."
+          tag="${GITHUB_REF_NAME}"
+          if [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+            echo "Stable release tag: $tag (npm dist-tag 'latest')"
+          elif [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+-[0-9A-Za-z.-]+$ ]]; then
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+            echo "Prerelease tag: $tag (npm dist-tag 'beta', GitHub pre-release; 'latest' untouched)"
+          else
+            echo "Error: tag must be vX.Y.Z (stable) or vX.Y.Z-<prerelease> (e.g. v0.20.0-beta.0)"
             exit 1
           fi
 
@@ -55,12 +62,23 @@ jobs:
           npm run build
           npm run check:npm-package
 
-      - name: Verify tag is on master
+      - name: Verify tag is on the expected branch
+        shell: bash
+        env:
+          # Branch that owns the beta/prerelease line. Stable tags must be on master.
+          BETA_BRANCH: "0.20-beta"
         run: |
-          if ! git merge-base --is-ancestor "${{ github.ref_name }}" refs/remotes/origin/master; then
-            echo "Error: Tag ${{ github.ref_name }} is not on master branch"
+          set -euo pipefail
+          if [ "${{ steps.tagcheck.outputs.prerelease }}" = "true" ]; then
+            target="refs/remotes/origin/${BETA_BRANCH}"; label="${BETA_BRANCH}"
+          else
+            target="refs/remotes/origin/master"; label="master"
+          fi
+          if ! git merge-base --is-ancestor "${GITHUB_REF_NAME}" "$target"; then
+            echo "Error: Tag ${GITHUB_REF_NAME} is not on ${label} branch"
             exit 1
           fi
+          echo "OK: ${GITHUB_REF_NAME} is on ${label}"
 
       - name: Build release bundle
         run: node scripts/package-release.mjs --version "${GITHUB_REF_NAME}" --output-dir "${RELEASE_OUTPUT_DIR}"
@@ -73,12 +91,18 @@ jobs:
           set -euo pipefail
           assets=("${RELEASE_OUTPUT_DIR}"/*)
 
+          prerelease_flag=""
+          if [ "${{ steps.tagcheck.outputs.prerelease }}" = "true" ]; then
+            prerelease_flag="--prerelease"
+          fi
+
           if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
             gh release upload "${GITHUB_REF_NAME}" "${assets[@]}" --clobber
           else
             gh release create "${GITHUB_REF_NAME}" "${assets[@]}" \
               --title "${GITHUB_REF_NAME}" \
-              --generate-notes
+              --generate-notes \
+              $prerelease_flag
           fi
 
       - name: Verify package.json version matches tag
@@ -101,4 +125,12 @@ jobs:
           echo "OK: package.json and package-lock.json version $actual matches tag $expected"
 
       - name: Publish to npm
-        run: npm publish --access public --provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${{ steps.tagcheck.outputs.prerelease }}" = "true" ]; then
+            echo "Publishing prerelease to npm dist-tag 'beta' ('latest' unchanged)"
+            npm publish --access public --provenance --tag beta
+          else
+            npm publish --access public --provenance
+          fi
