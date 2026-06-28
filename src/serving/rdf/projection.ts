@@ -15,6 +15,10 @@ export const REL = `${BASE}rel/`;
 export const iri = (id: string): string => BASE + encodeURIComponent(id);
 export const rel = (predicate: string): string => REL + encodeURIComponent(predicate);
 
+/** Inverse of iri() — recovers the entity id from an internal IRI (no-leak boundary). */
+export const idFromIri = (term: string): string =>
+  term.startsWith(BASE) ? decodeURIComponent(term.slice(BASE.length)) : term;
+
 export interface Triple {
   s: string;
   p: string;

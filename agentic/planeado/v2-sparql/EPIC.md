@@ -9,131 +9,111 @@ epic: v2-sparql
 review_status: pending-human-review
 ---
 
-# EPIC — v2: SPARQL serving engine (linha beta `0.20.x`)
+# EPIC — v2: SPARQL graph-query capability (linha beta `0.20.x`)
 
-**Home:** `sbd-toe-mcp-poc_0.20.0` (clone independente, branch `0.20-beta`, version `0.20.0-beta.0`).
-**Linha estável paralela:** `0.10.x`/`0.11.x` (`master`, dist-tag `latest`) — **intocada**.
-**Decisão (2026-06-27):** SPARQL é o destino do serving. **TS graph-index é o fallback documentado**
-(se um *hard gate* falhar ou houver regressão → reverte para TS no estável). Ver `[[dual-line-0.20-beta-strategy]]`.
+**Home:** `sbd-toe-mcp-poc_0.20.0` (branch `0.20-beta`, version `0.20.0-beta.0`).
+**Estável paralelo:** `0.10.x`/`0.11.x` (`master`, `latest`) — **intocado**.
+
+## ⟳ PIVOT (2026-06-27) — de "refactor" para "capacidade nova"
+
+Piloto (`resolve_entities`) deu gate decisivo: é **filtro de atributos plano**, não travessia → SPARQL
+seria **pior** (achatar→reconstruir, mais código). E `get_threat_landscape` é **graph-light** (2+5 links).
+**Em nenhuma tool existente o SPARQL simplifica materialmente → tese "refactor" cai.**
+
+Análise de topologia confirmou: o grafo é **shallow / em estrela** (hubs `Slice` e `ControlObjective`;
+`Control`/`Threat`/`EvidencePattern` são *sinks*). Logo o valor não é "deep paths" — é **star-joins de
+2-hop** que hoje não existem como tool. **v2 = adicionar UMA capacidade nova; não migrar tool nenhuma.**
 
 ---
 
 ## Objetivo
 
-Substituir a travessia de grafo **hand-rolled** das tools (os ~32 Maps de adjacência em 11 tools)
-por um **engine SPARQL embebido (Oxigraph/WASM)** sobre uma projeção RDF do bundle já consumido —
-**sem mudar a surface MCP, sem mudar os dados, sem perder determinismo**.
+Adicionar o tool **`trace_sbd_toe_graph`** (nome provisório): **lentes multi-hop curadas** sobre a
+projeção RDF, determinísticas e paginadas, servindo rastreabilidade que hoje está presa dentro de
+tools ou não existe. **Aditivo** — não altera a surface existente.
 
-Ganho: tools mais simples (traversal/join/filtro → query declarativa), e a fundação para
-"query ontologia" (FAIR/RDF) como deliverable upstream futuro e separado.
+### Lentes curadas (o valor do tool — ancoradas na topologia real)
 
----
+| Lens | Caminho (hub `ControlObjective`) | Pergunta que responde |
+|---|---|---|
+| **`slice_implementation`** 🏆 | `Slice ← objectives → {Mechanisms, Practices}` | "como é este slice realizado?" |
+| **`objective_realization`** | `ControlObjective → {Mechanism, Practice}` | "o que implementa+realiza este objetivo?" |
+| **`mechanism_provenance`** | `Mechanism/Practice → objectives → Slices` | "onde é usado este mecanismo?" (impacto) |
 
-## Invariantes (MANTER em TODAS as slices — qualquer violação = gate falha)
-
-1. **Surface MCP inalterada.** Nomes de tools, input schemas, output shapes, `next` band — idênticos.
-2. **Paridade de output byte-a-byte** com o engine estável (TS). É a **garantia entre passos** (ver abaixo).
-3. **`consumed-bundle.json` idêntico ao estável.** A beta muda o *engine*, não os *dados*.
-4. **Determinismo:** toda a query SPARQL tem `ORDER BY` por ordem **total** + `LIMIT/OFFSET` explícitos.
-   Teste de reprodutibilidade (2× idêntico) obrigatório.
-5. **Coverage-preserving:** nunca truncar em silêncio; expor totais + cursor (regra `[[serving-tools-must-paginate]]`).
-6. **Offline / `npx` / cross-platform:** só Oxigraph WASM. Zero deps nativas, zero install scripts.
-7. **Sem mover builder logic** do upstream para cá (CLAUDE.md hard constraint). IRIs provisórias locais
-   no spike; o esquema **canónico** de IRIs é decisão **upstream** (Codex/ontology) antes de graduar.
+*(Candidata 4ª lens — `antipattern_impact` `AntiPattern→{Threats,Requirements}→Controls` — adiada:
+dados finos, 5+2 arestas. Add-on se houver procura.)*
 
 ---
 
-## A garantia entre passos ("garante entre passos")
+## Invariantes (MANTER — violação = gate falha)
 
-Cada slice fecha **só** quando um **tester independente** confirma o seu gate. O gate central é
-**paridade diferencial**: o engine SPARQL tem de produzir **a mesma output** que o engine estável (TS)
-para o mesmo input. Mecanismo:
-
-- **Golden outputs:** capturar as outputs do engine estável (`master`) para um conjunto de inputs por tool.
-- **Diff gate:** a tool migrada para SPARQL corre os mesmos inputs; `diff == ∅`. Senão → slice **não fecha**.
-- Os **testes existentes** (513) correm **sem alteração** sobre o engine novo (são, eles próprios, golden).
-
-Fallback: se um **hard gate** (offline/determinismo) falhar, ou a paridade for **impossível** numa tool,
-ou o orçamento de integração estourar → **PARA SPARQL, reverte para TS graph-index no estável (0.11.0)**.
+1. **Aditivo.** Não alterar contratos/outputs das tools existentes; só acrescentar o tool novo.
+2. **`consumed-bundle.json` idêntico ao estável.**
+3. **Determinismo:** `ORDER BY` total + paginação (garantido pelo GraphStore, s2).
+4. **Coverage-preserving:** totais + cursor; sem truncar em silêncio.
+5. **Sem fuga de internals:** input/output usam **ids de entidade**, nunca IRIs provisórias.
+6. **Offline / `npx` / cross-platform:** só Oxigraph WASM.
+7. **Sem builder logic** upstream. IRIs provisórias; esquema canónico = decisão upstream antes de graduar.
 
 ---
 
-## Orçamento (gates medidos — fonte: `spike/sparql-gate-check.mjs`, s0)
+## Garantia entre passos
 
-| Gate | Tipo | Orçamento | s0 medido |
+Tool **novo** → sem baseline de paridade. Gate de cada slice (tester independente):
+**golden snapshots** (output fixa para inputs fixos) + **determinismo** (2× idêntico) +
+**coverage** (páginas somam ao total) + **no-leak** (nenhuma IRI na output) + **suite completa** verde.
+
+Fallback: se as lentes não derem valor real, ou determinismo/coverage falharem → **dropa o tool**
+(aditivo, zero dano no estável).
+
+---
+
+## Orçamento (s0; foundation s1+s2 fechada)
+
+| Gate | Tipo | Orçamento | Estado |
 |---|---|---|---|
-| Offline / `npx` / nativo | 🔴 hard | sem nativo, importa em Node | ✅ WASM puro |
-| Determinismo | 🔴 hard | `ORDER BY` → reprodutível | ✅ PASS |
-| Cold-start | 🟡 soft | ≤ +150 ms | ✅ ~+47 ms (init 23 + ingest 24) |
-| Size (footprint) | 🟡 soft | ≤ 8 MB | ✅ +7.89 MB (tarball intocado) |
-| Memória RSS | informativo | — | +10.4 MB |
+| Offline / nativo | 🔴 hard | sem nativo | ✅ WASM puro |
+| Determinismo | 🔴 hard | `ORDER BY` | ✅ (s2) |
+| Cold-start | 🟡 soft | ≤ +150 ms | ✅ ~+47 ms |
+| Size | 🟡 soft | ≤ 8 MB | ✅ +7.89 MB (tarball intocado) |
 
 ---
 
-## Slices (sequência com depends_on + gate)
+## Slices
 
-### s0 — Spike & baseline de gates  **[DONE]**
-- **Create:** `spike/sparql-gate-check.mjs`.
-- **Gate (tester):** todos os hard gates passam + números registados. ✅ (ver tabela acima).
+- **s0** — spike & gates **[DONE]** (`spike/sparql-gate-check.mjs`).
+- **s1** — projeção RDF **[DONE]** (`src/serving/rdf/projection.ts`, 789 triplos). `4542d0e`.
+- **s2** — GraphStore **[DONE]** (`src/serving/rdf/graph-store.ts`, ORDER BY guard + paging). `850d1ac`.
 
-### s1 — Camada de projeção RDF  *(depends_on: s0)*
-- **Create:** `src/serving/rdf/projection.ts` — mapeia o bundle (`relations.jsonl` + link tables +
-  entidades) → triplos RDF com esquema de IRI **provisório**; emite também um manifesto
-  predicado→IRI / tipo→IRI.
-- **Maintain:** consome `data/publish/*` como está; `consumed-bundle.json` intocado.
-- **Test (gate):** nº de triplos == soma de arestas esperadas por fonte; **output determinística**
-  (mesmo input → hash N-Triples idêntico); nenhum id perdido (round-trip). Fix do bug do spike
-  (link tables são objeto-não-array nalguns ficheiros) entra aqui.
+### s3 — Desenho & contrato do tool  *(depends_on: s2)*  ← **PRÓXIMA**
+- **Create:** `s3-tool-design/brief.md` — contrato input (`lens`, `anchor?`, `page`, `pageSize`) /
+  output (rows por ids, `total`/`cursor`, `provenance`, `next`); registry das 3 lentes (SPARQL curado
+  com `ORDER BY`); helper `idFromIri()` (inverso de `iri()`) para o no-leak.
+- **Gate:** contrato revisto; cada lens justificada pela topologia (não duplica tool existente);
+  output validado contra resultado real do GraphStore.
 
-### s2 — GraphStore (serviço de query)  *(depends_on: s1)*
-- **Create:** `src/serving/rdf/graph-store.ts` — wrapper Oxigraph: carrega triplos ao arranque,
-  expõe `query(sparql, {page, cursor})` que **força** `ORDER BY` + paginação + integra o coverage-envelope.
-- **Create:** guard/lint que **rejeita** queries sem `ORDER BY` (determinismo by-construction-of-the-wrapper).
-- **Test (gate):** teste de reprodutibilidade (2× idêntico); teste de paginação/coverage (totais+cursor,
-  sem truncar); o guard rejeita uma query não-ordenada.
+### s4 — Implementação do core  *(depends_on: s3)*
+- **Create:** `src/tools/trace-graph.ts` (registry de templates por lens, parametrizados por `anchor`;
+  handler args→SPARQL→GraphStore→ids).
+- **Test (gate):** determinismo, coverage/paginação, no-leak, **golden snapshot por lens**.
 
-### s3 — Tool piloto: `get_threat_landscape`  *(depends_on: s2)*
-- **Alter:** `src/tools/get-threat-landscape.ts` → query via `GraphStore` (substitui os 3 Maps + 18 walk-ops).
-- **Maintain:** output shape EXATA.
-- **Test (gate):** `get-threat-landscape.test.ts` passa **sem alteração** + **paridade diferencial**
-  vs golden do estável (`diff == ∅`).
-
-### s4.N — Migração das restantes tools de travessia  *(depends_on: s3; uma sub-slice por tool)*
-Ordem por complexidade decrescente (maior ganho primeiro): `prepare-codegen-context` (47 walk-ops),
-`consult-security-requirements`, `map-review-scope`, `plan-repo-governance`, `get-guide-by-role`,
-`map-regulatory-activation`, `resolve-entities`, `assess-implementation`, `generate-sbd-toe-skill`,
-`ontology-loader` (consumers).
-- **Alter:** cada tool → SPARQL.   **Maintain:** surface + output.
-- **Test (gate) por tool:** testes existentes verdes + paridade diferencial. Slice não fecha sem `diff == ∅`.
-- **Não migrar:** `search_sbd_toe_manual` e lookups puros (não fazem travessia) — ficam como estão.
-
-### s5 — Integração & re-medição de orçamento  *(depends_on: s4.N)*
-- **Test (gate):** **513 testes** verdes sobre o engine novo; `npm pack` → Δ-tarball; cold-start do
-  servidor real; RSS — todos dentro do orçamento. Qualquer estouro = fallback.
+### s5 — Wire-in MCP + integração  *(depends_on: s4)*
+- **Alter (aditivo):** registar o tool no `src/index.ts` (+ afordâncias/`next`).
+- **Test (gate):** **suite completa** verde; teste MCP-level do tool.
 
 ### s6 — Release beta  *(depends_on: s5)*
-- **Create:** entrada CHANGELOG `0.20.0-beta.0`; nota no `FREEZE-REGISTRY.md` (**betas não-citáveis**).
-- **Maintain:** o `release.yml` da beta já suporta prerelease (commit `4894c1a`).
-- **Test (gate):** push `0.20-beta` → tag `v0.20.0-beta.0` → publica em **`@beta`** (`latest` intocado),
-  GitHub pre-release. **Valida também o pipeline prerelease + o fix OIDC/trusted-publishing.**
+- **Create:** CHANGELOG `0.20.0-beta.0`; nota FREEZE-REGISTRY (betas não-citáveis).
+- **Test (gate):** push `0.20-beta` → tag `v0.20.0-beta.0` → `@beta` (latest intocado), GH pre-release.
+  Valida também o pipeline prerelease + o fix OIDC.
 
 ---
 
-## Inventário CRIAR / ALTERAR / MANTER / TESTAR (resumo)
+## Inventário
+**CRIAR:** `src/tools/trace-graph.ts` (+ registry), `src/serving/rdf/*` (feito), golden snapshots, CHANGELOG/FREEZE.
+**ALTERAR (aditivo):** `src/index.ts` (registar tool); `package.json` (`oxigraph`, instalada).
+**MANTER:** todas as tools existentes + surface; `consumed-bundle.json`; coverage-envelope; offline.
+**TESTAR:** projeção (s1), GraphStore (s2), tool novo (determinismo+coverage+no-leak+golden), suite, orçamento.
 
-**CRIAR:** `src/serving/rdf/projection.ts`, `src/serving/rdf/graph-store.ts`, golden-output fixtures +
-harness de paridade diferencial, `spike/` (s0, feito), entrada CHANGELOG/FREEZE beta.
-**ALTERAR:** as ~11 tools de travessia (s3–s4); `package.json` (dep `oxigraph`, já instalada).
-**MANTER:** surface MCP, `consumed-bundle.json`, coverage-envelope, `next` band, determinismo, offline.
-**TESTAR:** projeção (counts+hash), GraphStore (determinismo+paginação), paridade diferencial por tool,
-suite 513, orçamento de integração.
-
----
-
-## Papéis (modelo agentic)
-
-- **sync:** mantém este epic + abre as slice briefs em `agentic/planeado/v2-sparql/sNN-*/brief.md`.
-- **executor:** implementa a slice ativa.
-- **tester:** valida o gate **independentemente** (paridade diferencial + testes) antes de fechar.
-- **programme-lead (humano):** ratifica o esquema de IRIs canónico (com upstream) **antes da graduação**
-  da beta a estável; aprova fallback se acionado.
+## Papéis
+sync (mantém epic + abre briefs) · executor (implementa) · tester (valida gate) ·
+programme-lead (ratifica IRIs canónicas com upstream antes de graduar).
