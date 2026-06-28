@@ -32,6 +32,7 @@ import { handleConsultSecurityRequirements } from "./tools/consult-security-requ
 import { handleGetThreatLandscape } from "./tools/get-threat-landscape.js";
 import { handleGetGuideByRole } from "./tools/get-guide-by-role.js";
 import { handleResolveEntities } from "./tools/resolve-entities.js";
+import { handleTraceGraph } from "./tools/trace-graph.js";
 import { handlePrepareCodegenContext } from "./tools/prepare-codegen-context.js";
 import {
   buildChapterApplicabilityJson,
@@ -1118,6 +1119,46 @@ class McpRuntime {
           annotations: { readOnlyHint: true }
         },
         {
+          name: "trace_sbd_toe_graph",
+          title: "Trace SbD-ToE Ontology Graph",
+          description:
+            "Curated multi-hop traversal over the AppSec Core v1 relation graph (slices, control " +
+            "objectives, mechanisms, practices). Answers traceability questions the high-level tools " +
+            "do not expose directly. Pick a `lens`: " +
+            "'slice_implementation' (a slice -> its control objectives -> the mechanisms that implement " +
+            "and practices that realize them); " +
+            "'objective_realization' (a control objective -> its mechanisms + practices); " +
+            "'mechanism_provenance' (a mechanism/practice -> the objectives it serves -> their slices). " +
+            "Optionally scope with `anchor` (an entity id). Results are deterministic and paginated " +
+            "(total + cursor; never silently truncated). All edges from the published deterministic " +
+            "runtime — nothing is invented.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              lens: {
+                type: "string",
+                description:
+                  "Traversal lens. slice_implementation: slice -> objectives -> mechanisms/practices. " +
+                  "objective_realization: objective -> mechanisms/practices. " +
+                  "mechanism_provenance: mechanism/practice -> objectives -> slices.",
+                enum: ["slice_implementation", "objective_realization", "mechanism_provenance"]
+              },
+              anchor: {
+                type: "string",
+                description:
+                  "Optional entity id to scope the traversal (a slice id for slice_implementation, a " +
+                  "control objective id for objective_realization, a mechanism/practice id for " +
+                  "mechanism_provenance). Omit to traverse the whole graph."
+              },
+              page: { type: "number", description: "0-based page index. Default: 0." },
+              pageSize: { type: "number", description: "Rows per page. Default: 50, max: 200." }
+            },
+            required: ["lens"],
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
           name: "prepare_sbd_toe_codegen_context",
           title: "Prepare SbD-ToE Grounded Codegen Context",
           description:
@@ -2079,6 +2120,20 @@ class McpRuntime {
         }
         case "resolve_entities": {
           const result = handleResolveEntities(args);
+          this.sendResponse(request.id, {
+            content: [{ type: "text", text: JSON.stringify(result) }]
+          });
+          await this.log("info", {
+            event_type: "tool.call",
+            outcome: "succeeded",
+            duration_ms: Date.now() - startedAt,
+            ...metadata,
+            message: "Tool invocation completed"
+          });
+          return;
+        }
+        case "trace_sbd_toe_graph": {
+          const result = handleTraceGraph(args);
           this.sendResponse(request.id, {
             content: [{ type: "text", text: JSON.stringify(result) }]
           });
