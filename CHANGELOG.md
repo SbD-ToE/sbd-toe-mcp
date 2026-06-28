@@ -1,13 +1,40 @@
 ---
 ai_assisted: true
 model: Claude Opus 4.8 (1M context)
-date: 2026-06-25
+date: 2026-06-28
 purpose: documentation
-reasoning: v0.10.1 — packaging fix (restore `dist/version-info.*` to the npm tarball; fixes ERR_MODULE_NOT_FOUND on clean install of 0.9.0/0.10.0) + repository relocation to SbD-ToE/sbd-toe-mcp. v0.10.0 and earlier entries below.
+reasoning: v0.20.0-beta.0 (beta line) — new `trace_sbd_toe_graph` tool: curated multi-hop SPARQL traversals (Oxigraph/WASM) over the AppSec Core v1 relation graph. Additive, deterministic, non-citable prerelease on the `beta` dist-tag; stable `0.10.x` unchanged. v0.10.1 and earlier entries below.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.0 — 2026-06-28
+
+**Prerelease (beta line).** Published to the npm `beta` dist-tag — `latest` (stable
+`0.10.x`) is unchanged. Experimental; **not citable** — excluded from the scientific
+record per `PROGRAMME-PRESERVATION-PROTOCOL.md`.
+
+### Added — SPARQL graph-query capability (v2 engine R&D)
+
+- **`trace_sbd_toe_graph`** — a new tool exposing curated multi-hop traversals over the
+  AppSec Core v1 relation graph, served by an embedded SPARQL engine (Oxigraph/WASM).
+  Three lenses: `slice_implementation` (slice → control objectives → mechanisms/practices),
+  `objective_realization` (objective → mechanisms/practices), `mechanism_provenance`
+  (mechanism/practice → objectives → slices). Deterministic (`ORDER BY`) and
+  coverage-preserving (total + cursor); output is entity ids — internal IRIs never leak.
+- Internal serving layer: `src/serving/rdf/projection.ts` (bundle → RDF triples,
+  provisional local IRI scheme) and `src/serving/rdf/graph-store.ts` (Oxigraph wrapper
+  enforcing `ORDER BY` + coverage paging).
+- Adds the `oxigraph` (WASM) dependency — no native binaries; `npx`/offline preserved.
+
+### Unchanged
+
+- **Additive only.** Every existing tool's contract and output is identical to the stable
+  line; `consumed-bundle.json` (the served data) is unchanged. New engine, constant data.
+
+> The IRI scheme is **provisional/local**; canonical IRIs are an upstream (ontology)
+> decision required before any graduation of this line to stable.
 
 ## 0.10.1 — 2026-06-25
 

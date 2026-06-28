@@ -47,6 +47,15 @@ TODO — confirm with programme lead.
 - v0.10.1 *(packaging fix — see CHANGELOG; tag pending, to be created on release
   of the commit that introduces this registry)*
 
+### Beta line (`0.20.x-beta`) — NOT citable, NOT a freeze candidate
+
+Prerelease tags on the `0.20-beta` branch (e.g. `v0.20.0-beta.0`) publish to the npm
+`beta` dist-tag for engine R&D (the SPARQL graph-query capability, `trace_sbd_toe_graph`).
+They are **experimental, non-citable, and explicitly excluded from the scientific record**
+— no DOI, no freeze, no archival deposit. `CITATION.cff` and the published states above
+track **only** the stable line. A beta graduates to the scientific record only by being
+folded into a stable `vX.Y.Z` release (with canonical, upstream-ratified IRIs).
+
 ## Current working state
 
 **Current branch:** master
