@@ -1,15 +1,15 @@
 ---
 ai_assisted: true
 model: Claude Opus 4.8 (1M context)
-date: 2026-06-28
+date: 2026-06-29
 purpose: documentation
-reasoning: v0.20.0-beta.0 (beta line) — new `trace_sbd_toe_graph` tool: curated multi-hop SPARQL traversals (Oxigraph/WASM) over the AppSec Core v1 relation graph. Additive, deterministic, non-citable prerelease on the `beta` dist-tag; stable `0.10.x` unchanged. v0.10.1 and earlier entries below.
+reasoning: v0.20.0-beta.1 (beta line; beta.0 aborted on a Sigstore tlog flake before reaching npm) — new `trace_sbd_toe_graph` tool: curated multi-hop SPARQL traversals (Oxigraph/WASM) over the AppSec Core v1 relation graph. Additive, deterministic, non-citable prerelease on the `beta` dist-tag; stable `0.10.x` unchanged. v0.10.1 and earlier entries below.
 review_status: pending-human-review
 ---
 
 # Changelog
 
-## 0.20.0-beta.0 — 2026-06-28
+## 0.20.0-beta.1 — 2026-06-29
 
 **Prerelease (beta line).** Published to the npm `beta` dist-tag — `latest` (stable
 `0.10.x`) is unchanged. Experimental; **not citable** — excluded from the scientific
