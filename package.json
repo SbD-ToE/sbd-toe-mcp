@@ -89,6 +89,7 @@
     "package:release": "node scripts/package-release.mjs",
     "prepack": "npm run build",
     "test": "vitest run",
+    "smoke:mcp": "node scripts/smoke-mcp.mjs",
     "test:qualitative-smoke": "vitest run src/qualitative-eval-smoke.test.ts",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
