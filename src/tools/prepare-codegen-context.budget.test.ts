@@ -19,7 +19,9 @@
  *                  + ~8% de margem, para apanhar regressões de tamanho.
  *   - `standard` = gates hard do EPIC (total ≤6.500 típico / ≤8.500
  *                  3-famílias). SKIPPED até o parâmetro `detail` existir.
- *   - `minimal`  = alvo s3b (total ≤2.000). SKIPPED até `detail` existir.
+ *   - `minimal`  = s3b REVISTO (⟳ ADENDA 2026-07-05: sem top-N; o alvo
+ *                  original ≤2.000 caiu com o desenho top-N — totais fixados
+ *                  por medição, ver BUDGETS.minimal).
  *
  * O skip é condicional em runtime, em dois estágios (s1 aterrou 2026-07-05):
  *   1. probe `detailParamSupported` — o parâmetro `detail` existe (s1);
@@ -152,12 +154,13 @@ type SectionBudgets = Record<SectionName, number> & { total: number };
  * `full`: baseline medido (2026-07-05, 0.20.0-beta.1) + ~8% de margem — a
  * margem justa pedida pelo s0 para apanhar regressões sem falsos positivos.
  *
- * `standard`/`minimal`: os TOTAIS são os gates hard do EPIC (§Orçamento:
- * standard ≤6.500 típico / ≤8.500 3-famílias; minimal ≤2.000). Os budgets POR
- * SECÇÃO destes dois níveis são PROVISÓRIOS, derivados dos deltas previstos
- * nos slices s1–s3b (citations invertido, grounding agrupado, relations→ref,
- * caps de evidence, +description no activated_scope) — recalibrar quando os
- * slices aterrarem; até lá o gate que vincula é o TOTAL.
+ * `standard`: os TOTAIS são os gates hard do EPIC (§Orçamento: ≤6.500 típico /
+ * ≤8.500 3-famílias); budgets por secção recalibrados no s3 (medição real).
+ *
+ * `minimal`: totais e budgets por secção FIXADOS POR MEDIÇÃO no s3b REVISTO
+ * (⟳ ADENDA 2026-07-05 — sem top-N, o total ≤2.000 do desenho original era
+ * inviável e foi substituído pela medição + ~5%; ratificação do operador na
+ * validação — ver nota no BUDGETS.minimal).
  */
 const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudgets>> = {
   full: {
@@ -214,26 +217,37 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       total: 8500 // 🔴 gate hard do EPIC (payload 3-famílias)
     }
   },
+  // minimal: ⟳ ADENDA s3b (2026-07-05, decisão do operador — EPIC §s3b): sem
+  // top-N, o conjunto ativado (scope com description, entidades, citations)
+  // vai COMPLETO — o alvo ≤2.000 do desenho top-N era inviável e foi REVISTO
+  // pela adenda ("o número hard é fixado pela medição real do slice e
+  // ratificado pelo operador na validação"). Budgets FIXADOS POR MEDIÇÃO do
+  // s3b revisto (2026-07-05, dist: f1 = relations_ref 121 / grounding-mínimo
+  // 223 / evidence-cap-5 527 / citations 169 / scope-com-description 3.076 /
+  // entidades 642 / resto 760, total 5.518; f2 = 204 / 260 / 527 / 170 /
+  // 4.824 / 899 / 755, total 7.639) + ~5% de margem justa — ratificação do
+  // operador na validação. O minimal corta face ao standard SÓ serialização
+  // de traceability (evidence 10→5, grounding mínimo): −639 (f1) / −719 (f2).
   minimal: {
     fixture1: {
-      "g2_context.relations": 200,
-      manual_grounding: 300,
-      "g2_context.evidence_patterns": 800, // s3b: cap 5
-      citation_map: 300,
-      activated_scope: 900, // s3b: requirements top-10 + description, controls direct
-      g2_entities: 450,
-      rest: 400,
-      total: 2000 // alvo s3b
+      "g2_context.relations": 130, // s2: relations_ref (igual a standard)
+      manual_grounding: 240, // s3b: forma mínima (contagens + sha + groups_ref)
+      "g2_context.evidence_patterns": 560, // s3b: cap 5
+      citation_map: 180, // citations invertido (byte-igual a standard)
+      activated_scope: 3230, // COMPLETO com description (byte-igual a standard)
+      g2_entities: 680, // COMPLETO (byte-igual a standard)
+      rest: 800,
+      total: 5800 // 🔴 hard s3b revisto (medido 5.518 + ~5%)
     },
     fixture2: {
-      "g2_context.relations": 200,
-      manual_grounding: 300,
-      "g2_context.evidence_patterns": 800,
-      citation_map: 350,
-      activated_scope: 900,
-      g2_entities: 450,
-      rest: 400,
-      total: 2000 // alvo s3b (recalibrável em s3b se a task 3-famílias justificar)
+      "g2_context.relations": 215,
+      manual_grounding: 275,
+      "g2_context.evidence_patterns": 560,
+      citation_map: 180,
+      activated_scope: 5070,
+      g2_entities: 950,
+      rest: 800,
+      total: 8000 // 🔴 hard s3b revisto (medido 7.639 + ~5%)
     }
   }
 };
@@ -284,12 +298,19 @@ function detailParamSupported(fixture: BaselineFixture): boolean {
  *    `standard` (passa a `relations_ref`). Sentinela: deixa de ser um array.
  *  - s3 (caps/boilerplate): cap de evidence_patterns desce 25→10 em
  *    `standard`. Sentinela: `completeness_report.evidence_pattern_cap <= 10`.
- *  - s3b (minimal codegen-lean): requirements top-N com omissão explícita
- *    (padrão total/returned/omitted) em `minimal`. Sentinela: o campo deixa
- *    de ser um array plano completo.
+ *  - s3b REVISTO (⟳ ADENDA 2026-07-05 do operador, EPIC §s3b — SUBSTITUI o
+ *    desenho top-N): SEM ranking/subsetting; `minimal` mantém o conjunto
+ *    ativado COMPLETO (requirements/controls com description, byte-igual a
+ *    `standard`) e corta só serialização de traceability — evidence cap 10→5
+ *    e `manual_grounding` na forma mínima (contagens + sha agregado +
+ *    groups_ref executável). A sentinela top-N original ("requirements deixa
+ *    de ser array plano") NUNCA acionaria neste desenho; a sentinela real é
+ *    `completeness_report.evidence_pattern_cap <= 5` em `minimal`.
  *
  * Se a forma final de um slice divergir da sentinela aqui prevista, o
- * executor desse slice ajusta a sentinela NESTE ficheiro (nunca os budgets).
+ * executor desse slice ajusta a sentinela NESTE ficheiro (nunca os budgets;
+ * exceção: os TOTAIS `minimal` do desenho top-N foram revistos pela ADENDA
+ * s3b — ver nota no BUDGETS.minimal).
  */
 function s2RelationsRefLanded(result: PrepareCodegenContextResultReady): boolean {
   return !Array.isArray(result.g2_context.relations);
@@ -300,7 +321,11 @@ function s3CapsLanded(result: PrepareCodegenContextResultReady): boolean {
 }
 
 function s3bMinimalLanded(result: PrepareCodegenContextResultReady): boolean {
-  return !Array.isArray(result.activated_scope.requirements);
+  // ⟳ ADENDA s3b (2026-07-05, EPIC §s3b): sem top-N — `requirements` continua
+  // um array plano COMPLETO em todos os níveis, pelo que a sentinela original
+  // (deixar de ser array) nunca acionaria. O marcador real do s3b revisto é o
+  // cap de evidence 10→5 em `minimal` (a par da forma mínima do grounding).
+  return result.completeness_report.evidence_pattern_cap <= 5;
 }
 
 /** Resolve um path `ids_from` sobre o próprio payload dieted (mini-sintaxe
@@ -393,7 +418,7 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
       assertSectionBudgets(sectionTokens(result), BUDGETS.standard[fixture.name]);
     });
 
-    it("respeita os budgets do nível `minimal` (alvo s3b ≤2K) [pendente s3b]", (ctx) => {
+    it("respeita os budgets do nível `minimal` (s3b revisto — fixados por medição, ADENDA 2026-07-05)", (ctx) => {
       if (!detailSupported) {
         ctx.skip(); // parâmetro `detail` ainda não existe (pré-s1)
         return;
@@ -401,9 +426,9 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
       const result = handlePrepareCodegenContext(withDetail(fixture.input, "minimal"));
       expectReady(result);
       if (!s3bMinimalLanded(result)) {
-        // s1 trata `minimal` como `standard`; o alvo ≤2K só chega com o
-        // perfil codegen-lean do s3b (top-N + omissão explícita). Sentinela
-        // acima; budgets intactos.
+        // Pré-s3b `minimal` partilhava a codificação de `standard`; os budgets
+        // minimal (fixados por medição do s3b revisto) só vinculam com a
+        // sentinela acima (evidence cap ≤ 5).
         ctx.skip();
         return;
       }

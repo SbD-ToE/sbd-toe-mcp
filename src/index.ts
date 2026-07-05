@@ -1252,13 +1252,16 @@ class McpRuntime {
                   "relevance_score) are elided per the `provenance_legend`/resource legend, and " +
                   "`g2_context.relations` is replaced by `g2_context.relations_ref` — executable " +
                   "trace_sbd_toe_graph {lens, anchor} calls (set include_relations=true to keep relations " +
-                  "inline instead). Additionally at 'standard'/'minimal': evidence_patterns are capped at 10 " +
+                  "inline instead). Additionally at 'standard'/'minimal': evidence_patterns are capped " +
                   "(deterministic prefix; counts + rest-reference in completeness_report), " +
                   "llm_codegen_instructions + security_rationale_template move to the MCP resource " +
                   "sbd://toe/codegen-instructions/{mode} (see codegen_instructions_ref), activation_trace is " +
                   "included only with debug=true (activation_trace_ref keeps the count), and requirements + " +
                   "direct controls carry the verbatim published `description`. Nothing is silently dropped. " +
-                  "In this beta, 'minimal' and 'standard' are identical (they diverge in later 0.20.x betas)."
+                  "'minimal' keeps the SAME complete activated scope as 'standard' (no ranking/subsetting) " +
+                  "and trims only traceability serialization: evidence_patterns cap 5 (vs 10) and " +
+                  "manual_grounding as counts + shared manual_commit_sha + executable groups_ref " +
+                  "(same input, detail='standard')."
               },
               include_relations: {
                 type: "boolean",

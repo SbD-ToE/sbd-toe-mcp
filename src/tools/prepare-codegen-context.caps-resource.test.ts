@@ -2,8 +2,9 @@
  * s3 — Caps, boilerplate e o "how" publicado (epic v2-token-diet).
  *
  * Gates do slice (EPIC §s3 + instruções do guardian):
- *   - cap evidence_patterns 25→10 em `standard`/`minimal` (neste slice os dois
- *     níveis partilham o cap; a divergência 10→5 do minimal é s3b), com padrão
+ *   - cap evidence_patterns 25→10 em `standard` (desde o s3b REVISTO — ADENDA
+ *     2026-07-05 do operador, sem top-N — o `minimal` diverge para cap 5 com o
+ *     MESMO mecanismo; ver prepare-codegen-context.minimal.test.ts), com padrão
  *     boundList nunca-silencioso: `completeness_report` reporta
  *     total/returned/capped (omitted+returned == total) e, quando algo foi
  *     cortado, `evidence_patterns_rest` diz COMO obter o resto — referência
@@ -81,6 +82,12 @@ const FIXTURES: readonly BaselineFixture[] = [
 
 const DIET_LEVELS = ["standard", "minimal"] as const;
 
+/** Cap de evidence por nível dieted (s3: standard 10; s3b revisto: minimal 5). */
+const EXPECTED_CAP: Record<(typeof DIET_LEVELS)[number], number> = {
+  standard: 10,
+  minimal: 5
+};
+
 // ---------------------------------------------------------------------------
 // Bundle publicado — lido DIRETAMENTE dos JSON (prova verbatim byte-igual).
 // ---------------------------------------------------------------------------
@@ -147,7 +154,7 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
 
   describe.each(FIXTURES)("$label — cap de evidence_patterns", (fixture) => {
     it.each([...DIET_LEVELS])(
-      "%s: cap 10, omitted+returned == total, prefixo determinístico do top-25 clássico",
+      "%s: cap por nível (standard 10 / minimal 5 — s3b revisto), omitted+returned == total, prefixo determinístico do top-25 clássico",
       (detail) => {
         const full = handlePrepareCodegenContext(fixture.input);
         expectReadyFull(full);
@@ -155,7 +162,9 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
         expectReadyDieted(dieted);
 
         const report = dieted.completeness_report;
-        expect(report.evidence_pattern_cap).toBe(10); // sentinela s3CapsLanded
+        // sentinelas do budget.test: s3CapsLanded (standard, cap ≤ 10) e
+        // s3bMinimalLanded (minimal, cap ≤ 5 — ADENDA s3b 2026-07-05).
+        expect(report.evidence_pattern_cap).toBe(EXPECTED_CAP[detail]);
         expect(dieted.g2_context.evidence_patterns.length).toBe(
           report.evidence_patterns_returned
         );
@@ -172,7 +181,7 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
         // core já ordena por relevance_score desc, id asc), sem os campos
         // derivável-elididos (source, relevance_score).
         const expected = full.g2_context.evidence_patterns
-          .slice(0, 10)
+          .slice(0, EXPECTED_CAP[detail])
           .map(({ source: _s, relevance_score: _r, ...rest }) => rest);
         expect(JSON.stringify(dieted.g2_context.evidence_patterns)).toBe(
           JSON.stringify(expected)
@@ -479,18 +488,29 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
   });
 
   // -------------------------------------------------------------------------
-  // Sentinelas do budget.test (s3 aciona standard; s3b NÃO acionado)
+  // Sentinelas do budget.test (s3 aciona standard; s3b REVISTO aciona minimal)
   // -------------------------------------------------------------------------
 
-  it("sentinela s3CapsLanded aciona (cap ≤ 10) e s3bMinimalLanded NÃO (requirements continua array)", () => {
-    const dieted = handlePrepareCodegenContext({
+  it("sentinelas: s3CapsLanded (standard, cap ≤ 10) e s3bMinimalLanded (minimal, cap ≤ 5) acionam; requirements CONTINUA array completo (ADENDA s3b: sem top-N)", () => {
+    const standard = handlePrepareCodegenContext({
+      ...FIXTURES[0]!.input,
+      detail: "standard"
+    });
+    expectReadyDieted(standard);
+    expect(standard.completeness_report.evidence_pattern_cap).toBeLessThanOrEqual(10);
+
+    const minimal = handlePrepareCodegenContext({
       ...FIXTURES[0]!.input,
       detail: "minimal"
     });
-    expectReadyDieted(dieted);
-    expect(dieted.completeness_report.evidence_pattern_cap).toBeLessThanOrEqual(10);
-    // s3b (minimal codegen-lean) ainda não aterrou: o campo continua a ser um
-    // array plano completo — o budget.test mantém o skip de minimal.
-    expect(Array.isArray(dieted.activated_scope.requirements)).toBe(true);
+    expectReadyDieted(minimal);
+    // Sentinela s3b revista (budget.test): cap de evidence ≤ 5 em minimal.
+    expect(minimal.completeness_report.evidence_pattern_cap).toBeLessThanOrEqual(5);
+    // ADENDA s3b (2026-07-05): SEM top-N — o conjunto ativado vai COMPLETO em
+    // todos os níveis; requirements permanece um array plano completo.
+    expect(Array.isArray(minimal.activated_scope.requirements)).toBe(true);
+    expect(minimal.activated_scope.requirements.length).toBe(
+      standard.activated_scope.requirements.length
+    );
   });
 });

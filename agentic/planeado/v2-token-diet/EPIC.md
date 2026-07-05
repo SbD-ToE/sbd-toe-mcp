@@ -176,6 +176,11 @@ sem refactor SPARQL das tools existentes.
 >   traceability e projeção derivável (nunca-silencioso: contagens + referência).
 > - **Alvo revisto:** ≤ 2K era inviável sem top-N; novo alvo ~4–4,5K típico — o número hard é
 >   fixado pela medição real do slice e ratificado pelo operador na validação.
+>   **RATIFICADO (2026-07-05, operador): 5.800 típico / 8.000 3-famílias** (medido 5.518/7.639
+>   +5%; acima da projeção porque o activated_scope completo com descriptions = 56–63% do
+>   payload e é intocável por decisão do próprio operador). O minimal re-emagrece (~3K) quando
+>   o KG upstream publicar o campo `brief` (ver D-C-ABLATION-BACKLOG.md, pacote upstream) —
+>   nova medição + nova ratificação nessa altura.
 > - Gates que se mantêm: `omitted + returned == total` onde houver contagem; conjunto de IDs
 >   citáveis idêntico entre níveis; referências executáveis; determinismo 2× byte-igual.
 

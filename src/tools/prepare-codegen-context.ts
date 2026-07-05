@@ -73,8 +73,11 @@ export type RiskLevel = "L1" | "L2" | "L3";
  * - `standard` / `minimal`: same citable ID set, deduplicated encoding
  *   (inverted `citations`, grouped `manual_grounding`, top-level
  *   `provenance_legend` instead of per-item `source`). No information is
- *   lost — only the serialization changes. In s1 the two levels are
- *   identical; they diverge in later slices (s3/s3b).
+ *   lost — only the serialization changes. Since s3b (revised ADENDA
+ *   2026-07-05 — no top-N/subsetting) `minimal` differs from `standard`
+ *   ONLY in traceability serialization: evidence cap 10→5 and the minimal
+ *   `manual_grounding` form; the activated scope stays complete and
+ *   byte-identical to `standard`.
  *
  * The default flips to `standard` only at graduation to the next stable
  * release (documented as breaking) — never on the beta line.
@@ -213,10 +216,21 @@ const EVIDENCE_PATTERN_CAP = 25;
  * emits) of the classic top-{@link EVIDENCE_PATTERN_CAP} list. Never silent:
  * `completeness_report` reports total/returned/capped and, when anything was
  * cut, `evidence_patterns_rest` says how to retrieve the rest (same tool,
- * `detail: "full"`). s3b will diverge `minimal` (cap 5); in s3 both levels
- * share this cap.
+ * `detail: "full"`).
  */
 const STANDARD_EVIDENCE_PATTERN_CAP = 10;
+
+/**
+ * v2 token diet, s3b (revised per the 2026-07-05 operator ADENDA in
+ * agentic/planeado/v2-token-diet/EPIC.md — no top-N, no subsetting of the
+ * activated set): at `detail: "minimal"` the evidence cap tightens 10→5 with
+ * the SAME s3 mechanism (deterministic prefix, never-silent counts +
+ * executable rest-reference). This cap — together with the minimal
+ * `manual_grounding` form — is the ONLY divergence from `standard`; the
+ * activated scope (requirements/controls/slices/entities, with the verbatim
+ * published descriptions) stays COMPLETE and byte-identical to `standard`.
+ */
+const MINIMAL_EVIDENCE_PATTERN_CAP = 5;
 
 export interface G2Context {
   control_objectives: G2ContextEntity[];
@@ -430,6 +444,63 @@ export interface ManualGroundingGrouped {
   /** Number of flat entries the groups encode (dedup audit: sum of group sizes). */
   total_entries: number;
   groups: ManualGroundingGroup[];
+  /** Lossless guard: entries without a v1_entity_id (expected empty). */
+  ungrouped?: Array<WithoutSource<ManualGroundingEntry>>;
+}
+
+/**
+ * v2 token diet, s3b (revised ADENDA 2026-07-05) — minimal-form grounding
+ * group: the SAME group as {@link ManualGroundingGroup} (1:1, same order) with
+ * the per-group `v1_entity_ids` list replaced by its exact count (`entries`).
+ * The grounding id SET is NOT lost: every grounding v1_entity_id is an
+ * activated entity id already present verbatim in this payload's
+ * `g2_context` entity maps (the grounding is resolved FROM those ids) — only
+ * the id→(chapter,file) traceability assignment moves behind the executable
+ * `groups_ref` (same input, detail="standard"). Never silent: `entries`
+ * counts sum to `total_entries`.
+ */
+export interface ManualGroundingMinimalGroup {
+  rastreabilidade_role: string;
+  manual_chapter?: string | null;
+  manual_file?: string | null;
+  /** Present ONLY when the sha could not be hoisted to the top level
+   * (mixed/absent shas across groups — never expected for the published
+   * bundle; lossless guard). */
+  manual_commit_sha?: string;
+  /** Exact number of v1_entity_ids the detail="standard" group carries. */
+  entries: number;
+  /** Lossless guard: names NOT recoverable via g2_context entity `name`
+   * (kept verbatim from the standard group; expected never). */
+  v1_entity_names?: Record<string, string>;
+}
+
+/** Executable reference to the full per-group grounding ids (s3b). */
+export interface GroundingGroupsRef {
+  tool: "prepare_sbd_toe_codegen_context";
+  /** Merge over this call's input_echo: same input, detail="standard". */
+  with: { detail: "standard" };
+  note: string;
+}
+
+/**
+ * `manual_grounding` at `detail: "minimal"` (s3b revised): aggregated
+ * provenance — total count, the manual_commit_sha shared by every group
+ * (hoisted), and the (role, chapter, file) group list with per-group entry
+ * COUNTS instead of per-group id lists — plus the executable `groups_ref`.
+ * The citable id set is untouched (invariant 3): grounding ids never feed
+ * `citations`/`ids_from`, and the id set itself stays reconstructible from
+ * this same payload's g2_context entity maps without any extra call.
+ */
+export interface ManualGroundingMinimal {
+  /** Number of flat detail="full" entries the groups encode (Σ entries). */
+  total_entries: number;
+  /** Hoisted provenance: present iff EVERY group carries this same sha
+   * (expected always for the published bundle); otherwise each group keeps
+   * its own `manual_commit_sha` inline (lossless guard). */
+  manual_commit_sha?: string;
+  groups: ManualGroundingMinimalGroup[];
+  /** How to obtain the full per-group v1_entity_ids (detail="standard"). */
+  groups_ref: GroundingGroupsRef;
   /** Lossless guard: entries without a v1_entity_id (expected empty). */
   ungrouped?: Array<WithoutSource<ManualGroundingEntry>>;
 }
@@ -658,9 +729,8 @@ export type DietedCompletenessReport = CompletenessReport & {
 };
 
 /**
- * `ready_for_codegen` result at `detail: "standard" | "minimal"` (s3: the two
- * levels still share this encoding; they diverge in s3b). Same citable ID set
- * as the full result (invariant 3) — the encoding is deduplicated (s1),
+ * `ready_for_codegen` result at `detail: "standard" | "minimal"`. Same citable
+ * ID set as the full result (invariant 3) — the encoding is deduplicated (s1),
  * relations are served on-demand (s2) and, since s3:
  *   - `g2_context.evidence_patterns` is capped 25→10 (deterministic prefix;
  *     never-silent counts + rest-reference in `completeness_report`);
@@ -673,6 +743,16 @@ export type DietedCompletenessReport = CompletenessReport & {
  *     `description` (the "how"), and derivable fields (`category`,
  *     `entity_type`, `slice_family`, `relevance_score`, repeated citation ids)
  *     are elided per the resource's `detail_encoding` legend.
+ *
+ * s3b (revised per the 2026-07-05 operator ADENDA — NO top-N/subsetting):
+ * `minimal` diverges from `standard` ONLY in serialization of traceability,
+ * never in execution context. The activated scope (requirements + controls
+ * with descriptions, slices, obligations, g2 entities, citations,
+ * relations_ref) is byte-identical to `standard`; `minimal` additionally
+ *   - caps `g2_context.evidence_patterns` 10→5 (same s3 mechanism: prefix,
+ *     counts, rest-ref);
+ *   - serves `manual_grounding` in the minimal form ({@link
+ *     ManualGroundingMinimal}: counts + hoisted sha + executable groups_ref).
  */
 export interface PrepareCodegenContextResultReadyDieted {
   status: "ready_for_codegen";
@@ -687,7 +767,8 @@ export interface PrepareCodegenContextResultReadyDieted {
   provenance_legend: ProvenanceLegend;
   activated_scope: DietedActivatedScope;
   g2_context: DietedG2Context;
-  manual_grounding: ManualGroundingGrouped;
+  /** Grouped (standard) or minimal form (s3b, detail="minimal"). */
+  manual_grounding: ManualGroundingGrouped | ManualGroundingMinimal;
   regulatory_overlay: DietedRegulatoryOverlayContext;
   citations: CitationsBySource;
   completeness_report: DietedCompletenessReport;
@@ -2036,6 +2117,17 @@ const DETAIL_ENCODING_LEGEND = {
     "total/returned/capped and, when anything was cut, evidence_patterns_rest " +
     "says how to retrieve the rest (same input, detail='full'; with debug=true " +
     "the ids beyond the classic cap are listed in debug.rejected_candidates).",
+  manual_grounding_minimal:
+    "At detail=minimal, manual_grounding is the aggregated-provenance form " +
+    "(s3b): total_entries, the manual_commit_sha shared by every group " +
+    "(hoisted; a group keeps its own sha inline only if hoisting was not " +
+    "possible), and the (rastreabilidade_role, manual_chapter, manual_file) " +
+    "groups with the exact per-group `entries` COUNT instead of the " +
+    "v1_entity_ids list (counts sum to total_entries — never silent). The " +
+    "grounding id set is already in the same payload (g2_context entity-map " +
+    "keys); manual_grounding.groups_ref is the executable reference (same " +
+    "input, detail='standard') for the per-group id lists — groups align " +
+    "1:1, same order. detail=standard keeps the full grouping inline.",
   activation_trace:
     "activation_trace is elided at detail=standard/minimal; " +
     "activation_trace_ref.entries keeps the exact count. Re-call with debug=true " +
@@ -2487,6 +2579,62 @@ function groupManualGrounding(
   return grouped;
 }
 
+// s3b: kept URI-free on purpose (no-leak discipline, same as RELATIONS_REF_NOTE).
+const GROUNDING_GROUPS_REF_NOTE =
+  "Per-group v1_entity_ids elided at detail=minimal (each group carries its " +
+  "exact `entries` count). The grounding id set is already in this payload — " +
+  "every grounding id is an entity-id key of the g2_context maps. Re-call " +
+  "with the same input at detail='standard' for the per-group id lists " +
+  "(groups align 1:1, same order).";
+
+/**
+ * v2 token diet, s3b (revised ADENDA 2026-07-05) — minimal-form
+ * `manual_grounding`, derived from the detail="standard" grouping (so the 1:1
+ * group alignment holds by construction). Serialization-only cut, never
+ * silent:
+ *   - per-group `v1_entity_ids` → exact `entries` count (Σ == total_entries);
+ *   - `manual_commit_sha` hoisted to the top level iff EVERY group carries
+ *     the same sha (expected always: one published manual commit); otherwise
+ *     each group keeps its own sha inline (lossless guard);
+ *   - `v1_entity_names` (never expected) and `ungrouped` (never expected)
+ *     survive verbatim — no name or entry can be lost;
+ *   - `groups_ref` is the executable reference to the full grouping.
+ * Invariant-3 note: grounding ids never feed `citations`/`ids_from`, and the
+ * id set stays reconstructible from this same payload's g2_context entity
+ * maps without any extra call.
+ */
+function buildMinimalGrounding(grouped: ManualGroundingGrouped): ManualGroundingMinimal {
+  const shas = grouped.groups.map((group) => group.manual_commit_sha);
+  const hoistedSha =
+    grouped.groups.length > 0 &&
+    shas[0] !== undefined &&
+    shas.every((sha) => sha === shas[0])
+      ? shas[0]
+      : undefined;
+
+  const minimal: ManualGroundingMinimal = {
+    total_entries: grouped.total_entries,
+    ...(hoistedSha !== undefined ? { manual_commit_sha: hoistedSha } : {}),
+    groups: grouped.groups.map((group) => ({
+      rastreabilidade_role: group.rastreabilidade_role,
+      ...("manual_chapter" in group ? { manual_chapter: group.manual_chapter } : {}),
+      ...("manual_file" in group ? { manual_file: group.manual_file } : {}),
+      ...(hoistedSha === undefined && group.manual_commit_sha !== undefined
+        ? { manual_commit_sha: group.manual_commit_sha }
+        : {}),
+      entries: group.v1_entity_ids.length,
+      ...(group.v1_entity_names ? { v1_entity_names: group.v1_entity_names } : {})
+    })),
+    groups_ref: {
+      tool: "prepare_sbd_toe_codegen_context",
+      with: { detail: "standard" },
+      note: GROUNDING_GROUPS_REF_NOTE
+    }
+  };
+  if (grouped.ungrouped) minimal.ungrouped = grouped.ungrouped;
+  return minimal;
+}
+
 /** Slice-grouped, name-only entity encoding (see {@link SliceGroupedEntityNames}). */
 function groupEntitiesBySlice(
   entities: readonly G2ContextEntity[]
@@ -2561,28 +2709,32 @@ function dietControls(controls: ActivatedScope["controls"]): DietedControl[] {
  *     completeness_report), instructions/template → MCP resource, trace only
  *     with debug, verbatim published `description` on requirements + direct
  *     controls, and derivable-field dedup (category, entity_type/slice_family
- *     via slice-grouped entity maps, relevance_score, citation id repeats).
- * In s3 `minimal` and `standard` still share this encoding; divergence lands
- * in s3b behind the same parameter.
+ *     via slice-grouped entity maps, relevance_score, citation id repeats);
+ *   - s3b (revised ADENDA 2026-07-05 — no top-N): `minimal` keeps the
+ *     activated scope byte-identical to `standard` and diverges ONLY on
+ *     traceability serialization — evidence cap 10→5 (same mechanism) and
+ *     `manual_grounding` in the minimal form (counts + hoisted sha +
+ *     executable groups_ref).
  */
 function applyStructuralDiet(
   result: PrepareCodegenContextResultReady,
   detail: Exclude<CodegenDetailLevel, "full">,
   includeRelations: boolean
 ): PrepareCodegenContextResultReadyDieted {
-  // s3 evidence cap: deterministic prefix of the classic (already sorted:
-  // relevance_score desc, id asc) list; never-silent counts below.
-  const evidenceKept = result.g2_context.evidence_patterns.slice(
-    0,
-    STANDARD_EVIDENCE_PATTERN_CAP
-  );
+  // s3/s3b evidence cap (standard 10, minimal 5): deterministic prefix of the
+  // classic (already sorted: relevance_score desc, id asc) list; the minimal
+  // list is by construction a prefix of the standard one. Never-silent counts
+  // below.
+  const evidenceCap =
+    detail === "minimal" ? MINIMAL_EVIDENCE_PATTERN_CAP : STANDARD_EVIDENCE_PATTERN_CAP;
+  const evidenceKept = result.g2_context.evidence_patterns.slice(0, evidenceCap);
   const evidenceTotal = result.completeness_report.evidence_patterns_total;
   const evidenceCapped = evidenceTotal - evidenceKept.length;
   const completeness: DietedCompletenessReport = {
     ...result.completeness_report,
     evidence_patterns_returned: evidenceKept.length,
     evidence_patterns_capped: evidenceCapped,
-    evidence_pattern_cap: STANDARD_EVIDENCE_PATTERN_CAP,
+    evidence_pattern_cap: evidenceCap,
     ...(evidenceCapped > 0
       ? {
           evidence_patterns_rest: {
@@ -2661,7 +2813,12 @@ function applyStructuralDiet(
         ({ source: _source, relevance_score: _score, ...rest }) => rest
       )
     },
-    manual_grounding: groupManualGrounding(result),
+    // s3b: minimal serves the count+provenance form (executable groups_ref);
+    // standard keeps the full grouping.
+    manual_grounding:
+      detail === "minimal"
+        ? buildMinimalGrounding(groupManualGrounding(result))
+        : groupManualGrounding(result),
     regulatory_overlay: {
       frameworks: stripSource(result.regulatory_overlay.frameworks),
       obligations: stripSource(result.regulatory_overlay.obligations),

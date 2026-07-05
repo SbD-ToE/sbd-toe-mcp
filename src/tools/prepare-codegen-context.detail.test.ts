@@ -1,7 +1,10 @@
 /**
  * s1 — Dieta estrutural (epic v2-token-diet): golden snapshots por `detail`
  * e invariantes da codificação deduplicada. ATUALIZADO pelo s3 (caps,
- * boilerplate→resource, descriptions): a codificação dieted evoluiu — ver
+ * boilerplate→resource, descriptions) e pelo s3b REVISTO (ADENDA 2026-07-05
+ * do operador: sem top-N — `minimal` mantém o conjunto ativado COMPLETO e
+ * diverge de `standard` só em serialização de traceability; gates próprios em
+ * prepare-codegen-context.minimal.test.ts). Ver
  * prepare-codegen-context.caps-resource.test.ts para os gates específicos do
  * s3; aqui ficam os invariantes s1 adaptados à codificação corrente:
  *
@@ -27,6 +30,7 @@ import {
   type G2ContextEntity,
   type ManualGroundingEntry,
   type ManualGroundingGrouped,
+  type ManualGroundingMinimal,
   type PrepareCodegenContextInput,
   type PrepareCodegenContextResult,
   type PrepareCodegenContextResultReady,
@@ -87,6 +91,14 @@ function expectReadyDieted(
   expect(result.status).toBe("ready_for_codegen");
   expect(result).toHaveProperty("citations");
   expect(result).not.toHaveProperty("citation_map");
+}
+
+/** Narrowing: grounding na forma agrupada de `standard` (s3b: `minimal` usa a
+ * forma mínima — ver prepare-codegen-context.minimal.test.ts). */
+function expectGroupedGrounding(
+  grounding: ManualGroundingGrouped | ManualGroundingMinimal
+): asserts grounding is ManualGroundingGrouped {
+  expect(grounding).not.toHaveProperty("groups_ref");
 }
 
 /** Chaves de um mapa de entidades agrupado por slice, na ordem dos grupos e
@@ -295,6 +307,7 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
       const dieted = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
       expectReadyDieted(dieted);
       const grouped = dieted.manual_grounding;
+      expectGroupedGrounding(grouped);
       // contagem exata — s1 não corta nada (invariante 2)
       const groupedCount =
         grouped.groups.reduce((sum, group) => sum + group.v1_entity_ids.length, 0) +
@@ -415,18 +428,53 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
       expect(dieted.provenance_legend.note).toContain("sbd://toe/codegen-instructions/");
     });
 
-    it("s1: `minimal` e `standard` partilham a codificação (diferem só no echo do detail)", () => {
+    it("s3b (ADENDA 2026-07-05): `minimal` diverge de `standard` SÓ em serialização de traceability (evidence cap 5, grounding mínimo, echo)", () => {
       const standard = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
       const minimal = handlePrepareCodegenContext({ ...fixture.input, detail: "minimal" });
       expectReadyDieted(standard);
       expectReadyDieted(minimal);
       expect(standard.input_echo.detail).toBe("standard");
       expect(minimal.input_echo.detail).toBe("minimal");
-      const stripEcho = (result: PrepareCodegenContextResultReadyDieted): string =>
-        JSON.stringify({ ...result, input_echo: null });
-      // NOTA s3/s3b: quando os níveis divergirem, substituir esta igualdade
-      // pelos contratos próprios de cada nível.
-      expect(stripEcho(minimal)).toBe(stripEcho(standard));
+
+      // Contexto de execução INTOCADO (sem top-N, sem subsetting): o
+      // activated_scope completo — requirements/controls com description —,
+      // as entidades g2, as citations (ids_from), o relations_ref, o overlay
+      // e as referências são byte-iguais aos de standard.
+      expect(JSON.stringify(minimal.activated_scope)).toBe(
+        JSON.stringify(standard.activated_scope)
+      );
+      expect(JSON.stringify(minimal.citations)).toBe(JSON.stringify(standard.citations));
+      expect(JSON.stringify(minimal.regulatory_overlay)).toBe(
+        JSON.stringify(standard.regulatory_overlay)
+      );
+      expect(JSON.stringify(minimal.codegen_instructions_ref)).toBe(
+        JSON.stringify(standard.codegen_instructions_ref)
+      );
+      const g2Sansevidence = (
+        result: PrepareCodegenContextResultReadyDieted
+      ): string =>
+        JSON.stringify({ ...result.g2_context, evidence_patterns: null });
+      expect(g2Sansevidence(minimal)).toBe(g2Sansevidence(standard));
+
+      // Divergências PERMITIDAS (e só estas): input_echo (detail), evidence
+      // cap 10→5 (prefixo; contagens no completeness_report) e a forma mínima
+      // do manual_grounding. Normalizando-as, os payloads são byte-iguais.
+      const normalize = (result: PrepareCodegenContextResultReadyDieted): string =>
+        JSON.stringify({
+          ...result,
+          input_echo: null,
+          manual_grounding: null,
+          g2_context: { ...result.g2_context, evidence_patterns: null },
+          completeness_report: null
+        });
+      expect(normalize(minimal)).toBe(normalize(standard));
+
+      // Evidence: o minimal (cap 5) é PREFIXO exato do standard (cap 10).
+      expect(JSON.stringify(minimal.g2_context.evidence_patterns)).toBe(
+        JSON.stringify(standard.g2_context.evidence_patterns.slice(0, 5))
+      );
+      // Gates específicos do minimal (grounding mínimo, contagens, referências
+      // executáveis): prepare-codegen-context.minimal.test.ts.
     });
   });
 
