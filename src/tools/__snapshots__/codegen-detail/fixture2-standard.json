@@ -7,541 +7,422 @@
     "mode": "codegen",
     "detail": "standard"
   },
-  "activation_trace": [
-    {
-      "source": "compound_term",
-      "produced": "api",
-      "trigger": "secure endpoint",
-      "score": 0.7,
-      "confidence": "semantic",
-      "reason": "Compound phrase 'secure endpoint' activates api."
-    },
-    {
-      "source": "compound_term",
-      "produced": "auth",
-      "trigger": "secure endpoint",
-      "score": 0.7,
-      "confidence": "semantic",
-      "reason": "Compound phrase 'secure endpoint' activates auth."
-    },
-    {
-      "source": "compound_term",
-      "produced": "validation",
-      "trigger": "secure endpoint",
-      "score": 0.7,
-      "confidence": "semantic",
-      "reason": "Compound phrase 'secure endpoint' activates validation."
-    },
-    {
-      "source": "compound_term",
-      "produced": "logging",
-      "trigger": "secure endpoint",
-      "score": 0.7,
-      "confidence": "semantic",
-      "reason": "Compound phrase 'secure endpoint' activates logging."
-    },
-    {
-      "source": "task_term",
-      "produced": "api",
-      "trigger": "endpoint",
-      "score": 0.8,
-      "confidence": "deterministic",
-      "reason": "Task text contains 'endpoint'."
-    },
-    {
-      "source": "task_term",
-      "produced": "logging",
-      "trigger": "logging",
-      "score": 0.8,
-      "confidence": "deterministic",
-      "reason": "Task text contains 'logging'."
-    },
-    {
-      "source": "task_term",
-      "produced": "monitoring",
-      "trigger": "logging",
-      "score": 0.8,
-      "confidence": "deterministic",
-      "reason": "Task text contains 'logging'."
-    },
-    {
-      "source": "task_term",
-      "produced": "ACO-IVF",
-      "trigger": "api",
-      "score": 0.8,
-      "confidence": "deterministic",
-      "reason": "Concern 'api' maps to AppSec Core slice family 'ACO-IVF'."
-    },
-    {
-      "source": "task_term",
-      "produced": "ACO-IAT",
-      "trigger": "auth",
-      "score": 0.7,
-      "confidence": "deterministic",
-      "reason": "Concern 'auth' maps to AppSec Core slice family 'ACO-IAT'."
-    },
-    {
-      "source": "task_term",
-      "produced": "ACO-IVF",
-      "trigger": "validation",
-      "score": 0.7,
-      "confidence": "deterministic",
-      "reason": "Concern 'validation' maps to AppSec Core slice family 'ACO-IVF'."
-    },
-    {
-      "source": "task_term",
-      "produced": "ACO-SLG",
-      "trigger": "logging",
-      "score": 0.8,
-      "confidence": "deterministic",
-      "reason": "Concern 'logging' maps to AppSec Core slice family 'ACO-SLG'."
-    },
-    {
-      "source": "task_term",
-      "produced": "ACO-SLG",
-      "trigger": "monitoring",
-      "score": 0.8,
-      "confidence": "deterministic",
-      "reason": "Concern 'monitoring' maps to AppSec Core slice family 'ACO-SLG'."
-    },
-    {
-      "source": "risk_level",
-      "produced": "L2",
-      "trigger": "L2",
-      "score": 1,
-      "confidence": "deterministic",
-      "reason": "Risk level L2 filters runtime v0 requirements."
-    }
-  ],
+  "activation_trace_ref": {
+    "entries": 13,
+    "note": "activation_trace elided at detail=standard/minimal — re-call with debug=true to include it (always inline at detail=full)."
+  },
   "provenance_legend": {
-    "note": "Per-item `source` fields are elided at detail=standard/minimal. Every list below is source-homogeneous (no exceptions): apply the listed source to each of its items. Per-id source_data lives in citations.<source>.source_data (ordered run-length map file -> count over citations.<source>.ids). g2_context.relations applies only when relations come inline (include_relations=true or detail=full); otherwise g2_context.relations_ref is a derived reference to trace_sbd_toe_graph calls, not a source list.",
-    "sources": {
-      "activated_scope.requirements": "runtime_v0",
-      "activated_scope.controls": "runtime_v0",
-      "activated_scope.slices": "runtime_v1",
-      "activated_scope.regulatory_obligations": "overlay",
-      "g2_context.control_objectives": "runtime_v1",
-      "g2_context.mechanisms": "runtime_v1",
-      "g2_context.practices": "runtime_v1",
-      "g2_context.artifacts": "runtime_v1",
-      "g2_context.relations": "runtime_v1",
-      "g2_context.evidence_patterns": "runtime_v0",
-      "manual_grounding.groups": "runtime_v1",
-      "regulatory_overlay.frameworks": "overlay",
-      "regulatory_overlay.obligations": "overlay",
-      "regulatory_overlay.mappings": "overlay",
-      "regulatory_overlay.playbooks": "overlay"
-    }
+    "note": "Deduplicated encoding (detail=standard/minimal): per-item `source` fields are elided (every list is source-homogeneous), requirement `category` = requirement_id prefix, g2_context entity lists are grouped as {slice_id: {entity_id: name|null}}, and citations ids are referenced via ids_from payload paths. Full legend: MCP resource sbd://toe/codegen-instructions/{mode}, section detail_encoding."
   },
   "activated_scope": {
     "requirements": [
       {
         "requirement_id": "ACC-001",
         "name": "Controlo de acesso RBAC",
-        "category": "ACC",
-        "type": "base"
+        "type": "base",
+        "description": "Perfis e permissões mapeados; role com privilégio reduzido não acede a recursos restritos."
       },
       {
         "requirement_id": "ACC-002",
         "name": "Princípio do menor privilégio",
-        "category": "ACC",
-        "type": "base"
+        "type": "base",
+        "description": "Contas sem permissões desnecessárias; auditoria evidencia restrição efectiva."
       },
       {
         "requirement_id": "ACC-003",
         "name": "Bloqueio e auditoria de acessos ilegítimos",
-        "category": "ACC",
-        "type": "base"
+        "type": "base",
+        "description": "Tentativas de acesso não autorizado são bloqueadas e registadas com contexto suficiente."
       },
       {
         "requirement_id": "ACC-004",
         "name": "Separação de perfis",
-        "category": "ACC",
-        "type": "base"
+        "type": "base",
+        "description": "Perfis de utilizador, administrador e serviço são distintos; acções de cada perfil são rastreáveis."
       },
       {
         "requirement_id": "ACC-005",
         "name": "Controlo de acesso a APIs e serviços",
-        "category": "ACC",
-        "type": "base"
+        "type": "base",
+        "description": "Endpoints rejeitam chamadas não autenticadas ou não autorizadas; logs registam rejeições."
       },
       {
         "requirement_id": "ACC-006",
         "name": "Protecção de recursos sensíveis",
-        "category": "ACC",
-        "type": "base"
+        "type": "base",
+        "description": "Acesso não autorizado a dados críticos é impedido e registado; teste de bypasse falha."
       },
       {
         "requirement_id": "ACC-007",
         "name": "Validação do modelo de acesso",
-        "category": "ACC",
-        "type": "base"
+        "type": "base",
+        "description": "Modelo de permissões revisto e documentado; ameaças de controlo de acesso mapeadas."
       },
       {
         "requirement_id": "ACC-008",
         "name": "Revogação em tempo real",
-        "category": "ACC",
-        "type": "base"
+        "type": "base",
+        "description": "Remoção de acesso reflecte-se imediatamente; teste de permissão falha após revogação."
       },
       {
         "requirement_id": "ACC-010",
         "name": "Revisão periódica de permissões",
-        "category": "ACC",
-        "type": "base"
+        "type": "base",
+        "description": "Auditorias periódicas removem permissões obsoletas; registos de revisão mantidos e datados."
       },
       {
         "requirement_id": "API-001",
         "name": "Autenticação e autorização de chamadas API",
-        "category": "API",
-        "type": "base"
+        "type": "base",
+        "description": "Endpoints rejeitam chamadas sem autenticação/autorização válida; chamadas anónimas falham."
       },
       {
         "requirement_id": "API-002",
         "name": "Endpoints desnecessários removidos ou ocultos",
-        "category": "API",
-        "type": "base"
+        "type": "base",
+        "description": "Endpoints de debug ou legacy não expostos em produção; apenas em ambientes de teste controlados."
       },
       {
         "requirement_id": "API-003",
         "name": "Validação de input em APIs",
-        "category": "API",
-        "type": "base"
+        "type": "base",
+        "description": "Inputs malformados são rejeitados; logs registam tentativa com contexto mínimo."
       },
       {
         "requirement_id": "API-004",
         "name": "Rate limiting e detecção de abusos",
-        "category": "API",
-        "type": "base"
+        "type": "base",
+        "description": "Limite configurado e activo; chamadas excessivas resultam em 429 ou bloqueio temporário."
       },
       {
         "requirement_id": "API-005",
         "name": "Protecção por TLS e certificados actualizados",
-        "category": "API",
-        "type": "base"
+        "type": "base",
+        "description": "Canal TLS obrigatório; certificados válidos; cabeçalhos de segurança (HSTS, etc.) activos."
       },
       {
         "requirement_id": "API-006",
         "name": "Verificação de SDKs e wrappers utilizados",
-        "category": "API",
-        "type": "base"
+        "type": "base",
+        "description": "Dependências e versões documentadas em SBOM; auditoria de licenças e vulnerabilidades conhecidas."
       },
       {
         "requirement_id": "API-007",
         "name": "Logging e auditoria de chamadas externas",
-        "category": "API",
-        "type": "base"
+        "type": "base",
+        "description": "Chamadas externas registadas com dados essenciais (origem, destino, resultado, timestamp)."
       },
       {
         "requirement_id": "AUT-001",
         "name": "MFA obrigatório",
-        "category": "AUT",
-        "type": "base"
+        "type": "base",
+        "description": "Login sem segundo factor é rejeitado; evidência de bloqueio em logs."
       },
       {
         "requirement_id": "AUT-002",
         "name": "Política de passwords",
-        "category": "AUT",
-        "type": "base"
+        "type": "base",
+        "description": "Sistema rejeita passwords que não cumpram a política; bloqueio evidenciado em teste."
       },
       {
         "requirement_id": "AUT-003",
         "name": "Protecção contra brute force",
-        "category": "AUT",
-        "type": "base"
+        "type": "base",
+        "description": "Conta bloqueada ou acesso atrasado após N tentativas falhadas; logs evidenciam o evento."
       },
       {
         "requirement_id": "AUT-004",
         "name": "Revogação activa de sessões",
-        "category": "AUT",
-        "type": "base"
+        "type": "base",
+        "description": "Logout invalida token/sessão imediatamente; reutilização resulta em erro autenticado."
       },
       {
         "requirement_id": "AUT-005",
         "name": "Expiração automática de sessão",
-        "category": "AUT",
-        "type": "base"
+        "type": "base",
+        "description": "Sessão termina após período de inactividade configurado; redirect para autenticação."
       },
       {
         "requirement_id": "AUT-006",
         "name": "Proibição de credenciais em claro",
-        "category": "AUT",
-        "type": "base"
+        "type": "base",
+        "description": "Auditoria confirma hashing com salt; ausência de credenciais em claro em armazenamento e transmissão."
       },
       {
         "requirement_id": "AUT-007",
         "name": "Suporte a autenticação federada",
-        "category": "AUT",
-        "type": "base"
+        "type": "base",
+        "description": "Fluxo SAML/OIDC funcional e testado; log de autenticação via IdP externo disponível."
       },
       {
         "requirement_id": "AUT-008",
         "name": "Step-up para acções sensíveis",
-        "category": "AUT",
-        "type": "base"
+        "type": "base",
+        "description": "Operações críticas requerem factor adicional; teste evidencia bloqueio sem step-up."
       },
       {
         "requirement_id": "AUT-009",
         "name": "Reautenticação para alterações críticas",
-        "category": "AUT",
-        "type": "base"
+        "type": "base",
+        "description": "Alterações de credenciais ou dados sensíveis exigem confirmação da identidade activa."
       },
       {
         "requirement_id": "AUT-010",
         "name": "Alerta de acessos suspeitos",
-        "category": "AUT",
-        "type": "base"
+        "type": "base",
+        "description": "Acessos anómalos geram alerta ou notificação ao utilizador; log do evento disponível."
       },
       {
         "requirement_id": "ERR-001",
         "name": "Erros não expõem dados sensíveis",
-        "category": "ERR",
-        "type": "base"
+        "type": "base",
+        "description": "Mensagens ao cliente são abstractas; logs internos detalhados nunca expostos externamente."
       },
       {
         "requirement_id": "ERR-002",
         "name": "Mensagens genéricas no cliente",
-        "category": "ERR",
-        "type": "base"
+        "type": "base",
+        "description": "Cliente recebe sempre mensagem genérica; stack traces e detalhes internos não transmitidos."
       },
       {
         "requirement_id": "ERR-003",
         "name": "Não revelar existência de recursos",
-        "category": "ERR",
-        "type": "base"
+        "type": "base",
+        "description": "Respostas de erro são idênticas para recursos existentes e inexistentes (sem enumeração)."
       },
       {
         "requirement_id": "ERR-004",
         "name": "Mensagens localizadas e seguras",
-        "category": "ERR",
-        "type": "base"
+        "type": "base",
+        "description": "Mensagens traduzidas sem conteúdo executável ou referências a lógica interna."
       },
       {
         "requirement_id": "ERR-005",
         "name": "Gestão padronizada e centralizada",
-        "category": "ERR",
-        "type": "base"
+        "type": "base",
+        "description": "Framework de erros centraliza tratamento e logging; ausência de tratamento ad-hoc disperso."
       },
       {
         "requirement_id": "ERR-006",
         "name": "Testes automáticos para erros excessivos",
-        "category": "ERR",
-        "type": "base"
+        "type": "base",
+        "description": "Testes garantem que erros são tratados e não há fuga de informação; cobertura de casos limite."
       },
       {
         "requirement_id": "ERR-007",
         "name": "Logs de erro com contexto pseudonimizado",
-        "category": "ERR",
-        "type": "base"
+        "type": "base",
+        "description": "Logs incluem IDs contextuais; dados pessoais ou credenciais nunca registados em logs de erro."
       },
       {
         "requirement_id": "LOG-001",
         "name": "Registo de eventos críticos",
-        "category": "LOG",
-        "type": "base"
+        "type": "base",
+        "description": "Acessos, alterações e falhas de segurança críticas são registados; logs verificados por amostragem."
       },
       {
         "requirement_id": "LOG-002",
         "name": "Atributos mínimos em logs",
-        "category": "LOG",
-        "type": "base"
+        "type": "base",
+        "description": "Cada entrada inclui: quem, quando, o quê e onde; ausência de qualquer atributo falha auditoria."
       },
       {
         "requirement_id": "LOG-003",
         "name": "Protecção de integridade e acesso aos logs",
-        "category": "LOG",
-        "type": "base"
+        "type": "base",
+        "description": "Logs não alteráveis por utilizadores comuns; protecção por permissões ou assinatura verificável."
       },
       {
         "requirement_id": "LOG-004",
         "name": "Análise periódica de logs",
-        "category": "LOG",
-        "type": "base"
+        "type": "base",
+        "description": "Processo de análise periódica documentado e evidenciado; frequência proporcional ao risco."
       },
       {
         "requirement_id": "LOG-005",
         "name": "Retenção mínima dos logs",
-        "category": "LOG",
-        "type": "base"
+        "type": "base",
+        "description": "Logs mantidos pelo período definido em política; verificação de retenção efectiva."
       },
       {
         "requirement_id": "LOG-006",
         "name": "Envio para sistema centralizado",
-        "category": "LOG",
-        "type": "base"
+        "type": "base",
+        "description": "Eventos críticos enviados e registados em agregador central (SIEM ou equivalente)."
       },
       {
         "requirement_id": "LOG-007",
         "name": "Classificação e detecção de anomalias",
-        "category": "LOG",
-        "type": "base"
+        "type": "base",
+        "description": "Política de severidade definida; anomalias disparam alertas configurados e testados."
       },
       {
         "requirement_id": "LOG-008",
         "name": "Alarme em falhas do mecanismo de logging",
-        "category": "LOG",
-        "type": "base"
+        "type": "base",
+        "description": "Falhas do sistema de logging geram alerta; ausência de logs é detectada e notificada."
       },
       {
         "requirement_id": "LOG-009",
         "name": "Logs suportam resposta a incidentes",
-        "category": "LOG",
-        "type": "base"
+        "type": "base",
+        "description": "Logs com detalhe suficiente para reconstrução de incidente; testado em exercício ou simulação."
       },
       {
         "requirement_id": "OPS-001",
         "name": "Logging estruturado e persistente para todos os componentes em produção",
-        "category": "OPS",
-        "type": "domain-specific"
+        "type": "domain-specific",
+        "description": "Logs de todos os componentes em produção em formato estruturado (JSON, CEF ou equivalente); persistidos fora da instância (não apenas locais); acessíveis sem acesso directo ao host; cobertura verificável por inventário."
       },
       {
         "requirement_id": "OPS-002",
         "name": "Catálogo de eventos críticos de segurança definido e verificado",
-        "category": "OPS",
-        "type": "domain-specific"
+        "type": "domain-specific",
+        "description": "Catálogo de eventos críticos definido por aplicação (autenticação, alteração de permissões, erros de autorização, acessos a dados sensíveis, etc.); evidência de que esses eventos são efectivamente gerados e retidos; revisto com cada release significativo."
       },
       {
         "requirement_id": "OPS-003",
         "name": "Retenção de logs conforme política e requisitos regulatórios",
-        "category": "OPS",
-        "type": "domain-specific"
+        "type": "domain-specific",
+        "description": "Política de retenção documentada por tipo de log e contexto regulatório aplicável; logs retidos pelo período mínimo obrigatório; processo de arquivo e purga documentado e auditável; evidência de cumprimento disponível."
       },
       {
         "requirement_id": "OPS-004",
         "name": "Centralização de logs em sistema SIEM ou equivalente",
-        "category": "OPS",
-        "type": "domain-specific"
+        "type": "domain-specific",
+        "description": "Logs enviados para sistema de monitorização centralizado com ingestion verificável; sem dependência exclusiva de logs locais para análise de segurança; evidência de logs recebidos por fonte; falhas de envio detectadas e alertadas."
       },
       {
         "requirement_id": "OPS-005",
         "name": "Alertas automáticos para eventos de segurança críticos",
-        "category": "OPS",
-        "type": "domain-specific"
+        "type": "domain-specific",
+        "description": "Alertas configurados para eventos críticos definidos no OPS-002; thresholds documentados e revistos periodicamente; canal de notificação testado; alertas não silenciados sem justificação."
       },
       {
         "requirement_id": "OPS-006",
         "name": "SLA de resposta a alertas definido e medido",
-        "category": "OPS",
-        "type": "domain-specific"
+        "type": "domain-specific",
+        "description": "SLA de resposta (time-to-acknowledge e time-to-resolve) definido por severidade de alerta; métricas de MTTD e MTTR recolhidas e reportadas periodicamente; desvios ao SLA documentados e tratados."
       },
       {
         "requirement_id": "OPS-007",
         "name": "Integração com processo formal de resposta a incidentes",
-        "category": "OPS",
-        "type": "domain-specific"
+        "type": "domain-specific",
+        "description": "Runbooks ou playbooks de resposta definidos para tipos de alerta críticos; integração entre sistema de alertas e sistema de gestão de incidentes; evidência de activação em incidente real ou exercício documentado no último ciclo."
       },
       {
         "requirement_id": "OPS-011",
         "name": "Observabilidade dedicada a componentes AI/ML em produção",
-        "category": "OPS",
-        "type": "domain-specific"
+        "type": "domain-specific",
+        "description": "Sistemas com componentes AI/ML em produção (LLMs, modelos preditivos, RAG, agentes autónomos) têm telemetria dedicada: logging completo de inputs e outputs do modelo (com sanitização de PII); logging de tool invocations em agentes com agent identity, scope e contexto (AML.M0024 AI Telemetry Logging); registo de drift de comportamento e degradação de precisão; alertas para anomalias de prompt input (potencial prompt injection); audit trail completo de model versions deployed e dataset versions usados em inferência. Os logs são integrados no SIEM/observability pipeline existente (OPS-004); a deteção de anomalias específicas a AI/ML (drift, prompt injection patterns, exfiltration via tool calls) é tratada em OPS-009 com baselines AI-aware."
       },
       {
         "requirement_id": "OPS-012",
         "name": "Audit completo por *tool invocation* de agente AI",
-        "category": "OPS",
-        "type": "domain-specific"
+        "type": "domain-specific",
+        "description": "Para cada agente AI em nível A1+ (ver [Cap. 02 — A0-A4](../../requisitos-seguranca/addon/governanca-automatismos#niveis-autonomia)) em uso operacional, cada *tool call* gera *audit event* estruturado com timestamp, agent_id, session_id, mandate_ref (Policy 38), autonomy_level, tool, tool_version, args (PII redactada), intent_event_ref ([REQ-AGN-004](/sbd-toe/sbd-manual/requisitos-seguranca/addon/governanca-automatismos#req-agn) em A2+), outcome, external_effect. Eventos integrados no SIEM (OPS-004); divergência entre intent declarado e acção real gera alerta accionável; reúne-se a base para auditoria do mandate_ref e para reconstrução *post-mortem* de qualquer sessão."
       },
       {
         "requirement_id": "OPS-013",
         "name": "Budget e detecção de *runaway* em consumo de modelo (token spend)",
-        "category": "OPS",
-        "type": "domain-specific"
+        "type": "domain-specific",
+        "description": "Por agente e por mandate, define-se *budget* máximo de consumo por janela temporal (tokens, chamadas, custo); cada inferência conta para o orçamento; ao atingir threshold de aviso, alerta vai ao *owner*; ao atingir threshold máximo, sessão pausa ou *kill-switch* é accionado conforme nível de autonomia. Métricas de uso reportadas com cadência da revisão do *mandate*. Detecta *loops* descontrolados, abuso, regressões de eficiência do modelo após *upgrade*."
       },
       {
         "requirement_id": "SES-001",
         "name": "Expiração automática por inactividade",
-        "category": "SES",
-        "type": "base"
+        "type": "base",
+        "description": "Sessão termina após período configurado de inactividade; redirect para autenticação."
       },
       {
         "requirement_id": "SES-002",
         "name": "Logout manual e após alteração de credenciais",
-        "category": "SES",
-        "type": "base"
+        "type": "base",
+        "description": "Logout termina todas as sessões activas; alteração de password invalida tokens anteriores."
       },
       {
         "requirement_id": "SES-003",
         "name": "Identificadores de sessão imprevisíveis",
-        "category": "SES",
-        "type": "base"
+        "type": "base",
+        "description": "Tokens/sessões com entropia adequada; análise de previsibilidade não revela padrão."
       },
       {
         "requirement_id": "SES-004",
         "name": "Transmissão segura dos tokens",
-        "category": "SES",
-        "type": "base"
+        "type": "base",
+        "description": "Tokens transmitidos apenas por canais TLS; cookies com flags Secure e HttpOnly."
       },
       {
         "requirement_id": "SES-005",
         "name": "Ligação da sessão ao contexto do cliente",
-        "category": "SES",
-        "type": "base"
+        "type": "base",
+        "description": "Mudança de IP ou user-agent termina sessão ou exige revalidação; teste evidencia comportamento."
       },
       {
         "requirement_id": "SES-006",
         "name": "Revogação explícita da sessão",
-        "category": "SES",
-        "type": "base"
+        "type": "base",
+        "description": "Sessão pode ser terminada a pedido do utilizador ou do sistema; token fica inválido imediatamente."
       },
       {
         "requirement_id": "SES-007",
         "name": "Prevenção de sessões long-lived",
-        "category": "SES",
-        "type": "base"
+        "type": "base",
+        "description": "TTL máximo configurado e aplicado; sessões com duração excessiva não são possíveis."
       },
       {
         "requirement_id": "SES-008",
         "name": "Scope, TTL e revogação de tokens JWT",
-        "category": "SES",
-        "type": "base"
+        "type": "base",
+        "description": "JWTs incluem claims de âmbito e expiração; mecanismo de revogação implementado e testado."
       },
       {
         "requirement_id": "VAL-001",
         "name": "Validação geral de entradas externas",
-        "category": "VAL",
-        "type": "base"
+        "type": "base",
+        "description": "Inputs inválidos são rejeitados com código de erro adequado; logs evidenciam bloqueio."
       },
       {
         "requirement_id": "VAL-002",
         "name": "Uso de whitelists em vez de blacklists",
-        "category": "VAL",
-        "type": "base"
+        "type": "base",
+        "description": "Apenas valores explicitamente aceites são permitidos; valores não previstos são rejeitados."
       },
       {
         "requirement_id": "VAL-003",
         "name": "Validadores de esquema (JSON/XML schema)",
-        "category": "VAL",
-        "type": "base"
+        "type": "base",
+        "description": "Payloads malformados são rejeitados automaticamente; logs de parsing disponíveis."
       },
       {
         "requirement_id": "VAL-004",
         "name": "Sanitização contra injecções",
-        "category": "VAL",
-        "type": "base"
+        "type": "base",
+        "description": "Inputs potencialmente perigosos são neutralizados; ataques de injecção resultam em falha controlada."
       },
       {
         "requirement_id": "VAL-005",
         "name": "Validação antes do uso interno",
-        "category": "VAL",
-        "type": "base"
+        "type": "base",
+        "description": "Dados são validados antes de uso em lógica de negócio ou persistência; não há caminhos não validados."
       },
       {
         "requirement_id": "VAL-006",
         "name": "Mensagens de erro seguras na validação",
-        "category": "VAL",
-        "type": "base"
+        "type": "base",
+        "description": "Erros de validação não expõem lógica interna nem dados sensíveis ao cliente."
       },
       {
         "requirement_id": "VAL-007",
         "name": "Testes automáticos contra entradas maliciosas",
-        "category": "VAL",
-        "type": "base"
+        "type": "base",
+        "description": "Testes automatizados cobrem XSS, SQLi e outras injecções relevantes; resultados registados."
       },
       {
         "requirement_id": "VAL-008",
         "name": "Codificação/escaping de output em renderização (anti-XSS)",
-        "category": "VAL",
-        "type": "base"
+        "type": "base",
+        "description": "Output é codificado de forma contextual ao destino de renderização (HTML/atributo/JavaScript, queries via prepared statements, comandos shell, logs anti-injection); ausência de concatenação directa em superfícies sensíveis."
       }
     ],
     "controls": [
@@ -550,42 +431,48 @@
         "name": "Desenvolvimento seguro e validação de código",
         "domain": "code_integrity",
         "control_type": "preventive",
-        "confidence": "direct"
+        "confidence": "direct",
+        "description": "Aplica guidelines, validações automáticas e gates de código para preservar integridade e qualidade do software."
       },
       {
         "control_id": "CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf",
         "name": "Capacitação e onboarding de segurança",
         "domain": "governance",
         "control_type": "governance",
-        "confidence": "direct"
+        "confidence": "direct",
+        "description": "Assegura formação contínua, onboarding e medição de eficácia para competências de segurança por perfil."
       },
       {
         "control_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
         "name": "Classificação e governação por risco",
         "domain": "governance",
         "control_type": "governance",
-        "confidence": "direct"
+        "confidence": "direct",
+        "description": "Estabelece classificação de risco, revisão periódica e governação proporcional por criticidade."
       },
       {
         "control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
         "name": "Gestão de identidades, acessos e ownership",
         "domain": "identity",
         "control_type": "preventive",
-        "confidence": "direct"
+        "confidence": "direct",
+        "description": "Controla identidades, privilégios mínimos, ownership e segregação de acesso em toolchains e operações."
       },
       {
         "control_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
         "name": "Monitorização e resposta operacional",
         "domain": "monitoring",
         "control_type": "detective",
-        "confidence": "direct"
+        "confidence": "direct",
+        "description": "Define logs, alertas, correlação e integração com resposta a incidentes para deteção operacional sustentada."
       },
       {
         "control_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
         "name": "Inventário e análise de dependências",
         "domain": "supply_chain",
         "control_type": "detective",
-        "confidence": "direct"
+        "confidence": "direct",
+        "description": "Garante inventário de componentes, análise de vulnerabilidades e rastreabilidade de dependências terceiras."
       },
       {
         "control_id": "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
@@ -639,483 +526,107 @@
     "regulatory_obligations": []
   },
   "g2_context": {
-    "control_objectives": [
-      {
-        "entity_id": "ACO-IAT-001",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "name": "Authentication Strength And Identity Assurance"
+    "control_objectives": {
+      "ASC-02": {
+        "ACO-IAT-001": "Authentication Strength And Identity Assurance",
+        "ACO-IAT-002": "Authorization Policy Integrity And Least Privilege",
+        "ACO-IAT-003": "Access Revocation And Privilege Lifecycle Integrity",
+        "ACO-IAT-004": "Session And Token Trust Boundaries",
+        "ACO-IAT-005": "API Caller Trust And Service Boundary Enforcement",
+        "ACO-IAT-006": "Access Abuse Detection And Auditability",
+        "ACO-IAT-007": "Identity And Access Control Integrity"
       },
-      {
-        "entity_id": "ACO-IAT-002",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "name": "Authorization Policy Integrity And Least Privilege"
+      "ASC-07": {
+        "ACO-IVF-001": "External Input Contract Validation",
+        "ACO-IVF-002": "Schema, Type And Allowlist Discipline",
+        "ACO-IVF-003": "Injection-Resistant Input Handling And Dangerous Pattern Exclusion",
+        "ACO-IVF-004": "Validation Before Internal Use And Trust Crossing",
+        "ACO-IVF-005": "Controlled Failure And Non-Revealing Client Error Surface",
+        "ACO-IVF-006": "Centralized Error Handling And Sensitive Error Logging Hygiene",
+        "ACO-IVF-008": "Context-Aware Output Encoding And Rendering Safety",
+        "ACO-IVF-007": "Input Validation And Safe Failure Integrity"
       },
-      {
-        "entity_id": "ACO-IAT-003",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "name": "Access Revocation And Privilege Lifecycle Integrity"
-      },
-      {
-        "entity_id": "ACO-IAT-004",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "name": "Session And Token Trust Boundaries"
-      },
-      {
-        "entity_id": "ACO-IAT-005",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "name": "API Caller Trust And Service Boundary Enforcement"
-      },
-      {
-        "entity_id": "ACO-IAT-006",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "name": "Access Abuse Detection And Auditability"
-      },
-      {
-        "entity_id": "ACO-IAT-007",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "name": "Identity And Access Control Integrity"
-      },
-      {
-        "entity_id": "ACO-IVF-001",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "name": "External Input Contract Validation"
-      },
-      {
-        "entity_id": "ACO-IVF-002",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "name": "Schema, Type And Allowlist Discipline"
-      },
-      {
-        "entity_id": "ACO-IVF-003",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "name": "Injection-Resistant Input Handling And Dangerous Pattern Exclusion"
-      },
-      {
-        "entity_id": "ACO-IVF-004",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "name": "Validation Before Internal Use And Trust Crossing"
-      },
-      {
-        "entity_id": "ACO-IVF-005",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "name": "Controlled Failure And Non-Revealing Client Error Surface"
-      },
-      {
-        "entity_id": "ACO-IVF-006",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "name": "Centralized Error Handling And Sensitive Error Logging Hygiene"
-      },
-      {
-        "entity_id": "ACO-IVF-008",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "name": "Context-Aware Output Encoding And Rendering Safety"
-      },
-      {
-        "entity_id": "ACO-IVF-007",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "name": "Input Validation And Safe Failure Integrity"
-      },
-      {
-        "entity_id": "ACO-SLG-001",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-10",
-        "slice_family": "ACO-SLG",
-        "name": "Critical Security Event Coverage And Catalog Discipline"
-      },
-      {
-        "entity_id": "ACO-SLG-002",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-10",
-        "slice_family": "ACO-SLG",
-        "name": "Structured Audit Fields And Machine-Readable Log Shape"
-      },
-      {
-        "entity_id": "ACO-SLG-003",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-10",
-        "slice_family": "ACO-SLG",
-        "name": "Log Integrity Protection And Access Discipline"
-      },
-      {
-        "entity_id": "ACO-SLG-004",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-10",
-        "slice_family": "ACO-SLG",
-        "name": "Audit Record Retention And Lifecycle Governance"
-      },
-      {
-        "entity_id": "ACO-SLG-005",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-10",
-        "slice_family": "ACO-SLG",
-        "name": "Centralized Log Ingestion And Source Accountability"
-      },
-      {
-        "entity_id": "ACO-SLG-006",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-10",
-        "slice_family": "ACO-SLG",
-        "name": "Logging Pipeline Health And Silent-Failure Visibility"
-      },
-      {
-        "entity_id": "ACO-SLG-007",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-10",
-        "slice_family": "ACO-SLG",
-        "name": "Security Logging And Audit Trail Assurance"
+      "ASC-10": {
+        "ACO-SLG-001": "Critical Security Event Coverage And Catalog Discipline",
+        "ACO-SLG-002": "Structured Audit Fields And Machine-Readable Log Shape",
+        "ACO-SLG-003": "Log Integrity Protection And Access Discipline",
+        "ACO-SLG-004": "Audit Record Retention And Lifecycle Governance",
+        "ACO-SLG-005": "Centralized Log Ingestion And Source Accountability",
+        "ACO-SLG-006": "Logging Pipeline Health And Silent-Failure Visibility",
+        "ACO-SLG-007": "Security Logging And Audit Trail Assurance"
       }
-    ],
-    "mechanisms": [
-      {
-        "entity_id": "ACM-IAT-001",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "name": "Authentication And Federation Protocols"
+    },
+    "mechanisms": {
+      "ASC-02": {
+        "ACM-IAT-001": "Authentication And Federation Protocols",
+        "ACM-IAT-002": "Access Policy Enforcement",
+        "ACM-IAT-003": "Periodic Review And Access Audit",
+        "ACM-IAT-004": "Short-Lived Token Controls",
+        "ACM-IAT-005": "API Gateway Mutual Authentication",
+        "ACM-IAT-006": "Structured Logging And Effective Configuration Recording"
       },
-      {
-        "entity_id": "ACM-IAT-002",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "name": "Access Policy Enforcement"
+      "ASC-07": {
+        "ACM-IVF-001": "Code Review For Input And Error Discipline",
+        "ACM-IVF-002": "Static Rulepacks And Security Linters",
+        "ACM-IVF-003": "Schema And Contract Validators",
+        "ACM-IVF-004": "Centralized Error Translation And Redaction",
+        "ACM-IVF-005": "Context-Aware Encoder Selection And Application"
       },
-      {
-        "entity_id": "ACM-IAT-003",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "name": "Periodic Review And Access Audit"
-      },
-      {
-        "entity_id": "ACM-IAT-004",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "name": "Short-Lived Token Controls"
-      },
-      {
-        "entity_id": "ACM-IAT-005",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "name": "API Gateway Mutual Authentication"
-      },
-      {
-        "entity_id": "ACM-IAT-006",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "name": "Structured Logging And Effective Configuration Recording"
-      },
-      {
-        "entity_id": "ACM-IVF-001",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "name": "Code Review For Input And Error Discipline"
-      },
-      {
-        "entity_id": "ACM-IVF-002",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "name": "Static Rulepacks And Security Linters"
-      },
-      {
-        "entity_id": "ACM-IVF-003",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "name": "Schema And Contract Validators"
-      },
-      {
-        "entity_id": "ACM-IVF-004",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "name": "Centralized Error Translation And Redaction"
-      },
-      {
-        "entity_id": "ACM-IVF-005",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "name": "Context-Aware Encoder Selection And Application"
-      },
-      {
-        "entity_id": "ACM-SLG-001",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-10",
-        "slice_family": "ACO-SLG",
-        "name": "Machine-Readable Structured Logging"
-      },
-      {
-        "entity_id": "ACM-SLG-002",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-10",
-        "slice_family": "ACO-SLG",
-        "name": "Central Log Ingestion And Normalization"
-      },
-      {
-        "entity_id": "ACM-SLG-003",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-10",
-        "slice_family": "ACO-SLG",
-        "name": "Log Integrity And Access Controls"
-      },
-      {
-        "entity_id": "ACM-SLG-004",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-10",
-        "slice_family": "ACO-SLG",
-        "name": "Logging Failure Visibility Controls"
+      "ASC-10": {
+        "ACM-SLG-001": "Machine-Readable Structured Logging",
+        "ACM-SLG-002": "Central Log Ingestion And Normalization",
+        "ACM-SLG-003": "Log Integrity And Access Controls",
+        "ACM-SLG-004": "Logging Failure Visibility Controls"
       }
-    ],
-    "practices": [
-      {
-        "entity_id": "ACP-IAT-001",
-        "entity_type": "Practice",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "name": "Strong Authentication And Step-Up Enforcement"
+    },
+    "practices": {
+      "ASC-02": {
+        "ACP-IAT-001": "Strong Authentication And Step-Up Enforcement",
+        "ACP-IAT-002": "Least-Privilege Authorization Governance",
+        "ACP-IAT-003": "Access Review And Timely Revocation",
+        "ACP-IAT-004": "Bounded Session And Token Management",
+        "ACP-IAT-005": "Authenticated API Boundary Enforcement",
+        "ACP-IAT-006": "Access Abuse Monitoring And Audit Trail"
       },
-      {
-        "entity_id": "ACP-IAT-002",
-        "entity_type": "Practice",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "name": "Least-Privilege Authorization Governance"
+      "ASC-07": {
+        "ACP-IVF-001": "Boundary Input Validation",
+        "ACP-IVF-002": "Schema And Allowlist Enforcement",
+        "ACP-IVF-003": "Dangerous Pattern Exclusion",
+        "ACP-IVF-004": "Pre-Use Data Validation Discipline",
+        "ACP-IVF-005": "Non-Revealing Error Surface Control",
+        "ACP-IVF-006": "Centralized Error Governance",
+        "ACP-IVF-007": "Context-Aware Output Encoding At Rendering Boundaries"
       },
-      {
-        "entity_id": "ACP-IAT-003",
-        "entity_type": "Practice",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "name": "Access Review And Timely Revocation"
-      },
-      {
-        "entity_id": "ACP-IAT-004",
-        "entity_type": "Practice",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "name": "Bounded Session And Token Management"
-      },
-      {
-        "entity_id": "ACP-IAT-005",
-        "entity_type": "Practice",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "name": "Authenticated API Boundary Enforcement"
-      },
-      {
-        "entity_id": "ACP-IAT-006",
-        "entity_type": "Practice",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "name": "Access Abuse Monitoring And Audit Trail"
-      },
-      {
-        "entity_id": "ACP-IVF-001",
-        "entity_type": "Practice",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "name": "Boundary Input Validation"
-      },
-      {
-        "entity_id": "ACP-IVF-002",
-        "entity_type": "Practice",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "name": "Schema And Allowlist Enforcement"
-      },
-      {
-        "entity_id": "ACP-IVF-003",
-        "entity_type": "Practice",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "name": "Dangerous Pattern Exclusion"
-      },
-      {
-        "entity_id": "ACP-IVF-004",
-        "entity_type": "Practice",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "name": "Pre-Use Data Validation Discipline"
-      },
-      {
-        "entity_id": "ACP-IVF-005",
-        "entity_type": "Practice",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "name": "Non-Revealing Error Surface Control"
-      },
-      {
-        "entity_id": "ACP-IVF-006",
-        "entity_type": "Practice",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "name": "Centralized Error Governance"
-      },
-      {
-        "entity_id": "ACP-IVF-007",
-        "entity_type": "Practice",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "name": "Context-Aware Output Encoding At Rendering Boundaries"
-      },
-      {
-        "entity_id": "ACP-SLG-001",
-        "entity_type": "Practice",
-        "slice_id": "ASC-10",
-        "slice_family": "ACO-SLG",
-        "name": "Critical Event Catalog Governance"
-      },
-      {
-        "entity_id": "ACP-SLG-002",
-        "entity_type": "Practice",
-        "slice_id": "ASC-10",
-        "slice_family": "ACO-SLG",
-        "name": "Structured And Centralized Security Logging"
-      },
-      {
-        "entity_id": "ACP-SLG-003",
-        "entity_type": "Practice",
-        "slice_id": "ASC-10",
-        "slice_family": "ACO-SLG",
-        "name": "Log Integrity And Protected Access"
-      },
-      {
-        "entity_id": "ACP-SLG-004",
-        "entity_type": "Practice",
-        "slice_id": "ASC-10",
-        "slice_family": "ACO-SLG",
-        "name": "Log Retention And Lifecycle Governance"
-      },
-      {
-        "entity_id": "ACP-SLG-005",
-        "entity_type": "Practice",
-        "slice_id": "ASC-10",
-        "slice_family": "ACO-SLG",
-        "name": "Logging Pipeline Health Visibility"
+      "ASC-10": {
+        "ACP-SLG-001": "Critical Event Catalog Governance",
+        "ACP-SLG-002": "Structured And Centralized Security Logging",
+        "ACP-SLG-003": "Log Integrity And Protected Access",
+        "ACP-SLG-004": "Log Retention And Lifecycle Governance",
+        "ACP-SLG-005": "Logging Pipeline Health Visibility"
       }
-    ],
-    "artifacts": [
-      {
-        "entity_id": "ACA-IAT-001",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT"
+    },
+    "artifacts": {
+      "ASC-02": {
+        "ACA-IAT-001": null,
+        "ACA-IAT-002": null,
+        "ACA-IAT-003": null,
+        "ACA-IAT-004": null,
+        "ACA-IAT-005": null,
+        "ACA-IAT-006": null
       },
-      {
-        "entity_id": "ACA-IAT-002",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT"
+      "ASC-07": {
+        "ACA-IVF-001": null,
+        "ACA-IVF-002": null,
+        "ACA-IVF-003": null,
+        "ACA-IVF-004": null,
+        "ACA-IVF-005": null,
+        "ACA-IVF-006": null
       },
-      {
-        "entity_id": "ACA-IAT-003",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT"
-      },
-      {
-        "entity_id": "ACA-IAT-004",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT"
-      },
-      {
-        "entity_id": "ACA-IAT-005",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT"
-      },
-      {
-        "entity_id": "ACA-IAT-006",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT"
-      },
-      {
-        "entity_id": "ACA-IVF-001",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF"
-      },
-      {
-        "entity_id": "ACA-IVF-002",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF"
-      },
-      {
-        "entity_id": "ACA-IVF-003",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF"
-      },
-      {
-        "entity_id": "ACA-IVF-004",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF"
-      },
-      {
-        "entity_id": "ACA-IVF-005",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF"
-      },
-      {
-        "entity_id": "ACA-IVF-006",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF"
-      },
-      {
-        "entity_id": "ACA-SLG-001",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-10",
-        "slice_family": "ACO-SLG"
-      },
-      {
-        "entity_id": "ACA-SLG-002",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-10",
-        "slice_family": "ACO-SLG"
+      "ASC-10": {
+        "ACA-SLG-001": null,
+        "ACA-SLG-002": null
       }
-    ],
+    },
     "relations_ref": {
       "tool": "trace_sbd_toe_graph",
       "lenses": [
@@ -1138,7 +649,7 @@
         "implicit_in_entities": 47,
         "residual_inline": 2
       },
-      "note": "Inline g2_context.relations elided at detail=standard/minimal (re-call with include_relations=true to restore them). Recover the elided graph edges by executing trace_sbd_toe_graph with each {lens, anchor} pair listed (anchors are activated slice/entity ids from this payload); the belongsToSlice edges counted as implicit_in_entities are already encoded by the slice_id field of every g2_context entity.",
+      "note": "Inline g2_context.relations elided; execute each listed trace_sbd_toe_graph {lens, anchor} call to recover them, or re-call with include_relations=true. Encoding details: MCP resource codegen-instructions, detail_encoding.relations_ref.",
       "residual_relations": [
         {
           "subject_id": "ACM-SLG-005",
@@ -1159,7 +670,6 @@
     "evidence_patterns": [
       {
         "id": "EP-ACC-001",
-        "relevance_score": 1,
         "maps_to_requirement_id": "ACC-001",
         "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
         "evidence_expectation": "Log de rejeição. Mapeamento de roles documentado.",
@@ -1171,7 +681,6 @@
       },
       {
         "id": "EP-ACC-002",
-        "relevance_score": 1,
         "maps_to_requirement_id": "ACC-002",
         "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
         "evidence_expectation": "Relatório de auditoria de permissões.",
@@ -1183,7 +692,6 @@
       },
       {
         "id": "EP-ACC-003",
-        "relevance_score": 1,
         "maps_to_requirement_id": "ACC-003",
         "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
         "evidence_expectation": "Log de rejeição com dados de contexto.",
@@ -1195,7 +703,6 @@
       },
       {
         "id": "EP-ACC-004",
-        "relevance_score": 1,
         "maps_to_requirement_id": "ACC-004",
         "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
         "evidence_expectation": "Logs com perfil identificado. Teste cruzado de perfis.",
@@ -1207,7 +714,6 @@
       },
       {
         "id": "EP-ACC-005",
-        "relevance_score": 1,
         "maps_to_requirement_id": "ACC-005",
         "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
         "evidence_expectation": "Log de rejeição. Testes automatizados de endpoints.",
@@ -1219,7 +725,6 @@
       },
       {
         "id": "EP-ACC-006",
-        "relevance_score": 1,
         "maps_to_requirement_id": "ACC-006",
         "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
         "evidence_expectation": "Evidência de controlo efectivo. Log do evento.",
@@ -1231,7 +736,6 @@
       },
       {
         "id": "EP-ACC-007",
-        "relevance_score": 1,
         "maps_to_requirement_id": "ACC-007",
         "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
         "evidence_expectation": "Documentação do modelo. Registo de revisão datada.",
@@ -1243,7 +747,6 @@
       },
       {
         "id": "EP-ACC-008",
-        "relevance_score": 1,
         "maps_to_requirement_id": "ACC-008",
         "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
         "evidence_expectation": "Log de tentativa falhada após revogação. Timestamp de revogação.",
@@ -1254,7 +757,6 @@
       },
       {
         "id": "EP-ACC-009",
-        "relevance_score": 1,
         "maps_to_requirement_id": "ACC-009",
         "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
         "evidence_expectation": "Logs com avaliação de atributos. Teste com variação de contexto.",
@@ -1266,7 +768,6 @@
       },
       {
         "id": "EP-ACC-010",
-        "relevance_score": 1,
         "maps_to_requirement_id": "ACC-010",
         "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
         "evidence_expectation": "Registos de revisão datados. Evidência de limpeza de permissões.",
@@ -1274,180 +775,6 @@
         "expected_artifact_type_ids": [
           "ART-approval-record-6fe32eb803",
           "ART-finding-register-b39d52b4e7"
-        ]
-      },
-      {
-        "id": "EP-API-001",
-        "relevance_score": 1,
-        "maps_to_requirement_id": "API-001",
-        "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
-        "evidence_expectation": "Logs de rejeição. Testes automatizados de endpoints.",
-        "verification_logic": "Testar endpoints sem credenciais. Confirmar rejeição 401/403.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e",
-          "ART-test-report-b11c5dfb8a"
-        ]
-      },
-      {
-        "id": "EP-API-002",
-        "relevance_score": 1,
-        "maps_to_requirement_id": "API-002",
-        "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
-        "evidence_expectation": "Inventário de endpoints activos. Ausência de endpoints não intencionais.",
-        "verification_logic": "Inventariar endpoints expostos em produção. Confirmar ausência de debug ou legacy.",
-        "expected_artifact_type_ids": [
-          "ART-dependency-inventory-4ddd43ae4f"
-        ]
-      },
-      {
-        "id": "EP-API-003",
-        "relevance_score": 1,
-        "maps_to_requirement_id": "API-003",
-        "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
-        "evidence_expectation": "Logs de rejeição. Testes com payloads malformados.",
-        "verification_logic": "Enviar payloads inválidos. Confirmar rejeição com código adequado.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e",
-          "ART-test-report-b11c5dfb8a"
-        ]
-      },
-      {
-        "id": "EP-API-004",
-        "relevance_score": 1,
-        "maps_to_requirement_id": "API-004",
-        "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
-        "evidence_expectation": "Evidência de rate limiting em runtime ou logs.",
-        "verification_logic": "Executar burst de chamadas. Confirmar resposta 429 ou bloqueio temporário.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e",
-          "ART-operational-evidence-f5e852756f"
-        ]
-      },
-      {
-        "id": "EP-API-005",
-        "relevance_score": 1,
-        "maps_to_requirement_id": "API-005",
-        "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
-        "evidence_expectation": "Scanner TLS. Headers de resposta.",
-        "verification_logic": "Verificar certificados e versão TLS. Confirmar cabeçalhos de segurança activos.",
-        "expected_artifact_type_ids": [
-          "ART-sca-report-da2c6d2413",
-          "ART-test-report-b11c5dfb8a"
-        ]
-      },
-      {
-        "id": "EP-API-006",
-        "relevance_score": 1,
-        "maps_to_requirement_id": "API-006",
-        "maps_to_control_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
-        "evidence_expectation": "SBOM. Relatório de auditoria de dependências.",
-        "verification_logic": "Verificar SBOM e dependências documentadas. Confirmar auditoria de vulnerabilidades conhecidas.",
-        "expected_artifact_type_ids": [
-          "ART-sbom-ec0b691fce",
-          "ART-sca-report-da2c6d2413"
-        ]
-      },
-      {
-        "id": "EP-API-007",
-        "relevance_score": 1,
-        "maps_to_requirement_id": "API-007",
-        "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
-        "evidence_expectation": "Logs com origem, destino, resultado e timestamp.",
-        "verification_logic": "Verificar logs de chamadas externas. Confirmar presença de dados essenciais.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e",
-          "ART-quiz-result-f93b4a0252"
-        ]
-      },
-      {
-        "id": "EP-AUT-001",
-        "relevance_score": 1,
-        "maps_to_requirement_id": "AUT-001",
-        "maps_to_control_id": "CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf",
-        "evidence_expectation": "Log de autenticação falhada sem MFA. Captura do bloqueio.",
-        "verification_logic": "Tentar login sem segundo factor. Confirmar rejeição e logs de falha.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e"
-        ]
-      },
-      {
-        "id": "EP-AUT-002",
-        "relevance_score": 1,
-        "maps_to_requirement_id": "AUT-002",
-        "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
-        "evidence_expectation": "Política documentada. Log de erro ou rejeição.",
-        "verification_logic": "Rever política activa. Tentar definir password inválida. Confirmar rejeição.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e",
-          "ART-policy-report-7e52280504"
-        ]
-      },
-      {
-        "id": "EP-AUT-003",
-        "relevance_score": 1,
-        "maps_to_requirement_id": "AUT-003",
-        "maps_to_control_id": "CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf",
-        "evidence_expectation": "Log com contagem de falhas. Evidência de bloqueio ou atraso.",
-        "verification_logic": "Simular tentativas repetidas falhadas. Confirmar bloqueio, CAPTCHA ou atraso progressivo.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e",
-          "ART-operational-evidence-f5e852756f"
-        ]
-      },
-      {
-        "id": "EP-AUT-004",
-        "relevance_score": 1,
-        "maps_to_requirement_id": "AUT-004",
-        "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
-        "evidence_expectation": "Log de sessão revogada. Erro de autenticação na reutilização.",
-        "verification_logic": "Efectuar logout. Tentar reutilizar sessão ou token. Confirmar rejeição.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e"
-        ]
-      },
-      {
-        "id": "EP-AUT-005",
-        "relevance_score": 1,
-        "maps_to_requirement_id": "AUT-005",
-        "maps_to_control_id": "CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf",
-        "evidence_expectation": "Log de timeout. Captura de expiração automática.",
-        "verification_logic": "Simular inactividade pelo período configurado. Confirmar expiração e redirect.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e"
-        ]
-      },
-      {
-        "id": "EP-AUT-006",
-        "relevance_score": 1,
-        "maps_to_requirement_id": "AUT-006",
-        "maps_to_control_id": "CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf",
-        "evidence_expectation": "Output de configuração. Resultado de scan. Ausência em repositório.",
-        "verification_logic": "Validar hashing com salt. Verificar ausência de credenciais em claro em armazenamento e transmissão.",
-        "expected_artifact_type_ids": [
-          "ART-sca-report-da2c6d2413",
-          "ART-test-report-b11c5dfb8a"
-        ]
-      },
-      {
-        "id": "EP-AUT-007",
-        "relevance_score": 1,
-        "maps_to_requirement_id": "AUT-007",
-        "maps_to_control_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
-        "evidence_expectation": "Log de autenticação via IdP externo. Captura de login bem-sucedido.",
-        "verification_logic": "Simular login federado via SAML/OIDC. Confirmar fluxo completo e logging.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e"
-        ]
-      },
-      {
-        "id": "EP-AUT-008",
-        "relevance_score": 1,
-        "maps_to_requirement_id": "AUT-008",
-        "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
-        "evidence_expectation": "Captura de step-up. Log associado à acção crítica.",
-        "verification_logic": "Simular acção sensível. Confirmar exigência de factor adicional.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e"
         ]
       }
     ]
@@ -1570,85 +897,9 @@
         "data/publish/runtime/requirements.json": 68,
         "data/publish/runtime/controls.json": 10
       },
-      "ids": [
-        "ACC-001",
-        "ACC-002",
-        "ACC-003",
-        "ACC-004",
-        "ACC-005",
-        "ACC-006",
-        "ACC-007",
-        "ACC-008",
-        "ACC-010",
-        "API-001",
-        "API-002",
-        "API-003",
-        "API-004",
-        "API-005",
-        "API-006",
-        "API-007",
-        "AUT-001",
-        "AUT-002",
-        "AUT-003",
-        "AUT-004",
-        "AUT-005",
-        "AUT-006",
-        "AUT-007",
-        "AUT-008",
-        "AUT-009",
-        "AUT-010",
-        "ERR-001",
-        "ERR-002",
-        "ERR-003",
-        "ERR-004",
-        "ERR-005",
-        "ERR-006",
-        "ERR-007",
-        "LOG-001",
-        "LOG-002",
-        "LOG-003",
-        "LOG-004",
-        "LOG-005",
-        "LOG-006",
-        "LOG-007",
-        "LOG-008",
-        "LOG-009",
-        "OPS-001",
-        "OPS-002",
-        "OPS-003",
-        "OPS-004",
-        "OPS-005",
-        "OPS-006",
-        "OPS-007",
-        "OPS-011",
-        "OPS-012",
-        "OPS-013",
-        "SES-001",
-        "SES-002",
-        "SES-003",
-        "SES-004",
-        "SES-005",
-        "SES-006",
-        "SES-007",
-        "SES-008",
-        "VAL-001",
-        "VAL-002",
-        "VAL-003",
-        "VAL-004",
-        "VAL-005",
-        "VAL-006",
-        "VAL-007",
-        "VAL-008",
-        "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
-        "CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf",
-        "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
-        "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
-        "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
-        "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
-        "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
-        "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4",
-        "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
-        "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0"
+      "ids_from": [
+        "activated_scope.requirements[].requirement_id",
+        "activated_scope.controls[].control_id"
       ]
     },
     "runtime_v1": {
@@ -1659,79 +910,12 @@
         "data/publish/runtime/v1/practices.json": 18,
         "data/publish/runtime/v1/artifacts.json": 14
       },
-      "ids": [
-        "ASC-02",
-        "ASC-07",
-        "ASC-10",
-        "ACO-IAT-001",
-        "ACO-IAT-002",
-        "ACO-IAT-003",
-        "ACO-IAT-004",
-        "ACO-IAT-005",
-        "ACO-IAT-006",
-        "ACO-IAT-007",
-        "ACO-IVF-001",
-        "ACO-IVF-002",
-        "ACO-IVF-003",
-        "ACO-IVF-004",
-        "ACO-IVF-005",
-        "ACO-IVF-006",
-        "ACO-IVF-008",
-        "ACO-IVF-007",
-        "ACO-SLG-001",
-        "ACO-SLG-002",
-        "ACO-SLG-003",
-        "ACO-SLG-004",
-        "ACO-SLG-005",
-        "ACO-SLG-006",
-        "ACO-SLG-007",
-        "ACM-IAT-001",
-        "ACM-IAT-002",
-        "ACM-IAT-003",
-        "ACM-IAT-004",
-        "ACM-IAT-005",
-        "ACM-IAT-006",
-        "ACM-IVF-001",
-        "ACM-IVF-002",
-        "ACM-IVF-003",
-        "ACM-IVF-004",
-        "ACM-IVF-005",
-        "ACM-SLG-001",
-        "ACM-SLG-002",
-        "ACM-SLG-003",
-        "ACM-SLG-004",
-        "ACP-IAT-001",
-        "ACP-IAT-002",
-        "ACP-IAT-003",
-        "ACP-IAT-004",
-        "ACP-IAT-005",
-        "ACP-IAT-006",
-        "ACP-IVF-001",
-        "ACP-IVF-002",
-        "ACP-IVF-003",
-        "ACP-IVF-004",
-        "ACP-IVF-005",
-        "ACP-IVF-006",
-        "ACP-IVF-007",
-        "ACP-SLG-001",
-        "ACP-SLG-002",
-        "ACP-SLG-003",
-        "ACP-SLG-004",
-        "ACP-SLG-005",
-        "ACA-IAT-001",
-        "ACA-IAT-002",
-        "ACA-IAT-003",
-        "ACA-IAT-004",
-        "ACA-IAT-005",
-        "ACA-IAT-006",
-        "ACA-IVF-001",
-        "ACA-IVF-002",
-        "ACA-IVF-003",
-        "ACA-IVF-004",
-        "ACA-IVF-005",
-        "ACA-IVF-006",
-        "ACA-SLG-001",
-        "ACA-SLG-002"
+      "ids_from": [
+        "activated_scope.slices[].slice_id",
+        "keys(g2_context.control_objectives[slice])",
+        "keys(g2_context.mechanisms[slice])",
+        "keys(g2_context.practices[slice])",
+        "keys(g2_context.artifacts[slice])"
       ]
     }
   },
@@ -1756,44 +940,23 @@
       "ASC-10 mechanisms: declared=6 actual=4 (slice contract status=working_contract)"
     ],
     "evidence_patterns_total": 196,
-    "evidence_patterns_returned": 25,
-    "evidence_patterns_capped": 171,
-    "evidence_pattern_cap": 25
+    "evidence_patterns_returned": 10,
+    "evidence_patterns_capped": 186,
+    "evidence_pattern_cap": 10,
+    "evidence_patterns_rest": {
+      "tool": "prepare_sbd_toe_codegen_context",
+      "with": {
+        "detail": "full"
+      },
+      "note": "Re-call with the same input at detail='full' for the classic inline top-25 evidence_patterns (this list is its deterministic prefix); with debug=true, ids beyond the classic cap are listed in debug.rejected_candidates."
+    }
   },
-  "llm_codegen_instructions": [
-    "Generate code or review changes ONLY against the deterministic IDs provided in `citation_map`. Do NOT invent SbD-ToE requirement, control, slice, mechanism or obligation IDs.",
-    "For each non-trivial design decision, populate the `security_rationale_template.decisions[].cited_ids` with IDs from `citation_map`. If no ID applies, say so explicitly.",
-    "List concrete validations in `security_rationale_template.validations` (surface, rule, rejection behaviour). Do NOT claim conformity without naming the validation.",
-    "List expected evidence in `security_rationale_template.expected_evidence` (test paths, log shapes, SBOM, attestation, scan reports). Code on its own is NOT evidence of compliance.",
-    "If the requested task does not match the activated scope, REPLY with `status: needs_clarification` and request specifics — do not fabricate IDs.",
-    "Risk level L2 is the active filter — do not propose controls applicable only at a higher level unless explicitly justified."
-  ],
-  "security_rationale_template": {
-    "task": "Implement a secure endpoint for uploading documents with logging",
-    "decisions": [
-      {
-        "decision": "<fill: what design choice was made>",
-        "rationale": "<fill: why, citing IDs from citation_map>",
-        "cited_ids": [
-          "<requirement_id|control_id|slice_id|obligation_id>"
-        ]
-      }
+  "codegen_instructions_ref": {
+    "resource": "sbd://toe/codegen-instructions/codegen",
+    "active_conditions": [
+      "risk_level:L2"
     ],
-    "validations": [
-      {
-        "surface": "<fill: code path being validated>",
-        "rule": "<fill: validation rule>",
-        "rejection_behaviour": "<fill: how invalid input is rejected>"
-      }
-    ],
-    "expected_evidence": [
-      {
-        "artefact": "<fill: test, log, doc, sbom, scan, attestation, ...>",
-        "location": "<fill: where to find it>",
-        "verifies": "<fill: which control/requirement id>"
-      }
-    ],
-    "residual_risk": "<fill: anything NOT addressed by this change>"
+    "note": "Read this MCP resource for llm_codegen_instructions (slots filtered by active_conditions) and security_rationale_template (task = input_echo.task trimmed) — byte-identical to the detail=full inline content — plus the detail_encoding legend for this payload."
   },
   "provenance": {
     "runtime_v0": "data/publish/runtime/*.json + data/publish/ontology/*",

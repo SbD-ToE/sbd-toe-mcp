@@ -33,7 +33,11 @@ import { handleGetThreatLandscape } from "./tools/get-threat-landscape.js";
 import { handleGetGuideByRole } from "./tools/get-guide-by-role.js";
 import { handleResolveEntities } from "./tools/resolve-entities.js";
 import { handleTraceGraph } from "./tools/trace-graph.js";
-import { handlePrepareCodegenContext } from "./tools/prepare-codegen-context.js";
+import {
+  buildCodegenInstructionsResourceContent,
+  handlePrepareCodegenContext,
+  type CodegenMode
+} from "./tools/prepare-codegen-context.js";
 import {
   buildChapterApplicabilityJson,
   buildGroundedCodegenPrompt,
@@ -1242,16 +1246,19 @@ class McpRuntime {
                 description:
                   "Response encoding level (v2 token diet). 'full' (default) returns the classic payload, " +
                   "byte-identical to previous releases. 'standard'/'minimal' return the SAME citable ID set " +
-                  "with a deduplicated encoding: `citations` grouped by source (citations.<source>.ids + " +
-                  "run-length source_data) replaces `citation_map`, `manual_grounding` is grouped by " +
-                  "(rastreabilidade_role, manual_chapter, manual_file, manual_commit_sha) with v1_entity_ids " +
-                  "per group, and a top-level `provenance_legend` replaces the per-item `source` fields. " +
-                  "At 'standard'/'minimal' `g2_context.relations` is replaced by `g2_context.relations_ref` — " +
-                  "executable trace_sbd_toe_graph {lens, anchor} calls (anchors are activated slice/entity ids) " +
-                  "whose union, plus the slice_id already on every g2_context entity, covers the elided " +
-                  "relations; set include_relations=true to keep them inline instead. " +
-                  "No information is lost. In this beta, 'minimal' and 'standard' are identical (they diverge " +
-                  "in later 0.20.x betas)."
+                  "with a deduplicated encoding: inverted `citations` (run-length source_data + ids_from " +
+                  "payload paths) replaces `citation_map`, `manual_grounding` is grouped, per-item `source` " +
+                  "and other derivable fields (requirement category, entity_type/slice_family, " +
+                  "relevance_score) are elided per the `provenance_legend`/resource legend, and " +
+                  "`g2_context.relations` is replaced by `g2_context.relations_ref` — executable " +
+                  "trace_sbd_toe_graph {lens, anchor} calls (set include_relations=true to keep relations " +
+                  "inline instead). Additionally at 'standard'/'minimal': evidence_patterns are capped at 10 " +
+                  "(deterministic prefix; counts + rest-reference in completeness_report), " +
+                  "llm_codegen_instructions + security_rationale_template move to the MCP resource " +
+                  "sbd://toe/codegen-instructions/{mode} (see codegen_instructions_ref), activation_trace is " +
+                  "included only with debug=true (activation_trace_ref keeps the count), and requirements + " +
+                  "direct controls carry the verbatim published `description`. Nothing is silently dropped. " +
+                  "In this beta, 'minimal' and 'standard' are identical (they diverge in later 0.20.x betas)."
               },
               include_relations: {
                 type: "boolean",
@@ -1528,6 +1535,17 @@ class McpRuntime {
           mimeType: "application/json"
         },
         {
+          uri: "sbd://toe/codegen-instructions/{mode}",
+          name: "SbD-ToE Codegen Instructions (per mode)",
+          description:
+            "Static per-mode boilerplate of prepare_sbd_toe_codegen_context (mode: codegen, review or " +
+            "test-plan): llm_codegen_instructions slots + security_rationale_template skeleton — " +
+            "byte-identical to the detail=full inline content when assembled per the embedded rules — " +
+            "plus the detail_encoding legend for detail=standard/minimal payloads (v2 token diet). " +
+            "Referenced by codegen_instructions_ref in dieted payloads.",
+          mimeType: "application/json"
+        },
+        {
           uri: "sbd://toe/grounded-codegen-guide",
           name: "SbD-ToE Grounded Codegen Guide",
           description:
@@ -1561,6 +1579,28 @@ class McpRuntime {
       const data = buildChapterApplicabilityJson(riskLevel);
       this.sendResponse(request.id, {
         contents: [{ uri, mimeType: "application/json", text: JSON.stringify(data, null, 2) }]
+      });
+      return;
+    }
+
+    const codegenInstructionsMatch = /^\/\/toe\/codegen-instructions\/([^/]+)$/.exec(
+      uri.startsWith("sbd:") ? uri.slice(4) : ""
+    );
+    if (codegenInstructionsMatch !== null) {
+      const mode = codegenInstructionsMatch[1] ?? "";
+      if (!["codegen", "review", "test-plan"].includes(mode)) {
+        this.sendError(
+          request.id,
+          -32602,
+          `Invalid codegen-instructions mode: "${mode}". Allowed values: codegen, review, test-plan.`
+        );
+        return;
+      }
+      const content = buildCodegenInstructionsResourceContent(mode as CodegenMode);
+      this.sendResponse(request.id, {
+        contents: [
+          { uri, mimeType: "application/json", text: JSON.stringify(content, null, 2) }
+        ]
       });
       return;
     }

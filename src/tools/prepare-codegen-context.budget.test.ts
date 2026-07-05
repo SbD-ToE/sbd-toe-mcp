@@ -36,7 +36,8 @@ import {
   handlePrepareCodegenContext,
   type PrepareCodegenContextInput,
   type PrepareCodegenContextResult,
-  type PrepareCodegenContextResultReady
+  type PrepareCodegenContextResultReady,
+  type PrepareCodegenContextResultReadyDieted
 } from "./prepare-codegen-context.js";
 import { estimateSize } from "../serving/response-shaping.js";
 import { clearG2RuntimeCacheForTests } from "./g2-runtime-loader.js";
@@ -98,12 +99,22 @@ function tok(value: unknown): number {
   return estimateSize(value).approx_tokens;
 }
 
-function sectionTokens(result: PrepareCodegenContextResultReady): SectionTokens {
+function sectionTokens(
+  result: PrepareCodegenContextResultReady | PrepareCodegenContextResultReadyDieted
+): SectionTokens {
   const total = tok(result);
-  const relations = tok(result.g2_context.relations);
+  // Nas formas dieted (s2/s3) a secção equivalente é relations_ref / citations.
+  const g2 = result.g2_context as {
+    relations?: unknown;
+    relations_ref?: unknown;
+  };
+  const relations = tok(g2.relations ?? g2.relations_ref);
   const manualGrounding = tok(result.manual_grounding);
   const evidencePatterns = tok(result.g2_context.evidence_patterns);
-  const citationMap = tok(result.citation_map);
+  const citationMap = tok(
+    (result as { citation_map?: unknown }).citation_map ??
+      (result as { citations?: unknown }).citations
+  );
   const activatedScope = tok(result.activated_scope);
   // "entidades g2_context" = soma das 4 listas núcleo (como no quadro do EPIC).
   const g2Entities =
@@ -175,25 +186,31 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       total: 26700
     }
   },
+  // standard: budgets POR SECÇÃO recalibrados no s3 para os valores REAIS
+  // medidos (2026-07-05, pós-s3: f1 = relations_ref 121 / grounding 333 /
+  // evidence 1.054 / citations 169 / scope-com-description 3.076 / entidades
+  // 642 / resto 762, total 6.157; f2 = 204 / 450 / 1.054 / 170 / 4.824 / 899 /
+  // 757, total 8.358) + ~10% de margem justa. Os TOTAIS são os gates hard do
+  // EPIC — intocados.
   standard: {
     fixture1: {
-      "g2_context.relations": 300, // s2: relations_ref (lenses trace_sbd_toe_graph)
-      manual_grounding: 1300, // s1: agrupado por (chapter,file,sha)
-      "g2_context.evidence_patterns": 1400, // s3: cap 25→10
-      citation_map: 450, // s1: citations invertido por source
-      activated_scope: 3400, // núcleo mantém + `description` publicada (s3)
-      g2_entities: 2300, // núcleo — mantém
-      rest: 900, // s3: instructions→resource, trace só com debug
+      "g2_context.relations": 150, // s2: relations_ref (lenses trace_sbd_toe_graph)
+      manual_grounding: 380, // s1: agrupado por (chapter,file,sha)
+      "g2_context.evidence_patterns": 1150, // s3: cap 25→10, sem relevance_score
+      citation_map: 200, // s1+s3: citations invertido, ids via ids_from
+      activated_scope: 3350, // núcleo mantém + `description` publicada (s3)
+      g2_entities: 720, // núcleo — agrupado por slice (s3)
+      rest: 850, // s3: instructions→resource, trace só com debug
       total: 6500 // 🔴 gate hard do EPIC (payload típico)
     },
     fixture2: {
-      "g2_context.relations": 350,
-      manual_grounding: 1800,
-      "g2_context.evidence_patterns": 1400,
-      citation_map: 600,
-      activated_scope: 4300,
-      g2_entities: 3100,
-      rest: 1000,
+      "g2_context.relations": 240,
+      manual_grounding: 510,
+      "g2_context.evidence_patterns": 1150,
+      citation_map: 200,
+      activated_scope: 5200,
+      g2_entities: 1000,
+      rest: 850,
       total: 8500 // 🔴 gate hard do EPIC (payload 3-famílias)
     }
   },
@@ -284,6 +301,27 @@ function s3CapsLanded(result: PrepareCodegenContextResultReady): boolean {
 
 function s3bMinimalLanded(result: PrepareCodegenContextResultReady): boolean {
   return !Array.isArray(result.activated_scope.requirements);
+}
+
+/** Resolve um path `ids_from` sobre o próprio payload dieted (mini-sintaxe
+ * documentada no resource sbd://toe/codegen-instructions/{mode},
+ * detail_encoding.citations). */
+function idsAtPath(payload: unknown, path: string): string[] {
+  const root = payload as Record<string, Record<string, unknown>>;
+  const keysMatch = /^keys\(g2_context\.([a-z_]+)\[slice\]\)$/.exec(path);
+  if (keysMatch) {
+    const grouped = (root.g2_context?.[keysMatch[1]!] ?? {}) as Record<
+      string,
+      Record<string, unknown>
+    >;
+    return Object.values(grouped).flatMap((entities) => Object.keys(entities));
+  }
+  const listMatch = /^([a-z_]+)\.([a-z_]+)\[\]\.([a-z_]+)$/.exec(path);
+  if (!listMatch) throw new Error(`ids_from path desconhecido: ${path}`);
+  const list = (root[listMatch[1]!]?.[listMatch[2]!] ?? []) as Array<
+    Record<string, string>
+  >;
+  return list.map((item) => item[listMatch[3]!]!);
 }
 
 function assertSectionBudgets(measured: SectionTokens, budgets: SectionBudgets): void {
@@ -377,20 +415,26 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
         ctx.skip(); // parâmetro `detail` ainda não existe (pré-s1)
         return;
       }
-      // Invariante 3 do EPIC: muda a codificação, não o conjunto. A forma de
-      // extrair os ids em standard/minimal (citations invertido, s1) será
-      // ligada aqui quando o formato existir; até lá comparamos citation_map.
+      // Invariante 3 do EPIC: muda a codificação, não o conjunto. Desde o s3
+      // os ids citáveis vivem nas secções do payload e
+      // citations.<source>.ids_from referencia-os (run-length source_data
+      // alinhado 1:1) — extração via a mesma regra documentada no resource
+      // (detail_encoding.citations), com fallback para ids explícitos.
       const fullIds = Object.keys(results.get(fixture.name)!.citation_map).sort();
       for (const detail of ["standard", "minimal"] as const) {
         const result = handlePrepareCodegenContext(withDetail(fixture.input, detail));
         expectReady(result);
         const shaped = result as unknown as {
           citation_map?: Record<string, unknown>;
-          citations?: Record<string, { ids?: string[] }>;
+          citations?: Record<string, { ids_from?: string[]; ids?: string[] }>;
         };
         const ids = shaped.citation_map
           ? Object.keys(shaped.citation_map)
-          : Object.values(shaped.citations ?? {}).flatMap((group) => group.ids ?? []);
+          : Object.values(shaped.citations ?? {}).flatMap(
+              (group) =>
+                group.ids ??
+                (group.ids_from ?? []).flatMap((path) => idsAtPath(shaped, path))
+            );
         expect([...new Set(ids)].sort()).toEqual(fullIds);
       }
     });

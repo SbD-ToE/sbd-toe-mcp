@@ -1,34 +1,38 @@
 /**
  * s1 — Dieta estrutural (epic v2-token-diet): golden snapshots por `detail`
- * e invariantes da codificação deduplicada.
+ * e invariantes da codificação deduplicada. ATUALIZADO pelo s3 (caps,
+ * boilerplate→resource, descriptions): a codificação dieted evoluiu — ver
+ * prepare-codegen-context.caps-resource.test.ts para os gates específicos do
+ * s3; aqui ficam os invariantes s1 adaptados à codificação corrente:
  *
- * Gates do slice (EPIC §s1):
  *   - `full` (default e explícito) byte-idêntico ao comportamento pré-s1;
  *   - golden snapshots por nível (full/standard/minimal) para as 2 fixtures
  *     baseline do EPIC;
  *   - conjunto de IDs citáveis IDÊNTICO em todos os níveis (invariante 3 —
- *     muda a codificação, não o conjunto);
- *   - dedup sem perda: `citations` invertido reconstrói o `citation_map`
- *     clássico byte-igual; `manual_grounding` agrupado reconstrói as entradas
- *     planas (como multiset — a ordem plana original intercala grupos);
- *   - `provenance_legend` cobre exatamente as listas cujos `source` por item
- *     foram removidos, com o source correto (listas source-homogéneas).
- *
- * s1 é dedup puro: nenhuma truncagem introduzida (invariante 2) — os testes
- * de contagem abaixo (total_entries, somas por grupo) provam-no.
+ *     muda a codificação, não o conjunto); desde o s3 os ids vivem nas
+ *     secções do payload e `citations.<source>.ids_from` referencia-os
+ *     (run-length `source_data` alinhado 1:1) — a reconstrução byte-igual do
+ *     `citation_map` clássico prova a codificação;
+ *   - dedup sem perda: `manual_grounding` agrupado reconstrói as entradas
+ *     planas (como multiset); as listas com campos derivável-elididos
+ *     (source, category, entity_type/slice_family, relevance_score)
+ *     reconstroem byte-igual a partir do PRÓPRIO payload + regras documentadas
+ *     no resource sbd://toe/codegen-instructions/{mode} (detail_encoding).
  */
 import { beforeAll, describe, expect, it } from "vitest";
 
 import {
   handlePrepareCodegenContext,
-  type CitationsBySource,
   type CitationMapEntry,
+  type G2ContextEntity,
   type ManualGroundingEntry,
   type ManualGroundingGrouped,
   type PrepareCodegenContextInput,
   type PrepareCodegenContextResult,
   type PrepareCodegenContextResultReady,
-  type PrepareCodegenContextResultReadyDieted
+  type PrepareCodegenContextResultReadyDieted,
+  type SliceGroupedEntityNames,
+  type WithoutSource
 } from "./prepare-codegen-context.js";
 import { clearG2RuntimeCacheForTests } from "./g2-runtime-loader.js";
 import { clearRegulatoryOverlayCacheForTests } from "./regulatory-overlay-loader.js";
@@ -85,30 +89,74 @@ function expectReadyDieted(
   expect(result).not.toHaveProperty("citation_map");
 }
 
-function citationIds(citations: CitationsBySource): string[] {
-  return Object.values(citations).flatMap((group) => group.ids);
+/** Chaves de um mapa de entidades agrupado por slice, na ordem dos grupos e
+ * das chaves (= ordem da lista clássica; ver detail_encoding.g2_entities). */
+function flattenEntityKeys(grouped: SliceGroupedEntityNames): string[] {
+  return Object.values(grouped).flatMap((entities) => Object.keys(entities));
+}
+
+/** Resolve um path `ids_from` sobre o PRÓPRIO payload dieted (mini-sintaxe
+ * documentada no resource, detail_encoding.citations). */
+function idsAtPath(
+  dieted: PrepareCodegenContextResultReadyDieted,
+  path: string
+): string[] {
+  switch (path) {
+    case "activated_scope.requirements[].requirement_id":
+      return dieted.activated_scope.requirements.map((item) => item.requirement_id);
+    case "activated_scope.controls[].control_id":
+      return dieted.activated_scope.controls.map((item) => item.control_id);
+    case "activated_scope.slices[].slice_id":
+      return dieted.activated_scope.slices.map((item) => item.slice_id);
+    case "keys(g2_context.control_objectives[slice])":
+      return flattenEntityKeys(dieted.g2_context.control_objectives);
+    case "keys(g2_context.mechanisms[slice])":
+      return flattenEntityKeys(dieted.g2_context.mechanisms);
+    case "keys(g2_context.practices[slice])":
+      return flattenEntityKeys(dieted.g2_context.practices);
+    case "keys(g2_context.artifacts[slice])":
+      return flattenEntityKeys(dieted.g2_context.artifacts);
+    case "regulatory_overlay.frameworks[].framework_id":
+      return dieted.regulatory_overlay.frameworks.map((item) => item.framework_id);
+    case "activated_scope.regulatory_obligations[].obligation_id":
+      return dieted.activated_scope.regulatory_obligations.map(
+        (item) => item.obligation_id
+      );
+    default:
+      throw new Error(`ids_from path desconhecido: ${path}`);
+  }
 }
 
 /** Reconstrói o citation_map clássico a partir do `citations` invertido
- * (run-length: os N₁ primeiros ids do grupo vêm do 1º ficheiro, etc.). */
+ * (s3: run-length source_data + ids_from alinhado 1:1 com os ficheiros; os
+ * ids vêm das secções do próprio payload, por ordem). */
 function rebuildCitationMap(
-  citations: CitationsBySource
+  dieted: PrepareCodegenContextResultReadyDieted
 ): Record<string, CitationMapEntry> {
   const rebuilt: Record<string, CitationMapEntry> = {};
-  for (const [source, group] of Object.entries(citations)) {
-    let cursor = 0;
-    for (const [file, count] of Object.entries(group.source_data)) {
-      for (let i = 0; i < count; i++) {
-        const id = group.ids[cursor++]!;
+  for (const [source, group] of Object.entries(dieted.citations)) {
+    const files = Object.entries(group.source_data);
+    // Codificação s3: ids_from presente, ids explícitos ausentes (fallback
+    // nunca esperado para o bundle publicado).
+    expect(group.ids, `fallback ids explícitos inesperado em ${source}`).toBeUndefined();
+    expect(group.ids_from, `ids_from ausente em ${source}`).toBeDefined();
+    expect(group.ids_from!.length).toBe(files.length); // alinhado 1:1
+    for (const [index, [file, count]] of files.entries()) {
+      const ids = idsAtPath(dieted, group.ids_from![index]!);
+      expect(ids.length, `run-length de ${file} ≠ tamanho da secção`).toBe(count);
+      for (const id of ids) {
         rebuilt[id] = {
           source: source as CitationMapEntry["source"],
           source_data: file
         };
       }
     }
-    expect(cursor).toBe(group.ids.length); // run-lengths cobrem todos os ids
   }
   return rebuilt;
+}
+
+function citationIds(dieted: PrepareCodegenContextResultReadyDieted): string[] {
+  return Object.keys(rebuildCitationMap(dieted));
 }
 
 /** Reconstrói as entradas planas de manual_grounding a partir dos grupos +
@@ -225,18 +273,18 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
       for (const detail of DIET_LEVELS) {
         const dieted = handlePrepareCodegenContext({ ...fixture.input, detail });
         expectReadyDieted(dieted);
-        const ids = citationIds(dieted.citations);
+        const ids = citationIds(dieted);
         expect(ids.length).toBe(fullIds.length); // sem duplicados nem cortes
         expect([...ids].sort()).toEqual(fullIds);
       }
     });
 
-    it("`citations` invertido reconstrói o citation_map clássico byte-igual (dedup sem perda)", () => {
+    it("`citations` invertido (ids_from) reconstrói o citation_map clássico byte-igual (dedup sem perda)", () => {
       const full = handlePrepareCodegenContext(fixture.input);
       expectReadyFull(full);
       const dieted = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
       expectReadyDieted(dieted);
-      const rebuilt = rebuildCitationMap(dieted.citations);
+      const rebuilt = rebuildCitationMap(dieted);
       // byte-igual: mesmos ids, mesma ordem de inserção, mesmo {source, source_data}
       expect(JSON.stringify(rebuilt)).toBe(JSON.stringify(full.citation_map));
     });
@@ -258,14 +306,13 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
       expect(canonicalMultiset(rebuilt)).toEqual(canonicalMultiset(full.manual_grounding));
     });
 
-    it("`provenance_legend` cobre as listas com `source` removido, com o source correto", () => {
+    it("reconstrução sem perda: listas dieted + regras do detail_encoding ⇒ full-menos-source byte-igual", () => {
       const full = handlePrepareCodegenContext(fixture.input);
       expectReadyFull(full);
       const dieted = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
       expectReadyDieted(dieted);
-      // s2: por omissão as relations vêm como relations_ref; a entrada
-      // g2_context.relations da legend aplica-se ao caminho inline
-      // (include_relations: true) — validada com esse payload.
+      // s2: por omissão as relations vêm como relations_ref; o caminho inline
+      // (include_relations: true) continua a validar-se item a item.
       const dietedWithRelations = handlePrepareCodegenContext({
         ...fixture.input,
         detail: "standard",
@@ -273,88 +320,99 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
       });
       expectReadyDieted(dietedWithRelations);
 
-      const listsBySection: Record<string, { fullList: Array<{ source: string }>; dietedList: unknown[] }> = {
-        "activated_scope.requirements": {
-          fullList: full.activated_scope.requirements,
-          dietedList: dieted.activated_scope.requirements
-        },
-        "activated_scope.controls": {
-          fullList: full.activated_scope.controls,
-          dietedList: dieted.activated_scope.controls
-        },
-        "activated_scope.slices": {
-          fullList: full.activated_scope.slices,
-          dietedList: dieted.activated_scope.slices
-        },
-        "activated_scope.regulatory_obligations": {
-          fullList: full.activated_scope.regulatory_obligations,
-          dietedList: dieted.activated_scope.regulatory_obligations
-        },
-        "g2_context.control_objectives": {
-          fullList: full.g2_context.control_objectives,
-          dietedList: dieted.g2_context.control_objectives
-        },
-        "g2_context.mechanisms": {
-          fullList: full.g2_context.mechanisms,
-          dietedList: dieted.g2_context.mechanisms
-        },
-        "g2_context.practices": {
-          fullList: full.g2_context.practices,
-          dietedList: dieted.g2_context.practices
-        },
-        "g2_context.artifacts": {
-          fullList: full.g2_context.artifacts,
-          dietedList: dieted.g2_context.artifacts
-        },
-        "g2_context.relations": {
-          fullList: full.g2_context.relations,
-          dietedList: dietedWithRelations.g2_context.relations!
-        },
-        "g2_context.evidence_patterns": {
-          fullList: full.g2_context.evidence_patterns,
-          dietedList: dieted.g2_context.evidence_patterns
-        },
-        "regulatory_overlay.frameworks": {
-          fullList: full.regulatory_overlay.frameworks,
-          dietedList: dieted.regulatory_overlay.frameworks
-        },
-        "regulatory_overlay.obligations": {
-          fullList: full.regulatory_overlay.obligations,
-          dietedList: dieted.regulatory_overlay.obligations
-        },
-        "regulatory_overlay.mappings": {
-          fullList: full.regulatory_overlay.mappings,
-          dietedList: dieted.regulatory_overlay.mappings
-        },
-        "regulatory_overlay.playbooks": {
-          fullList: full.regulatory_overlay.playbooks,
-          dietedList: dieted.regulatory_overlay.playbooks
-        }
-      };
+      const stripSource = <T extends { source: unknown }>(items: readonly T[]) =>
+        items.map(({ source: _source, ...rest }) => rest);
 
-      const legendSources = dieted.provenance_legend.sources as Record<string, string>;
-      for (const [section, { fullList, dietedList }] of Object.entries(listsBySection)) {
-        // 1) a legend declara a secção
-        expect(legendSources[section], `legend sem entrada para ${section}`).toBeDefined();
-        // 2) a lista full é source-homogénea e coincide com a legend
-        for (const item of fullList) {
-          expect(item.source, `source misto em ${section}`).toBe(legendSources[section]);
-        }
-        // 3) itens dieted não repetem `source` e nada mais foi alterado
-        expect(dietedList.length).toBe(fullList.length); // s1: zero truncagem
-        for (const [index, item] of dietedList.entries()) {
-          expect(item).not.toHaveProperty("source");
-          const { source: _source, ...rest } = fullList[index]!;
-          expect(JSON.stringify(item)).toBe(JSON.stringify(rest));
-        }
-      }
-      // manual_grounding agrupado: source coberto pela legend
-      expect(legendSources["manual_grounding.groups"]).toBe("runtime_v1");
-      // activation_trace: `source` é o TIPO de trigger, não proveniência — mantém-se
-      expect(dieted.activation_trace[0]).toHaveProperty("source");
-      expect(JSON.stringify(dieted.activation_trace)).toBe(
-        JSON.stringify(full.activation_trace)
+      // -- requirements: repõe `category` (= prefixo do id) e retira a
+      //    `description` adicionada (s3) ⇒ byte-igual a full-menos-source.
+      const rebuiltRequirements = dieted.activated_scope.requirements.map((item) => {
+        const { description: _description, ...rest } = item;
+        const category =
+          rest.category ?? item.requirement_id.slice(0, item.requirement_id.indexOf("-"));
+        return {
+          requirement_id: rest.requirement_id,
+          name: rest.name,
+          category,
+          ...(rest.type !== undefined ? { type: rest.type } : {})
+        };
+      });
+      expect(JSON.stringify(rebuiltRequirements)).toBe(
+        JSON.stringify(stripSource(full.activated_scope.requirements))
       );
+
+      // -- controls: retira a `description` (s3, só nos direct) ⇒ byte-igual.
+      const rebuiltControls = dieted.activated_scope.controls.map(
+        ({ description: _description, ...rest }) => rest
+      );
+      expect(JSON.stringify(rebuiltControls)).toBe(
+        JSON.stringify(stripSource(full.activated_scope.controls))
+      );
+
+      // -- slices / obrigações / listas do overlay: dedup s1 puro (só source).
+      expect(JSON.stringify(dieted.activated_scope.slices)).toBe(
+        JSON.stringify(stripSource(full.activated_scope.slices))
+      );
+      expect(JSON.stringify(dieted.activated_scope.regulatory_obligations)).toBe(
+        JSON.stringify(stripSource(full.activated_scope.regulatory_obligations))
+      );
+      for (const key of ["frameworks", "obligations", "mappings", "playbooks"] as const) {
+        expect(JSON.stringify(dieted.regulatory_overlay[key])).toBe(
+          JSON.stringify(stripSource(full.regulatory_overlay[key]))
+        );
+      }
+
+      // -- entidades g2: mapa {slice_id: {entity_id: name|null}} reconstrói a
+      //    lista clássica (entity_type = lista; slice_family via slices).
+      const familyBySlice = new Map(
+        dieted.activated_scope.slices.map((slice) => [slice.slice_id, slice.objective_family])
+      );
+      const entityLists = [
+        ["control_objectives", "ControlObjective"],
+        ["mechanisms", "Mechanism"],
+        ["practices", "Practice"],
+        ["artifacts", "Artifact"]
+      ] as const;
+      for (const [list, entityType] of entityLists) {
+        const rebuilt: Array<WithoutSource<G2ContextEntity>> = [];
+        for (const [sliceId, entities] of Object.entries(dieted.g2_context[list])) {
+          for (const [entityId, name] of Object.entries(entities)) {
+            rebuilt.push({
+              entity_id: entityId,
+              entity_type: entityType,
+              slice_id: sliceId,
+              slice_family: familyBySlice.get(sliceId)!,
+              ...(name !== null ? { name } : {})
+            });
+          }
+        }
+        expect(
+          JSON.stringify(rebuilt),
+          `reconstrução de g2_context.${list} divergiu`
+        ).toBe(JSON.stringify(stripSource(full.g2_context[list])));
+      }
+
+      // -- relations (caminho inline): dedup s1 puro, item a item.
+      expect(JSON.stringify(dietedWithRelations.g2_context.relations)).toBe(
+        JSON.stringify(stripSource(full.g2_context.relations))
+      );
+
+      // -- evidence_patterns: prefixo determinístico do top-25 clássico, sem
+      //    relevance_score (a ordem carrega o ranking) — cap nunca-silencioso
+      //    (contagens + rest-ref testadas no caps-resource.test).
+      const expectedEvidence = full.g2_context.evidence_patterns
+        .slice(0, dieted.completeness_report.evidence_pattern_cap)
+        .map(({ source: _source, relevance_score: _score, ...rest }) => rest);
+      expect(JSON.stringify(dieted.g2_context.evidence_patterns)).toBe(
+        JSON.stringify(expectedEvidence)
+      );
+
+      // -- activation_trace: elidido (s3) com contador exato; debug=true repõe
+      //    (testado no caps-resource.test).
+      expect(dieted.activation_trace).toBeUndefined();
+      expect(dieted.activation_trace_ref?.entries).toBe(full.activation_trace.length);
+
+      // -- legend inline: aponta para o resource com a legenda completa.
+      expect(dieted.provenance_legend.note).toContain("sbd://toe/codegen-instructions/");
     });
 
     it("s1: `minimal` e `standard` partilham a codificação (diferem só no echo do detail)", () => {

@@ -175,23 +175,36 @@ function deriveRelations(
   return derived;
 }
 
-interface DietedEntityLists {
-  control_objectives: Array<{ entity_id: string; entity_type: string; slice_id: string }>;
-  mechanisms: Array<{ entity_id: string; entity_type: string; slice_id: string }>;
-  practices: Array<{ entity_id: string; entity_type: string; slice_id: string }>;
-  artifacts: Array<{ entity_id: string; entity_type: string; slice_id: string }>;
+/** s3: as listas de entidades dieted vêm agrupadas por slice
+ * ({slice_id: {entity_id: name|null}}) — o entity_type é a lista onde o mapa
+ * vive e o slice_id é a chave do grupo (detail_encoding.g2_entities). */
+type DietedEntityMaps = Record<string, Record<string, string | null>>;
+
+interface DietedG2EntitySections {
+  control_objectives: DietedEntityMaps;
+  mechanisms: DietedEntityMaps;
+  practices: DietedEntityMaps;
+  artifacts: DietedEntityMaps;
 }
 
-function entityIndex(g2: DietedEntityLists): {
+function entityIndex(g2: DietedG2EntitySections): {
   typeById: Map<string, string>;
   sliceById: Map<string, string>;
 } {
   const typeById = new Map<string, string>();
   const sliceById = new Map<string, string>();
-  for (const list of [g2.control_objectives, g2.mechanisms, g2.practices, g2.artifacts]) {
-    for (const entity of list) {
-      typeById.set(entity.entity_id, entity.entity_type);
-      sliceById.set(entity.entity_id, entity.slice_id);
+  const lists = [
+    [g2.control_objectives, "ControlObjective"],
+    [g2.mechanisms, "Mechanism"],
+    [g2.practices, "Practice"],
+    [g2.artifacts, "Artifact"]
+  ] as const;
+  for (const [grouped, entityType] of lists) {
+    for (const [sliceId, entities] of Object.entries(grouped)) {
+      for (const entityId of Object.keys(entities)) {
+        typeById.set(entityId, entityType);
+        sliceById.set(entityId, sliceId);
+      }
     }
   }
   return { typeById, sliceById };
