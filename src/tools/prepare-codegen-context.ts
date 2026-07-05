@@ -93,6 +93,14 @@ export interface PrepareCodegenContextInput {
   regulatory_frameworks?: string[];
   include_regulatory_overlay?: boolean;
   detail?: CodegenDetailLevel;
+  /**
+   * v2 token diet, s2 — escape hatch for clients that cannot make a second
+   * call: when true, `detail: "standard" | "minimal"` keeps `g2_context.relations`
+   * inline (dieted: no per-item `source`) instead of `relations_ref`.
+   * Ignored at `detail: "full"` (full is always byte-identical to the classic
+   * payload, relations inline).
+   */
+  include_relations?: boolean;
   debug?: boolean;
 }
 
@@ -412,12 +420,70 @@ export interface DietedActivatedScope {
   >;
 }
 
+/**
+ * v2 token diet, s2 — Relations on-demand. In `standard`/`minimal` the inline
+ * `g2_context.relations` array (~4.3K tokens) is replaced by a REFERENCE to
+ * executable calls of the `trace_sbd_toe_graph` tool whose union returns a
+ * superset of the elided relations. Anchors are activated slice_ids/entity_ids
+ * from THIS payload — domain ids, never internal IRIs (EPIC invariant 6).
+ *
+ * Relation kind → curated lens mapping (see buildRelationsRef):
+ *  - (objective → mechanism/practice) edges, where the objective has a
+ *    belongsToSlice edge to an activated slice S:
+ *      `slice_implementation(anchor=S)` — each row (slice, objective, kind,
+ *      target) carries BOTH the objective→target edge (kind selects the
+ *      predicate) and the objective's belongsToSlice edge.
+ *  - (objective, belongsToSlice, S) for objectives with ≥1 mechanism/practice
+ *    edge: same `slice_implementation(anchor=S)` rows.
+ *  - (objective → target) edges whose objective is activated but has NO
+ *    belongsToSlice edge in the published graph (data gap):
+ *      `objective_realization(anchor=objective)`.
+ *  - (objective → target) edges where only the TARGET is activated
+ *    (cross-slice): `mechanism_provenance(anchor=target)` — the predicate is
+ *    recovered from the target's entity_type in this same payload.
+ *  - (entity, belongsToSlice, slice) for Mechanism/Practice/Artifact subjects
+ *    (and objectives without mechanism/practice edges): NO curated lens
+ *    returns these edges, and they are 100% redundant with the payload — every
+ *    `g2_context` entity already carries `slice_id`. Counted as
+ *    `coverage.implicit_in_entities` (never silently dropped).
+ *  - Anything not covered above stays INLINE in `residual_relations`
+ *    (expected empty; never-silent guard).
+ */
+export interface RelationsRefLensCall {
+  lens: "slice_implementation" | "objective_realization" | "mechanism_provenance";
+  /** Activated slice_id or entity_id from this payload (id, never an IRI). */
+  anchor: string;
+}
+
+export interface RelationsRef {
+  tool: "trace_sbd_toe_graph";
+  /** Executable calls whose union covers the lens-recoverable relations. */
+  lenses: RelationsRefLensCall[];
+  /** Exact number of relations that would go inline at detail=full (audit). */
+  total_relations: number;
+  /** Never-silent split of total_relations by recovery path. */
+  coverage: {
+    /** Recoverable by executing the `lenses` calls above. */
+    via_lenses: number;
+    /** belongsToSlice edges equal to the `slice_id` field of a g2_context entity. */
+    implicit_in_entities: number;
+    /** Relations kept inline in `residual_relations` (expected 0). */
+    residual_inline: number;
+  };
+  /** Only present when a relation is neither lens-recoverable nor implicit. */
+  residual_relations?: Array<WithoutSource<G2ContextRelation>>;
+  note: string;
+}
+
 export interface DietedG2Context {
   control_objectives: Array<WithoutSource<G2ContextEntity>>;
   mechanisms: Array<WithoutSource<G2ContextEntity>>;
   practices: Array<WithoutSource<G2ContextEntity>>;
   artifacts: Array<WithoutSource<G2ContextEntity>>;
-  relations: Array<WithoutSource<G2ContextRelation>>;
+  /** Inline only with `include_relations: true` (s2); otherwise see relations_ref. */
+  relations?: Array<WithoutSource<G2ContextRelation>>;
+  /** Present when relations are elided (s2 default at standard/minimal). */
+  relations_ref?: RelationsRef;
   evidence_patterns: Array<WithoutSource<G2ContextEvidencePattern>>;
 }
 
@@ -440,7 +506,10 @@ const PROVENANCE_LEGEND = {
     "Per-item `source` fields are elided at detail=standard/minimal. Every list " +
     "below is source-homogeneous (no exceptions): apply the listed source to each " +
     "of its items. Per-id source_data lives in citations.<source>.source_data " +
-    "(ordered run-length map file -> count over citations.<source>.ids).",
+    "(ordered run-length map file -> count over citations.<source>.ids). " +
+    "g2_context.relations applies only when relations come inline " +
+    "(include_relations=true or detail=full); otherwise g2_context.relations_ref " +
+    "is a derived reference to trace_sbd_toe_graph calls, not a source list.",
   sources: {
     "activated_scope.requirements": "runtime_v0",
     "activated_scope.controls": "runtime_v0",
@@ -1735,6 +1804,179 @@ function parseDetail(raw: unknown): CodegenDetailLevel {
   );
 }
 
+/**
+ * Validate the `include_relations` input (v2 token diet, s2). Only booleans
+ * (or omission = false) are accepted — same fail-fast pattern as parseDetail.
+ */
+function parseIncludeRelations(raw: unknown): boolean {
+  const value =
+    typeof raw === "object" && raw !== null
+      ? (raw as Record<string, unknown>).include_relations
+      : undefined;
+  if (value === undefined) return false;
+  if (typeof value === "boolean") return value;
+  throw Object.assign(
+    new Error(
+      `Invalid "include_relations": ${JSON.stringify(value)}. Use a boolean.`
+    ),
+    {
+      rpcError: {
+        code: -32602,
+        message: 'Invalid "include_relations". Use a boolean.'
+      }
+    }
+  );
+}
+
+// Relation predicates published in data/publish/runtime/v1/relations.jsonl —
+// the same three the RDF projection exposes to trace_sbd_toe_graph lenses.
+const PRED_BELONGS_TO_SLICE = "belongsToSlice";
+const PRED_IMPLEMENTED_BY_MECHANISM = "objective_implemented_by_mechanism";
+const PRED_REALIZED_BY_PRACTICE = "objective_realized_by_practice";
+
+const RELATIONS_REF_NOTE =
+  "Inline g2_context.relations elided at detail=standard/minimal (re-call with " +
+  "include_relations=true to restore them). Recover the elided graph edges by " +
+  "executing trace_sbd_toe_graph with each {lens, anchor} pair listed (anchors " +
+  "are activated slice/entity ids from this payload); the belongsToSlice edges " +
+  "counted as implicit_in_entities are already encoded by the slice_id field " +
+  "of every g2_context entity.";
+
+/**
+ * v2 token diet, s2 — build the `relations_ref` for `detail: "standard" |
+ * "minimal"`. See the {@link RelationsRefLensCall} doc block for the full
+ * relation-kind → lens mapping. Coverage is decided per relation and counted
+ * (never-silent): every inline relation is either recoverable by executing
+ * one of the referenced curated lenses, byte-redundant with an entity's
+ * `slice_id` in this same payload, or kept inline in `residual_relations`.
+ * Deterministic: lens order follows activated_scope.slices order, then sorted
+ * fallback anchors.
+ */
+function buildRelationsRef(result: PrepareCodegenContextResultReady): RelationsRef {
+  const relations = result.g2_context.relations;
+  const activatedSliceIds = result.activated_scope.slices.map((slice) => slice.slice_id);
+  const activatedSliceIdSet = new Set(activatedSliceIds);
+
+  const entitySliceById = new Map<string, string>();
+  const entityTypeById = new Map<string, G2ContextEntity["entity_type"]>();
+  for (const list of [
+    result.g2_context.control_objectives,
+    result.g2_context.mechanisms,
+    result.g2_context.practices,
+    result.g2_context.artifacts
+  ]) {
+    for (const entity of list) {
+      entitySliceById.set(entity.entity_id, entity.slice_id);
+      entityTypeById.set(entity.entity_id, entity.entity_type);
+    }
+  }
+
+  // Objective → activated slice via an explicit belongsToSlice edge (the
+  // pattern slice_implementation anchors on), and objectives that have at
+  // least one mechanism/practice edge (required by that lens's UNION).
+  const sliceEdgeBySubject = new Map<string, string>();
+  const subjectsWithTargets = new Set<string>();
+  for (const relation of relations) {
+    if (
+      relation.predicate === PRED_BELONGS_TO_SLICE &&
+      activatedSliceIdSet.has(relation.object_id)
+    ) {
+      if (!sliceEdgeBySubject.has(relation.subject_id)) {
+        sliceEdgeBySubject.set(relation.subject_id, relation.object_id);
+      }
+    } else if (
+      relation.predicate === PRED_IMPLEMENTED_BY_MECHANISM ||
+      relation.predicate === PRED_REALIZED_BY_PRACTICE
+    ) {
+      subjectsWithTargets.add(relation.subject_id);
+    }
+  }
+
+  const sliceImplementationAnchors = new Set<string>();
+  const objectiveRealizationAnchors = new Set<string>();
+  const mechanismProvenanceAnchors = new Set<string>();
+  let viaLenses = 0;
+  let implicitInEntities = 0;
+  const residual: Array<WithoutSource<G2ContextRelation>> = [];
+
+  for (const relation of relations) {
+    if (relation.predicate === PRED_BELONGS_TO_SLICE) {
+      if (
+        activatedSliceIdSet.has(relation.object_id) &&
+        subjectsWithTargets.has(relation.subject_id)
+      ) {
+        // slice_implementation(anchor=slice) rows carry this edge.
+        sliceImplementationAnchors.add(relation.object_id);
+        viaLenses += 1;
+      } else if (entitySliceById.get(relation.subject_id) === relation.object_id) {
+        // Redundant with the entity's own slice_id in g2_context.
+        implicitInEntities += 1;
+      } else {
+        const { source: _source, ...rest } = relation;
+        residual.push(rest);
+      }
+      continue;
+    }
+    if (
+      relation.predicate === PRED_IMPLEMENTED_BY_MECHANISM ||
+      relation.predicate === PRED_REALIZED_BY_PRACTICE
+    ) {
+      const sliceAnchor = sliceEdgeBySubject.get(relation.subject_id);
+      if (sliceAnchor !== undefined) {
+        sliceImplementationAnchors.add(sliceAnchor);
+        viaLenses += 1;
+      } else if (entitySliceById.has(relation.subject_id)) {
+        // Activated objective without a belongsToSlice edge (data gap).
+        objectiveRealizationAnchors.add(relation.subject_id);
+        viaLenses += 1;
+      } else if (
+        (relation.predicate === PRED_IMPLEMENTED_BY_MECHANISM &&
+          entityTypeById.get(relation.object_id) === "Mechanism") ||
+        (relation.predicate === PRED_REALIZED_BY_PRACTICE &&
+          entityTypeById.get(relation.object_id) === "Practice")
+      ) {
+        // Only the target is activated (cross-slice edge); the predicate is
+        // recoverable from the target's entity_type in this payload.
+        mechanismProvenanceAnchors.add(relation.object_id);
+        viaLenses += 1;
+      } else {
+        const { source: _source, ...rest } = relation;
+        residual.push(rest);
+      }
+      continue;
+    }
+    // Unknown predicate — never silently dropped.
+    const { source: _source, ...rest } = relation;
+    residual.push(rest);
+  }
+
+  const lenses: RelationsRefLensCall[] = [
+    ...activatedSliceIds
+      .filter((sliceId) => sliceImplementationAnchors.has(sliceId))
+      .map((anchor): RelationsRefLensCall => ({ lens: "slice_implementation", anchor })),
+    ...[...objectiveRealizationAnchors]
+      .sort()
+      .map((anchor): RelationsRefLensCall => ({ lens: "objective_realization", anchor })),
+    ...[...mechanismProvenanceAnchors]
+      .sort()
+      .map((anchor): RelationsRefLensCall => ({ lens: "mechanism_provenance", anchor }))
+  ];
+
+  const relationsRef: RelationsRef = {
+    tool: "trace_sbd_toe_graph",
+    lenses,
+    total_relations: relations.length,
+    coverage: {
+      via_lenses: viaLenses,
+      implicit_in_entities: implicitInEntities,
+      residual_inline: residual.length
+    },
+    note: RELATIONS_REF_NOTE
+  };
+  if (residual.length > 0) relationsRef.residual_relations = residual;
+  return relationsRef;
+}
+
 function stripSource<T extends { source: unknown }>(
   items: readonly T[]
 ): Array<Omit<T, "source">> {
@@ -1857,17 +2099,28 @@ function groupManualGrounding(
  * provenance legend). The citable ID set is EXACTLY the full one (invariant 3).
  * In s1 `minimal` and `standard` share this encoding; divergence lands in
  * s3/s3b behind the same parameter.
+ *
+ * s2 (Relations on-demand): `g2_context.relations` is replaced by
+ * `relations_ref` — executable trace_sbd_toe_graph lens calls whose union
+ * (plus the entities' own slice_id fields) covers every elided relation.
+ * `include_relations: true` restores the inline (dieted) array instead.
  */
 function applyStructuralDiet(
   result: PrepareCodegenContextResultReady,
-  detail: Exclude<CodegenDetailLevel, "full">
+  detail: Exclude<CodegenDetailLevel, "full">,
+  includeRelations: boolean
 ): PrepareCodegenContextResultReadyDieted {
   const dieted: PrepareCodegenContextResultReadyDieted = {
     status: result.status,
     mode: result.mode,
-    // Echo the requested detail for audit; the FULL result never echoes
-    // `detail` (explicit "full" must stay byte-identical to the omitted form).
-    input_echo: { ...result.input_echo, detail },
+    // Echo the requested detail (and the include_relations escape hatch, when
+    // active) for audit; the FULL result never echoes either (explicit "full"
+    // must stay byte-identical to the omitted form).
+    input_echo: {
+      ...result.input_echo,
+      detail,
+      ...(includeRelations ? { include_relations: true } : {})
+    },
     activation_trace: result.activation_trace,
     provenance_legend: PROVENANCE_LEGEND,
     activated_scope: {
@@ -1881,7 +2134,9 @@ function applyStructuralDiet(
       mechanisms: stripSource(result.g2_context.mechanisms),
       practices: stripSource(result.g2_context.practices),
       artifacts: stripSource(result.g2_context.artifacts),
-      relations: stripSource(result.g2_context.relations),
+      ...(includeRelations
+        ? { relations: stripSource(result.g2_context.relations) }
+        : { relations_ref: buildRelationsRef(result) }),
       evidence_patterns: stripSource(result.g2_context.evidence_patterns)
     },
     manual_grounding: groupManualGrounding(result),
@@ -1904,13 +2159,15 @@ function applyStructuralDiet(
 export function handlePrepareCodegenContext(
   raw: PrepareCodegenContextInput
 ): PrepareCodegenContextResult {
-  // v2 token diet (s1): `detail` selects the response ENCODING only — it is
-  // validated up-front and never influences activation/resolution.
+  // v2 token diet (s1/s2): `detail` and `include_relations` select the
+  // response ENCODING only — they are validated up-front and never influence
+  // activation/resolution.
   const detail = parseDetail(raw);
+  const includeRelations = parseIncludeRelations(raw);
   const result = prepareCodegenContextCore(raw);
   const shaped =
     detail !== "full" && result.status === "ready_for_codegen"
-      ? applyStructuralDiet(result, detail)
+      ? applyStructuralDiet(result, detail, includeRelations)
       : result;
   // RF-H: append the advisory band (status-aware, pure) around the deterministic result.
   return { ...shaped, next: prepareCodegenAffordances(result.status) };

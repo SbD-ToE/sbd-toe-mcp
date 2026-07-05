@@ -263,6 +263,15 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
       expectReadyFull(full);
       const dieted = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
       expectReadyDieted(dieted);
+      // s2: por omissão as relations vêm como relations_ref; a entrada
+      // g2_context.relations da legend aplica-se ao caminho inline
+      // (include_relations: true) — validada com esse payload.
+      const dietedWithRelations = handlePrepareCodegenContext({
+        ...fixture.input,
+        detail: "standard",
+        include_relations: true
+      });
+      expectReadyDieted(dietedWithRelations);
 
       const listsBySection: Record<string, { fullList: Array<{ source: string }>; dietedList: unknown[] }> = {
         "activated_scope.requirements": {
@@ -299,7 +308,7 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
         },
         "g2_context.relations": {
           fullList: full.g2_context.relations,
-          dietedList: dieted.g2_context.relations
+          dietedList: dietedWithRelations.g2_context.relations!
         },
         "g2_context.evidence_patterns": {
           fullList: full.g2_context.evidence_patterns,

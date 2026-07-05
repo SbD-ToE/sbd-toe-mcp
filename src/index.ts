@@ -1246,8 +1246,20 @@ class McpRuntime {
                   "run-length source_data) replaces `citation_map`, `manual_grounding` is grouped by " +
                   "(rastreabilidade_role, manual_chapter, manual_file, manual_commit_sha) with v1_entity_ids " +
                   "per group, and a top-level `provenance_legend` replaces the per-item `source` fields. " +
+                  "At 'standard'/'minimal' `g2_context.relations` is replaced by `g2_context.relations_ref` — " +
+                  "executable trace_sbd_toe_graph {lens, anchor} calls (anchors are activated slice/entity ids) " +
+                  "whose union, plus the slice_id already on every g2_context entity, covers the elided " +
+                  "relations; set include_relations=true to keep them inline instead. " +
                   "No information is lost. In this beta, 'minimal' and 'standard' are identical (they diverge " +
                   "in later 0.20.x betas)."
+              },
+              include_relations: {
+                type: "boolean",
+                description:
+                  "Escape hatch for clients that cannot make a second call (v2 token diet). When true at " +
+                  "detail='standard'/'minimal', keeps g2_context.relations inline (dieted: no per-item source) " +
+                  "instead of the relations_ref reference. Default false. Ignored at detail='full' (full always " +
+                  "carries relations inline, byte-identical to previous releases)."
               },
               debug: {
                 type: "boolean",
