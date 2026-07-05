@@ -1,13 +1,65 @@
 ---
 ai_assisted: true
-model: Claude Opus 4.8 (1M context)
-date: 2026-06-29
+model: Claude Fable 5
+date: 2026-07-05
 purpose: documentation
-reasoning: v0.20.0-beta.1 (beta line; beta.0 aborted on a Sigstore tlog flake before reaching npm) — new `trace_sbd_toe_graph` tool: curated multi-hop SPARQL traversals (Oxigraph/WASM) over the AppSec Core v1 relation graph. Additive, deterministic, non-citable prerelease on the `beta` dist-tag; stable `0.10.x` unchanged. v0.10.1 and earlier entries below.
+reasoning: v0.20.0-beta.2 (beta line) — v2 token diet of prepare_sbd_toe_codegen_context. New additive `detail` parameter (full default byte-identical; standard/minimal/ultrathin deduplicated encodings, −67% to −81% payload), relations on-demand via trace_sbd_toe_graph refs, evidence caps with never-silent accounting, published `description` (the "how") included at dieted levels, sbd://toe/codegen-instructions/{mode} resource, context-reuse guidance + repeat_call_hint. Non-citable prerelease on the `beta` dist-tag; stable `0.10.x` unchanged. Earlier entries below.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.2 — 2026-07-05
+
+**Prerelease (beta line).** Published to the npm `beta` dist-tag — `latest` (stable
+`0.10.x`) is unchanged. Experimental; **not citable** — excluded from the scientific
+record per `PROGRAMME-PRESERVATION-PROTOCOL.md`.
+
+### Added — v2 token diet of `prepare_sbd_toe_codegen_context` (epic `v2-token-diet`)
+
+Measured baseline (2026-07-05, beta.1): typical codegen payload ≈18.9K tokens,
+3-family ≈24.7K. External eval (D-a/D-b) attributed the 5.5× MCP cost multiplier to
+*large payload × many turns*. This release cuts the payload, never the context.
+
+- **`detail` input parameter** — `"full" | "standard" | "minimal" | "ultrathin"`,
+  **default `"full"` is byte-identical to beta.1** (proven by binary comparison and
+  golden snapshots; zero breaking change). The dieted levels re-encode, they never
+  drop the activated set: no top-k, no ranking, complete requirement/control sets at
+  every level, identical citable ID set (111/150 on the baseline fixtures) at every level.
+  - `standard` — ≈6.2K/8.4K tokens (−67%/−66%): inverted `citations` grouped by source,
+    `manual_grounding` grouped by (role, chapter, file, sha), top-level `provenance_legend`,
+    evidence patterns capped at 10 (deterministic prefix, `total/returned/capped` +
+    executable rest-reference), and — new context — the published verbatim `description`
+    (the "how") on activated requirements and direct controls.
+  - `minimal` — ≈5.6K/7.7K: same complete scope with descriptions; traceability
+    serialization reduced to counts + executable references; evidence cap 5.
+  - `ultrathin` — ≈3.7K/4.6K (−80%): complete sets as `{id, name, type}` without
+    descriptions (`descriptions_ref` points at `minimal`); evidence 0 inline;
+    grounding as `{total_entries, sha, groups_ref}`. Ablation arm for measuring the
+    value of the description field.
+- **Relations on-demand** — at dieted levels `g2_context.relations` (≈4.3K inline) becomes
+  `relations_ref`: executable `trace_sbd_toe_graph` `{lens, anchor}` calls whose union is a
+  proven superset of the elided edges (verified by real execution in tests; no IRI leakage;
+  ids only). `include_relations: true` restores inline. Two orphan edges in the published
+  bundle v1.5.0 (`ACM-SLG-005/006` in relations.jsonl without entities in mechanisms.json)
+  are kept inline verbatim in `residual_relations` — never silent, data untouched.
+- **`sbd://toe/codegen-instructions/{mode}` MCP resource** — static per-mode
+  `llm_codegen_instructions` + `security_rationale_template` (byte-identical to the
+  `full` inline content) referenced by `codegen_instructions_ref` at dieted levels;
+  also carries the `detail_encoding` legend.
+- **Context-reuse workflow** — grounded-codegen guide and plugin skill now instruct:
+  one call per task (deterministic), loop against the received context, deepen via
+  `detail:"minimal"` or targeted `consult_security_requirements` (measured ≈3K ≈16% of
+  full); `repeat_call_hint` (54 tokens) added to dieted outputs.
+- **Payload budget gates** — per-section vitest budgets on two fixed baseline fixtures;
+  hard totals: standard ≤6,500/8,500 (epic), minimal ≤5,800/8,000 and ultrathin
+  ≤3,870/4,840 (fixed by measurement, operator-ratified 2026-07-05).
+
+### Unchanged
+
+- `consumed-bundle.json` (formal release v1.5.0, sha256-pinned) — the diet is
+  serialization only, never data. Deterministic activation core untouched.
+- All other tools; offline/`npx` operation; stable `0.10.x` line.
 
 ## 0.20.0-beta.1 — 2026-06-29
 
