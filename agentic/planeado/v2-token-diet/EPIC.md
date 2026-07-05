@@ -163,6 +163,23 @@ sem refactor SPARQL das tools existentes.
   o texto exato que ia inline; `description` é byte-igual ao campo do bundle (nunca parafraseada).
 
 ### s3b — Perfil `minimal` codegen-lean *(depends_on: s3)*
+
+> **⟳ ADENDA s3b (2026-07-05, decisão do operador — human review; SUBSTITUI o desenho abaixo):**
+> **Sem top-N. Não há ranking/subsetting de requirements — a ativação é determinística e o
+> conjunto ativado vai COMPLETO em todos os níveis de `detail`.** O top-N original contradizia
+> a própria Nota de segurança deste slice (o servidor não julga o que a task precisa).
+> Princípio ratificado: *minimizar o package sem reduzir contexto* — o que o ponto de execução
+> precisa (requirements completos COM `description`, controls direct com `description`) vai
+> inline; o que é rasto de traceability (grounding por item, proveniência repetida, projeção
+> derivável) vai por referência/contagem. "Se for melhor o input, melhor o output."
+> - `minimal` = conjunto ativado completo com `description`; corta apenas serialização de
+>   traceability e projeção derivável (nunca-silencioso: contagens + referência).
+> - **Alvo revisto:** ≤ 2K era inviável sem top-N; novo alvo ~4–4,5K típico — o número hard é
+>   fixado pela medição real do slice e ratificado pelo operador na validação.
+> - Gates que se mantêm: `omitted + returned == total` onde houver contagem; conjunto de IDs
+>   citáveis idêntico entre níveis; referências executáveis; determinismo 2× byte-igual.
+
+*(Desenho original, superseded pela adenda acima — mantido por história append-only:)*
 - **Alter (aditivo):** `detail: "minimal"` para tarefas pequenas: requirements top-N (N=10)
   ordenados por score de ativação **determinístico** (score do concern que ativou a categoria;
   desempate `requirement_id`), com `description`; controls só `direct`; `omitted` explícito +
