@@ -196,6 +196,26 @@ sem refactor SPARQL das tools existentes.
 - **Gate:** `omitted + returned == total` em qualquer input; ranking estável (2× idêntico);
   conjunto de IDs recuperável na íntegra via a referência indicada.
 
+### s3c — Perfil `ultrathin` (id+nome, sem descriptions) *(ADENDA 2026-07-05, pedido do operador; depends_on: s3b)*
+
+> **ESTADO: especificado, ADIADO (decisão do operador 2026-07-05, "5–7K já é razoável").**
+> Não executar antes do s5: o standard 6,2K já resolve o problema medido (custo 5,5× era
+> payload×turnos), o ultrathin sacrifica o "how" (a alavanca de qualidade do s3), e a
+> re-consulta barata já existe (consult_security_requirements ≈3K). Executar apenas SE o s5
+> mostrar custo ainda alto OU quando o D-c precisar do braço A do E1. Spec abaixo pronta.
+- **Alter (aditivo):** novo nível `detail: "ultrathin"` abaixo de `minimal`: mesmas regras
+  (conjunto ativado COMPLETO, sem top-k, nada só-id, nunca-silencioso), mas requirements/
+  controls só `id + name (+ type/confidence)` — sem `description`; `evidence_patterns` 0 inline
+  (contagens + rest-ref); `manual_grounding` só `{total_entries, sha, groups_ref}`;
+  `completeness_report` aparado ao essencial. MANTÉM entidades g2 id→nome (âncoras de contexto
+  + invariante 3 via `ids_from`), `relations_ref`, `citations`, refs e `repeat_call_hint`.
+- **Duplo propósito:** braço A do E1 (D-C-ABLATION-BACKLOG: id+nome vs id+nome+descrição
+  comparável só via `detail`) e alvo das re-consultas baratas do s4. Quando o KG publicar
+  `brief`, o ultrathin passa a id+name+brief (verbatim) — nova medição nessa altura.
+- **Gate:** estimativa ~3,0–3,2K típico / ~3,9–4,1K 3-famílias; número hard fixado por medição
+  (+~5%) e ratificado pelo operador. Conjunto citável idêntico a todos os níveis; full/standard/
+  minimal byte-idênticos ao pós-s4; suite + eval qualitativo verdes.
+
 ### s4 — Workflow: turnos baratos, não menos turnos *(depends_on: s3; independente de s2)*
 *(Revisto pela ADENDA: em uso de PRODUÇÃO o loop "obtém contexto → escreve → testa contra o
 contexto → corrige" é legítimo — não se cortam turnos; corta-se o custo de cada turno e de
