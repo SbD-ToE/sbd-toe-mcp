@@ -685,6 +685,22 @@ const PROVENANCE_LEGEND = {
 export type ProvenanceLegend = typeof PROVENANCE_LEGEND;
 
 /**
+ * v2 token diet, s4 — cheap turns, not fewer turns: short note (≈50 tokens)
+ * appended to every `standard`/`minimal` ready payload. The production
+ * write-test-edit loop is legitimate; what must not repeat is the cost of
+ * re-requesting THIS payload — an identical call returns a byte-identical
+ * result (deterministic, tested), so the context already in the session is
+ * the source for the loop. Follow-ups that genuinely need more go through
+ * `detail: "minimal"` or a targeted `consult_security_requirements` call —
+ * never a repeat of the full payload. `full` carries NO hint (byte-identical
+ * to the classic payload, EPIC invariant 1).
+ */
+export const REPEAT_CALL_HINT =
+  "Identical input returns this exact payload (deterministic) — reuse the " +
+  "context already received instead of re-calling; deepen via " +
+  "detail:'minimal' or a targeted consult_security_requirements.";
+
+/**
  * v2 token diet, s3 — reference that replaces the inline
  * `llm_codegen_instructions` + `security_rationale_template` boilerplate at
  * `detail: "standard" | "minimal"` (both stay inline at `full`). The MCP
@@ -773,6 +789,9 @@ export interface PrepareCodegenContextResultReadyDieted {
   citations: CitationsBySource;
   completeness_report: DietedCompletenessReport;
   codegen_instructions_ref: CodegenInstructionsRef;
+  /** s4 — reuse note ({@link REPEAT_CALL_HINT}): identical re-call is
+   * deterministic; the context already received is the loop's source. */
+  repeat_call_hint: string;
   provenance: PrepareCodegenContextResultReady["provenance"];
   debug?: PrepareCodegenContextResultReady["debug"];
 }
@@ -2828,6 +2847,9 @@ function applyStructuralDiet(
     citations: invertCitationMap(result.citation_map),
     completeness_report: completeness,
     codegen_instructions_ref: instructionsRef,
+    // s4: identical re-call is deterministic — point the client back at the
+    // context it already holds (full stays byte-identical: no hint there).
+    repeat_call_hint: REPEAT_CALL_HINT,
     provenance: result.provenance
   };
   if (result.debug) dieted.debug = result.debug;

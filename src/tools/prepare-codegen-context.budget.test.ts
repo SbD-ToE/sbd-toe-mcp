@@ -194,7 +194,8 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
   // evidence 1.054 / citations 169 / scope-com-description 3.076 / entidades
   // 642 / resto 762, total 6.157; f2 = 204 / 450 / 1.054 / 170 / 4.824 / 899 /
   // 757, total 8.358) + ~10% de margem justa. Os TOTAIS são os gates hard do
-  // EPIC — intocados.
+  // EPIC — intocados. s4 (repeat_call_hint, 2026-07-05): +53 tokens medidos na
+  // secção "rest" (f1 762→815, f2 757→810) — absorvidos pelo budget 850.
   standard: {
     fixture1: {
       "g2_context.relations": 150, // s2: relations_ref (lenses trace_sbd_toe_graph)
@@ -228,6 +229,9 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
   // 4.824 / 899 / 755, total 7.639) + ~5% de margem justa — ratificação do
   // operador na validação. O minimal corta face ao standard SÓ serialização
   // de traceability (evidence 10→5, grounding mínimo): −639 (f1) / −719 (f2).
+  // s4 (repeat_call_hint, 2026-07-05): o hint (~53 tokens medidos: rest f1
+  // 760→813, f2 755→808) cai na secção "rest" — rest recalibrado +delta
+  // medido (800→853), TOTAIS intocados (medido pós-s4: 5.571 / 7.692).
   minimal: {
     fixture1: {
       "g2_context.relations": 130, // s2: relations_ref (igual a standard)
@@ -236,7 +240,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       citation_map: 180, // citations invertido (byte-igual a standard)
       activated_scope: 3230, // COMPLETO com description (byte-igual a standard)
       g2_entities: 680, // COMPLETO (byte-igual a standard)
-      rest: 800,
+      rest: 853, // s4: +53 medidos (repeat_call_hint)
       total: 5800 // 🔴 hard s3b revisto (medido 5.518 + ~5%)
     },
     fixture2: {
@@ -246,7 +250,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       citation_map: 180,
       activated_scope: 5070,
       g2_entities: 950,
-      rest: 800,
+      rest: 853, // s4: +53 medidos (repeat_call_hint)
       total: 8000 // 🔴 hard s3b revisto (medido 7.639 + ~5%)
     }
   }

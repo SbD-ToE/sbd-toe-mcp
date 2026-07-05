@@ -958,6 +958,7 @@
     ],
     "note": "Read this MCP resource for llm_codegen_instructions (slots filtered by active_conditions) and security_rationale_template (task = input_echo.task trimmed) — byte-identical to the detail=full inline content — plus the detail_encoding legend for this payload."
   },
+  "repeat_call_hint": "Identical input returns this exact payload (deterministic) — reuse the context already received instead of re-calling; deepen via detail:'minimal' or a targeted consult_security_requirements.",
   "provenance": {
     "runtime_v0": "data/publish/runtime/*.json + data/publish/ontology/*",
     "runtime_v1": "data/publish/runtime/v1/*",
