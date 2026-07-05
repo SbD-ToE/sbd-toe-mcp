@@ -203,6 +203,13 @@ sem refactor SPARQL das tools existentes.
 > payload×turnos), o ultrathin sacrifica o "how" (a alavanca de qualidade do s3), e a
 > re-consulta barata já existe (consult_security_requirements ≈3K). Executar apenas SE o s5
 > mostrar custo ainda alto OU quando o D-c precisar do braço A do E1. Spec abaixo pronta.
+>
+> **REATIVADO no mesmo dia (2026-07-05, decisão do operador): executar já** — o braço E1
+> fica disponível via `detail` desde a beta.2 e o custo de implementação é baixo (pipeline
+> dieted já ramifica). Gate por medição + ratificação, como no s3b.
+> **RATIFICADO (2026-07-05, operador): 3.870 típico / 4.840 3-famílias** (medido 3.688/4.606
+> +5%; acima da estimativa ~3–3,2K pelo chão incompressível: scope completo sem descriptions
+> 1.712/2.293 + âncoras g2 + referências nunca-silenciosas). −80,5%/−81,4% vs full.
 - **Alter (aditivo):** novo nível `detail: "ultrathin"` abaixo de `minimal`: mesmas regras
   (conjunto ativado COMPLETO, sem top-k, nada só-id, nunca-silencioso), mas requirements/
   controls só `id + name (+ type/confidence)` — sem `description`; `evidence_patterns` 0 inline

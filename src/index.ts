@@ -1242,7 +1242,7 @@ class McpRuntime {
               },
               detail: {
                 type: "string",
-                enum: ["minimal", "standard", "full"],
+                enum: ["ultrathin", "minimal", "standard", "full"],
                 description:
                   "Response encoding level (v2 token diet). 'full' (default) returns the classic payload, " +
                   "byte-identical to previous releases. 'standard'/'minimal' return the SAME citable ID set " +
@@ -1261,7 +1261,13 @@ class McpRuntime {
                   "'minimal' keeps the SAME complete activated scope as 'standard' (no ranking/subsetting) " +
                   "and trims only traceability serialization: evidence_patterns cap 5 (vs 10) and " +
                   "manual_grounding as counts + shared manual_commit_sha + executable groups_ref " +
-                  "(same input, detail='standard')."
+                  "(same input, detail='standard'). 'ultrathin' goes one level below 'minimal' with the same " +
+                  "rules (complete activated set, nothing id-only, never silent): requirements/controls keep " +
+                  "id+name(+type/domain/control_type/confidence) but drop the published description " +
+                  "(executable activated_scope.descriptions_ref, detail='minimal'), evidence_patterns are 0 " +
+                  "inline (counts + rest-ref to detail='minimal'), manual_grounding is " +
+                  "{total_entries, manual_commit_sha, groups_ref} and completeness_report diagnostics become " +
+                  "exact counts (+ executable ref)."
               },
               include_relations: {
                 type: "boolean",

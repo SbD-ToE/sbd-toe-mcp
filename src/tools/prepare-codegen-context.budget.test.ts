@@ -22,6 +22,10 @@
  *   - `minimal`  = s3b REVISTO (⟳ ADENDA 2026-07-05: sem top-N; o alvo
  *                  original ≤2.000 caiu com o desenho top-N — totais fixados
  *                  por medição, ver BUDGETS.minimal).
+ *   - `ultrathin`= s3c (ADENDA 2026-07-05, reativado pelo operador: id+name
+ *                  sem descriptions, evidence 0 inline, grounding agregado —
+ *                  totais fixados por medição +~5%, ver BUDGETS.ultrathin;
+ *                  ratificação do operador na validação).
  *
  * O skip é condicional em runtime, em dois estágios (s1 aterrou 2026-07-05):
  *   1. probe `detailParamSupported` — o parâmetro `detail` existe (s1);
@@ -147,7 +151,7 @@ function sectionTokens(
 // Budgets declarados (tokens ≈ chars/4) por nível de `detail` e por fixture
 // ---------------------------------------------------------------------------
 
-type DetailLevel = "full" | "standard" | "minimal";
+type DetailLevel = "full" | "standard" | "minimal" | "ultrathin";
 type SectionBudgets = Record<SectionName, number> & { total: number };
 
 /**
@@ -253,6 +257,43 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       rest: 853, // s4: +53 medidos (repeat_call_hint)
       total: 8000 // 🔴 hard s3b revisto (medido 7.639 + ~5%)
     }
+  },
+  // ultrathin: s3c (ADENDA 2026-07-05 do operador, REATIVADO no mesmo dia —
+  // EPIC §s3c): abaixo do minimal, MESMAS regras (conjunto ativado COMPLETO,
+  // sem top-k, nada só-id, nunca-silencioso), mas sem `description` nos
+  // requirements/controls (descriptions_ref executável → detail="minimal"),
+  // evidence_patterns 0 inline (contagens + rest-ref → detail="minimal"),
+  // manual_grounding só {total_entries, manual_commit_sha, groups_ref} e
+  // completeness_report com os arrays de diagnóstico → contagens exatas
+  // (+ v1_diagnostics_ref). Budgets FIXADOS POR MEDIÇÃO do s3c (2026-07-05,
+  // dist: f1 = relations_ref 121 / grounding-ultrathin 156 / evidence-0 1 /
+  // citations 169 / scope-sem-description 1.712 / entidades 642 / resto 887,
+  // total 3.688; f2 = 204 / 156 / 1 / 169 / 2.293 / 897 / 886, total 4.606)
+  // + ~5% de margem justa — ratificação do operador na validação (a
+  // estimativa do EPIC ~3,0–3,2K/3,9–4,1K era projeção; o número hard é o
+  // medido, como no s3b). O corte face ao minimal é só serialização:
+  // −1.883 (f1) / −3.086 (f2) — nenhum id/name sai do payload.
+  ultrathin: {
+    fixture1: {
+      "g2_context.relations": 130, // s2: relations_ref (byte-igual a standard/minimal)
+      manual_grounding: 165, // s3c: forma agregada (total + sha + groups_ref)
+      "g2_context.evidence_patterns": 5, // s3c: 0 inline ([] serializado)
+      citation_map: 180, // citations invertido (byte-igual aos outros dieted)
+      activated_scope: 1800, // COMPLETO, sem description (+descriptions_ref)
+      g2_entities: 680, // COMPLETO (byte-igual a standard/minimal)
+      rest: 935, // completeness com contagens + refs executáveis
+      total: 3870 // 🔴 hard s3c (medido 3.688 + ~5%)
+    },
+    fixture2: {
+      "g2_context.relations": 215,
+      manual_grounding: 165,
+      "g2_context.evidence_patterns": 5,
+      citation_map: 180,
+      activated_scope: 2410,
+      g2_entities: 950,
+      rest: 935,
+      total: 4840 // 🔴 hard s3c (medido 4.606 + ~5%)
+    }
   }
 };
 
@@ -332,6 +373,36 @@ function s3bMinimalLanded(result: PrepareCodegenContextResultReady): boolean {
   return result.completeness_report.evidence_pattern_cap <= 5;
 }
 
+/**
+ * s3c (ultrathin — ADENDA 2026-07-05, reativado pelo operador no mesmo dia):
+ * marcador real do slice — os requirements continuam um array COMPLETO (sem
+ * top-k) mas SEM o campo `description`, e evidence_patterns vai a 0 inline
+ * (returned == 0, capped == total). Sentinela nova; as sentinelas s2/s3/s3b
+ * e os budgets/totais standard/minimal ficam intocados.
+ */
+function s3cUltrathinLanded(result: PrepareCodegenContextResultReady): boolean {
+  const requirements = result.activated_scope.requirements as ReadonlyArray<
+    Record<string, unknown>
+  >;
+  return (
+    requirements.length > 0 &&
+    requirements.every((item) => !("description" in item)) &&
+    result.completeness_report.evidence_patterns_returned === 0
+  );
+}
+
+/** Probe s3c: pré-s3c, detail="ultrathin" falha na validação (-32602). */
+function ultrathinParamSupported(fixture: BaselineFixture): boolean {
+  try {
+    return (
+      handlePrepareCodegenContext(withDetail(fixture.input, "ultrathin")).status ===
+      "ready_for_codegen"
+    );
+  } catch {
+    return false;
+  }
+}
+
 /** Resolve um path `ids_from` sobre o próprio payload dieted (mini-sintaxe
  * documentada no resource sbd://toe/codegen-instructions/{mode},
  * detail_encoding.citations). */
@@ -369,6 +440,7 @@ function assertSectionBudgets(measured: SectionTokens, budgets: SectionBudgets):
 describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-diet s0)", () => {
   const results = new Map<BaselineFixture["name"], PrepareCodegenContextResultReady>();
   let detailSupported = false;
+  let ultrathinSupported = false;
 
   beforeAll(() => {
     clearG2RuntimeCacheForTests();
@@ -377,6 +449,7 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
       results.set(fixture.name, runFixture(fixture));
     }
     detailSupported = detailParamSupported(FIXTURES[0]!);
+    ultrathinSupported = ultrathinParamSupported(FIXTURES[0]!);
   });
 
   describe.each(FIXTURES)("$label", (fixture) => {
@@ -439,6 +512,22 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
       assertSectionBudgets(sectionTokens(result), BUDGETS.minimal[fixture.name]);
     });
 
+    it("respeita os budgets do nível `ultrathin` (s3c — fixados por medição +~5%; ratificação do operador na validação)", (ctx) => {
+      if (!detailSupported || !ultrathinSupported) {
+        ctx.skip(); // parâmetro `detail`/nível `ultrathin` ainda não existe (pré-s1/pré-s3c)
+        return;
+      }
+      const result = handlePrepareCodegenContext(withDetail(fixture.input, "ultrathin"));
+      expectReady(result);
+      if (!s3cUltrathinLanded(result)) {
+        // Sentinela s3c (requirements sem `description` + evidence 0 inline);
+        // budgets ultrathin só vinculam quando o slice aterrar.
+        ctx.skip();
+        return;
+      }
+      assertSectionBudgets(sectionTokens(result), BUDGETS.ultrathin[fixture.name]);
+    });
+
     it("conjunto de ids citáveis idêntico em todos os níveis de `detail` [pendente s1]", (ctx) => {
       if (!detailSupported) {
         ctx.skip(); // parâmetro `detail` ainda não existe (pré-s1)
@@ -449,8 +538,14 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
       // citations.<source>.ids_from referencia-os (run-length source_data
       // alinhado 1:1) — extração via a mesma regra documentada no resource
       // (detail_encoding.citations), com fallback para ids explícitos.
+      // s3c: o loop inclui `ultrathin` (mesma regra, sem enfraquecimento —
+      // os ids continuam a vir das secções COMPLETAS do próprio payload).
       const fullIds = Object.keys(results.get(fixture.name)!.citation_map).sort();
-      for (const detail of ["standard", "minimal"] as const) {
+      const levels: ReadonlyArray<"standard" | "minimal" | "ultrathin"> =
+        ultrathinSupported
+          ? ["standard", "minimal", "ultrathin"]
+          : ["standard", "minimal"];
+      for (const detail of levels) {
         const result = handlePrepareCodegenContext(withDetail(fixture.input, detail));
         expectReady(result);
         const shaped = result as unknown as {

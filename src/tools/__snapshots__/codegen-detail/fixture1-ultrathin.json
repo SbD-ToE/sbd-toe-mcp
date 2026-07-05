@@ -1,0 +1,556 @@
+{
+  "status": "ready_for_codegen",
+  "mode": "codegen",
+  "input_echo": {
+    "task": "Adicionar validação de payload e autenticação ao endpoint POST /users/:id/email",
+    "risk_level": "L2",
+    "mode": "codegen",
+    "detail": "ultrathin"
+  },
+  "activation_trace_ref": {
+    "entries": 9,
+    "note": "activation_trace elided at detail=ultrathin — re-call with debug=true to include it (always inline at detail=full)."
+  },
+  "provenance_legend": {
+    "note": "Deduplicated encoding (detail=ultrathin): same rules as detail=standard/minimal — per-item `source` elided, requirement `category` = requirement_id prefix, g2_context entity lists grouped as {slice_id: {entity_id: name|null}}, citations ids via ids_from payload paths — PLUS: published `description` fields elided (executable activated_scope.descriptions_ref, detail='minimal'), evidence_patterns 0 inline (counts + rest-ref in completeness_report), manual_grounding aggregate-only (total + sha + groups_ref) and completeness diagnostics as exact counts (+ ref). Nothing silently dropped. Full legend: MCP resource sbd://toe/codegen-instructions/{mode}, section detail_encoding."
+  },
+  "activated_scope": {
+    "requirements": [
+      {
+        "requirement_id": "ACC-001",
+        "name": "Controlo de acesso RBAC",
+        "type": "base"
+      },
+      {
+        "requirement_id": "ACC-002",
+        "name": "Princípio do menor privilégio",
+        "type": "base"
+      },
+      {
+        "requirement_id": "ACC-003",
+        "name": "Bloqueio e auditoria de acessos ilegítimos",
+        "type": "base"
+      },
+      {
+        "requirement_id": "ACC-004",
+        "name": "Separação de perfis",
+        "type": "base"
+      },
+      {
+        "requirement_id": "ACC-005",
+        "name": "Controlo de acesso a APIs e serviços",
+        "type": "base"
+      },
+      {
+        "requirement_id": "ACC-006",
+        "name": "Protecção de recursos sensíveis",
+        "type": "base"
+      },
+      {
+        "requirement_id": "ACC-007",
+        "name": "Validação do modelo de acesso",
+        "type": "base"
+      },
+      {
+        "requirement_id": "ACC-008",
+        "name": "Revogação em tempo real",
+        "type": "base"
+      },
+      {
+        "requirement_id": "ACC-010",
+        "name": "Revisão periódica de permissões",
+        "type": "base"
+      },
+      {
+        "requirement_id": "API-001",
+        "name": "Autenticação e autorização de chamadas API",
+        "type": "base"
+      },
+      {
+        "requirement_id": "API-002",
+        "name": "Endpoints desnecessários removidos ou ocultos",
+        "type": "base"
+      },
+      {
+        "requirement_id": "API-003",
+        "name": "Validação de input em APIs",
+        "type": "base"
+      },
+      {
+        "requirement_id": "API-004",
+        "name": "Rate limiting e detecção de abusos",
+        "type": "base"
+      },
+      {
+        "requirement_id": "API-005",
+        "name": "Protecção por TLS e certificados actualizados",
+        "type": "base"
+      },
+      {
+        "requirement_id": "API-006",
+        "name": "Verificação de SDKs e wrappers utilizados",
+        "type": "base"
+      },
+      {
+        "requirement_id": "API-007",
+        "name": "Logging e auditoria de chamadas externas",
+        "type": "base"
+      },
+      {
+        "requirement_id": "AUT-001",
+        "name": "MFA obrigatório",
+        "type": "base"
+      },
+      {
+        "requirement_id": "AUT-002",
+        "name": "Política de passwords",
+        "type": "base"
+      },
+      {
+        "requirement_id": "AUT-003",
+        "name": "Protecção contra brute force",
+        "type": "base"
+      },
+      {
+        "requirement_id": "AUT-004",
+        "name": "Revogação activa de sessões",
+        "type": "base"
+      },
+      {
+        "requirement_id": "AUT-005",
+        "name": "Expiração automática de sessão",
+        "type": "base"
+      },
+      {
+        "requirement_id": "AUT-006",
+        "name": "Proibição de credenciais em claro",
+        "type": "base"
+      },
+      {
+        "requirement_id": "AUT-007",
+        "name": "Suporte a autenticação federada",
+        "type": "base"
+      },
+      {
+        "requirement_id": "AUT-008",
+        "name": "Step-up para acções sensíveis",
+        "type": "base"
+      },
+      {
+        "requirement_id": "AUT-009",
+        "name": "Reautenticação para alterações críticas",
+        "type": "base"
+      },
+      {
+        "requirement_id": "AUT-010",
+        "name": "Alerta de acessos suspeitos",
+        "type": "base"
+      },
+      {
+        "requirement_id": "ERR-001",
+        "name": "Erros não expõem dados sensíveis",
+        "type": "base"
+      },
+      {
+        "requirement_id": "ERR-002",
+        "name": "Mensagens genéricas no cliente",
+        "type": "base"
+      },
+      {
+        "requirement_id": "ERR-003",
+        "name": "Não revelar existência de recursos",
+        "type": "base"
+      },
+      {
+        "requirement_id": "ERR-004",
+        "name": "Mensagens localizadas e seguras",
+        "type": "base"
+      },
+      {
+        "requirement_id": "ERR-005",
+        "name": "Gestão padronizada e centralizada",
+        "type": "base"
+      },
+      {
+        "requirement_id": "ERR-006",
+        "name": "Testes automáticos para erros excessivos",
+        "type": "base"
+      },
+      {
+        "requirement_id": "ERR-007",
+        "name": "Logs de erro com contexto pseudonimizado",
+        "type": "base"
+      },
+      {
+        "requirement_id": "SES-001",
+        "name": "Expiração automática por inactividade",
+        "type": "base"
+      },
+      {
+        "requirement_id": "SES-002",
+        "name": "Logout manual e após alteração de credenciais",
+        "type": "base"
+      },
+      {
+        "requirement_id": "SES-003",
+        "name": "Identificadores de sessão imprevisíveis",
+        "type": "base"
+      },
+      {
+        "requirement_id": "SES-004",
+        "name": "Transmissão segura dos tokens",
+        "type": "base"
+      },
+      {
+        "requirement_id": "SES-005",
+        "name": "Ligação da sessão ao contexto do cliente",
+        "type": "base"
+      },
+      {
+        "requirement_id": "SES-006",
+        "name": "Revogação explícita da sessão",
+        "type": "base"
+      },
+      {
+        "requirement_id": "SES-007",
+        "name": "Prevenção de sessões long-lived",
+        "type": "base"
+      },
+      {
+        "requirement_id": "SES-008",
+        "name": "Scope, TTL e revogação de tokens JWT",
+        "type": "base"
+      },
+      {
+        "requirement_id": "VAL-001",
+        "name": "Validação geral de entradas externas",
+        "type": "base"
+      },
+      {
+        "requirement_id": "VAL-002",
+        "name": "Uso de whitelists em vez de blacklists",
+        "type": "base"
+      },
+      {
+        "requirement_id": "VAL-003",
+        "name": "Validadores de esquema (JSON/XML schema)",
+        "type": "base"
+      },
+      {
+        "requirement_id": "VAL-004",
+        "name": "Sanitização contra injecções",
+        "type": "base"
+      },
+      {
+        "requirement_id": "VAL-005",
+        "name": "Validação antes do uso interno",
+        "type": "base"
+      },
+      {
+        "requirement_id": "VAL-006",
+        "name": "Mensagens de erro seguras na validação",
+        "type": "base"
+      },
+      {
+        "requirement_id": "VAL-007",
+        "name": "Testes automáticos contra entradas maliciosas",
+        "type": "base"
+      },
+      {
+        "requirement_id": "VAL-008",
+        "name": "Codificação/escaping de output em renderização (anti-XSS)",
+        "type": "base"
+      }
+    ],
+    "controls": [
+      {
+        "control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+        "name": "Desenvolvimento seguro e validação de código",
+        "domain": "code_integrity",
+        "control_type": "preventive",
+        "confidence": "direct"
+      },
+      {
+        "control_id": "CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf",
+        "name": "Capacitação e onboarding de segurança",
+        "domain": "governance",
+        "control_type": "governance",
+        "confidence": "direct"
+      },
+      {
+        "control_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+        "name": "Classificação e governação por risco",
+        "domain": "governance",
+        "control_type": "governance",
+        "confidence": "direct"
+      },
+      {
+        "control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "name": "Gestão de identidades, acessos e ownership",
+        "domain": "identity",
+        "control_type": "preventive",
+        "confidence": "direct"
+      },
+      {
+        "control_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+        "name": "Inventário e análise de dependências",
+        "domain": "supply_chain",
+        "control_type": "detective",
+        "confidence": "direct"
+      },
+      {
+        "control_id": "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
+        "name": "Integridade e governação de pipelines",
+        "domain": "code_integrity",
+        "control_type": "preventive",
+        "confidence": "derived"
+      },
+      {
+        "control_id": "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4",
+        "name": "Arquitetura segura e rastreável",
+        "domain": "governance",
+        "control_type": "governance",
+        "confidence": "derived"
+      },
+      {
+        "control_id": "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
+        "name": "Governação de fornecedores e exceções",
+        "domain": "governance",
+        "control_type": "governance",
+        "confidence": "derived"
+      },
+      {
+        "control_id": "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0",
+        "name": "Threat modeling e gestão de risco",
+        "domain": "governance",
+        "control_type": "governance",
+        "confidence": "derived"
+      }
+    ],
+    "slices": [
+      {
+        "slice_id": "ASC-02",
+        "objective_family": "ACO-IAT",
+        "scope": "identity_access_and_session_trust",
+        "contract_status": "working_contract"
+      },
+      {
+        "slice_id": "ASC-07",
+        "objective_family": "ACO-IVF",
+        "scope": "input_output_data_safety_and_controlled_failure",
+        "contract_status": "working_contract"
+      }
+    ],
+    "regulatory_obligations": [],
+    "descriptions_ref": {
+      "tool": "prepare_sbd_toe_codegen_context",
+      "with": {
+        "detail": "minimal"
+      },
+      "note": "Published `description` fields (the 'how') elided at detail=ultrathin — the requirement/control lists themselves are COMPLETE (same ids, same order, name always present). Re-call with the same input at detail='minimal' for the same complete scope WITH the verbatim published descriptions (requirements + direct controls)."
+    }
+  },
+  "g2_context": {
+    "control_objectives": {
+      "ASC-02": {
+        "ACO-IAT-001": "Authentication Strength And Identity Assurance",
+        "ACO-IAT-002": "Authorization Policy Integrity And Least Privilege",
+        "ACO-IAT-003": "Access Revocation And Privilege Lifecycle Integrity",
+        "ACO-IAT-004": "Session And Token Trust Boundaries",
+        "ACO-IAT-005": "API Caller Trust And Service Boundary Enforcement",
+        "ACO-IAT-006": "Access Abuse Detection And Auditability",
+        "ACO-IAT-007": "Identity And Access Control Integrity"
+      },
+      "ASC-07": {
+        "ACO-IVF-001": "External Input Contract Validation",
+        "ACO-IVF-002": "Schema, Type And Allowlist Discipline",
+        "ACO-IVF-003": "Injection-Resistant Input Handling And Dangerous Pattern Exclusion",
+        "ACO-IVF-004": "Validation Before Internal Use And Trust Crossing",
+        "ACO-IVF-005": "Controlled Failure And Non-Revealing Client Error Surface",
+        "ACO-IVF-006": "Centralized Error Handling And Sensitive Error Logging Hygiene",
+        "ACO-IVF-008": "Context-Aware Output Encoding And Rendering Safety",
+        "ACO-IVF-007": "Input Validation And Safe Failure Integrity"
+      }
+    },
+    "mechanisms": {
+      "ASC-02": {
+        "ACM-IAT-001": "Authentication And Federation Protocols",
+        "ACM-IAT-002": "Access Policy Enforcement",
+        "ACM-IAT-003": "Periodic Review And Access Audit",
+        "ACM-IAT-004": "Short-Lived Token Controls",
+        "ACM-IAT-005": "API Gateway Mutual Authentication",
+        "ACM-IAT-006": "Structured Logging And Effective Configuration Recording"
+      },
+      "ASC-07": {
+        "ACM-IVF-001": "Code Review For Input And Error Discipline",
+        "ACM-IVF-002": "Static Rulepacks And Security Linters",
+        "ACM-IVF-003": "Schema And Contract Validators",
+        "ACM-IVF-004": "Centralized Error Translation And Redaction",
+        "ACM-IVF-005": "Context-Aware Encoder Selection And Application"
+      }
+    },
+    "practices": {
+      "ASC-02": {
+        "ACP-IAT-001": "Strong Authentication And Step-Up Enforcement",
+        "ACP-IAT-002": "Least-Privilege Authorization Governance",
+        "ACP-IAT-003": "Access Review And Timely Revocation",
+        "ACP-IAT-004": "Bounded Session And Token Management",
+        "ACP-IAT-005": "Authenticated API Boundary Enforcement",
+        "ACP-IAT-006": "Access Abuse Monitoring And Audit Trail"
+      },
+      "ASC-07": {
+        "ACP-IVF-001": "Boundary Input Validation",
+        "ACP-IVF-002": "Schema And Allowlist Enforcement",
+        "ACP-IVF-003": "Dangerous Pattern Exclusion",
+        "ACP-IVF-004": "Pre-Use Data Validation Discipline",
+        "ACP-IVF-005": "Non-Revealing Error Surface Control",
+        "ACP-IVF-006": "Centralized Error Governance",
+        "ACP-IVF-007": "Context-Aware Output Encoding At Rendering Boundaries"
+      }
+    },
+    "artifacts": {
+      "ASC-02": {
+        "ACA-IAT-001": null,
+        "ACA-IAT-002": null,
+        "ACA-IAT-003": null,
+        "ACA-IAT-004": null,
+        "ACA-IAT-005": null,
+        "ACA-IAT-006": null
+      },
+      "ASC-07": {
+        "ACA-IVF-001": null,
+        "ACA-IVF-002": null,
+        "ACA-IVF-003": null,
+        "ACA-IVF-004": null,
+        "ACA-IVF-005": null,
+        "ACA-IVF-006": null
+      }
+    },
+    "relations_ref": {
+      "tool": "trace_sbd_toe_graph",
+      "lenses": [
+        {
+          "lens": "slice_implementation",
+          "anchor": "ASC-02"
+        },
+        {
+          "lens": "slice_implementation",
+          "anchor": "ASC-07"
+        }
+      ],
+      "total_relations": 106,
+      "coverage": {
+        "via_lenses": 70,
+        "implicit_in_entities": 36,
+        "residual_inline": 0
+      },
+      "note": "Inline g2_context.relations elided; execute each listed trace_sbd_toe_graph {lens, anchor} call to recover them, or re-call with include_relations=true. Encoding details: MCP resource codegen-instructions, detail_encoding.relations_ref."
+    },
+    "evidence_patterns": []
+  },
+  "manual_grounding": {
+    "total_entries": 51,
+    "manual_commit_sha": "09b20f6fd2714a44b974d4ba38612f4dfdc73c11",
+    "groups_ref": {
+      "tool": "prepare_sbd_toe_codegen_context",
+      "with": {
+        "detail": "standard"
+      },
+      "note": "Grounding group list elided at detail=ultrathin (total_entries is the exact flat entry count; manual_commit_sha is the shared published manual commit). The grounding id set is already in this payload — every grounding id is an entity-id key of the g2_context maps. Re-call with the same input at detail='standard' for the full (role, chapter, file) groups with per-group v1_entity_ids; detail='minimal' returns the groups with per-group counts."
+    }
+  },
+  "regulatory_overlay": {
+    "frameworks": [],
+    "obligations": [],
+    "mappings": [],
+    "playbooks": []
+  },
+  "citations": {
+    "runtime_v0": {
+      "source_data": {
+        "data/publish/runtime/requirements.json": 49,
+        "data/publish/runtime/controls.json": 9
+      },
+      "ids_from": [
+        "activated_scope.requirements[].requirement_id",
+        "activated_scope.controls[].control_id"
+      ]
+    },
+    "runtime_v1": {
+      "source_data": {
+        "data/publish/runtime/v1/slices.json": 2,
+        "data/publish/runtime/v1/control_objectives.json": 15,
+        "data/publish/runtime/v1/mechanisms.json": 11,
+        "data/publish/runtime/v1/practices.json": 13,
+        "data/publish/runtime/v1/artifacts.json": 12
+      },
+      "ids_from": [
+        "activated_scope.slices[].slice_id",
+        "keys(g2_context.control_objectives[slice])",
+        "keys(g2_context.mechanisms[slice])",
+        "keys(g2_context.practices[slice])",
+        "keys(g2_context.artifacts[slice])"
+      ]
+    }
+  },
+  "completeness_report": {
+    "expected_objectives": 15,
+    "returned_objectives": 15,
+    "m_recall": 1,
+    "expected_mechanisms": 11,
+    "returned_mechanisms": 11,
+    "expected_practices": 13,
+    "returned_practices": 13,
+    "expected_artifacts": 12,
+    "returned_artifacts": 12,
+    "named_v1_entities": 39,
+    "unnamed_v1_entities": 12,
+    "evidence_patterns_total": 173,
+    "evidence_patterns_returned": 0,
+    "evidence_patterns_capped": 173,
+    "evidence_pattern_cap": 0,
+    "evidence_patterns_rest": {
+      "tool": "prepare_sbd_toe_codegen_context",
+      "with": {
+        "detail": "minimal"
+      },
+      "note": "No evidence pattern goes inline at detail=ultrathin (returned=0; capped=total). Re-call with the same input at detail='minimal' for the deterministic top-5 (cheapest level that returns patterns inline); detail='standard' returns the top-10 and detail='full' the classic top-25 (each list is a deterministic prefix of the next)."
+    },
+    "v1_consistency_mismatches_count": 0,
+    "v1_manifest_warnings_count": 5,
+    "v1_diagnostics_ref": {
+      "tool": "prepare_sbd_toe_codegen_context",
+      "with": {
+        "detail": "minimal"
+      },
+      "note": "v1_consistency_mismatches/v1_manifest_warnings texts elided at detail=ultrathin (exact counts inline). Re-call with the same input at detail='minimal' for the full text arrays in completeness_report."
+    }
+  },
+  "codegen_instructions_ref": {
+    "resource": "sbd://toe/codegen-instructions/codegen",
+    "active_conditions": [
+      "risk_level:L2"
+    ],
+    "note": "Read this MCP resource for llm_codegen_instructions (slots filtered by active_conditions) and security_rationale_template (task = input_echo.task trimmed) — byte-identical to the detail=full inline content — plus the detail_encoding legend for this payload."
+  },
+  "repeat_call_hint": "Identical input returns this exact payload (deterministic) — reuse the context already received instead of re-calling; deepen via detail:'minimal' or a targeted consult_security_requirements.",
+  "provenance": {
+    "runtime_v0": "data/publish/runtime/*.json + data/publish/ontology/*",
+    "runtime_v1": "data/publish/runtime/v1/*",
+    "overlay": "absent"
+  },
+  "next": [
+    {
+      "intent": "cite the citation_map and fill the rationale as you implement",
+      "tool": "resolve_entities",
+      "with": "the cited ids",
+      "kind": "structural"
+    },
+    {
+      "intent": "check the threats relevant to this work",
+      "tool": "get_threat_landscape",
+      "with": "risk_level + concerns",
+      "kind": "semantic"
+    }
+  ]
+}
