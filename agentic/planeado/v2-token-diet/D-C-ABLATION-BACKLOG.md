@@ -48,6 +48,27 @@ Três eixos independentes:
 e a regra "verbatim" do epic). Uma `description_en` só existe como campo
 publicado do bundle upstream.
 
+## E3 — Âncoras em standards que o LLM conhece (CWE/ASVS/OWASP)
+
+**Ideia do operador (2026-07-05):** referenciar standards que o LLM já tem
+internalizados do pré-treino — `CWE-308`, `ASVS 2.8.1`, OWASP Top 10 — junto
+de cada requirement/threat. Propriedade única entre as alavancas: é a única
+que REDUZ tokens e AUMENTA contexto em simultâneo (um id CWE custa ~4 tokens
+e desbloqueia conhecimento que a description não precisa de repetir).
+
+- **Estado no bundle v1.5.0 (verificado 2026-07-05):** requirements sem
+  qualquer mapeamento CWE/ASVS/OWASP; `mitigated_threats.json` tem campo
+  `cwe` mas quase sempre `null` (~5 menções CWE em todo o publish).
+  ⇒ é enriquecimento do KG upstream (campo publicado, curado, verbatim),
+  não deste repo.
+- **Experiência (quando o campo existir):** braço com `{id, name, cwe/asvs}`
+  vs braço com description — mede se a âncora externa substitui, complementa
+  ou supera o "how" em PT. Cruza com E1/E2 (a âncora é language-neutral,
+  o que também responde parcialmente ao E2).
+- **Cautela:** mapeamentos CWE/ASVS têm de ser curados upstream (mapeamento
+  errado é pior que ausente — o LLM confia no que "conhece"); nunca gerados
+  aqui nem pelo LLM em runtime.
+
 ## Pacote de pedidos ao KG upstream (juntar num só pedido)
 
 | Pedido | Origem | Estado |
@@ -55,6 +76,7 @@ publicado do bundle upstream.
 | Campo `brief` por requirement (cadeia id → brief → prosa) | decisão do operador no s3b revisto | a formular |
 | Corrigir arestas órfãs `ACM-SLG-005`/`ACM-SLG-006` (relations.jsonl referencia ids ausentes de mechanisms.json, bundle v1.5.0) | achado do s2, verificado pelo guardian | a reportar |
 | `description_en` (bundle bilingue) | E2 | condicional aos resultados do E2/custo medido |
+| Mapeamento curado requirement/threat → CWE/ASVS/OWASP (campo publicado) | E3, ideia do operador | a formular; preencher também o campo `cwe` existente em mitigated_threats |
 
 ## Ordem
 
