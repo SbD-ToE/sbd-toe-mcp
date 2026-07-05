@@ -1236,6 +1236,19 @@ class McpRuntime {
                 description:
                   "When true (and overlay is published), enriches the response with regulatory_overlay context."
               },
+              detail: {
+                type: "string",
+                enum: ["minimal", "standard", "full"],
+                description:
+                  "Response encoding level (v2 token diet). 'full' (default) returns the classic payload, " +
+                  "byte-identical to previous releases. 'standard'/'minimal' return the SAME citable ID set " +
+                  "with a deduplicated encoding: `citations` grouped by source (citations.<source>.ids + " +
+                  "run-length source_data) replaces `citation_map`, `manual_grounding` is grouped by " +
+                  "(rastreabilidade_role, manual_chapter, manual_file, manual_commit_sha) with v1_entity_ids " +
+                  "per group, and a top-level `provenance_legend` replaces the per-item `source` fields. " +
+                  "No information is lost. In this beta, 'minimal' and 'standard' are identical (they diverge " +
+                  "in later 0.20.x betas)."
+              },
               debug: {
                 type: "boolean",
                 description: "When true, includes rejected_candidates and trace notes in the output."

@@ -21,10 +21,14 @@
  *                  3-famílias). SKIPPED até o parâmetro `detail` existir.
  *   - `minimal`  = alvo s3b (total ≤2.000). SKIPPED até `detail` existir.
  *
- * O skip é condicional à existência do parâmetro `detail` no handler (probe em
- * runtime, ver `detailParamSupported`): quando s1–s3b aterrarem, os testes
- * `standard`/`minimal` ativam-se sozinhos — não é preciso mexer neste ficheiro
- * (só recalibrar os budgets POR SECÇÃO provisórios, ver nota no BUDGETS).
+ * O skip é condicional em runtime, em dois estágios (s1 aterrou 2026-07-05):
+ *   1. probe `detailParamSupported` — o parâmetro `detail` existe (s1);
+ *   2. sentinelas por slice (`s2RelationsRefLanded`/`s3CapsLanded`/
+ *      `s3bMinimalLanded`) — os TOTAIS hard standard/minimal só vinculam
+ *      quando os slices que cortam as secções pesadas aterrarem (s2+s3 para
+ *      standard; s3b para minimal). Quando aterrarem, os testes ativam-se
+ *      sozinhos (só recalibrar os budgets POR SECÇÃO provisórios, ver nota
+ *      no BUDGETS — nunca baixar os TOTAIS).
  */
 import { beforeAll, describe, expect, it } from "vitest";
 
@@ -252,6 +256,36 @@ function detailParamSupported(fixture: BaselineFixture): boolean {
   return JSON.stringify(probe) !== JSON.stringify(withoutDetail);
 }
 
+/**
+ * Sentinelas por slice (s1 aterrou; ver EPIC §Slices). O parâmetro `detail`
+ * existe desde o s1 (dedup estrutural), mas os TOTAIS hard standard/minimal
+ * só são alcançáveis com os slices que cortam as secções pesadas. Os budgets
+ * NÃO são baixados nem os testes removidos — ficam skip até a sentinela do
+ * slice correspondente aterrar, e ativam-se sozinhos nesse momento:
+ *
+ *  - s2 (relations on-demand): `g2_context.relations` deixa de vir inline em
+ *    `standard` (passa a `relations_ref`). Sentinela: deixa de ser um array.
+ *  - s3 (caps/boilerplate): cap de evidence_patterns desce 25→10 em
+ *    `standard`. Sentinela: `completeness_report.evidence_pattern_cap <= 10`.
+ *  - s3b (minimal codegen-lean): requirements top-N com omissão explícita
+ *    (padrão total/returned/omitted) em `minimal`. Sentinela: o campo deixa
+ *    de ser um array plano completo.
+ *
+ * Se a forma final de um slice divergir da sentinela aqui prevista, o
+ * executor desse slice ajusta a sentinela NESTE ficheiro (nunca os budgets).
+ */
+function s2RelationsRefLanded(result: PrepareCodegenContextResultReady): boolean {
+  return !Array.isArray(result.g2_context.relations);
+}
+
+function s3CapsLanded(result: PrepareCodegenContextResultReady): boolean {
+  return result.completeness_report.evidence_pattern_cap <= 10;
+}
+
+function s3bMinimalLanded(result: PrepareCodegenContextResultReady): boolean {
+  return !Array.isArray(result.activated_scope.requirements);
+}
+
 function assertSectionBudgets(measured: SectionTokens, budgets: SectionBudgets): void {
   for (const section of Object.keys(budgets) as (keyof SectionBudgets)[]) {
     expect(
@@ -311,6 +345,13 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
       }
       const result = handlePrepareCodegenContext(withDetail(fixture.input, "standard"));
       expectReady(result);
+      if (!s2RelationsRefLanded(result) || !s3CapsLanded(result)) {
+        // s1 (dedup estrutural) aterrou, mas o total ≤6.5K/8.5K só é
+        // alcançável com s2 (relations→ref, −4.3K) + s3 (caps/boilerplate)
+        // — ver EPIC §Slices. Sentinelas acima; budgets intactos.
+        ctx.skip();
+        return;
+      }
       assertSectionBudgets(sectionTokens(result), BUDGETS.standard[fixture.name]);
     });
 
@@ -321,6 +362,13 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
       }
       const result = handlePrepareCodegenContext(withDetail(fixture.input, "minimal"));
       expectReady(result);
+      if (!s3bMinimalLanded(result)) {
+        // s1 trata `minimal` como `standard`; o alvo ≤2K só chega com o
+        // perfil codegen-lean do s3b (top-N + omissão explícita). Sentinela
+        // acima; budgets intactos.
+        ctx.skip();
+        return;
+      }
       assertSectionBudgets(sectionTokens(result), BUDGETS.minimal[fixture.name]);
     });
 

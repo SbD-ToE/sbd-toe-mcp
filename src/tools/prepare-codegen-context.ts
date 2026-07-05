@@ -65,6 +65,22 @@ import { prepareCodegenAffordances } from "../serving/affordances.js";
 export type CodegenMode = "codegen" | "review" | "test-plan";
 export type RiskLevel = "L1" | "L2" | "L3";
 
+/**
+ * Response ENCODING level (v2 token diet, epic v2-token-diet slice s1).
+ *
+ * - `full` (default): classic payload, byte-identical to previous releases —
+ *   whether `detail` is omitted or explicitly "full".
+ * - `standard` / `minimal`: same citable ID set, deduplicated encoding
+ *   (inverted `citations`, grouped `manual_grounding`, top-level
+ *   `provenance_legend` instead of per-item `source`). No information is
+ *   lost — only the serialization changes. In s1 the two levels are
+ *   identical; they diverge in later slices (s3/s3b).
+ *
+ * The default flips to `standard` only at graduation to the next stable
+ * release (documented as breaking) — never on the beta line.
+ */
+export type CodegenDetailLevel = "minimal" | "standard" | "full";
+
 export interface PrepareCodegenContextInput {
   task: string;
   risk_level?: RiskLevel;
@@ -76,6 +92,7 @@ export interface PrepareCodegenContextInput {
   changed_files?: string[];
   regulatory_frameworks?: string[];
   include_regulatory_overlay?: boolean;
+  detail?: CodegenDetailLevel;
   debug?: boolean;
 }
 
@@ -334,8 +351,147 @@ export interface PrepareCodegenContextResultBlocked {
   };
 }
 
+// ---------------------------------------------------------------------------
+// Detail-level encoding types (v2 token diet, s1 — dedup, nothing removed)
+// ---------------------------------------------------------------------------
+
+/** An item shape with the repeated per-item `source` field removed (the
+ * provenance is carried once, in `provenance_legend`). */
+export type WithoutSource<T> = Omit<T, "source">;
+
+/**
+ * Inverted citation encoding (replaces `citation_map` in `standard`/`minimal`).
+ * Grouped by source; `source_data` is an ORDERED run-length map
+ * `file → count`: the first N₁ entries of `ids` come from the first file, the
+ * next N₂ from the second, and so on. This preserves the exact per-id
+ * `{source, source_data}` of the classic `citation_map` with zero repetition.
+ */
+export interface CitationsGroup {
+  /** Ordered map: published file → number of consecutive ids in `ids`. */
+  source_data: Record<string, number>;
+  /** Citable ids for this source, ordered by the `source_data` runs. */
+  ids: string[];
+}
+
+export type CitationsBySource = Partial<
+  Record<CitationMapEntry["source"], CitationsGroup>
+>;
+
+/**
+ * `manual_grounding` grouped by (rastreabilidade_role, manual_chapter,
+ * manual_file, manual_commit_sha) — the fields that repeat verbatim across
+ * entries. Total information is preserved: `v1_entity_ids` lists every entry
+ * of the group, and `v1_entity_names` carries ONLY the names that are not
+ * already recoverable from the `g2_context` entity lists in the same payload
+ * (normally empty — names come from the same rastreabilidade source).
+ */
+export interface ManualGroundingGroup {
+  rastreabilidade_role: string;
+  manual_chapter?: string | null;
+  manual_file?: string | null;
+  manual_commit_sha?: string;
+  v1_entity_ids: string[];
+  /** Lossless guard: names NOT recoverable via g2_context entity `name`. */
+  v1_entity_names?: Record<string, string>;
+}
+
+export interface ManualGroundingGrouped {
+  /** Number of flat entries the groups encode (dedup audit: sum of group sizes). */
+  total_entries: number;
+  groups: ManualGroundingGroup[];
+  /** Lossless guard: entries without a v1_entity_id (expected empty). */
+  ungrouped?: Array<WithoutSource<ManualGroundingEntry>>;
+}
+
+export interface DietedActivatedScope {
+  requirements: Array<WithoutSource<ActivatedScope["requirements"][number]>>;
+  controls: Array<WithoutSource<ActivatedScope["controls"][number]>>;
+  slices: Array<WithoutSource<ActivatedScope["slices"][number]>>;
+  regulatory_obligations: Array<
+    WithoutSource<ActivatedScope["regulatory_obligations"][number]>
+  >;
+}
+
+export interface DietedG2Context {
+  control_objectives: Array<WithoutSource<G2ContextEntity>>;
+  mechanisms: Array<WithoutSource<G2ContextEntity>>;
+  practices: Array<WithoutSource<G2ContextEntity>>;
+  artifacts: Array<WithoutSource<G2ContextEntity>>;
+  relations: Array<WithoutSource<G2ContextRelation>>;
+  evidence_patterns: Array<WithoutSource<G2ContextEvidencePattern>>;
+}
+
+export interface DietedRegulatoryOverlayContext {
+  frameworks: Array<WithoutSource<RegulatoryOverlayContext["frameworks"][number]>>;
+  obligations: Array<WithoutSource<RegulatoryOverlayContext["obligations"][number]>>;
+  mappings: Array<WithoutSource<RegulatoryOverlayContext["mappings"][number]>>;
+  playbooks: Array<WithoutSource<RegulatoryOverlayContext["playbooks"][number]>>;
+}
+
+/**
+ * Top-level provenance legend for `standard`/`minimal`: each list below is
+ * source-homogeneous BY CONSTRUCTION (the projection types hardcode a single
+ * source literal per list), so one entry per list reconstitutes the `source`
+ * of every item with no exceptions. Citations provenance lives in
+ * `citations.<source>.source_data`.
+ */
+const PROVENANCE_LEGEND = {
+  note:
+    "Per-item `source` fields are elided at detail=standard/minimal. Every list " +
+    "below is source-homogeneous (no exceptions): apply the listed source to each " +
+    "of its items. Per-id source_data lives in citations.<source>.source_data " +
+    "(ordered run-length map file -> count over citations.<source>.ids).",
+  sources: {
+    "activated_scope.requirements": "runtime_v0",
+    "activated_scope.controls": "runtime_v0",
+    "activated_scope.slices": "runtime_v1",
+    "activated_scope.regulatory_obligations": "overlay",
+    "g2_context.control_objectives": "runtime_v1",
+    "g2_context.mechanisms": "runtime_v1",
+    "g2_context.practices": "runtime_v1",
+    "g2_context.artifacts": "runtime_v1",
+    "g2_context.relations": "runtime_v1",
+    "g2_context.evidence_patterns": "runtime_v0",
+    "manual_grounding.groups": "runtime_v1",
+    "regulatory_overlay.frameworks": "overlay",
+    "regulatory_overlay.obligations": "overlay",
+    "regulatory_overlay.mappings": "overlay",
+    "regulatory_overlay.playbooks": "overlay"
+  }
+} as const;
+
+export type ProvenanceLegend = typeof PROVENANCE_LEGEND;
+
+/**
+ * `ready_for_codegen` result at `detail: "standard" | "minimal"` (s1: the two
+ * levels share this encoding; they diverge in s3/s3b). Same sections, same
+ * citable ID set as the full result — only the encoding is deduplicated:
+ * `citations` replaces `citation_map`, `manual_grounding` is grouped, and
+ * `provenance_legend` replaces the per-item `source` fields.
+ */
+export interface PrepareCodegenContextResultReadyDieted {
+  status: "ready_for_codegen";
+  /** RF-H advisory band — adjacent tools the caller likely needs next. */
+  next?: Affordance[];
+  mode: CodegenMode;
+  input_echo: PrepareCodegenContextResultReady["input_echo"];
+  activation_trace: ActivationTraceEntry[];
+  provenance_legend: ProvenanceLegend;
+  activated_scope: DietedActivatedScope;
+  g2_context: DietedG2Context;
+  manual_grounding: ManualGroundingGrouped;
+  regulatory_overlay: DietedRegulatoryOverlayContext;
+  citations: CitationsBySource;
+  completeness_report: CompletenessReport;
+  llm_codegen_instructions: string[];
+  security_rationale_template: SecurityRationaleTemplate;
+  provenance: PrepareCodegenContextResultReady["provenance"];
+  debug?: PrepareCodegenContextResultReady["debug"];
+}
+
 export type PrepareCodegenContextResult =
   | PrepareCodegenContextResultReady
+  | PrepareCodegenContextResultReadyDieted
   | PrepareCodegenContextResultBlocked;
 
 // ---------------------------------------------------------------------------
@@ -1550,17 +1706,219 @@ function blocked(
   return result;
 }
 
+const DETAIL_LEVELS: ReadonlySet<string> = new Set(["minimal", "standard", "full"]);
+
+/**
+ * Validate the `detail` input (v2 token diet, s1). Invalid values fail fast
+ * with a JSON-RPC -32602 (same pattern as trace-graph's lens validation);
+ * omission defaults to `full` — the classic, byte-identical payload.
+ */
+function parseDetail(raw: unknown): CodegenDetailLevel {
+  const value =
+    typeof raw === "object" && raw !== null
+      ? (raw as Record<string, unknown>).detail
+      : undefined;
+  if (value === undefined) return "full";
+  if (typeof value === "string" && DETAIL_LEVELS.has(value)) {
+    return value as CodegenDetailLevel;
+  }
+  throw Object.assign(
+    new Error(
+      `Invalid "detail": ${JSON.stringify(value)}. Use one of: minimal, standard, full.`
+    ),
+    {
+      rpcError: {
+        code: -32602,
+        message: 'Invalid "detail". Use one of: minimal, standard, full.'
+      }
+    }
+  );
+}
+
+function stripSource<T extends { source: unknown }>(
+  items: readonly T[]
+): Array<Omit<T, "source">> {
+  return items.map(({ source: _source, ...rest }) => rest);
+}
+
+/**
+ * Invert the classic `citation_map` (id → {source, source_data}) into
+ * source-grouped `citations` (see {@link CitationsGroup}). Pure re-encoding:
+ * the exact per-id source and source_data are reconstructible from the
+ * ordered run-length `source_data` map — nothing is dropped.
+ */
+function invertCitationMap(
+  citationMap: Record<string, CitationMapEntry>
+): CitationsBySource {
+  const bySource = new Map<CitationMapEntry["source"], Map<string, string[]>>();
+  for (const [id, entry] of Object.entries(citationMap)) {
+    let files = bySource.get(entry.source);
+    if (!files) {
+      files = new Map();
+      bySource.set(entry.source, files);
+    }
+    let ids = files.get(entry.source_data);
+    if (!ids) {
+      ids = [];
+      files.set(entry.source_data, ids);
+    }
+    ids.push(id);
+  }
+  const citations: CitationsBySource = {};
+  for (const [source, files] of bySource) {
+    const source_data: Record<string, number> = {};
+    const ids: string[] = [];
+    for (const [file, fileIds] of files) {
+      source_data[file] = fileIds.length;
+      ids.push(...fileIds);
+    }
+    citations[source] = { source_data, ids };
+  }
+  return citations;
+}
+
+/**
+ * Group the flat `manual_grounding` entries by the tuple that repeats
+ * verbatim: (rastreabilidade_role, manual_chapter, manual_file,
+ * manual_commit_sha). Names are elided ONLY when recoverable from the
+ * `g2_context` entity lists in the same payload (they come from the same
+ * rastreabilidade source); any non-recoverable name is kept explicitly in
+ * `v1_entity_names`, so no information is lost.
+ */
+function groupManualGrounding(
+  result: PrepareCodegenContextResultReady
+): ManualGroundingGrouped {
+  const g2Names = new Map<string, string | undefined>();
+  for (const list of [
+    result.g2_context.control_objectives,
+    result.g2_context.mechanisms,
+    result.g2_context.practices,
+    result.g2_context.artifacts
+  ]) {
+    for (const entity of list) g2Names.set(entity.entity_id, entity.name);
+  }
+
+  // Object sentinel: serializes unlike any string/null value, so an absent
+  // field can never collide with a real published value in the group key.
+  const ABSENT = { absent: true };
+  const groups = new Map<string, ManualGroundingGroup>();
+  const ungrouped: Array<WithoutSource<ManualGroundingEntry>> = [];
+
+  for (const entry of result.manual_grounding) {
+    if (!entry.v1_entity_id) {
+      // Lossless guard — the loader keys entries by v1_entity_id, so this is
+      // not expected; if it ever happens the entry survives verbatim.
+      const { source: _source, ...rest } = entry;
+      ungrouped.push(rest);
+      continue;
+    }
+    const hasChapter = "manual_chapter" in entry;
+    const hasFile = "manual_file" in entry;
+    const hasSha = entry.manual_commit_sha !== undefined;
+    const key = JSON.stringify([
+      entry.rastreabilidade_role,
+      hasChapter ? entry.manual_chapter ?? null : ABSENT,
+      hasFile ? entry.manual_file ?? null : ABSENT,
+      hasSha ? entry.manual_commit_sha : ABSENT
+    ]);
+    let group = groups.get(key);
+    if (!group) {
+      group = {
+        rastreabilidade_role: entry.rastreabilidade_role,
+        ...(hasChapter ? { manual_chapter: entry.manual_chapter ?? null } : {}),
+        ...(hasFile ? { manual_file: entry.manual_file ?? null } : {}),
+        ...(hasSha ? { manual_commit_sha: entry.manual_commit_sha } : {}),
+        v1_entity_ids: []
+      };
+      groups.set(key, group);
+    }
+    group.v1_entity_ids.push(entry.v1_entity_id);
+    if (
+      entry.v1_entity_name &&
+      g2Names.get(entry.v1_entity_id) !== entry.v1_entity_name
+    ) {
+      (group.v1_entity_names ??= {})[entry.v1_entity_id] = entry.v1_entity_name;
+    }
+  }
+
+  const grouped: ManualGroundingGrouped = {
+    total_entries: result.manual_grounding.length,
+    groups: [...groups.values()]
+  };
+  if (ungrouped.length > 0) grouped.ungrouped = ungrouped;
+  return grouped;
+}
+
+/**
+ * v2 token diet, s1 — structural dedup for `detail: "standard" | "minimal"`.
+ * Pure post-processing over the byte-identical full result: no section is
+ * removed and no list is cut (invariant 2: s1 performs zero truncation) —
+ * repetition is re-encoded (inverted citations, grouped grounding, top-level
+ * provenance legend). The citable ID set is EXACTLY the full one (invariant 3).
+ * In s1 `minimal` and `standard` share this encoding; divergence lands in
+ * s3/s3b behind the same parameter.
+ */
+function applyStructuralDiet(
+  result: PrepareCodegenContextResultReady,
+  detail: Exclude<CodegenDetailLevel, "full">
+): PrepareCodegenContextResultReadyDieted {
+  const dieted: PrepareCodegenContextResultReadyDieted = {
+    status: result.status,
+    mode: result.mode,
+    // Echo the requested detail for audit; the FULL result never echoes
+    // `detail` (explicit "full" must stay byte-identical to the omitted form).
+    input_echo: { ...result.input_echo, detail },
+    activation_trace: result.activation_trace,
+    provenance_legend: PROVENANCE_LEGEND,
+    activated_scope: {
+      requirements: stripSource(result.activated_scope.requirements),
+      controls: stripSource(result.activated_scope.controls),
+      slices: stripSource(result.activated_scope.slices),
+      regulatory_obligations: stripSource(result.activated_scope.regulatory_obligations)
+    },
+    g2_context: {
+      control_objectives: stripSource(result.g2_context.control_objectives),
+      mechanisms: stripSource(result.g2_context.mechanisms),
+      practices: stripSource(result.g2_context.practices),
+      artifacts: stripSource(result.g2_context.artifacts),
+      relations: stripSource(result.g2_context.relations),
+      evidence_patterns: stripSource(result.g2_context.evidence_patterns)
+    },
+    manual_grounding: groupManualGrounding(result),
+    regulatory_overlay: {
+      frameworks: stripSource(result.regulatory_overlay.frameworks),
+      obligations: stripSource(result.regulatory_overlay.obligations),
+      mappings: stripSource(result.regulatory_overlay.mappings),
+      playbooks: stripSource(result.regulatory_overlay.playbooks)
+    },
+    citations: invertCitationMap(result.citation_map),
+    completeness_report: result.completeness_report,
+    llm_codegen_instructions: result.llm_codegen_instructions,
+    security_rationale_template: result.security_rationale_template,
+    provenance: result.provenance
+  };
+  if (result.debug) dieted.debug = result.debug;
+  return dieted;
+}
+
 export function handlePrepareCodegenContext(
   raw: PrepareCodegenContextInput
 ): PrepareCodegenContextResult {
-  // RF-H: append the advisory band (status-aware, pure) around the deterministic result.
+  // v2 token diet (s1): `detail` selects the response ENCODING only — it is
+  // validated up-front and never influences activation/resolution.
+  const detail = parseDetail(raw);
   const result = prepareCodegenContextCore(raw);
-  return { ...result, next: prepareCodegenAffordances(result.status) };
+  const shaped =
+    detail !== "full" && result.status === "ready_for_codegen"
+      ? applyStructuralDiet(result, detail)
+      : result;
+  // RF-H: append the advisory band (status-aware, pure) around the deterministic result.
+  return { ...shaped, next: prepareCodegenAffordances(result.status) };
 }
 
 function prepareCodegenContextCore(
   raw: PrepareCodegenContextInput
-): PrepareCodegenContextResult {
+): PrepareCodegenContextResultReady | PrepareCodegenContextResultBlocked {
   const input = normalizeInput(raw);
 
   const preGate = gateBeforeActivation(input);
