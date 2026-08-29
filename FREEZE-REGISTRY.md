@@ -13,7 +13,7 @@
   (formerly `Shiftleftpt/sbd-toe-mcp-poc`; relocated 2026-06)
 **Part of programme:** SbD-ToE / AppSec Core (P0 DOI 10.17605/OSF.IO/7T849)
 **Governed by:** PROGRAMME-PRESERVATION-PROTOCOL.md v1.0
-**Last updated:** 2026-06-25
+**Last updated:** 2026-08-29
 **Status:** skeleton — pending human verification
 
 ## Published states
@@ -44,8 +44,10 @@ TODO — confirm with programme lead.
 - icsme-2026-tool-demonstration
 - v0.9.0
 - v0.10.0
-- v0.10.1 *(packaging fix — see CHANGELOG; tag pending, to be created on release
-  of the commit that introduces this registry)*
+- v0.10.1 (packaging fix — see CHANGELOG)
+- v0.10.2 → `31aa22af780d56f958b220258ffa82ca46f1d7c7` (2026-08-29; formal KG release v1.6.0
+  pinned — see CHANGELOG; npm `@shiftleftpt/sbd-toe-mcp@0.10.2` = `latest`, gitHead same commit;
+  GitHub Release `v0.10.2`)
 
 ### Beta line (`0.20.x-beta`) — NOT citable, NOT a freeze candidate
 
@@ -56,12 +58,30 @@ They are **experimental, non-citable, and explicitly excluded from the scientifi
 track **only** the stable line. A beta graduates to the scientific record only by being
 folded into a stable `vX.Y.Z` release (with canonical, upstream-ratified IRIs).
 
+Prerelease tags issued on `0.20-beta` (annotated; immutable like every pushed tag, but
+**not** protected/frozen states and never archived):
+
+| Tag | Commit | Date | Served bundle | npm |
+|---|---|---|---|---|
+| v0.20.0-beta.1 | cf4f011 | 2026-06-29 | KG v1.5.0 (`feaa0155…`) | `beta` (superseded) |
+| v0.20.0-beta.2 | 0cc9e14 | 2026-07-05 | KG v1.5.0 (`feaa0155…`) | `beta` (superseded) |
+| v0.20.0-beta.3 | *(annotated tag on the commit that introduces this row; recorded in the close commit)* | 2026-08-29 | formal KG `v1.6.0` (`baf5913b…`, contract v1.11, Manual v1.7.0) — same pin and content as stable v0.10.2 | `beta` (`latest` = 0.10.2 untouched) |
+
 ## Current working state
 
-**Current branch:** master
+**Current branch:** `0.20-beta` — this copy of the registry lives on the beta branch; the
+stable-line rows mirror master (`e0f17c0`, close of v0.10.2) and are maintained there.
+**Beta line:** most recent prerelease v0.20.0-beta.3 (2026-08-29), npm dist-tag `beta`; serves
+the same formal KG `v1.6.0` pin as v0.10.2 (see the beta table above). Not a published/frozen state.
 **Most recent published state:** icsme-2026-tool-demonstration / v0.9.0 (2026-05-21)
-**Most recent release:** v0.10.0 (2026-06-17). v0.10.1 (packaging fix; fix-forward
-over immutable v0.10.0) is pending — tag to be created on release of this commit.
+**Most recent release:** v0.10.2 (2026-08-29) — served bundle: formal KG release
+`v1.6.0` (commit `aad4e962cd20b105cd0a4840a5dea6f7011dcd5d` = `mcp-stable`; asset sha256
+`baf5913b596fdeb17c77d9c3a1d9394738c4c9319a8bcf0ec03972ba5db1d93b`; consumer contract
+v1.11), Manual v1.7.0 (`d5c2586ae2cd12ab2e31b65febb2e85ed20e1bce`), ontology
+`ontology-v1.1-fair-baseline` (`84fe8bf6f5de1443d778f9b2f0555b722540bbff`). Tag
+`v0.10.2` → `31aa22af780d56f958b220258ffa82ca46f1d7c7` (squash of PR #47; annotated; created and
+pushed 2026-08-29 by Pontifex under programme-lead authorisation; `release.yml` run
+33265635554 published npm 0.10.2 = latest). Prior: v0.10.1 (2026-06-25), v0.10.0 (2026-06-17).
 **Expected next freeze event:** none scheduled
 
 ## Cross-references
@@ -77,9 +97,13 @@ Programme papers cited by this tool (upstream, see CITATION.cff):
 - P7 = 10.17605/OSF.IO/3E8G5 (Pressure-Testing AppSec Core — DSR)
 - P8 = 10.17605/OSF.IO/TXW8P (Coverage-Preserving Compilation v2)
 
-This repository depends on (upstream, pinned releases — TODO record exact tags/hashes):
-- sbd-toe-knowledge-graph (served bundle; CHANGELOG cites formal KG release v1.5.0)
-- appsec-core-ontology-research
+This repository depends on (upstream, pinned in `consumed-bundle.json`, digest-verified):
+- sbd-toe-knowledge-graph — formal release `v1.6.0` @ `aad4e962cd20b105cd0a4840a5dea6f7011dcd5d`
+  (asset sha256 `baf5913b596fdeb17c77d9c3a1d9394738c4c9319a8bcf0ec03972ba5db1d93b`) since v0.10.2;
+  `v1.5.0` (sha256 `feaa0155b64d78fe529d805c6e17430fb3ce9fe1c5b5900eb6e267e2fa077294`) for v0.10.0/v0.10.1
+- SbD-ToE/sbd-toe-manual — `v1.7.0` @ `d5c2586ae2cd12ab2e31b65febb2e85ed20e1bce` (via the KG bundle) since v0.10.2
+- SbD-ToE/sbd-toe-ontology — `ontology-v1.1-fair-baseline` @ `84fe8bf6f5de1443d778f9b2f0555b722540bbff`
+- appsec-core-ontology-research (programme papers P1/P6/P7/P8, see CITATION.cff)
 
 ## Violations / anomalies detected
 
@@ -94,8 +118,24 @@ prohibits tag deletion without explicit authorisation):
   (2026-04-17) and after the §8.1 four-week retroactive window. Class B per §9.2
   (reversible; no scientific damage if completed promptly).
 
+- **Tag `v0.2.5` diverges between a local clone and origin** (observed 2026-08-29 while
+  preparing v0.20.0-beta.3). `origin` `refs/tags/v0.2.5` → `8a479c81892e12a249279c772be313d7efffd777`
+  (lightweight; «ci: remove NODE_AUTH_TOKEN from npm publish step», 2026-03-27 18:07:05Z; the
+  GitHub Release `v0.2.5` was created at that instant on that commit). The local clone at
+  `SecurityByDesign-TheoryOfEverything/sbd-toe-mcp-poc` carries `v0.2.5` →
+  `318b8ee7e952c6e968a2836aa59223e778e62ec7` («chore: bump to 0.2.5», 18:07:36Z). The two
+  commits are siblings (neither is an ancestor of the other; both reachable from master) and
+  npm never published 0.2.5 (`npm view …@0.2.5` → 404). **Canonical = origin (`8a479c81`)** —
+  the pushed tag and its GitHub Release are the published state (§3.2); the local ref is a
+  stale pre-push variant. Per Rule 9 nothing was re-pointed; the only remediation, if the
+  programme lead wants it, is refreshing the local ref in that clone
+  (`git fetch origin --tags --force`), which touches no published state.
+
 ## Change log for this registry
 
 | Date | Change | Author |
 |---|---|---|
 | 2026-06-25 | Initial skeleton created (file was absent). Populated from git tags + CITATION.cff; uncertain mappings marked TODO. | Claude (AI agent), under Pedro Farinha |
+| 2026-08-29 | v0.10.2 registered (protected tag list, current working state, upstream pins with exact tags/hashes: KG v1.6.0, Manual v1.7.0, ontology v1.1). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-29 | v0.10.2 tag commit recorded (`31aa22af`, squash of #47); npm publish + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-29 | Beta-line copy (branch `0.20-beta`): prerelease-tag table (beta.1/beta.2/beta.3), beta current working state, `v0.2.5` local/origin divergence recorded (canonical = origin; nothing re-pointed). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |

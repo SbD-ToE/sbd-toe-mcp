@@ -51,7 +51,7 @@ esta**; (b) `source: "runtime_v1"` repetido item-a-item em todas as listas.
 
 (1ª fixture ⇒ 18.903 tokens / 111 ids no `citation_map`; 2ª ⇒ 24.731 tokens / 150 ids.)
 
-> **Re-baseline 2026-08-29 (0.20.0-beta.3, pin `kg-v1-manual-v1.7.0-aligned-2026-08-29`, contrato v1.11):** a 2ª fixture activa agora OPS-015 (publicado neste bundle) ⇒ 24.792 tokens / **151 ids**; `standard` mede 8.645 (> gate 8.500, +223 vs v1.6.7 — crescimento de dados, não de codificação). Gate mantido; desvio tolerado a 8.700 em `KNOWN_TOTAL_DEVIATIONS` (budget.test) até ratificação do operador. 1ª fixture inalterada (18.903 / 111).
+> **Re-baseline 2026-08-29 (0.20.0-beta.3, pin `kg-v1-manual-v1.7.0-aligned-2026-08-29`, contrato v1.11):** a 2ª fixture activa agora OPS-015 (publicado neste bundle) ⇒ 24.792 tokens / **151 ids**; `standard` mede 8.645 (> gate 8.500, +223 vs v1.6.7 — crescimento de dados, não de codificação). Gate mantido; desvio tolerado a 8.700 em `KNOWN_TOTAL_DEVIATIONS` (budget.test) — **tolerância ≤8.700 ratificada pelo programme lead a 2026-08-29** (pin formal KG v1.6.0, conteúdo idêntico ao dev-build v1.7.0). 1ª fixture inalterada (18.903 / 111).
 
 ## ⟳ ADENDA (2026-07-05) — correção de arquitetura do D-b + achados novos
 

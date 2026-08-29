@@ -432,7 +432,7 @@ function idsAtPath(payload: unknown, path: string): string[] {
  * Known, REPORTED deviations from a hard gate — never a silent raise of the
  * gate itself (BUDGETS stays the EPIC/operator-ratified number). Each entry
  * names the measurement, the tolerated ceiling and the cause; it is removed
- * when the operator ratifies a new gate or the data shrinks back.
+ * when the EPIC gate itself is re-set or the data shrinks back.
  */
 const KNOWN_TOTAL_DEVIATIONS: Readonly<
   Record<string, { measured: number; tolerated: number; since: string; reason: string }>
@@ -445,8 +445,8 @@ const KNOWN_TOTAL_DEVIATIONS: Readonly<
       "dev-build kg-v1-manual-v1.7.0-aligned-2026-08-29 (contract v1.11, 0.20.0-beta.3) " +
       "publishes OPS-015, activated by this fixture (+1 requirement with its published " +
       "description): +223 tokens vs the v1.6.7 pin (8,422). Data growth, not an encoding " +
-      "regression; EPIC hard gate 8,500 unchanged — operator ratification pending " +
-      "(CHANGELOG 0.20.0-beta.3)."
+      "regression; EPIC hard gate 8,500 unchanged. Tolerance ≤8,700 RATIFIED by the " +
+      "programme lead on 2026-08-29 (0.20.0-beta.3, formal KG v1.6.0 pin; CHANGELOG)."
   }
 };
 

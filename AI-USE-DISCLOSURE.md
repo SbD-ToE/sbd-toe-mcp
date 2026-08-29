@@ -22,7 +22,7 @@ methodological substance, not an AI-content-generation event).
 
 AI tools were used to support the development of `sbd-toe-mcp-poc`, including:
 
-- Implementation pair-programming for the MCP server and the ten exposed tools
+- Implementation pair-programming for the MCP server and its exposed tools
 - Drafting and structural revision of the README, CONTRIBUTING, and other
   repository documentation
 - Code review, refactoring suggestions, and test scaffolding
@@ -67,7 +67,11 @@ AI was explicitly **not** used to:
   DSR cycle), and P8 (Manual + KG joint compilation).
 - Generate or invent SHA-256 hashes, DOIs, release tags, or any provenance
   identifier; all provenance references in the code and documentation are
-  verified against the upstream programme.
+  verified against the upstream programme. The served bundle is pinned in
+  `consumed-bundle.json` to a named upstream release (from v0.10.2 / v0.20.0-beta.3: KG formal
+  release `v1.6.0`, Manual `v1.7.0`) whose archive digest is verified against the
+  upstream-published `.sha256` before it is materialised; the AI agent never
+  edits the served data.
 - Make security-relevant judgements about the SbD content the tool mediates.
 - Replace human decisions on licensing, distribution, or release model.
 

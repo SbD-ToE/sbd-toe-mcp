@@ -3,7 +3,7 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-29
 purpose: documentation
-reasoning: v0.20.0-beta.3 (beta line, unreleased) — absorbs master bc8c9189 (PR #45) and 947f38e6 (PR #46, same day) into the v2 line: re-pin to dev-build kg-v1-manual-v1.7.0-aligned-2026-08-29 (contract v1.11, Manual v1.7.0; supersedes the v1.6.7 pin below), informative citation classifier (citation_note vs declared_gap), toolchain hygiene in a separate commit; dev-build KG pin kg-v1-manual-v1.6.7-aligned-2026-08-29 (REQ-AGN-001…004 served), requirement-id grammar v1.10 §1.18, declared gaps (requirements without control link; legacy REQ-<CAT>-NNN citations); verified against the v2 surface (SPARQL trace, detail levels, payload budgets). v0.20.0-beta.2 (token diet) and the stable-line entries (0.10.2 proposed, 0.10.1 and earlier) below.
+reasoning: v0.20.0-beta.3 (beta line, published to the npm `beta` dist-tag) — serves the formal KG release v1.6.0 (mcp-stable, contract v1.11, Manual v1.7.0), same content as stable 0.10.2; absorbs master bc8c9189 (PR #45), 947f38e6 (PR #46) and the formal pin of 31aa22af (PR #47) into the v2 line: id grammar v1.10, informative citation classifier, toolchain hygiene (separate commit), fixture-2 standard budget tolerance ≤8,700 ratified; dev-build KG pin kg-v1-manual-v1.6.7-aligned-2026-08-29 (REQ-AGN-001…004 served), requirement-id grammar v1.10 §1.18, declared gaps (requirements without control link; legacy REQ-<CAT>-NNN citations); verified against the v2 surface (SPARQL trace, detail levels, payload budgets). v0.20.0-beta.2 (token diet) and the stable-line entries (0.10.2 proposed, 0.10.1 and earlier) below.
 review_status: pending-human-review
 ---
 
@@ -11,13 +11,40 @@ review_status: pending-human-review
 
 ## 0.20.0-beta.3 — 2026-08-29
 
-**Prerelease (beta line), unreleased.** Two same-day absorptions from `master`: PR #45
-(`bc8c918`, below) and PR #46 (`947f38e612a9b2d906733adaadc6e9d200b70547`, this addendum).
-No tag, no npm publish.
+**Prerelease (beta line).** Published to the npm `beta` dist-tag — `latest` (stable
+`0.10.2`, gitHead `31aa22af`) is unchanged. Experimental; **not citable** — excluded from the
+scientific record per `PROGRAMME-PRESERVATION-PROTOCOL.md` (see `FREEZE-REGISTRY.md`, beta line).
 
-### Addendum — re-pin to dev-build `kg-v1-manual-v1.7.0-aligned-2026-08-29` (absorbs master `947f38e6`, PR #46)
+### Served bundle — formal KG release `v1.6.0` (`mcp-stable`), `source: release`
 
-Supersedes the `v1.6.7` pin below within this same unreleased version.
+`consumed-bundle.json`: `release_tag: v1.6.0`, `release_ref: SbD-ToE/sbd-toe-knowledge-graph@v1.6.0`,
+asset `sbd-toe-knowledge-graph-bundle-v1.6.0.zip` sha256
+`baf5913b596fdeb17c77d9c3a1d9394738c4c9319a8bcf0ec03972ba5db1d93b` (verified by
+`sync-bundle --from-release` against the release's `.sha256` asset), contract **v1.11**,
+Manual **v1.7.0** @ `d5c2586ae2cd12ab2e31b65febb2e85ed20e1bce` (`SbD-ToE/sbd-toe-manual`),
+ontology `ontology-v1.1-fair-baseline` @ `84fe8bf6`, `pinned_at` 2026-08-29. **Identical pin
+and identical served content to stable `0.10.2`** (master `31aa22af`, PR #47).
+
+Pin lineage inside this version, all on 2026-08-29 (each step absorbed from `master` and
+verified on this line — steps documented below in reverse order): dev-build
+`kg-v1-manual-v1.6.7-aligned-2026-08-29` (PR #45 → `6353557`) → dev-build
+`kg-v1-manual-v1.7.0-aligned-2026-08-29` (PR #46 → `eac79e6`) → **formal `v1.6.0`** (PR #47).
+Diff of `data/` between the v1.7.0 dev-build and the formal release: **one file**,
+`data/reports/run_manifest.json` — the `release` block only (`channel: dev-build → stable`,
+`version: kg-v1-manual-v1.7.0-aligned-2026-08-29 → v1.6.0`); every served file byte-identical.
+
+What this line adds over stable `0.10.2` (unchanged from beta.1/beta.2, re-verified on this
+pin): `trace_sbd_toe_graph` (SPARQL/Oxigraph, deterministic, 270/270/270 rows per lens — equal
+to beta.2), the `detail` parameter of `prepare_sbd_toe_codegen_context`
+(`full`/`standard`/`minimal`/`ultrathin`), and — from this version —
+`concerns: ["agents"]` accepted by `prepare` (REQ-AGN-001…004 + OPS-015 verified in the
+activated set at all four detail levels) and the v1.10 category-segment rule in the dieted
+encoding.
+
+### Step 2 — re-pin to dev-build `kg-v1-manual-v1.7.0-aligned-2026-08-29` (absorbs master `947f38e6`, PR #46)
+
+Superseded the `v1.6.7` pin (step 1, below) the same day; content identical to the formal
+`v1.6.0` above.
 
 - **Served bundle:** `consumed-bundle.json` → `kg-v1-manual-v1.7.0-aligned-2026-08-29`, sha256
   `2c27f4ebccb9a693ccb3ae50fb0bb64fd602aff3acc9b53d36f898a64c0064fa` (verified against the
@@ -46,8 +73,9 @@ Supersedes the `v1.6.7` pin below within this same unreleased version.
     **payload deviation reported, gate not raised:** fixture 2 `standard` measures **8,645 >
     8,500** (EPIC hard gate; +223 tokens vs the v1.6.7 pin — OPS-015 with its published
     description; data growth, not an encoding regression). Recorded as a tolerated deviation
-    (`KNOWN_TOTAL_DEVIATIONS`, ceiling 8,700) pending operator ratification; EPIC.md carries
-    the re-baseline note. All other budgets within limits: f1 standard 6,227 / minimal 5,588 /
+    (`KNOWN_TOTAL_DEVIATIONS`, ceiling **8,700 — ratified by the programme lead on
+    2026-08-29**); the EPIC gate (8,500) itself is not raised; EPIC.md carries the
+    re-baseline note. All other budgets within limits: f1 standard 6,227 / minimal 5,588 /
     ultrathin 3,696 (unchanged); f2 minimal **7,926**/8,000, ultrathin **4,642**/4,840; full
     18,903 / 24,792.
 - **Toolchain hygiene (from master, separate commit on this line):** devDependencies `vitest` /
@@ -62,11 +90,11 @@ Supersedes the `v1.6.7` pin below within this same unreleased version.
   at full/standard/minimal/ultrathin with REQ-AGN-001…004 **and OPS-015** in the activated set
   (task heuristic `ai agent` + `audit logging`); `npm run check` ✅, **723/723** ✅.
 
-**Prerelease (beta line).** Absorbs `master` `bc8c91890e454f171e267cea892d9d9b99f6585a`
-(squash of PR #45, the stable-line `0.10.2` content — entry below) into the v2 line by
-cherry-pick. Not citable; `latest` (stable `0.10.x`) unchanged. **No tag, no npm publish.**
+### Step 1 — absorb master `bc8c91890e454f171e267cea892d9d9b99f6585a` (PR #45): dev-build `v1.6.7`, id grammar v1.10, declared gaps
 
-### Served bundle (re-pin, same as master)
+Absorbed into the v2 line by cherry-pick (`6353557`). Superseded the same day by step 2.
+
+#### Served bundle at step 1 (same as master at #45)
 
 `consumed-bundle.json`: formal `v1.5.0` → **dev-build `kg-v1-manual-v1.6.7-aligned-2026-08-29`**
 (sha256 `a66c324575cede5ffb9e7c5ddae06bb8d090b3a1ec7150d53f80074f55185276`, verified by
@@ -78,7 +106,7 @@ data (`+0 ~0 -0 =49`). Bundle deltas measured on this line: requirements 251 →
 ENISA-CSA). The dispatcher's «+64 overlay edges / +32 EP» does not match these counts —
 reported as a difference, not reconciled.
 
-### Absorbed from master (see `0.10.2` entry for the full description)
+#### Absorbed from master (see `0.10.2` entry for the full description)
 
 - REQ-AGN-001…004 served; `concerns: ["agents"]` on `consult_security_requirements`;
   `coverage_gaps.requirements_without_control_link` (20 at L3 / 18 at L2 / 4 at L1);
@@ -89,7 +117,7 @@ reported as a difference, not reconciled.
   (`trace_sbd_toe_graph`, `detail`, `include_relations`, codegen-instructions resource) are
   preserved. Version bump `0.10.2` **not** taken — this line is `0.20.0-beta.3`.
 
-### Changed — v2 line alignment with the v1.10 grammar (this line only; differences vs stable)
+#### Changed — v2 line alignment with the v1.10 grammar (this line only; differences vs stable)
 
 - `prepare_sbd_toe_codegen_context` dieted levels elided `category` when it equalled the
   requirement_id **prefix before the first `-`** — a grammar assumption the stable audit could
@@ -109,7 +137,7 @@ reported as a difference, not reconciled.
   `description` (markdown asterisks removed upstream in OPS-013 / REQ-AGN text), 6× legend
   `note` (above). No line added or removed.
 
-### Verified on this line (live server over stdio, `dist/index.js`)
+#### Verified on this line (live server over stdio, `dist/index.js`)
 
 | Check | Result |
 |---|---|
@@ -206,21 +234,24 @@ record per `PROGRAMME-PRESERVATION-PROTOCOL.md`.
 
 > The IRI scheme is **provisional/local**; canonical IRIs are an upstream (ontology)
 > decision required before any graduation of this line to stable.
-## 0.10.2 — 2026-08-29 (proposed — prepared, not tagged, not published)
+## 0.10.2 — 2026-08-29
 
 **Patch** — served-bundle alignment + declared-gap serving. Additive on the tool
 surface (new response fields, one new `concerns` value); no tool removed or reshaped.
 
-Served bundle: **dev-build `kg-v1-manual-v1.7.0-aligned-2026-08-29`** (KG commit
-`737efe2090618787af2a4f863f97717a374d9b2f`; snapshot
-`sbd-toe-knowledge-graph-bundle-kg-v1-manual-v1.7.0-aligned-2026-08-29-snapshot.zip`, sha256
-`2c27f4ebccb9a693ccb3ae50fb0bb64fd602aff3acc9b53d36f898a64c0064fa`, verified against the
-`.sha256` sidecar by `sync-bundle`), `consumer_contract_version` **v1.11** (§1.19),
-**Manual v1.7.0** @ `d5c2586a` (remote `SbD-ToE/sbd-toe-manual`), ontology
-`ontology-v1.1-fair-baseline` (unchanged). `source: dev-build` — the formal KG release
-stays `v1.5.0`; `mcp-stable` was not moved. Supersedes the intermediate pin
-`kg-v1-manual-v1.6.7-aligned-2026-08-29` (`762ccaaf`, sha256 `a66c3245…5276`, contract
-v1.10, merged in #45) — both are dev-builds on this line.
+Served bundle: **formal KG release `v1.6.0`** (GitHub Release
+`SbD-ToE/sbd-toe-knowledge-graph@v1.6.0`, commit `aad4e962cd20b105cd0a4840a5dea6f7011dcd5d`
+= `mcp-stable`; asset `sbd-toe-knowledge-graph-bundle-v1.6.0.zip`, sha256
+**`baf5913b596fdeb17c77d9c3a1d9394738c4c9319a8bcf0ec03972ba5db1d93b`**, fetched and
+digest-verified against the release `.sha256` by `sync-bundle --from-release`;
+`run_manifest.release = {channel: stable, version: v1.6.0}`), `consumer_contract_version`
+**v1.11** (§1.19), **Manual v1.7.0** @ `d5c2586a` (remote `SbD-ToE/sbd-toe-manual`), ontology
+`ontology-v1.1-fair-baseline` (unchanged). `source: release` — supersedes the formal `v1.5.0`
+pin of 0.10.0/0.10.1. Lineage on this line (same day, both dev-builds, merged in #45 / #46):
+`kg-v1-manual-v1.6.7-aligned-2026-08-29` (`762ccaaf`, sha256 `a66c3245…5276`, contract v1.10)
+→ `kg-v1-manual-v1.7.0-aligned-2026-08-29` (`737efe20`, sha256 `2c27f4eb…64fa`, contract v1.11);
+`v1.6.0` is byte-identical to the latter in `data/publish` — the only difference in the
+consumed files is the `release` block of `run_manifest.json`.
 
 ### Changed — served knowledge (dev-build 2026-08-29 v1.6.7 → v1.7.0, contract v1.11)
 

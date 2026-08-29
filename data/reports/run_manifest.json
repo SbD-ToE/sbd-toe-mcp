@@ -23,7 +23,7 @@
   "tool_version": "0.1.0",
   "version": "0.1.0",
   "release": {
-    "channel": "dev-build",
-    "version": "kg-v1-manual-v1.7.0-aligned-2026-08-29"
+    "channel": "stable",
+    "version": "v1.6.0"
   }
 }
