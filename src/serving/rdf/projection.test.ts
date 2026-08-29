@@ -2,17 +2,21 @@ import { describe, it, expect } from "vitest";
 
 import { projectBundleToTriples, toNTriples, predicateManifest } from "./projection.js";
 
-// s1 gate — pins the consumed v1.5.0 bundle. A change here means the data drifted.
+// s1 gate — pins the consumed bundle. A change here means the data drifted.
+// History: v1.5.0 → requirement_control_links 242. Dev-build
+// kg-v1-manual-v1.7.0-aligned-2026-08-29 (contract v1.11, 0.20.0-beta.3) → 263:
+// the curated requirement→control layer links the 20 formerly unlinked
+// requirements (incl. REQ-AGN-001…004) and the new OPS-015. relations.v1 unchanged.
 describe("rdf projection (v2 / s1)", () => {
   it("loads every source with expected counts (no silent skip)", () => {
     const { counts } = projectBundleToTriples();
     expect(counts["relations.v1"]).toBe(529);
-    expect(counts["requirement_control_links"]).toBe(242);
+    expect(counts["requirement_control_links"]).toBe(263);
     expect(counts["antipattern_requirement_links"]).toBe(2);
     expect(counts["antipattern_threat_links"]).toBe(5);
     expect(counts["signal_evidence_links"]).toBe(11);
 
-    const sum = 529 + 242 + 2 + 5 + 11;
+    const sum = 529 + 263 + 2 + 5 + 11;
     expect(counts["__total__"]).toBe(sum);
 
     // every declared source contributed at least one edge

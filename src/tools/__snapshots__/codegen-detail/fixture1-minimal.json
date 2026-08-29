@@ -553,7 +553,7 @@
   },
   "manual_grounding": {
     "total_entries": 51,
-    "manual_commit_sha": "171db83db82630d018654367e3209eb6f57e0c9a",
+    "manual_commit_sha": "d5c2586ae2cd12ab2e31b65febb2e85ed20e1bce",
     "groups": [
       {
         "rastreabilidade_role": "substrate_landing",
@@ -636,9 +636,9 @@
       "ASC-09 artifacts: declared=12 actual=8 (slice contract status=working_contract)",
       "ASC-10 mechanisms: declared=6 actual=4 (slice contract status=working_contract)"
     ],
-    "evidence_patterns_total": 173,
+    "evidence_patterns_total": 186,
     "evidence_patterns_returned": 5,
-    "evidence_patterns_capped": 168,
+    "evidence_patterns_capped": 181,
     "evidence_pattern_cap": 5,
     "evidence_patterns_rest": {
       "tool": "prepare_sbd_toe_codegen_context",

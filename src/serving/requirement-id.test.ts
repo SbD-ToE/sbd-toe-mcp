@@ -3,6 +3,7 @@ import {
   LEGACY_CITATION_SERVING_PHRASE,
   LEGACY_REQUIREMENT_CITATION_PATTERN,
   REQUIREMENT_ID_PATTERN,
+  describeRequirementCitation,
   describeRequirementGap,
   getRequirementCitations,
   isLegacyRequirementCitation,
@@ -62,66 +63,59 @@ describe("requirement id grammar (consumer contract v1.10 §1.18)", () => {
   });
 });
 
-describe("declared requirement gaps over the pinned bundle (Codex handover 2026-08-29, gap (b))", () => {
+describe("declared gaps vs informative citations over the pinned bundle (KG v1.7.0, contract v1.11)", () => {
   const known = new Set(getOntologyData().requirements.map((r) => r.requirement_id));
 
-  it("published ids are never gaps (namespaced or base)", () => {
-    expect(describeRequirementGap("REQ-AGN-001", known)).toBeUndefined();
-    expect(describeRequirementGap("AUT-001", known)).toBeUndefined();
-  });
-
-  it("REQ-AUT-003 is a declared legacy gap carrying the handover serving phrase and its citations", () => {
-    const gap = describeRequirementGap("REQ-AUT-003", known);
-    expect(gap).toBeDefined();
-    expect(gap?.status).toBe("declared_gap");
-    expect(gap?.kind).toBe("legacy_citation_unresolvable");
-    expect(gap?.note).toContain(LEGACY_CITATION_SERVING_PHRASE);
-    expect(gap?.note).toContain("Não é «requisito inexistente»");
-    expect(gap?.cited_in.mention_count).toBeGreaterThan(0);
-    expect(gap?.cited_in.chunk_ids.length).toBeGreaterThan(0);
-    expect(gap?.routed_to).toContain("Manual");
-  });
-
-  it("never aliases a legacy citation to the base requirement with another meaning", () => {
-    // Contract §1.18: REQ-AUT-003 used to resolve to AUT-003 by substring accident — forbidden.
-    const gap = describeRequirementGap("REQ-AUT-003", known);
-    expect(JSON.stringify(gap)).not.toContain('"AUT-003"');
-  });
-
-  it("the 20 legacy REQ-<CAT>-NNN citations of the handover are all declared gaps, never silent", () => {
-    // 16 distinct ids × their mentions = the 20 citations in 6 Manual files (handover (b));
-    // REQ-AC-010 is the 21st and is asserted separately below.
-    const legacyIds = [
-      "REQ-ARC-003", "REQ-AUT-001", "REQ-AUT-003", "REQ-AUT-004", "REQ-DAT-002", "REQ-DAT-005",
-      "REQ-DAT-006", "REQ-DAT-008", "REQ-DOS-001", "REQ-IAM-001", "REQ-LOG-001", "REQ-LOG-002",
-      "REQ-LOG-004", "REQ-PRI-001", "REQ-PRI-004", "REQ-VAL-002"
-    ];
-    let mentions = 0;
-    for (const id of legacyIds) {
-      const gap = describeRequirementGap(id, known);
-      expect(gap?.kind, id).toBe("legacy_citation_unresolvable");
-      expect(gap?.note, id).toContain(LEGACY_CITATION_SERVING_PHRASE);
-      mentions += gap?.cited_in.mention_count ?? 0;
+  it("published ids are never gaps nor notes (namespaced or base)", () => {
+    for (const id of ["REQ-AGN-001", "AUT-001", "OPS-015"]) {
+      expect(describeRequirementGap(id, known), id).toBeUndefined();
+      expect(describeRequirementCitation(id, known), id).toBeUndefined();
     }
-    expect(mentions).toBe(20);
   });
 
-  it("a base-form id the corpus cites but the bundle lacks is a declared (non-legacy) citation gap", () => {
-    // REQ-010 is valid shape (category REQ) and cited by the Manual, yet unpublished → declared, not silent.
-    const gap = describeRequirementGap("REQ-010", known);
-    expect(gap?.kind).toBe("citation_unresolvable");
-    expect(gap?.cited_in.mention_count).toBeGreaterThan(0);
+  it("the former legacy REQ-<CAT>-NNN citations are no longer cited (Manual v1.7.0 corrected them) → no gap", () => {
+    for (const id of ["REQ-ARC-003", "REQ-AUT-001", "REQ-AUT-003", "REQ-DAT-005", "REQ-IAM-001", "REQ-LOG-004", "REQ-PRI-001", "REQ-VAL-002"]) {
+      expect(getRequirementCitations(id).mention_count, id).toBe(0);
+      expect(describeRequirementGap(id, known), id).toBeUndefined();
+    }
   });
 
-  it("EX-AUT-003 (illustrative id) is neither a requirement nor a gap — and never AUT-003", () => {
-    const gap = describeRequirementGap("EX-AUT-003", known);
-    expect(gap).toBeUndefined();
+  it("a legacy-shaped citation would still be a declared gap if the corpus cited it (machinery kept, data-driven)", () => {
+    // Synthetic: known set without AUT-003 does not turn REQ-AUT-003 into a gap because nothing cites it.
+    expect(describeRequirementGap("REQ-AUT-003", new Set())).toBeUndefined();
+    expect(LEGACY_CITATION_SERVING_PHRASE).toBe("citação legada não resolvível (finding editorial em curso)");
   });
 
-  it("a requirement-shaped token nobody cites is not a declared gap (caller keeps its fallback)", () => {
+  it("illustrative REQ-NNN example ids (25 mentions / 20 ids) are informative, never gaps", () => {
+    const illustrative = ["REQ-010", "REQ-011", "REQ-014", "REQ-015", "REQ-017", "REQ-018", "REQ-024", "REQ-114", "REQ-115", "REQ-118",
+      "REQ-203", "REQ-205", "REQ-208", "REQ-303", "REQ-307", "REQ-309", "REQ-310", "REQ-404", "REQ-405", "REQ-406"];
+    let mentions = 0;
+    for (const id of illustrative) {
+      expect(describeRequirementGap(id, known), id).toBeUndefined();
+      const note = describeRequirementCitation(id, known);
+      expect(note?.status, id).toBe("informative");
+      mentions += note?.cited_in.mention_count ?? 0;
+    }
+    expect(mentions).toBe(25);
+  });
+
+  it("non-requirement tokens captured by the <CAT>-NNN shape (CWE-, SHA-) are informative, never gaps", () => {
+    for (const id of ["CWE-212", "SHA-256"]) {
+      expect(describeRequirementGap(id, known), id).toBeUndefined();
+      expect(describeRequirementCitation(id, known)?.status, id).toBe("informative");
+    }
+  });
+
+  it("never aliases an unpublished id to a published one", () => {
+    expect(JSON.stringify(describeRequirementCitation("REQ-010", known))).not.toContain('"REQ-01"');
+    expect(describeRequirementCitation("EX-AUT-003", known)).toBeUndefined();
+    expect(describeRequirementGap("EX-AUT-003", known)).toBeUndefined();
+  });
+
+  it("a requirement-shaped token nobody cites is neither gap nor note (caller keeps its fallback)", () => {
     expect(getRequirementCitations("REQ-ZZZ-999").mention_count).toBe(0);
     expect(describeRequirementGap("REQ-ZZZ-999", known)).toBeUndefined();
-    expect(describeRequirementGap("AUT-999", known)).toBeUndefined();
-    expect(describeRequirementGap("CTRL-06", known)).toBeUndefined();
+    expect(describeRequirementCitation("AUT-999", known)).toBeUndefined();
+    expect(describeRequirementCitation("CTRL-06", known)).toBeUndefined();
   });
 });

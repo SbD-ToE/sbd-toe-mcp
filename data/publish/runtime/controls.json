@@ -49,7 +49,7 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.84,
         "mode": "derived",
-        "n_links": 60,
+        "n_links": 61,
         "source_requirement_ids": [
           "API-001",
           "API-002",
@@ -110,7 +110,8 @@
           "VAL-004",
           "VAL-005",
           "VAL-006",
-          "VAL-007"
+          "VAL-007",
+          "VAL-008"
         ],
         "via": "requirement_control_links"
       },
@@ -393,7 +394,7 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.84,
         "mode": "derived",
-        "n_links": 9,
+        "n_links": 11,
         "source_requirement_ids": [
           "ARC-002",
           "ARC-003",
@@ -403,7 +404,9 @@
           "ARC-009",
           "ARC-010",
           "ARC-012",
-          "ARC-013"
+          "ARC-013",
+          "ARC-014",
+          "ARC-015"
         ],
         "via": "requirement_control_links"
       },
@@ -679,7 +682,7 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.87,
         "mode": "derived",
-        "n_links": 16,
+        "n_links": 20,
         "source_requirement_ids": [
           "AUT-007",
           "CFG-001",
@@ -696,7 +699,11 @@
           "REQ-003",
           "REQ-005",
           "REQ-006",
-          "REQ-007"
+          "REQ-007",
+          "REQ-AGN-001",
+          "REQ-AGN-002",
+          "REQ-AGN-003",
+          "REQ-AGN-004"
         ],
         "via": "requirement_control_links"
       },
@@ -817,7 +824,7 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.87,
         "mode": "derived",
-        "n_links": 8,
+        "n_links": 9,
         "source_requirement_ids": [
           "GOV-001",
           "GOV-004",
@@ -826,7 +833,8 @@
           "GOV-007",
           "GOV-010",
           "GOV-011",
-          "GOV-012"
+          "GOV-012",
+          "GOV-013"
         ],
         "via": "requirement_control_links"
       },
@@ -933,7 +941,7 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.98,
         "mode": "derived",
-        "n_links": 7,
+        "n_links": 8,
         "source_requirement_ids": [
           "THR-001",
           "THR-002",
@@ -941,7 +949,8 @@
           "THR-004",
           "THR-005",
           "THR-006",
-          "THR-007"
+          "THR-007",
+          "THR-008"
         ],
         "via": "requirement_control_links"
       },
@@ -1084,7 +1093,7 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.54,
         "mode": "derived",
-        "n_links": 34,
+        "n_links": 35,
         "source_requirement_ids": [
           "ACC-001",
           "ACC-002",
@@ -1112,6 +1121,7 @@
           "GOV-008",
           "GOV-009",
           "GOV-010",
+          "GOV-014",
           "SES-001",
           "SES-002",
           "SES-003",
@@ -1282,7 +1292,7 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.87,
         "mode": "derived",
-        "n_links": 9,
+        "n_links": 11,
         "source_requirement_ids": [
           "DPL-001",
           "DPL-002",
@@ -1292,7 +1302,9 @@
           "DPL-006",
           "DPL-007",
           "DPL-008",
-          "DPL-009"
+          "DPL-009",
+          "DPL-010",
+          "DPL-011"
         ],
         "via": "requirement_control_links"
       },
@@ -1569,7 +1581,7 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.54,
         "mode": "derived",
-        "n_links": 20,
+        "n_links": 25,
         "source_requirement_ids": [
           "LOG-001",
           "LOG-002",
@@ -1590,7 +1602,12 @@
           "OPS-007",
           "OPS-008",
           "OPS-009",
-          "OPS-010"
+          "OPS-010",
+          "OPS-011",
+          "OPS-012",
+          "OPS-013",
+          "OPS-014",
+          "OPS-015"
         ],
         "via": "requirement_control_links"
       },
@@ -1771,7 +1788,7 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.87,
         "mode": "derived",
-        "n_links": 14,
+        "n_links": 18,
         "source_requirement_ids": [
           "API-006",
           "DEP-001",
@@ -1784,6 +1801,10 @@
           "DEP-008",
           "DEP-009",
           "DEP-010",
+          "DEP-011",
+          "DEP-012",
+          "DEP-013",
+          "DEP-014",
           "DST-003",
           "DST-004",
           "DST-007"

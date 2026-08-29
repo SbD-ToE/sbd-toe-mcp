@@ -450,7 +450,7 @@
   },
   "manual_grounding": {
     "total_entries": 51,
-    "manual_commit_sha": "171db83db82630d018654367e3209eb6f57e0c9a",
+    "manual_commit_sha": "d5c2586ae2cd12ab2e31b65febb2e85ed20e1bce",
     "groups_ref": {
       "tool": "prepare_sbd_toe_codegen_context",
       "with": {
@@ -505,9 +505,9 @@
     "returned_artifacts": 12,
     "named_v1_entities": 39,
     "unnamed_v1_entities": 12,
-    "evidence_patterns_total": 173,
+    "evidence_patterns_total": 186,
     "evidence_patterns_returned": 0,
-    "evidence_patterns_capped": 173,
+    "evidence_patterns_capped": 186,
     "evidence_pattern_cap": 0,
     "evidence_patterns_rest": {
       "tool": "prepare_sbd_toe_codegen_context",

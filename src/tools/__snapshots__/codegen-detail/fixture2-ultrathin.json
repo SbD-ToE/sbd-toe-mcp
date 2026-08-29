@@ -277,6 +277,11 @@
         "type": "domain-specific"
       },
       {
+        "requirement_id": "OPS-015",
+        "name": "Sinais contínuos de saúde e disponibilidade operacional",
+        "type": "domain-specific"
+      },
+      {
         "requirement_id": "SES-001",
         "name": "Expiração automática por inactividade",
         "type": "base"
@@ -604,7 +609,7 @@
   },
   "manual_grounding": {
     "total_entries": 69,
-    "manual_commit_sha": "171db83db82630d018654367e3209eb6f57e0c9a",
+    "manual_commit_sha": "d5c2586ae2cd12ab2e31b65febb2e85ed20e1bce",
     "groups_ref": {
       "tool": "prepare_sbd_toe_codegen_context",
       "with": {
@@ -622,7 +627,7 @@
   "citations": {
     "runtime_v0": {
       "source_data": {
-        "data/publish/runtime/requirements.json": 68,
+        "data/publish/runtime/requirements.json": 69,
         "data/publish/runtime/controls.json": 10
       },
       "ids_from": [
@@ -659,9 +664,9 @@
     "returned_artifacts": 14,
     "named_v1_entities": 55,
     "unnamed_v1_entities": 14,
-    "evidence_patterns_total": 196,
+    "evidence_patterns_total": 211,
     "evidence_patterns_returned": 0,
-    "evidence_patterns_capped": 196,
+    "evidence_patterns_capped": 211,
     "evidence_pattern_cap": 0,
     "evidence_patterns_rest": {
       "tool": "prepare_sbd_toe_codegen_context",

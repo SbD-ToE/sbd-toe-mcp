@@ -329,6 +329,12 @@
         "description": "Por agente e por mandate, define-se budget máximo de consumo por janela temporal (tokens, chamadas, custo); cada inferência conta para o orçamento; ao atingir threshold de aviso, alerta vai ao owner; ao atingir threshold máximo, sessão pausa ou kill-switch é accionado conforme nível de autonomia. Métricas de uso reportadas com cadência da revisão do mandate. Detecta loops descontrolados, abuso, regressões de eficiência do modelo após upgrade."
       },
       {
+        "requirement_id": "OPS-015",
+        "name": "Sinais contínuos de saúde e disponibilidade operacional",
+        "type": "domain-specific",
+        "description": "Serviços e aplicações críticas em produção expõem um sinal explícito de saúde, prontidão ou disponibilidade, ou mecanismo equivalente da plataforma, monitorizado continuamente fora da instância. Exemplos incluem endpoint de saúde, heartbeat, readiness/liveness probes, health checks de load balancer ou watchdog do supervisor. Falhas persistentes geram alerta accionável e integram, quando aplicável, rollback ([DPL-008](/sbd-toe/sbd-manual/deploy-seguro/addon/catalogo-requisitos-deploy)) ou resposta a incidente ([OPS-007](/sbd-toe/sbd-manual/monitorizacao-operacoes/addon/catalogo-requisitos-operacoes)). O sinal não expõe segredos, configuração sensível nem diagnósticos internos não autorizados; a cobertura é verificável por inventário de serviços."
+      },
+      {
         "requirement_id": "SES-001",
         "name": "Expiração automática por inactividade",
         "type": "base",
@@ -727,7 +733,7 @@
   },
   "manual_grounding": {
     "total_entries": 69,
-    "manual_commit_sha": "171db83db82630d018654367e3209eb6f57e0c9a",
+    "manual_commit_sha": "d5c2586ae2cd12ab2e31b65febb2e85ed20e1bce",
     "groups": [
       {
         "rastreabilidade_role": "substrate_landing",
@@ -771,7 +777,7 @@
   "citations": {
     "runtime_v0": {
       "source_data": {
-        "data/publish/runtime/requirements.json": 68,
+        "data/publish/runtime/requirements.json": 69,
         "data/publish/runtime/controls.json": 10
       },
       "ids_from": [
@@ -816,9 +822,9 @@
       "ASC-09 artifacts: declared=12 actual=8 (slice contract status=working_contract)",
       "ASC-10 mechanisms: declared=6 actual=4 (slice contract status=working_contract)"
     ],
-    "evidence_patterns_total": 196,
+    "evidence_patterns_total": 211,
     "evidence_patterns_returned": 5,
-    "evidence_patterns_capped": 191,
+    "evidence_patterns_capped": 206,
     "evidence_pattern_cap": 5,
     "evidence_patterns_rest": {
       "tool": "prepare_sbd_toe_codegen_context",

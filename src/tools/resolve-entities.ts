@@ -39,7 +39,12 @@ import {
 } from "./regulatory-overlay-loader.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { resolveEntitiesAffordances } from "../serving/affordances.js";
-import { describeRequirementGap, type RequirementGap } from "../serving/requirement-id.js";
+import {
+  describeRequirementCitation,
+  describeRequirementGap,
+  type RequirementCitationNote,
+  type RequirementGap
+} from "../serving/requirement-id.js";
 
 const DEFAULT_LIMIT = 50;
 const MAX_LIMIT = 200;
@@ -72,8 +77,10 @@ export interface ResolveEntitiesResult {
   meta: {
     filtersApplied: Record<string, unknown>;
     note: string;
-    /** Present when a requirement_id filter names a cited-but-unpublished requirement (declared, never silent). */
+    /** Present when a requirement_id filter names a legacy REQ-<CAT>-NNN citation the bundle cannot resolve (declared, never silent). */
     declared_gap?: RequirementGap;
+    /** Present when a requirement_id filter names a cited, unpublished base-form id (illustrative example / non-requirement token) — informative, not a gap. */
+    citation_note?: RequirementCitationNote;
   };
   /** RF-H advisory band — adjacent tools the caller likely needs next (advisory; may be absent). */
   next?: Affordance[];
@@ -433,6 +440,9 @@ function resolveEntitiesCore(
     const gap = describeRequirementGap(requirementIdFilter, knownRequirementIds);
     if (gap) {
       result.meta = { ...result.meta, note: `${gap.note} ${result.meta.note}`, declared_gap: gap };
+    } else {
+      const citation = describeRequirementCitation(requirementIdFilter, knownRequirementIds);
+      if (citation) result.meta = { ...result.meta, note: `${citation.note} ${result.meta.note}`, citation_note: citation };
     }
   }
   return { provenance: RUNTIME_V0_PROVENANCE, ...result };

@@ -3,13 +3,58 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-29
 purpose: documentation
-reasoning: v0.20.0-beta.3 (beta line) — absorbs master bc8c9189 (PR #45, 0.10.2 content) into the v2 line: dev-build KG pin kg-v1-manual-v1.6.7-aligned-2026-08-29 (REQ-AGN-001…004 served), requirement-id grammar v1.10 §1.18, declared gaps (requirements without control link; legacy REQ-<CAT>-NNN citations); verified against the v2 surface (SPARQL trace, detail levels, payload budgets). v0.20.0-beta.2 (token diet) and the stable-line entries (0.10.2 proposed, 0.10.1 and earlier) below.
+reasoning: v0.20.0-beta.3 (beta line, unreleased) — absorbs master bc8c9189 (PR #45) and 947f38e6 (PR #46, same day) into the v2 line: re-pin to dev-build kg-v1-manual-v1.7.0-aligned-2026-08-29 (contract v1.11, Manual v1.7.0; supersedes the v1.6.7 pin below), informative citation classifier (citation_note vs declared_gap), toolchain hygiene in a separate commit; dev-build KG pin kg-v1-manual-v1.6.7-aligned-2026-08-29 (REQ-AGN-001…004 served), requirement-id grammar v1.10 §1.18, declared gaps (requirements without control link; legacy REQ-<CAT>-NNN citations); verified against the v2 surface (SPARQL trace, detail levels, payload budgets). v0.20.0-beta.2 (token diet) and the stable-line entries (0.10.2 proposed, 0.10.1 and earlier) below.
 review_status: pending-human-review
 ---
 
 # Changelog
 
 ## 0.20.0-beta.3 — 2026-08-29
+
+**Prerelease (beta line), unreleased.** Two same-day absorptions from `master`: PR #45
+(`bc8c918`, below) and PR #46 (`947f38e612a9b2d906733adaadc6e9d200b70547`, this addendum).
+No tag, no npm publish.
+
+### Addendum — re-pin to dev-build `kg-v1-manual-v1.7.0-aligned-2026-08-29` (absorbs master `947f38e6`, PR #46)
+
+Supersedes the `v1.6.7` pin below within this same unreleased version.
+
+- **Served bundle:** `consumed-bundle.json` → `kg-v1-manual-v1.7.0-aligned-2026-08-29`, sha256
+  `2c27f4ebccb9a693ccb3ae50fb0bb64fd602aff3acc9b53d36f898a64c0064fa` (verified against the
+  sidecar by `sync-bundle`; idempotent over the cherry-picked data, `+0 ~0 -0 =49`), contract
+  **v1.11**, Manual **v1.7.0** @ `d5c2586ae2cd12ab2e31b65febb2e85ed20e1bce` (repo
+  `SbD-ToE/sbd-toe-manual`), ontology unchanged. Identical to master's pin.
+- **Served knowledge:** requirements 255 → **256** (OPS-015, ch. 12), categories 27; curated
+  requirement→control layer: `requirement_control_links` 242 → **263** — the 20 formerly
+  unlinked requirements (incl. REQ-AGN-001…004 → `CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29`)
+  and OPS-015 now carry a direct control; `coverage_gaps.requirements_without_control_link`
+  = **0** at L1/L2/L3 (mechanism kept, data-driven). Legacy `REQ-<CAT>-NNN` citations: **0**
+  (`declared_gap` mechanism kept). Manual v1.7.0 `macro-processos` chunks served in `guide`.
+- **Citation classifier (from master):** `src/serving/requirement-id.ts` `describeRequirementCitation`
+  — illustrative `REQ-NNN` and non-requirement `<CAT>-NNN` tokens (`CWE-`, `SHA-`, …) answer
+  with an **informative** `citation_note` (`status: "informative"`, `query_sbd_toe_entities` /
+  `resolve_entities.meta`), never a gap, never resolved by approximation; `declared_gap` is
+  reserved for the legacy shape. `EX-AUT-003` / `REQ-AUTH-001` still rejected (fullmatch).
+- **v2 line, data-driven re-baselines (this line only):**
+  - `src/serving/rdf/projection.test.ts`: `requirement_control_links` 242 → 263 (comment
+    records the history). `trace_sbd_toe_graph` unchanged: 270/270/270 rows per lens,
+    byte-equal to beta.2 (`relations.v1` 529 untouched).
+  - Golden snapshots regenerated: 131× `manual_commit_sha` (`171db83d` → `d5c2586a`);
+    fixture 2 gains OPS-015 (`logging` → OPS) in the activated set (68 → 69 requirements,
+    +1 `citation_map` id, +1 grounding entry, `evidence_patterns_total` +1).
+  - `prepare-codegen-context.budget.test.ts`: fixture 2 `citationIds` 150 → **151**;
+    **payload deviation reported, gate not raised:** fixture 2 `standard` measures **8,645 >
+    8,500** (EPIC hard gate; +223 tokens vs the v1.6.7 pin — OPS-015 with its published
+    description; data growth, not an encoding regression). Recorded as a tolerated deviation
+    (`KNOWN_TOTAL_DEVIATIONS`, ceiling 8,700) pending operator ratification; EPIC.md carries
+    the re-baseline note. All other budgets within limits: f1 standard 6,227 / minimal 5,588 /
+    ultrathin 3,696 (unchanged); f2 minimal **7,926**/8,000, ultrathin **4,642**/4,840; full
+    18,903 / 24,792.
+- **Verified live (stdio):** resolve REQ-AGN-001…004 + **OPS-015** 5/5; consult L1 120/26,
+  L2 **231/27**, L3 **256/27**, gaps 0/0/0; `concerns:["agents"]` → REQ-AGN-001…004 with 1
+  direct control via `requirement_control_links` + 5 derived; `prepare_sbd_toe_codegen_context`
+  at full/standard/minimal/ultrathin with REQ-AGN-001…004 **and OPS-015** in the activated set
+  (task heuristic `ai agent` + `audit logging`); `npm run check` ✅, **723/723** ✅.
 
 **Prerelease (beta line).** Absorbs `master` `bc8c91890e454f171e267cea892d9d9b99f6585a`
 (squash of PR #45, the stable-line `0.10.2` content — entry below) into the v2 line by
@@ -160,14 +205,40 @@ record per `PROGRAMME-PRESERVATION-PROTOCOL.md`.
 **Patch** — served-bundle alignment + declared-gap serving. Additive on the tool
 surface (new response fields, one new `concerns` value); no tool removed or reshaped.
 
-Served bundle: **dev-build `kg-v1-manual-v1.6.7-aligned-2026-08-29`** (KG commit
-`762ccaafa5cacec44f203488c234be3a174ef780`; snapshot
-`sbd-toe-knowledge-graph-bundle-kg-v1-manual-v1.6.7-aligned-2026-08-29-snapshot.zip`, sha256
-`a66c324575cede5ffb9e7c5ddae06bb8d090b3a1ec7150d53f80074f55185276`, verified against the
-`.sha256` sidecar by `sync-bundle`), `consumer_contract_version` **v1.10** (§1.18),
-**Manual v1.6.7** @ `171db83d`, ontology `ontology-v1.1-fair-baseline` (unchanged).
-`source: dev-build` (June precedent, `kg-v1-manual-v1.6.4-aligned-2026-06-17`) — the formal
-KG release stays `v1.5.0`; `mcp-stable` was not moved.
+Served bundle: **dev-build `kg-v1-manual-v1.7.0-aligned-2026-08-29`** (KG commit
+`737efe2090618787af2a4f863f97717a374d9b2f`; snapshot
+`sbd-toe-knowledge-graph-bundle-kg-v1-manual-v1.7.0-aligned-2026-08-29-snapshot.zip`, sha256
+`2c27f4ebccb9a693ccb3ae50fb0bb64fd602aff3acc9b53d36f898a64c0064fa`, verified against the
+`.sha256` sidecar by `sync-bundle`), `consumer_contract_version` **v1.11** (§1.19),
+**Manual v1.7.0** @ `d5c2586a` (remote `SbD-ToE/sbd-toe-manual`), ontology
+`ontology-v1.1-fair-baseline` (unchanged). `source: dev-build` — the formal KG release
+stays `v1.5.0`; `mcp-stable` was not moved. Supersedes the intermediate pin
+`kg-v1-manual-v1.6.7-aligned-2026-08-29` (`762ccaaf`, sha256 `a66c3245…5276`, contract
+v1.10, merged in #45) — both are dev-builds on this line.
+
+### Changed — served knowledge (dev-build 2026-08-29 v1.6.7 → v1.7.0, contract v1.11)
+
+- **Manual v1.7.0**: **OPS-015** «Sinais contínuos de saúde e disponibilidade operacional»
+  (L2/L3, chapter 12) → `requirements.json` 255 → **256** (27 categories); EvidencePatterns
+  256 (coverage 256/256). Per level: L1 120, L2 231, L3 256.
+- **Curated requirement→control layer** (`requirement_control_links` 242 → **263**,
+  `--preserve-existing`): the 20 requirements previously without a control link (AGN ×4,
+  ARC-014/015, DEP-011…014, DPL-010/011, OPS-011…014, GOV-013/014, THR-008, VAL-008) and
+  OPS-015 are now linked — REQ-AGN-001…004 → `CTRL-governance-classificacao-e-governacao-por-risco-*`
+  via the curated `domain_mapping.AGN: [governance, identity]` (programme-lead judgement,
+  not Manual-derived). `coverage_gaps.requirements_without_control_link` is therefore **0**
+  at every level — the declaration machinery stays (data-driven).
+- **Legacy citations corrected upstream**: 0 unresolvable `REQ-[A-Z]{3}-NNN` mentions and
+  0 `EX-` entries in `chunk_entity_mentions` → **0 declared legacy-citation gaps**. The 25
+  illustrative `REQ-NNN` example mentions (20 ids, 8 example docs) and non-requirement
+  tokens captured by the `<CAT>-NNN` shape (`CWE-`, `SHA-256`, …) are **informative, not
+  gaps**: `query_sbd_toe_entities` / `resolve_entities` surface them as `citation_note` /
+  `meta.citation_note` (`status: "informative"`) while keeping their normal path — never
+  aliased, never silent.
+- `00-fundamentos/macro-processos.md` (new, 82 chunks, role `addon`) is served in the
+  **`guide`** and `consult` profiles (MP1–MP5 are not entities, by declaration).
+
+### Changed — served knowledge (formal `v1.5.0` → dev-build 2026-08-29 v1.6.7; superseded above)
 
 ### Changed — served knowledge (formal `v1.5.0` → dev-build 2026-08-29)
 
@@ -214,7 +285,16 @@ KG release stays `v1.5.0`; `mcp-stable` was not moved.
   there is nothing to declare for it until the KG surfaces it.
 - `assets/agent-guide.md`: requirement identifier convention (both forms, category rule,
   `EX-` illustrative prefix, legacy-citation rule), the `agents` concern, and
-  interpretation rows for `coverage_gaps` / `declared_gap`.
+  interpretation rows for `coverage_gaps` / `declared_gap` / `citation_note`.
+
+### Changed — toolchain hygiene (devDependencies only, no package impact)
+
+- Dependabot alerts on the test toolchain: `vitest` 1.6.1 → **4.1.9**, `@vitest/coverage-v8`
+  and `@vitest/ui` 1.6.1 → **4.1.9** (Dependabot #39/#41/#42), pulling `vite` 8.2.2 and
+  `postcss` 8.5.26 through the tree; `esbuild` and `brace-expansion` (the other two alerts) are no
+  longer in the dependency tree at all (vite 8 builds on rolldown; `test-exclude`/`minimatch` dropped).
+  `npm audit`: 0 vulnerabilities. `npm test` / `npm run check` green; `npm pack --dry-run`
+  file list identical before/after — toolchain hygiene, no impact on the published package.
 
 ### Governance
 

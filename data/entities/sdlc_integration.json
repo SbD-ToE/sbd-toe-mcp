@@ -1,6 +1,6 @@
 {
   "agent": "lifecycle_extractor",
-  "generated_at": "2026-08-29T14:18:59Z",
+  "generated_at": "2026-08-29T16:31:43Z",
   "items": [
     {
       "confidence": 0.91,
@@ -5217,17 +5217,17 @@
       "warnings": []
     }
   ],
-  "run_id": "20260829T141859Z",
+  "run_id": "20260829T163143Z",
   "source": {
     "branch": "HEAD",
-    "commit_sha": "171db83db82630d018654367e3209eb6f57e0c9a",
+    "commit_sha": "d5c2586ae2cd12ab2e31b65febb2e85ed20e1bce",
     "corpus_root": "manuals_src/docs/sbd-toe",
-    "repo_url": "git@github.com:Shiftleftpt/SbD-ToE-Manual.git"
+    "repo_url": "git@github.com:SbD-ToE/sbd-toe-manual.git"
   },
   "stats": {
     "errors": 0,
     "processed_files": 253,
-    "processed_sections": 2560,
+    "processed_sections": 2565,
     "skipped": 0,
     "warnings": 53
   },
