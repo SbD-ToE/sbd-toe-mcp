@@ -49,7 +49,7 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.84,
         "mode": "derived",
-        "n_links": 61,
+        "n_links": 58,
         "source_requirement_ids": [
           "API-001",
           "API-002",
@@ -59,7 +59,6 @@
           "API-007",
           "AUT-002",
           "AUT-004",
-          "AUT-008",
           "CFG-002",
           "CFG-003",
           "CFG-004",
@@ -80,7 +79,6 @@
           "ENC-004",
           "ENC-005",
           "ENC-006",
-          "ENC-007",
           "ENC-008",
           "ENC-009",
           "ERR-001",
@@ -103,7 +101,6 @@
           "INT-005",
           "INT-006",
           "INT-007",
-          "INT-008",
           "VAL-001",
           "VAL-002",
           "VAL-003",
@@ -394,8 +391,9 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.84,
         "mode": "derived",
-        "n_links": 11,
+        "n_links": 12,
         "source_requirement_ids": [
+          "ARC-001",
           "ARC-002",
           "ARC-003",
           "ARC-004",
@@ -519,15 +517,13 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.84,
         "mode": "derived",
-        "n_links": 19,
+        "n_links": 17,
         "source_requirement_ids": [
           "AUT-001",
           "AUT-003",
           "AUT-005",
           "AUT-006",
           "AUT-009",
-          "AUT-010",
-          "REQ-001",
           "REQ-002",
           "REQ-004",
           "REQ-005",
@@ -682,9 +678,8 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.87,
         "mode": "derived",
-        "n_links": 20,
+        "n_links": 19,
         "source_requirement_ids": [
-          "AUT-007",
           "CFG-001",
           "CFG-006",
           "CLA-001",
@@ -695,7 +690,7 @@
           "CLA-006",
           "CLA-007",
           "CLA-008",
-          "INT-008",
+          "REQ-001",
           "REQ-003",
           "REQ-005",
           "REQ-006",
@@ -824,17 +819,19 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.87,
         "mode": "derived",
-        "n_links": 9,
+        "n_links": 11,
         "source_requirement_ids": [
           "GOV-001",
           "GOV-004",
           "GOV-005",
           "GOV-006",
           "GOV-007",
+          "GOV-009",
           "GOV-010",
           "GOV-011",
           "GOV-012",
-          "GOV-013"
+          "GOV-013",
+          "INT-008"
         ],
         "via": "requirement_control_links"
       },
@@ -1093,7 +1090,7 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.54,
         "mode": "derived",
-        "n_links": 35,
+        "n_links": 32,
         "source_requirement_ids": [
           "ACC-001",
           "ACC-002",
@@ -1105,13 +1102,11 @@
           "ACC-008",
           "ACC-009",
           "ACC-010",
+          "AUT-007",
+          "AUT-008",
           "CNT-001",
           "CNT-002",
-          "CNT-003",
           "CNT-004",
-          "CNT-005",
-          "CNT-006",
-          "CNT-009",
           "CNT-010",
           "CNT-011",
           "CNT-012",
@@ -1119,7 +1114,6 @@
           "GOV-003",
           "GOV-006",
           "GOV-008",
-          "GOV-009",
           "GOV-010",
           "GOV-014",
           "SES-001",
@@ -1502,12 +1496,14 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.876,
         "mode": "derived",
-        "n_links": 4,
+        "n_links": 6,
         "source_requirement_ids": [
           "ARC-001",
           "ARC-006",
           "ARC-008",
-          "ARC-011"
+          "ARC-011",
+          "ARC-013",
+          "INT-008"
         ],
         "via": "requirement_control_links"
       },
@@ -1581,8 +1577,9 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.54,
         "mode": "derived",
-        "n_links": 25,
+        "n_links": 26,
         "source_requirement_ids": [
+          "AUT-010",
           "LOG-001",
           "LOG-002",
           "LOG-003",
@@ -1702,10 +1699,11 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.7338,
         "mode": "derived",
-        "n_links": 2,
+        "n_links": 3,
         "source_requirement_ids": [
           "CFG-006",
-          "CIC-003"
+          "CIC-003",
+          "ENC-007"
         ],
         "via": "requirement_control_links"
       },
@@ -1913,10 +1911,14 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.9016,
         "mode": "derived",
-        "n_links": 3,
+        "n_links": 7,
         "source_requirement_ids": [
+          "CNT-003",
+          "CNT-005",
+          "CNT-006",
           "CNT-007",
           "CNT-008",
+          "CNT-009",
           "CNT-010"
         ],
         "via": "requirement_control_links"

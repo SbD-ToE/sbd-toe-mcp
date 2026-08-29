@@ -229,18 +229,36 @@ export const scenarios = [
       if (!d.coverage) return fail("no coverage envelope (G1)"); const act = d.data?.activated ?? []; if (act.length === 0) return fail("nothing activated"); if (act.length > 3) return fail("page > limit");
       const u = await c.tool("map_sbd_toe_regulatory_activation", { framework: "PCI" }); const honest = !u.ok || (u.data?.data?.activated?.length ?? 0) === 0;
       return ok(`DORA: ${act.length}/${d.coverage.chapters ?? d.coverage.total} chapters, mappings ${d.coverage.mappings}, obligations ${d.coverage.obligations}; unknown framework → ${honest ? "honest empty/error" : "activated?!"}`); } },
+  { id: "TC-F-08", axis: "F", title: "curated requirement→control layer v2 (KG v1.6.1): 265 links, 0 unlinked, Archon re-targets served", tool: "resolve_entities",
+    run: async (c) => { const links = await c.tool("resolve_entities", { record_type: "requirement_control_link", limit: 1 }); if (!links.ok) return fail(links.error);
+      const gaps = []; for (const L of ["L1", "L2", "L3"]) { const r = await c.tool("consult_security_requirements", { risk_level: L }); gaps.push(r.data?.coverage_gaps?.requirements_without_control_link?.count); }
+      const direct = async (id) => { const r = await c.tool("consult_security_requirements", { risk_level: "L3", concerns: ["auth"] }); const req = (r.data.requirements ?? []).some((x) => x.requirement_id === id); const l = await c.tool("resolve_entities", { record_type: "requirement_control_link", filters: { source_id: id } }); return { req, targets: (l.data?.entities ?? []).map((e) => e.target_id) }; };
+      const a7 = await direct("AUT-007"), a8 = await direct("AUT-008"), a10 = await direct("AUT-010");
+      const idn = (t) => t.some((x) => /^CTRL-identity-/.test(x)), mon = (t) => t.some((x) => /^CTRL-monitoring-/.test(x));
+      if (links.data.total !== 265) return fail(`links total ${links.data.total} (expected 265)`, "graph"); if (gaps.some((g) => g !== 0)) return fail(`coverage_gaps ${gaps}`);
+      if (!idn(a7.targets) || !idn(a8.targets)) return fail(`AUT-007/008 → ${a7.targets},${a8.targets} (expected identity)`, "graph"); if (!mon(a10.targets)) return fail(`AUT-010 → ${a10.targets} (expected monitoring)`, "graph");
+      const cur = await c.tool("resolve_entities", { record_type: "requirement_control_link", filters: { "curation.curator": "archon-2026-08-29" } });
+      return ok(`265 links, gaps L1/L2/L3 = ${gaps.join("/")}, AUT-007/008 → identity, AUT-010 → monitoring; curated links (curation.curator=archon-2026-08-29): ${cur.data?.total ?? "n/a"} — additive key tolerated`); } },
   { id: "TC-F-07", axis: "F", title: "G1 gate — every set-returning tool exposes offset/limit", tool: "tools/list",
     run: async (c) => { const setTools = ["plan_sbd_toe_repo_governance", "get_sbd_toe_chapter_implementation_checklist", "get_sbd_toe_operating_model", "get_sbd_toe_verification_matrix", "assess_sbd_toe_implementation", "plan_sbd_toe_rollout", "map_sbd_toe_regulatory_activation", "get_threat_landscape", "consult_security_requirements", "get_guide_by_role", "resolve_entities", "query_sbd_toe_entities"];
       const missing = setTools.filter((n) => { const t = c.tools.find((x) => x.name === n); const p = Object.keys(t?.inputSchema?.properties ?? {}); return !(p.includes("offset") && p.includes("limit")) && !(p.includes("limit") || p.includes("topK")); });
       return missing.length ? part(`set-returning tools without offset/limit: ${missing.join(", ")} (declared totals only)`) : ok("all set-returning tools paginate"); } },
 
   // ───────────────────────── Axis E — Regression (promotion gate) ─────────────────────────
-  { id: "TC-E-01", axis: "E", title: "threat associated_controls ≥1 (L2, logging)", tool: "get_threat_landscape",
-    run: async (c) => { const r = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["logging"] }); if (!r.ok) return fail(r.error); const n = r.data.threats.filter((t) => (t.associated_controls ?? []).length).length; return n ? ok(`${n}/${r.data.threats.length} threats with associated_controls`) : fail(`0/${r.data.threats.length} threats carry associated_controls (mitigated_by populated on ${r.data.threats.filter((t) => t.mitigated_by?.length).length}) — substrate field empty for ch.12`, "graph"); } },
-  { id: "TC-E-02", axis: "E", title: "threat associated_controls ⊇ mitigated_by ids (L2, auth)", tool: "get_threat_landscape",
-    run: async (c) => { const r = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["auth"] }); if (!r.ok) return fail(r.error); const th = r.data.threats; const withAssoc = th.filter((t) => (t.associated_controls ?? []).length);
-      const idLike = withAssoc.filter((t) => t.associated_controls.some((x) => /^CTRL-/.test(String(x)))).length; const superset = th.filter((t) => t.mitigated_by?.length && t.mitigated_by.every((m) => (t.associated_controls ?? []).includes(m.control_id))).length;
-      return superset ? ok(`${superset} threats with assoc ⊇ mitigated_by`) : fail(`${withAssoc.length}/${th.length} threats have associated_controls, ${idLike} as CTRL ids (the rest are substrate prose refs); 0 satisfy assoc ⊇ mitigated_by — field is textual in the bundle, not control ids`, "graph"); } },
+  // Criterion revised by the programme lead 2026-08-30: the structural mitigation link is
+  // `mitigated_by` (derived from the resolved controls, must be populated); the substrate's
+  // `associated_controls` is textual prose (passed through) → PART when present as text,
+  // never a FAIL of the serving layer.
+  { id: "TC-E-01", axis: "E", title: "threat mitigation links populated (L2, logging) — mitigated_by structural; associated_controls textual", tool: "get_threat_landscape",
+    run: async (c, ctx) => { const r = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["logging"] }); if (!r.ok) return fail(r.error); const th = r.data.threats;
+      const mit = th.filter((t) => (t.mitigated_by ?? []).length).length; const badIds = th.flatMap((t) => t.mitigated_by ?? []).filter((m) => !ctx.knownIds.has(m.control_id)); const assoc = th.filter((t) => (t.associated_controls ?? []).length).length;
+      if (mit !== th.length) return fail(`${mit}/${th.length} threats carry mitigated_by`); if (badIds.length) return fail(`mitigated_by ids not in bundle: ${badIds.slice(0, 3).map((m) => m.control_id)}`, "mixed");
+      return assoc === th.length ? ok(`${mit}/${th.length} mitigated_by (ids resolve); associated_controls on all`) : part(`${mit}/${th.length} threats mitigated_by structural (ids resolve); associated_controls textual/empty on ${th.length - assoc} (substrate prose field)`, "graph"); } },
+  { id: "TC-E-02", axis: "E", title: "threat mitigation coherent (L2, auth) — mitigated_by ids resolve; associated_controls textual", tool: "get_threat_landscape",
+    run: async (c, ctx) => { const r = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["auth"] }); if (!r.ok) return fail(r.error); const th = r.data.threats;
+      const mit = th.filter((t) => (t.mitigated_by ?? []).length).length; const badIds = th.flatMap((t) => t.mitigated_by ?? []).filter((m) => !ctx.knownIds.has(m.control_id)); const assocText = th.filter((t) => (t.associated_controls ?? []).some((x) => !/^CTRL-/.test(String(x)))).length;
+      if (mit !== th.length) return fail(`${mit}/${th.length} threats carry mitigated_by`); if (badIds.length) return fail(`mitigated_by ids not in bundle: ${badIds.length}`, "mixed");
+      return assocText ? part(`${mit}/${th.length} mitigated_by structural (ids resolve); associated_controls is prose on ${assocText} threats (not control ids — substrate field)`, "graph") : ok(`${mit}/${th.length} mitigated_by; associated_controls empty or ids`); } },
   { id: "TC-E-03", axis: "E", title: "review path-map: containers → ch.09", tool: "map_sbd_toe_review_scope",
     run: async (c) => { const f = ["Dockerfile", "docker-compose.yml", "k8s/deploy.yaml", "helm/app/values.yaml"]; const r = await c.tool("map_sbd_toe_review_scope", { riskLevel: "L2", changedFiles: f }); if (!r.ok) return fail(r.error); const miss = f.filter((x) => !has(bundlesOf(r.data, x), "09-containers-imagens")); return miss.length ? fail(`not → 09: ${miss}`) : ok("all 4 → 09 with reason"); } },
   { id: "TC-E-04", axis: "E", title: "review path-map: *.tf/*.bicep → ch.08", tool: "map_sbd_toe_review_scope",

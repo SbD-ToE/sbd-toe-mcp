@@ -1,6 +1,6 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 263,
+  "count": 265,
   "entity_type": "RequirementControlLink",
   "items": [
     {
@@ -553,6 +553,51 @@
       "bundle_ids": [
         "04-arquitetura-segura"
       ],
+      "confidence": 0.9053,
+      "curation": {
+        "action": "add-secondary",
+        "curator": "archon-2026-08-29",
+        "previous_target_id": null,
+        "ratified_by": "programme-lead",
+        "ratified_on": "2026-08-30",
+        "rationale": "Parecer #7/A1: zonas documentadas, versionadas e revistas em revisão de arquitectura = rastreabilidade arquitetural; SEG continua primária.",
+        "source": "sbd-toe-ontology/agentic/briefs/2026-08-29-archon-parecer-arestas-requisito-controlo.md"
+      },
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "curated_semantic_review",
+        "domain_mapping",
+        "lexical_alignment"
+      ],
+      "link_id": "ARC-001|maps_to_control|CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4",
+      "link_type": "maps_to_control",
+      "matched_control_field": "alias",
+      "matched_control_text": "Revisão de arquitectura para agente AI em A2+ {#us-16}",
+      "score_components": {
+        "chapter_overlap": [
+          "04-arquitetura-segura"
+        ],
+        "mechanical_score": 0.9053,
+        "runner_up_margin": 0.3353,
+        "shared_salient_tokens": [
+          "arquitectura",
+          "revisao"
+        ],
+        "token_similarity": 0.1176
+      },
+      "source_id": "ARC-001",
+      "source_label": "Zonas de confiança identificadas e documentadas",
+      "source_type": "Requirement",
+      "target_id": "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4",
+      "target_label": "Arquitetura segura e rastreável",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "04-arquitetura-segura"
+      ],
       "confidence": 0.87,
       "evidence_unit_ids": [],
       "justification": [
@@ -922,6 +967,52 @@
       "bundle_ids": [
         "04-arquitetura-segura"
       ],
+      "confidence": 0.9647,
+      "curation": {
+        "action": "add-primary",
+        "curator": "archon-2026-08-29",
+        "previous_target_id": null,
+        "ratified_by": "programme-lead",
+        "ratified_on": "2026-08-30",
+        "rationale": "Parecer #11/A2: alias exacto 'validação de topologia como código (L3)'; ARQ passa a secundária.",
+        "source": "sbd-toe-ontology/agentic/briefs/2026-08-29-archon-parecer-arestas-requisito-controlo.md"
+      },
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "curated_semantic_review",
+        "domain_mapping",
+        "lexical_alignment"
+      ],
+      "link_id": "ARC-013|maps_to_control|CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b",
+      "link_type": "maps_to_control",
+      "matched_control_field": "alias",
+      "matched_control_text": "Segmentação de ambientes e validação de topologia como código (L3)",
+      "score_components": {
+        "chapter_overlap": [
+          "04-arquitetura-segura"
+        ],
+        "mechanical_score": 0.9647,
+        "runner_up_margin": 0.0647,
+        "shared_salient_tokens": [
+          "codigo",
+          "como",
+          "topologia"
+        ],
+        "token_similarity": 0.2105
+      },
+      "source_id": "ARC-013",
+      "source_label": "Validação automática de topologia em CI/CD ou como código",
+      "source_type": "Requirement",
+      "target_id": "CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b",
+      "target_label": "Segmentação e controlo arquitetural",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "04-arquitetura-segura"
+      ],
       "confidence": 0.9,
       "evidence_unit_ids": [],
       "justification": [
@@ -1205,65 +1296,74 @@
       "bundle_ids": [
         "02-requisitos-seguranca"
       ],
-      "confidence": 0.87,
+      "confidence": 0.95,
+      "curation": {
+        "action": "retarget",
+        "curator": "archon-2026-08-29",
+        "previous_target_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+        "ratified_by": "programme-lead",
+        "ratified_on": "2026-08-30",
+        "rationale": "Parecer #12: SAML/OIDC é identidade; match curado anterior por token 'funcional' (ruído). Único controlo `identity` disponível (lacuna L1).",
+        "source": "sbd-toe-ontology/agentic/briefs/2026-08-29-archon-parecer-arestas-requisito-controlo.md"
+      },
       "evidence_unit_ids": [],
       "justification": [
-        "bundle_grounding",
-        "chapter_grounding",
-        "domain_mapping"
+        "curated_semantic_review"
       ],
-      "link_id": "AUT-007|maps_to_control|CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+      "link_id": "AUT-007|maps_to_control|CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
       "link_type": "maps_to_control",
-      "matched_control_field": "alias",
-      "matched_control_text": "Integrar requisitos de segurança no backlog funcional da aplicação",
+      "matched_control_field": "curation",
+      "matched_control_text": "Gestão de identidades, acessos e ownership",
       "score_components": {
-        "chapter_overlap": [
-          "02-requisitos-seguranca"
-        ],
-        "runner_up_margin": 0.03,
-        "shared_salient_tokens": [
-          "funcional"
-        ],
-        "token_similarity": 0.0588
+        "chapter_overlap": [],
+        "mechanical_score": 0.6,
+        "runner_up_margin": 0.01,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
       },
       "source_id": "AUT-007",
       "source_label": "Suporte a autenticação federada",
       "source_type": "Requirement",
-      "target_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
-      "target_label": "Classificação e governação por risco",
+      "target_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+      "target_label": "Gestão de identidades, acessos e ownership",
       "target_type": "Control"
     },
     {
       "bundle_ids": [
         "02-requisitos-seguranca"
       ],
-      "confidence": 0.92,
+      "confidence": 0.95,
+      "curation": {
+        "action": "retarget",
+        "curator": "archon-2026-08-29",
+        "previous_target_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+        "ratified_by": "programme-lead",
+        "ratified_on": "2026-08-30",
+        "rationale": "Parecer #13: factor adicional por acção sensível = autenticação/autorização; match anterior por token 'evidencia' (ruído).",
+        "source": "sbd-toe-ontology/agentic/briefs/2026-08-29-archon-parecer-arestas-requisito-controlo.md"
+      },
       "evidence_unit_ids": [],
       "justification": [
-        "bundle_grounding",
-        "chapter_grounding",
-        "domain_mapping",
-        "requirement_domain_hint"
+        "curated_semantic_review"
       ],
-      "link_id": "AUT-008|maps_to_control|CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "link_id": "AUT-008|maps_to_control|CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
       "link_type": "maps_to_control",
-      "matched_control_field": "alias",
-      "matched_control_text": "Arquivo Central de Evidências de Validação",
+      "matched_control_field": "curation",
+      "matched_control_text": "Gestão de identidades, acessos e ownership",
       "score_components": {
-        "chapter_overlap": [
-          "02-requisitos-seguranca"
-        ],
-        "runner_up_margin": 0.05,
+        "chapter_overlap": [],
+        "mechanical_score": 0.57,
+        "runner_up_margin": 0.03,
         "shared_salient_tokens": [
           "evidencia"
         ],
-        "token_similarity": 0.0667
+        "token_similarity": 0.0714
       },
       "source_id": "AUT-008",
       "source_label": "Step-up para acções sensíveis",
       "source_type": "Requirement",
-      "target_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
-      "target_label": "Desenvolvimento seguro e validação de código",
+      "target_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+      "target_label": "Gestão de identidades, acessos e ownership",
       "target_type": "Control"
     },
     {
@@ -1300,30 +1400,38 @@
       "bundle_ids": [
         "02-requisitos-seguranca"
       ],
-      "confidence": 0.84,
+      "confidence": 0.95,
+      "curation": {
+        "action": "retarget",
+        "curator": "archon-2026-08-29",
+        "previous_target_id": "CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf",
+        "ratified_by": "programme-lead",
+        "ratified_on": "2026-08-30",
+        "rationale": "Parecer #14: requisito detectivo (acessos anómalos geram alerta); `monitoring ∉ domain_mapping.AUT` — aresta curada explícita; rebuild propunha fornecedores (rejeitado).",
+        "source": "sbd-toe-ontology/agentic/briefs/2026-08-29-archon-parecer-arestas-requisito-controlo.md"
+      },
       "evidence_unit_ids": [],
       "justification": [
-        "bundle_grounding",
-        "chapter_grounding",
-        "domain_mapping"
+        "curated_semantic_review"
       ],
-      "link_id": "AUT-010|maps_to_control|CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf",
+      "link_id": "AUT-010|maps_to_control|CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
       "link_type": "maps_to_control",
-      "matched_control_field": "name",
-      "matched_control_text": "Capacitação e onboarding de segurança",
+      "matched_control_field": "curation",
+      "matched_control_text": "Correlação e Deteção de Anomalias",
       "score_components": {
-        "chapter_overlap": [
-          "02-requisitos-seguranca"
+        "chapter_overlap": [],
+        "mechanical_score": 0.6433,
+        "runner_up_margin": 0.0233,
+        "shared_salient_tokens": [
+          "alerta"
         ],
-        "runner_up_margin": 0.0,
-        "shared_salient_tokens": [],
-        "token_similarity": 0.0
+        "token_similarity": 0.1111
       },
       "source_id": "AUT-010",
       "source_label": "Alerta de acessos suspeitos",
       "source_type": "Requirement",
-      "target_id": "CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf",
-      "target_label": "Capacitação e onboarding de segurança",
+      "target_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "target_label": "Monitorização e resposta operacional",
       "target_type": "Control"
     },
     {
@@ -2294,35 +2402,41 @@
       "bundle_ids": [
         "09-containers-imagens"
       ],
-      "confidence": 0.9021,
+      "confidence": 0.95,
+      "curation": {
+        "action": "retarget",
+        "curator": "archon-2026-08-29",
+        "previous_target_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "ratified_by": "programme-lead",
+        "ratified_on": "2026-08-30",
+        "rationale": "Parecer #23: hardening de imagem; IMG = hardening, assinatura, promoção controlada e políticas de runtime (alias 'Imagens Base Seguras e Minimalistas' arquivado em IDN por L2).",
+        "source": "sbd-toe-ontology/agentic/briefs/2026-08-29-archon-parecer-arestas-requisito-controlo.md"
+      },
       "evidence_unit_ids": [],
       "justification": [
-        "bundle_grounding",
-        "chapter_grounding",
-        "domain_mapping",
-        "lexical_alignment"
+        "curated_semantic_review"
       ],
-      "link_id": "CNT-003|maps_to_control|CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+      "link_id": "CNT-003|maps_to_control|CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d",
       "link_type": "maps_to_control",
-      "matched_control_field": "alias",
-      "matched_control_text": "🧱 Imagens Base Seguras e Minimalistas",
+      "matched_control_field": "curation",
+      "matched_control_text": "Golden Base Images com Patching Automático",
       "score_components": {
         "chapter_overlap": [
           "09-containers-imagens"
         ],
-        "runner_up_margin": 0.0321,
+        "mechanical_score": 0.87,
+        "runner_up_margin": 0.3,
         "shared_salient_tokens": [
           "base",
-          "imagen",
-          "minimalista"
+          "imagem"
         ],
-        "token_similarity": 0.1071
+        "token_similarity": 0.0606
       },
       "source_id": "CNT-003",
       "source_label": "Imagens minimalistas - ausência de componentes não necessários",
       "source_type": "Requirement",
-      "target_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
-      "target_label": "Gestão de identidades, acessos e ownership",
+      "target_id": "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d",
+      "target_label": "Supply chain segura de imagens e containers",
       "target_type": "Control"
     },
     {
@@ -2363,64 +2477,80 @@
       "bundle_ids": [
         "09-containers-imagens"
       ],
-      "confidence": 0.87,
+      "confidence": 0.95,
+      "curation": {
+        "action": "retarget",
+        "curator": "archon-2026-08-29",
+        "previous_target_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "ratified_by": "programme-lead",
+        "ratified_on": "2026-08-30",
+        "rationale": "Parecer #24: hardening de runtime; match anterior por token 'ficheiro' (ruído).",
+        "source": "sbd-toe-ontology/agentic/briefs/2026-08-29-archon-parecer-arestas-requisito-controlo.md"
+      },
       "evidence_unit_ids": [],
       "justification": [
-        "bundle_grounding",
-        "chapter_grounding",
-        "domain_mapping"
+        "curated_semantic_review"
       ],
-      "link_id": "CNT-005|maps_to_control|CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+      "link_id": "CNT-005|maps_to_control|CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d",
       "link_type": "maps_to_control",
-      "matched_control_field": "alias",
-      "matched_control_text": "Rastreabilidade ficheiro → recurso → ambiente",
+      "matched_control_field": "curation",
+      "matched_control_text": "Aplicação de políticas formais de segurança no runtime com OPA/Kyverno",
       "score_components": {
         "chapter_overlap": [
           "09-containers-imagens"
         ],
-        "runner_up_margin": 0.0,
+        "mechanical_score": 0.87,
+        "runner_up_margin": 0.03,
         "shared_salient_tokens": [
-          "ficheiro"
+          "runtime"
         ],
-        "token_similarity": 0.0435
+        "token_similarity": 0.04
       },
       "source_id": "CNT-005",
       "source_label": "Sistema de ficheiros em modo de leitura em runtime",
       "source_type": "Requirement",
-      "target_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
-      "target_label": "Gestão de identidades, acessos e ownership",
+      "target_id": "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d",
+      "target_label": "Supply chain segura de imagens e containers",
       "target_type": "Control"
     },
     {
       "bundle_ids": [
         "09-containers-imagens"
       ],
-      "confidence": 0.87,
+      "confidence": 0.95,
+      "curation": {
+        "action": "retarget",
+        "curator": "archon-2026-08-29",
+        "previous_target_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "ratified_by": "programme-lead",
+        "ratified_on": "2026-08-30",
+        "rationale": "Parecer #25: capabilities/seccomp = hardening de runtime (alias 'Perfis seccomp/AppArmor' em IDN por L2).",
+        "source": "sbd-toe-ontology/agentic/briefs/2026-08-29-archon-parecer-arestas-requisito-controlo.md"
+      },
       "evidence_unit_ids": [],
       "justification": [
-        "bundle_grounding",
-        "chapter_grounding",
-        "domain_mapping"
+        "curated_semantic_review"
       ],
-      "link_id": "CNT-006|maps_to_control|CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+      "link_id": "CNT-006|maps_to_control|CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d",
       "link_type": "maps_to_control",
-      "matched_control_field": "alias",
-      "matched_control_text": "Reprodutibilidade de incidentes em runtime",
+      "matched_control_field": "curation",
+      "matched_control_text": "Aplicação de políticas formais de segurança no runtime com OPA/Kyverno",
       "score_components": {
         "chapter_overlap": [
           "09-containers-imagens"
         ],
-        "runner_up_margin": 0.0,
+        "mechanical_score": 0.87,
+        "runner_up_margin": 0.03,
         "shared_salient_tokens": [
           "runtime"
         ],
-        "token_similarity": 0.04
+        "token_similarity": 0.0357
       },
       "source_id": "CNT-006",
       "source_label": "Restrição de capabilities do kernel e perfis de syscall",
       "source_type": "Requirement",
-      "target_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
-      "target_label": "Gestão de identidades, acessos e ownership",
+      "target_id": "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d",
+      "target_label": "Supply chain segura de imagens e containers",
       "target_type": "Control"
     },
     {
@@ -2497,32 +2627,40 @@
       "bundle_ids": [
         "09-containers-imagens"
       ],
-      "confidence": 0.87,
+      "confidence": 0.95,
+      "curation": {
+        "action": "retarget",
+        "curator": "archon-2026-08-29",
+        "previous_target_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "ratified_by": "programme-lead",
+        "ratified_on": "2026-08-30",
+        "rationale": "Parecer #26: admission control = políticas de runtime; aliases exactos em IMG (OPA/Kyverno).",
+        "source": "sbd-toe-ontology/agentic/briefs/2026-08-29-archon-parecer-arestas-requisito-controlo.md"
+      },
       "evidence_unit_ids": [],
       "justification": [
-        "bundle_grounding",
-        "chapter_grounding",
-        "domain_mapping"
+        "curated_semantic_review"
       ],
-      "link_id": "CNT-009|maps_to_control|CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+      "link_id": "CNT-009|maps_to_control|CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d",
       "link_type": "maps_to_control",
-      "matched_control_field": "alias",
-      "matched_control_text": "Enforcement automático de políticas",
+      "matched_control_field": "curation",
+      "matched_control_text": "Enforcement Centralizado e Auditável de Políticas no Runtime",
       "score_components": {
         "chapter_overlap": [
           "09-containers-imagens"
         ],
-        "runner_up_margin": 0.0,
+        "mechanical_score": 0.87,
+        "runner_up_margin": 0.03,
         "shared_salient_tokens": [
           "politica"
         ],
-        "token_similarity": 0.0357
+        "token_similarity": 0.0323
       },
       "source_id": "CNT-009",
       "source_label": "Políticas de admission control activas",
       "source_type": "Requirement",
-      "target_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
-      "target_label": "Gestão de identidades, acessos e ownership",
+      "target_id": "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d",
+      "target_label": "Supply chain segura de imagens e containers",
       "target_type": "Control"
     },
     {
@@ -4196,32 +4334,38 @@
       "bundle_ids": [
         "02-requisitos-seguranca"
       ],
-      "confidence": 0.87,
+      "confidence": 0.95,
+      "curation": {
+        "action": "retarget",
+        "curator": "archon-2026-08-29",
+        "previous_target_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+        "ratified_by": "programme-lead",
+        "ratified_on": "2026-08-30",
+        "rationale": "Parecer #33: rotação de chaves/segredos; 'rotacao'/'chave'/'segredo' são keywords `secrets`; match anterior por 'evidencia' (ruído).",
+        "source": "sbd-toe-ontology/agentic/briefs/2026-08-29-archon-parecer-arestas-requisito-controlo.md"
+      },
       "evidence_unit_ids": [],
       "justification": [
-        "bundle_grounding",
-        "chapter_grounding",
-        "domain_mapping"
+        "curated_semantic_review"
       ],
-      "link_id": "ENC-007|maps_to_control|CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "link_id": "ENC-007|maps_to_control|CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9",
       "link_type": "maps_to_control",
-      "matched_control_field": "alias",
-      "matched_control_text": "Arquivo Central de Evidências de Validação",
+      "matched_control_field": "curation",
+      "matched_control_text": "Proibir segredos estáticos",
       "score_components": {
-        "chapter_overlap": [
-          "02-requisitos-seguranca"
-        ],
-        "runner_up_margin": 0.23,
+        "chapter_overlap": [],
+        "mechanical_score": 0.64,
+        "runner_up_margin": 0.07,
         "shared_salient_tokens": [
-          "evidencia"
+          "segredo"
         ],
-        "token_similarity": 0.0476
+        "token_similarity": 0.0417
       },
       "source_id": "ENC-007",
       "source_label": "Rotação periódica de chaves e segredos",
       "source_type": "Requirement",
-      "target_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
-      "target_label": "Desenvolvimento seguro e validação de código",
+      "target_id": "CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9",
+      "target_label": "Gestão de segredos e identidades operacionais",
       "target_type": "Control"
     },
     {
@@ -4817,32 +4961,38 @@
       "bundle_ids": [
         "14-governanca-contratacao"
       ],
-      "confidence": 0.87,
+      "confidence": 0.95,
+      "curation": {
+        "action": "retarget",
+        "curator": "archon-2026-08-29",
+        "previous_target_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "ratified_by": "programme-lead",
+        "ratified_on": "2026-08-30",
+        "rationale": "Parecer #36: evidência de decisões de risco/excepção com cadeia de autoridade = governação de excepções/accountability (exception_record, governance_kpi); match anterior por 'politica' (ruído).",
+        "source": "sbd-toe-ontology/agentic/briefs/2026-08-29-archon-parecer-arestas-requisito-controlo.md"
+      },
       "evidence_unit_ids": [],
       "justification": [
-        "bundle_grounding",
-        "chapter_grounding",
-        "domain_mapping"
+        "curated_semantic_review"
       ],
-      "link_id": "GOV-009|maps_to_control|CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+      "link_id": "GOV-009|maps_to_control|CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
       "link_type": "maps_to_control",
-      "matched_control_field": "alias",
-      "matched_control_text": "Enforcement automático de políticas",
+      "matched_control_field": "curation",
+      "matched_control_text": "Governação de fornecedores e exceções",
       "score_components": {
         "chapter_overlap": [
           "14-governanca-contratacao"
         ],
-        "runner_up_margin": 0.03,
-        "shared_salient_tokens": [
-          "politica"
-        ],
-        "token_similarity": 0.0312
+        "mechanical_score": 0.84,
+        "runner_up_margin": 0.27,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
       },
       "source_id": "GOV-009",
       "source_label": "Evidência de decisões rastreável, referenciável e retida",
       "source_type": "Requirement",
-      "target_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
-      "target_label": "Gestão de identidades, acessos e ownership",
+      "target_id": "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
+      "target_label": "Governação de fornecedores e exceções",
       "target_type": "Control"
     },
     {
@@ -5893,67 +6043,84 @@
       "bundle_ids": [
         "02-requisitos-seguranca"
       ],
-      "confidence": 0.96,
+      "confidence": 0.98,
+      "curation": {
+        "action": "add-primary",
+        "curator": "archon-2026-08-29",
+        "previous_target_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+        "ratified_by": "programme-lead",
+        "ratified_on": "2026-08-30",
+        "rationale": "Parecer #46/A7: 'integrações documentadas com cláusulas de segurança' → cláusulas contratuais (FORN); substitui DEV ('Revisão de Código Segura', ruído) e CLA ('Revisão por alteração relevante', ruído).",
+        "source": "sbd-toe-ontology/agentic/briefs/2026-08-29-archon-parecer-arestas-requisito-controlo.md"
+      },
       "evidence_unit_ids": [],
       "justification": [
         "bundle_grounding",
         "chapter_grounding",
+        "curated_semantic_review",
         "domain_mapping",
         "lexical_alignment",
         "requirement_domain_hint"
       ],
-      "link_id": "INT-008|maps_to_control|CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+      "link_id": "INT-008|maps_to_control|CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
       "link_type": "maps_to_control",
       "matched_control_field": "alias",
-      "matched_control_text": "Revisão por alteração relevante",
+      "matched_control_text": "Cláusulas Contratuais de Segurança",
       "score_components": {
         "chapter_overlap": [
           "02-requisitos-seguranca"
         ],
-        "runner_up_margin": 0.03,
+        "mechanical_score": 0.98,
+        "runner_up_margin": 0.02,
         "shared_salient_tokens": [
-          "revisao"
+          "clausula"
         ],
-        "token_similarity": 0.1
+        "token_similarity": 0.2222
       },
       "source_id": "INT-008",
       "source_label": "Revisão de segurança e contrato em integrações",
       "source_type": "Requirement",
-      "target_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
-      "target_label": "Classificação e governação por risco",
+      "target_id": "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
+      "target_label": "Governação de fornecedores e exceções",
       "target_type": "Control"
     },
     {
       "bundle_ids": [
         "02-requisitos-seguranca"
       ],
-      "confidence": 0.9,
+      "confidence": 0.95,
+      "curation": {
+        "action": "add-secondary",
+        "curator": "archon-2026-08-29",
+        "previous_target_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+        "ratified_by": "programme-lead",
+        "ratified_on": "2026-08-30",
+        "rationale": "Parecer #46: revisão técnica da integração (integration_review); `infrastructure ∉ domain_mapping.INT` — aresta curada explícita.",
+        "source": "sbd-toe-ontology/agentic/briefs/2026-08-29-archon-parecer-arestas-requisito-controlo.md"
+      },
       "evidence_unit_ids": [],
       "justification": [
-        "bundle_grounding",
-        "chapter_grounding",
-        "domain_mapping",
-        "lexical_alignment"
+        "curated_semantic_review"
       ],
-      "link_id": "INT-008|maps_to_control|CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "link_id": "INT-008|maps_to_control|CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b",
       "link_type": "maps_to_control",
-      "matched_control_field": "alias",
-      "matched_control_text": "Revisão de Código Segura",
+      "matched_control_field": "curation",
+      "matched_control_text": "Revisão de fronteiras de confiança e integrações",
       "score_components": {
-        "chapter_overlap": [
-          "02-requisitos-seguranca"
-        ],
-        "runner_up_margin": 0.2033,
+        "chapter_overlap": [],
+        "mechanical_score": 0.66,
+        "runner_up_margin": 0.03,
         "shared_salient_tokens": [
+          "integracoe",
           "revisao"
         ],
-        "token_similarity": 0.1
+        "token_similarity": 0.2
       },
       "source_id": "INT-008",
       "source_label": "Revisão de segurança e contrato em integrações",
       "source_type": "Requirement",
-      "target_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
-      "target_label": "Desenvolvimento seguro e validação de código",
+      "target_id": "CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b",
+      "target_label": "Segmentação e controlo arquitetural",
       "target_type": "Control"
     },
     {
@@ -6734,33 +6901,38 @@
       "bundle_ids": [
         "02-requisitos-seguranca"
       ],
-      "confidence": 0.9,
+      "confidence": 0.95,
+      "curation": {
+        "action": "retarget",
+        "curator": "archon-2026-08-29",
+        "previous_target_id": "CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf",
+        "ratified_by": "programme-lead",
+        "ratified_on": "2026-08-30",
+        "rationale": "Parecer #51: alias exacto em CLA; match anterior por 'inclusao' ('Inclusão de Terceiros em Programas de Formação') — ruído puro.",
+        "source": "sbd-toe-ontology/agentic/briefs/2026-08-29-archon-parecer-arestas-requisito-controlo.md"
+      },
       "evidence_unit_ids": [],
       "justification": [
-        "bundle_grounding",
-        "chapter_grounding",
-        "domain_mapping",
-        "lexical_alignment"
+        "curated_semantic_review"
       ],
-      "link_id": "REQ-001|maps_to_control|CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf",
+      "link_id": "REQ-001|maps_to_control|CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
       "link_type": "maps_to_control",
-      "matched_control_field": "alias",
-      "matched_control_text": "🤝 Inclusão de Terceiros em Programas de Formação",
+      "matched_control_field": "curation",
+      "matched_control_text": "Integrar requisitos de segurança no backlog funcional da aplicação",
       "score_components": {
         "chapter_overlap": [
           "02-requisitos-seguranca"
         ],
-        "runner_up_margin": 0.06,
-        "shared_salient_tokens": [
-          "inclusao"
-        ],
-        "token_similarity": 0.1
+        "mechanical_score": 0.84,
+        "runner_up_margin": 0.0,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
       },
       "source_id": "REQ-001",
       "source_label": "Inclusão de requisitos de segurança",
       "source_type": "Requirement",
-      "target_id": "CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf",
-      "target_label": "Capacitação e onboarding de segurança",
+      "target_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+      "target_label": "Classificação e governação por risco",
       "target_type": "Control"
     },
     {

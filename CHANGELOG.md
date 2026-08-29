@@ -3,15 +3,59 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-30
 purpose: documentation
-reasoning: Unreleased — acceptance regression runner (94+7 scenarios, coverage), query_entities filter fix, Algolia-era cache paths removed; v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
+reasoning: v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
 review_status: pending-human-review
 ---
 
 # Changelog
 
-## Unreleased
+## 0.10.3 — 2026-08-30
 
-### Added — acceptance regression runner
+**Patch** — formal KG release `v1.6.1` (curated requirement→control layer v2) + the #49
+serving/test changes. Additive on the tool surface (`filters` on `query_sbd_toe_entities`);
+no tool removed or reshaped.
+
+Served bundle: **formal KG release `v1.6.1`** (GitHub Release
+`SbD-ToE/sbd-toe-knowledge-graph@v1.6.1`, commit `e9fc54f312829c632ecd50e2306bfa356e9e457c`
+= `mcp-stable`; asset `sbd-toe-knowledge-graph-bundle-v1.6.1.zip`, sha256
+**`df6920cbef5bbd6f2b723708efe0b48ca5017abf8928bc800db0609536ef547b`**, fetched and
+digest-verified against the release `.sha256` by `sync-bundle --from-release`;
+`run_manifest.release = {channel: stable, version: v1.6.1}`), `consumer_contract_version`
+**v1.12** (§1.19 curated layer v2), **Manual v1.7.1** @ `8e03454c` (mini-site aligned to
+0.10.2; illustrative `REQ-NNN` → `EX-REQ-NNN`), ontology `ontology-v1.1-fair-baseline`.
+Supersedes `v1.6.0` (0.10.2).
+
+### Changed — served knowledge (`v1.6.0` → `v1.6.1`)
+
+- **Curated requirement→control layer v2** (Archon opinion ratified 2026-08-30, applied by
+  curated edit, no rebuild): `requirement_control_links` 263 → **265**, **0 requirements
+  without a link**; 12 links removed / 14 added, each new link carrying an additive
+  `curation {curator: archon-2026-08-29, rationale}` key (tolerated by the loader — served
+  fields unchanged). Re-targets served: AUT-007/AUT-008 → identity control, AUT-010 →
+  monitoring, CNT-003/005/006/009 → images, ENC-007 → secrets, GOV-009 → suppliers,
+  REQ-001 → classification; INT-008 → suppliers (+ segmentation); ARC-013 + segmentation,
+  ARC-001 + architecture. 10 EvidencePatterns follow (`maps_to_control_id`); overlay
+  mappings 6382 → 6457; cross-layer referrals 7240 → 7315. Requirements 256/27 and
+  EvidencePatterns 256/256 unchanged.
+- Manual v1.7.1: content-only wave — the 25 illustrative `REQ-NNN` example ids became
+  `EX-REQ-NNN` (never resolve, no citation note), and the mini-site `020-assets/mcp/`
+  describes 0.10.2 as published (content-lag lifted).
+
+### Acceptance regression (`npm run eval:acceptance`, this bundle)
+
+- See `docs/acceptance-runs/2026-08-30-v0.10.3-acceptance.md`. Axis E criterion revised by
+  the programme lead: the structural mitigation link is `mitigated_by` (must be populated,
+  ids must resolve); the substrate's textual `associated_controls` is passed through and
+  reported as PART, never as a serving FAIL. New TC-F-08 checks the curated layer v2 (265
+  links, 0 gaps, the AUT re-targets, `curation` tolerated).
+
+### Record corrections (Manual v1.7.1 handover, verified live on 0.10.2)
+
+- AI Act overlay: **661** mappings (earlier handoffs said 651); the server exposes **3**
+  prompts (`setup_sbd_toe_agent`, `ask_sbd_toe_manual`, `prepare_grounded_codegen`), not 2;
+  the npm `beta` dist-tag is **0.20.0-beta.3** (not beta.2).
+
+### Added — acceptance regression runner (merged in #49)
 
 - **`npm run eval:acceptance`** (`scripts/run-acceptance-scenarios.mjs` + `scripts/acceptance/`):
   executes the **94 acceptance scenarios** of

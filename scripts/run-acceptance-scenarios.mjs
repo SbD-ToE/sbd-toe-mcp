@@ -4,7 +4,7 @@
  * DevelopmentGovernance/docs/mcp-acceptance-test-scenarios.md against the built
  * server (dist/index.js) over stdio and writes a verdict report.
  *
- * Usage: node scripts/run-acceptance-scenarios.mjs [--out <dir>] [--only TC-E] [--json]
+ * Usage: node scripts/run-acceptance-scenarios.mjs [--out <dir>] [--only TC-E] [--stamp YYYY-MM-DD]
  *   --out   report directory (default: acceptance-reports/)
  *   --only  prefix filter (e.g. TC-E, TC-D-1)
  * Exit code: 1 when any Axis-E (promotion gate) scenario FAILs; 0 otherwise.
@@ -71,7 +71,7 @@ const coverage = {
   roles_x_phases: roleRuns,
 };
 
-const stamp = new Date().toISOString().slice(0, 10);
+const stamp = opt("--stamp") ?? new Date().toISOString().slice(0, 10);
 mkdirSync(outDir, { recursive: true });
 const base = path.join(outDir, `${stamp}-v${pkg.version}-acceptance`);
 const report = { generated_at: new Date().toISOString(), server: client.serverInfo, package_version: pkg.version, consumed_bundle: { release_tag: pin.kg_bundle.release_tag, source: pin.kg_bundle.source, sha256: pin.kg_bundle.release_sha256, contract: pin.consumer_contract_version, manual: pin.inputs.manual.tag }, totals, executed, rollup, coverage, results };
