@@ -91,7 +91,8 @@
     "test": "vitest run",
     "test:qualitative-smoke": "vitest run src/qualitative-eval-smoke.test.ts",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "eval:acceptance": "node scripts/run-acceptance-scenarios.mjs"
   },
   "engines": {
     "node": ">=20.9.0"
