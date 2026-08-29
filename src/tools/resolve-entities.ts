@@ -39,6 +39,7 @@ import {
 } from "./regulatory-overlay-loader.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { resolveEntitiesAffordances } from "../serving/affordances.js";
+import { describeRequirementGap, type RequirementGap } from "../serving/requirement-id.js";
 
 const DEFAULT_LIMIT = 50;
 const MAX_LIMIT = 200;
@@ -71,6 +72,8 @@ export interface ResolveEntitiesResult {
   meta: {
     filtersApplied: Record<string, unknown>;
     note: string;
+    /** Present when a requirement_id filter names a cited-but-unpublished requirement (declared, never silent). */
+    declared_gap?: RequirementGap;
   };
   /** RF-H advisory band — adjacent tools the caller likely needs next (advisory; may be absent). */
   next?: Affordance[];
@@ -422,6 +425,16 @@ function resolveEntitiesCore(
   }
 
   const result = _resolveEntities(args, loadRuntimeV0Items());
+  // Gap (b), Codex handover 2026-08-29: an exact requirement_id filter that matches
+  // nothing but names a citation the corpus carries is a DECLARED gap, not an empty page.
+  const requirementIdFilter = result.meta.filtersApplied["requirement_id"];
+  if (recordType === "requirement" && result.total === 0 && typeof requirementIdFilter === "string") {
+    const knownRequirementIds = new Set(getOntologyData().requirements.map((r) => r.requirement_id));
+    const gap = describeRequirementGap(requirementIdFilter, knownRequirementIds);
+    if (gap) {
+      result.meta = { ...result.meta, note: `${gap.note} ${result.meta.note}`, declared_gap: gap };
+    }
+  }
   return { provenance: RUNTIME_V0_PROVENANCE, ...result };
 }
 

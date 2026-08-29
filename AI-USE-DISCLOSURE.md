@@ -15,7 +15,7 @@ methodological substance, not an AI-content-generation event).
 
 | Tool | Provider | Used for |
 |------|----------|----------|
-| **Claude** (Opus 4.6, Opus 4.7, Opus 4.8, Sonnet 4.6) | Anthropic | Implementation pair-programming, README and documentation drafting, code review, refactoring, release-pipeline scripting |
+| **Claude** (Opus 4.6, Opus 4.7, Opus 4.8, Sonnet 4.6, Fable 5) | Anthropic | Implementation pair-programming, README and documentation drafting, code review, refactoring, release-pipeline scripting |
 | **Codex** | OpenAI | Initial code-generation drafts for selected modules during early development iterations |
 
 ## Development Use
@@ -133,4 +133,4 @@ This disclosure will be updated if:
 - The runtime behaviour or licensing of the released software materially changes
 - Venue-specific disclosure requirements differ from this baseline
 
-Last updated: 2026-06-11
+Last updated: 2026-08-29

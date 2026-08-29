@@ -1,6 +1,6 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 251,
+  "count": 255,
   "entity_type": "EvidencePattern",
   "items": [
     {
@@ -1426,7 +1426,7 @@
       "maps_to_control_name": "",
       "maps_to_requirement_id": "ARC-015",
       "requirement_category": "ARC",
-      "requirement_name": "Agentes AI operam como *principals* isolados com mandate e least privilege",
+      "requirement_name": "Agentes AI operam como principals isolados com mandate e least privilege",
       "responsible_roles": [],
       "risk_level_hint": "L2+",
       "source_bundle": "04-arquitetura-segura",
@@ -3954,7 +3954,7 @@
       "maps_to_control_name": "",
       "maps_to_requirement_id": "DEP-012",
       "requirement_category": "DEP",
-      "requirement_name": "AI BOM gerado por *build* em formato standardizado",
+      "requirement_name": "AI BOM gerado por build em formato standardizado",
       "responsible_roles": [],
       "risk_level_hint": "L2+",
       "source_bundle": "05-dependencias-sbom-sca",
@@ -3999,7 +3999,7 @@
       "maps_to_control_name": "",
       "maps_to_requirement_id": "DEP-013",
       "requirement_category": "DEP",
-      "requirement_name": "Versão *pinned* explícita para modelos AI e providers",
+      "requirement_name": "Versão pinned explícita para modelos AI e providers",
       "responsible_roles": [],
       "risk_level_hint": "L2+",
       "source_bundle": "05-dependencias-sbom-sca",
@@ -4044,7 +4044,7 @@
       "maps_to_control_name": "",
       "maps_to_requirement_id": "DEP-014",
       "requirement_category": "DEP",
-      "requirement_name": "Lista de *providers* AI aprovados com classificação de risco",
+      "requirement_name": "Lista de providers AI aprovados com classificação de risco",
       "responsible_roles": [],
       "risk_level_hint": "L2+",
       "source_bundle": "05-dependencias-sbom-sca",
@@ -8519,7 +8519,7 @@
       "maps_to_control_name": "",
       "maps_to_requirement_id": "OPS-012",
       "requirement_category": "OPS",
-      "requirement_name": "Audit completo por *tool invocation* de agente AI",
+      "requirement_name": "Audit completo por tool invocation de agente AI",
       "responsible_roles": [],
       "risk_level_hint": "L2+",
       "source_bundle": "12-monitorizacao-operacoes",
@@ -8564,7 +8564,7 @@
       "maps_to_control_name": "",
       "maps_to_requirement_id": "OPS-013",
       "requirement_category": "OPS",
-      "requirement_name": "Budget e detecção de *runaway* em consumo de modelo (token spend)",
+      "requirement_name": "Budget e detecção de runaway em consumo de modelo (token spend)",
       "responsible_roles": [],
       "risk_level_hint": "L2+",
       "source_bundle": "12-monitorizacao-operacoes",
@@ -8610,7 +8610,7 @@
       "maps_to_control_name": "",
       "maps_to_requirement_id": "OPS-014",
       "requirement_category": "OPS",
-      "requirement_name": "Detecção de *jailbreak* / *off-policy actions* em produção",
+      "requirement_name": "Detecção de jailbreak / off-policy actions em produção",
       "responsible_roles": [],
       "risk_level_hint": "L3",
       "source_bundle": "12-monitorizacao-operacoes",
@@ -8899,6 +8899,188 @@
       "source_mode": "explicit",
       "supported_signal_ids": [],
       "verification_logic": "Confirmar existência de ciclos de revisão com equipas.",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Cada agente em uso operacional (A1+) tem *mandate* documentado e versionado em VCS contendo: identidade, nível de autonomia, escopo de *tools* permitidas, ambientes onde opera, *owner* humano, periodicidade de revisão. Sem *mandate* válido o agente não opera além de A0. Operacionalizado por Policy 38 — Mandates de agentes AI.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-environment-inventory-154c4568fd",
+        "ART-operational-evidence-f5e852756f"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-environment-inventory-154c4568fd",
+          "confidence": 0.54,
+          "name": "Environment Inventory",
+          "shared_salient_tokens": [
+            "ambiente"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-operational-evidence-f5e852756f",
+          "confidence": 0.54,
+          "name": "Operational Evidence",
+          "shared_salient_tokens": [
+            "operacional"
+          ]
+        }
+      ],
+      "id": "EP-REQ-AGN-001",
+      "maps_to_control_id": null,
+      "maps_to_control_name": "",
+      "maps_to_requirement_id": "REQ-AGN-001",
+      "requirement_category": "AGN",
+      "requirement_name": "Mandate registado e versionado",
+      "responsible_roles": [],
+      "risk_level_hint": "L1+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/09-governaca-automatismos.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Cada uso de agente declara o nível A0–A4 aplicável ao contexto específico (projecto × ambiente × tarefa). Mudança de contexto re-avalia o nível. A4 só com *mandate* assinado pelo CISO e auditoria calendarizada.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-artifact-signature-1d67811ec5",
+        "ART-signature-attestation-67e300d959"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-artifact-signature-1d67811ec5",
+          "confidence": 0.88,
+          "name": "Artifact Signature",
+          "shared_salient_tokens": [
+            "assinatura"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-signature-attestation-67e300d959",
+          "confidence": 0.88,
+          "name": "Signature Attestation",
+          "shared_salient_tokens": [
+            "assinatura"
+          ]
+        }
+      ],
+      "id": "EP-REQ-AGN-002",
+      "maps_to_control_id": null,
+      "maps_to_control_name": "",
+      "maps_to_requirement_id": "REQ-AGN-002",
+      "requirement_category": "AGN",
+      "requirement_name": "Nível de autonomia classificado por contexto",
+      "responsible_roles": [],
+      "risk_level_hint": "L1+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/09-governaca-automatismos.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Para agentes A2+, existe mecanismo documentado para interromper a operação imediatamente (revogar credenciais, terminar sessão, isolar runtime). O *kill-switch* é exercitado em sandbox/staging pelo menos uma vez por trimestre (A3) ou por mês (A4); resultado registado.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-operational-evidence-f5e852756f",
+        "ART-quiz-result-f93b4a0252"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-operational-evidence-f5e852756f",
+          "confidence": 0.54,
+          "name": "Operational Evidence",
+          "shared_salient_tokens": [
+            "operacional"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-quiz-result-f93b4a0252",
+          "confidence": 0.54,
+          "name": "Quiz Result",
+          "shared_salient_tokens": [
+            "resultado"
+          ]
+        }
+      ],
+      "id": "EP-REQ-AGN-003",
+      "maps_to_control_id": null,
+      "maps_to_control_name": "",
+      "maps_to_requirement_id": "REQ-AGN-003",
+      "requirement_category": "AGN",
+      "requirement_name": "Kill-switch operacional documentado e testado",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/09-governaca-automatismos.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "logs",
+        "ci_cd"
+      ],
+      "evidence_expectation": "Em agentes A2+, antes de cada *tool call* com efeito destrutivo ou *side-effectful* (apagar, escrever externo, rotacionar segredos, *commit/push*, *deploy*), o agente declara à infraestrutura (log estruturado, *audit event*) o que vai fazer e porquê, antes de o fazer. O gate audita *intent* vs *acção real* a posteriori.",
+      "evidence_type": "log",
+      "expected_artifact_type_ids": [
+        "ART-log-stream-b67ee06f7e",
+        "ART-deployment-plan-945b804751"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-log-stream-b67ee06f7e",
+          "confidence": 0.7,
+          "name": "Log Stream",
+          "shared_salient_tokens": [
+            "audit",
+            "log"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-deployment-plan-945b804751",
+          "confidence": 0.54,
+          "name": "Deployment Plan",
+          "shared_salient_tokens": [
+            "deploy"
+          ]
+        }
+      ],
+      "id": "EP-REQ-AGN-004",
+      "maps_to_control_id": null,
+      "maps_to_control_name": "",
+      "maps_to_requirement_id": "REQ-AGN-004",
+      "requirement_category": "AGN",
+      "requirement_name": "Intent declaration antes de tool-call destrutivo",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/09-governaca-automatismos.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
       "verification_when": null
     },
     {

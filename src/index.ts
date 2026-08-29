@@ -935,6 +935,7 @@ class McpRuntime {
             "Deterministic resolution of security requirements, controls and artifacts for a given application context. " +
             "Filters requirements by risk level, optionally narrows by concern domains (auth, logging, api, etc.), " +
             "then resolves controls via the published runtime bundle, complementing with ontology domain_mapping when needed. " +
+            "Requirements with no published control link are served and declared in coverage_gaps (never omitted). " +
             "All data comes from the published SbD-ToE deterministic runtime bundle — nothing is invented.",
           inputSchema: {
             type: "object",
@@ -948,9 +949,9 @@ class McpRuntime {
                 type: "array",
                 items: {
                   type: "string",
-                  enum: ["auth", "logging", "validation", "api", "config", "integrity", "distribution", "ide", "requirements", "architecture", "iac", "encryption"]
+                  enum: ["auth", "logging", "validation", "api", "config", "integrity", "distribution", "ide", "requirements", "architecture", "iac", "encryption", "agents"]
                 },
-                description: "Optional concern domains to narrow scope (intersects with risk-level filter, does not replace)."
+                description: "Optional concern domains to narrow scope (intersects with risk-level filter, does not replace). 'agents' = AI-agent / automation governance catalogue (REQ-AGN-001…004)."
               },
               exposure: {
                 type: "string",
