@@ -19,3 +19,6 @@
 
 ## Update 2026-08-29 (pós-push)
 - `origin/0.20-beta` = `6353557b76bf9a6b17f06d191802e7e2f2e93ac2`. Sem tag, sem npm. Nota do remoto: Dependabot reporta 10 vulnerabilidades no branch por omissão (1 critical, 4 high, 5 moderate) — triagem já adiada pelo operador (2026-07-05), fora deste despacho.
+
+## Update 2026-08-29 (superseded)
+- Pin v1.6.7 superseded no mesmo dia pelo re-pin v1.7.0 (`eac79e6`) — ver `agentic/em-curso/2026-08-29-pontifex-kg-v1.7.0-repin-0-20-beta.md`.
