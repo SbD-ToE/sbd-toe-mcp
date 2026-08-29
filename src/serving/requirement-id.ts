@@ -17,6 +17,11 @@
  * não resolvível (finding editorial em curso)», never «requisito inexistente».
  * Pontifex exposes the gap; it does not patch the data (AGENTS.md §0.5). Nothing here
  * aliases REQ-AUT-003 to AUT-003 — the contract forbids that reconstruction.
+ *
+ * Informative, NOT a gap (programme lead 2026-08-29, KG v1.7.0 / contract v1.11): base-form
+ * ids the corpus cites without a published entity — the illustrative `REQ-NNN` example ids
+ * and non-requirement tokens (`CWE-212`, `SHA-256`, …) captured by the `[A-Z]{3}-\d{3}` shape —
+ * are surfaced as a citation note (never resolved by approximation), not declared as gaps.
  */
 
 import { existsSync, readFileSync } from "node:fs";
@@ -63,10 +68,18 @@ export interface RequirementCitations {
 export interface RequirementGap {
   requirement_id: string;
   status: "declared_gap";
-  kind: "legacy_citation_unresolvable" | "citation_unresolvable";
+  kind: "legacy_citation_unresolvable";
   note: string;
   cited_in: RequirementCitations;
   routed_to: string;
+}
+
+/** Informative citation note — a cited, unpublished, grammar-shaped id that is NOT a gap. */
+export interface RequirementCitationNote {
+  requirement_id: string;
+  status: "informative";
+  note: string;
+  cited_in: RequirementCitations;
 }
 
 const CITATION_SAMPLE_CAP = 8;
@@ -121,46 +134,57 @@ export function getRequirementCitations(id: string): RequirementCitations {
 }
 
 /**
- * Classify an unresolved requirement id as a DECLARED gap when the published corpus
- * cites it but the runtime bundle carries no such requirement. Returns undefined when
- * the id is known (no gap), when it is not requirement-shaped, or when nothing in the
- * corpus cites it (a guessed token — the caller keeps its normal fallback).
+ * Classify an unresolved LEGACY citation (`REQ-<CAT>-NNN`) as a DECLARED gap when the
+ * published corpus cites it but the runtime bundle carries no such requirement. Returns
+ * undefined when the id is known (no gap), when it is not legacy-shaped, or when nothing
+ * in the corpus cites it (a guessed token — the caller keeps its normal fallback).
+ * Base-form cited ids are NOT gaps — see describeRequirementCitation.
  */
 export function describeRequirementGap(
   id: string,
   knownRequirementIds: ReadonlySet<string>
 ): RequirementGap | undefined {
   if (knownRequirementIds.has(id)) return undefined;
-  const legacy = isLegacyRequirementCitation(id);
-  if (!legacy && !isRequirementId(id)) return undefined;
+  if (!isLegacyRequirementCitation(id)) return undefined;
 
   const cited_in = getRequirementCitations(id);
   if (cited_in.mention_count === 0) return undefined;
 
-  if (legacy) {
-    return {
-      requirement_id: id,
-      status: "declared_gap",
-      kind: "legacy_citation_unresolvable",
-      note:
-        `${LEGACY_CITATION_SERVING_PHRASE} — o Manual cita \`${id}\` na notação legada REQ-<CAT>-NNN ` +
-        `(requisito base ou categoria inexistente); o KG surfaced a citação literalmente, sem entidade ` +
-        `correspondente e sem a resolver por acidente de substring a outro requisito (contrato v1.10 §1.18). ` +
-        `Não é «requisito inexistente»: a correcção editorial pertence ao Manual e está em curso.`,
-      cited_in,
-      routed_to: ROUTED_TO
-    };
-  }
-
   return {
     requirement_id: id,
     status: "declared_gap",
-    kind: "citation_unresolvable",
+    kind: "legacy_citation_unresolvable",
     note:
-      `citação não resolvível no bundle publicado — o Manual cita \`${id}\` mas o runtime bundle não carrega ` +
-      `esse requisito (surfaced literalmente pelo KG; finding editorial). Não é um requisito servido nem um ` +
-      `alias de outro requisito.`,
+      `${LEGACY_CITATION_SERVING_PHRASE} — o Manual cita \`${id}\` na notação legada REQ-<CAT>-NNN ` +
+      `(requisito base ou categoria inexistente); o KG surfaced a citação literalmente, sem entidade ` +
+      `correspondente e sem a resolver por acidente de substring a outro requisito (contrato v1.10 §1.18). ` +
+      `Não é «requisito inexistente»: a correcção editorial pertence ao Manual e está em curso.`,
     cited_in,
     routed_to: ROUTED_TO
+  };
+}
+
+/**
+ * Informative note (not a gap) for a grammar-shaped base-form id the corpus cites but
+ * the bundle does not publish: illustrative `REQ-NNN` example ids and non-requirement
+ * tokens captured by the `[A-Z]{3}-\d{3}` shape. Undefined when known, legacy-shaped,
+ * outside the grammar, or uncited.
+ */
+export function describeRequirementCitation(
+  id: string,
+  knownRequirementIds: ReadonlySet<string>
+): RequirementCitationNote | undefined {
+  if (knownRequirementIds.has(id)) return undefined;
+  if (isLegacyRequirementCitation(id) || !isRequirementId(id)) return undefined;
+  const cited_in = getRequirementCitations(id);
+  if (cited_in.mention_count === 0) return undefined;
+  return {
+    requirement_id: id,
+    status: "informative",
+    note:
+      `\`${id}\` não é um requisito publicado: o Manual cita-o como identificador ilustrativo de exemplo ` +
+      `ou é um token não-requisito com a forma <CAT>-NNN (CWE-, SHA-, …). Informativo, não é um gap; ` +
+      `nunca resolvido por aproximação a outro requisito.`,
+    cited_in
   };
 }

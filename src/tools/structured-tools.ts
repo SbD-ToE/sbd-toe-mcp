@@ -4,7 +4,7 @@ import { retrievePublishedContext } from "../backend/semantic-index-gateway.js";
 import { resolveAppPath } from "../config.js";
 import type { LooseRecord } from "../types.js";
 import { getOntologyData } from "./ontology-loader.js";
-import { describeRequirementGap } from "../serving/requirement-id.js";
+import { describeRequirementCitation, describeRequirementGap } from "../serving/requirement-id.js";
 import {
   listChaptersAffordances,
   queryEntitiesAffordances,
@@ -257,7 +257,16 @@ export async function handleQuerySbdToeEntities(
   args: Record<string, unknown>,
   cache?: SnapshotCache
 ): Promise<unknown> {
-  return { ...((await handleQuerySbdToeEntitiesCore(args, cache)) as Record<string, unknown>), next: queryEntitiesAffordances() };
+  const core = (await handleQuerySbdToeEntitiesCore(args, cache)) as Record<string, unknown>;
+  // Informative (not a gap): a cited, unpublished base-form id (illustrative REQ-NNN example
+  // ids, CWE-/SHA- tokens) keeps the semantic path but says so — never silent, never aliased.
+  const query = args["query"];
+  if (typeof query === "string" && core["match"] === undefined) {
+    const knownRequirementIds = new Set(getOntologyData().requirements.map((r) => r.requirement_id));
+    const citation = describeRequirementCitation(query, knownRequirementIds);
+    if (citation) core["citation_note"] = citation;
+  }
+  return { ...core, next: queryEntitiesAffordances() };
 }
 
 async function handleQuerySbdToeEntitiesCore(

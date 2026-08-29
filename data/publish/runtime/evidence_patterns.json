@@ -1,6 +1,6 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 255,
+  "count": 256,
   "entity_type": "EvidencePattern",
   "items": [
     {
@@ -1375,8 +1375,8 @@
         }
       ],
       "id": "EP-ARC-014",
-      "maps_to_control_id": null,
-      "maps_to_control_name": "",
+      "maps_to_control_id": "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4",
+      "maps_to_control_name": "Arquitetura segura e rastreável",
       "maps_to_requirement_id": "ARC-014",
       "requirement_category": "ARC",
       "requirement_name": "Padrões arquitetónicos específicos para sistemas com componentes AI/ML",
@@ -1422,8 +1422,8 @@
         }
       ],
       "id": "EP-ARC-015",
-      "maps_to_control_id": null,
-      "maps_to_control_name": "",
+      "maps_to_control_id": "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4",
+      "maps_to_control_name": "Arquitetura segura e rastreável",
       "maps_to_requirement_id": "ARC-015",
       "requirement_category": "ARC",
       "requirement_name": "Agentes AI operam como principals isolados com mandate e least privilege",
@@ -3905,8 +3905,8 @@
         }
       ],
       "id": "EP-DEP-011",
-      "maps_to_control_id": null,
-      "maps_to_control_name": "",
+      "maps_to_control_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+      "maps_to_control_name": "Inventário e análise de dependências",
       "maps_to_requirement_id": "DEP-011",
       "requirement_category": "DEP",
       "requirement_name": "Inventário e proveniência de dependências AI/ML",
@@ -3950,8 +3950,8 @@
         }
       ],
       "id": "EP-DEP-012",
-      "maps_to_control_id": null,
-      "maps_to_control_name": "",
+      "maps_to_control_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+      "maps_to_control_name": "Inventário e análise de dependências",
       "maps_to_requirement_id": "DEP-012",
       "requirement_category": "DEP",
       "requirement_name": "AI BOM gerado por build em formato standardizado",
@@ -3995,8 +3995,8 @@
         }
       ],
       "id": "EP-DEP-013",
-      "maps_to_control_id": null,
-      "maps_to_control_name": "",
+      "maps_to_control_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+      "maps_to_control_name": "Inventário e análise de dependências",
       "maps_to_requirement_id": "DEP-013",
       "requirement_category": "DEP",
       "requirement_name": "Versão pinned explícita para modelos AI e providers",
@@ -4040,8 +4040,8 @@
         }
       ],
       "id": "EP-DEP-014",
-      "maps_to_control_id": null,
-      "maps_to_control_name": "",
+      "maps_to_control_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+      "maps_to_control_name": "Inventário e análise de dependências",
       "maps_to_requirement_id": "DEP-014",
       "requirement_category": "DEP",
       "requirement_name": "Lista de providers AI aprovados com classificação de risco",
@@ -4901,8 +4901,8 @@
         }
       ],
       "id": "EP-DPL-010",
-      "maps_to_control_id": null,
-      "maps_to_control_name": "",
+      "maps_to_control_id": "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0",
+      "maps_to_control_name": "Deploy seguro e reversível",
       "maps_to_requirement_id": "DPL-010",
       "requirement_category": "DPL",
       "requirement_name": "Release gates para sistemas com agentes AI",
@@ -4947,8 +4947,8 @@
         }
       ],
       "id": "EP-DPL-011",
-      "maps_to_control_id": null,
-      "maps_to_control_name": "",
+      "maps_to_control_id": "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0",
+      "maps_to_control_name": "Deploy seguro e reversível",
       "maps_to_requirement_id": "DPL-011",
       "requirement_category": "DPL",
       "requirement_name": "Canary e demoção de autonomia no release de modelos",
@@ -6392,8 +6392,8 @@
         }
       ],
       "id": "EP-GOV-013",
-      "maps_to_control_id": null,
-      "maps_to_control_name": "",
+      "maps_to_control_id": "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
+      "maps_to_control_name": "Governação de fornecedores e exceções",
       "maps_to_requirement_id": "GOV-013",
       "requirement_category": "GOV",
       "requirement_name": "Onboarding técnico e formação obrigatória pré-acesso de terceiros",
@@ -6438,8 +6438,8 @@
         }
       ],
       "id": "EP-GOV-014",
-      "maps_to_control_id": null,
-      "maps_to_control_name": "",
+      "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+      "maps_to_control_name": "Gestão de identidades, acessos e ownership",
       "maps_to_requirement_id": "GOV-014",
       "requirement_category": "GOV",
       "requirement_name": "Revisão periódica de acesso de terceiros (least privilege)",
@@ -8470,8 +8470,8 @@
         }
       ],
       "id": "EP-OPS-011",
-      "maps_to_control_id": null,
-      "maps_to_control_name": "",
+      "maps_to_control_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "maps_to_control_name": "Monitorização e resposta operacional",
       "maps_to_requirement_id": "OPS-011",
       "requirement_category": "OPS",
       "requirement_name": "Observabilidade dedicada a componentes AI/ML em produção",
@@ -8515,8 +8515,8 @@
         }
       ],
       "id": "EP-OPS-012",
-      "maps_to_control_id": null,
-      "maps_to_control_name": "",
+      "maps_to_control_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "maps_to_control_name": "Monitorização e resposta operacional",
       "maps_to_requirement_id": "OPS-012",
       "requirement_category": "OPS",
       "requirement_name": "Audit completo por tool invocation de agente AI",
@@ -8560,8 +8560,8 @@
         }
       ],
       "id": "EP-OPS-013",
-      "maps_to_control_id": null,
-      "maps_to_control_name": "",
+      "maps_to_control_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "maps_to_control_name": "Monitorização e resposta operacional",
       "maps_to_requirement_id": "OPS-013",
       "requirement_category": "OPS",
       "requirement_name": "Budget e detecção de runaway em consumo de modelo (token spend)",
@@ -8606,8 +8606,8 @@
         }
       ],
       "id": "EP-OPS-014",
-      "maps_to_control_id": null,
-      "maps_to_control_name": "",
+      "maps_to_control_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "maps_to_control_name": "Monitorização e resposta operacional",
       "maps_to_requirement_id": "OPS-014",
       "requirement_category": "OPS",
       "requirement_name": "Detecção de jailbreak / off-policy actions em produção",
@@ -8618,6 +8618,52 @@
       "source_mode": "explicit",
       "supported_signal_ids": [],
       "verification_logic": "Para agentes A2+, mecanismo activo de detecção de tentativas de *jailbreak* (LLM01-2025) e *off-policy actions* — acções fora do *scope* declarado no *mandate*. Sinais incluem: divergência entre intent declarado e acção real (cross-link OPS-012), padrões adversariais conhecidos no input, *tool call* com argumentos materialmente diferentes do esperado, recusas do modelo seguidas de tentativa diferente do utilizador. Eventos accionáveis alimentam IR (OPS-007) e a *eval suite* offline (Cap. 10 §C5). Para sistemas L3 com componente AI, deteção é obrigatória — para A4 com *mandate* assinado, é actualizada com cadência declarada no *mandate*.",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd",
+        "config"
+      ],
+      "evidence_expectation": "Serviços e aplicações críticas em produção expõem um sinal explícito de saúde, prontidão ou disponibilidade, ou mecanismo equivalente da plataforma, monitorizado continuamente fora da instância. Exemplos incluem endpoint de saúde, heartbeat, readiness/liveness probes, health checks de load balancer ou watchdog do supervisor. Falhas persistentes geram alerta accionável e integram, quando aplicável, rollback (DPL-008) ou resposta a incidente (OPS-007). O sinal não expõe segredos, configuração sensível nem diagnósticos internos não autorizados; a cobertura é verificável por inventário de serviços.",
+      "evidence_type": "log",
+      "expected_artifact_type_ids": [
+        "ART-alert-policy-c55180d8ab",
+        "ART-incident-metrics-946f5d7447"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-alert-policy-c55180d8ab",
+          "confidence": 0.54,
+          "name": "Alert Policy",
+          "shared_salient_tokens": [
+            "alerta"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-incident-metrics-946f5d7447",
+          "confidence": 0.54,
+          "name": "Incident Metrics",
+          "shared_salient_tokens": [
+            "incidente"
+          ]
+        }
+      ],
+      "id": "EP-OPS-015",
+      "maps_to_control_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "maps_to_control_name": "Monitorização e resposta operacional",
+      "maps_to_requirement_id": "OPS-015",
+      "requirement_category": "OPS",
+      "requirement_name": "Sinais contínuos de saúde e disponibilidade operacional",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "12-monitorizacao-operacoes",
+      "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
+      "source_mode": "explicit",
+      "supported_signal_ids": [],
+      "verification_logic": "Serviços e aplicações críticas em produção expõem um sinal explícito de saúde, prontidão ou disponibilidade, ou mecanismo equivalente da plataforma, monitorizado continuamente fora da instância. Exemplos incluem endpoint de saúde, heartbeat, readiness/liveness probes, health checks de load balancer ou watchdog do supervisor. Falhas persistentes geram alerta accionável e integram, quando aplicável, rollback (DPL-008) ou resposta a incidente (OPS-007). O sinal não expõe segredos, configuração sensível nem diagnósticos internos não autorizados; a cobertura é verificável por inventário de serviços.",
       "verification_when": null
     },
     {
@@ -8932,8 +8978,8 @@
         }
       ],
       "id": "EP-REQ-AGN-001",
-      "maps_to_control_id": null,
-      "maps_to_control_name": "",
+      "maps_to_control_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+      "maps_to_control_name": "Classificação e governação por risco",
       "maps_to_requirement_id": "REQ-AGN-001",
       "requirement_category": "AGN",
       "requirement_name": "Mandate registado e versionado",
@@ -8977,8 +9023,8 @@
         }
       ],
       "id": "EP-REQ-AGN-002",
-      "maps_to_control_id": null,
-      "maps_to_control_name": "",
+      "maps_to_control_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+      "maps_to_control_name": "Classificação e governação por risco",
       "maps_to_requirement_id": "REQ-AGN-002",
       "requirement_category": "AGN",
       "requirement_name": "Nível de autonomia classificado por contexto",
@@ -9022,8 +9068,8 @@
         }
       ],
       "id": "EP-REQ-AGN-003",
-      "maps_to_control_id": null,
-      "maps_to_control_name": "",
+      "maps_to_control_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+      "maps_to_control_name": "Classificação e governação por risco",
       "maps_to_requirement_id": "REQ-AGN-003",
       "requirement_category": "AGN",
       "requirement_name": "Kill-switch operacional documentado e testado",
@@ -9069,8 +9115,8 @@
         }
       ],
       "id": "EP-REQ-AGN-004",
-      "maps_to_control_id": null,
-      "maps_to_control_name": "",
+      "maps_to_control_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+      "maps_to_control_name": "Classificação e governação por risco",
       "maps_to_requirement_id": "REQ-AGN-004",
       "requirement_category": "AGN",
       "requirement_name": "Intent declaration antes de tool-call destrutivo",
@@ -9693,8 +9739,8 @@
         }
       ],
       "id": "EP-THR-008",
-      "maps_to_control_id": null,
-      "maps_to_control_name": "",
+      "maps_to_control_id": "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0",
+      "maps_to_control_name": "Threat modeling e gestão de risco",
       "maps_to_requirement_id": "THR-008",
       "requirement_category": "THR",
       "requirement_name": "Threat modeling estendido para sistemas com componentes AI/ML",
@@ -10888,8 +10934,8 @@
         }
       ],
       "id": "EP-VAL-008",
-      "maps_to_control_id": null,
-      "maps_to_control_name": "",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
       "maps_to_requirement_id": "VAL-008",
       "requirement_category": "VAL",
       "requirement_name": "Codificação/escaping de output em renderização (anti-XSS)",

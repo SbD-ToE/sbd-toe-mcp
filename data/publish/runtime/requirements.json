@@ -1,6 +1,6 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 255,
+  "count": 256,
   "entity_type": "Requirement",
   "items": [
     {
@@ -3415,6 +3415,23 @@
       "evidence_types": [],
       "name": "Detecção de jailbreak / off-policy actions em produção",
       "requirement_id": "OPS-014",
+      "source_bundle": "12-monitorizacao-operacoes",
+      "source_chapter": 12,
+      "source_file": "12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
+      "type": "domain-specific"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "OPS",
+      "description": "Serviços e aplicações críticas em produção expõem um sinal explícito de saúde, prontidão ou disponibilidade, ou mecanismo equivalente da plataforma, monitorizado continuamente fora da instância. Exemplos incluem endpoint de saúde, heartbeat, readiness/liveness probes, health checks de load balancer ou watchdog do supervisor. Falhas persistentes geram alerta accionável e integram, quando aplicável, rollback ([DPL-008](/sbd-toe/sbd-manual/deploy-seguro/addon/catalogo-requisitos-deploy)) ou resposta a incidente ([OPS-007](/sbd-toe/sbd-manual/monitorizacao-operacoes/addon/catalogo-requisitos-operacoes)). O sinal não expõe segredos, configuração sensível nem diagnósticos internos não autorizados; a cobertura é verificável por inventário de serviços.",
+      "domain": "operations-monitoring",
+      "evidence_types": [],
+      "name": "Sinais contínuos de saúde e disponibilidade operacional",
+      "requirement_id": "OPS-015",
       "source_bundle": "12-monitorizacao-operacoes",
       "source_chapter": 12,
       "source_file": "12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
