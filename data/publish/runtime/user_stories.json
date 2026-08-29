@@ -63,7 +63,7 @@
       "checklist_items": [
         "Matriz consultada para o nível da aplicação",
         "Requisitos transformados em cartões/histórias de backlog",
-        "Cada requisito mapeado explicitamente para REQ-XXX do Cap. 02 (ex: REQ-LOG-001, REQ-ARC-003)",
+        "Cada requisito mapeado explicitamente para o ID de catálogo XXX-NNN (ex.: LOG-001 do Cap. 02, ARC-003 do Cap. 04)",
         "Tabela de rastreamento: controlo | L1/L2/L3 | REQ-XXX | responsável",
         "Exceções documentadas, aprovadas por AppSec Engineer com justificação técnica",
         "AppSec Engineer valida mapeamento antes de entrada em backlog"
@@ -502,7 +502,7 @@
       "chapter_id": "02-requisitos-seguranca",
       "checklist_items": [
         "Exceção com ID e ligação ao requisito (SEC-Lx-... e/ou REQ-XXX) registada",
-        "TTL definido consoante nível (L1=12m recomendado; L2=6m; L3=3m)",
+        "TTL definido conforme a política master de exceções ([Processo Canónico de Gestão de Exceções](/sbd-toe/sbd-manual/governanca-contratacao/addon/processo-excecoes), Cap. 14): prazo máximo por defeito, extensão só com reavaliação",
         "Owner designado e destinatários de alertas definidos",
         "Aprovação técnica por AppSec documentada; aprovação executiva quando aplicável em L3",
         "Alertas automáticos configurados (ex.: 15 dias antes de expiração)",

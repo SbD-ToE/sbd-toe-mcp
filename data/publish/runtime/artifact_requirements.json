@@ -1234,7 +1234,7 @@
         "practice 06-desenvolvimento-seguro:governacao-e-curadoria-de-guidelines matched alias 'guidelines'",
         "practice 06-desenvolvimento-seguro:guidelines-de-desenvolvimento-seguro matched alias 'guidelines'",
         "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['guidelines']",
-        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/appsec-engineer.md matched aliases ['guidelines']"
+        "corpus document 010-sbd-manual/00-fundamentos/macro-processos.md matched aliases ['guidelines']"
       ],
       "mandatory": true,
       "requirement_id": "REQ-guideline-000",
@@ -1507,7 +1507,7 @@
         "practice 07-cicd-seguro:contencao-de-contexto-e-higiene-de-logs-outputs matched alias 'logs'",
         "practice 12-monitorizacao-operacoes:seguranca-e-integridade-de-logs matched alias 'logs'",
         "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['logs']",
-        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/developer.md matched aliases ['logs']"
+        "corpus document 010-sbd-manual/00-fundamentos/macro-processos.md matched aliases ['logs']"
       ],
       "mandatory": true,
       "requirement_id": "REQ-log-000",
@@ -2134,9 +2134,9 @@
       "evidence": [
         "control CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0 references risk_acceptance_record",
         "practice 01-classificacao-aplicacoes:analise-de-risco-residual matched alias 'risco residual'",
+        "corpus document 010-sbd-manual/00-fundamentos/macro-processos.md matched aliases ['risco residual']",
         "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/appsec-engineer.md matched aliases ['risco residual']",
-        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/gestao-executiva.md matched aliases ['risco residual']",
-        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/grc-compliance.md matched aliases ['risco residual']"
+        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/gestao-executiva.md matched aliases ['risco residual']"
       ],
       "mandatory": true,
       "requirement_id": "REQ-risk-000",
@@ -2743,6 +2743,7 @@
     {
       "artifact_type_id": "ART-supplier-assessment-43fc2de564",
       "chapter_ids": [
+        "00-fundamentos",
         "02-requisitos-seguranca",
         "05-dependencias-sbom-sca",
         "09-containers-imagens",
@@ -2754,10 +2755,10 @@
       "description": "Supplier Assessment must be produced and retained as auditable evidence for practices such as Incorporação de restrições legais, normativas e contratuais, Cláusulas contratuais de segurança, Consolidação de KPIs de governação e maturidade.",
       "evidence": [
         "control CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628 references supplier_assessment",
+        "corpus document 010-sbd-manual/00-fundamentos/macro-processos.md matched aliases ['fornecedor']",
         "corpus document 010-sbd-manual/05-dependencias-sbom-sca/addon/01-inventario-sbom.md matched aliases ['fornecedor']",
         "corpus document 010-sbd-manual/09-containers-imagens/addon/12-self-hosted-inference.md matched aliases ['third party']",
-        "corpus document 010-sbd-manual/10-testes-seguranca/addon/14-tlpt-readiness.md matched aliases ['third party']",
-        "corpus document 010-sbd-manual/13-formacao-onboarding/addon/11-kpis-metricas.md matched aliases ['fornecedor']"
+        "corpus document 010-sbd-manual/10-testes-seguranca/addon/14-tlpt-readiness.md matched aliases ['third party']"
       ],
       "mandatory": true,
       "requirement_id": "REQ-supplier-000",

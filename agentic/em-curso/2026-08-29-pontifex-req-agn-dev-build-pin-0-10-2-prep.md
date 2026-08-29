@@ -23,3 +23,6 @@ Mover para `done/` quando o commit/tag for decidido.
 
 ## Update 2026-08-29 (pós-autorização)
 - Commit `85b1b308b16bc061fc6259dfd1360cd863a62b76` autorizado para `master`; push directo rejeitado (check `Validate` obrigatório) → branch `release/0.10.2-dev-build-pin-2026-08-29`, **PR #45** https://github.com/SbD-ToE/sbd-toe-mcp/pull/45. Merge = decisão do programme lead. Sem tag, sem npm, sem `mcp-stable`.
+
+## Update 2026-08-29 (tarde)
+- PR #45 **mergeado** (`bc8c918`). Pin v1.6.7 **superseded** no mesmo dia pelo re-pin v1.7.0 — ver `agentic/em-curso/2026-08-29-pontifex-kg-v1.7.0-repin-toolchain.md`. Mantém-se em curso só a tag `v0.10.2` (após release formal do KG).

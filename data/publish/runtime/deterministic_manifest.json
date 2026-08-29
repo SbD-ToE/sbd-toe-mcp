@@ -1,7 +1,7 @@
 {
   "artifacts": [
     {
-      "count": 255,
+      "count": 256,
       "entity_type": "Requirement",
       "file": "requirements.json",
       "name": "requirements",
@@ -97,7 +97,7 @@
       "source_artifact": "data/entities/mitigated_threats.json"
     },
     {
-      "count": 255,
+      "count": 256,
       "entity_type": "EvidencePattern",
       "file": "evidence_patterns.json",
       "name": "evidence_patterns",
@@ -118,7 +118,7 @@
       "source_artifact": "data/entities/artifact_requirements.json"
     },
     {
-      "count": 242,
+      "count": 263,
       "entity_type": "RequirementControlLink",
       "file": "requirement_control_links.json",
       "name": "requirement_control_links",

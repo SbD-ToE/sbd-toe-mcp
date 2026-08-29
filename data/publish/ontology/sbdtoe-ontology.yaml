@@ -817,6 +817,12 @@ not_in_scope_yet:
   - These belong to the future external-alignment layer or AppSec core ontology
   - The current goal is to formalize the SbD-ToE manual ontology itself
 domain_mapping:
+  # AGN — curated mapping (programme-lead decision 2026-08-29, v1.7.0 acceptance report §3.2):
+  # the agentic requirements are governed by the governance/identity controls (US-15 mandate,
+  # intent declaration); not derived from the Manual, reviewed by the programme lead.
+  AGN:
+  - governance
+  - identity
   AUT:
   - identity
   - governance

@@ -3,7 +3,7 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-29
 purpose: documentation
-reasoning: v0.10.2 (proposed) — dev-build KG pin kg-v1-manual-v1.6.7-aligned-2026-08-29 (REQ-AGN-001…004 served), requirement-id grammar v1.10 §1.18, declared gaps (requirements without control link; legacy REQ-<CAT>-NNN citations). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
+reasoning: v0.10.2 (proposed) — dev-build KG pin re-aligned to kg-v1-manual-v1.7.0-aligned-2026-08-29 (Manual v1.7.0, OPS-015, curated requirement→control layer, contract v1.11) after the 2026-08-29 REQ-AGN pin (v1.6.7); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
 review_status: pending-human-review
 ---
 
@@ -14,14 +14,40 @@ review_status: pending-human-review
 **Patch** — served-bundle alignment + declared-gap serving. Additive on the tool
 surface (new response fields, one new `concerns` value); no tool removed or reshaped.
 
-Served bundle: **dev-build `kg-v1-manual-v1.6.7-aligned-2026-08-29`** (KG commit
-`762ccaafa5cacec44f203488c234be3a174ef780`; snapshot
-`sbd-toe-knowledge-graph-bundle-kg-v1-manual-v1.6.7-aligned-2026-08-29-snapshot.zip`, sha256
-`a66c324575cede5ffb9e7c5ddae06bb8d090b3a1ec7150d53f80074f55185276`, verified against the
-`.sha256` sidecar by `sync-bundle`), `consumer_contract_version` **v1.10** (§1.18),
-**Manual v1.6.7** @ `171db83d`, ontology `ontology-v1.1-fair-baseline` (unchanged).
-`source: dev-build` (June precedent, `kg-v1-manual-v1.6.4-aligned-2026-06-17`) — the formal
-KG release stays `v1.5.0`; `mcp-stable` was not moved.
+Served bundle: **dev-build `kg-v1-manual-v1.7.0-aligned-2026-08-29`** (KG commit
+`737efe2090618787af2a4f863f97717a374d9b2f`; snapshot
+`sbd-toe-knowledge-graph-bundle-kg-v1-manual-v1.7.0-aligned-2026-08-29-snapshot.zip`, sha256
+`2c27f4ebccb9a693ccb3ae50fb0bb64fd602aff3acc9b53d36f898a64c0064fa`, verified against the
+`.sha256` sidecar by `sync-bundle`), `consumer_contract_version` **v1.11** (§1.19),
+**Manual v1.7.0** @ `d5c2586a` (remote `SbD-ToE/sbd-toe-manual`), ontology
+`ontology-v1.1-fair-baseline` (unchanged). `source: dev-build` — the formal KG release
+stays `v1.5.0`; `mcp-stable` was not moved. Supersedes the intermediate pin
+`kg-v1-manual-v1.6.7-aligned-2026-08-29` (`762ccaaf`, sha256 `a66c3245…5276`, contract
+v1.10, merged in #45) — both are dev-builds on this line.
+
+### Changed — served knowledge (dev-build 2026-08-29 v1.6.7 → v1.7.0, contract v1.11)
+
+- **Manual v1.7.0**: **OPS-015** «Sinais contínuos de saúde e disponibilidade operacional»
+  (L2/L3, chapter 12) → `requirements.json` 255 → **256** (27 categories); EvidencePatterns
+  256 (coverage 256/256). Per level: L1 120, L2 231, L3 256.
+- **Curated requirement→control layer** (`requirement_control_links` 242 → **263**,
+  `--preserve-existing`): the 20 requirements previously without a control link (AGN ×4,
+  ARC-014/015, DEP-011…014, DPL-010/011, OPS-011…014, GOV-013/014, THR-008, VAL-008) and
+  OPS-015 are now linked — REQ-AGN-001…004 → `CTRL-governance-classificacao-e-governacao-por-risco-*`
+  via the curated `domain_mapping.AGN: [governance, identity]` (programme-lead judgement,
+  not Manual-derived). `coverage_gaps.requirements_without_control_link` is therefore **0**
+  at every level — the declaration machinery stays (data-driven).
+- **Legacy citations corrected upstream**: 0 unresolvable `REQ-[A-Z]{3}-NNN` mentions and
+  0 `EX-` entries in `chunk_entity_mentions` → **0 declared legacy-citation gaps**. The 25
+  illustrative `REQ-NNN` example mentions (20 ids, 8 example docs) and non-requirement
+  tokens captured by the `<CAT>-NNN` shape (`CWE-`, `SHA-256`, …) are **informative, not
+  gaps**: `query_sbd_toe_entities` / `resolve_entities` surface them as `citation_note` /
+  `meta.citation_note` (`status: "informative"`) while keeping their normal path — never
+  aliased, never silent.
+- `00-fundamentos/macro-processos.md` (new, 82 chunks, role `addon`) is served in the
+  **`guide`** and `consult` profiles (MP1–MP5 are not entities, by declaration).
+
+### Changed — served knowledge (formal `v1.5.0` → dev-build 2026-08-29 v1.6.7; superseded above)
 
 ### Changed — served knowledge (formal `v1.5.0` → dev-build 2026-08-29)
 
@@ -68,7 +94,16 @@ KG release stays `v1.5.0`; `mcp-stable` was not moved.
   there is nothing to declare for it until the KG surfaces it.
 - `assets/agent-guide.md`: requirement identifier convention (both forms, category rule,
   `EX-` illustrative prefix, legacy-citation rule), the `agents` concern, and
-  interpretation rows for `coverage_gaps` / `declared_gap`.
+  interpretation rows for `coverage_gaps` / `declared_gap` / `citation_note`.
+
+### Changed — toolchain hygiene (devDependencies only, no package impact)
+
+- Dependabot alerts on the test toolchain: `vitest` 1.6.1 → **4.1.9**, `@vitest/coverage-v8`
+  and `@vitest/ui` 1.6.1 → **4.1.9** (Dependabot #39/#41/#42), pulling `vite` 8.2.2 and
+  `postcss` 8.5.26 through the tree; `esbuild` and `brace-expansion` (the other two alerts) are no
+  longer in the dependency tree at all (vite 8 builds on rolldown; `test-exclude`/`minimatch` dropped).
+  `npm audit`: 0 vulnerabilities. `npm test` / `npm run check` green; `npm pack --dry-run`
+  file list identical before/after — toolchain hygiene, no impact on the published package.
 
 ### Governance
 

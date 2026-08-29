@@ -136,6 +136,7 @@ Canonical role IDs (pass exact or common alias — resolved automatically):
 | `active_domains` | List the security domains active at this risk level |
 | `coverage_gaps.requirements_without_control_link` (consult) | Those requirements are active but have **no published control link** — say so (declared gap, routed to Codex); do not invent controls |
 | `match: "declared_gap"` / `meta.declared_gap` (query_sbd_toe_entities, resolve_entities) | Cite `declared_gap.note` verbatim — a legacy / unresolvable citation, not a missing requirement |
+| `citation_note` / `meta.citation_note` (informative) | The id is an illustrative example (`REQ-NNN`) or a non-requirement token (`CWE-`, `SHA-`) cited by the Manual — say so; it is not a requirement and not a gap |
 
 #### Pattern for complex answers (threat model / security plan / checklist)
 

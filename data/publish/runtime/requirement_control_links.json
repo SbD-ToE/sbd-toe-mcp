@@ -1,6 +1,6 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 242,
+  "count": 263,
   "entity_type": "RequirementControlLink",
   "items": [
     {
@@ -946,6 +946,70 @@
       },
       "source_id": "ARC-013",
       "source_label": "Validação automática de topologia em CI/CD ou como código",
+      "source_type": "Requirement",
+      "target_id": "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4",
+      "target_label": "Arquitetura segura e rastreável",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "04-arquitetura-segura"
+      ],
+      "confidence": 0.87,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping"
+      ],
+      "link_id": "ARC-014|maps_to_control|CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4",
+      "link_type": "maps_to_control",
+      "matched_control_field": "alias",
+      "matched_control_text": "Catálogo de padrões de arquitetura segura (reutilização governada)",
+      "score_components": {
+        "chapter_overlap": [
+          "04-arquitetura-segura"
+        ],
+        "runner_up_margin": 0.0,
+        "shared_salient_tokens": [
+          "padroe"
+        ],
+        "token_similarity": 0.0127
+      },
+      "source_id": "ARC-014",
+      "source_label": "Padrões arquitetónicos específicos para sistemas com componentes AI/ML",
+      "source_type": "Requirement",
+      "target_id": "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4",
+      "target_label": "Arquitetura segura e rastreável",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "04-arquitetura-segura"
+      ],
+      "confidence": 0.87,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping"
+      ],
+      "link_id": "ARC-015|maps_to_control|CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4",
+      "link_type": "maps_to_control",
+      "matched_control_field": "alias",
+      "matched_control_text": "Gate arquitetural antes do Go-live",
+      "score_components": {
+        "chapter_overlap": [
+          "04-arquitetura-segura"
+        ],
+        "runner_up_margin": 0.0,
+        "shared_salient_tokens": [
+          "ante"
+        ],
+        "token_similarity": 0.0099
+      },
+      "source_id": "ARC-015",
+      "source_label": "Agentes AI operam como principals isolados com mandate e least privilege",
       "source_type": "Requirement",
       "target_id": "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4",
       "target_label": "Arquitetura segura e rastreável",
@@ -2921,6 +2985,136 @@
     },
     {
       "bundle_ids": [
+        "05-dependencias-sbom-sca"
+      ],
+      "confidence": 0.98,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping",
+        "single_control_bundle"
+      ],
+      "link_id": "DEP-011|maps_to_control|CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+      "link_type": "maps_to_control",
+      "matched_control_field": "name",
+      "matched_control_text": "Inventário e análise de dependências",
+      "score_components": {
+        "chapter_overlap": [
+          "05-dependencias-sbom-sca"
+        ],
+        "runner_up_margin": 0.41,
+        "shared_salient_tokens": [
+          "dependencia",
+          "inventario"
+        ],
+        "token_similarity": 0.0317
+      },
+      "source_id": "DEP-011",
+      "source_label": "Inventário e proveniência de dependências AI/ML",
+      "source_type": "Requirement",
+      "target_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+      "target_label": "Inventário e análise de dependências",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "05-dependencias-sbom-sca"
+      ],
+      "confidence": 0.98,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping",
+        "single_control_bundle"
+      ],
+      "link_id": "DEP-012|maps_to_control|CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+      "link_type": "maps_to_control",
+      "matched_control_field": "name",
+      "matched_control_text": "Inventário e análise de dependências",
+      "score_components": {
+        "chapter_overlap": [
+          "05-dependencias-sbom-sca"
+        ],
+        "runner_up_margin": 0.41,
+        "shared_salient_tokens": [
+          "analise",
+          "inventario"
+        ],
+        "token_similarity": 0.0465
+      },
+      "source_id": "DEP-012",
+      "source_label": "AI BOM gerado por build em formato standardizado",
+      "source_type": "Requirement",
+      "target_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+      "target_label": "Inventário e análise de dependências",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "05-dependencias-sbom-sca"
+      ],
+      "confidence": 0.98,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping",
+        "single_control_bundle"
+      ],
+      "link_id": "DEP-013|maps_to_control|CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+      "link_type": "maps_to_control",
+      "matched_control_field": "name",
+      "matched_control_text": "Inventário e análise de dependências",
+      "score_components": {
+        "chapter_overlap": [
+          "05-dependencias-sbom-sca"
+        ],
+        "runner_up_margin": 0.41,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "DEP-013",
+      "source_label": "Versão pinned explícita para modelos AI e providers",
+      "source_type": "Requirement",
+      "target_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+      "target_label": "Inventário e análise de dependências",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "05-dependencias-sbom-sca"
+      ],
+      "confidence": 0.98,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping",
+        "single_control_bundle"
+      ],
+      "link_id": "DEP-014|maps_to_control|CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+      "link_type": "maps_to_control",
+      "matched_control_field": "name",
+      "matched_control_text": "Inventário e análise de dependências",
+      "score_components": {
+        "chapter_overlap": [
+          "05-dependencias-sbom-sca"
+        ],
+        "runner_up_margin": 0.41,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "DEP-014",
+      "source_label": "Lista de providers AI aprovados com classificação de risco",
+      "source_type": "Requirement",
+      "target_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
+      "target_label": "Inventário e análise de dependências",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
         "06-desenvolvimento-seguro"
       ],
       "confidence": 0.98,
@@ -3508,6 +3702,70 @@
       },
       "source_id": "DPL-009",
       "source_label": "Deploy progressivo com contenção de impacto para aplicações críticas",
+      "source_type": "Requirement",
+      "target_id": "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0",
+      "target_label": "Deploy seguro e reversível",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "11-deploy-seguro"
+      ],
+      "confidence": 0.87,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping"
+      ],
+      "link_id": "DPL-010|maps_to_control|CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0",
+      "link_type": "maps_to_control",
+      "matched_control_field": "alias",
+      "matched_control_text": "*Feature flags* avaliadas no *backend* como fronteira de confiança",
+      "score_components": {
+        "chapter_overlap": [
+          "11-deploy-seguro"
+        ],
+        "runner_up_margin": 0.03,
+        "shared_salient_tokens": [
+          "como"
+        ],
+        "token_similarity": 0.02
+      },
+      "source_id": "DPL-010",
+      "source_label": "Release gates para sistemas com agentes AI",
+      "source_type": "Requirement",
+      "target_id": "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0",
+      "target_label": "Deploy seguro e reversível",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "11-deploy-seguro"
+      ],
+      "confidence": 0.87,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping"
+      ],
+      "link_id": "DPL-011|maps_to_control|CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0",
+      "link_type": "maps_to_control",
+      "matched_control_field": "alias",
+      "matched_control_text": "*Deploy* progressivo com estratégias *canary*/*blue-green*",
+      "score_components": {
+        "chapter_overlap": [
+          "11-deploy-seguro"
+        ],
+        "runner_up_margin": 0.03,
+        "shared_salient_tokens": [
+          "canary"
+        ],
+        "token_similarity": 0.0169
+      },
+      "source_id": "DPL-011",
+      "source_label": "Canary e demoção de autonomia no release de modelos",
       "source_type": "Requirement",
       "target_id": "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0",
       "target_label": "Deploy seguro e reversível",
@@ -4722,6 +4980,76 @@
       "source_type": "Requirement",
       "target_id": "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
       "target_label": "Governação de fornecedores e exceções",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "14-governanca-contratacao"
+      ],
+      "confidence": 0.87,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping"
+      ],
+      "link_id": "GOV-013|maps_to_control|CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
+      "link_type": "maps_to_control",
+      "matched_control_field": "alias",
+      "matched_control_text": "Feedback Pós-Projeto e Rating de Contractors",
+      "score_components": {
+        "chapter_overlap": [
+          "14-governanca-contratacao"
+        ],
+        "runner_up_margin": 0.0,
+        "shared_salient_tokens": [
+          "contractor"
+        ],
+        "token_similarity": 0.0161
+      },
+      "source_id": "GOV-013",
+      "source_label": "Onboarding técnico e formação obrigatória pré-acesso de terceiros",
+      "source_type": "Requirement",
+      "target_id": "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
+      "target_label": "Governação de fornecedores e exceções",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "14-governanca-contratacao"
+      ],
+      "confidence": 0.9053,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping",
+        "lexical_alignment"
+      ],
+      "link_id": "GOV-014|maps_to_control|CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+      "link_type": "maps_to_control",
+      "matched_control_field": "alias",
+      "matched_control_text": "Revisão Trimestral de Acesso de Contractors (Least Privilege)",
+      "score_components": {
+        "chapter_overlap": [
+          "14-governanca-contratacao"
+        ],
+        "runner_up_margin": 0.0353,
+        "shared_salient_tokens": [
+          "acesso",
+          "contractor",
+          "least",
+          "privilege",
+          "revisao",
+          "trimestral"
+        ],
+        "token_similarity": 0.1176
+      },
+      "source_id": "GOV-014",
+      "source_label": "Revisão periódica de acesso de terceiros (least privilege)",
+      "source_type": "Requirement",
+      "target_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+      "target_label": "Gestão de identidades, acessos e ownership",
       "target_type": "Control"
     },
     {
@@ -6244,6 +6572,166 @@
     },
     {
       "bundle_ids": [
+        "12-monitorizacao-operacoes"
+      ],
+      "confidence": 0.98,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping",
+        "single_control_bundle"
+      ],
+      "link_id": "OPS-011|maps_to_control|CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "link_type": "maps_to_control",
+      "matched_control_field": "name",
+      "matched_control_text": "Monitorização e resposta operacional",
+      "score_components": {
+        "chapter_overlap": [
+          "12-monitorizacao-operacoes"
+        ],
+        "runner_up_margin": 0.98,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "OPS-011",
+      "source_label": "Observabilidade dedicada a componentes AI/ML em produção",
+      "source_type": "Requirement",
+      "target_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "target_label": "Monitorização e resposta operacional",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "12-monitorizacao-operacoes"
+      ],
+      "confidence": 0.98,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping",
+        "single_control_bundle"
+      ],
+      "link_id": "OPS-012|maps_to_control|CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "link_type": "maps_to_control",
+      "matched_control_field": "name",
+      "matched_control_text": "Monitorização e resposta operacional",
+      "score_components": {
+        "chapter_overlap": [
+          "12-monitorizacao-operacoes"
+        ],
+        "runner_up_margin": 0.98,
+        "shared_salient_tokens": [
+          "operacional"
+        ],
+        "token_similarity": 0.0159
+      },
+      "source_id": "OPS-012",
+      "source_label": "Audit completo por tool invocation de agente AI",
+      "source_type": "Requirement",
+      "target_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "target_label": "Monitorização e resposta operacional",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "12-monitorizacao-operacoes"
+      ],
+      "confidence": 0.98,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping",
+        "single_control_bundle"
+      ],
+      "link_id": "OPS-013|maps_to_control|CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "link_type": "maps_to_control",
+      "matched_control_field": "name",
+      "matched_control_text": "Monitorização e resposta operacional",
+      "score_components": {
+        "chapter_overlap": [
+          "12-monitorizacao-operacoes"
+        ],
+        "runner_up_margin": 0.98,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "OPS-013",
+      "source_label": "Budget e detecção de runaway em consumo de modelo (token spend)",
+      "source_type": "Requirement",
+      "target_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "target_label": "Monitorização e resposta operacional",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "12-monitorizacao-operacoes"
+      ],
+      "confidence": 0.98,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping",
+        "single_control_bundle"
+      ],
+      "link_id": "OPS-014|maps_to_control|CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "link_type": "maps_to_control",
+      "matched_control_field": "name",
+      "matched_control_text": "Monitorização e resposta operacional",
+      "score_components": {
+        "chapter_overlap": [
+          "12-monitorizacao-operacoes"
+        ],
+        "runner_up_margin": 0.98,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "OPS-014",
+      "source_label": "Detecção de jailbreak / off-policy actions em produção",
+      "source_type": "Requirement",
+      "target_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "target_label": "Monitorização e resposta operacional",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "12-monitorizacao-operacoes"
+      ],
+      "confidence": 0.98,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping",
+        "single_control_bundle"
+      ],
+      "link_id": "OPS-015|maps_to_control|CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "link_type": "maps_to_control",
+      "matched_control_field": "name",
+      "matched_control_text": "Monitorização e resposta operacional",
+      "score_components": {
+        "chapter_overlap": [
+          "12-monitorizacao-operacoes"
+        ],
+        "runner_up_margin": 0.98,
+        "shared_salient_tokens": [
+          "operacional",
+          "resposta"
+        ],
+        "token_similarity": 0.0328
+      },
+      "source_id": "OPS-015",
+      "source_label": "Sinais contínuos de saúde e disponibilidade operacional",
+      "source_type": "Requirement",
+      "target_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "target_label": "Monitorização e resposta operacional",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
         "02-requisitos-seguranca"
       ],
       "confidence": 0.9,
@@ -6507,6 +6995,141 @@
       },
       "source_id": "REQ-007",
       "source_label": "Revisão iterativa com equipas",
+      "source_type": "Requirement",
+      "target_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+      "target_label": "Classificação e governação por risco",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.87,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping"
+      ],
+      "link_id": "REQ-AGN-001|maps_to_control|CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+      "link_type": "maps_to_control",
+      "matched_control_field": "alias",
+      "matched_control_text": "Classificação e registo do *mandate* de agente AI {#us-15}",
+      "score_components": {
+        "chapter_overlap": [
+          "02-requisitos-seguranca"
+        ],
+        "runner_up_margin": 0.03,
+        "shared_salient_tokens": [
+          "agente",
+          "mandate"
+        ],
+        "token_similarity": 0.0789
+      },
+      "source_id": "REQ-AGN-001",
+      "source_label": "Mandate registado e versionado",
+      "source_type": "Requirement",
+      "target_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+      "target_label": "Classificação e governação por risco",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.87,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping"
+      ],
+      "link_id": "REQ-AGN-002|maps_to_control|CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+      "link_type": "maps_to_control",
+      "matched_control_field": "alias",
+      "matched_control_text": "Classificação e registo do *mandate* de agente AI {#us-15}",
+      "score_components": {
+        "chapter_overlap": [
+          "02-requisitos-seguranca"
+        ],
+        "runner_up_margin": 0.03,
+        "shared_salient_tokens": [
+          "agente",
+          "mandate"
+        ],
+        "token_similarity": 0.0714
+      },
+      "source_id": "REQ-AGN-002",
+      "source_label": "Nível de autonomia classificado por contexto",
+      "source_type": "Requirement",
+      "target_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+      "target_label": "Classificação e governação por risco",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.87,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping"
+      ],
+      "link_id": "REQ-AGN-003|maps_to_control|CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+      "link_type": "maps_to_control",
+      "matched_control_field": "alias",
+      "matched_control_text": "Classificação e registo do *mandate* de agente AI {#us-15}",
+      "score_components": {
+        "chapter_overlap": [
+          "02-requisitos-seguranca"
+        ],
+        "runner_up_margin": 0.03,
+        "shared_salient_tokens": [
+          "agente"
+        ],
+        "token_similarity": 0.0294
+      },
+      "source_id": "REQ-AGN-003",
+      "source_label": "Kill-switch operacional documentado e testado",
+      "source_type": "Requirement",
+      "target_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+      "target_label": "Classificação e governação por risco",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.9117,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping",
+        "lexical_alignment"
+      ],
+      "link_id": "REQ-AGN-004|maps_to_control|CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+      "link_type": "maps_to_control",
+      "matched_control_field": "alias",
+      "matched_control_text": "Intent declaration por tool-call destrutivo de agente AI",
+      "score_components": {
+        "chapter_overlap": [
+          "02-requisitos-seguranca"
+        ],
+        "runner_up_margin": 0.0417,
+        "shared_salient_tokens": [
+          "agente",
+          "declaration",
+          "destrutivo",
+          "intent",
+          "tool-call"
+        ],
+        "token_similarity": 0.1389
+      },
+      "source_id": "REQ-AGN-004",
+      "source_label": "Intent declaration antes de tool-call destrutivo",
       "source_type": "Requirement",
       "target_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
       "target_label": "Classificação e governação por risco",
@@ -6963,6 +7586,40 @@
       },
       "source_id": "THR-007",
       "source_label": "Revisão independente por AppSec antes de go-live em L2 e L3",
+      "source_type": "Requirement",
+      "target_id": "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0",
+      "target_label": "Threat modeling e gestão de risco",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "03-threat-modeling"
+      ],
+      "confidence": 0.98,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping",
+        "single_control_bundle"
+      ],
+      "link_id": "THR-008|maps_to_control|CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0",
+      "link_type": "maps_to_control",
+      "matched_control_field": "name",
+      "matched_control_text": "Threat modeling e gestão de risco",
+      "score_components": {
+        "chapter_overlap": [
+          "03-threat-modeling"
+        ],
+        "runner_up_margin": 0.41,
+        "shared_salient_tokens": [
+          "ameaca",
+          "modeling"
+        ],
+        "token_similarity": 0.0299
+      },
+      "source_id": "THR-008",
+      "source_label": "Threat modeling estendido para sistemas com componentes AI/ML",
       "source_type": "Requirement",
       "target_id": "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0",
       "target_label": "Threat modeling e gestão de risco",
@@ -7804,6 +8461,38 @@
       },
       "source_id": "VAL-007",
       "source_label": "Testes automáticos contra entradas maliciosas",
+      "source_type": "Requirement",
+      "target_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "target_label": "Desenvolvimento seguro e validação de código",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.87,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping"
+      ],
+      "link_id": "VAL-008|maps_to_control|CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "link_type": "maps_to_control",
+      "matched_control_field": "alias",
+      "matched_control_text": "Prompts e Outputs de GenAI sob Disciplina de Código",
+      "score_components": {
+        "chapter_overlap": [
+          "02-requisitos-seguranca"
+        ],
+        "runner_up_margin": 0.33,
+        "shared_salient_tokens": [
+          "output"
+        ],
+        "token_similarity": 0.037
+      },
+      "source_id": "VAL-008",
+      "source_label": "Codificação/escaping de output em renderização (anti-XSS)",
       "source_type": "Requirement",
       "target_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
       "target_label": "Desenvolvimento seguro e validação de código",
