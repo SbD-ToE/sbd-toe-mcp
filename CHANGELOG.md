@@ -3,27 +3,30 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-29
 purpose: documentation
-reasoning: v0.10.2 (proposed) — dev-build KG pin re-aligned to kg-v1-manual-v1.7.0-aligned-2026-08-29 (Manual v1.7.0, OPS-015, curated requirement→control layer, contract v1.11) after the 2026-08-29 REQ-AGN pin (v1.6.7); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
+reasoning: v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
 review_status: pending-human-review
 ---
 
 # Changelog
 
-## 0.10.2 — 2026-08-29 (proposed — prepared, not tagged, not published)
+## 0.10.2 — 2026-08-29
 
 **Patch** — served-bundle alignment + declared-gap serving. Additive on the tool
 surface (new response fields, one new `concerns` value); no tool removed or reshaped.
 
-Served bundle: **dev-build `kg-v1-manual-v1.7.0-aligned-2026-08-29`** (KG commit
-`737efe2090618787af2a4f863f97717a374d9b2f`; snapshot
-`sbd-toe-knowledge-graph-bundle-kg-v1-manual-v1.7.0-aligned-2026-08-29-snapshot.zip`, sha256
-`2c27f4ebccb9a693ccb3ae50fb0bb64fd602aff3acc9b53d36f898a64c0064fa`, verified against the
-`.sha256` sidecar by `sync-bundle`), `consumer_contract_version` **v1.11** (§1.19),
-**Manual v1.7.0** @ `d5c2586a` (remote `SbD-ToE/sbd-toe-manual`), ontology
-`ontology-v1.1-fair-baseline` (unchanged). `source: dev-build` — the formal KG release
-stays `v1.5.0`; `mcp-stable` was not moved. Supersedes the intermediate pin
-`kg-v1-manual-v1.6.7-aligned-2026-08-29` (`762ccaaf`, sha256 `a66c3245…5276`, contract
-v1.10, merged in #45) — both are dev-builds on this line.
+Served bundle: **formal KG release `v1.6.0`** (GitHub Release
+`SbD-ToE/sbd-toe-knowledge-graph@v1.6.0`, commit `aad4e962cd20b105cd0a4840a5dea6f7011dcd5d`
+= `mcp-stable`; asset `sbd-toe-knowledge-graph-bundle-v1.6.0.zip`, sha256
+**`baf5913b596fdeb17c77d9c3a1d9394738c4c9319a8bcf0ec03972ba5db1d93b`**, fetched and
+digest-verified against the release `.sha256` by `sync-bundle --from-release`;
+`run_manifest.release = {channel: stable, version: v1.6.0}`), `consumer_contract_version`
+**v1.11** (§1.19), **Manual v1.7.0** @ `d5c2586a` (remote `SbD-ToE/sbd-toe-manual`), ontology
+`ontology-v1.1-fair-baseline` (unchanged). `source: release` — supersedes the formal `v1.5.0`
+pin of 0.10.0/0.10.1. Lineage on this line (same day, both dev-builds, merged in #45 / #46):
+`kg-v1-manual-v1.6.7-aligned-2026-08-29` (`762ccaaf`, sha256 `a66c3245…5276`, contract v1.10)
+→ `kg-v1-manual-v1.7.0-aligned-2026-08-29` (`737efe20`, sha256 `2c27f4eb…64fa`, contract v1.11);
+`v1.6.0` is byte-identical to the latter in `data/publish` — the only difference in the
+consumed files is the `release` block of `run_manifest.json`.
 
 ### Changed — served knowledge (dev-build 2026-08-29 v1.6.7 → v1.7.0, contract v1.11)
 
