@@ -77,6 +77,8 @@ const base = path.join(outDir, `${stamp}-v${pkg.version}-acceptance`);
 const report = { generated_at: new Date().toISOString(), server: client.serverInfo, package_version: pkg.version, consumed_bundle: { release_tag: pin.kg_bundle.release_tag, source: pin.kg_bundle.source, sha256: pin.kg_bundle.release_sha256, contract: pin.consumer_contract_version, manual: pin.inputs.manual.tag }, totals, executed, rollup, coverage, results };
 writeFileSync(`${base}.json`, JSON.stringify(report, null, 2) + "\n");
 
+// Markdown table cell: escape backslashes first, then pipes; flatten line breaks.
+const mdCell = (v) => String(v).replace(/\\/g, "\\\\").replace(/\|/g, "\\|").replace(/\r?\n/g, " ");
 const md = [];
 md.push(`# MCP acceptance scenarios — run ${stamp} — @shiftleftpt/sbd-toe-mcp@${pkg.version}`, "");
 md.push(`Source: \`DevelopmentGovernance/docs/mcp-acceptance-test-scenarios.md\` (94 scenarios, 5 axes). Runner: \`npm run eval:acceptance\` (\`scripts/run-acceptance-scenarios.mjs\`, live stdio server \`dist/index.js\`).`);
@@ -93,7 +95,7 @@ md.push(`- **Acceptance cases (28):** OSS-testable covered: ${acCovered.join(", 
 md.push(`- **Roles × phases (Axis B):** ${roleRuns.join("; ")}.`, "");
 md.push("Call counts per tool: " + Object.entries(coverage.tools.calls).map(([k, v]) => `\`${k}\`×${v}`).join(", ") + ".", "");
 for (const a of axes) { md.push(`## Axis ${a} — ${axisName[a]}`, "", "| ID | Status | Tool | Verdict note | Owner |", "|---|---|---|---|---|");
-  for (const r of results.filter((r) => r.axis === a)) md.push(`| ${r.id} | ${r.status} | \`${r.tool}\` | ${String(r.note).replace(/\|/g, "\\|")} | ${r.owner ?? ""} |`); md.push(""); }
+  for (const r of results.filter((r) => r.axis === a)) md.push(`| ${r.id} | ${r.status} | \`${r.tool}\` | ${mdCell(r.note)} | ${r.owner ?? ""} |`); md.push(""); }
 writeFileSync(`${base}.md`, md.join("\n") + "\n");
 
 console.log(JSON.stringify({ totals, executed, rollup, gate: gateFails.length ? "FAIL" : "PASS", report: `${base}.md` }, null, 1));
