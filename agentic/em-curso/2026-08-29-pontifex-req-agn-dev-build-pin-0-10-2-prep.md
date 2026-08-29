@@ -20,3 +20,6 @@
 - [ ] Codex: refresh de `requirement_control_links` (gap (a) → 0)
 
 Mover para `done/` quando o commit/tag for decidido.
+
+## Update 2026-08-29 (pós-autorização)
+- Commit `85b1b308b16bc061fc6259dfd1360cd863a62b76` autorizado para `master`; push directo rejeitado (check `Validate` obrigatório) → branch `release/0.10.2-dev-build-pin-2026-08-29`, **PR #45** https://github.com/SbD-ToE/sbd-toe-mcp/pull/45. Merge = decisão do programme lead. Sem tag, sem npm, sem `mcp-stable`.
