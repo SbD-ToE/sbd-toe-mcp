@@ -45,8 +45,9 @@ TODO — confirm with programme lead.
 - v0.9.0
 - v0.10.0
 - v0.10.1 (packaging fix — see CHANGELOG)
-- v0.10.2 *(formal KG release v1.6.0 pinned — see CHANGELOG; annotated tag created on
-  the squash commit of the PR that introduces this row, after its merge to master)*
+- v0.10.2 → `31aa22af780d56f958b220258ffa82ca46f1d7c7` (2026-08-29; formal KG release v1.6.0
+  pinned — see CHANGELOG; npm `@shiftleftpt/sbd-toe-mcp@0.10.2` = `latest`, gitHead same commit;
+  GitHub Release `v0.10.2`)
 
 ## Current working state
 
@@ -57,8 +58,9 @@ TODO — confirm with programme lead.
 `baf5913b596fdeb17c77d9c3a1d9394738c4c9319a8bcf0ec03972ba5db1d93b`; consumer contract
 v1.11), Manual v1.7.0 (`d5c2586ae2cd12ab2e31b65febb2e85ed20e1bce`), ontology
 `ontology-v1.1-fair-baseline` (`84fe8bf6f5de1443d778f9b2f0555b722540bbff`). Tag
-`v0.10.2` = squash commit of the PR introducing this row (recorded in the CHANGELOG /
-GitHub Release once created). Prior: v0.10.1 (2026-06-25), v0.10.0 (2026-06-17).
+`v0.10.2` → `31aa22af780d56f958b220258ffa82ca46f1d7c7` (squash of PR #47; annotated; created and
+pushed 2026-08-29 by Pontifex under programme-lead authorisation; `release.yml` run
+33265635554 published npm 0.10.2 = latest). Prior: v0.10.1 (2026-06-25), v0.10.0 (2026-06-17).
 **Expected next freeze event:** none scheduled
 
 ## Cross-references
@@ -101,3 +103,4 @@ prohibits tag deletion without explicit authorisation):
 |---|---|---|
 | 2026-06-25 | Initial skeleton created (file was absent). Populated from git tags + CITATION.cff; uncertain mappings marked TODO. | Claude (AI agent), under Pedro Farinha |
 | 2026-08-29 | v0.10.2 registered (protected tag list, current working state, upstream pins with exact tags/hashes: KG v1.6.0, Manual v1.7.0, ontology v1.1). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-29 | v0.10.2 tag commit recorded (`31aa22af`, squash of #47); npm publish + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
