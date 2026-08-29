@@ -1,13 +1,82 @@
 ---
 ai_assisted: true
-model: Claude Opus 4.8 (1M context)
-date: 2026-06-25
+model: Claude Fable 5
+date: 2026-08-29
 purpose: documentation
-reasoning: v0.10.1 — packaging fix (restore `dist/version-info.*` to the npm tarball; fixes ERR_MODULE_NOT_FOUND on clean install of 0.9.0/0.10.0) + repository relocation to SbD-ToE/sbd-toe-mcp. v0.10.0 and earlier entries below.
+reasoning: v0.10.2 (proposed) — dev-build KG pin kg-v1-manual-v1.6.7-aligned-2026-08-29 (REQ-AGN-001…004 served), requirement-id grammar v1.10 §1.18, declared gaps (requirements without control link; legacy REQ-<CAT>-NNN citations). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.10.2 — 2026-08-29 (proposed — prepared, not tagged, not published)
+
+**Patch** — served-bundle alignment + declared-gap serving. Additive on the tool
+surface (new response fields, one new `concerns` value); no tool removed or reshaped.
+
+Served bundle: **dev-build `kg-v1-manual-v1.6.7-aligned-2026-08-29`** (KG commit
+`762ccaafa5cacec44f203488c234be3a174ef780`; snapshot
+`sbd-toe-knowledge-graph-bundle-kg-v1-manual-v1.6.7-aligned-2026-08-29-snapshot.zip`, sha256
+`a66c324575cede5ffb9e7c5ddae06bb8d090b3a1ec7150d53f80074f55185276`, verified against the
+`.sha256` sidecar by `sync-bundle`), `consumer_contract_version` **v1.10** (§1.18),
+**Manual v1.6.7** @ `171db83d`, ontology `ontology-v1.1-fair-baseline` (unchanged).
+`source: dev-build` (June precedent, `kg-v1-manual-v1.6.4-aligned-2026-06-17`) — the formal
+KG release stays `v1.5.0`; `mcp-stable` was not moved.
+
+### Changed — served knowledge (formal `v1.5.0` → dev-build 2026-08-29)
+
+- **REQ-AGN-001…004 served** — the AI-agent / automation governance catalogue (versioned
+  mandate, autonomy A0–A4, kill-switch, intent declaration; Manual
+  `02-requisitos-seguranca/addon/09-governaca-automatismos.md`). `requirements.json`
+  251 → **255**, categories 26 → **27** (`AGN`, chapter 02); EvidencePatterns 251 → **255**
+  (coverage 255/255). Per level: L1 118 → 120, L2 226 → 230, L3 251 → 255. Closes the
+  Pontifex side of `agentic/briefs/2026-08-02-orchestrator-to-pontifex-req-agn-surface-gap.md`.
+- Collateral of the dev-build line (contract v1.9, 2026-06-18): the regulatory overlay now
+  indexes **AI Act** and **ENISA-CSA** (`external_frameworks` 4 → 6; overlay mappings 6360;
+  cross-layer referrals 7218). The 0.10.0 note "AI Act cross-check is not indexed" no
+  longer holds.
+- Legacy `REQ-<CAT>-NNN` citations of base requirements no longer resolve by substring
+  accident to requirements with another meaning (contract §1.18) — declared instead, below.
+
+### Added — requirement-id grammar (consumer contract v1.10 §1.18)
+
+- `src/serving/requirement-id.ts` — the single serving-side source of the grammar
+  `^(?:REQ-[A-Z]{3}-\d{3}|[A-Z]{3}-\d{3})$` (**fullmatch**; never search, never prefix
+  normalisation). `category` = the segment before the number (`AGN`, never `REQ`).
+  Audit: no site in this server assumed the old `^[A-Z]{3}-\d{3}$`; the loader now flags on
+  stderr (never drops, never rewrites) any published id outside the grammar. Mandatory
+  cases under test: `REQ-AGN-001` ✓, `AUT-003` ✓, `EX-AUT-003` ✗ (the Manual's illustrative
+  `EX-` prefix — never resolves to `AUT-003`), `REQ-AUTH-001` ✗.
+- `consult_security_requirements`: new `concerns` value **`agents`** → category `AGN`
+  (consult only; `get_threat_landscape` has no domain chapter for it).
+
+### Added — declared gaps (never silent; Codex handover 2026-08-29)
+
+- **(a) Requirements without a control link.** `consult_security_requirements` returns
+  `coverage_gaps.requirements_without_control_link` `{count, requirement_ids, note}` and a
+  `REQUIREMENT_WITHOUT_CONTROL_LINK` rule-trace line. The 20 requirements with no
+  `requirement_control_links` entry (AGN ×4, ARC-014/015, DEP-011…014, DPL-010/011,
+  OPS-011…014, GOV-013/014, THR-008, VAL-008) are served with the absence declared — not
+  omitted, no controls invented (link layer of 2026-04-07; refresh is a Codex decision).
+- **(b) Legacy citations.** `query_sbd_toe_entities(query=<id>)` and
+  `resolve_entities(requirement, {requirement_id})` answer a cited-but-unpublished
+  requirement id with a **declared gap** (`match: "declared_gap"` / `meta.declared_gap`,
+  with the citing chunk/document ids). The 20 legacy `REQ-<CAT>-NNN` citations (16 ids,
+  6 Manual files) carry the serving phrase «citação legada não resolvível (finding
+  editorial em curso)» — never «requisito inexistente», never a silent semantic fallback.
+  The 21st (`REQ-AC-010`) is not present in this bundle's `chunk_entity_mentions`, so
+  there is nothing to declare for it until the KG surfaces it.
+- `assets/agent-guide.md`: requirement identifier convention (both forms, category rule,
+  `EX-` illustrative prefix, legacy-citation rule), the `agents` concern, and
+  interpretation rows for `coverage_gaps` / `declared_gap`.
+
+### Governance
+
+- No interim AGN gap declaration had been implemented in the served code (brief 02-08
+  item 1); nothing to lift — the closure is the published data itself.
+- Not a freeze event; `FREEZE-REGISTRY.md` unchanged. Pending upstream before a formal
+  release: KG formal release (re-pin `source: release`) + `mcp-stable` move (Codex /
+  programme lead); Manual correction of the legacy citations, then Codex recompile.
 
 ## 0.10.1 — 2026-06-25
 

@@ -4,6 +4,7 @@ import { retrievePublishedContext } from "../backend/semantic-index-gateway.js";
 import { resolveAppPath } from "../config.js";
 import type { LooseRecord } from "../types.js";
 import { getOntologyData } from "./ontology-loader.js";
+import { describeRequirementGap } from "../serving/requirement-id.js";
 import {
   listChaptersAffordances,
   queryEntitiesAffordances,
@@ -277,6 +278,17 @@ async function handleQuerySbdToeEntitiesCore(
   const exact = exactEntityLookup(query);
   if (exact) {
     return { entities: [exact], total: 1, match: "exact_id" };
+  }
+
+  // Requirement-shaped id (contract v1.10 §1.18 grammar or the legacy REQ-<CAT>-NNN
+  // citation shape) that the bundle does not carry but the corpus cites: answer with a
+  // DECLARED gap («citação legada não resolvível (finding editorial em curso)»), never
+  // «requisito inexistente», and never a silent semantic fallback (Codex handover
+  // 2026-08-29, gap (b)). A token nobody cites keeps the semantic fallback below.
+  const knownRequirementIds = new Set(getOntologyData().requirements.map((r) => r.requirement_id));
+  const requirementGap = describeRequirementGap(query, knownRequirementIds);
+  if (requirementGap) {
+    return { entities: [], total: 0, match: "declared_gap", declared_gap: requirementGap };
   }
 
   const topKArg = args["topK"];

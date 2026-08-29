@@ -155,3 +155,42 @@ describe("_resolveConsultResult", () => {
     expect(result.rule_trace.every((r) => typeof r === "string" && r.length > 0)).toBe(true);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Declared coverage gap — requirements without a control link (handover 2026-08-29 (a))
+// ---------------------------------------------------------------------------
+
+describe("_resolveConsultResult — coverage_gaps.requirements_without_control_link", () => {
+  it("declares every active requirement that has no maps_to_control link (sorted ids, never omitted)", () => {
+    const r = _resolveConsultResult({ risk_level: "L2" }, makeOntologyData());
+    expect(r.coverage_gaps.requirements_without_control_link.count).toBe(3);
+    expect(r.coverage_gaps.requirements_without_control_link.requirement_ids).toEqual(["AUT-001", "LOG-001", "VAL-001"]);
+    expect(r.requirements).toHaveLength(3); // still served
+    expect(r.rule_trace.some((l) => l.startsWith("REQUIREMENT_WITHOUT_CONTROL_LINK: 3 "))).toBe(true);
+  });
+
+  it("excludes requirements that do have a maps_to_control link", () => {
+    const r = _resolveConsultResult(
+      { risk_level: "L2" },
+      makeOntologyData({
+        requirementControlLinks: [{ source_id: "AUT-001", target_id: "CTRL-001", link_type: "maps_to_control" }],
+      })
+    );
+    expect(r.coverage_gaps.requirements_without_control_link.requirement_ids).toEqual(["LOG-001", "VAL-001"]);
+    expect(r.controls.find((c) => c.control_id === "CTRL-001")?._confidence).toBe("direct");
+  });
+
+  it("is zero (and silent in rule_trace) when every active requirement is linked", () => {
+    const r = _resolveConsultResult(
+      { risk_level: "L1" },
+      makeOntologyData({
+        requirementControlLinks: [
+          { source_id: "LOG-001", target_id: "CTRL-002", link_type: "maps_to_control" },
+          { source_id: "VAL-001", target_id: "CTRL-003", link_type: "maps_to_control" },
+        ],
+      })
+    );
+    expect(r.coverage_gaps.requirements_without_control_link.count).toBe(0);
+    expect(r.rule_trace.some((l) => l.startsWith("REQUIREMENT_WITHOUT_CONTROL_LINK"))).toBe(false);
+  });
+});
