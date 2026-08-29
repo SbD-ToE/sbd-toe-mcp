@@ -13,6 +13,9 @@
 - [x] Alinhamento v1.10 no `prepare` (category segment) + `concerns:["agents"]` no `prepare` (diferenças 1–2 do brief); snapshots regenerados (data-driven)
 
 ## Pendente
-- [ ] Commit + push em `0.20-beta` (PR se rejeitado) — SHA/PR anotado abaixo
+- [x] Commit + push directo em `0.20-beta` aceite (sem protecção nesta branch; PR não necessário): **`6353557b76bf9a6b17f06d191802e7e2f2e93ac2`**
 - [ ] Orchestrator/Codex: confirmar «+64 arestas / +32 EP» (medido +852 overlay / +4 EP)
 - [ ] Os mesmos pendentes upstream da estável (KG formal + mcp-stable; citações legadas; control links)
+
+## Update 2026-08-29 (pós-push)
+- `origin/0.20-beta` = `6353557b76bf9a6b17f06d191802e7e2f2e93ac2`. Sem tag, sem npm. Nota do remoto: Dependabot reporta 10 vulnerabilidades no branch por omissão (1 critical, 4 high, 5 moderate) — triagem já adiada pelo operador (2026-07-05), fora deste despacho.
