@@ -50,6 +50,12 @@ Supersedes the `v1.6.7` pin below within this same unreleased version.
     the re-baseline note. All other budgets within limits: f1 standard 6,227 / minimal 5,588 /
     ultrathin 3,696 (unchanged); f2 minimal **7,926**/8,000, ultrathin **4,642**/4,840; full
     18,903 / 24,792.
+- **Toolchain hygiene (from master, separate commit on this line):** devDependencies `vitest` /
+  `@vitest/coverage-v8` / `@vitest/ui` 1.6.x → **4.1.9**; resulting tree `vite` **8.2.2**
+  (rolldown 1.2.6), `postcss` **8.5.26**; `esbuild` and `brace-expansion` leave the tree.
+  Verified on the v2 line with `oxigraph` 0.5.9 (WASM): `npm run check` ✅, build ✅,
+  **723/723** ✅ (incl. payload budgets and golden snapshots), `smoke:mcp` ✅, `npm audit`
+  0 vulnerabilities. Package contents unchanged (devDependencies only).
 - **Verified live (stdio):** resolve REQ-AGN-001…004 + **OPS-015** 5/5; consult L1 120/26,
   L2 **231/27**, L3 **256/27**, gaps 0/0/0; `concerns:["agents"]` → REQ-AGN-001…004 with 1
   direct control via `requirement_control_links` + 5 derived; `prepare_sbd_toe_codegen_context`
