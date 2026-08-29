@@ -39,6 +39,7 @@ import {
   type WithoutSource
 } from "./prepare-codegen-context.js";
 import { clearG2RuntimeCacheForTests } from "./g2-runtime-loader.js";
+import { requirementCategoryOf } from "../serving/requirement-id.js";
 import { clearRegulatoryOverlayCacheForTests } from "./regulatory-overlay-loader.js";
 
 // ---------------------------------------------------------------------------
@@ -336,12 +337,12 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
       const stripSource = <T extends { source: unknown }>(items: readonly T[]) =>
         items.map(({ source: _source, ...rest }) => rest);
 
-      // -- requirements: repõe `category` (= prefixo do id) e retira a
-      //    `description` adicionada (s3) ⇒ byte-igual a full-menos-source.
+      // -- requirements: repõe `category` (= segmento de categoria do id, v1.10:
+      //    `REQ-AGN-001` → AGN) e retira a `description` adicionada (s3) ⇒
+      //    byte-igual a full-menos-source.
       const rebuiltRequirements = dieted.activated_scope.requirements.map((item) => {
         const { description: _description, ...rest } = item;
-        const category =
-          rest.category ?? item.requirement_id.slice(0, item.requirement_id.indexOf("-"));
+        const category = rest.category ?? requirementCategoryOf(item.requirement_id);
         return {
           requirement_id: rest.requirement_id,
           name: rest.name,

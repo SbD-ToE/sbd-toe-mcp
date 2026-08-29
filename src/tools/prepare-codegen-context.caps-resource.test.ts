@@ -45,6 +45,7 @@ import {
   type PrepareCodegenContextResultReadyDieted
 } from "./prepare-codegen-context.js";
 import { getOntologyData } from "./ontology-loader.js";
+import { requirementCategoryOf } from "../serving/requirement-id.js";
 import { resolveAppPath } from "../config.js";
 import { clearG2RuntimeCacheForTests } from "./g2-runtime-loader.js";
 import { clearRegulatoryOverlayCacheForTests } from "./regulatory-overlay-loader.js";
@@ -467,14 +468,17 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
   // Derivação category = prefixo do requirement_id — invariante do bundle
   // -------------------------------------------------------------------------
 
-  it("invariante bundle-wide: category == prefixo do requirement_id em TODOS os requirements publicados", () => {
+  it("invariante bundle-wide: category == segmento de categoria do requirement_id (v1.10 §1.18) em TODOS os requirements publicados", () => {
     const requirements = getOntologyData().requirements;
     expect(requirements.length).toBeGreaterThan(0);
     for (const requirement of requirements) {
-      const dash = requirement.requirement_id.indexOf("-");
-      expect(dash).toBeGreaterThan(0);
-      expect(requirement.requirement_id.slice(0, dash)).toBe(requirement.category);
+      // Gramática v1.10: `AUT-003` → AUT, `REQ-AGN-001` → AGN (nunca `REQ`).
+      expect(requirementCategoryOf(requirement.requirement_id)).toBe(requirement.category);
     }
+    // O bundle pinado publica a categoria namespaced AGN (REQ-AGN-001…004).
+    const agn = requirements.filter((r) => r.requirement_id.startsWith("REQ-AGN-"));
+    expect(agn.map((r) => r.category)).toEqual(agn.map(() => "AGN"));
+    expect(agn.length).toBe(4);
   });
 
   it("dieted: category elidido (derivável); nenhum requirement o transporta", () => {

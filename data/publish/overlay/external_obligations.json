@@ -2,6 +2,146 @@
   "items": [
     {
       "applicability_scope": "framework_specific",
+      "citation": "10",
+      "framework_id": "EXT-AI-ACT",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-AI-ACT-OBL-10",
+      "obligation_kind": "article",
+      "title": "Dados e governação",
+      "topic": "Dados e governação"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "11 / Anexo IV",
+      "framework_id": "EXT-AI-ACT",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-AI-ACT-OBL-11",
+      "obligation_kind": "article",
+      "title": "Documentação técnica",
+      "topic": "Documentação técnica"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "12 / 19",
+      "framework_id": "EXT-AI-ACT",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-AI-ACT-OBL-12",
+      "obligation_kind": "article",
+      "title": "Logging e retenção",
+      "topic": "Logging e retenção"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "13",
+      "framework_id": "EXT-AI-ACT",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-AI-ACT-OBL-13",
+      "obligation_kind": "article",
+      "title": "Transparência aos *deployers*",
+      "topic": "Transparência aos *deployers*"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "14 ⚡",
+      "framework_id": "EXT-AI-ACT",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-AI-ACT-OBL-14",
+      "obligation_kind": "article",
+      "title": "Supervisão humana",
+      "topic": "Supervisão humana"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "15",
+      "framework_id": "EXT-AI-ACT",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-AI-ACT-OBL-15",
+      "obligation_kind": "article",
+      "title": "Robustez e cibersegurança",
+      "topic": "Robustez e cibersegurança"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "17",
+      "framework_id": "EXT-AI-ACT",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-AI-ACT-OBL-17",
+      "obligation_kind": "article",
+      "title": "QMS",
+      "topic": "QMS"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "25",
+      "framework_id": "EXT-AI-ACT",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-AI-ACT-OBL-25",
+      "obligation_kind": "article",
+      "title": "Cadeia de fornecimento",
+      "topic": "Cadeia de fornecimento"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "26",
+      "framework_id": "EXT-AI-ACT",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-AI-ACT-OBL-26",
+      "obligation_kind": "article",
+      "title": "Obrigações do *deployer*",
+      "topic": "Obrigações do *deployer*"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "4",
+      "framework_id": "EXT-AI-ACT",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-AI-ACT-OBL-4",
+      "obligation_kind": "article",
+      "title": "Literacia em IA",
+      "topic": "Literacia em IA"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "53 / 55",
+      "framework_id": "EXT-AI-ACT",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-AI-ACT-OBL-53",
+      "obligation_kind": "article",
+      "title": "GPAI",
+      "topic": "GPAI"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "72",
+      "framework_id": "EXT-AI-ACT",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-AI-ACT-OBL-72",
+      "obligation_kind": "article",
+      "title": "Monitorização pós-mercado",
+      "topic": "Monitorização pós-mercado"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "73",
+      "framework_id": "EXT-AI-ACT",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-AI-ACT-OBL-73",
+      "obligation_kind": "article",
+      "title": "Incidentes graves",
+      "topic": "Incidentes graves"
+    },
+    {
+      "applicability_scope": "framework_specific",
+      "citation": "9",
+      "framework_id": "EXT-AI-ACT",
+      "normative_strength": "curated",
+      "obligation_id": "EXT-AI-ACT-OBL-9",
+      "obligation_kind": "article",
+      "title": "Gestão de risco",
+      "topic": "Gestão de risco"
+    },
+    {
+      "applicability_scope": "framework_specific",
       "citation": "Cadeia Fornecimento",
       "framework_id": "EXT-CRA",
       "normative_strength": "curated",

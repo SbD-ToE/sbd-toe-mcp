@@ -12,7 +12,7 @@
     "note": "activation_trace elided at detail=ultrathin — re-call with debug=true to include it (always inline at detail=full)."
   },
   "provenance_legend": {
-    "note": "Deduplicated encoding (detail=ultrathin): same rules as detail=standard/minimal — per-item `source` elided, requirement `category` = requirement_id prefix, g2_context entity lists grouped as {slice_id: {entity_id: name|null}}, citations ids via ids_from payload paths — PLUS: published `description` fields elided (executable activated_scope.descriptions_ref, detail='minimal'), evidence_patterns 0 inline (counts + rest-ref in completeness_report), manual_grounding aggregate-only (total + sha + groups_ref) and completeness diagnostics as exact counts (+ ref). Nothing silently dropped. Full legend: MCP resource sbd://toe/codegen-instructions/{mode}, section detail_encoding."
+    "note": "Deduplicated encoding (detail=ultrathin): same rules as detail=standard/minimal — per-item `source` elided, requirement `category` = requirement_id category segment (before the number), g2_context entity lists grouped as {slice_id: {entity_id: name|null}}, citations ids via ids_from payload paths — PLUS: published `description` fields elided (executable activated_scope.descriptions_ref, detail='minimal'), evidence_patterns 0 inline (counts + rest-ref in completeness_report), manual_grounding aggregate-only (total + sha + groups_ref) and completeness diagnostics as exact counts (+ ref). Nothing silently dropped. Full legend: MCP resource sbd://toe/codegen-instructions/{mode}, section detail_encoding."
   },
   "activated_scope": {
     "requirements": [
@@ -450,7 +450,7 @@
   },
   "manual_grounding": {
     "total_entries": 51,
-    "manual_commit_sha": "09b20f6fd2714a44b974d4ba38612f4dfdc73c11",
+    "manual_commit_sha": "171db83db82630d018654367e3209eb6f57e0c9a",
     "groups_ref": {
       "tool": "prepare_sbd_toe_codegen_context",
       "with": {

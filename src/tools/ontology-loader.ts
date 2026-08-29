@@ -15,6 +15,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { parse as parseYaml } from "yaml";
 import { resolveAppPath } from "../config.js";
+import { isRequirementId } from "../serving/requirement-id.js";
 
 export interface Requirement {
   requirement_id: string;
@@ -325,6 +326,10 @@ export function getOntologyData(): OntologyData {
     architecture: ["ARC"],
     iac: ["IAC"],
     encryption: ["ENC"],
+    // AI-agent / automation governance catalogue (REQ-AGN-001…004; Manual ch.02 addon 09;
+    // consumer contract v1.10 §1.18). Consult-only concern — get_threat_landscape has no
+    // domain chapter for it (ch.02 threats are requirements-process meta-threats).
+    agents: ["AGN"],
   };
 
   const requirements: Requirement[] = loadRuntimeItems("data/publish/runtime/requirements.json")
@@ -350,6 +355,17 @@ export function getOntologyData(): OntologyData {
       };
     })
     .filter((item) => item.requirement_id.length > 0);
+
+  // Contract v1.10 §1.18 grammar (`REQ-<CAT>-NNN` | `<CAT>-NNN`) is the single source
+  // (serving/requirement-id.ts). A published id outside it is SERVED AS PUBLISHED (never
+  // dropped, never rewritten) and flagged on stderr for Codex — data fidelity over shape.
+  for (const requirement of requirements) {
+    if (!isRequirementId(requirement.requirement_id)) {
+      console.error(
+        `[ontology-loader] requirement_id "${requirement.requirement_id}" is outside the consumer-contract v1.10 §1.18 grammar — served as published; flag for Codex`
+      );
+    }
+  }
 
   const controls: Control[] = loadRuntimeItems("data/publish/runtime/controls.json")
     .filter(isRecord)

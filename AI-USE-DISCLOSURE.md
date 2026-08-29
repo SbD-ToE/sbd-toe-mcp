@@ -133,4 +133,4 @@ This disclosure will be updated if:
 - The runtime behaviour or licensing of the released software materially changes
 - Venue-specific disclosure requirements differ from this baseline
 
-Last updated: 2026-06-11
+Last updated: 2026-08-29

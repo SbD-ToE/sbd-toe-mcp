@@ -89,6 +89,7 @@ Use `search_sbd_toe_manual` for narrative/conceptual questions.
 | `architecture` | ARC | Secure architecture |
 | `iac` | IAC | Infrastructure-as-Code |
 | `encryption` | ENC | Cryptography & sensitive data |
+| `agents` | AGN | AI-agent / automation governance — mandate, autonomy A0–A4, kill-switch, intent declaration (`REQ-AGN-001…004`; consult only) |
 
 Pass concerns as exact lowercase strings from the table above.
 
@@ -133,6 +134,8 @@ Canonical role IDs (pass exact or common alias — resolved automatically):
 | `mitigation_confidence: "derived"` | Structural chapter-match — reliable |
 | `assignments: []` / `threats: []` | Say "manual-grounded: not applicable in this scope" — do not invent |
 | `active_domains` | List the security domains active at this risk level |
+| `coverage_gaps.requirements_without_control_link` (consult) | Those requirements are active but have **no published control link** — say so (declared gap, routed to Codex); do not invent controls |
+| `match: "declared_gap"` / `meta.declared_gap` (query_sbd_toe_entities, resolve_entities) | Cite `declared_gap.note` verbatim — a legacy / unresolvable citation, not a missing requirement |
 
 #### Pattern for complex answers (threat model / security plan / checklist)
 
@@ -305,6 +308,7 @@ Always distinguish between:
 
 ## Identifier conventions
 
+- **Requirements**: `<CAT>-NNN` (e.g. `AUT-001`) or the namespaced transversal form `REQ-<CAT>-NNN` (e.g. `REQ-AGN-001…004`, the AI-agent governance catalogue). Grammar (consumer contract v1.10 §1.18, fullmatch): `^(?:REQ-[A-Z]{3}-\d{3}|[A-Z]{3}-\d{3})$`. The category is the segment immediately before the number (`AGN`, never `REQ`). `REQ-AUT-003` is **not** an alias of `AUT-003`, and an `EX-` prefix marks an illustrative identifier that never resolves: legacy `REQ-<CAT>-NNN` citations of base requirements (or of non-existent categories such as `DAT`, `PRI`, `DOS`, `IAM`) resolve to a **declared gap** (`match: "declared_gap"` — «citação legada não resolvível (finding editorial em curso)»). Report it as such, never as "requirement does not exist".
 - **Controls**: `CTRL-<domain>-<slug>-<hash>` (e.g. `CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4`). There is **no** `CTRL-<chapter>-<number>` form.
 - **Threats**: `MT-<number>` (e.g. `MT-001`)
 - **Artefacts**: `ART-<…>` — use `get_sbd_toe_chapter_brief` to list a chapter's `artifact_ids`

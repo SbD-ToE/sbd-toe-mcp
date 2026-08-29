@@ -71,6 +71,24 @@ export interface ArtifactWithCoverage extends Artifact {
   _coverage: "direct" | "derived";
 }
 
+/**
+ * Declared coverage gap (Codex handover 2026-08-29, gap (a)): active requirements with
+ * no `requirement_control_links` entry. The link layer is the semantic layer of
+ * 2026-04-07, outside the deterministic recompile; requirements added since (AGN ×4,
+ * ARC-014/015, DEP-011…014, DPL-010/011, OPS-011…014, GOV-013/014, THR-008, VAL-008)
+ * carry no control link. They are SERVED with the absence declared — never omitted,
+ * never given invented controls.
+ */
+export interface RequirementControlLinkGap {
+  count: number;
+  requirement_ids: string[];
+  note: string;
+}
+
+export interface ConsultCoverageGaps {
+  requirements_without_control_link: RequirementControlLinkGap;
+}
+
 export interface ConsultSecurityRequirementsResult {
   risk_level: string;
   active_categories: string[];
@@ -79,6 +97,7 @@ export interface ConsultSecurityRequirementsResult {
   controls: ControlWithConfidence[];
   artifacts: ArtifactWithCoverage[];
   rule_trace: string[];
+  coverage_gaps: ConsultCoverageGaps;
   meta: {
     requirementCount: number;
     controlCount: number;
@@ -104,6 +123,7 @@ export interface ConsultSecurityRequirementsOutput {
   controls: ControlSlim[];
   artifacts: ArtifactSlim[];
   rule_trace: string[];
+  coverage_gaps: ConsultCoverageGaps;
   meta: {
     requirementCount: number;
     controlCount: number;
@@ -320,6 +340,29 @@ export function _resolveConsultResult(
   const derivedControlCount = controls.length - directControlCount;
   const directArtifactCount = artifacts.filter((artifact) => artifact._coverage === "direct").length;
 
+  // Declared gap (a): active requirements with no maps_to_control link. Declared as a
+  // count + the ids (coverage-preserving) — the requirement stays in `requirements`.
+  const linkedRequirementIds = new Set(
+    requirementControlLinks
+      .filter((link) => link.link_type === "maps_to_control")
+      .map((link) => link.source_id)
+  );
+  const requirementsWithoutControlLink = filteredRequirements
+    .map((requirement) => requirement.requirement_id)
+    .filter((requirementId) => !linkedRequirementIds.has(requirementId))
+    .sort();
+  const coverage_gaps: ConsultCoverageGaps = {
+    requirements_without_control_link: {
+      count: requirementsWithoutControlLink.length,
+      requirement_ids: requirementsWithoutControlLink,
+      note:
+        `${requirementsWithoutControlLink.length} of ${filteredRequirements.length} active requirements have no ` +
+        `requirement_control_links entry in the consumed bundle (link layer of 2026-04-07 not refreshed for ` +
+        `requirements published since) — declared gap, not an absence of obligation: the requirement is served, ` +
+        `its controls are at most domain-derived (\`_confidence: "derived"\`) and never invented; routed to Codex.`,
+    },
+  };
+
   const rule_trace: string[] = [];
   rule_trace.push(
     `REQUIREMENT_APPLIES_BY_RISK(risk_level=${riskLevel}): ${filteredRequirements.length} requirements active`
@@ -349,6 +392,11 @@ export function _resolveConsultResult(
       `CONCERNS_FILTER_REQUIREMENTS(concerns=[${concernsApplied.join(",")}]): intersected with risk-level filter`
     );
   }
+  if (requirementsWithoutControlLink.length > 0) {
+    rule_trace.push(
+      `REQUIREMENT_WITHOUT_CONTROL_LINK: ${requirementsWithoutControlLink.length} active requirements have no requirement_control_links entry — declared gap (served; controls not invented)`
+    );
+  }
 
   return {
     risk_level: riskLevel,
@@ -358,6 +406,7 @@ export function _resolveConsultResult(
     controls,
     artifacts,
     rule_trace,
+    coverage_gaps,
     meta: {
       requirementCount: filteredRequirements.length,
       controlCount: controls.length,
@@ -365,7 +414,8 @@ export function _resolveConsultResult(
       concernsApplied,
       note:
         "Requirements are canonical SbD-ToE entities. Controls resolve primarily via requirement_control_links " +
-        "and secondarily via ontology domain_mapping. Artifacts resolve from artifact_requirements and control artifact types.",
+        "and secondarily via ontology domain_mapping. Artifacts resolve from artifact_requirements and control artifact types. " +
+        "Requirements with no published control link are served and declared in coverage_gaps — never omitted.",
     },
   };
 }
@@ -410,6 +460,7 @@ export function handleConsultSecurityRequirements(
       _coverage: artifact._coverage,
     })),
     rule_trace: full.rule_trace,
+    coverage_gaps: full.coverage_gaps,
     meta: full.meta,
     next: consultAffordances(full.risk_level, full.meta.concernsApplied ?? undefined),
   };

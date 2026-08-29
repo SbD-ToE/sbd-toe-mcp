@@ -56,6 +56,7 @@ import {
 } from "./regulatory-overlay-loader.js";
 import { expandQueryWithAliases } from "../backend/semantic-index-gateway.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
+import { requirementCategoryOf } from "../serving/requirement-id.js";
 import { prepareCodegenAffordances } from "../serving/affordances.js";
 
 // ---------------------------------------------------------------------------
@@ -553,9 +554,11 @@ export interface ManualGroundingUltrathin {
 
 /**
  * v2 token diet, s3 — dieted requirement projection. `category` is elided when
- * (and only when) it equals the `requirement_id` prefix before the first "-"
- * (true for all 251 published requirements; the field survives verbatim on any
- * future mismatch — lossless guard). `description` is the PUBLISHED bundle
+ * (and only when) it equals the category segment of the `requirement_id` —
+ * the segment immediately before the number (`AUT-003` → `AUT`,
+ * `REQ-AGN-001` → `AGN`; consumer contract v1.10 §1.18, single source
+ * `src/serving/requirement-id.ts`). True for all 255 published requirements;
+ * the field survives verbatim on any future mismatch — lossless guard. `description` is the PUBLISHED bundle
  * field (data/publish/runtime/requirements.json), verbatim, never paraphrased
  * — the "how" the full projection historically dropped.
  */
@@ -563,7 +566,7 @@ export interface DietedRequirement {
   requirement_id: string;
   name: string;
   type?: string;
-  /** Present only on the (never expected) category ≠ id-prefix mismatch. */
+  /** Present only on the (never expected) category ≠ id-category-segment mismatch. */
   category?: string;
   /** Verbatim `description` from the published bundle. */
   description?: string;
@@ -741,7 +744,8 @@ const PROVENANCE_LEGEND = {
   note:
     "Deduplicated encoding (detail=standard/minimal): per-item `source` fields " +
     "are elided (every list is source-homogeneous), requirement `category` = " +
-    "requirement_id prefix, g2_context entity lists are grouped as " +
+    "requirement_id category segment (the one before the number: AUT-003→AUT, " +
+    "REQ-AGN-001→AGN), g2_context entity lists are grouped as " +
     "{slice_id: {entity_id: name|null}}, and citations ids are referenced via " +
     "ids_from payload paths. Full legend: MCP resource " +
     "sbd://toe/codegen-instructions/{mode}, section detail_encoding."
@@ -751,15 +755,16 @@ export type ProvenanceLegend = typeof PROVENANCE_LEGEND;
 
 /**
  * Inline legend for `ultrathin` (s3c) — the standard/minimal legend text is
- * NEVER edited (snapshots are byte-frozen); ultrathin carries its own note
- * with the extra cut rules. Full legend: same MCP resource, section
+ * frozen within a bundle pin (snapshots are byte-frozen; the only edit so far is
+ * the v1.10 category-segment wording, beta.3, bundle re-pin); ultrathin carries
+ * its own note with the extra cut rules. Full legend: same MCP resource, section
  * `detail_encoding` (incl. the `ultrathin` entry).
  */
 const PROVENANCE_LEGEND_ULTRATHIN: ProvenanceLegend = {
   note:
     "Deduplicated encoding (detail=ultrathin): same rules as detail=standard/" +
     "minimal — per-item `source` elided, requirement `category` = " +
-    "requirement_id prefix, g2_context entity lists grouped as " +
+    "requirement_id category segment (before the number), g2_context entity lists grouped as " +
     "{slice_id: {entity_id: name|null}}, citations ids via ids_from payload " +
     "paths — PLUS: published `description` fields elided (executable " +
     "activated_scope.descriptions_ref, detail='minimal'), evidence_patterns 0 " +
@@ -968,7 +973,11 @@ const VALID_CONCERNS = [
   "monitoring",
   "release",
   "deployment",
-  "integration"
+  "integration",
+  // AI-agent / automation governance catalogue (REQ-AGN-001…004, category AGN;
+  // consumer contract v1.10 §1.18) — maps through the loader's concernsMap
+  // (`agents: ["AGN"]`, absorbed from master bc8c9189 in 0.20.0-beta.3).
+  "agents"
 ] as const;
 
 export type Concern = (typeof VALID_CONCERNS)[number];
@@ -1025,6 +1034,11 @@ const TASK_TERM_TO_CONCERNS: ReadonlyArray<readonly [string, readonly Concern[]]
   ["kubernetes", ["deployment", "config"]],
   ["docker", ["deployment", "config"]],
   ["container", ["deployment"]],
+  ["ai agent", ["agents"]],
+  ["agentic", ["agents"]],
+  ["kill-switch", ["agents"]],
+  ["kill switch", ["agents"]],
+  ["autonomy level", ["agents"]],
   ["threat model", ["threat_modeling"]],
   ["stride", ["threat_modeling"]],
   ["linddun", ["threat_modeling"]],
@@ -1079,7 +1093,9 @@ const CONCERN_TO_V0_CATEGORIES_SUPPLEMENT: Readonly<Record<Concern, string[]>> =
   monitoring: ["LOG", "OPS"],
   release: ["DPL", "OPS"],
   deployment: ["DPL", "IAC", "CNT"],
-  integration: ["API", "INT"]
+  integration: ["API", "INT"],
+  // `agents` → AGN comes from ontology.concernsMap (loader); nothing to supplement.
+  agents: []
 };
 
 const CONCERN_TO_SLICE_FAMILY: Readonly<Record<Concern, string | null>> = {
@@ -1103,7 +1119,10 @@ const CONCERN_TO_SLICE_FAMILY: Readonly<Record<Concern, string | null>> = {
   monitoring: "ACO-SLG",
   release: "ACO-RPR",
   deployment: "ACO-RPR",
-  integration: "ACO-ITS"
+  integration: "ACO-ITS",
+  // No AppSec Core slice family for the AGN catalogue (no published control link
+  // for REQ-AGN-001…004 — declared gap, never invented).
+  agents: null
 };
 
 /**
@@ -2256,9 +2275,10 @@ const DETAIL_ENCODING_LEGEND = {
     "entity-id keys in order. If a file ever has no path mapping, the group " +
     "carries explicit `ids` instead (lossless fallback).",
   activated_scope_requirements:
-    "requirement `category` is elided because it equals the requirement_id prefix " +
-    "before the first '-' (verbatim bundle invariant; the field survives inline " +
-    "on any future mismatch). `description` is the verbatim published field from " +
+    "requirement `category` is elided because it equals the requirement_id " +
+    "category segment — the one immediately before the number (AUT-003→AUT, " +
+    "REQ-AGN-001→AGN; consumer contract v1.10 §1.18). Verbatim bundle invariant; " +
+    "the field survives inline on any future mismatch. `description` is the verbatim published field from " +
     "data/publish/runtime/requirements.json — never paraphrased.",
   activated_scope_controls:
     "controls with confidence='direct' carry the verbatim published `description` " +
@@ -2927,11 +2947,12 @@ function groupEntitiesBySlice(
   return grouped;
 }
 
-/** `category` is derivable iff it equals the requirement_id prefix before the
- * first "-" (bundle-wide invariant, guarded per item). */
+/** `category` is derivable iff it equals the requirement_id category segment
+ * (the one before the number — `REQ-AGN-001` → `AGN`; grammar v1.10 §1.18,
+ * single source `requirementCategoryOf`). Bundle-wide invariant, guarded per item. */
 function categoryIsDerivable(requirementId: string, category: string): boolean {
-  const dash = requirementId.indexOf("-");
-  return dash > 0 && requirementId.slice(0, dash) === category;
+  const derived = requirementCategoryOf(requirementId);
+  return derived !== undefined && derived === category;
 }
 
 /** Dieted requirements: `source`/derivable `category` elided, verbatim

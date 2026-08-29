@@ -12,7 +12,7 @@
     "note": "activation_trace elided at detail=standard/minimal — re-call with debug=true to include it (always inline at detail=full)."
   },
   "provenance_legend": {
-    "note": "Deduplicated encoding (detail=standard/minimal): per-item `source` fields are elided (every list is source-homogeneous), requirement `category` = requirement_id prefix, g2_context entity lists are grouped as {slice_id: {entity_id: name|null}}, and citations ids are referenced via ids_from payload paths. Full legend: MCP resource sbd://toe/codegen-instructions/{mode}, section detail_encoding."
+    "note": "Deduplicated encoding (detail=standard/minimal): per-item `source` fields are elided (every list is source-homogeneous), requirement `category` = requirement_id category segment (the one before the number: AUT-003→AUT, REQ-AGN-001→AGN), g2_context entity lists are grouped as {slice_id: {entity_id: name|null}}, and citations ids are referenced via ids_from payload paths. Full legend: MCP resource sbd://toe/codegen-instructions/{mode}, section detail_encoding."
   },
   "activated_scope": {
     "requirements": [
@@ -318,15 +318,15 @@
       },
       {
         "requirement_id": "OPS-012",
-        "name": "Audit completo por *tool invocation* de agente AI",
+        "name": "Audit completo por tool invocation de agente AI",
         "type": "domain-specific",
-        "description": "Para cada agente AI em nível A1+ (ver [Cap. 02 — A0-A4](../../requisitos-seguranca/addon/governanca-automatismos#niveis-autonomia)) em uso operacional, cada *tool call* gera *audit event* estruturado com timestamp, agent_id, session_id, mandate_ref (Policy 38), autonomy_level, tool, tool_version, args (PII redactada), intent_event_ref ([REQ-AGN-004](/sbd-toe/sbd-manual/requisitos-seguranca/addon/governanca-automatismos#req-agn) em A2+), outcome, external_effect. Eventos integrados no SIEM (OPS-004); divergência entre intent declarado e acção real gera alerta accionável; reúne-se a base para auditoria do mandate_ref e para reconstrução *post-mortem* de qualquer sessão."
+        "description": "Para cada agente AI em nível A1+ (ver [Cap. 02 — A0-A4](../../requisitos-seguranca/addon/governanca-automatismos#niveis-autonomia)) em uso operacional, cada tool call gera audit event estruturado com timestamp, agent_id, session_id, mandate_ref (Policy 38), autonomy_level, tool, tool_version, args (PII redactada), intent_event_ref ([REQ-AGN-004](/sbd-toe/sbd-manual/requisitos-seguranca/addon/governanca-automatismos#req-agn) em A2+), outcome, external_effect. Eventos integrados no SIEM (OPS-004); divergência entre intent declarado e acção real gera alerta accionável; reúne-se a base para auditoria do mandate_ref e para reconstrução post-mortem de qualquer sessão."
       },
       {
         "requirement_id": "OPS-013",
-        "name": "Budget e detecção de *runaway* em consumo de modelo (token spend)",
+        "name": "Budget e detecção de runaway em consumo de modelo (token spend)",
         "type": "domain-specific",
-        "description": "Por agente e por mandate, define-se *budget* máximo de consumo por janela temporal (tokens, chamadas, custo); cada inferência conta para o orçamento; ao atingir threshold de aviso, alerta vai ao *owner*; ao atingir threshold máximo, sessão pausa ou *kill-switch* é accionado conforme nível de autonomia. Métricas de uso reportadas com cadência da revisão do *mandate*. Detecta *loops* descontrolados, abuso, regressões de eficiência do modelo após *upgrade*."
+        "description": "Por agente e por mandate, define-se budget máximo de consumo por janela temporal (tokens, chamadas, custo); cada inferência conta para o orçamento; ao atingir threshold de aviso, alerta vai ao owner; ao atingir threshold máximo, sessão pausa ou kill-switch é accionado conforme nível de autonomia. Métricas de uso reportadas com cadência da revisão do mandate. Detecta loops descontrolados, abuso, regressões de eficiência do modelo após upgrade."
       },
       {
         "requirement_id": "SES-001",
@@ -727,7 +727,7 @@
   },
   "manual_grounding": {
     "total_entries": 69,
-    "manual_commit_sha": "09b20f6fd2714a44b974d4ba38612f4dfdc73c11",
+    "manual_commit_sha": "171db83db82630d018654367e3209eb6f57e0c9a",
     "groups": [
       {
         "rastreabilidade_role": "substrate_landing",

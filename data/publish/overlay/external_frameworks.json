@@ -35,6 +35,24 @@
       "name": "Regulamento Geral sobre a Proteção de Dados",
       "scope_summary": "Data protection by design/default, security of processing, incidents and DPIA support.",
       "short_code": "RGPD"
+    },
+    {
+      "authority_class": "external_normative_overlay",
+      "framework_id": "EXT-AI-ACT",
+      "framework_kind": "regulation",
+      "jurisdiction": "EU",
+      "name": "Artificial Intelligence Act",
+      "scope_summary": "Technical requirements for AI systems — accuracy, robustness, cybersecurity, logging, risk management and post-market monitoring (Regulation (EU) 2024/1689).",
+      "short_code": "AI-ACT"
+    },
+    {
+      "authority_class": "external_normative_overlay",
+      "framework_id": "EXT-ENISA-CSA",
+      "framework_kind": "certification",
+      "jurisdiction": "EU",
+      "name": "ENISA / EU Cybersecurity Act certification (EUCC, EUCS, EU5G)",
+      "scope_summary": "EU cybersecurity certification schemes (EUCC, EUCS, EU5G) — when to use and how to map SbD-ToE evidence for certification and procurement.",
+      "short_code": "ENISA-CSA"
     }
   ]
 }

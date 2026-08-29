@@ -151,6 +151,66 @@
       "title": "SbD-ToE 4 GDPR: Playbook de Implementação"
     },
     {
+      "adoption_status": "curated_reference",
+      "applicability_scope": "framework_specific",
+      "authority_class": "external_normative_overlay",
+      "curation_status": "curated",
+      "framework_ids": [
+        "EXT-AI-ACT"
+      ],
+      "playbook_id": "OVR-AI-ACT-intro",
+      "playbook_kind": "normative_cross_check",
+      "source_bundle_id": "ai-act",
+      "source_document_id": "002-cross-check-normativo-ai-act-01-intro",
+      "source_path": "002-cross-check-normativo/ai-act/01-intro.md",
+      "title": "AI Act - Cross-Check Normativo"
+    },
+    {
+      "adoption_status": "curated_reference",
+      "applicability_scope": "framework_specific",
+      "authority_class": "external_normative_overlay",
+      "curation_status": "curated",
+      "framework_ids": [
+        "EXT-AI-ACT"
+      ],
+      "playbook_id": "OVR-AI-ACT-playbook",
+      "playbook_kind": "implementation_playbook",
+      "source_bundle_id": "ai-act",
+      "source_document_id": "002-cross-check-normativo-ai-act-02-playbook",
+      "source_path": "002-cross-check-normativo/ai-act/02-playbook.md",
+      "title": "SbD-ToE 4 AI Act: Playbook de Implementação"
+    },
+    {
+      "adoption_status": "curated_reference",
+      "applicability_scope": "framework_specific",
+      "authority_class": "external_normative_overlay",
+      "curation_status": "curated",
+      "framework_ids": [
+        "EXT-AI-ACT"
+      ],
+      "playbook_id": "OVR-AI-ACT-convergencia-cra",
+      "playbook_kind": "convergence_note",
+      "source_bundle_id": "ai-act",
+      "source_document_id": "002-cross-check-normativo-ai-act-03-convergencia-cra",
+      "source_path": "002-cross-check-normativo/ai-act/03-convergencia-cra.md",
+      "title": "Nota - Convergência AI Act & CRA"
+    },
+    {
+      "adoption_status": "curated_reference",
+      "applicability_scope": "framework_specific",
+      "authority_class": "external_normative_overlay",
+      "curation_status": "curated",
+      "framework_ids": [
+        "EXT-ENISA-CSA"
+      ],
+      "playbook_id": "OVR-ENISA-CSA-intro",
+      "playbook_kind": "normative_cross_check",
+      "source_bundle_id": "enisa-csa",
+      "source_document_id": "002-cross-check-normativo-enisa-csa-01-intro",
+      "source_path": "002-cross-check-normativo/enisa-csa/01-intro.md",
+      "title": "Certificação ENISA/CSA (EUCC, EUCS, EU5G) - Nota de Enquadramento"
+    },
+    {
       "adoption_status": "example_only",
       "applicability_scope": "multi_framework_support",
       "authority_class": "illustrative_overlay",
@@ -159,7 +219,9 @@
         "EXT-DORA",
         "EXT-NIS2",
         "EXT-CRA",
-        "EXT-RGPD"
+        "EXT-RGPD",
+        "EXT-AI-ACT",
+        "EXT-ENISA-CSA"
       ],
       "playbook_id": "OVR-EXEMPLO-PLAYBOOK-exemplo-toolchain-options",
       "playbook_kind": "illustrative_example",
@@ -177,7 +239,9 @@
         "EXT-DORA",
         "EXT-NIS2",
         "EXT-CRA",
-        "EXT-RGPD"
+        "EXT-RGPD",
+        "EXT-AI-ACT",
+        "EXT-ENISA-CSA"
       ],
       "playbook_id": "OVR-EXEMPLO-PLAYBOOK-exemplo-kpis-targets",
       "playbook_kind": "illustrative_example",
@@ -195,7 +259,9 @@
         "EXT-DORA",
         "EXT-NIS2",
         "EXT-CRA",
-        "EXT-RGPD"
+        "EXT-RGPD",
+        "EXT-AI-ACT",
+        "EXT-ENISA-CSA"
       ],
       "playbook_id": "OVR-EXEMPLO-PLAYBOOK-exemplo-raci-governance",
       "playbook_kind": "illustrative_example",
@@ -213,7 +279,9 @@
         "EXT-DORA",
         "EXT-NIS2",
         "EXT-CRA",
-        "EXT-RGPD"
+        "EXT-RGPD",
+        "EXT-AI-ACT",
+        "EXT-ENISA-CSA"
       ],
       "playbook_id": "OVR-EXEMPLO-PLAYBOOK-exemplo-relatorio-incidentes",
       "playbook_kind": "illustrative_example",
@@ -231,7 +299,9 @@
         "EXT-DORA",
         "EXT-NIS2",
         "EXT-CRA",
-        "EXT-RGPD"
+        "EXT-RGPD",
+        "EXT-AI-ACT",
+        "EXT-ENISA-CSA"
       ],
       "playbook_id": "OVR-EXEMPLO-PLAYBOOK-exemplo-agentic-sdlc",
       "playbook_kind": "illustrative_example",
@@ -249,7 +319,9 @@
         "EXT-DORA",
         "EXT-NIS2",
         "EXT-CRA",
-        "EXT-RGPD"
+        "EXT-RGPD",
+        "EXT-AI-ACT",
+        "EXT-ENISA-CSA"
       ],
       "playbook_id": "OVR-EXEMPLO-PLAYBOOK-indice",
       "playbook_kind": "illustrative_index",
