@@ -65,13 +65,15 @@ Prerelease tags issued on `0.20-beta` (annotated; immutable like every pushed ta
 |---|---|---|---|---|
 | v0.20.0-beta.1 | cf4f011 | 2026-06-29 | KG v1.5.0 (`feaa0155…`) | `beta` (superseded) |
 | v0.20.0-beta.2 | 0cc9e14 | 2026-07-05 | KG v1.5.0 (`feaa0155…`) | `beta` (superseded) |
-| v0.20.0-beta.3 | *(annotated tag on the commit that introduces this row; recorded in the close commit)* | 2026-08-29 | formal KG `v1.6.0` (`baf5913b…`, contract v1.11, Manual v1.7.0) — same pin and content as stable v0.10.2 | `beta` (`latest` = 0.10.2 untouched) |
+| v0.20.0-beta.3 | 5b34638 (`5b346387cdfd48146d64422c0e7a217d9b3f320f`; annotated tag object `48cdd14d`) | 2026-08-29 | formal KG `v1.6.0` (`baf5913b…`, contract v1.11, Manual v1.7.0) — same pin and content as stable v0.10.2 | `beta` (`latest` = 0.10.2 untouched) |
 
 ## Current working state
 
 **Current branch:** `0.20-beta` — this copy of the registry lives on the beta branch; the
 stable-line rows mirror master (`e0f17c0`, close of v0.10.2) and are maintained there.
-**Beta line:** most recent prerelease v0.20.0-beta.3 (2026-08-29), npm dist-tag `beta`; serves
+**Beta line:** most recent prerelease v0.20.0-beta.3 → `5b346387cdfd48146d64422c0e7a217d9b3f320f` (2026-08-29;
+`release.yml` run 33266147054 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.3` = `beta`, gitHead
+same commit; GitHub pre-release `v0.20.0-beta.3`; `latest` = 0.10.2 untouched); serves
 the same formal KG `v1.6.0` pin as v0.10.2 (see the beta table above). Not a published/frozen state.
 **Most recent published state:** icsme-2026-tool-demonstration / v0.9.0 (2026-05-21)
 **Most recent release:** v0.10.2 (2026-08-29) — served bundle: formal KG release
@@ -139,3 +141,4 @@ prohibits tag deletion without explicit authorisation):
 | 2026-08-29 | v0.10.2 registered (protected tag list, current working state, upstream pins with exact tags/hashes: KG v1.6.0, Manual v1.7.0, ontology v1.1). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-29 | v0.10.2 tag commit recorded (`31aa22af`, squash of #47); npm publish + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-29 | Beta-line copy (branch `0.20-beta`): prerelease-tag table (beta.1/beta.2/beta.3), beta current working state, `v0.2.5` local/origin divergence recorded (canonical = origin; nothing re-pointed). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-29 | v0.20.0-beta.3 tag commit recorded (`5b346387`); npm `beta` publish + GitHub pre-release confirmed (run 33266147054). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
