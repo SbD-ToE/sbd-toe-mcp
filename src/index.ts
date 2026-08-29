@@ -601,10 +601,10 @@ class McpRuntime {
           inputSchema: {
             type: "object",
             properties: {
-              query: { type: "string", minLength: 1, maxLength: 200 },
-              entityType: { type: "string" },
-              chapterId: { type: "string" },
-              riskLevel: { type: "string", enum: ["L1", "L2", "L3"] },
+              query: { type: "string", minLength: 1, maxLength: 200, description: "Free text, or an exact entity id (resolved directly: match=exact_id)." },
+              entityType: { type: "string", description: "Filter chunks by the entity type they mention: Requirement | UserStory | Metric | Threat (aliases accepted, e.g. requirements, us, kpi). Structured records (controls, control objectives, mechanisms, artifacts) are queried with resolve_entities instead." },
+              chapterId: { type: "string", description: "Filter by chapter bundle id (e.g. 06-desenvolvimento-seguro) or its numeric prefix." },
+              riskLevel: { type: "string", enum: ["L1", "L2", "L3"], description: "Filter by the chunk's published risk facet; chunks without a facet are not returned (declared in the `filters` field of the result)." },
               topK: { type: "integer", minimum: 1, maximum: 15 }
             },
             required: ["query"],

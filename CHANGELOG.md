@@ -1,13 +1,51 @@
 ---
 ai_assisted: true
 model: Claude Fable 5
-date: 2026-08-29
+date: 2026-08-30
 purpose: documentation
-reasoning: v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
+reasoning: Unreleased — acceptance regression runner (94+7 scenarios, coverage), query_entities filter fix, Algolia-era cache paths removed; v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## Unreleased
+
+### Added — acceptance regression runner
+
+- **`npm run eval:acceptance`** (`scripts/run-acceptance-scenarios.mjs` + `scripts/acceptance/`):
+  executes the **94 acceptance scenarios** of
+  `DevelopmentGovernance/docs/mcp-acceptance-test-scenarios.md` (axes A–E) against the real
+  stdio server on the pinned bundle, one verdict per scenario (PASS / PART / FAIL / SKIP with
+  owner `mcp`·`graph`·`roadmap`), Axis E as the promotion gate (exit 1 on FAIL), and a
+  **coverage** section (scenarios executed, tools exercised vs exposed, ACs covered, roles ×
+  phases). **Axis F** (7 scenarios) covers the six 0.10.0 tools that post-date the June
+  elicitation plus the G1 pagination gate. Run records live in `docs/acceptance-runs/`.
+- First run on `0.10.2` / KG `v1.6.0`: 101 scenarios, 78 executed (23 SKIP: 21 commercial
+  ACs + 2 needing a client LLM), **58 PASS · 18 PART · 2 FAIL**; **21/21 tools exercised**.
+  The two FAILs (TC-E-01/02) are data-rooted: `associated_controls` on threats is empty for
+  ch.12 and textual elsewhere in the bundle (routed to Codex); `mitigated_by` is populated
+  structurally on every threat.
+
+### Fixed — `query_sbd_toe_entities` filters (found by TC-A-13)
+
+- `entityType` and `riskLevel` filters returned **0 for every query**: they matched the
+  Algolia-era record fields `entity_type` / `risk_levels`, which no chunk of the current
+  substrate carries. They now match what the substrate publishes — entity types via the
+  chunk's entity mentions (`Requirement | UserStory | Metric | Threat`, aliases accepted) and
+  the risk facet `filter_tags.risk_level` — over the full ranked retrieval, and the response
+  declares `filters {applied, retrieval_pool, matched, pool_with_risk_facet, note}` (chunks
+  without a risk facet are not returned — declared, never silent). `chapterId` accepts the
+  bundle id or its numeric prefix. Tool schema documents the vocabulary.
+
+### Removed — Algolia-era snapshot-cache paths (dead at runtime)
+
+- `structured-tools.ts` (`list_chapters`, `query_entities`, `chapter_brief`,
+  `map_applicability`) and `plan-repo-governance.ts` carried a `SnapshotCache` branch that
+  the server never reached (runtime calls pass no cache). Removed, together with the ~25
+  unit tests that only exercised those branches with `chapter_bundle` /
+  `practice_assignment` / `risk_levels` fixtures; replaced by tests over the runtime bundle.
+  Suite: 532 tests.
 
 ## 0.10.2 — 2026-08-29
 

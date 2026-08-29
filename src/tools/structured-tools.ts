@@ -1,5 +1,4 @@
 import { readFileSync } from "node:fs";
-import type { SnapshotCache } from "../backend/semantic-index-gateway.js";
 import { retrievePublishedContext } from "../backend/semantic-index-gateway.js";
 import { resolveAppPath } from "../config.js";
 import type { LooseRecord } from "../types.js";
@@ -109,14 +108,6 @@ function getStrArr(record: LooseRecord, key: string): string[] {
   return val.filter((v): v is string => typeof v === "string");
 }
 
-function getEntityItems(cache: SnapshotCache): LooseRecord[] {
-  return cache.entities.items ?? [];
-}
-
-function hasProvidedCache(cache: SnapshotCache | undefined): cache is SnapshotCache {
-  return cache !== undefined;
-}
-
 function loadJsonLines(relativePath: string): LooseRecord[] {
   const path = resolveAppPath(relativePath);
   return readFileSync(path, "utf8")
@@ -150,13 +141,12 @@ function summarizeChunkText(text: string | undefined): string | undefined {
   return compact.length > 0 ? compact : undefined;
 }
 
-export function handleListSbdToeChapters(args: Record<string, unknown>, cache?: SnapshotCache): unknown {
-  return { ...(handleListSbdToeChaptersCore(args, cache) as Record<string, unknown>), next: listChaptersAffordances() };
+export function handleListSbdToeChapters(args: Record<string, unknown>): unknown {
+  return { ...(handleListSbdToeChaptersCore(args) as Record<string, unknown>), next: listChaptersAffordances() };
 }
 
 function handleListSbdToeChaptersCore(
-  args: Record<string, unknown>,
-  cache?: SnapshotCache
+  args: Record<string, unknown>
 ): unknown {
   const riskLevelArg = args["riskLevel"];
   if (riskLevelArg !== undefined && !isValidRiskLevel(riskLevelArg)) {
@@ -165,47 +155,6 @@ function handleListSbdToeChaptersCore(
     );
   }
   const riskLevel = isValidRiskLevel(riskLevelArg) ? riskLevelArg : undefined;
-
-  if (hasProvidedCache(cache)) {
-    const items = getEntityItems(cache);
-    const seen = new Set<string>();
-    const chapters: Array<
-      { id: string; title: string; readableTitle: string } & ChapterApplicability
-    > = [];
-
-    for (const item of items) {
-      const oid = getStr(item, "objectID") ?? "";
-      const entityType = getStr(item, "entity_type");
-      const chapterId = getStr(item, "chapter_id");
-
-      const isChapterRecord =
-        entityType === "chapter_bundle" ||
-        oid.startsWith("cap-") ||
-        oid.startsWith("ch-") ||
-        oid.toLowerCase().includes("chapter");
-
-      if (!isChapterRecord) continue;
-
-      const id = chapterId ?? oid;
-      if (!id || seen.has(id)) continue;
-
-      if (riskLevel !== undefined) {
-        const riskLevels = getStrArr(item, "risk_levels");
-        if (!riskLevels.includes(riskLevel)) continue;
-      }
-
-      seen.add(id);
-      const title = getStr(item, "title") ?? id;
-      chapters.push({
-        id,
-        title,
-        readableTitle: READABLE_TITLES[id] ?? title,
-        ...chapterApplicability(id),
-      });
-    }
-
-    return { chapters };
-  }
 
   const titleByChapter = new Map(
     loadBundleCatalog()
@@ -254,10 +203,9 @@ function exactEntityLookup(query: string): Record<string, unknown> | undefined {
 }
 
 export async function handleQuerySbdToeEntities(
-  args: Record<string, unknown>,
-  cache?: SnapshotCache
+  args: Record<string, unknown>
 ): Promise<unknown> {
-  const core = (await handleQuerySbdToeEntitiesCore(args, cache)) as Record<string, unknown>;
+  const core = (await handleQuerySbdToeEntitiesCore(args)) as Record<string, unknown>;
   // Informative (not a gap): a cited, unpublished base-form id (illustrative REQ-NNN example
   // ids, CWE-/SHA- tokens) keeps the semantic path but says so — never silent, never aliased.
   const query = args["query"];
@@ -270,11 +218,8 @@ export async function handleQuerySbdToeEntities(
 }
 
 async function handleQuerySbdToeEntitiesCore(
-  args: Record<string, unknown>,
-  cache?: SnapshotCache
+  args: Record<string, unknown>
 ): Promise<unknown> {
-  void cache;
-
   const query = args["query"];
   if (typeof query !== "string" || query.length < 1 || query.length > 200) {
     throw new Error(
@@ -326,31 +271,38 @@ async function handleQuerySbdToeEntitiesCore(
   const chapterId =
     typeof args["chapterId"] === "string" ? args["chapterId"] : undefined;
 
+  // Filters select over `retrieved` — the FULL ranked list of chunks scored for the
+  // query (the gateway only slices `selected` to topK) — so a typed / level-scoped
+  // query has the whole corpus as its pool, not just the top-K.
+  const hasFilter = entityType !== undefined || chapterId !== undefined || riskLevel !== undefined;
   const bundle = await retrievePublishedContext(query, topK);
-  let results = bundle.retrieved;
+  const pool = bundle.retrieved;
+  let results = pool;
 
   if (entityType !== undefined) {
-    results = results.filter(
-      (r) =>
-        typeof r.raw["entity_type"] === "string" && r.raw["entity_type"] === entityType
-    );
+    // The substrate carries no per-chunk `entity_type`; entity types reach a chunk through
+    // chunk_entity_mentions (joined by the gateway as `entity_mentions_flat`:
+    // Requirement / UserStory / Metric / Threat).
+    const wanted = normalizeEntityTypeToken(entityType);
+    results = results.filter((r) => chunkEntityTypeTokens(r.raw).some((t) => t === wanted));
   }
 
   if (chapterId !== undefined) {
+    // Chapter = the chunk's bundle (`bundle_id`, surfaced as `chapter`); accepts the full
+    // bundle id or its numeric prefix ("06" → "06-desenvolvimento-seguro").
     results = results.filter((r) => {
-      const rawChapterId = r.raw["chapter_id"];
+      const bundleId = r.raw["bundle_id"];
       return (
         (typeof r.chapter === "string" && r.chapter.includes(chapterId)) ||
-        (typeof rawChapterId === "string" && rawChapterId === chapterId)
+        (typeof bundleId === "string" && (bundleId === chapterId || bundleId.startsWith(chapterId)))
       );
     });
   }
 
   if (riskLevel !== undefined) {
-    results = results.filter((r) => {
-      const rls = r.raw["risk_levels"];
-      return Array.isArray(rls) && rls.includes(riskLevel);
-    });
+    // Risk facet: `filter_tags.risk_level` (contract v1.4 faceting). Strict: a chunk
+    // without a risk facet does not match — declared below.
+    results = results.filter((r) => chunkRiskLevels(r.raw).includes(riskLevel));
   }
 
   // Strip internal fields (raw Algolia record, scoring) — not useful to the agent.
@@ -358,61 +310,72 @@ async function handleQuerySbdToeEntitiesCore(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ({ raw, algoliaRank, localScore, indexName, ...rest }) => rest
   );
-  return { entities, total: results.length };
+  if (!hasFilter) return { entities, total: results.length };
+  const withRiskFacet = riskLevel === undefined ? undefined : pool.filter((r) => chunkRiskLevels(r.raw).length > 0).length;
+  return {
+    entities,
+    total: results.length,
+    filters: {
+      applied: {
+        ...(entityType !== undefined ? { entityType } : {}),
+        ...(chapterId !== undefined ? { chapterId } : {}),
+        ...(riskLevel !== undefined ? { riskLevel } : {}),
+      },
+      retrieval_pool: pool.length,
+      matched: results.length,
+      ...(withRiskFacet !== undefined ? { pool_with_risk_facet: withRiskFacet } : {}),
+      note:
+        "Filters select over the full ranked retrieval for the query. entityType matches the entity " +
+        "types a chunk mentions (Requirement, UserStory, Metric, Threat); riskLevel matches the chunk's " +
+        "published risk facet only — chunks without a facet are not returned (declared, not silent).",
+    },
+  };
 }
 
-export function handleGetSbdToeChapterBrief(args: Record<string, unknown>, cache?: SnapshotCache): unknown {
+const ENTITY_TYPE_ALIASES: Record<string, string> = {
+  requirements: "requirement",
+  req: "requirement",
+  userstories: "userstory",
+  user_story: "userstory",
+  user_stories: "userstory",
+  us: "userstory",
+  metrics: "metric",
+  kpi: "metric",
+  threats: "threat",
+};
+
+function normalizeEntityTypeToken(value: string): string {
+  const base = value.toLowerCase().replace(/[^a-z0-9_]/g, "");
+  const aliased = ENTITY_TYPE_ALIASES[base] ?? base;
+  return aliased.replace(/_/g, "");
+}
+
+function chunkEntityTypeTokens(raw: LooseRecord): string[] {
+  const arr = raw["entity_mentions_flat"];
+  if (!Array.isArray(arr)) return [];
+  return arr.filter((v): v is string => typeof v === "string").map(normalizeEntityTypeToken);
+}
+
+function chunkRiskLevels(raw: LooseRecord): string[] {
+  const tags = raw["filter_tags"];
+  if (typeof tags === "object" && tags !== null) {
+    const rl = (tags as Record<string, unknown>)["risk_level"];
+    if (Array.isArray(rl)) return rl.filter((v): v is string => typeof v === "string");
+  }
+  return [];
+}
+
+export function handleGetSbdToeChapterBrief(args: Record<string, unknown>): unknown {
   const chapterId = typeof args["chapterId"] === "string" ? args["chapterId"] : undefined;
-  return { ...(handleGetSbdToeChapterBriefCore(args, cache) as Record<string, unknown>), next: chapterBriefAffordances(chapterId) };
+  return { ...(handleGetSbdToeChapterBriefCore(args) as Record<string, unknown>), next: chapterBriefAffordances(chapterId) };
 }
 
 function handleGetSbdToeChapterBriefCore(
-  args: Record<string, unknown>,
-  cache?: SnapshotCache
+  args: Record<string, unknown>
 ): unknown {
   const chapterId = args["chapterId"];
   if (typeof chapterId !== "string" || chapterId.trim().length === 0) {
     throw new Error('O argumento "chapterId" é obrigatório e não pode ser vazio.');
-  }
-
-  if (hasProvidedCache(cache)) {
-    const items = getEntityItems(cache);
-    const enrichedLookup = cache.entitiesEnrichedLookup;
-
-    let found: LooseRecord | undefined;
-    for (const item of items) {
-      const oid = getStr(item, "objectID") ?? "";
-      const cid = getStr(item, "chapter_id") ?? "";
-      if (oid === chapterId || cid === chapterId) {
-        found = item;
-        break;
-      }
-    }
-
-    if (found === undefined) {
-      return { id: chapterId, found: false };
-    }
-
-    const oid = getStr(found, "objectID");
-    const enriched = oid !== undefined ? enrichedLookup.get(oid) : undefined;
-
-    const phases = getStrArr(found, "related_phases");
-    const artifacts = enriched?.artifact_ids
-      ? [...enriched.artifact_ids]
-      : getStrArr(found, "artifact_ids");
-    const objective =
-      getStr(found, "summary") ?? getStr(found, "searchable_text");
-
-    return {
-      id: chapterId,
-      found: true,
-      // Prefer the clean readable title over the canonical one, which can carry
-      // editorial noise ("Nota Canónica…") — consistent with list_chapters.
-      title: READABLE_TITLES[chapterId] ?? getStr(found, "title") ?? chapterId,
-      ...(objective !== undefined ? { objective } : {}),
-      ...(phases.length > 0 ? { phases } : {}),
-      ...(artifacts.length > 0 ? { artifacts } : {})
-    };
   }
 
   const bundle = loadBundleCatalog().find((item) => getStr(item, "bundle_id") === chapterId);
@@ -579,14 +542,13 @@ function buildActivatedBundles(
   return { foundationBundles, domainBundles, operationalBundles };
 }
 
-export function handleMapSbdToeApplicability(args: Record<string, unknown>, cache?: SnapshotCache): unknown {
+export function handleMapSbdToeApplicability(args: Record<string, unknown>): unknown {
   const riskLevel = typeof args["riskLevel"] === "string" ? args["riskLevel"] : undefined;
-  return { ...(handleMapSbdToeApplicabilityCore(args, cache) as Record<string, unknown>), next: mapApplicabilityAffordances(riskLevel) };
+  return { ...(handleMapSbdToeApplicabilityCore(args) as Record<string, unknown>), next: mapApplicabilityAffordances(riskLevel) };
 }
 
 function handleMapSbdToeApplicabilityCore(
-  args: Record<string, unknown>,
-  cache?: SnapshotCache
+  args: Record<string, unknown>
 ): unknown {
   const riskLevelArg = args["riskLevel"];
   if (!isValidRiskLevel(riskLevelArg)) {
@@ -634,34 +596,12 @@ function handleMapSbdToeApplicabilityCore(
   let active: string[];
   let excluded: string[];
 
-  if (hasProvidedCache(cache)) {
-    const items = getEntityItems(cache);
-
-    const allChapterIds = new Set<string>();
-    for (const item of items) {
-      if (getStr(item, "entity_type") === "chapter_bundle") {
-        const cid = getStr(item, "chapter_id");
-        if (cid !== undefined) allChapterIds.add(cid);
-      }
-    }
-
-    const activeChapterIds = new Set<string>();
-    for (const item of items) {
-      const rls = getStrArr(item, "risk_levels");
-      if (rls.includes(riskLevel)) {
-        const cid = getStr(item, "chapter_id");
-        if (cid !== undefined) activeChapterIds.add(cid);
-      }
-    }
-
-    active = [...activeChapterIds].sort();
-    excluded = [...allChapterIds].filter((id) => !activeChapterIds.has(id)).sort();
-  } else {
-    active = [...ACTIVE_CHAPTERS_BY_RISK[riskLevel]].sort();
-    excluded = Object.keys(READABLE_TITLES)
-      .filter((id) => !ACTIVE_CHAPTERS_BY_RISK[riskLevel].includes(id))
-      .sort();
-  }
+  // Risk baseline (in-code risk model) — the only path since the Algolia-era snapshot
+  // cache was retired; context activation lives in activatedBundles / conditional below.
+  active = [...ACTIVE_CHAPTERS_BY_RISK[riskLevel]].sort();
+  excluded = Object.keys(READABLE_TITLES)
+    .filter((id) => !ACTIVE_CHAPTERS_BY_RISK[riskLevel].includes(id))
+    .sort();
 
   const activatedBundles = buildActivatedBundles(riskLevel, technologies);
 
