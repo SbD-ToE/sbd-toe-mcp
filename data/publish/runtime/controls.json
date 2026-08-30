@@ -1,8 +1,102 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 16,
+  "count": 20,
   "entity_type": "Control",
   "items": [
+    {
+      "abstraction_level": "operational",
+      "aliases": [
+        "Actualização de IDEs e ferramentas",
+        "Ambiente de desenvolvimento seguro",
+        "Ambientes locais controlados",
+        "Assistentes de IA no desenvolvimento",
+        "Extensões e plugins de fontes confiáveis",
+        "IDEs e ferramentas autorizadas",
+        "Permissões de extensões e execução sandboxed",
+        "Prompts e Outputs de GenAI sob Disciplina de Código",
+        "Prompts sem informação sensível",
+        "Revisão humana de código gerado por IA",
+        "Uso Validado de GenIA",
+        "Uso controlado de assistentes automatizados",
+        "Uso controlado de assistentes automatizados (incluindo IA) no desenvolvimento"
+      ],
+      "anchor_kind": "practice",
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "min_link_confidence": 0.92,
+        "mode": "derived",
+        "n_links": 6,
+        "source_requirement_ids": [
+          "IDE-001",
+          "IDE-002",
+          "IDE-003",
+          "IDE-004",
+          "IDE-005",
+          "IDE-006"
+        ],
+        "via": "requirement_control_links"
+      },
+      "applicable_lifecycle_phases": [
+        "develop",
+        "test"
+      ],
+      "artifact_types": [
+        "approval_record",
+        "guideline_catalog",
+        "validation_evidence"
+      ],
+      "chapter_ids": [
+        "02-requisitos-seguranca",
+        "06-desenvolvimento-seguro"
+      ],
+      "cited_chapter_ids": [
+        "06-desenvolvimento-seguro",
+        "13-formacao-onboarding"
+      ],
+      "confidence": 0.9499999999999998,
+      "control_id": "CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a",
+      "control_type": "preventive",
+      "defining_chapter_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "description": "Trata o ambiente de desenvolvimento — IDEs, extensões, assistentes automatizados e ambientes locais — como superfície de risco governada: ferramentas autorizadas e actualizadas, permissões mínimas, revisão humana do que é gerado e ausência de informação sensível em prompts.",
+      "domain": "code_integrity",
+      "evidence": [
+        "practice_id derived deterministically from chapter '02-requisitos-seguranca'",
+        "practice_id derived deterministically from chapter '06-desenvolvimento-seguro'",
+        "user story title normalized to 'prompts-e-outputs-de-genai-sob-disciplina-de-codigo'",
+        "user story title normalized to 'uso-controlado-de-assistentes-automatizados-incluindo-ia-no-desenvolvimento'",
+        "user story title normalized to 'uso-validado-de-genia'"
+      ],
+      "name": "Ambiente e tooling de desenvolvimento governados",
+      "name_en": "Ambiente And Tooling Of Development Governados",
+      "receives_requirement_categories": [
+        "IDE"
+      ],
+      "receives_requirements_primary": [
+        "IDE-001",
+        "IDE-002",
+        "IDE-003",
+        "IDE-004",
+        "IDE-005",
+        "IDE-006"
+      ],
+      "receives_requirements_secondary": [
+        "DEV-007"
+      ],
+      "resolution_order": 18,
+      "source_practice_ids": [
+        "02-requisitos-seguranca:uso-controlado-de-assistentes-automatizados-incluindo-ia-no-desenvolvimento",
+        "06-desenvolvimento-seguro:prompts-e-outputs-de-genai-sob-disciplina-de-codigo",
+        "06-desenvolvimento-seguro:uso-validado-de-genia"
+      ],
+      "status": "new",
+      "warnings": []
+    },
     {
       "abstraction_level": "technical",
       "aliases": [
@@ -10,58 +104,40 @@
         "Arquivo Central de Evidências de Validação",
         "Automatização em CI/CD (Linters & SAST)",
         "Catálogo de Requisitos de Desenvolvimento Seguro",
-        "Definição de critérios de validação",
         "Excepções em Desenvolvimento Seguro",
         "Gate de Segurança Pré-release",
         "Gerem exceções técnicas",
         "Gerem exceções técnicas com mitigação definida, aprovação explícita e prazo de validade",
         "Gestão de Dependências no Código",
         "Gestão de Exceções Técnicas",
-        "Gestão de Exceções com TTL e Revalidação Obrigatória",
         "Governação e Curadoria de Guidelines",
         "Guidelines de Desenvolvimento Seguro",
-        "Identificar requisitos com tags normalizadas da taxonomia SEC-Lx-XXX",
         "KPIs e Métricas - Desenvolvimento Seguro",
         "Monitorização de Conformidade e Métricas de Segurança",
         "Perfis de Validação por Nível de Risco (L1–L3)",
-        "Prompts e Outputs de GenAI sob Disciplina de Código",
         "Proveniência e Quality Gate com Baseline Aprovada",
         "Rastreabilidade com Anotações de Segurança",
         "Rastreiem decisões de segurança",
         "Rastreiem decisões de segurança através de anotações padronizadas no código e nos testes",
         "Revisão de Código Segura",
-        "Uso Validado de GenIA",
-        "Validar os requisitos com base nos critérios definidos na secção de validação",
         "Validação de Padrões Perigosos e Anti-patterns",
-        "Validação de cobertura de testes",
-        "Validação de tags `SEC-Lx-*` e requisitos no pipeline",
-        "Validação e aprovação final",
-        "Validação por requisito/domínio (REQ-XXX → evidência)",
-        "Validações Locais Obrigatórias (Pre-commit)",
-        "critérios de aceitação claros",
-        "tags normalizadas"
+        "Validações Locais Obrigatórias (Pre-commit)"
       ],
+      "anchor_kind": "practice",
       "applicable_levels": {
         "L1": true,
         "L2": true,
         "L3": true
       },
       "applicable_levels_provenance": {
-        "min_link_confidence": 0.84,
+        "min_link_confidence": 0.8,
         "mode": "derived",
-        "n_links": 58,
+        "n_links": 33,
         "source_requirement_ids": [
-          "API-001",
           "API-002",
           "API-003",
-          "API-004",
-          "API-005",
           "API-007",
-          "AUT-002",
-          "AUT-004",
-          "CFG-002",
           "CFG-003",
-          "CFG-004",
           "CFG-005",
           "DEV-001",
           "DEV-002",
@@ -72,15 +148,7 @@
           "DEV-007",
           "DEV-008",
           "DEV-009",
-          "DST-001",
-          "ENC-001",
-          "ENC-002",
-          "ENC-003",
-          "ENC-004",
-          "ENC-005",
           "ENC-006",
-          "ENC-008",
-          "ENC-009",
           "ERR-001",
           "ERR-002",
           "ERR-003",
@@ -88,19 +156,9 @@
           "ERR-005",
           "ERR-006",
           "ERR-007",
-          "IDE-001",
-          "IDE-002",
           "IDE-003",
-          "IDE-004",
-          "IDE-005",
-          "IDE-006",
           "INT-001",
-          "INT-002",
-          "INT-003",
-          "INT-004",
-          "INT-005",
           "INT-006",
-          "INT-007",
           "VAL-001",
           "VAL-002",
           "VAL-003",
@@ -129,65 +187,51 @@
         "validation_evidence"
       ],
       "chapter_ids": [
-        "02-requisitos-seguranca",
         "06-desenvolvimento-seguro"
       ],
+      "cited_chapter_ids": [],
       "confidence": 0.95,
       "control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
       "control_type": "preventive",
+      "defining_chapter_ids": [
+        "06-desenvolvimento-seguro"
+      ],
       "description": "Aplica guidelines, validações automáticas e gates de código para preservar integridade e qualidade do software.",
       "domain": "code_integrity",
       "evidence": [
-        "practice_id derived deterministically from chapter '02-requisitos-seguranca'",
         "practice_id derived deterministically from chapter '06-desenvolvimento-seguro'",
-        "short candidate anchored by a strong shared domain token",
-        "summary occurrence linked from 010-sbd-manual/02-requisitos-seguranca/intro.md",
         "summary occurrence linked from 010-sbd-manual/06-desenvolvimento-seguro/intro.md",
         "technical_detail occurrence linked from 010-sbd-manual/06-desenvolvimento-seguro/addon/00-catalogo-requisitos.md",
         "technical_detail occurrence linked from 010-sbd-manual/06-desenvolvimento-seguro/addon/05-excecoes-e-justificacoes.md",
         "technical_detail occurrence linked from 010-sbd-manual/06-desenvolvimento-seguro/addon/09-anotacoes-evidencia.md",
         "technical_detail occurrence linked from 010-sbd-manual/06-desenvolvimento-seguro/addon/11-kpis-metricas.md",
         "token overlap: ['anotacoe', 'seguranca']",
-        "token overlap: ['criterio', 'validacao']",
-        "token overlap: ['criterio']",
         "token overlap: ['desenvolvimento', 'seguro']",
         "token overlap: ['evidencia', 'validacao']",
         "token overlap: ['excecao', 'tecnica']",
-        "token overlap: ['lx', 'requisito', 'sec', 'tags']",
         "token overlap: ['seguranca']",
-        "token overlap: ['tags']",
         "user story title normalized to 'arquivo-central-de-evidencias-de-validacao'",
         "user story title normalized to 'automatizacao-em-ci-cd-linters-sast'",
-        "user story title normalized to 'definicao-de-criterios-de-validacao'",
         "user story title normalized to 'gate-de-seguranca-pre-release'",
         "user story title normalized to 'gestao-de-dependencias-no-codigo'",
-        "user story title normalized to 'gestao-de-excecoes-com-ttl-e-revalidacao-obrigatoria'",
         "user story title normalized to 'gestao-de-excecoes-tecnicas'",
         "user story title normalized to 'governacao-e-curadoria-de-guidelines'",
         "user story title normalized to 'guidelines-de-desenvolvimento-seguro'",
         "user story title normalized to 'monitorizacao-de-conformidade-e-metricas-de-seguranca'",
         "user story title normalized to 'perfis-de-validacao-por-nivel-de-risco-l1l3'",
-        "user story title normalized to 'prompts-e-outputs-de-genai-sob-disciplina-de-codigo'",
         "user story title normalized to 'proveniencia-e-quality-gate-com-baseline-aprovada'",
         "user story title normalized to 'rastreabilidade-com-anotacoes-de-seguranca'",
         "user story title normalized to 'revisao-de-codigo-segura'",
-        "user story title normalized to 'uso-validado-de-genia'",
-        "user story title normalized to 'validacao-de-cobertura-de-testes'",
         "user story title normalized to 'validacao-de-padroes-perigosos-e-anti-patterns'",
-        "user story title normalized to 'validacao-de-tags-sec-lx-e-requisitos-no-pipeline'",
-        "user story title normalized to 'validacao-e-aprovacao-final'",
-        "user story title normalized to 'validacao-por-requisito-dominio-req-xxx-evidencia'",
         "user story title normalized to 'validacoes-locais-obrigatorias-pre-commit'"
       ],
       "name": "Desenvolvimento seguro e validação de código",
       "name_en": "Development Secure And Validation Of Code",
+      "receives_requirement_categories": [],
+      "receives_requirements_primary": [],
+      "receives_requirements_secondary": [],
+      "resolution_order": 6,
       "source_practice_ids": [
-        "02-requisitos-seguranca:definicao-de-criterios-de-validacao",
-        "02-requisitos-seguranca:gestao-de-excecoes-com-ttl-e-revalidacao-obrigatoria",
-        "02-requisitos-seguranca:validacao-de-cobertura-de-testes",
-        "02-requisitos-seguranca:validacao-de-tags-sec-lx-e-requisitos-no-pipeline",
-        "02-requisitos-seguranca:validacao-e-aprovacao-final",
-        "02-requisitos-seguranca:validacao-por-requisito-dominio-req-xxx-evidencia",
         "06-desenvolvimento-seguro:arquivo-central-de-evidencias-de-validacao",
         "06-desenvolvimento-seguro:automatizacao-em-ci-cd-linters-sast",
         "06-desenvolvimento-seguro:gate-de-seguranca-pre-release",
@@ -197,14 +241,13 @@
         "06-desenvolvimento-seguro:guidelines-de-desenvolvimento-seguro",
         "06-desenvolvimento-seguro:monitorizacao-de-conformidade-e-metricas-de-seguranca",
         "06-desenvolvimento-seguro:perfis-de-validacao-por-nivel-de-risco-l1l3",
-        "06-desenvolvimento-seguro:prompts-e-outputs-de-genai-sob-disciplina-de-codigo",
         "06-desenvolvimento-seguro:proveniencia-e-quality-gate-com-baseline-aprovada",
         "06-desenvolvimento-seguro:rastreabilidade-com-anotacoes-de-seguranca",
         "06-desenvolvimento-seguro:revisao-de-codigo-segura",
-        "06-desenvolvimento-seguro:uso-validado-de-genia",
         "06-desenvolvimento-seguro:validacao-de-padroes-perigosos-e-anti-patterns",
         "06-desenvolvimento-seguro:validacoes-locais-obrigatorias-pre-commit"
       ],
+      "status": "existing",
       "warnings": []
     },
     {
@@ -244,15 +287,16 @@
         "Validação de integridade de imagens base",
         "Versionamento de pipelines em repositórios Git com revisão por PR"
       ],
+      "anchor_kind": "practice",
       "applicable_levels": {
         "L1": true,
         "L2": true,
         "L3": true
       },
       "applicable_levels_provenance": {
-        "min_link_confidence": 0.87,
+        "min_link_confidence": 0.8,
         "mode": "derived",
-        "n_links": 9,
+        "n_links": 12,
         "source_requirement_ids": [
           "CIC-001",
           "CIC-002",
@@ -262,7 +306,10 @@
           "CIC-007",
           "CIC-008",
           "CIC-009",
-          "CIC-010"
+          "CIC-010",
+          "DST-002",
+          "DST-003",
+          "DST-006"
         ],
         "via": "requirement_control_links"
       },
@@ -282,9 +329,13 @@
       "chapter_ids": [
         "07-cicd-seguro"
       ],
+      "cited_chapter_ids": [],
       "confidence": 0.95,
       "control_id": "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
       "control_type": "preventive",
+      "defining_chapter_ids": [
+        "07-cicd-seguro"
+      ],
       "description": "Protege pipelines CI/CD com determinismo, proveniência, segregação de decisão e evidência executável.",
       "domain": "code_integrity",
       "evidence": [
@@ -330,6 +381,10 @@
       ],
       "name": "Integridade e governação de pipelines",
       "name_en": "Integridade And Governacao Of Pipelines",
+      "receives_requirement_categories": [],
+      "receives_requirements_primary": [],
+      "receives_requirements_secondary": [],
+      "resolution_order": 7,
       "source_practice_ids": [
         "07-cicd-seguro:agentes-ai-como-principals-na-pipeline-us-19",
         "07-cicd-seguro:assinatura-e-proveniencia",
@@ -354,6 +409,107 @@
         "07-cicd-seguro:testes-de-seguranca-dinamicos-dast",
         "07-cicd-seguro:validacao-de-integridade-de-imagens-base"
       ],
+      "status": "existing",
+      "warnings": []
+    },
+    {
+      "abstraction_level": "technical",
+      "aliases": [
+        "Algoritmos e primitivas criptográficas aprovadas",
+        "Assinatura e integridade de mensagens",
+        "Certificados e HSTS",
+        "Criptografia aplicacional",
+        "Encriptação de dados em repouso",
+        "Encriptação em trânsito (TLS)",
+        "Gestão de chaves criptográficas",
+        "Hashing adaptativo de passwords",
+        "Integridade verificável de dados (MAC, assinatura, checksum)",
+        "Mascaramento de dados sensíveis em logs e respostas",
+        "Prevenção de caching de dados sensíveis no cliente",
+        "Proibição de protocolos sem cifra",
+        "Protecção de dados sensíveis"
+      ],
+      "anchor_kind": "catalogue",
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "min_link_confidence": 0.8,
+        "mode": "derived",
+        "n_links": 15,
+        "source_requirement_ids": [
+          "API-005",
+          "ENC-001",
+          "ENC-002",
+          "ENC-003",
+          "ENC-004",
+          "ENC-005",
+          "ENC-006",
+          "ENC-007",
+          "ENC-008",
+          "ENC-009",
+          "INT-002",
+          "INT-003",
+          "INT-004",
+          "INT-005",
+          "SES-004"
+        ],
+        "via": "requirement_control_links"
+      },
+      "applicable_lifecycle_phases": [
+        "design",
+        "develop",
+        "test",
+        "operate"
+      ],
+      "artifact_types": [
+        "secret_config",
+        "test_report",
+        "validation_evidence"
+      ],
+      "chapter_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "cited_chapter_ids": [
+        "06-desenvolvimento-seguro"
+      ],
+      "confidence": null,
+      "control_id": "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+      "control_type": "preventive",
+      "defining_chapter_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "description": "Protege dados sensíveis em trânsito e em repouso com primitivas aprovadas, hashing adaptativo, integridade verificável e prevenção de exposição acidental em logs, caches e respostas.",
+      "domain": "data_protection",
+      "evidence": [],
+      "name": "Criptografia aplicacional e protecção de dados",
+      "name_en": "Criptografia Application And Proteccao Of Dados",
+      "receives_requirement_categories": [
+        "ENC"
+      ],
+      "receives_requirements_primary": [
+        "API-005",
+        "ENC-001",
+        "ENC-002",
+        "ENC-003",
+        "ENC-004",
+        "ENC-005",
+        "ENC-008",
+        "ENC-009",
+        "INT-003",
+        "INT-004",
+        "INT-005"
+      ],
+      "receives_requirements_secondary": [
+        "ENC-006",
+        "ENC-007",
+        "SES-004"
+      ],
+      "resolution_order": 20,
+      "source_practice_ids": [],
+      "status": "new",
       "warnings": []
     },
     {
@@ -383,15 +539,16 @@
         "Validar arquitetura antes de go-live e em alterações significativas",
         "Validação arquitetural automatizável no CI/CD (quando aplicável)"
       ],
+      "anchor_kind": "practice",
       "applicable_levels": {
         "L1": true,
         "L2": true,
         "L3": true
       },
       "applicable_levels_provenance": {
-        "min_link_confidence": 0.84,
+        "min_link_confidence": 0.87,
         "mode": "derived",
-        "n_links": 12,
+        "n_links": 11,
         "source_requirement_ids": [
           "ARC-001",
           "ARC-002",
@@ -402,7 +559,6 @@
           "ARC-009",
           "ARC-010",
           "ARC-012",
-          "ARC-013",
           "ARC-014",
           "ARC-015"
         ],
@@ -423,9 +579,13 @@
       "chapter_ids": [
         "04-arquitetura-segura"
       ],
+      "cited_chapter_ids": [],
       "confidence": 0.95,
       "control_id": "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4",
       "control_type": "governance",
+      "defining_chapter_ids": [
+        "04-arquitetura-segura"
+      ],
       "description": "Define baseline, decisões, revisões e rastreabilidade arquitetural para manter a segurança do design auditável e proporcional ao risco.",
       "domain": "governance",
       "evidence": [
@@ -456,6 +616,10 @@
       ],
       "name": "Arquitetura segura e rastreável",
       "name_en": "Architecture Secure And Rastreavel",
+      "receives_requirement_categories": [],
+      "receives_requirements_primary": [],
+      "receives_requirements_secondary": [],
+      "resolution_order": 3,
       "source_practice_ids": [
         "04-arquitetura-segura:atualizacao-da-baseline-apos-alteracao-arquitetural-significativa",
         "04-arquitetura-segura:avaliacao-de-impacto-no-negocio-e-priorizacao-de-trade-offs",
@@ -474,6 +638,7 @@
         "04-arquitetura-segura:triggers-de-arquitetura-viva-e-disciplina-de-revisao",
         "04-arquitetura-segura:validacao-arquitetural-automatizavel-no-ci-cd-quando-aplicavel"
       ],
+      "status": "existing",
       "warnings": []
     },
     {
@@ -503,30 +668,24 @@
         "Sandbox Isolado para Prática de Contractors",
         "Termo de Responsabilidade de Terceiros",
         "Threat Modeling Peer-led e Rotativo",
+        "Trilho de Formação Obrigatória pré-Acesso (Contractors)",
         "Trilhos Formativos Proporcionais por Risco (L1–L3)",
         "Trilhos Formativos por Função e Risco",
         "Validação Formal de Onboarding via Checklist",
         "Validação de Conhecimento via Quizzes Estruturados",
         "War Room e Simulações de Incidentes"
       ],
+      "anchor_kind": "practice",
       "applicable_levels": {
         "L1": true,
         "L2": true,
         "L3": true
       },
       "applicable_levels_provenance": {
-        "min_link_confidence": 0.84,
+        "min_link_confidence": 0.98,
         "mode": "derived",
-        "n_links": 17,
+        "n_links": 9,
         "source_requirement_ids": [
-          "AUT-001",
-          "AUT-003",
-          "AUT-005",
-          "AUT-006",
-          "AUT-009",
-          "REQ-002",
-          "REQ-004",
-          "REQ-005",
           "TRN-001",
           "TRN-002",
           "TRN-003",
@@ -551,11 +710,19 @@
       ],
       "chapter_ids": [
         "02-requisitos-seguranca",
-        "13-formacao-onboarding"
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
+      "cited_chapter_ids": [
+        "02-requisitos-seguranca",
+        "14-governanca-contratacao"
       ],
       "confidence": 0.95,
       "control_id": "CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf",
       "control_type": "governance",
+      "defining_chapter_ids": [
+        "13-formacao-onboarding"
+      ],
       "description": "Assegura formação contínua, onboarding e medição de eficácia para competências de segurança por perfil.",
       "domain": "governance",
       "evidence": [
@@ -564,6 +731,7 @@
         "normalized labels share prefix/containment",
         "practice_id derived deterministically from chapter '02-requisitos-seguranca'",
         "practice_id derived deterministically from chapter '13-formacao-onboarding'",
+        "practice_id derived deterministically from chapter '14-governanca-contratacao'",
         "technical_detail occurrence linked from 010-sbd-manual/13-formacao-onboarding/addon/02-trilho-formativo.md",
         "technical_detail occurrence linked from 010-sbd-manual/13-formacao-onboarding/addon/03-programa-champions.md",
         "technical_detail occurrence linked from 010-sbd-manual/13-formacao-onboarding/addon/06-manual-formação-por-capitulo.md",
@@ -597,6 +765,7 @@
         "user story title normalized to 'sandbox-isolado-para-pratica-de-contractors'",
         "user story title normalized to 'termo-de-responsabilidade-de-terceiros'",
         "user story title normalized to 'threat-modeling-peer-led-e-rotativo'",
+        "user story title normalized to 'trilho-de-formacao-obrigatoria-pre-acesso-contractors'",
         "user story title normalized to 'trilhos-formativos-proporcionais-por-risco-l1l3'",
         "user story title normalized to 'validacao-de-conhecimento-via-quizzes-estruturados'",
         "user story title normalized to 'validacao-formal-de-onboarding-via-checklist'",
@@ -604,6 +773,10 @@
       ],
       "name": "Capacitação e onboarding de segurança",
       "name_en": "Capacitacao And Onboarding Of Security",
+      "receives_requirement_categories": [],
+      "receives_requirements_primary": [],
+      "receives_requirements_secondary": [],
+      "resolution_order": 13,
       "source_practice_ids": [
         "02-requisitos-seguranca:politica-formacao-e-procedimentos-operacionais",
         "13-formacao-onboarding:acao-corretiva-sobre-desvios-de-kpis",
@@ -625,8 +798,10 @@
         "13-formacao-onboarding:trilhos-formativos-proporcionais-por-risco-l1l3",
         "13-formacao-onboarding:validacao-de-conhecimento-via-quizzes-estruturados",
         "13-formacao-onboarding:validacao-formal-de-onboarding-via-checklist",
-        "13-formacao-onboarding:war-room-e-simulacoes-de-incidentes"
+        "13-formacao-onboarding:war-room-e-simulacoes-de-incidentes",
+        "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors"
       ],
+      "status": "existing",
       "warnings": []
     },
     {
@@ -638,14 +813,19 @@
         "Aplicar critérios formais para aceitação de risco, quando necessário.",
         "Aplicar os Critérios para Aceitação de Risco;",
         "Aplicação da matriz de controlo",
+        "Catálogo de Requisitos Aplicacionais",
+        "Catálogo de requisitos do projeto (criação e manutenção)",
         "Classificação do tipo de controlo na matriz de rastreabilidade",
         "Classificação e registo do *mandate* de agente AI {#us-15}",
         "Classificação inicial da aplicação",
         "Considerar ameaças reais através do Mapeamento de Ameaças por Nível de Risco;",
         "Considerar explicitamente como automação e apoio à decisão (incl. IA) influenciam os atributos do risco relevantes;",
+        "Definição de critérios de validação",
         "Garantir rastreabilidade sistemática entre risco, requisito, controlo e evidência, utilizando a taxonomia definida",
         "Gates automáticos em CI/CD para requisitos de segurança",
+        "Gestão de Exceções com TTL e Revalidação Obrigatória",
         "Identificar e documentar requisitos de segurança com base no risco",
+        "Identificar requisitos com tags normalizadas da taxonomia SEC-Lx-XXX",
         "Integrar requisitos de segurança no backlog funcional da aplicação",
         "Intent declaration por tool-call destrutivo de agente AI",
         "Interdições de aceitação de risco em automação e apoio à decisão",
@@ -663,13 +843,20 @@
         "Revisão por alteração relevante (event-based)",
         "Seleção de requisitos por criticidade",
         "Taxonomia e Rastreabilidade de Requisitos de Segurança",
-        "Uso controlado de assistentes automatizados (incluindo IA) no desenvolvimento",
+        "Validar os requisitos com base nos critérios definidos na secção de validação",
         "Validação antes do go-live",
+        "Validação de cobertura de testes",
+        "Validação de tags `SEC-Lx-*` e requisitos no pipeline",
+        "Validação e aprovação final",
+        "Validação por requisito/domínio (REQ-XXX → evidência)",
         "atributos do risco",
         "automação e apoio à decisão (incl. IA)",
         "avaliar o seu impacto nos atributos do risco",
-        "rastreabilidade sistemática"
+        "critérios de aceitação claros",
+        "rastreabilidade sistemática",
+        "tags normalizadas"
       ],
+      "anchor_kind": "practice",
       "applicable_levels": {
         "L1": true,
         "L2": true,
@@ -680,8 +867,6 @@
         "mode": "derived",
         "n_links": 19,
         "source_requirement_ids": [
-          "CFG-001",
-          "CFG-006",
           "CLA-001",
           "CLA-002",
           "CLA-003",
@@ -691,7 +876,9 @@
           "CLA-007",
           "CLA-008",
           "REQ-001",
+          "REQ-002",
           "REQ-003",
+          "REQ-004",
           "REQ-005",
           "REQ-006",
           "REQ-007",
@@ -709,15 +896,21 @@
       "artifact_types": [
         "pipeline_config",
         "review_checklist",
-        "risk_matrix"
+        "risk_matrix",
+        "test_report"
       ],
       "chapter_ids": [
         "01-classificacao-aplicacoes",
         "02-requisitos-seguranca"
       ],
-      "confidence": 0.9500000000000001,
+      "cited_chapter_ids": [],
+      "confidence": 0.95,
       "control_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
       "control_type": "governance",
+      "defining_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca"
+      ],
       "description": "Estabelece classificação de risco, revisão periódica e governação proporcional por criticidade.",
       "domain": "governance",
       "evidence": [
@@ -733,6 +926,7 @@
         "technical_detail occurrence linked from 010-sbd-manual/01-classificacao-aplicacoes/addon/05-matriz-controlos-por-risco.md",
         "technical_detail occurrence linked from 010-sbd-manual/01-classificacao-aplicacoes/addon/06-mapeamento-ameacas-risco.md",
         "technical_detail occurrence linked from 010-sbd-manual/01-classificacao-aplicacoes/addon/07-adopcao-drp-bia.md",
+        "technical_detail occurrence linked from 010-sbd-manual/02-requisitos-seguranca/addon/01-catalogo-requisitos.md",
         "technical_detail occurrence linked from 010-sbd-manual/02-requisitos-seguranca/addon/03-taxonomia-rastreabilidade.md",
         "technical_detail occurrence linked from 010-sbd-manual/02-requisitos-seguranca/addon/04-rastreabilidade-controlo.md",
         "token overlap: ['aceitacao', 'risco']",
@@ -743,17 +937,25 @@
         "token overlap: ['apoio', 'automacao', 'decisao', 'risco']",
         "token overlap: ['apoio', 'automacao', 'decisao']",
         "token overlap: ['atributo', 'risco']",
+        "token overlap: ['catalogo', 'requisito']",
         "token overlap: ['controlo', 'matriz']",
+        "token overlap: ['criterio', 'validacao']",
+        "token overlap: ['criterio']",
+        "token overlap: ['lx', 'requisito', 'sec', 'tags']",
         "token overlap: ['rastreabilidade', 'requisito']",
         "token overlap: ['rastreabilidade']",
         "token overlap: ['requisito', 'seguranca']",
+        "token overlap: ['tags']",
         "user story title normalized to 'adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i'",
         "user story title normalized to 'analise-de-risco-residual'",
         "user story title normalized to 'aplicacao-da-matriz-de-controlo'",
+        "user story title normalized to 'catalogo-de-requisitos-do-projeto-criacao-e-manutencao'",
         "user story title normalized to 'classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade'",
         "user story title normalized to 'classificacao-e-registo-do-mandate-de-agente-ai-us-15'",
         "user story title normalized to 'classificacao-inicial-da-aplicacao'",
+        "user story title normalized to 'definicao-de-criterios-de-validacao'",
         "user story title normalized to 'gates-automaticos-em-ci-cd-para-requisitos-de-seguranca'",
+        "user story title normalized to 'gestao-de-excecoes-com-ttl-e-revalidacao-obrigatoria'",
         "user story title normalized to 'intent-declaration-por-tool-call-destrutivo-de-agente-ai'",
         "user story title normalized to 'interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao'",
         "user story title normalized to 'mapeamento-de-ameacas-por-nivel-de-risco'",
@@ -764,11 +966,42 @@
         "user story title normalized to 'revisao-por-alteracao-relevante'",
         "user story title normalized to 'revisao-por-alteracao-relevante-event-based'",
         "user story title normalized to 'selecao-de-requisitos-por-criticidade'",
-        "user story title normalized to 'uso-controlado-de-assistentes-automatizados-incluindo-ia-no-desenvolvimento'",
-        "user story title normalized to 'validacao-antes-do-go-live'"
+        "user story title normalized to 'validacao-antes-do-go-live'",
+        "user story title normalized to 'validacao-de-cobertura-de-testes'",
+        "user story title normalized to 'validacao-de-tags-sec-lx-e-requisitos-no-pipeline'",
+        "user story title normalized to 'validacao-e-aprovacao-final'",
+        "user story title normalized to 'validacao-por-requisito-dominio-req-xxx-evidencia'"
       ],
       "name": "Classificação e governação por risco",
       "name_en": "Classification And Governacao Por Risk",
+      "receives_requirement_categories": [
+        "AGN",
+        "CLA",
+        "REQ"
+      ],
+      "receives_requirements_primary": [
+        "CLA-001",
+        "CLA-002",
+        "CLA-003",
+        "CLA-004",
+        "CLA-005",
+        "CLA-006",
+        "CLA-007",
+        "CLA-008",
+        "REQ-001",
+        "REQ-002",
+        "REQ-003",
+        "REQ-004",
+        "REQ-005",
+        "REQ-006",
+        "REQ-007",
+        "REQ-AGN-001",
+        "REQ-AGN-002",
+        "REQ-AGN-003",
+        "REQ-AGN-004"
+      ],
+      "receives_requirements_secondary": [],
+      "resolution_order": 1,
       "source_practice_ids": [
         "01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
         "01-classificacao-aplicacoes:analise-de-risco-residual",
@@ -780,37 +1013,44 @@
         "01-classificacao-aplicacoes:reforco-de-controlos-por-atributos-do-risco",
         "01-classificacao-aplicacoes:revisao-por-alteracao-relevante-event-based",
         "01-classificacao-aplicacoes:validacao-antes-do-go-live",
+        "02-requisitos-seguranca:catalogo-de-requisitos-do-projeto-criacao-e-manutencao",
         "02-requisitos-seguranca:classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade",
         "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai-us-15",
+        "02-requisitos-seguranca:definicao-de-criterios-de-validacao",
         "02-requisitos-seguranca:gates-automaticos-em-ci-cd-para-requisitos-de-seguranca",
+        "02-requisitos-seguranca:gestao-de-excecoes-com-ttl-e-revalidacao-obrigatoria",
         "02-requisitos-seguranca:intent-declaration-por-tool-call-destrutivo-de-agente-ai",
         "02-requisitos-seguranca:rastreabilidade-de-requisitos",
         "02-requisitos-seguranca:recolha-e-thresholds-dos-indicadores-rqs",
         "02-requisitos-seguranca:revisao-por-alteracao-relevante",
         "02-requisitos-seguranca:selecao-de-requisitos-por-criticidade",
-        "02-requisitos-seguranca:uso-controlado-de-assistentes-automatizados-incluindo-ia-no-desenvolvimento"
+        "02-requisitos-seguranca:validacao-de-cobertura-de-testes",
+        "02-requisitos-seguranca:validacao-de-tags-sec-lx-e-requisitos-no-pipeline",
+        "02-requisitos-seguranca:validacao-e-aprovacao-final",
+        "02-requisitos-seguranca:validacao-por-requisito-dominio-req-xxx-evidencia"
       ],
+      "status": "existing",
       "warnings": []
     },
     {
       "abstraction_level": "foundational",
       "aliases": [
         "Checklist de Offboarding Seguro",
+        "Ciclo contínuo de revisão e reavaliação de exceções",
         "Cláusulas Contratuais de Segurança",
         "Cláusulas contratuais de segurança",
-        "Consolidação de KPIs de governação e maturidade",
         "Contratação de provedores de modelos AI {#us-21}",
         "Execução de fluxo formal de validação de fornecedores",
         "Feedback Pós-Projeto e Rating de Contractors",
         "Incorporação de restrições legais, normativas e contratuais",
-        "KPIs de Domínio - Governação e Contratação",
-        "KPIs de governação",
         "Modelo de Validação de Fornecedores e Terceiros",
         "Monitorização Contínua de Conformidade de Fornecedores (Alertas e Escalação)",
         "Offboarding Seguro de Contractors e Rescisão de Fornecedores",
+        "Processo formal de exceções com alçadas por nível de risco",
         "Reavaliação contínua e rotação de fornecedores pós-onboarding",
         "Validação contínua de fornecedores"
       ],
+      "anchor_kind": "practice",
       "applicable_levels": {
         "L1": true,
         "L2": true,
@@ -819,17 +1059,15 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.87,
         "mode": "derived",
-        "n_links": 11,
+        "n_links": 9,
         "source_requirement_ids": [
-          "GOV-001",
+          "GOV-003",
           "GOV-004",
           "GOV-005",
           "GOV-006",
           "GOV-007",
           "GOV-009",
           "GOV-010",
-          "GOV-011",
-          "GOV-012",
           "GOV-013",
           "INT-008"
         ],
@@ -851,9 +1089,15 @@
         "02-requisitos-seguranca",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "02-requisitos-seguranca"
+      ],
       "confidence": 0.95,
       "control_id": "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
       "control_type": "governance",
+      "defining_chapter_ids": [
+        "14-governanca-contratacao"
+      ],
       "description": "Formaliza validação, monitorização, exceções e accountability de terceiros com acesso ao ecossistema.",
       "domain": "governance",
       "evidence": [
@@ -864,38 +1108,153 @@
         "technical_detail occurrence linked from 010-sbd-manual/14-governanca-contratacao/addon/02-clausulas-contratuais.md",
         "technical_detail occurrence linked from 010-sbd-manual/14-governanca-contratacao/addon/03-modelo-validacao-fornecedores.md",
         "technical_detail occurrence linked from 010-sbd-manual/14-governanca-contratacao/addon/13-checklist-offboarding.md",
-        "technical_detail occurrence linked from 010-sbd-manual/14-governanca-contratacao/addon/13-kpis-dominio-gov.md",
         "token overlap: ['clausula', 'contratuai', 'seguranca']",
         "token overlap: ['fornecedore', 'validacao']",
-        "token overlap: ['governacao', 'kpis']",
         "token overlap: ['offboarding', 'seguro']",
+        "user story title normalized to 'ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes'",
         "user story title normalized to 'clausulas-contratuais-de-seguranca'",
-        "user story title normalized to 'consolidacao-de-kpis-de-governacao-e-maturidade'",
         "user story title normalized to 'contratacao-de-provedores-de-modelos-ai-us-21'",
         "user story title normalized to 'execucao-de-fluxo-formal-de-validacao-de-fornecedores'",
         "user story title normalized to 'feedback-pos-projeto-e-rating-de-contractors'",
         "user story title normalized to 'incorporacao-de-restricoes-legais-normativas-e-contratuais'",
-        "user story title normalized to 'kpis-de-governacao'",
         "user story title normalized to 'monitorizacao-continua-de-conformidade-de-fornecedores-alertas-e-escalacao'",
         "user story title normalized to 'offboarding-seguro-de-contractors-e-rescisao-de-fornecedores'",
+        "user story title normalized to 'processo-formal-de-excecoes-com-alcadas-por-nivel-de-risco'",
         "user story title normalized to 'reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding'",
         "user story title normalized to 'validacao-continua-de-fornecedores'"
       ],
       "name": "Governação de fornecedores e exceções",
       "name_en": "Governacao Of Fornecedores And Excecoes",
+      "receives_requirement_categories": [],
+      "receives_requirements_primary": [],
+      "receives_requirements_secondary": [],
+      "resolution_order": 15,
       "source_practice_ids": [
         "02-requisitos-seguranca:incorporacao-de-restricoes-legais-normativas-e-contratuais",
+        "14-governanca-contratacao:ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
         "14-governanca-contratacao:clausulas-contratuais-de-seguranca",
-        "14-governanca-contratacao:consolidacao-de-kpis-de-governacao-e-maturidade",
         "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
         "14-governanca-contratacao:execucao-de-fluxo-formal-de-validacao-de-fornecedores",
         "14-governanca-contratacao:feedback-pos-projeto-e-rating-de-contractors",
-        "14-governanca-contratacao:kpis-de-governacao",
         "14-governanca-contratacao:monitorizacao-continua-de-conformidade-de-fornecedores-alertas-e-escalacao",
         "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+        "14-governanca-contratacao:processo-formal-de-excecoes-com-alcadas-por-nivel-de-risco",
         "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
         "14-governanca-contratacao:validacao-continua-de-fornecedores"
       ],
+      "status": "existing",
+      "warnings": []
+    },
+    {
+      "abstraction_level": "foundational",
+      "aliases": [
+        "Aprovação formal e auditoria periódica das políticas organizacionais {#us-22}",
+        "Consolidação de KPIs de governação e maturidade",
+        "Controlo Sistemático das Práticas do SbD-ToE",
+        "Controlo sistemático e periódico por capítulo SbD-ToE",
+        "Designação formal de owners de segurança por aplicação",
+        "Formalização de modelo de governação por nível de risco",
+        "KPIs de Domínio - Governação e Contratação",
+        "KPIs de governação",
+        "Modelo de Rastreabilidade Organizacional",
+        "Rastreabilidade organizacional",
+        "Repositório de conformidade por aplicação (controlo sistemático)",
+        "Validação periódica de aplicações (ciclo de conformidade)"
+      ],
+      "anchor_kind": "practice",
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "min_link_confidence": 0.87,
+        "mode": "derived",
+        "n_links": 7,
+        "source_requirement_ids": [
+          "GOV-001",
+          "GOV-002",
+          "GOV-003",
+          "GOV-008",
+          "GOV-010",
+          "GOV-011",
+          "GOV-012"
+        ],
+        "via": "requirement_control_links"
+      },
+      "applicable_lifecycle_phases": [
+        "design",
+        "operate",
+        "govern"
+      ],
+      "artifact_types": [
+        "approval_record",
+        "governance_kpi",
+        "review_checklist"
+      ],
+      "chapter_ids": [
+        "14-governanca-contratacao"
+      ],
+      "cited_chapter_ids": [],
+      "confidence": 0.9499999999999998,
+      "control_id": "CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead",
+      "control_type": "governance",
+      "defining_chapter_ids": [
+        "14-governanca-contratacao"
+      ],
+      "description": "Formaliza o modelo de governação de segurança — ownership por aplicação, alçadas por nível de risco, rastreabilidade organizacional de decisões, ciclo de conformidade e KPIs/maturidade — distinto da governação de terceiros.",
+      "domain": "governance",
+      "evidence": [
+        "candidate covers all practice tokens",
+        "normalized labels share prefix/containment",
+        "practice_id derived deterministically from chapter '14-governanca-contratacao'",
+        "technical_detail occurrence linked from 010-sbd-manual/14-governanca-contratacao/addon/04-rastreabilidade-organizacional.md",
+        "technical_detail occurrence linked from 010-sbd-manual/14-governanca-contratacao/addon/11-controlos-praticas-sbd.md",
+        "technical_detail occurrence linked from 010-sbd-manual/14-governanca-contratacao/addon/13-kpis-dominio-gov.md",
+        "token overlap: ['controlo', 'sbd', 'sistematico', 'toe']",
+        "token overlap: ['governacao', 'kpis']",
+        "token overlap: ['organizacional', 'rastreabilidade']",
+        "user story title normalized to 'aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais-us-22'",
+        "user story title normalized to 'consolidacao-de-kpis-de-governacao-e-maturidade'",
+        "user story title normalized to 'controlo-sistematico-e-periodico-por-capitulo-sbd-toe'",
+        "user story title normalized to 'designacao-formal-de-owners-de-seguranca-por-aplicacao'",
+        "user story title normalized to 'formalizacao-de-modelo-de-governacao-por-nivel-de-risco'",
+        "user story title normalized to 'kpis-de-governacao'",
+        "user story title normalized to 'rastreabilidade-organizacional'",
+        "user story title normalized to 'repositorio-de-conformidade-por-aplicacao-controlo-sistematico'",
+        "user story title normalized to 'validacao-periodica-de-aplicacoes-ciclo-de-conformidade'"
+      ],
+      "name": "Governação organizacional, ownership e conformidade",
+      "name_en": "Governacao Organizacional Ownership And Conformidade",
+      "receives_requirement_categories": [
+        "GOV"
+      ],
+      "receives_requirements_primary": [
+        "GOV-001",
+        "GOV-002",
+        "GOV-003",
+        "GOV-008",
+        "GOV-010",
+        "GOV-011",
+        "GOV-012"
+      ],
+      "receives_requirements_secondary": [
+        "CLA-007",
+        "GOV-009"
+      ],
+      "resolution_order": 14,
+      "source_practice_ids": [
+        "14-governanca-contratacao:aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais-us-22",
+        "14-governanca-contratacao:consolidacao-de-kpis-de-governacao-e-maturidade",
+        "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+        "14-governanca-contratacao:designacao-formal-de-owners-de-seguranca-por-aplicacao",
+        "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+        "14-governanca-contratacao:kpis-de-governacao",
+        "14-governanca-contratacao:rastreabilidade-organizacional",
+        "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+        "14-governanca-contratacao:validacao-periodica-de-aplicacoes-ciclo-de-conformidade"
+      ],
+      "status": "new",
       "warnings": []
     },
     {
@@ -930,16 +1289,18 @@
         "Validação de impacto no negócio",
         "Validação e Evidência no Threat Modeling"
       ],
+      "anchor_kind": "practice",
       "applicable_levels": {
         "L1": false,
         "L2": true,
         "L3": true
       },
       "applicable_levels_provenance": {
-        "min_link_confidence": 0.98,
+        "min_link_confidence": 0.8,
         "mode": "derived",
-        "n_links": 8,
+        "n_links": 9,
         "source_requirement_ids": [
+          "REQ-005",
           "THR-001",
           "THR-002",
           "THR-003",
@@ -965,9 +1326,13 @@
       "chapter_ids": [
         "03-threat-modeling"
       ],
+      "cited_chapter_ids": [],
       "confidence": 0.95,
       "control_id": "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0",
       "control_type": "governance",
+      "defining_chapter_ids": [
+        "03-threat-modeling"
+      ],
       "description": "Mantém modelos de ameaça, revisões formais e decisões de risco rastreáveis ao longo do ciclo de vida.",
       "domain": "governance",
       "evidence": [
@@ -1010,6 +1375,10 @@
       ],
       "name": "Threat modeling e gestão de risco",
       "name_en": "Threat Modeling And Management Of Risk",
+      "receives_requirement_categories": [],
+      "receives_requirements_primary": [],
+      "receives_requirements_secondary": [],
+      "resolution_order": 2,
       "source_practice_ids": [
         "03-threat-modeling:aplicacao-linddun-quando-existir-tratamento-de-dados-pessoais-novo",
         "03-threat-modeling:aprovacao-formal-do-threat-model-baseline-e-revisoes",
@@ -1027,68 +1396,131 @@
         "03-threat-modeling:validacao-de-arquitetura-com-threat-modeling",
         "03-threat-modeling:validacao-de-impacto-no-negocio"
       ],
+      "status": "existing",
       "warnings": []
     },
     {
       "abstraction_level": "foundational",
       "aliases": [
-        "*Rollback* e salvaguarda de *destroy*",
-        "Aprovação formal e auditoria periódica das políticas organizacionais {#us-22}",
-        "Builders e Runners Ephemerais, Assinados e com Auditoria",
-        "Ciclo contínuo de revisão e reavaliação de exceções",
-        "Construção de imagens a partir de bases seguras, minimalistas e pinned por digest",
-        "Controlo Sistemático das Práticas do SbD-ToE",
-        "Controlo e validação de drift operacional",
-        "Controlo sistemático e periódico por capítulo SbD-ToE",
-        "Designação formal de owners de segurança por aplicação",
-        "Enforcement automático",
-        "Enforcement automático de políticas",
-        "Enforcement automático de políticas de segurança no pipeline",
-        "Enforcement de políticas: OPA, Sentinel, Conftest",
-        "Evidência operacional auditável",
-        "Exceções temporárias a findings/policies com TTL, compensações e revalidação",
-        "Formalização de modelo de governação por nível de risco",
-        "Garantia de rastreabilidade completa entre código, recursos e ambientes",
-        "Gestão de segredos e identidades para IaC",
-        "Governação de Registries com Allowlist e Digest-Only",
-        "Imagens Base Seguras e Minimalistas",
-        "Isolamento de GPU e separação de workloads de inferência sensíveis",
         "Janela de mudança e aprovações por papel",
-        "Modelo de Rastreabilidade Organizacional",
-        "Monitorização e Reação a Incidentes de Runtime",
-        "Perfis seccomp/AppArmor e verificação de drift de hardening",
         "Preparação Técnica e Validação de Contractors pré-Acesso",
-        "Processo formal de exceções com alçadas por nível de risco",
-        "Promoção por estágios com aprovação explícita e revalidação por ambiente",
         "RBAC Mínimo e ServiceAccounts Dedicadas",
-        "Rastreabilidade *end-to-end*",
-        "Rastreabilidade ficheiro → recurso → ambiente",
-        "Rastreabilidade organizacional",
-        "Rastreabilidade, versionamento e naming",
-        "Release gates específicos para sistemas com agentes AI {#us-18}",
-        "Repositório de conformidade por aplicação (controlo sistemático)",
-        "Reprodutibilidade de incidentes em runtime",
-        "Retenção e limpeza de imagens com renovação periódica por SLA",
         "Revisão Trimestral de Acesso de Contractors (Least Privilege)",
-        "Sandboxing Avançado com gVisor/Kata para Workloads Críticas",
-        "Segregação de Ambientes e Validação Operacional",
         "Segregação de ambientes, tagging e permissões mínimas",
-        "Segregação rigorosa e versionamento",
         "Segregação rigorosa e versionamento de ambientes",
-        "Separação entre ação automática e autorização irreversível",
-        "Trilho de Formação Obrigatória pré-Acesso (Contractors)",
-        "Usar imagens base minimalistas, mantidas e verificadas.",
-        "Validação automática de vulnerabilidades em imagens no pipeline CI/CD",
-        "Validação periódica de aplicações (ciclo de conformidade)",
-        "Versionamento semântico e *changelog* técnico"
+        "Separação entre ação automática e autorização irreversível"
       ],
+      "anchor_kind": "practice",
       "applicable_levels": {
         "L1": true,
         "L2": true,
         "L3": true
       },
       "applicable_levels_provenance": {
-        "min_link_confidence": 0.54,
+        "min_link_confidence": 0.8,
+        "mode": "derived",
+        "n_links": 4,
+        "source_requirement_ids": [
+          "CFG-004",
+          "DST-001",
+          "DST-005",
+          "GOV-014"
+        ],
+        "via": "requirement_control_links"
+      },
+      "applicable_lifecycle_phases": [
+        "design",
+        "build",
+        "deploy",
+        "operate"
+      ],
+      "artifact_types": [
+        "access_review",
+        "approval_record",
+        "identity_binding"
+      ],
+      "chapter_ids": [
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "14-governanca-contratacao"
+      ],
+      "cited_chapter_ids": [
+        "09-containers-imagens",
+        "11-deploy-seguro"
+      ],
+      "confidence": 0.9499999999999998,
+      "control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+      "control_type": "preventive",
+      "defining_chapter_ids": [
+        "08-iac-infraestrutura",
+        "14-governanca-contratacao"
+      ],
+      "description": "Controla identidades, privilégios mínimos e segregação de acesso de pessoas e workloads em toolchains e operações (ownership de acessos e contas); a governação organizacional do cap. 14 e o hardening do cap. 09 vivem noutros controlos desde v2.1.",
+      "domain": "identity",
+      "evidence": [
+        "practice_id derived deterministically from chapter '08-iac-infraestrutura'",
+        "practice_id derived deterministically from chapter '09-containers-imagens'",
+        "practice_id derived deterministically from chapter '11-deploy-seguro'",
+        "practice_id derived deterministically from chapter '14-governanca-contratacao'",
+        "summary occurrence linked from 010-sbd-manual/08-iac-infraestrutura/intro.md",
+        "token overlap: ['ambiente', 'segregacao']",
+        "user story title normalized to 'janela-de-mudanca-e-aprovacoes-por-papel'",
+        "user story title normalized to 'preparacao-tecnica-e-validacao-de-contractors-pre-acesso'",
+        "user story title normalized to 'rbac-minimo-e-serviceaccounts-dedicadas'",
+        "user story title normalized to 'revisao-trimestral-de-acesso-de-contractors-least-privilege'",
+        "user story title normalized to 'segregacao-de-ambientes-tagging-e-permissoes-minimas'",
+        "user story title normalized to 'separacao-entre-acao-automatica-e-autorizacao-irreversivel'"
+      ],
+      "name": "Gestão de identidades, acessos e ownership",
+      "name_en": "Management Of Identidades Acessos And Ownership",
+      "receives_requirement_categories": [],
+      "receives_requirements_primary": [],
+      "receives_requirements_secondary": [],
+      "resolution_order": 16,
+      "source_practice_ids": [
+        "08-iac-infraestrutura:janela-de-mudanca-e-aprovacoes-por-papel",
+        "08-iac-infraestrutura:segregacao-de-ambientes-tagging-e-permissoes-minimas",
+        "09-containers-imagens:rbac-minimo-e-serviceaccounts-dedicadas",
+        "11-deploy-seguro:separacao-entre-acao-automatica-e-autorizacao-irreversivel",
+        "14-governanca-contratacao:preparacao-tecnica-e-validacao-de-contractors-pre-acesso",
+        "14-governanca-contratacao:revisao-trimestral-de-acesso-de-contractors-least-privilege"
+      ],
+      "status": "existing",
+      "warnings": []
+    },
+    {
+      "abstraction_level": "technical",
+      "aliases": [
+        "Autenticação e autorização de chamadas API",
+        "Autenticação e identidade aplicacional",
+        "Autenticação federada (SAML/OIDC)",
+        "Autenticação multifactor (MFA)",
+        "Autorização baseada em atributos (ABAC)",
+        "Controlo de acesso RBAC",
+        "Expiração automática de sessão",
+        "Gestão de sessões e tokens",
+        "Identificadores de sessão imprevisíveis",
+        "Ligação da sessão ao contexto do cliente",
+        "Logout e revogação de sessão",
+        "Política de passwords",
+        "Princípio do menor privilégio",
+        "Protecção contra brute force",
+        "Reautenticação para alterações críticas",
+        "Revisão periódica de permissões",
+        "Revogação de acessos em tempo real",
+        "Separação de perfis",
+        "Step-up para acções sensíveis",
+        "Tokens JWT com scope, TTL e revogação"
+      ],
+      "anchor_kind": "catalogue",
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "applicable_levels_provenance": {
+        "min_link_confidence": 0.8,
         "mode": "derived",
         "n_links": 32,
         "source_requirement_ids": [
@@ -1102,20 +1534,20 @@
           "ACC-008",
           "ACC-009",
           "ACC-010",
+          "API-001",
+          "API-004",
+          "AUT-001",
+          "AUT-002",
+          "AUT-003",
+          "AUT-004",
+          "AUT-005",
+          "AUT-006",
           "AUT-007",
           "AUT-008",
-          "CNT-001",
-          "CNT-002",
-          "CNT-004",
-          "CNT-010",
-          "CNT-011",
-          "CNT-012",
-          "GOV-002",
-          "GOV-003",
-          "GOV-006",
-          "GOV-008",
-          "GOV-010",
-          "GOV-014",
+          "AUT-009",
+          "AUT-010",
+          "ENC-004",
+          "INT-002",
           "SES-001",
           "SES-002",
           "SES-003",
@@ -1130,135 +1562,78 @@
       "applicable_lifecycle_phases": [
         "design",
         "develop",
-        "build",
-        "deploy",
+        "test",
         "operate"
       ],
       "artifact_types": [
         "access_review",
-        "approval_record",
-        "artifact_provenance",
-        "artifact_signature",
         "identity_binding",
-        "pipeline_config",
-        "secret_config"
+        "log_stream",
+        "test_report",
+        "validation_evidence"
       ],
       "chapter_ids": [
-        "08-iac-infraestrutura",
-        "09-containers-imagens",
-        "11-deploy-seguro",
-        "14-governanca-contratacao"
+        "02-requisitos-seguranca"
       ],
-      "confidence": 0.95,
-      "control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+      "cited_chapter_ids": [
+        "04-arquitetura-segura",
+        "06-desenvolvimento-seguro"
+      ],
+      "confidence": null,
+      "control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
       "control_type": "preventive",
-      "description": "Controla identidades, privilégios mínimos, ownership e segregação de acesso em toolchains e operações.",
+      "defining_chapter_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "description": "Garante que só principals legítimos — humanos ou não-humanos — acedem à aplicação, com autenticação proporcional à sensibilidade, autorização por privilégio mínimo e ciclo de vida de sessões e tokens controlado.",
       "domain": "identity",
-      "evidence": [
-        "candidate covers all practice tokens",
-        "normalized labels share prefix/containment",
-        "practice_id derived deterministically from chapter '08-iac-infraestrutura'",
-        "practice_id derived deterministically from chapter '09-containers-imagens'",
-        "practice_id derived deterministically from chapter '11-deploy-seguro'",
-        "practice_id derived deterministically from chapter '14-governanca-contratacao'",
-        "summary occurrence linked from 010-sbd-manual/08-iac-infraestrutura/intro.md",
-        "summary occurrence linked from 010-sbd-manual/09-containers-imagens/intro.md",
-        "technical_detail occurrence linked from 010-sbd-manual/09-containers-imagens/addon/01-imagens-base.md",
-        "technical_detail occurrence linked from 010-sbd-manual/11-deploy-seguro/addon/05-monitorizacao-e-reacao.md",
-        "technical_detail occurrence linked from 010-sbd-manual/11-deploy-seguro/addon/08-segregacao-e-validacao-operacional.md",
-        "technical_detail occurrence linked from 010-sbd-manual/14-governanca-contratacao/addon/04-rastreabilidade-organizacional.md",
-        "technical_detail occurrence linked from 010-sbd-manual/14-governanca-contratacao/addon/11-controlos-praticas-sbd.md",
-        "token overlap: ['ambiente', 'rastreabilidade', 'recurso']",
-        "token overlap: ['ambiente', 'segregacao']",
-        "token overlap: ['automatico', 'enforcement', 'politica']",
-        "token overlap: ['automatico', 'enforcement']",
-        "token overlap: ['base', 'imagen', 'minimalista', 'segura']",
-        "token overlap: ['base', 'imagen', 'minimalista']",
-        "token overlap: ['controlo', 'sbd', 'sistematico', 'toe']",
-        "token overlap: ['enforcement', 'politica']",
-        "token overlap: ['incidente', 'runtime']",
-        "token overlap: ['operacional', 'validacao']",
-        "token overlap: ['organizacional', 'rastreabilidade']",
-        "token overlap: ['versionamento']",
-        "user story title normalized to 'aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais-us-22'",
-        "user story title normalized to 'builders-e-runners-ephemerais-assinados-e-com-auditoria'",
-        "user story title normalized to 'ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes'",
-        "user story title normalized to 'construcao-de-imagens-a-partir-de-bases-seguras-minimalistas-e-pinned-por-digest'",
-        "user story title normalized to 'controlo-e-validacao-de-drift-operacional'",
-        "user story title normalized to 'controlo-sistematico-e-periodico-por-capitulo-sbd-toe'",
-        "user story title normalized to 'designacao-formal-de-owners-de-seguranca-por-aplicacao'",
-        "user story title normalized to 'enforcement-automatico-de-politicas'",
-        "user story title normalized to 'evidencia-operacional-auditavel'",
-        "user story title normalized to 'excecoes-temporarias-a-findings-policies-com-ttl-compensacoes-e-revalidacao'",
-        "user story title normalized to 'formalizacao-de-modelo-de-governacao-por-nivel-de-risco'",
-        "user story title normalized to 'gestao-de-segredos-e-identidades-para-iac'",
-        "user story title normalized to 'governacao-de-registries-com-allowlist-e-digest-only'",
-        "user story title normalized to 'isolamento-de-gpu-e-separacao-de-workloads-de-inferencia-sensiveis'",
-        "user story title normalized to 'janela-de-mudanca-e-aprovacoes-por-papel'",
-        "user story title normalized to 'perfis-seccomp-apparmor-e-verificacao-de-drift-de-hardening'",
-        "user story title normalized to 'preparacao-tecnica-e-validacao-de-contractors-pre-acesso'",
-        "user story title normalized to 'processo-formal-de-excecoes-com-alcadas-por-nivel-de-risco'",
-        "user story title normalized to 'promocao-por-estagios-com-aprovacao-explicita-e-revalidacao-por-ambiente'",
-        "user story title normalized to 'rastreabilidade-end-to-end'",
-        "user story title normalized to 'rastreabilidade-ficheiro-recurso-ambiente'",
-        "user story title normalized to 'rastreabilidade-organizacional'",
-        "user story title normalized to 'rastreabilidade-versionamento-e-naming'",
-        "user story title normalized to 'rbac-minimo-e-serviceaccounts-dedicadas'",
-        "user story title normalized to 'release-gates-especificos-para-sistemas-com-agentes-ai-us-18'",
-        "user story title normalized to 'repositorio-de-conformidade-por-aplicacao-controlo-sistematico'",
-        "user story title normalized to 'reprodutibilidade-de-incidentes-em-runtime'",
-        "user story title normalized to 'retencao-e-limpeza-de-imagens-com-renovacao-periodica-por-sla'",
-        "user story title normalized to 'revisao-trimestral-de-acesso-de-contractors-least-privilege'",
-        "user story title normalized to 'rollback-e-salvaguarda-de-destroy'",
-        "user story title normalized to 'sandboxing-avancado-com-gvisor-kata-para-workloads-criticas'",
-        "user story title normalized to 'segregacao-de-ambientes-tagging-e-permissoes-minimas'",
-        "user story title normalized to 'separacao-entre-acao-automatica-e-autorizacao-irreversivel'",
-        "user story title normalized to 'trilho-de-formacao-obrigatoria-pre-acesso-contractors'",
-        "user story title normalized to 'validacao-automatica-de-vulnerabilidades-em-imagens-no-pipeline-ci-cd'",
-        "user story title normalized to 'validacao-periodica-de-aplicacoes-ciclo-de-conformidade'",
-        "user story title normalized to 'versionamento-semantico-e-changelog-tecnico'"
+      "evidence": [],
+      "name": "Identidade, autenticação e sessões aplicacionais",
+      "name_en": "Identidade Autenticacao And Sessoes Aplicacionais",
+      "receives_requirement_categories": [
+        "ACC",
+        "AUT",
+        "SES"
       ],
-      "name": "Gestão de identidades, acessos e ownership",
-      "name_en": "Management Of Identidades Acessos And Ownership",
-      "source_practice_ids": [
-        "08-iac-infraestrutura:enforcement-automatico-de-politicas",
-        "08-iac-infraestrutura:gestao-de-segredos-e-identidades-para-iac",
-        "08-iac-infraestrutura:janela-de-mudanca-e-aprovacoes-por-papel",
-        "08-iac-infraestrutura:rastreabilidade-ficheiro-recurso-ambiente",
-        "08-iac-infraestrutura:rastreabilidade-versionamento-e-naming",
-        "08-iac-infraestrutura:rollback-e-salvaguarda-de-destroy",
-        "08-iac-infraestrutura:segregacao-de-ambientes-tagging-e-permissoes-minimas",
-        "09-containers-imagens:builders-e-runners-ephemerais-assinados-e-com-auditoria",
-        "09-containers-imagens:construcao-de-imagens-a-partir-de-bases-seguras-minimalistas-e-pinned-por-digest",
-        "09-containers-imagens:excecoes-temporarias-a-findings-policies-com-ttl-compensacoes-e-revalidacao",
-        "09-containers-imagens:governacao-de-registries-com-allowlist-e-digest-only",
-        "09-containers-imagens:isolamento-de-gpu-e-separacao-de-workloads-de-inferencia-sensiveis",
-        "09-containers-imagens:perfis-seccomp-apparmor-e-verificacao-de-drift-de-hardening",
-        "09-containers-imagens:promocao-por-estagios-com-aprovacao-explicita-e-revalidacao-por-ambiente",
-        "09-containers-imagens:rbac-minimo-e-serviceaccounts-dedicadas",
-        "09-containers-imagens:retencao-e-limpeza-de-imagens-com-renovacao-periodica-por-sla",
-        "09-containers-imagens:sandboxing-avancado-com-gvisor-kata-para-workloads-criticas",
-        "09-containers-imagens:validacao-automatica-de-vulnerabilidades-em-imagens-no-pipeline-ci-cd",
-        "11-deploy-seguro:controlo-e-validacao-de-drift-operacional",
-        "11-deploy-seguro:evidencia-operacional-auditavel",
-        "11-deploy-seguro:rastreabilidade-end-to-end",
-        "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
-        "11-deploy-seguro:reprodutibilidade-de-incidentes-em-runtime",
-        "11-deploy-seguro:separacao-entre-acao-automatica-e-autorizacao-irreversivel",
-        "11-deploy-seguro:versionamento-semantico-e-changelog-tecnico",
-        "14-governanca-contratacao:aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais-us-22",
-        "14-governanca-contratacao:ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
-        "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
-        "14-governanca-contratacao:designacao-formal-de-owners-de-seguranca-por-aplicacao",
-        "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
-        "14-governanca-contratacao:preparacao-tecnica-e-validacao-de-contractors-pre-acesso",
-        "14-governanca-contratacao:processo-formal-de-excecoes-com-alcadas-por-nivel-de-risco",
-        "14-governanca-contratacao:rastreabilidade-organizacional",
-        "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
-        "14-governanca-contratacao:revisao-trimestral-de-acesso-de-contractors-least-privilege",
-        "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
-        "14-governanca-contratacao:validacao-periodica-de-aplicacoes-ciclo-de-conformidade"
+      "receives_requirements_primary": [
+        "ACC-001",
+        "ACC-002",
+        "ACC-003",
+        "ACC-004",
+        "ACC-005",
+        "ACC-006",
+        "ACC-007",
+        "ACC-008",
+        "ACC-009",
+        "ACC-010",
+        "API-001",
+        "AUT-001",
+        "AUT-002",
+        "AUT-003",
+        "AUT-004",
+        "AUT-005",
+        "AUT-006",
+        "AUT-007",
+        "AUT-008",
+        "AUT-009",
+        "SES-001",
+        "SES-002",
+        "SES-003",
+        "SES-004",
+        "SES-005",
+        "SES-006",
+        "SES-007",
+        "SES-008"
       ],
+      "receives_requirements_secondary": [
+        "ARC-015",
+        "AUT-010",
+        "ENC-004",
+        "REQ-AGN-003"
+      ],
+      "resolution_order": 19,
+      "source_practice_ids": [],
+      "status": "new",
       "warnings": []
     },
     {
@@ -1270,24 +1645,34 @@
         "*Rollback* estruturado por tipo (binário, configuração, BD, infra)",
         "*Rollback* rápido e testado",
         "Controlo de execução com *feature flags*",
+        "Controlo e validação de drift operacional",
         "Deploy apenas de artefactos assinados",
+        "Evidência operacional auditável",
         "Modelo de Controlo de Execução em Runtime",
+        "Monitorização e Reação a Incidentes de Runtime",
         "Monitorização pós-deploy",
+        "Rastreabilidade *end-to-end*",
+        "Release gates específicos para sistemas com agentes AI {#us-18}",
+        "Reprodutibilidade de incidentes em runtime",
+        "Segregação de Ambientes e Validação Operacional",
         "Validação em *staging* antes da promoção",
         "Validação humana obrigatória após deploy automatizado",
         "Validações de Segurança antes de Deploy",
-        "Validações técnicas pré-deploy com *gates* condicionais"
+        "Validações técnicas pré-deploy com *gates* condicionais",
+        "Versionamento semântico e *changelog* técnico"
       ],
+      "anchor_kind": "practice",
       "applicable_levels": {
         "L1": true,
         "L2": true,
         "L3": true
       },
       "applicable_levels_provenance": {
-        "min_link_confidence": 0.87,
+        "min_link_confidence": 0.8,
         "mode": "derived",
-        "n_links": 11,
+        "n_links": 14,
         "source_requirement_ids": [
+          "CFG-001",
           "DPL-001",
           "DPL-002",
           "DPL-003",
@@ -1298,7 +1683,9 @@
           "DPL-008",
           "DPL-009",
           "DPL-010",
-          "DPL-011"
+          "DPL-011",
+          "DST-005",
+          "DST-006"
         ],
         "via": "requirement_control_links"
       },
@@ -1317,87 +1704,119 @@
       "chapter_ids": [
         "11-deploy-seguro"
       ],
+      "cited_chapter_ids": [],
       "confidence": 0.95,
       "control_id": "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0",
       "control_type": "corrective",
+      "defining_chapter_ids": [
+        "11-deploy-seguro"
+      ],
       "description": "Controla promoção, rollback e validação pós-deploy para reduzir impacto operacional de alterações.",
       "domain": "infrastructure",
       "evidence": [
         "practice_id derived deterministically from chapter '11-deploy-seguro'",
         "technical_detail occurrence linked from 010-sbd-manual/11-deploy-seguro/addon/01-modelo-controle-execucao.md",
         "technical_detail occurrence linked from 010-sbd-manual/11-deploy-seguro/addon/04-validacoes-pre-deploy.md",
+        "technical_detail occurrence linked from 010-sbd-manual/11-deploy-seguro/addon/05-monitorizacao-e-reacao.md",
+        "technical_detail occurrence linked from 010-sbd-manual/11-deploy-seguro/addon/08-segregacao-e-validacao-operacional.md",
         "token overlap: ['ante', 'validacao']",
         "token overlap: ['controlo', 'execucao']",
+        "token overlap: ['incidente', 'runtime']",
+        "token overlap: ['operacional', 'validacao']",
         "user story title normalized to 'controlo-de-execucao-com-feature-flags'",
+        "user story title normalized to 'controlo-e-validacao-de-drift-operacional'",
         "user story title normalized to 'deploy-apenas-de-artefactos-assinados'",
         "user story title normalized to 'deploy-progressivo-com-estrategias-canary-blue-green'",
+        "user story title normalized to 'evidencia-operacional-auditavel'",
         "user story title normalized to 'feature-flags-avaliadas-no-backend-como-fronteira-de-confianca'",
         "user story title normalized to 'gates-de-aprovacao-no-deploy'",
         "user story title normalized to 'monitorizacao-pos-deploy'",
+        "user story title normalized to 'rastreabilidade-end-to-end'",
+        "user story title normalized to 'release-gates-especificos-para-sistemas-com-agentes-ai-us-18'",
+        "user story title normalized to 'reprodutibilidade-de-incidentes-em-runtime'",
         "user story title normalized to 'rollback-estruturado-por-tipo-binario-configuracao-bd-infra'",
         "user story title normalized to 'rollback-rapido-e-testado'",
         "user story title normalized to 'validacao-em-staging-antes-da-promocao'",
         "user story title normalized to 'validacao-humana-obrigatoria-apos-deploy-automatizado'",
-        "user story title normalized to 'validacoes-tecnicas-pre-deploy-com-gates-condicionais'"
+        "user story title normalized to 'validacoes-tecnicas-pre-deploy-com-gates-condicionais'",
+        "user story title normalized to 'versionamento-semantico-e-changelog-tecnico'"
       ],
       "name": "Deploy seguro e reversível",
       "name_en": "Deploy Secure And Reversivel",
+      "receives_requirement_categories": [],
+      "receives_requirements_primary": [],
+      "receives_requirements_secondary": [],
+      "resolution_order": 11,
       "source_practice_ids": [
         "11-deploy-seguro:controlo-de-execucao-com-feature-flags",
+        "11-deploy-seguro:controlo-e-validacao-de-drift-operacional",
         "11-deploy-seguro:deploy-apenas-de-artefactos-assinados",
         "11-deploy-seguro:deploy-progressivo-com-estrategias-canary-blue-green",
+        "11-deploy-seguro:evidencia-operacional-auditavel",
         "11-deploy-seguro:feature-flags-avaliadas-no-backend-como-fronteira-de-confianca",
         "11-deploy-seguro:gates-de-aprovacao-no-deploy",
         "11-deploy-seguro:monitorizacao-pos-deploy",
+        "11-deploy-seguro:rastreabilidade-end-to-end",
+        "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
+        "11-deploy-seguro:reprodutibilidade-de-incidentes-em-runtime",
         "11-deploy-seguro:rollback-estruturado-por-tipo-binario-configuracao-bd-infra",
         "11-deploy-seguro:rollback-rapido-e-testado",
         "11-deploy-seguro:validacao-em-staging-antes-da-promocao",
         "11-deploy-seguro:validacao-humana-obrigatoria-apos-deploy-automatizado",
-        "11-deploy-seguro:validacoes-tecnicas-pre-deploy-com-gates-condicionais"
+        "11-deploy-seguro:validacoes-tecnicas-pre-deploy-com-gates-condicionais",
+        "11-deploy-seguro:versionamento-semantico-e-changelog-tecnico"
       ],
+      "status": "existing",
       "warnings": []
     },
     {
       "abstraction_level": "technical",
       "aliases": [
+        "*Rollback* e salvaguarda de *destroy*",
         "Assinatura e Proveniência de artefactos IaC",
         "Backend remoto, locking e rastreabilidade",
-        "Catálogo de Requisitos Aplicacionais",
         "Catálogo de módulos internos certificados, pinados por versão e com origem auditável",
-        "Catálogo de requisitos do projeto (criação e manutenção)",
         "Controlo estrito da origem, integridade e versão dos módulos utilizados",
         "Determinismo e reprodutibilidade do `plan`",
         "Deteção e correção de *drift*",
+        "Enforcement automático",
+        "Enforcement automático de políticas",
+        "Enforcement automático de políticas de segurança no pipeline",
+        "Enforcement de políticas: OPA, Sentinel, Conftest",
         "Excepções em IaC",
         "Exceções formais em IaC",
+        "Garantia de rastreabilidade completa entre código, recursos e ambientes",
         "Governança e origem confiável de módulos",
         "Minimização de contexto e proteção de informação sensível em IaC",
         "Proibição de `apply` manual/local fora do pipeline",
+        "Rastreabilidade ficheiro → recurso → ambiente",
+        "Rastreabilidade, versionamento e naming",
         "Reabertura da revisão de hardening por integridade do baseline",
         "Revisão formal de plan antes de apply",
         "Revisão formal e humana do plan",
         "Revisão formal e humana do plan, com critérios de impacto claramente definidos",
         "Revisão periódica de templates, módulos, políticas e exceções para detetar erosão do baseline, drift ou desvio silencioso da postura de hardening pretendida",
+        "Segregação rigorosa e versionamento",
         "Separação de funções (SoD) e controlo de execução de `apply`",
         "Validações automáticas e bloqueantes",
         "Validações automáticas e bloqueantes (lint, segurança, policies) antes de qualquer apply",
         "Validações automáticas integradas"
       ],
+      "anchor_kind": "practice",
       "applicable_levels": {
         "L1": true,
         "L2": true,
         "L3": true
       },
       "applicable_levels_provenance": {
-        "min_link_confidence": 0.84,
+        "min_link_confidence": 0.87,
         "mode": "derived",
-        "n_links": 18,
+        "n_links": 16,
         "source_requirement_ids": [
+          "CFG-001",
           "CFG-002",
+          "CFG-004",
           "CFG-007",
-          "DST-002",
-          "DST-005",
-          "DST-006",
           "IAC-001",
           "IAC-002",
           "IAC-003",
@@ -1408,7 +1827,6 @@
           "IAC-008",
           "IAC-009",
           "IAC-010",
-          "IAC-011",
           "IAC-012",
           "IAC-013"
         ],
@@ -1427,58 +1845,76 @@
         "policy_report"
       ],
       "chapter_ids": [
-        "02-requisitos-seguranca",
         "08-iac-infraestrutura"
       ],
+      "cited_chapter_ids": [],
       "confidence": 0.95,
       "control_id": "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
       "control_type": "preventive",
+      "defining_chapter_ids": [
+        "08-iac-infraestrutura"
+      ],
       "description": "Endurece IaC com rastreabilidade de planos, validações automáticas, separação de funções e controlo de drift.",
       "domain": "infrastructure",
       "evidence": [
-        "practice_id derived deterministically from chapter '02-requisitos-seguranca'",
+        "candidate covers all practice tokens",
+        "normalized labels share prefix/containment",
         "practice_id derived deterministically from chapter '08-iac-infraestrutura'",
         "short candidate anchored by a strong shared domain token",
         "summary occurrence linked from 010-sbd-manual/08-iac-infraestrutura/intro.md",
-        "technical_detail occurrence linked from 010-sbd-manual/02-requisitos-seguranca/addon/01-catalogo-requisitos.md",
         "technical_detail occurrence linked from 010-sbd-manual/08-iac-infraestrutura/addon/09-gestao-excecoes.md",
+        "token overlap: ['ambiente', 'rastreabilidade', 'recurso']",
         "token overlap: ['automatica', 'validacao']",
+        "token overlap: ['automatico', 'enforcement', 'politica']",
+        "token overlap: ['automatico', 'enforcement']",
         "token overlap: ['baseline', 'hardening', 'revisao']",
-        "token overlap: ['catalogo', 'requisito']",
+        "token overlap: ['enforcement', 'politica']",
         "token overlap: ['formal', 'plan', 'revisao']",
         "token overlap: ['iac']",
         "token overlap: ['modulo', 'origem']",
+        "token overlap: ['versionamento']",
         "user story title normalized to 'assinatura-e-proveniencia-de-artefactos-iac'",
         "user story title normalized to 'backend-remoto-locking-e-rastreabilidade'",
-        "user story title normalized to 'catalogo-de-requisitos-do-projeto-criacao-e-manutencao'",
         "user story title normalized to 'detecao-e-correcao-de-drift'",
         "user story title normalized to 'determinismo-e-reprodutibilidade-do-plan'",
+        "user story title normalized to 'enforcement-automatico-de-politicas'",
         "user story title normalized to 'excecoes-formais-em-iac'",
         "user story title normalized to 'governanca-e-origem-confiavel-de-modulos'",
         "user story title normalized to 'minimizacao-de-contexto-e-protecao-de-informacao-sensivel-em-iac'",
         "user story title normalized to 'proibicao-de-apply-manual-local-fora-do-pipeline'",
+        "user story title normalized to 'rastreabilidade-ficheiro-recurso-ambiente'",
+        "user story title normalized to 'rastreabilidade-versionamento-e-naming'",
         "user story title normalized to 'reabertura-da-revisao-de-hardening-por-integridade-do-baseline'",
         "user story title normalized to 'revisao-formal-de-plan-antes-de-apply'",
+        "user story title normalized to 'rollback-e-salvaguarda-de-destroy'",
         "user story title normalized to 'separacao-de-funcoes-sod-e-controlo-de-execucao-de-apply'",
         "user story title normalized to 'validacoes-automaticas-integradas'"
       ],
       "name": "Infraestrutura como código governada",
       "name_en": "Infraestrutura Como Code Governada",
+      "receives_requirement_categories": [],
+      "receives_requirements_primary": [],
+      "receives_requirements_secondary": [],
+      "resolution_order": 8,
       "source_practice_ids": [
-        "02-requisitos-seguranca:catalogo-de-requisitos-do-projeto-criacao-e-manutencao",
         "08-iac-infraestrutura:assinatura-e-proveniencia-de-artefactos-iac",
         "08-iac-infraestrutura:backend-remoto-locking-e-rastreabilidade",
         "08-iac-infraestrutura:detecao-e-correcao-de-drift",
         "08-iac-infraestrutura:determinismo-e-reprodutibilidade-do-plan",
+        "08-iac-infraestrutura:enforcement-automatico-de-politicas",
         "08-iac-infraestrutura:excecoes-formais-em-iac",
         "08-iac-infraestrutura:governanca-e-origem-confiavel-de-modulos",
         "08-iac-infraestrutura:minimizacao-de-contexto-e-protecao-de-informacao-sensivel-em-iac",
         "08-iac-infraestrutura:proibicao-de-apply-manual-local-fora-do-pipeline",
+        "08-iac-infraestrutura:rastreabilidade-ficheiro-recurso-ambiente",
+        "08-iac-infraestrutura:rastreabilidade-versionamento-e-naming",
         "08-iac-infraestrutura:reabertura-da-revisao-de-hardening-por-integridade-do-baseline",
         "08-iac-infraestrutura:revisao-formal-de-plan-antes-de-apply",
+        "08-iac-infraestrutura:rollback-e-salvaguarda-de-destroy",
         "08-iac-infraestrutura:separacao-de-funcoes-sod-e-controlo-de-execucao-de-apply",
         "08-iac-infraestrutura:validacoes-automaticas-integradas"
       ],
+      "status": "existing",
       "warnings": []
     },
     {
@@ -1488,21 +1924,24 @@
         "Revisão de fronteiras de confiança e integrações",
         "Segmentação de ambientes e validação de topologia como código (L3)"
       ],
+      "anchor_kind": "practice",
       "applicable_levels": {
         "L1": true,
         "L2": true,
         "L3": true
       },
       "applicable_levels_provenance": {
-        "min_link_confidence": 0.876,
+        "min_link_confidence": 0.8,
         "mode": "derived",
-        "n_links": 6,
+        "n_links": 8,
         "source_requirement_ids": [
+          "API-002",
           "ARC-001",
           "ARC-006",
           "ARC-008",
           "ARC-011",
           "ARC-013",
+          "INT-006",
           "INT-008"
         ],
         "via": "requirement_control_links"
@@ -1522,9 +1961,13 @@
       "chapter_ids": [
         "04-arquitetura-segura"
       ],
+      "cited_chapter_ids": [],
       "confidence": 0.95,
       "control_id": "CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b",
       "control_type": "preventive",
+      "defining_chapter_ids": [
+        "04-arquitetura-segura"
+      ],
       "description": "Protege fronteiras de confiança, fluxos e segmentação técnica da arquitetura com desenho verificável e controlo entre zonas sensíveis.",
       "domain": "infrastructure",
       "evidence": [
@@ -1536,10 +1979,15 @@
       ],
       "name": "Segmentação e controlo arquitetural",
       "name_en": "Segmentacao And Control Arquitetural",
+      "receives_requirement_categories": [],
+      "receives_requirements_primary": [],
+      "receives_requirements_secondary": [],
+      "resolution_order": 4,
       "source_practice_ids": [
         "04-arquitetura-segura:revisao-de-fronteiras-de-confianca-e-integracoes",
         "04-arquitetura-segura:segmentacao-de-ambientes-e-validacao-de-topologia-como-codigo-l3"
       ],
+      "status": "existing",
       "warnings": []
     },
     {
@@ -1569,17 +2017,23 @@
         "Telemetria de agentes AI em produção {#us-13}",
         "Validação e *Tuning* de Alertas"
       ],
+      "anchor_kind": "practice",
       "applicable_levels": {
         "L1": true,
         "L2": true,
         "L3": true
       },
       "applicable_levels_provenance": {
-        "min_link_confidence": 0.54,
+        "min_link_confidence": 0.8,
         "mode": "derived",
-        "n_links": 26,
+        "n_links": 31,
         "source_requirement_ids": [
+          "API-004",
+          "API-007",
           "AUT-010",
+          "CFG-007",
+          "ERR-007",
+          "INT-007",
           "LOG-001",
           "LOG-002",
           "LOG-003",
@@ -1619,9 +2073,13 @@
       "chapter_ids": [
         "12-monitorizacao-operacoes"
       ],
+      "cited_chapter_ids": [],
       "confidence": 0.9499999999999998,
       "control_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
       "control_type": "detective",
+      "defining_chapter_ids": [
+        "12-monitorizacao-operacoes"
+      ],
       "description": "Define logs, alertas, correlação e integração com resposta a incidentes para deteção operacional sustentada.",
       "domain": "monitoring",
       "evidence": [
@@ -1659,6 +2117,10 @@
       ],
       "name": "Monitorização e resposta operacional",
       "name_en": "Monitorizacao And Resposta Operacional",
+      "receives_requirement_categories": [],
+      "receives_requirements_primary": [],
+      "receives_requirements_secondary": [],
+      "resolution_order": 12,
       "source_practice_ids": [
         "12-monitorizacao-operacoes:alertas-com-slas-definidos",
         "12-monitorizacao-operacoes:classificacao-e-cobertura-de-dominios-de-monitorizacao",
@@ -1679,6 +2141,7 @@
         "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao-us-13",
         "12-monitorizacao-operacoes:validacao-e-tuning-de-alertas"
       ],
+      "status": "existing",
       "warnings": []
     },
     {
@@ -1687,27 +2150,32 @@
         "Credenciais de *deploy* isoladas por aplicação e efémeras",
         "Gestão de Segredos Fora da Imagem com OIDC e Workload Identity",
         "Gestão de segredos",
+        "Gestão de segredos e identidades para IaC",
         "Gestão e injeção segura de segredos",
         "Gestão segura de segredos no *deploy*",
         "Proibir segredos estáticos"
       ],
+      "anchor_kind": "practice",
       "applicable_levels": {
         "L1": true,
         "L2": true,
         "L3": true
       },
       "applicable_levels_provenance": {
-        "min_link_confidence": 0.7338,
+        "min_link_confidence": 0.9075,
         "mode": "derived",
-        "n_links": 3,
+        "n_links": 5,
         "source_requirement_ids": [
+          "CFG-003",
           "CFG-006",
           "CIC-003",
-          "ENC-007"
+          "ENC-007",
+          "IAC-011"
         ],
         "via": "requirement_control_links"
       },
       "applicable_lifecycle_phases": [
+        "design",
         "build",
         "deploy",
         "operate"
@@ -1718,17 +2186,26 @@
       ],
       "chapter_ids": [
         "07-cicd-seguro",
+        "08-iac-infraestrutura",
         "09-containers-imagens",
         "11-deploy-seguro"
       ],
+      "cited_chapter_ids": [],
       "confidence": 0.95,
       "control_id": "CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9",
       "control_type": "preventive",
+      "defining_chapter_ids": [
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "11-deploy-seguro"
+      ],
       "description": "Controla segredos, credenciais efémeras e identidades de workload para reduzir exposição e abuso operacional.",
       "domain": "secrets",
       "evidence": [
         "candidate covers all practice tokens",
         "practice_id derived deterministically from chapter '07-cicd-seguro'",
+        "practice_id derived deterministically from chapter '08-iac-infraestrutura'",
         "practice_id derived deterministically from chapter '09-containers-imagens'",
         "practice_id derived deterministically from chapter '11-deploy-seguro'",
         "summary occurrence linked from 010-sbd-manual/07-cicd-seguro/intro.md",
@@ -1737,17 +2214,24 @@
         "token overlap: ['segredo']",
         "user story title normalized to 'credenciais-de-deploy-isoladas-por-aplicacao-e-efemeras'",
         "user story title normalized to 'gestao-de-segredos'",
+        "user story title normalized to 'gestao-de-segredos-e-identidades-para-iac'",
         "user story title normalized to 'gestao-de-segredos-fora-da-imagem-com-oidc-e-workload-identity'",
         "user story title normalized to 'gestao-segura-de-segredos-no-deploy'"
       ],
       "name": "Gestão de segredos e identidades operacionais",
       "name_en": "Management Of Segredos And Identidades Operacionais",
+      "receives_requirement_categories": [],
+      "receives_requirements_primary": [],
+      "receives_requirements_secondary": [],
+      "resolution_order": 17,
       "source_practice_ids": [
         "07-cicd-seguro:gestao-de-segredos",
+        "08-iac-infraestrutura:gestao-de-segredos-e-identidades-para-iac",
         "09-containers-imagens:gestao-de-segredos-fora-da-imagem-com-oidc-e-workload-identity",
         "11-deploy-seguro:credenciais-de-deploy-isoladas-por-aplicacao-e-efemeras",
         "11-deploy-seguro:gestao-segura-de-segredos-no-deploy"
       ],
+      "status": "existing",
       "warnings": []
     },
     {
@@ -1778,15 +2262,16 @@
         "bots de atualização",
         "exceções"
       ],
+      "anchor_kind": "practice",
       "applicable_levels": {
         "L1": true,
         "L2": true,
         "L3": true
       },
       "applicable_levels_provenance": {
-        "min_link_confidence": 0.87,
+        "min_link_confidence": 0.92,
         "mode": "derived",
-        "n_links": 18,
+        "n_links": 17,
         "source_requirement_ids": [
           "API-006",
           "DEP-001",
@@ -1803,7 +2288,6 @@
           "DEP-012",
           "DEP-013",
           "DEP-014",
-          "DST-003",
           "DST-004",
           "DST-007"
         ],
@@ -1825,9 +2309,15 @@
         "02-requisitos-seguranca",
         "05-dependencias-sbom-sca"
       ],
+      "cited_chapter_ids": [
+        "02-requisitos-seguranca"
+      ],
       "confidence": 0.95,
       "control_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
       "control_type": "detective",
+      "defining_chapter_ids": [
+        "05-dependencias-sbom-sca"
+      ],
       "description": "Garante inventário de componentes, análise de vulnerabilidades e rastreabilidade de dependências terceiras.",
       "domain": "supply_chain",
       "evidence": [
@@ -1865,6 +2355,10 @@
       ],
       "name": "Inventário e análise de dependências",
       "name_en": "Inventario And Analysis Of Dependencias",
+      "receives_requirement_categories": [],
+      "receives_requirements_primary": [],
+      "receives_requirements_secondary": [],
+      "resolution_order": 5,
       "source_practice_ids": [
         "02-requisitos-seguranca:geracao-de-sbom-e-assinatura-de-artefactos-de-build",
         "05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
@@ -1884,6 +2378,7 @@
         "05-dependencias-sbom-sca:validacao-automatica-de-compatibilidade-de-licencas",
         "05-dependencias-sbom-sca:validacao-de-release-go-no-go"
       ],
+      "status": "existing",
       "warnings": []
     },
     {
@@ -1893,33 +2388,53 @@
         "Aprovação, depreciação e revogação de Golden Base Images (catálogo organizacional)",
         "Assinar imagens e verificar proveniência antes da execução.",
         "Assinatura e verificação de proveniência de imagens com Cosign e Rekor",
+        "Builders e Runners Ephemerais, Assinados e com Auditoria",
+        "Construção de imagens a partir de bases seguras, minimalistas e pinned por digest",
         "Enforcement Centralizado e Auditável de Políticas no Runtime",
+        "Exceções temporárias a findings/policies com TTL, compensações e revalidação",
         "Geração e Rastreabilidade de SBOM em Imagens",
         "Golden Base Images com Patching Automático",
+        "Governação de Registries com Allowlist e Digest-Only",
         "Hardening da API e do container de inferência AI",
+        "Imagens Base Seguras e Minimalistas",
         "Inferência AI Self-Hosted — Runtimes, Isolamento e Pesos",
+        "Isolamento de GPU e separação de workloads de inferência sensíveis",
         "Monitorização e Resposta a Incidentes em Runtime",
+        "Perfis seccomp/AppArmor e verificação de drift de hardening",
         "Pesos de modelo AI self-hosted tratados como ativo crítico",
+        "Promoção por estágios com aprovação explícita e revalidação por ambiente",
+        "Retenção e limpeza de imagens com renovação periódica por SLA",
         "SBOM de Containers e Rastreabilidade de Runtime",
-        "Segmentação de Rede e NetworkPolicy"
+        "Sandboxing Avançado com gVisor/Kata para Workloads Críticas",
+        "Segmentação de Rede e NetworkPolicy",
+        "Usar imagens base minimalistas, mantidas e verificadas.",
+        "Validação automática de vulnerabilidades em imagens no pipeline CI/CD"
       ],
+      "anchor_kind": "practice",
       "applicable_levels": {
         "L1": true,
         "L2": true,
         "L3": true
       },
       "applicable_levels_provenance": {
-        "min_link_confidence": 0.9016,
+        "min_link_confidence": 0.8,
         "mode": "derived",
-        "n_links": 7,
+        "n_links": 14,
         "source_requirement_ids": [
+          "CNT-001",
+          "CNT-002",
           "CNT-003",
+          "CNT-004",
           "CNT-005",
           "CNT-006",
           "CNT-007",
           "CNT-008",
           "CNT-009",
-          "CNT-010"
+          "CNT-010",
+          "CNT-011",
+          "CNT-012",
+          "DST-002",
+          "DST-007"
         ],
         "via": "requirement_control_links"
       },
@@ -1933,6 +2448,7 @@
         "artifact_provenance",
         "artifact_signature",
         "container_image",
+        "pipeline_config",
         "sbom",
         "sca_report",
         "signature_attestation"
@@ -1940,44 +2456,76 @@
       "chapter_ids": [
         "09-containers-imagens"
       ],
+      "cited_chapter_ids": [],
       "confidence": 0.95,
       "control_id": "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d",
       "control_type": "preventive",
+      "defining_chapter_ids": [
+        "09-containers-imagens"
+      ],
       "description": "Assegura hardening, assinatura, promoção controlada e políticas de runtime para imagens e workloads containerizadas.",
       "domain": "supply_chain",
       "evidence": [
         "practice_id derived deterministically from chapter '09-containers-imagens'",
         "summary occurrence linked from 010-sbd-manual/09-containers-imagens/intro.md",
+        "technical_detail occurrence linked from 010-sbd-manual/09-containers-imagens/addon/01-imagens-base.md",
         "technical_detail occurrence linked from 010-sbd-manual/09-containers-imagens/addon/06-inventario-sbom.md",
         "technical_detail occurrence linked from 010-sbd-manual/09-containers-imagens/addon/12-self-hosted-inference.md",
         "token overlap: ['ai', 'hosted', 'peso', 'self']",
         "token overlap: ['assinatura', 'imagen', 'proveniencia']",
+        "token overlap: ['base', 'imagen', 'minimalista', 'segura']",
+        "token overlap: ['base', 'imagen', 'minimalista']",
         "token overlap: ['rastreabilidade', 'sbom']",
         "user story title normalized to 'aplicacao-de-politicas-formais-de-seguranca-no-runtime-com-opa-kyverno'",
         "user story title normalized to 'aprovacao-depreciacao-e-revogacao-de-golden-base-images-catalogo-organizacional'",
         "user story title normalized to 'assinatura-e-verificacao-de-proveniencia-de-imagens-com-cosign-e-rekor'",
+        "user story title normalized to 'builders-e-runners-ephemerais-assinados-e-com-auditoria'",
+        "user story title normalized to 'construcao-de-imagens-a-partir-de-bases-seguras-minimalistas-e-pinned-por-digest'",
         "user story title normalized to 'enforcement-centralizado-e-auditavel-de-politicas-no-runtime'",
+        "user story title normalized to 'excecoes-temporarias-a-findings-policies-com-ttl-compensacoes-e-revalidacao'",
         "user story title normalized to 'geracao-e-rastreabilidade-de-sbom-em-imagens'",
         "user story title normalized to 'golden-base-images-com-patching-automatico'",
+        "user story title normalized to 'governacao-de-registries-com-allowlist-e-digest-only'",
         "user story title normalized to 'hardening-da-api-e-do-container-de-inferencia-ai'",
+        "user story title normalized to 'isolamento-de-gpu-e-separacao-de-workloads-de-inferencia-sensiveis'",
         "user story title normalized to 'monitorizacao-e-resposta-a-incidentes-em-runtime'",
+        "user story title normalized to 'perfis-seccomp-apparmor-e-verificacao-de-drift-de-hardening'",
         "user story title normalized to 'pesos-de-modelo-ai-self-hosted-tratados-como-ativo-critico'",
-        "user story title normalized to 'segmentacao-de-rede-e-networkpolicy'"
+        "user story title normalized to 'promocao-por-estagios-com-aprovacao-explicita-e-revalidacao-por-ambiente'",
+        "user story title normalized to 'retencao-e-limpeza-de-imagens-com-renovacao-periodica-por-sla'",
+        "user story title normalized to 'sandboxing-avancado-com-gvisor-kata-para-workloads-criticas'",
+        "user story title normalized to 'segmentacao-de-rede-e-networkpolicy'",
+        "user story title normalized to 'validacao-automatica-de-vulnerabilidades-em-imagens-no-pipeline-ci-cd'"
       ],
       "name": "Supply chain segura de imagens e containers",
       "name_en": "Supply Chain Secure Of Imagens And Containers",
+      "receives_requirement_categories": [],
+      "receives_requirements_primary": [],
+      "receives_requirements_secondary": [],
+      "resolution_order": 9,
       "source_practice_ids": [
         "09-containers-imagens:aplicacao-de-politicas-formais-de-seguranca-no-runtime-com-opa-kyverno",
         "09-containers-imagens:aprovacao-depreciacao-e-revogacao-de-golden-base-images-catalogo-organizacional",
         "09-containers-imagens:assinatura-e-verificacao-de-proveniencia-de-imagens-com-cosign-e-rekor",
+        "09-containers-imagens:builders-e-runners-ephemerais-assinados-e-com-auditoria",
+        "09-containers-imagens:construcao-de-imagens-a-partir-de-bases-seguras-minimalistas-e-pinned-por-digest",
         "09-containers-imagens:enforcement-centralizado-e-auditavel-de-politicas-no-runtime",
+        "09-containers-imagens:excecoes-temporarias-a-findings-policies-com-ttl-compensacoes-e-revalidacao",
         "09-containers-imagens:geracao-e-rastreabilidade-de-sbom-em-imagens",
         "09-containers-imagens:golden-base-images-com-patching-automatico",
+        "09-containers-imagens:governacao-de-registries-com-allowlist-e-digest-only",
         "09-containers-imagens:hardening-da-api-e-do-container-de-inferencia-ai",
+        "09-containers-imagens:isolamento-de-gpu-e-separacao-de-workloads-de-inferencia-sensiveis",
         "09-containers-imagens:monitorizacao-e-resposta-a-incidentes-em-runtime",
+        "09-containers-imagens:perfis-seccomp-apparmor-e-verificacao-de-drift-de-hardening",
         "09-containers-imagens:pesos-de-modelo-ai-self-hosted-tratados-como-ativo-critico",
-        "09-containers-imagens:segmentacao-de-rede-e-networkpolicy"
+        "09-containers-imagens:promocao-por-estagios-com-aprovacao-explicita-e-revalidacao-por-ambiente",
+        "09-containers-imagens:retencao-e-limpeza-de-imagens-com-renovacao-periodica-por-sla",
+        "09-containers-imagens:sandboxing-avancado-com-gvisor-kata-para-workloads-criticas",
+        "09-containers-imagens:segmentacao-de-rede-e-networkpolicy",
+        "09-containers-imagens:validacao-automatica-de-vulnerabilidades-em-imagens-no-pipeline-ci-cd"
       ],
+      "status": "existing",
       "warnings": []
     },
     {
@@ -2012,6 +2560,7 @@
         "Validação de Regressões de Segurança",
         "Validação humana da interpretação final dos resultados"
       ],
+      "anchor_kind": "practice",
       "applicable_levels": {
         "L1": true,
         "L2": true,
@@ -2048,9 +2597,13 @@
       "chapter_ids": [
         "10-testes-seguranca"
       ],
+      "cited_chapter_ids": [],
       "confidence": 0.95,
       "control_id": "CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34",
       "control_type": "detective",
+      "defining_chapter_ids": [
+        "10-testes-seguranca"
+      ],
       "description": "Combina testes automatizados e decisão humana para validar risco real antes da promoção a produção.",
       "domain": "testing",
       "evidence": [
@@ -2093,6 +2646,10 @@
       ],
       "name": "Testes de segurança baseados em risco",
       "name_en": "Tests Of Security Baseados In Risk",
+      "receives_requirement_categories": [],
+      "receives_requirements_primary": [],
+      "receives_requirements_secondary": [],
+      "resolution_order": 10,
       "source_practice_ids": [
         "10-testes-seguranca:avaliacao-critica-de-cobertura-real-e-limitacoes",
         "10-testes-seguranca:criterios-de-release-e-aceitacao-de-risco",
@@ -2117,6 +2674,7 @@
         "10-testes-seguranca:validacao-empirica-de-exploitabilidade-de-findings",
         "10-testes-seguranca:validacao-humana-da-interpretacao-final-dos-resultados"
       ],
+      "status": "existing",
       "warnings": []
     }
   ],

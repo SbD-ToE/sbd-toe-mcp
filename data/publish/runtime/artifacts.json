@@ -11,9 +11,10 @@
       },
       "applicable_levels_provenance": {
         "mode": "derived",
-        "n_controls": 1,
+        "n_controls": 2,
         "source_control_ids": [
-          "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af"
+          "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+          "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82"
         ],
         "via": "produced_by_controls|validated_by_controls"
       },
@@ -23,6 +24,7 @@
       ],
       "category": "governance_record",
       "chapter_occurrences": [
+        "02-requisitos-seguranca",
         "04-arquitetura-segura",
         "08-iac-infraestrutura",
         "09-containers-imagens",
@@ -33,6 +35,7 @@
       "description": "Governance Record artifact used as auditable evidence.",
       "evidence": [
         "control CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af references access_review",
+        "control CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82 references access_review",
         "corpus document 010-sbd-manual/04-arquitetura-segura/canon/25-rastreabilidade.md matched aliases ['access review']"
       ],
       "lifecycle_phases": [
@@ -42,7 +45,8 @@
       "name": "Access Review",
       "name_en": "Access Review",
       "produced_by_controls": [
-        "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af"
+        "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82"
       ],
       "validated_by_controls": [],
       "warnings": []
@@ -124,8 +128,10 @@
       },
       "applicable_levels_provenance": {
         "mode": "derived",
-        "n_controls": 1,
+        "n_controls": 3,
         "source_control_ids": [
+          "CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a",
+          "CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead",
           "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af"
         ],
         "via": "produced_by_controls|validated_by_controls"
@@ -159,11 +165,11 @@
       "confidence": null,
       "description": "Governance Record artifact used as auditable evidence.",
       "evidence": [
+        "control CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a references approval_record",
+        "control CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead references approval_record",
         "control CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af references approval_record",
         "practice 01-classificacao-aplicacoes:producao-e-manutencao-do-inventario-central-com-autoridade-de-aprovacao-proporcional matched alias 'aprovacao'",
-        "practice 02-requisitos-seguranca:validacao-e-aprovacao-final matched alias 'aprovacao'",
-        "practice 03-threat-modeling:aprovacao-formal-do-threat-model-baseline-e-revisoes matched alias 'aprovacao'",
-        "practice 05-dependencias-sbom-sca:governacao-documentada-de-politica-de-severidade-registries-e-registo-de-aprovacao matched alias 'registo de aprovacao'"
+        "practice 02-requisitos-seguranca:validacao-e-aprovacao-final matched alias 'aprovacao'"
       ],
       "lifecycle_phases": [
         "design",
@@ -172,6 +178,8 @@
       "name": "Approval Record",
       "name_en": "Approval Record",
       "produced_by_controls": [
+        "CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a",
+        "CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead",
         "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af"
       ],
       "validated_by_controls": [],
@@ -387,11 +395,10 @@
       },
       "applicable_levels_provenance": {
         "mode": "derived",
-        "n_controls": 7,
+        "n_controls": 6,
         "source_control_ids": [
           "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
           "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
-          "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
           "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0",
           "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
           "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
@@ -429,9 +436,9 @@
       "evidence": [
         "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references artifact_provenance",
         "control CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2 references artifact_provenance",
-        "control CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af references artifact_provenance",
         "control CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0 references artifact_provenance",
-        "control CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905 references artifact_provenance"
+        "control CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905 references artifact_provenance",
+        "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references artifact_provenance"
       ],
       "lifecycle_phases": [
         "deploy"
@@ -441,7 +448,6 @@
       "produced_by_controls": [
         "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
         "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
-        "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
         "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0",
         "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
         "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d"
@@ -459,11 +465,10 @@
       },
       "applicable_levels_provenance": {
         "mode": "derived",
-        "n_controls": 7,
+        "n_controls": 6,
         "source_control_ids": [
           "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
           "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
-          "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
           "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0",
           "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
           "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
@@ -504,9 +509,9 @@
       "evidence": [
         "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references artifact_signature",
         "control CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2 references artifact_signature",
-        "control CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af references artifact_signature",
         "control CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0 references artifact_signature",
-        "control CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905 references artifact_signature"
+        "control CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905 references artifact_signature",
+        "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references artifact_signature"
       ],
       "lifecycle_phases": [
         "deploy"
@@ -516,7 +521,6 @@
       "produced_by_controls": [
         "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
         "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
-        "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
         "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0",
         "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
         "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d"
@@ -916,9 +920,10 @@
       },
       "applicable_levels_provenance": {
         "mode": "derived",
-        "n_controls": 1,
+        "n_controls": 2,
         "source_control_ids": [
-          "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628"
+          "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
+          "CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead"
         ],
         "via": "produced_by_controls|validated_by_controls"
       },
@@ -953,10 +958,10 @@
       "description": "Operational Record artifact used as auditable evidence.",
       "evidence": [
         "control CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628 references governance_kpi",
+        "control CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead references governance_kpi",
         "practice 02-requisitos-seguranca:recolha-e-thresholds-dos-indicadores-rqs matched alias 'indicadores'",
         "practice 03-threat-modeling:validacao-de-arquitetura-com-threat-modeling matched alias 'metricas'",
-        "practice 06-desenvolvimento-seguro:guidelines-de-desenvolvimento-seguro matched alias 'metricas'",
-        "practice 06-desenvolvimento-seguro:monitorizacao-de-conformidade-e-metricas-de-seguranca matched alias 'metricas'"
+        "practice 06-desenvolvimento-seguro:guidelines-de-desenvolvimento-seguro matched alias 'metricas'"
       ],
       "lifecycle_phases": [
         "operate"
@@ -964,7 +969,8 @@
       "name": "Governance Kpi",
       "name_en": "Governance Kpi",
       "produced_by_controls": [
-        "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628"
+        "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
+        "CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead"
       ],
       "validated_by_controls": [],
       "warnings": []
@@ -977,8 +983,9 @@
       },
       "applicable_levels_provenance": {
         "mode": "derived",
-        "n_controls": 1,
+        "n_controls": 2,
         "source_control_ids": [
+          "CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a",
           "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460"
         ],
         "via": "produced_by_controls|validated_by_controls"
@@ -1000,11 +1007,11 @@
       "confidence": null,
       "description": "Configuration artifact used as auditable evidence.",
       "evidence": [
+        "control CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a references guideline_catalog",
         "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references guideline_catalog",
         "practice 06-desenvolvimento-seguro:governacao-e-curadoria-de-guidelines matched alias 'guidelines'",
         "practice 06-desenvolvimento-seguro:guidelines-de-desenvolvimento-seguro matched alias 'guidelines'",
-        "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['guidelines']",
-        "corpus document 010-sbd-manual/00-fundamentos/macro-processos.md matched aliases ['guidelines']"
+        "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['guidelines']"
       ],
       "lifecycle_phases": [
         "design",
@@ -1013,6 +1020,7 @@
       "name": "Guideline Catalog",
       "name_en": "Guideline Catalog",
       "produced_by_controls": [
+        "CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a",
         "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460"
       ],
       "validated_by_controls": [],
@@ -1085,9 +1093,10 @@
       },
       "applicable_levels_provenance": {
         "mode": "derived",
-        "n_controls": 2,
+        "n_controls": 3,
         "source_control_ids": [
           "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+          "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
           "CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9"
         ],
         "via": "produced_by_controls|validated_by_controls"
@@ -1122,10 +1131,10 @@
       "description": "Configuration artifact used as auditable evidence.",
       "evidence": [
         "control CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af references identity_binding",
+        "control CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82 references identity_binding",
         "control CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9 references identity_binding",
         "practice 09-containers-imagens:rbac-minimo-e-serviceaccounts-dedicadas matched alias 'rbac'",
-        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/devops-sre.md matched aliases ['rbac']",
-        "corpus document 010-sbd-manual/01-classificacao-aplicacoes/addon/06-mapeamento-ameacas-risco.md matched aliases ['rbac']"
+        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/devops-sre.md matched aliases ['rbac']"
       ],
       "lifecycle_phases": [
         "design",
@@ -1135,6 +1144,7 @@
       "name_en": "Identity Binding",
       "produced_by_controls": [
         "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
         "CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9"
       ],
       "validated_by_controls": [],
@@ -1245,8 +1255,9 @@
       },
       "applicable_levels_provenance": {
         "mode": "derived",
-        "n_controls": 1,
+        "n_controls": 2,
         "source_control_ids": [
+          "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
           "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70"
         ],
         "via": "produced_by_controls|validated_by_controls"
@@ -1278,18 +1289,20 @@
       "confidence": null,
       "description": "Operational Record artifact used as auditable evidence.",
       "evidence": [
+        "control CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82 references log_stream",
         "control CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70 references log_stream",
         "practice 07-cicd-seguro:contencao-de-contexto-e-higiene-de-logs-outputs matched alias 'logs'",
         "practice 12-monitorizacao-operacoes:seguranca-e-integridade-de-logs matched alias 'logs'",
-        "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['logs']",
-        "corpus document 010-sbd-manual/00-fundamentos/macro-processos.md matched aliases ['logs']"
+        "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['logs']"
       ],
       "lifecycle_phases": [
         "operate"
       ],
       "name": "Log Stream",
       "name_en": "Log Stream",
-      "produced_by_controls": [],
+      "produced_by_controls": [
+        "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82"
+      ],
       "validated_by_controls": [
         "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70"
       ],
@@ -1414,8 +1427,8 @@
           "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4",
           "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
           "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0",
-          "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
           "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+          "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d",
           "CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34"
         ],
         "via": "produced_by_controls|validated_by_controls"
@@ -1469,8 +1482,8 @@
         "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4",
         "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
         "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0",
-        "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
-        "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905"
+        "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+        "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d"
       ],
       "validated_by_controls": [
         "CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34"
@@ -1659,9 +1672,10 @@
       },
       "applicable_levels_provenance": {
         "mode": "derived",
-        "n_controls": 1,
+        "n_controls": 2,
         "source_control_ids": [
-          "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29"
+          "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+          "CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead"
         ],
         "via": "produced_by_controls|validated_by_controls"
       },
@@ -1693,10 +1707,10 @@
       "description": "Evidence artifact used as auditable evidence.",
       "evidence": [
         "control CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29 references review_checklist",
+        "control CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead references review_checklist",
         "practice 10-testes-seguranca:avaliacao-critica-de-cobertura-real-e-limitacoes matched alias 'checklist'",
         "practice 10-testes-seguranca:decisao-assistida-para-findings-de-testes-de-seguranca matched alias 'checklist'",
-        "practice 10-testes-seguranca:feedback-automatico-de-findings-as-equipas matched alias 'checklist'",
-        "practice 10-testes-seguranca:gestao-centralizada-de-findings-com-triagem-e-sla matched alias 'checklist'"
+        "practice 10-testes-seguranca:feedback-automatico-de-findings-as-equipas matched alias 'checklist'"
       ],
       "lifecycle_phases": [
         "test",
@@ -1705,7 +1719,8 @@
       "name": "Review Checklist",
       "name_en": "Review Checklist",
       "produced_by_controls": [
-        "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29"
+        "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+        "CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead"
       ],
       "validated_by_controls": [],
       "warnings": []
@@ -2074,7 +2089,7 @@
         "n_controls": 3,
         "source_control_ids": [
           "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
-          "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+          "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
           "CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9"
         ],
         "via": "produced_by_controls|validated_by_controls"
@@ -2111,7 +2126,7 @@
       "description": "Configuration artifact used as auditable evidence.",
       "evidence": [
         "control CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2 references secret_config",
-        "control CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af references secret_config",
+        "control CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411 references secret_config",
         "control CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9 references secret_config",
         "practice 07-cicd-seguro:gestao-de-segredos matched alias 'segredos'",
         "practice 08-iac-infraestrutura:gestao-de-segredos-e-identidades-para-iac matched alias 'segredos'"
@@ -2124,7 +2139,7 @@
       "name_en": "Secret Config",
       "produced_by_controls": [
         "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
-        "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
         "CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9"
       ],
       "validated_by_controls": [],
@@ -2248,10 +2263,13 @@
       },
       "applicable_levels_provenance": {
         "mode": "derived",
-        "n_controls": 3,
+        "n_controls": 6,
         "source_control_ids": [
           "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
           "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
+          "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+          "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+          "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
           "CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34"
         ],
         "via": "produced_by_controls|validated_by_controls"
@@ -2284,9 +2302,9 @@
       "evidence": [
         "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references test_report",
         "control CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2 references test_report",
-        "control CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34 references test_report",
-        "practice 02-requisitos-seguranca:validacao-de-cobertura-de-testes matched alias 'testes'",
-        "practice 07-cicd-seguro:testes-de-seguranca-dinamicos-dast matched alias 'testes'"
+        "control CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411 references test_report",
+        "control CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29 references test_report",
+        "control CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82 references test_report"
       ],
       "lifecycle_phases": [
         "test",
@@ -2296,7 +2314,10 @@
       "name_en": "Test Report",
       "produced_by_controls": [
         "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
-        "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2"
+        "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
+        "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+        "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+        "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82"
       ],
       "validated_by_controls": [
         "CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34"
@@ -2468,9 +2489,12 @@
       },
       "applicable_levels_provenance": {
         "mode": "derived",
-        "n_controls": 1,
+        "n_controls": 4,
         "source_control_ids": [
-          "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460"
+          "CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a",
+          "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+          "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+          "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82"
         ],
         "via": "produced_by_controls|validated_by_controls"
       },
@@ -2500,11 +2524,11 @@
       "confidence": null,
       "description": "Evidence artifact used as auditable evidence.",
       "evidence": [
+        "control CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a references validation_evidence",
         "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references validation_evidence",
-        "practice 06-desenvolvimento-seguro:arquivo-central-de-evidencias-de-validacao matched alias 'evidencias'",
-        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/auditores.md matched aliases ['evidencias']",
-        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/developer.md matched aliases ['evidencias']",
-        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/devops-sre.md matched aliases ['evidencias']"
+        "control CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411 references validation_evidence",
+        "control CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82 references validation_evidence",
+        "practice 06-desenvolvimento-seguro:arquivo-central-de-evidencias-de-validacao matched alias 'evidencias'"
       ],
       "lifecycle_phases": [
         "test",
@@ -2513,7 +2537,10 @@
       "name": "Validation Evidence",
       "name_en": "Validation Evidence",
       "produced_by_controls": [
-        "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460"
+        "CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a",
+        "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+        "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+        "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82"
       ],
       "validated_by_controls": [],
       "warnings": []
