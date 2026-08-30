@@ -140,6 +140,7 @@ export function _resolveThreatLandscape(
     name: control.name,
     domain: control.domain,
     chapter_ids: control.chapter_ids ?? [],
+    defining_chapter_ids: control.defining_chapter_ids ?? [],
   }));
   const activeControlIds = new Set(activeControls.map((control) => control.control_id));
 
@@ -160,8 +161,18 @@ export function _resolveThreatLandscape(
     const domainChapter = CONCERN_TO_DOMAIN_CHAPTER[concern];
     if (domainChapter !== undefined) activeChapterNumbers.add(domainChapter);
   }
+  // G-b decision 2 (2026-08-30): the DEFINING chapters of the activated controls count
+  // as in-scope — a control that defines its content in a chapter brings that chapter's
+  // threats with it (e.g. C1, identity/auth, defines in ch.02).
+  const definingBundles = new Set<string>();
   for (const control of activeControls) {
     for (const chapterId of control.chapter_ids) {
+      activeBundles.add(chapterId);
+      const num = chapterNumber(chapterId);
+      if (!Number.isNaN(num)) activeChapterNumbers.add(num);
+    }
+    for (const chapterId of control.defining_chapter_ids) {
+      definingBundles.add(chapterId);
       activeBundles.add(chapterId);
       const num = chapterNumber(chapterId);
       if (!Number.isNaN(num)) activeChapterNumbers.add(num);
@@ -177,9 +188,13 @@ export function _resolveThreatLandscape(
     }
   }
   // Chapter 02 (requisitos-seguranca) holds the requirements-process meta-threats.
-  // Surface them only when the caller explicitly targets requirements — never as a
-  // side effect of a base/domain concern whose controls happen to be catalogued there.
-  const wantsRequirements = !hasConcerns || inputConcerns.includes("requirements");
+  // Surface them when the caller explicitly targets requirements OR when an activated
+  // control DEFINES in ch.02 (G-b decision 2) — never as a side effect of a control
+  // merely catalogued there.
+  const wantsRequirements =
+    !hasConcerns ||
+    inputConcerns.includes("requirements") ||
+    definingBundles.has("02-requisitos-seguranca");
   if (!wantsRequirements) {
     activeChapterNumbers.delete(2);
     activeBundles.delete("02-requisitos-seguranca");
@@ -187,13 +202,15 @@ export function _resolveThreatLandscape(
 
   const controlsByChapter = new Map<string, MitigatingControl[]>();
   for (const control of activeControls) {
-    for (const chapterId of control.chapter_ids) {
+    for (const chapterId of new Set([...control.chapter_ids, ...control.defining_chapter_ids])) {
       const existing = controlsByChapter.get(chapterId) ?? [];
-      existing.push({
-        control_id: control.control_id,
-        name: control.name,
-        domain: control.domain,
-      });
+      if (!existing.some((c) => c.control_id === control.control_id)) {
+        existing.push({
+          control_id: control.control_id,
+          name: control.name,
+          domain: control.domain,
+        });
+      }
       controlsByChapter.set(chapterId, existing);
     }
   }
@@ -298,7 +315,7 @@ export function _resolveThreatLandscape(
       activeBundles: [...activeBundles].sort(),
       concernsApplied: consult.meta.concernsApplied,
       note:
-        "Threat applicability resolves from consult-mode requirement scope. mitigation_confidence uses direct control references first, then chapter/bundle or antipattern-derived alignment, then heuristic domain fallback.",
+        "Threat applicability resolves from consult-mode requirement scope; the defining chapters of activated controls count as in-scope (G-b 2026-08-30). mitigation_confidence uses direct control references first, then chapter/bundle or antipattern-derived alignment, then heuristic domain fallback.",
     },
   };
 }
@@ -323,10 +340,16 @@ export function handleGetThreatLandscape(
       mitigation_confidence: threat.mitigation_confidence,
       mitigated_by: threat.mitigated_by,
       related_antipatterns: threat.related_antipatterns,
-      // Surface the threat's own associated_controls carried by the substrate
-      // (runtime/threats.json). Previously hardcoded to [] — a serving-layer
-      // drop, not absent data. Pontifex serves what the bundle carries.
+      // Surface the threat's own association fields carried by the substrate.
+      // Contract v1.14 §1.21: associated_control_ids are structural CTRL-* ids with a
+      // DECLARED derivation; associated_controls_text is the Manual's prose;
+      // associated_controls stays as-is for compatibility. Nothing invented.
       associated_controls: threat.associated_controls ?? [],
+      associated_control_ids: threat.associated_control_ids ?? [],
+      ...(threat.associated_controls_text ? { associated_controls_text: threat.associated_controls_text } : {}),
+      ...(threat.associated_control_ids_derivation
+        ? { associated_control_ids_derivation: threat.associated_control_ids_derivation }
+        : {}),
       ...(threat.mitigated_threat_id ? { mitigated_threat_id: threat.mitigated_threat_id } : {}),
       ...(threat.chapter_id ? { chapter_id: threat.chapter_id } : {}),
       ...(threat.mitigation_summary ? { mitigation_summary: threat.mitigation_summary } : {}),

@@ -682,10 +682,11 @@
         "L3": true
       },
       "applicable_levels_provenance": {
-        "min_link_confidence": 0.98,
+        "min_link_confidence": 0.57,
         "mode": "derived",
-        "n_links": 9,
+        "n_links": 10,
         "source_requirement_ids": [
+          "GOV-013",
           "TRN-001",
           "TRN-002",
           "TRN-003",

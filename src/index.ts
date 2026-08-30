@@ -974,8 +974,10 @@ class McpRuntime {
           title: "Get SbD-ToE Threat Landscape",
           description:
             "Deterministic threat resolution for an application context using the SbD-ToE ontology threats pipeline. " +
-            "Returns threats from the published runtime bundle relevant to the active requirement/chapter scope, " +
-            "with structural mitigation confidence and antipattern enrichment. Optionally narrowed by concern domains. " +
+            "Returns threats from the published runtime bundle relevant to the active requirement/chapter scope " +
+            "(the defining chapters of activated controls count as in-scope), with structural mitigation confidence, " +
+            "antipattern enrichment, and per-threat associated_control_ids (structural CTRL-* ids with declared " +
+            "derivation) + associated_controls_text. Optionally narrowed by concern domains. " +
             "All data comes from the published SbD-ToE deterministic runtime bundle — nothing is invented.",
           inputSchema: {
             type: "object",

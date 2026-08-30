@@ -1,6 +1,6 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 281,
+  "count": 282,
   "entity_type": "RequirementControlLink",
   "items": [
     {
@@ -5535,6 +5535,45 @@
       "source_type": "Requirement",
       "target_id": "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
       "target_label": "Governação de fornecedores e exceções",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "14-governanca-contratacao"
+      ],
+      "confidence": 0.57,
+      "curation": {
+        "action": "add-secondary",
+        "curator": "archon-2026-08-30",
+        "previous_target_id": null,
+        "ratified_by": "programme-lead",
+        "ratified_on": "2026-08-30",
+        "rationale": "G-b decisão 3: GOV-013 (onboarding/formação de terceiros) mantém FORN primária; CAP entra como secundária curada — a proposta §7.1 esperava FORN + CAP e o requisito é domain-specific, fora das regras de catálogo, sem sinal léxico para publicação mecânica.",
+        "source": "sbd-ai-runtime/handover/em-curso/2026-08-30-orchestrator-to-archon-codex-ciclo-ontologia-sbd-toe-controlos-aplicacionais.md#Portão G-b decisão 3"
+      },
+      "evidence_unit_ids": [],
+      "justification": [
+        "curated_semantic_review",
+        "domain_mapping"
+      ],
+      "link_id": "GOV-013|maps_to_control|CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf",
+      "link_type": "maps_to_control",
+      "matched_control_field": "alias",
+      "matched_control_text": "Addon-12 - Formação em Uso Seguro de IA e Tooling Pervasivo",
+      "score_components": {
+        "chapter_overlap": [],
+        "mechanical_score": 0.57,
+        "runner_up_margin": null,
+        "shared_salient_tokens": [
+          "formacao"
+        ],
+        "token_similarity": 0.0152
+      },
+      "source_id": "GOV-013",
+      "source_label": "Onboarding técnico e formação obrigatória pré-acesso de terceiros",
+      "source_type": "Requirement",
+      "target_id": "CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf",
+      "target_label": "Capacitação e onboarding de segurança",
       "target_type": "Control"
     },
     {

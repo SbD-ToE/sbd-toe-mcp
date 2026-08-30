@@ -3,11 +3,52 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-30
 purpose: documentation
-reasoning: v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
+reasoning: v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.10.4 — 2026-08-30
+
+**Patch** — formal KG release `v1.7.0` (D2 cycle close) + the G-b routing decision in the
+serving layer. Additive on the tool surface (per-threat `associated_control_ids`,
+`associated_controls_text`, `associated_control_ids_derivation`); no tool removed or reshaped.
+
+Served bundle: **formal KG release `v1.7.0`** (GitHub Release
+`SbD-ToE/sbd-toe-knowledge-graph@v1.7.0`, commit `894af32a85d6a50f648f10d8a643848e806e533e`
+= `mcp-stable`; asset `sbd-toe-knowledge-graph-bundle-v1.7.0.zip`, sha256
+**`29156b86ef7785966f099f02bb67dd84fcb471d64092944038a3da906c72fb9a`**, fetched and
+digest-verified against the release `.sha256`; `run_manifest.release = {stable, v1.7.0}`),
+`consumer_contract_version` **v1.14** (§1.21), ontology `sbdtoe-ontology-v2.2`, **Manual
+v1.7.1** @ `8e03454c`. Supersedes `v1.6.1` (0.10.3) and the dev-build v2.2 pin (#53).
+
+### Changed — served knowledge (`v1.6.1` / dev-build v2.2 → `v1.7.0`)
+
+- Curated requirement→control layer: 281 → **282 links** (GOV-013 gains its curated CAP
+  secondary — Archon convergence 27/27; curated on surface 12 + 4). Requirements 256/27,
+  EvidencePatterns 256/256, 20 controls unchanged.
+- **Threats now carry structural control ids** (contract v1.14 §1.21, G-b decision 8):
+  `associated_control_ids` (CTRL-* ids, chapter-grained derivation **declared per record**
+  via `associated_control_ids_derivation`; 233/233 in this release) and
+  `associated_controls_text` (the Manual's prose); `associated_controls` unchanged for
+  compatibility. Served through `get_threat_landscape` — previously the surface carried
+  only the prose field.
+
+### Changed — threat routing (G-b decision 2, serving-layer fix)
+
+- The **defining chapters** of the activated controls (`defining_chapter_ids`, published
+  since contract v1.13) now count as in-scope in `get_threat_landscape`, and the ch.02
+  suppression applies only to controls merely *catalogued* there: a control that DEFINES
+  in ch.02 (C1 identity/auth, C2 data_protection, C3 dev tooling) brings the ch.02
+  threats with it, with the control listed in `mitigated_by`. Post-fix scopes at L2:
+  **auth 77 → 95** (+18 ch.02 catalogue threats), encryption 107, validation 72;
+  logging (15) and iac unchanged — no ch.02-defining control. No-concern landscape
+  unchanged (233).
+- Acceptance criterion for TC-E-01/02 updated accordingly (both PASS: `mitigated_by` and
+  `associated_control_ids` populated with resolving ids); TC-F-08 re-baselined to 282
+  links / curated 12+4. Run record: `docs/acceptance-runs/2026-08-30-v0.10.4-acceptance.md`
+  — 104 scenarios, 81 executed, **63 PASS · 18 PART · 0 FAIL · 23 SKIP, gate E PASS**.
 
 ## 0.10.3 — 2026-08-30
 
