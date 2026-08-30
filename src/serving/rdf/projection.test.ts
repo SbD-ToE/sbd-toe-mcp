@@ -6,17 +6,19 @@ import { projectBundleToTriples, toNTriples, predicateManifest } from "./project
 // History: v1.5.0 → requirement_control_links 242. Dev-build
 // kg-v1-manual-v1.7.0-aligned-2026-08-29 (contract v1.11, 0.20.0-beta.3) → 263:
 // the curated requirement→control layer links the 20 formerly unlinked
-// requirements (incl. REQ-AGN-001…004) and the new OPS-015. relations.v1 unchanged.
+// requirements (incl. REQ-AGN-001…004) and the new OPS-015. Formal v1.6.1
+// (contract v1.12 §1.19 curated layer v2, 0.20.0-beta.4) → 265 (12 removed / 14
+// added, Archon re-targets). relations.v1 unchanged throughout.
 describe("rdf projection (v2 / s1)", () => {
   it("loads every source with expected counts (no silent skip)", () => {
     const { counts } = projectBundleToTriples();
     expect(counts["relations.v1"]).toBe(529);
-    expect(counts["requirement_control_links"]).toBe(263);
+    expect(counts["requirement_control_links"]).toBe(265);
     expect(counts["antipattern_requirement_links"]).toBe(2);
     expect(counts["antipattern_threat_links"]).toBe(5);
     expect(counts["signal_evidence_links"]).toBe(11);
 
-    const sum = 529 + 263 + 2 + 5 + 11;
+    const sum = 529 + 265 + 2 + 5 + 11;
     expect(counts["__total__"]).toBe(sum);
 
     // every declared source contributed at least one edge

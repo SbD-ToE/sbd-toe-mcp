@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import type { SnapshotCache } from "../backend/semantic-index-gateway.js";
 
 vi.mock("../backend/semantic-index-gateway.js", () => ({
   retrievePublishedContext: vi.fn()
@@ -15,38 +14,6 @@ import { retrievePublishedContext } from "../backend/semantic-index-gateway.js";
 
 // --- Helpers ---
 
-function makeCache(entityItems: unknown[] = []): SnapshotCache {
-  return {
-    docs: { items: [] },
-    entities: { items: entityItems as never },
-    docsEnrichedLookup: new Map(),
-    entitiesEnrichedLookup: new Map()
-  };
-}
-
-function makeChapterBundle(chapterId: string, title: string, riskLevels: string[] = []) {
-  return {
-    objectID: `entity::chapter_bundle::${chapterId}::bundle`,
-    entity_type: "chapter_bundle",
-    chapter_id: chapterId,
-    title,
-    risk_levels: riskLevels,
-    summary: `Summary of ${title}`,
-    related_phases: ["design", "implementation"],
-    artifact_ids: [`ART-${chapterId}`]
-  };
-}
-
-function makePracticeAssignment(chapterId: string, riskLevels: string[]) {
-  return {
-    objectID: `entity::practice_assignment::${chapterId}::p1`,
-    entity_type: "practice_assignment",
-    chapter_id: chapterId,
-    title: `Practice for ${chapterId}`,
-    risk_levels: riskLevels
-  };
-}
-
 function makeNormalizedRecord(overrides: Record<string, unknown> = {}) {
   return {
     citationId: "E1",
@@ -60,9 +27,9 @@ function makeNormalizedRecord(overrides: Record<string, unknown> = {}) {
     localScore: 0,
     raw: {
       objectID: "test-001",
-      entity_type: "practice_assignment",
-      chapter_id: "01-test",
-      risk_levels: ["L1"]
+      bundle_id: "01-test",
+      filter_tags: { risk_level: ["L1"] },
+      entity_mentions_flat: []
     },
     ...overrides
   };
@@ -81,76 +48,26 @@ function makeBundle(records: unknown[] = []) {
 
 // --- list_sbd_toe_chapters ---
 
-describe("handleListSbdToeChapters", () => {
-  it("returns empty chapters when cache is empty", () => {
-    const cache = makeCache([]);
-    const result = handleListSbdToeChapters({}, cache) as { chapters: unknown[] };
-    expect(result.chapters).toEqual([]);
-  });
-
-  it("returns chapter_bundle records as chapters", () => {
-    const cache = makeCache([
-      makeChapterBundle("01-cap", "Cap. 01 Title"),
-      makeChapterBundle("02-cap", "Cap. 02 Title"),
-      { objectID: "entity::practice_assignment::x", entity_type: "practice_assignment" }
-    ]);
-    const result = handleListSbdToeChapters({}, cache) as { chapters: Array<{ id: string; title: string }> };
-    expect(result.chapters).toHaveLength(2);
-    expect(result.chapters[0]?.id).toBe("01-cap");
-    expect(result.chapters[1]?.id).toBe("02-cap");
-  });
-
-  it("deduplicates by chapter_id", () => {
-    const cache = makeCache([
-      makeChapterBundle("01-cap", "Cap. 01"),
-      makeChapterBundle("01-cap", "Cap. 01 duplicate")
-    ]);
-    const result = handleListSbdToeChapters({}, cache) as { chapters: unknown[] };
-    expect(result.chapters).toHaveLength(1);
-  });
-
-  it("filters by riskLevel when provided — returns only matching records", () => {
-    const cache = makeCache([
-      makeChapterBundle("01-cap", "Cap. 01", ["L1", "L2"]),
-      makeChapterBundle("02-cap", "Cap. 02", ["L3"])
-    ]);
-    const result = handleListSbdToeChapters({ riskLevel: "L1" }, cache) as {
-      chapters: Array<{ id: string }>;
-    };
-    expect(result.chapters).toHaveLength(1);
-    expect(result.chapters[0]?.id).toBe("01-cap");
-  });
-
-  it("returns empty chapters when riskLevel filter matches nothing", () => {
-    const cache = makeCache([makeChapterBundle("01-cap", "Cap. 01")]);
-    const result = handleListSbdToeChapters({ riskLevel: "L1" }, cache) as { chapters: unknown[] };
-    expect(result.chapters).toEqual([]);
-  });
-
+describe("handleListSbdToeChapters (runtime bundle)", () => {
   it("throws on invalid riskLevel", () => {
-    const cache = makeCache([]);
-    expect(() => handleListSbdToeChapters({ riskLevel: "L9" }, cache)).toThrow(
-      "riskLevel inválido"
-    );
+    expect(() => handleListSbdToeChapters({ riskLevel: "L9" })).toThrow("riskLevel inválido");
+    expect(() => handleListSbdToeChapters({ riskLevel: 42 })).toThrow("riskLevel inválido");
   });
 
-  it("throws on non-string riskLevel", () => {
-    const cache = makeCache([]);
-    expect(() => handleListSbdToeChapters({ riskLevel: 42 }, cache)).toThrow(
-      "riskLevel inválido"
-    );
+  it("lists the 15 chapters without a filter, each with id/title/readableTitle", () => {
+    const result = handleListSbdToeChapters({}) as { chapters: Array<{ id: string; title: string; readableTitle: string }> };
+    expect(result.chapters).toHaveLength(15);
+    expect(result.chapters.every((c) => c.id && c.title && c.readableTitle)).toBe(true);
   });
 
-  it("matches objectID patterns starting with cap- or ch-", () => {
-    const cache = makeCache([
-      {
-        objectID: "cap-01",
-        chapter_id: "cap-01",
-        title: "Cap 01 by objectID prefix"
-      }
-    ]);
-    const result = handleListSbdToeChapters({}, cache) as { chapters: Array<{ id: string }> };
-    expect(result.chapters.some((c) => c.id === "cap-01")).toBe(true);
+  it("riskLevel narrows to the chapters applicable at that level (L1 ⊂ L2 ⊂ L3)", () => {
+    const ids = (level: string) => (handleListSbdToeChapters({ riskLevel: level }) as { chapters: Array<{ id: string }> }).chapters.map((c) => c.id);
+    const l1 = ids("L1"), l2 = ids("L2"), l3 = ids("L3");
+    expect(l1.length).toBeLessThan(l2.length);
+    expect(l2.length).toBeLessThan(l3.length);
+    expect(l1.every((id) => l2.includes(id))).toBe(true);
+    expect(l2.every((id) => l3.includes(id))).toBe(true);
+    expect(l2).not.toContain("13-formacao-onboarding");
   });
 });
 
@@ -162,54 +79,47 @@ describe("handleQuerySbdToeEntities", () => {
   });
 
   it("throws when query is empty string", async () => {
-    const cache = makeCache([]);
-    await expect(handleQuerySbdToeEntities({ query: "" }, cache)).rejects.toThrow(
+    await expect(handleQuerySbdToeEntities({ query: "" })).rejects.toThrow(
       '"query" é obrigatório'
     );
   });
 
   it("throws when query exceeds 200 chars", async () => {
-    const cache = makeCache([]);
     const longQuery = "a".repeat(201);
-    await expect(handleQuerySbdToeEntities({ query: longQuery }, cache)).rejects.toThrow(
+    await expect(handleQuerySbdToeEntities({ query: longQuery })).rejects.toThrow(
       '"query" é obrigatório'
     );
   });
 
   it("throws when query is not a string", async () => {
-    const cache = makeCache([]);
-    await expect(handleQuerySbdToeEntities({ query: 42 }, cache)).rejects.toThrow('"query"');
+    await expect(handleQuerySbdToeEntities({ query: 42 })).rejects.toThrow('"query"');
   });
 
   it("throws when topK is out of range", async () => {
-    const cache = makeCache([]);
-    await expect(handleQuerySbdToeEntities({ query: "test", topK: 0 }, cache)).rejects.toThrow(
+    await expect(handleQuerySbdToeEntities({ query: "test", topK: 0 })).rejects.toThrow(
       '"topK"'
     );
-    await expect(handleQuerySbdToeEntities({ query: "test", topK: 16 }, cache)).rejects.toThrow(
+    await expect(handleQuerySbdToeEntities({ query: "test", topK: 16 })).rejects.toThrow(
       '"topK"'
     );
   });
 
   it("throws when topK is not an integer", async () => {
-    const cache = makeCache([]);
     await expect(
-      handleQuerySbdToeEntities({ query: "test", topK: 1.5 }, cache)
+      handleQuerySbdToeEntities({ query: "test", topK: 1.5 })
     ).rejects.toThrow('"topK"');
   });
 
   it("throws on invalid riskLevel", async () => {
-    const cache = makeCache([]);
     await expect(
-      handleQuerySbdToeEntities({ query: "test", riskLevel: "L9" }, cache)
+      handleQuerySbdToeEntities({ query: "test", riskLevel: "L9" })
     ).rejects.toThrow("riskLevel inválido");
   });
 
   it("returns entities and total from retrieved bundle", async () => {
     const record = makeNormalizedRecord();
     vi.mocked(retrievePublishedContext).mockResolvedValue(makeBundle([record]) as never);
-    const cache = makeCache([]);
-    const result = (await handleQuerySbdToeEntities({ query: "test" }, cache)) as {
+    const result = (await handleQuerySbdToeEntities({ query: "test" })) as {
       entities: unknown[];
       total: number;
     };
@@ -217,182 +127,91 @@ describe("handleQuerySbdToeEntities", () => {
     expect(result.total).toBe(1);
   });
 
-  it("filters by entityType when provided", async () => {
-    const r1 = makeNormalizedRecord({ raw: { entity_type: "practice_assignment" } });
+  it("filters by entityType when provided (entity types reach a chunk via entity_mentions_flat)", async () => {
+    const r1 = makeNormalizedRecord({ raw: { entity_mentions_flat: ["MT-001", "Threat"] } });
     const r2 = makeNormalizedRecord({
       objectID: "e-002",
-      raw: { entity_type: "chapter_bundle" }
+      raw: { entity_mentions_flat: ["US-01", "UserStory"] }
     });
     vi.mocked(retrievePublishedContext).mockResolvedValue(makeBundle([r1, r2]) as never);
-    const cache = makeCache([]);
     const result = (await handleQuerySbdToeEntities(
-      { query: "test", entityType: "practice_assignment" },
-      cache
+      { query: "test", entityType: "threat" }
     )) as { entities: unknown[]; total: number };
     expect(result.total).toBe(1);
   });
 
   it("filters by chapterId when provided", async () => {
-    const r1 = makeNormalizedRecord({
-      chapter: "Cap. 01",
-      raw: { chapter_id: "01-cap", entity_type: "practice" }
-    });
-    const r2 = makeNormalizedRecord({
-      objectID: "e-002",
-      chapter: "Cap. 02",
-      raw: { chapter_id: "02-cap", entity_type: "practice" }
-    });
+    const r1 = makeNormalizedRecord({ chapter: "01-cap", raw: { bundle_id: "01-cap" } });
+    const r2 = makeNormalizedRecord({ objectID: "e-002", chapter: "02-cap", raw: { bundle_id: "02-cap" } });
     vi.mocked(retrievePublishedContext).mockResolvedValue(makeBundle([r1, r2]) as never);
-    const cache = makeCache([]);
     const result = (await handleQuerySbdToeEntities(
-      { query: "test", chapterId: "01-cap" },
-      cache
+      { query: "test", chapterId: "01-cap" }
     )) as { entities: unknown[]; total: number };
     expect(result.total).toBe(1);
   });
 
   it("uses default topK=5 when topK not provided", async () => {
-    const cache = makeCache([]);
-    await handleQuerySbdToeEntities({ query: "test" }, cache);
+    await handleQuerySbdToeEntities({ query: "test" });
     expect(vi.mocked(retrievePublishedContext)).toHaveBeenCalledWith("test", 5);
   });
 
   it("passes provided topK to retrievePublishedContext", async () => {
-    const cache = makeCache([]);
-    await handleQuerySbdToeEntities({ query: "test", topK: 10 }, cache);
+    await handleQuerySbdToeEntities({ query: "test", topK: 10 });
     expect(vi.mocked(retrievePublishedContext)).toHaveBeenCalledWith("test", 10);
   });
 });
 
 // --- get_sbd_toe_chapter_brief ---
 
-describe("handleGetSbdToeChapterBrief", () => {
-  it("throws when chapterId is empty", () => {
-    const cache = makeCache([]);
-    expect(() => handleGetSbdToeChapterBrief({ chapterId: "" }, cache)).toThrow(
-      '"chapterId" é obrigatório'
-    );
+describe("handleGetSbdToeChapterBrief (runtime bundle)", () => {
+  it("throws when chapterId is empty, whitespace or missing", () => {
+    expect(() => handleGetSbdToeChapterBrief({ chapterId: "" })).toThrow('"chapterId" é obrigatório');
+    expect(() => handleGetSbdToeChapterBrief({ chapterId: "   " })).toThrow('"chapterId" é obrigatório');
+    expect(() => handleGetSbdToeChapterBrief({})).toThrow('"chapterId" é obrigatório');
   });
 
-  it("throws when chapterId is whitespace only", () => {
-    const cache = makeCache([]);
-    expect(() => handleGetSbdToeChapterBrief({ chapterId: "   " }, cache)).toThrow(
-      '"chapterId" é obrigatório'
-    );
-  });
-
-  it("throws when chapterId is not provided", () => {
-    const cache = makeCache([]);
-    expect(() => handleGetSbdToeChapterBrief({}, cache)).toThrow('"chapterId" é obrigatório');
-  });
-
-  it("returns found:false when chapter does not exist", () => {
-    const cache = makeCache([]);
-    const result = handleGetSbdToeChapterBrief({ chapterId: "unknown-id" }, cache) as {
-      found: boolean;
-      id: string;
-    };
+  it("returns found:false for an unknown chapter — never a fabricated brief", () => {
+    const result = handleGetSbdToeChapterBrief({ chapterId: "unknown-id" }) as { found: boolean; id: string; title?: string };
     expect(result.found).toBe(false);
     expect(result.id).toBe("unknown-id");
+    expect(result.title).toBeUndefined();
   });
 
-  it("finds chapter by chapter_id field", () => {
-    const item = makeChapterBundle("01-classificacao-aplicacoes", "Cap. 01");
-    const cache = makeCache([item]);
-    const result = handleGetSbdToeChapterBrief(
-      { chapterId: "01-classificacao-aplicacoes" },
-      cache
-    ) as { found: boolean; id: string; title: string };
+  it("briefs a real chapter from the bundle: readable title, objective, phases, roles, artifacts", () => {
+    const result = handleGetSbdToeChapterBrief({ chapterId: "01-classificacao-aplicacoes" }) as {
+      found: boolean; id: string; title: string; objective?: string; phases?: string[]; role?: string[]; artifacts?: string[];
+    };
     expect(result.found).toBe(true);
     expect(result.id).toBe("01-classificacao-aplicacoes");
-    // title prefers the clean readable title over the raw bundle title.
     expect(result.title).toBe("Classificação de Aplicações");
+    expect(typeof result.objective).toBe("string");
+    expect(result.phases?.length ?? 0).toBeGreaterThan(0);
+    expect(result.role?.length ?? 0).toBeGreaterThan(0);
+    expect(result.artifacts?.length ?? 0).toBeGreaterThan(0);
   });
-
-  it("finds chapter by objectID field", () => {
-    const item = makeChapterBundle("07-cicd", "Cap. 07");
-    const cache = makeCache([item]);
-    const objectID = `entity::chapter_bundle::07-cicd::bundle`;
-    const result = handleGetSbdToeChapterBrief({ chapterId: objectID }, cache) as {
-      found: boolean;
-    };
-    expect(result.found).toBe(true);
-  });
-
-  it("includes phases from related_phases field", () => {
-    const item = makeChapterBundle("01-cap", "Cap. 01");
-    const cache = makeCache([item]);
-    const result = handleGetSbdToeChapterBrief({ chapterId: "01-cap" }, cache) as {
-      phases?: string[];
-    };
-    expect(result.phases).toEqual(["design", "implementation"]);
-  });
-
-  it("includes objective from summary when present", () => {
-    const item = makeChapterBundle("01-cap", "Cap. 01");
-    const cache = makeCache([item]);
-    const result = handleGetSbdToeChapterBrief({ chapterId: "01-cap" }, cache) as {
-      objective?: string;
-    };
-    expect(result.objective).toBe("Summary of Cap. 01");
-  });
-
 });
 
 // --- list_sbd_toe_chapters — readableTitle ---
 
-describe("handleListSbdToeChapters — readableTitle", () => {
-  it("includes readableTitle field distinct from id", () => {
-    const cache = makeCache([
-      makeChapterBundle("01-classificacao-aplicacoes", "Cap. 01")
-    ]);
-    const result = handleListSbdToeChapters({}, cache) as {
-      chapters: Array<{ id: string; title: string; readableTitle: string }>;
-    };
-    expect(result.chapters).toHaveLength(1);
-    const ch = result.chapters[0];
-    expect(ch?.readableTitle).toBe("Classificação de Aplicações");
-    expect(ch?.readableTitle).not.toBe(ch?.id);
-  });
-
-  it("covers all 14 known chapter ids with distinct readableTitles", () => {
-    const knownIds = [
-      "01-classificacao-aplicacoes", "02-requisitos-seguranca", "03-threat-modeling",
-      "04-arquitetura-segura", "05-dependencias-sbom-sca", "06-desenvolvimento-seguro",
-      "07-cicd-seguro", "08-iac-infraestrutura", "09-containers-imagens",
-      "10-testes-seguranca", "11-deploy-seguro", "12-monitorizacao-operacoes",
-      "13-formacao-onboarding", "14-governanca-contratacao"
-    ];
-    const items = knownIds.map((id) => makeChapterBundle(id, `Title ${id}`));
-    const cache = makeCache(items);
-    const result = handleListSbdToeChapters({}, cache) as {
-      chapters: Array<{ id: string; readableTitle: string }>;
-    };
-    expect(result.chapters).toHaveLength(14);
+describe("handleListSbdToeChapters — readableTitle (runtime bundle)", () => {
+  it("every chapter carries a clean readableTitle distinct from its id", () => {
+    const result = handleListSbdToeChapters({}) as { chapters: Array<{ id: string; title: string; readableTitle: string }> };
+    expect(result.chapters).toHaveLength(15);
     for (const ch of result.chapters) {
-      expect(ch.readableTitle).not.toBe(ch.id);
       expect(typeof ch.readableTitle).toBe("string");
       expect(ch.readableTitle.length).toBeGreaterThan(0);
+      expect(ch.readableTitle).not.toBe(ch.id);
+      expect(ch.readableTitle).not.toMatch(/Nota Can[oó]nica|\{#/);
     }
   });
 
-  it("falls back to title when chapterId is unknown", () => {
-    const cache = makeCache([makeChapterBundle("unknown-chapter-xyz", "My Custom Title")]);
-    const result = handleListSbdToeChapters({}, cache) as {
-      chapters: Array<{ id: string; title: string; readableTitle: string }>;
-    };
-    expect(result.chapters[0]?.readableTitle).toBe("My Custom Title");
-  });
-
-  it("preserves id and title fields (retro-compatibility)", () => {
-    const cache = makeCache([makeChapterBundle("07-cicd-seguro", "CI/CD Seguro")]);
-    const result = handleListSbdToeChapters({}, cache) as {
-      chapters: Array<{ id: string; title: string; readableTitle: string }>;
-    };
-    const ch = result.chapters[0];
-    expect(ch?.id).toBe("07-cicd-seguro");
-    expect(ch?.title).toBe("CI/CD Seguro");
-    expect(ch?.readableTitle).toBe("CI/CD Seguro");
+  it("known chapters map to their canonical readable titles; id and title are preserved", () => {
+    const result = handleListSbdToeChapters({}) as { chapters: Array<{ id: string; title: string; readableTitle: string }> };
+    const byId = new Map(result.chapters.map((c) => [c.id, c]));
+    expect(byId.get("01-classificacao-aplicacoes")?.readableTitle).toBe("Classificação de Aplicações");
+    expect(byId.get("07-cicd-seguro")?.readableTitle).toBe("CI/CD Seguro");
+    expect(byId.get("07-cicd-seguro")?.id).toBe("07-cicd-seguro");
+    expect(typeof byId.get("07-cicd-seguro")?.title).toBe("string");
   });
 });
 
@@ -400,87 +219,21 @@ describe("handleListSbdToeChapters — readableTitle", () => {
 
 describe("handleMapSbdToeApplicability", () => {
   it("throws on undefined riskLevel", () => {
-    const cache = makeCache([]);
-    expect(() => handleMapSbdToeApplicability({}, cache)).toThrow("riskLevel é obrigatório");
+    expect(() => handleMapSbdToeApplicability({})).toThrow("riskLevel é obrigatório");
   });
 
   it("throws on invalid riskLevel L4", () => {
-    const cache = makeCache([]);
-    expect(() => handleMapSbdToeApplicability({ riskLevel: "L4" }, cache)).toThrow(
+    expect(() => handleMapSbdToeApplicability({ riskLevel: "L4" })).toThrow(
       "riskLevel é obrigatório"
     );
   });
 
   it("throws on non-string riskLevel", () => {
-    const cache = makeCache([]);
-    expect(() => handleMapSbdToeApplicability({ riskLevel: 1 }, cache)).toThrow(
+    expect(() => handleMapSbdToeApplicability({ riskLevel: 1 })).toThrow(
       "riskLevel é obrigatório"
     );
   });
 
-  it("returns empty active/excluded when cache is empty", () => {
-    const cache = makeCache([]);
-    const result = handleMapSbdToeApplicability({ riskLevel: "L1" }, cache) as {
-      riskLevel: string;
-      active: string[];
-      conditional: string[];
-      excluded: string[];
-    };
-    expect(result.riskLevel).toBe("L1");
-    expect(result.active).toEqual([]);
-    expect(result.conditional).toEqual([]);
-    expect(result.excluded).toEqual([]);
-  });
-
-  it("returns correct structure for L1 with chapter_bundle and practice_assignment", () => {
-    const cache = makeCache([
-      makeChapterBundle("01-cap", "Cap. 01"),
-      makeChapterBundle("02-cap", "Cap. 02"),
-      makePracticeAssignment("01-cap", ["L1", "L2"]),
-      makePracticeAssignment("02-cap", ["L3"])
-    ]);
-    const result = handleMapSbdToeApplicability({ riskLevel: "L1" }, cache) as {
-      active: string[];
-      excluded: string[];
-      conditional: string[];
-    };
-    expect(result.active).toContain("01-cap");
-    expect(result.active).not.toContain("02-cap");
-    expect(result.excluded).toContain("02-cap");
-    expect(result.conditional).toEqual([]);
-  });
-
-  it("activates chapter that has any entity with matching riskLevel", () => {
-    const cache = makeCache([
-      makeChapterBundle("01-cap", "Cap. 01"),
-      makePracticeAssignment("01-cap", ["L1", "L2", "L3"])
-    ]);
-    const resultL1 = handleMapSbdToeApplicability({ riskLevel: "L1" }, cache) as {
-      active: string[];
-    };
-    const resultL2 = handleMapSbdToeApplicability({ riskLevel: "L2" }, cache) as {
-      active: string[];
-    };
-    const resultL3 = handleMapSbdToeApplicability({ riskLevel: "L3" }, cache) as {
-      active: string[];
-    };
-    expect(resultL1.active).toContain("01-cap");
-    expect(resultL2.active).toContain("01-cap");
-    expect(resultL3.active).toContain("01-cap");
-  });
-
-  it("excluded contains chapter_bundle chapters not active for the given level", () => {
-    const cache = makeCache([
-      makeChapterBundle("01-cap", "Cap. 01"),
-      makeChapterBundle("02-cap", "Cap. 02"),
-      makePracticeAssignment("01-cap", ["L1"])
-    ]);
-    const result = handleMapSbdToeApplicability({ riskLevel: "L1" }, cache) as {
-      excluded: string[];
-    };
-    expect(result.excluded).toContain("02-cap");
-    expect(result.excluded).not.toContain("01-cap");
-  });
 });
 
 // --- map_sbd_toe_applicability — activatedBundles ---
@@ -499,8 +252,7 @@ interface ActivatedBundles {
 
 describe("handleMapSbdToeApplicability — activatedBundles", () => {
   it("always includes 3 foundation bundles for any risk level", () => {
-    const cache = makeCache([]);
-    const result = handleMapSbdToeApplicability({ riskLevel: "L1" }, cache) as {
+    const result = handleMapSbdToeApplicability({ riskLevel: "L1" }) as {
       activatedBundles: ActivatedBundles;
     };
     expect(result.activatedBundles.foundationBundles).toHaveLength(3);
@@ -511,48 +263,39 @@ describe("handleMapSbdToeApplicability — activatedBundles", () => {
   });
 
   it("activates 09-containers-imagens when technologies includes 'containers'", () => {
-    const cache = makeCache([]);
     const result = handleMapSbdToeApplicability(
-      { riskLevel: "L2", technologies: ["containers", "ci-cd"] },
-      cache
+      { riskLevel: "L2", technologies: ["containers", "ci-cd"] }
     ) as { activatedBundles: ActivatedBundles };
     const domainIds = result.activatedBundles.domainBundles.map((b) => b.chapterId);
     expect(domainIds).toContain("09-containers-imagens");
   });
 
   it("activates 07-cicd-seguro when technologies includes 'ci-cd'", () => {
-    const cache = makeCache([]);
     const result = handleMapSbdToeApplicability(
-      { riskLevel: "L1", technologies: ["ci-cd"] },
-      cache
+      { riskLevel: "L1", technologies: ["ci-cd"] }
     ) as { activatedBundles: ActivatedBundles };
     const opIds = result.activatedBundles.operationalBundles.map((b) => b.chapterId);
     expect(opIds).toContain("07-cicd-seguro");
   });
 
   it("does NOT activate 13-formacao-onboarding for L1 even with hasPersonalData", () => {
-    const cache = makeCache([]);
     const result = handleMapSbdToeApplicability(
-      { riskLevel: "L1", hasPersonalData: true },
-      cache
+      { riskLevel: "L1", hasPersonalData: true }
     ) as { activatedBundles: ActivatedBundles };
     const opIds = result.activatedBundles.operationalBundles.map((b) => b.chapterId);
     expect(opIds).not.toContain("13-formacao-onboarding");
   });
 
   it("activates 13-formacao-onboarding for L3", () => {
-    const cache = makeCache([]);
     const result = handleMapSbdToeApplicability(
-      { riskLevel: "L3" },
-      cache
+      { riskLevel: "L3" }
     ) as { activatedBundles: ActivatedBundles };
     const opIds = result.activatedBundles.operationalBundles.map((b) => b.chapterId);
     expect(opIds).toContain("13-formacao-onboarding");
   });
 
   it("does not activate domain/operational bundles for L1 without technologies", () => {
-    const cache = makeCache([]);
-    const result = handleMapSbdToeApplicability({ riskLevel: "L1" }, cache) as {
+    const result = handleMapSbdToeApplicability({ riskLevel: "L1" }) as {
       activatedBundles: ActivatedBundles;
     };
     expect(result.activatedBundles.domainBundles).toHaveLength(0);
@@ -560,10 +303,9 @@ describe("handleMapSbdToeApplicability — activatedBundles", () => {
   });
 
   it("throws (with rpcError) when technologies contain invalid value", () => {
-    const cache = makeCache([]);
     let caughtError: unknown;
     try {
-      handleMapSbdToeApplicability({ riskLevel: "L1", technologies: ["invalid-tech"] }, cache);
+      handleMapSbdToeApplicability({ riskLevel: "L1", technologies: ["invalid-tech"] });
     } catch (e) {
       caughtError = e;
     }
@@ -573,10 +315,9 @@ describe("handleMapSbdToeApplicability — activatedBundles", () => {
   });
 
   it("throws (with rpcError) when projectRole is invalid", () => {
-    const cache = makeCache([]);
     let caughtError: unknown;
     try {
-      handleMapSbdToeApplicability({ riskLevel: "L1", projectRole: "invalid-role" }, cache);
+      handleMapSbdToeApplicability({ riskLevel: "L1", projectRole: "invalid-role" });
     } catch (e) {
       caughtError = e;
     }
@@ -584,20 +325,18 @@ describe("handleMapSbdToeApplicability — activatedBundles", () => {
     expect((caughtError as Error & { rpcError?: { code: number } }).rpcError?.code).toBe(-32602);
   });
 
-  it("retro-compatible: input {riskLevel: 'L1'} without optional fields still works", () => {
-    const cache = makeCache([
-      makeChapterBundle("01-cap", "Cap. 01"),
-      makePracticeAssignment("01-cap", ["L1"])
-    ]);
-    const result = handleMapSbdToeApplicability({ riskLevel: "L1" }, cache) as {
+  it("retro-compatible: input {riskLevel: 'L1'} without optional fields still works (runtime bundle)", () => {
+    const result = handleMapSbdToeApplicability({ riskLevel: "L1" }) as {
       riskLevel: string;
       active: string[];
-      conditional: string[];
+      conditional: unknown[];
       excluded: string[];
       activatedBundles: ActivatedBundles;
     };
     expect(result.riskLevel).toBe("L1");
-    expect(result.active).toContain("01-cap");
+    expect(result.active).toContain("01-classificacao-aplicacoes");
+    expect(result.active).toContain("02-requisitos-seguranca");
+    expect(result.excluded).toContain("13-formacao-onboarding");
     expect(result.conditional).toEqual([]);
     expect(result.activatedBundles.foundationBundles).toHaveLength(3);
   });
@@ -720,5 +459,47 @@ describe("handleGetSbdToeChapterBrief — role", () => {
     expect(Array.isArray(result.role)).toBe(true);
     expect((result.role ?? []).length).toBeGreaterThan(0);
     expect(result.role).toEqual([...(result.role ?? [])].sort()); // deduped + sorted
+  });
+});
+
+// ---------------------------------------------------------------------------
+// query_sbd_toe_entities filters over the CURRENT substrate (no per-chunk entity_type;
+// entity types via entity_mentions_flat, risk via filter_tags.risk_level) — acceptance
+// scenario TC-A-13 (2026-08-29): entityType/riskLevel filters returned 0 for everything.
+// ---------------------------------------------------------------------------
+
+describe("handleQuerySbdToeEntities — filters over substrate facets", () => {
+  it("entityType matches the entity types a chunk mentions (entity_mentions_flat), with aliases", async () => {
+    const r1 = makeNormalizedRecord({ raw: { entity_mentions_flat: ["AUT-001", "Requirement", "AUT-001"] } });
+    const r2 = makeNormalizedRecord({ objectID: "e-002", raw: { entity_mentions_flat: ["US-02", "UserStory", "US-02"] } });
+    vi.mocked(retrievePublishedContext).mockResolvedValue(makeBundle([r1, r2]) as never);
+    const result = (await handleQuerySbdToeEntities({ query: "test", entityType: "requirements" })) as {
+      total: number; filters?: { applied: Record<string, string>; retrieval_pool: number; matched: number };
+    };
+    expect(result.total).toBe(1);
+    expect(result.filters?.applied).toEqual({ entityType: "requirements" });
+    expect(result.filters?.retrieval_pool).toBe(2);
+    expect(result.filters?.matched).toBe(1);
+  });
+
+  it("riskLevel matches filter_tags.risk_level and declares how much of the pool carries a facet", async () => {
+    const r1 = makeNormalizedRecord({ raw: { filter_tags: { risk_level: ["L2", "L3"] } } });
+    const r2 = makeNormalizedRecord({ objectID: "e-002", raw: { filter_tags: { risk_level: [] } } });
+    const r3 = makeNormalizedRecord({ objectID: "e-003", raw: {} });
+    vi.mocked(retrievePublishedContext).mockResolvedValue(makeBundle([r1, r2, r3]) as never);
+    const result = (await handleQuerySbdToeEntities({ query: "test", riskLevel: "L2" })) as {
+      total: number; filters?: { pool_with_risk_facet?: number; note: string };
+    };
+    expect(result.total).toBe(1);
+    expect(result.filters?.pool_with_risk_facet).toBe(1);
+    expect(result.filters?.note).toMatch(/declared/);
+  });
+
+  it("filters over the full ranked retrieval, then pages topK (total = matched, not topK)", async () => {
+    const recs = Array.from({ length: 12 }, (_, i) => makeNormalizedRecord({ objectID: `e-${i}`, raw: { entity_mentions_flat: ["Requirement"] } }));
+    vi.mocked(retrievePublishedContext).mockResolvedValue(makeBundle(recs) as never);
+    const result = (await handleQuerySbdToeEntities({ query: "test", topK: 3, entityType: "requirement" })) as { entities: unknown[]; total: number };
+    expect(result.entities).toHaveLength(3);
+    expect(result.total).toBe(12);
   });
 });

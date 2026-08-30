@@ -1,26 +1,26 @@
 {
   "_doc": "Pontifex bundle pin (PROGRAMME-PRESERVATION-PROTOCOL §0.6 / AGENTS.md Rule 4). Declares the Codex build artefact this MCP serves. Materialized + maintained by scripts/sync-bundle.mjs (digest-verified against the artefact .sha256), validated by scripts/verify-consumed-bundle.mjs (run in `npm run check`). source: dev-build = cycle snapshot; release = formal vX.Y.Z. release_sha256 is the verified artefact digest — never invented.",
   "pin_version": 1,
-  "pinned_at": "2026-08-29",
-  "consumer_contract_version": "v1.11",
+  "pinned_at": "2026-08-30",
+  "consumer_contract_version": "v1.12",
   "substrate_version": "v2-draft",
   "kg_bundle": {
-    "release_tag": "v1.6.0",
-    "release_sha256": "baf5913b596fdeb17c77d9c3a1d9394738c4c9319a8bcf0ec03972ba5db1d93b",
+    "release_tag": "v1.6.1",
+    "release_sha256": "df6920cbef5bbd6f2b723708efe0b48ca5017abf8928bc800db0609536ef547b",
     "source": "release",
-    "release_ref": "SbD-ToE/sbd-toe-knowledge-graph@v1.6.0",
-    "surface_built_at": "2026-08-29T16:32:13.452857+00:00",
+    "release_ref": "SbD-ToE/sbd-toe-knowledge-graph@v1.6.1",
+    "surface_built_at": "2026-08-29T23:21:40.627986+00:00",
     "tag_scheme": "semver",
-    "synced_at": "2026-08-29",
-    "artefact": "sbd-toe-knowledge-graph-bundle-v1.6.0.zip"
+    "synced_at": "2026-08-30",
+    "artefact": "sbd-toe-knowledge-graph-bundle-v1.6.1.zip"
   },
   "inputs": {
     "manual": {
       "repo": "SbD-ToE/sbd-toe-manual",
-      "commit": "d5c2586ae2cd12ab2e31b65febb2e85ed20e1bce",
-      "tag": "v1.7.0",
-      "version": "1.7.0",
-      "generated_at": "2026-08-29T16:31:43Z"
+      "commit": "8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac",
+      "tag": "v1.7.1",
+      "version": "1.7.1",
+      "generated_at": "2026-08-29T23:21:12Z"
     },
     "ontology": {
       "repo": "SbD-ToE/sbd-toe-ontology",

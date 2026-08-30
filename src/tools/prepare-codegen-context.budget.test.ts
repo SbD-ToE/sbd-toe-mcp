@@ -71,7 +71,11 @@ const FIXTURES: readonly BaselineFixture[] = [
       risk_level: "L2",
       mode: "codegen"
     },
-    citationIds: 111
+    // 111 on bundle v1.5.0 … v1.6.0 (EPIC baseline). 112 since the formal KG v1.6.1
+    // pin (0.20.0-beta.4, contract v1.12 curated requirement→control layer v2):
+    // one re-targeted link adds a direct control (9 → 10) to this fixture's
+    // activated set. Data change, not a serving change.
+    citationIds: 112
   },
   {
     name: "fixture2",
@@ -438,7 +442,7 @@ const KNOWN_TOTAL_DEVIATIONS: Readonly<
   Record<string, { measured: number; tolerated: number; since: string; reason: string }>
 > = {
   "standard:fixture2": {
-    measured: 8645,
+    measured: 8645, // 8,617 on v1.6.1 (2026-08-30) — still above the 8,500 gate
     tolerated: 8700,
     since: "2026-08-29",
     reason:

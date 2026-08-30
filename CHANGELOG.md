@@ -1,13 +1,103 @@
 ---
 ai_assisted: true
 model: Claude Fable 5
-date: 2026-08-29
+date: 2026-08-30
 purpose: documentation
-reasoning: v0.20.0-beta.3 (beta line, published to the npm `beta` dist-tag) — serves the formal KG release v1.6.0 (mcp-stable, contract v1.11, Manual v1.7.0), same content as stable 0.10.2; absorbs master bc8c9189 (PR #45), 947f38e6 (PR #46) and the formal pin of 31aa22af (PR #47) into the v2 line: id grammar v1.10, informative citation classifier, toolchain hygiene (separate commit), fixture-2 standard budget tolerance ≤8,700 ratified; dev-build KG pin kg-v1-manual-v1.6.7-aligned-2026-08-29 (REQ-AGN-001…004 served), requirement-id grammar v1.10 §1.18, declared gaps (requirements without control link; legacy REQ-<CAT>-NNN citations); verified against the v2 surface (SPARQL trace, detail levels, payload budgets). v0.20.0-beta.2 (token diet) and the stable-line entries (0.10.2 proposed, 0.10.1 and earlier) below.
+reasoning: v0.20.0-beta.4 (beta line, npm `beta` dist-tag) — serves the formal KG release v1.6.1 (mcp-stable, contract v1.12 §1.19 curated requirement→control layer v2, Manual v1.7.1), same content as stable 0.10.3; absorbs master 8ade07f (PR #49: acceptance regression runner, query_sbd_toe_entities filter fix, Algolia-era cache paths removed) into the v2 line; first eval:acceptance run on this line. Earlier beta entries and the stable-line entries (synced from master) below.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.4 — 2026-08-30
+
+**Prerelease (beta line).** Published to the npm `beta` dist-tag — `latest` (stable
+`0.10.3`) is unchanged. Experimental; **not citable** — excluded from the scientific record
+per `PROGRAMME-PRESERVATION-PROTOCOL.md` (see `FREEZE-REGISTRY.md`, beta line).
+
+### Served bundle — formal KG release `v1.6.1` (`mcp-stable`), `source: release`
+
+`consumed-bundle.json`: `release_tag: v1.6.1`, `release_ref: SbD-ToE/sbd-toe-knowledge-graph@v1.6.1`,
+asset `sbd-toe-knowledge-graph-bundle-v1.6.1.zip` sha256
+`df6920cbef5bbd6f2b723708efe0b48ca5017abf8928bc800db0609536ef547b` (fetched and
+digest-verified against the release `.sha256` by `sync-bundle --from-release`), contract
+**v1.12** (§1.19 curated layer v2), Manual **v1.7.1** @ `8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac`,
+ontology `ontology-v1.1-fair-baseline`, `pinned_at` 2026-08-30. **Same pin and same served
+content as stable `0.10.3`** (master `06f8bba`, PR #51); supersedes `v1.6.0` (beta.3).
+Served-knowledge delta `v1.6.0` → `v1.6.1` as recorded in the `0.10.3` entry below (curated
+requirement→control layer v2: `requirement_control_links` 263 → 265, 0 requirements without a
+link; Manual v1.7.1 `EX-REQ-NNN`).
+
+### Verified on this line (live server over stdio, `dist/index.js`; 2026-08-30)
+
+- **`npm run eval:acceptance`** (first run on the beta line; record
+  `docs/acceptance-runs/2026-08-30-v0.20.0-beta.4-acceptance.{md,json}`): **102 scenarios, 79
+  executed — 59 PASS · 20 PART · 0 FAIL · 23 SKIP; promotion gate (Axis E) PASS**; Axis F
+  7/7 incl. TC-F-08 (265 links, gaps 0/0/0, AUT-007/008 → identity, AUT-010 → monitoring).
+  The scenario set is master's 0.10.3 one (#51: TC-E-01/02 criterion revised to structural
+  `mitigated_by`, `associated_controls` textual → PART; `--stamp`). **21/22 exposed tools
+  exercised — `trace_sbd_toe_graph` (this line only) is not covered by the stable scenario
+  set** (follow-up: an Axis-G scenario for the SPARQL lens).
+- `trace_sbd_toe_graph`: deterministic (3 lenses × 2 calls byte-equal); **270/270/270 rows —
+  unchanged since beta.2** (`relations.v1` 529 untouched; the RDF projection's
+  `requirement_control_links` source 263 → **265**, test re-baselined with history).
+- `prepare_sbd_toe_codegen_context` with `concerns: ["agents"]` at `full`/`standard`/
+  `minimal`/`ultrathin`: REQ-AGN-001…004 in the activated set at every level (11,760 / 4,998 /
+  4,467 / 2,899 tokens; `category` elided at dieted levels, `description` at standard/minimal);
+  task heuristic «AI agent … kill-switch … audit logging» also activates OPS-015.
+- **Payload budgets** (vitest, `JSON.length/4`; tolerance ≤8,700 on fixture 2 `standard`
+  ratified by the programme lead on 2026-08-29): fixture 1 full **18,992** · standard
+  **6,280**/6,500 · minimal **5,641**/5,800 · ultrathin **3,746**/3,870 — the curated layer v2
+  re-targets one link into this fixture (direct controls 9 → 10, `citation_map` 111 → **112**,
+  re-baselined); fixture 2 full 24,790 · standard **8,617**/8,700 (gate 8,500 kept; −28 vs
+  v1.6.0) · minimal **7,898**/8,000 · ultrathin **4,642**/4,840 · 151 ids. All within limits.
+- Golden snapshots regenerated (data-driven: 131× `manual_commit_sha` `d5c2586a` → `8e03454c`,
+  the re-targeted control in fixture 1, evidence totals). `npm run check` ✅ · **708/708** ✅
+  (master's v1.6.1 tests `requirement-id.test.ts` / `req-agn-serving.test.ts` absorbed from #51).
+
+### Absorbed from master `8ade07f1018d986816b8dadb8c5bc29be6c9fdf3` (PR #49)
+
+Cherry-picked into the v2 line; `src/index.ts` merged cleanly (only the
+`query_sbd_toe_entities` schema descriptions changed — `trace_sbd_toe_graph`, `detail`,
+`include_relations` and `concerns: ["agents"]` untouched; the dieted `category` elision keeps
+this line's `requirementCategoryOf` rule).
+
+### Added — acceptance regression runner
+
+- **`npm run eval:acceptance`** (`scripts/run-acceptance-scenarios.mjs` + `scripts/acceptance/`):
+  executes the **94 acceptance scenarios** of
+  `DevelopmentGovernance/docs/mcp-acceptance-test-scenarios.md` (axes A–E) against the real
+  stdio server on the pinned bundle, one verdict per scenario (PASS / PART / FAIL / SKIP with
+  owner `mcp`·`graph`·`roadmap`), Axis E as the promotion gate (exit 1 on FAIL), and a
+  **coverage** section (scenarios executed, tools exercised vs exposed, ACs covered, roles ×
+  phases). **Axis F** (7 scenarios) covers the six 0.10.0 tools that post-date the June
+  elicitation plus the G1 pagination gate. Run records live in `docs/acceptance-runs/`.
+- First run on `0.10.2` / KG `v1.6.0`: 101 scenarios, 78 executed (23 SKIP: 21 commercial
+  ACs + 2 needing a client LLM), **58 PASS · 18 PART · 2 FAIL**; **21/21 tools exercised**.
+  The two FAILs (TC-E-01/02) are data-rooted: `associated_controls` on threats is empty for
+  ch.12 and textual elsewhere in the bundle (routed to Codex); `mitigated_by` is populated
+  structurally on every threat.
+
+### Fixed — `query_sbd_toe_entities` filters (found by TC-A-13)
+
+- `entityType` and `riskLevel` filters returned **0 for every query**: they matched the
+  Algolia-era record fields `entity_type` / `risk_levels`, which no chunk of the current
+  substrate carries. They now match what the substrate publishes — entity types via the
+  chunk's entity mentions (`Requirement | UserStory | Metric | Threat`, aliases accepted) and
+  the risk facet `filter_tags.risk_level` — over the full ranked retrieval, and the response
+  declares `filters {applied, retrieval_pool, matched, pool_with_risk_facet, note}` (chunks
+  without a risk facet are not returned — declared, never silent). `chapterId` accepts the
+  bundle id or its numeric prefix. Tool schema documents the vocabulary.
+
+### Removed — Algolia-era snapshot-cache paths (dead at runtime)
+
+- `structured-tools.ts` (`list_chapters`, `query_entities`, `chapter_brief`,
+  `map_applicability`) and `plan-repo-governance.ts` carried a `SnapshotCache` branch that
+  the server never reached (runtime calls pass no cache). Removed, together with the ~25
+  unit tests that only exercised those branches with `chapter_bundle` /
+  `practice_assignment` / `risk_levels` fixtures; replaced by tests over the runtime bundle.
+  Suite: 532 tests.
+
 
 ## 0.20.0-beta.3 — 2026-08-29
 
@@ -234,6 +324,88 @@ record per `PROGRAMME-PRESERVATION-PROTOCOL.md`.
 
 > The IRI scheme is **provisional/local**; canonical IRIs are an upstream (ontology)
 > decision required before any graduation of this line to stable.
+## 0.10.3 — 2026-08-30
+
+**Patch** — formal KG release `v1.6.1` (curated requirement→control layer v2) + the #49
+serving/test changes. Additive on the tool surface (`filters` on `query_sbd_toe_entities`);
+no tool removed or reshaped.
+
+Served bundle: **formal KG release `v1.6.1`** (GitHub Release
+`SbD-ToE/sbd-toe-knowledge-graph@v1.6.1`, commit `e9fc54f312829c632ecd50e2306bfa356e9e457c`
+= `mcp-stable`; asset `sbd-toe-knowledge-graph-bundle-v1.6.1.zip`, sha256
+**`df6920cbef5bbd6f2b723708efe0b48ca5017abf8928bc800db0609536ef547b`**, fetched and
+digest-verified against the release `.sha256` by `sync-bundle --from-release`;
+`run_manifest.release = {channel: stable, version: v1.6.1}`), `consumer_contract_version`
+**v1.12** (§1.19 curated layer v2), **Manual v1.7.1** @ `8e03454c` (mini-site aligned to
+0.10.2; illustrative `REQ-NNN` → `EX-REQ-NNN`), ontology `ontology-v1.1-fair-baseline`.
+Supersedes `v1.6.0` (0.10.2).
+
+### Changed — served knowledge (`v1.6.0` → `v1.6.1`)
+
+- **Curated requirement→control layer v2** (Archon opinion ratified 2026-08-30, applied by
+  curated edit, no rebuild): `requirement_control_links` 263 → **265**, **0 requirements
+  without a link**; 12 links removed / 14 added, each new link carrying an additive
+  `curation {curator: archon-2026-08-29, rationale}` key (tolerated by the loader — served
+  fields unchanged). Re-targets served: AUT-007/AUT-008 → identity control, AUT-010 →
+  monitoring, CNT-003/005/006/009 → images, ENC-007 → secrets, GOV-009 → suppliers,
+  REQ-001 → classification; INT-008 → suppliers (+ segmentation); ARC-013 + segmentation,
+  ARC-001 + architecture. 10 EvidencePatterns follow (`maps_to_control_id`); overlay
+  mappings 6382 → 6457; cross-layer referrals 7240 → 7315. Requirements 256/27 and
+  EvidencePatterns 256/256 unchanged.
+- Manual v1.7.1: content-only wave — the 25 illustrative `REQ-NNN` example ids became
+  `EX-REQ-NNN` (never resolve, no citation note), and the mini-site `020-assets/mcp/`
+  describes 0.10.2 as published (content-lag lifted).
+
+### Acceptance regression (`npm run eval:acceptance`, this bundle)
+
+- See `docs/acceptance-runs/2026-08-30-v0.10.3-acceptance.md`. Axis E criterion revised by
+  the programme lead: the structural mitigation link is `mitigated_by` (must be populated,
+  ids must resolve); the substrate's textual `associated_controls` is passed through and
+  reported as PART, never as a serving FAIL. New TC-F-08 checks the curated layer v2 (265
+  links, 0 gaps, the AUT re-targets, `curation` tolerated).
+
+### Record corrections (Manual v1.7.1 handover, verified live on 0.10.2)
+
+- AI Act overlay: **661** mappings (earlier handoffs said 651); the server exposes **3**
+  prompts (`setup_sbd_toe_agent`, `ask_sbd_toe_manual`, `prepare_grounded_codegen`), not 2;
+  the npm `beta` dist-tag is **0.20.0-beta.3** (not beta.2).
+
+### Added — acceptance regression runner (merged in #49)
+
+- **`npm run eval:acceptance`** (`scripts/run-acceptance-scenarios.mjs` + `scripts/acceptance/`):
+  executes the **94 acceptance scenarios** of
+  `DevelopmentGovernance/docs/mcp-acceptance-test-scenarios.md` (axes A–E) against the real
+  stdio server on the pinned bundle, one verdict per scenario (PASS / PART / FAIL / SKIP with
+  owner `mcp`·`graph`·`roadmap`), Axis E as the promotion gate (exit 1 on FAIL), and a
+  **coverage** section (scenarios executed, tools exercised vs exposed, ACs covered, roles ×
+  phases). **Axis F** (7 scenarios) covers the six 0.10.0 tools that post-date the June
+  elicitation plus the G1 pagination gate. Run records live in `docs/acceptance-runs/`.
+- First run on `0.10.2` / KG `v1.6.0`: 101 scenarios, 78 executed (23 SKIP: 21 commercial
+  ACs + 2 needing a client LLM), **58 PASS · 18 PART · 2 FAIL**; **21/21 tools exercised**.
+  The two FAILs (TC-E-01/02) are data-rooted: `associated_controls` on threats is empty for
+  ch.12 and textual elsewhere in the bundle (routed to Codex); `mitigated_by` is populated
+  structurally on every threat.
+
+### Fixed — `query_sbd_toe_entities` filters (found by TC-A-13)
+
+- `entityType` and `riskLevel` filters returned **0 for every query**: they matched the
+  Algolia-era record fields `entity_type` / `risk_levels`, which no chunk of the current
+  substrate carries. They now match what the substrate publishes — entity types via the
+  chunk's entity mentions (`Requirement | UserStory | Metric | Threat`, aliases accepted) and
+  the risk facet `filter_tags.risk_level` — over the full ranked retrieval, and the response
+  declares `filters {applied, retrieval_pool, matched, pool_with_risk_facet, note}` (chunks
+  without a risk facet are not returned — declared, never silent). `chapterId` accepts the
+  bundle id or its numeric prefix. Tool schema documents the vocabulary.
+
+### Removed — Algolia-era snapshot-cache paths (dead at runtime)
+
+- `structured-tools.ts` (`list_chapters`, `query_entities`, `chapter_brief`,
+  `map_applicability`) and `plan-repo-governance.ts` carried a `SnapshotCache` branch that
+  the server never reached (runtime calls pass no cache). Removed, together with the ~25
+  unit tests that only exercised those branches with `chapter_bundle` /
+  `practice_assignment` / `risk_levels` fixtures; replaced by tests over the runtime bundle.
+  Suite: 532 tests.
+
 ## 0.10.2 — 2026-08-29
 
 **Patch** — served-bundle alignment + declared-gap serving. Additive on the tool

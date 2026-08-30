@@ -449,14 +449,6 @@
         "description": "Assegura formação contínua, onboarding e medição de eficácia para competências de segurança por perfil."
       },
       {
-        "control_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
-        "name": "Classificação e governação por risco",
-        "domain": "governance",
-        "control_type": "governance",
-        "confidence": "direct",
-        "description": "Estabelece classificação de risco, revisão periódica e governação proporcional por criticidade."
-      },
-      {
         "control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
         "name": "Gestão de identidades, acessos e ownership",
         "domain": "identity",
@@ -490,6 +482,13 @@
       {
         "control_id": "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4",
         "name": "Arquitetura segura e rastreável",
+        "domain": "governance",
+        "control_type": "governance",
+        "confidence": "derived"
+      },
+      {
+        "control_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
+        "name": "Classificação e governação por risco",
         "domain": "governance",
         "control_type": "governance",
         "confidence": "derived"
@@ -733,7 +732,7 @@
   },
   "manual_grounding": {
     "total_entries": 69,
-    "manual_commit_sha": "d5c2586ae2cd12ab2e31b65febb2e85ed20e1bce",
+    "manual_commit_sha": "8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac",
     "groups": [
       {
         "rastreabilidade_role": "substrate_landing",
@@ -822,9 +821,9 @@
       "ASC-09 artifacts: declared=12 actual=8 (slice contract status=working_contract)",
       "ASC-10 mechanisms: declared=6 actual=4 (slice contract status=working_contract)"
     ],
-    "evidence_patterns_total": 211,
+    "evidence_patterns_total": 205,
     "evidence_patterns_returned": 5,
-    "evidence_patterns_capped": 206,
+    "evidence_patterns_capped": 200,
     "evidence_pattern_cap": 5,
     "evidence_patterns_rest": {
       "tool": "prepare_sbd_toe_codegen_context",

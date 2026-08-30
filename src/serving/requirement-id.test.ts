@@ -63,7 +63,7 @@ describe("requirement id grammar (consumer contract v1.10 §1.18)", () => {
   });
 });
 
-describe("declared gaps vs informative citations over the pinned bundle (KG v1.7.0, contract v1.11)", () => {
+describe("declared gaps vs informative citations over the pinned bundle (KG v1.6.1 / Manual v1.7.1, contract v1.12)", () => {
   const known = new Set(getOntologyData().requirements.map((r) => r.requirement_id));
 
   it("published ids are never gaps nor notes (namespaced or base)", () => {
@@ -86,17 +86,25 @@ describe("declared gaps vs informative citations over the pinned bundle (KG v1.7
     expect(LEGACY_CITATION_SERVING_PHRASE).toBe("citação legada não resolvível (finding editorial em curso)");
   });
 
-  it("illustrative REQ-NNN example ids (25 mentions / 20 ids) are informative, never gaps", () => {
-    const illustrative = ["REQ-010", "REQ-011", "REQ-014", "REQ-015", "REQ-017", "REQ-018", "REQ-024", "REQ-114", "REQ-115", "REQ-118",
+  it("illustrative REQ-NNN example ids are gone from the Manual (v1.7.1: EX-REQ-NNN) — no gap, no note; EX- never resolves", () => {
+    // Manual v1.7.1 renamed the 25 illustrative ids to EX-REQ-NNN, which the KG does not
+    // capture as Requirement mentions (0 EX- entries). The one exception is REQ-010, cited
+    // twice by the mini-site's own tools reference as the worked example of citation_note.
+    const illustrative = ["REQ-011", "REQ-014", "REQ-015", "REQ-017", "REQ-018", "REQ-024", "REQ-114", "REQ-115", "REQ-118",
       "REQ-203", "REQ-205", "REQ-208", "REQ-303", "REQ-307", "REQ-309", "REQ-310", "REQ-404", "REQ-405", "REQ-406"];
-    let mentions = 0;
     for (const id of illustrative) {
+      expect(getRequirementCitations(id).mention_count, id).toBe(0);
       expect(describeRequirementGap(id, known), id).toBeUndefined();
-      const note = describeRequirementCitation(id, known);
-      expect(note?.status, id).toBe("informative");
-      mentions += note?.cited_in.mention_count ?? 0;
+      expect(describeRequirementCitation(id, known), id).toBeUndefined();
     }
-    expect(mentions).toBe(25);
+    const note = describeRequirementCitation("REQ-010", known);
+    expect(note?.status).toBe("informative");
+    expect(note?.cited_in.document_ids).toEqual(["020-assets-mcp-05-tools-reference"]);
+    for (const id of ["EX-REQ-010", "EX-REQ-205"]) {
+      expect(getRequirementCitations(id).mention_count, id).toBe(0);
+      expect(describeRequirementGap(id, known), id).toBeUndefined();
+      expect(describeRequirementCitation(id, known), id).toBeUndefined();
+    }
   });
 
   it("non-requirement tokens captured by the <CAT>-NNN shape (CWE-, SHA-) are informative, never gaps", () => {

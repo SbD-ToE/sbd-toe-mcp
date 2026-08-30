@@ -7,7 +7,8 @@
 // Token estimate is JSON.stringify(value).length / 4 — the same method used to
 // record the EPIC baselines (fixture 1 ⇒ ≈18.903 tokens / 111 citation ids,
 // fixture 2 ⇒ ≈24.731 / 150, measured 2026-07-05 on 0.20.0-beta.1; re-baselined
-// 2026-08-29 on the kg-v1-manual-v1.7.0 pin: fixture 2 ⇒ ≈24.792 / 151, OPS-015 added). Regressions
+// 2026-08-29 on the kg-v1-manual-v1.7.0 pin: fixture 2 ⇒ ≈24.792 / 151, OPS-015 added;
+// 2026-08-30 on the formal v1.6.1 pin: fixture 1 ⇒ ≈18.992 / 112, curated layer v2). Regressions
 // are judged against those numbers; do not change the method or the fixtures
 // without updating the EPIC.
 

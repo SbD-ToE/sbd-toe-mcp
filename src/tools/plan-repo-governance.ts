@@ -10,7 +10,6 @@
  * them if asked, using the artefact list as a guide.
  */
 
-import type { SnapshotCache } from "../backend/semantic-index-gateway.js";
 import { chapterNumber, getOntologyData, type Requirement } from "./ontology-loader.js";
 import { paginate, type PageCoverage, type SizeEstimate } from "../serving/response-shaping.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
@@ -81,10 +80,7 @@ export interface PlanRepoGovernanceResult {
   next: Affordance[];
 }
 
-export function handlePlanRepoGovernance(
-  args: Record<string, unknown>,
-  cache?: SnapshotCache
-): PlanRepoGovernanceResult {
+export function handlePlanRepoGovernance(args: Record<string, unknown>): PlanRepoGovernanceResult {
   // riskLevel is optional — if provided, filter to artefacts applicable at that level
   const riskLevelArg = args["riskLevel"];
   let riskLevel: RiskLevel | null = null;
@@ -100,49 +96,23 @@ export function handlePlanRepoGovernance(
 
   const artMap = new Map<string, { artefactId: string; chapterId: string; riskLevels: Set<string> }>();
 
-  if (cache !== undefined) {
-    const items: unknown[] = Array.isArray(cache.entities.items) ? cache.entities.items : [];
-    for (const item of items) {
-      if (typeof item !== "object" || item === null) continue;
-      const rec = item as Record<string, unknown>;
-      const objectId = typeof rec["objectID"] === "string" ? rec["objectID"] : undefined;
-      const enriched = objectId ? cache.entitiesEnrichedLookup.get(objectId) : undefined;
-      const artifactIds: readonly string[] = enriched?.artifact_ids ?? [];
-      if (artifactIds.length === 0) continue;
-
-      const chapterId = typeof rec["chapter_id"] === "string" ? rec["chapter_id"] : "";
-      const recRiskLevels = Array.isArray(rec["risk_levels"])
-        ? (rec["risk_levels"] as unknown[]).filter((r): r is string => typeof r === "string")
-        : [];
-
-      for (const artId of artifactIds) {
-        if (typeof artId !== "string") continue;
-        const key = `${chapterId}::${artId}`;
-        if (!artMap.has(key)) {
-          artMap.set(key, { artefactId: artId, chapterId, riskLevels: new Set(recRiskLevels) });
-        } else {
-          const existing = artMap.get(key)!;
-          for (const rl of recRiskLevels) existing.riskLevels.add(rl);
-        }
-      }
-    }
-  } else {
-    const ontology = getOntologyData();
-    const ladder = activeLevelsByChapter(ontology.requirements ?? []);
-    for (const artifactRequirement of ontology.artifactRequirements ?? []) {
-      for (const chapterId of artifactRequirement.chapter_ids ?? []) {
-        const chapterRiskLevels = chapterActiveLevels(chapterId, ladder);
-        const key = `${chapterId}::${artifactRequirement.artifact_type_id}`;
-        if (!artMap.has(key)) {
-          artMap.set(key, {
-            artefactId: artifactRequirement.artifact_type_id,
-            chapterId,
-            riskLevels: new Set(chapterRiskLevels)
-          });
-        } else {
-          const existing = artMap.get(key)!;
-          for (const rl of chapterRiskLevels) existing.riskLevels.add(rl);
-        }
+  // Artefacts come from the runtime bundle (artifact_requirements × requirement ladder).
+  // The Algolia-era snapshot-cache path was retired (never reached at runtime).
+  const ontology = getOntologyData();
+  const ladder = activeLevelsByChapter(ontology.requirements ?? []);
+  for (const artifactRequirement of ontology.artifactRequirements ?? []) {
+    for (const chapterId of artifactRequirement.chapter_ids ?? []) {
+      const chapterRiskLevels = chapterActiveLevels(chapterId, ladder);
+      const key = `${chapterId}::${artifactRequirement.artifact_type_id}`;
+      if (!artMap.has(key)) {
+        artMap.set(key, {
+          artefactId: artifactRequirement.artifact_type_id,
+          chapterId,
+          riskLevels: new Set(chapterRiskLevels)
+        });
+      } else {
+        const existing = artMap.get(key)!;
+        for (const rl of chapterRiskLevels) existing.riskLevels.add(rl);
       }
     }
   }
