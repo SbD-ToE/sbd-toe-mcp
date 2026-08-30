@@ -1,8 +1,18 @@
 meta:
   name: SbD-ToE Manual Ontology
-  version: '2.0'
+  version: '2.2'
   status: current
   scope: Manual ontology
+  tag: sbdtoe-ontology-v2.2
+  history:
+  - version: '2.0'
+    note: V2 backbone + semantic layer (imported baseline from sbd-toe-knowledge-graph)
+  - version: '2.2'
+    date: '2026-08-30'
+    note: "Aditiva sobre 2.1 (pré-G-b, decisão programme-lead 2026-08-30 sobre o scorecard S2): catalogue_rules (regra de catálogo categoria→controlo para os 104 requisitos type base, confiança declarada, sem scoring lexical), requirement_selection_model (baseline ∪ específicos ⊕ overlay; lacuna replace/extend → ADR 0014), aliases em C1/C2/C3 (F-S2-1), hints hash* fora de data_protection, AUT-006 fora das secundárias de C2, receives_* em CLA, Requirement.type. Ids dos 20 controlos e resolution_order inalterados."
+  - version: '2.1'
+    date: '2026-08-30'
+    note: "Aditiva sobre 2.0 (D2, portão G-a programme-lead 2026-08-30): secção controls: (catálogo canónico de 20 controlos, 16 existentes + C1 identidade aplicacional, C2 criptografia aplicacional, C3 tooling de desenvolvimento, C4 governação organizacional), control_domains com data_protection, domain_mapping corrigido (AUT, ENC, CFG, DST, INT, API, ERR; AGN reconciliado), domain_profile_registry actualizado, entidade Control alinhada ao compilado. Sem OWL/SHACL para esta ontologia."
   description: 'Draft V2 ontology for the SbD-ToE manual. This model keeps the deterministic normative backbone of the manual and adds the semantic layer validated in the V2 discovery work. It is intended as the publishable ontology of the manual, not yet as a generic AppSec domain ontology.
 
     '
@@ -66,6 +76,7 @@ epistemic_model:
     derived: Deterministically derived from an explicit canonical relation or mapping
     scored: Deterministically scored from semantic evidence and lexical grounding
     heuristic: Fallback match with bounded confidence
+    catalogue_rule: Derived from a declared category→control rule of the ontology for baseline-catalogue requirements (type base); confidence is declared by the rule, never scored (v2.2)
     runtime: Produced only during runtime resolution
   authority_class:
     normative: Represents what the manual prescribes
@@ -77,6 +88,37 @@ epistemic_model:
     deterministic: Result is exact given canonical source data
     bounded: Result is deterministic but thresholded and contestable
     probabilistic: Result depends on a probabilistic extraction step; not allowed in runtime
+requirement_selection_model:
+  # v2.2 (2026-08-30) — semântica declarada pelo programme lead (pré-G-b, ciclo D2). Formulação normativa:
+  description: "O catálogo do cap. 02 (requisitos type: base) é a baseline normativa por defeito — catálogo real, seleccionado sempre, salvo overlay; os catálogos dos capítulos 03–14 (type: domain-specific) são requisitos do domínio, activados pelo contexto (Docker → 09, IaC → 08, infra → 08/11, CI → 07…); os overlays operam por categoria com replace ou extend. Selecção = baseline ∪ específicos(contexto) ⊕ overlay."
+  layers:
+    baseline:
+      source: 02-requisitos-seguranca
+      requirement_type: base
+      selection: always (por nível de risco L1–L3), salvo overlay
+      control_linking: catalogue_rules (categoria → controlo; confiança declarada)
+    domain_specific:
+      source: chapters 03–14
+      requirement_type: domain-specific
+      selection: activated by context
+      activation_examples:
+        containers/docker: 09-containers-imagens
+        iac: 08-iac-infraestrutura
+        infrastructure: [08-iac-infraestrutura, 11-deploy-seguro]
+        ci_cd: 07-cicd-seguro
+      control_linking: practice grounding + scoring (defining_chapters, receives_*, resolution_order)
+    overlay:
+      kinds: [regulatory, corporate]
+      granularity: requirement category
+      operators:
+        replace: "para a categoria, ignora o base e usa só os requisitos do overlay"
+        extend: "para a categoria, além do base usa também os requisitos do overlay"
+  composition: "selection = baseline(cap. 02, nível) ∪ domain_specific(capítulos activados pelo contexto) ⊕ overlay(replace | extend, por categoria)"
+  macro_process: MP1 Classificar → Seleccionar
+  status:
+    ontology: declared (v2.2)
+    overlay_operators: gap  # o modelo de overlay actual (relations.external_overlay / OverlayMapping.mapping_type) só tem obligation_maps_to_* e playbook_*; não existem operadores replace/extend. NÃO implementados aqui — lacuna registada para o ciclo do overlay (ADR 0014, overlay corporativo).
+    runtime_selection: gap  # nenhuma tool do MCP compõe as três camadas (consult devolve tudo por nível; map_applicability activa capítulos) — ciclo posterior do Pontifex (pipeline d).
 semantic_classification_policy:
   concept:
     definition: Stable semantic notion used to frame interpretation of the manual
@@ -194,6 +236,7 @@ entities:
     source_file: data/entities/canonical_requirements_s7.json
     attributes:
     - requirement_id: string
+    - type: enum[base, domain-specific]  # v2.2: base = catálogo do cap. 02 (baseline normativa); domain-specific = capítulos 03–14
     - category: string
     - name: string
     - description: string
@@ -202,23 +245,34 @@ entities:
     - source_chapter: integer
   Control:
     layer: core
-    description: Canonical control objective/strategy in the manual
+    description: Canonical control objective/strategy in the manual. From v2.1 the catalogue is declared in `controls:` (this file) and compiled into `canonical_controls.json`.
     id_field: control_id
     source_file: data/entities/canonical_controls.json
+    catalogue: controls.items
     authority_class: normative
     attributes:
     - control_id: string
     - name: string
+    - name_en: string
+    - description: string
+    - domain: enum[control_domains]
+    - control_type: enum[preventive, detective, corrective, governance]
+    - abstraction_level: enum[foundational, operational, technical]
+    - anchor_kind: enum[practice, catalogue]
+    - applicable_lifecycle_phases: list[string]
+    - artifact_types: list[string]
+    - aliases: list[string]
+    - source_practice_ids: list[string]
+    - chapter_ids: list[string]  # = defining_chapters (v2.1); antes: união dos capítulos das práticas
+    - cited_chapter_ids: list[string]  # v2.1, aditivo
+    - defining_chapter_ids: list[string]  # v2.1, aditivo (alias explícito de chapter_ids)
+    reserved_attributes:  # declarados em 2.0 mas nunca compilados; mantidos como reserva
     - statement: string
     - intent: string
-    - domain: string
     - control_family: string
-    - control_type: enum[preventive, detective, corrective, governance]
-    - abstraction_level: enum[technical, governance]
     - applicability_notes: string
     - operational_expectation: string
     - verification_notes: string
-    - chapter_ids: list[string]
   Practice:
     layer: core
     description: Operational practice that implements one or more controls
@@ -537,6 +591,7 @@ relations:
       confidence_model: bounded
       preferred_source: data/publish/semantic/requirement_control_links.jsonl
       fallback_source: ontology.domain_mapping
+      catalogue_rules: ontology.catalogue_rules  # v2.2: requisitos type base ligam por regra declarada, não por scoring
     control_implemented_by_practice:
       from: Control
       to: Practice
@@ -817,15 +872,14 @@ not_in_scope_yet:
   - These belong to the future external-alignment layer or AppSec core ontology
   - The current goal is to formalize the SbD-ToE manual ontology itself
 domain_mapping:
-  # AGN — curated mapping (programme-lead decision 2026-08-29, v1.7.0 acceptance report §3.2):
-  # the agentic requirements are governed by the governance/identity controls (US-15 mandate,
-  # intent declaration); not derived from the Manual, reviewed by the programme lead.
+  # v2.1 (2026-08-30): AUT→[identity]; ENC→[data_protection, secrets]; CFG/DST/INT/API completos; ERR→[code_integrity];
+  # AGN trazido do espelho do KG (curado pelo programme lead 2026-08-29) — fecha o drift F3. `identity` em AGN resolve
+  # para o controlo de toolchain (IDN: kill-switch = revogar credenciais de workload), não para C1.
   AGN:
   - governance
   - identity
   AUT:
   - identity
-  - governance
   ACC:
   - identity
   LOG:
@@ -836,21 +890,28 @@ domain_mapping:
   - code_integrity
   ERR:
   - code_integrity
-  - governance
   CFG:
   - infrastructure
-  - governance
+  - code_integrity
+  - secrets
   API:
   - identity
   - code_integrity
+  - data_protection
+  - monitoring
+  - supply_chain
   INT:
   - code_integrity
-  - secrets
+  - data_protection
+  - monitoring
+  - governance
   REQ:
   - governance
   DST:
   - supply_chain
   - code_integrity
+  - identity
+  - infrastructure
   IDE:
   - governance
   - code_integrity
@@ -891,8 +952,8 @@ domain_mapping:
   - governance
   - identity
   ENC:
+  - data_protection
   - secrets
-  - code_integrity
 domain_profile_registry:
   requirement_linking:
     domain_hint_keywords:
@@ -955,14 +1016,22 @@ domain_profile_registry:
       - chaves
       - certificado
       - certificados
-      - tls
       - token
       - tokens
-      - encriptacao
-      - cifragem
-      - hashing
-      - hash
       - rotacao
+      data_protection:  # v2.2: hash/hashing removidos (ambíguos: passwords → identidade; checksums → integridade de artefactos)
+      - encriptacao
+      - encriptar
+      - encriptada
+      - cifra
+      - cifragem
+      - criptografia
+      - criptografico
+      - criptograficas
+      - tls
+      - mac
+      - integridade
+      - cache
       code_integrity:
       - validacao
       - validar
@@ -1018,11 +1087,26 @@ domain_profile_registry:
       AUT:
         preferred_domains:
         - identity
-      API: {}
-      CFG: {}
+      ACC:
+        preferred_domains:
+        - identity
+      SES:
+        preferred_domains:
+        - identity
+      API:
+        preferred_domains:
+        - code_integrity
+        - identity
+      CFG:
+        preferred_domains:
+        - code_integrity
+        - infrastructure
       ENC:
         preferred_domains:
-        - secrets
+        - data_protection
+      IDE:
+        preferred_domains:
+        - code_integrity
       REQ:
         baseline_lexical_threshold:
           score: 0.6
@@ -1039,3 +1123,1597 @@ domain_profile_registry:
         baseline_lexical_threshold:
           score: 0.6
           margin: 0.03
+
+# ---------------------------------------------------------------------------
+# control_domains + controls — catálogo canónico dos controlos SbD-ToE (v2.1, 2026-08-30, portão G-a)
+# Antes de v2.1 os controlos viviam como CONTROL_TEMPLATES em código do compilador (sbd-toe-knowledge-graph,
+# agents/canonical_controls.py). A partir desta versão a ontologia é a fonte de verdade; o compilador carrega esta
+# secção (Codex S1). Regras contratuais desta secção:
+#  - control_id = "CTRL-" + slugify(domain + "-" + name) + "-" + sha1(domain + ":" + name.lower())[:10]; nomes e ids
+#    dos 16 controlos existentes são inalterados (estabilidade de identificadores); renomear = novo id.
+#  - defining_chapters = capítulos que DEFINEM o controlo (é o que dá grounding no linking Requisito→Controlo e o
+#    bónus de capítulo no resolver de práticas); cited_chapters = capítulos das práticas absorvidas que não o definem
+#    (proveniência, sem grounding). O compilador publica chapter_ids = defining_chapters e cited_chapter_ids à parte.
+#  - practice_assignments são EXPLÍCITAS para todas as práticas do Manual v1.7.1 (260) e vencem qualquer scoring;
+#    práticas futuras sem atribuição resolvem por: +5 se chapter_id ∈ defining_chapters, +2 por keyword no rótulo,
+#    empate desfeito por resolution_order ascendente (nunca por ordem de ficheiro).
+#  - anchor_kind: practice (definido por práticas do Manual) | catalogue (definido por catálogo de requisitos + plano
+#    de validação; practice_assignments vazio é legítimo e não conta contra a cobertura).
+# ---------------------------------------------------------------------------
+control_domains:
+  identity: "Identidades, autenticação, autorização e sessões — de pessoas e de workloads/principals não-humanos"
+  code_integrity: "Integridade do código e do que entra nele: guidelines, validações, pipelines, ambiente de desenvolvimento"
+  supply_chain: "Dependências, SBOM/SCA, imagens e containers"
+  secrets: "Gestão operacional de segredos, credenciais efémeras e identidades de workload"
+  infrastructure: "IaC, segmentação arquitetural, deploy e reversibilidade"
+  testing: "Testes de segurança baseados em risco"
+  monitoring: "Monitorização, alertas e resposta operacional"
+  governance: "Classificação, threat modeling, arquitectura governada, capacitação, fornecedores e governação organizacional"
+  data_protection: "NOVO em v2.1 — criptografia aplicacional e protecção de dados em trânsito, em repouso e em saída (logs/caches/respostas); distinto de `secrets` (operacional)"
+controls:
+  schema_version: '1.0'
+  manual_pin: 8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac
+  manual_version: v1.7.1
+  source_of_truth: ontology/sbdtoe-ontology.yaml#controls
+  supersedes: sbd-toe-knowledge-graph/src/sbdtoe_indexing/agents/canonical_controls.py#CONTROL_TEMPLATES (KG v1.6.1)
+  id_rule: CTRL-<slugify(domain-name)>-<sha1(domain:name.lower())[:10]>
+  resolution:
+    explicit_assignments_first: true
+    chapter_bonus: 5
+    keyword_bonus: 2
+    tie_break: resolution_order
+    order_rationale: "Donos de capítulo primeiro, na ordem dos capítulos do Manual (01→14; no cap. 04 ARQ antes de SEG e no cap. 14 C4 antes de FORN — preserva os desempates que o compilador v1.6.1 fazia por ordem de lista); controlos transversais (IDN, SECR) depois de todos os donos de capítulo, para que só ganhem práticas por keyword e nunca por defeito de capítulo (era a causa de L2); controlos ancorados em catálogo ou só por atribuição explícita (C3, C1, C2) no fim, porque não devem capturar práticas por scoring."
+  counts:
+    controls: 20
+    existing: 16
+    new: 4
+    practice_assignments: 260
+    practice_reassignments: 43
+  items:
+  - key: risk-classification
+    control_id: CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29
+    name: "Classificação e governação por risco"
+    status: existing
+    resolution_order: 1
+    domain: governance
+    control_type: governance
+    abstraction_level: foundational
+    anchor_kind: practice
+    description: "Estabelece classificação de risco, revisão periódica e governação proporcional por criticidade."
+    defining_chapters:
+    - 01-classificacao-aplicacoes
+    - 02-requisitos-seguranca
+    cited_chapters: []
+    lifecycle_phases:
+    - design
+    - deploy
+    artifact_types:
+    - risk_matrix
+    - review_checklist
+    keywords:
+    - "risco"
+    - "classificacao"
+    - "criticidade"
+    - "matriz"
+    - "revisao"
+    manual_anchor:
+    - "010-sbd-manual/01-classificacao-aplicacoes"
+    - "010-sbd-manual/02-requisitos-seguranca"
+    note: "v2.1: recebe as práticas de ciclo de vida de requisitos do cap. 02 (antes em DEV/IAC); cede «uso controlado de assistentes» a C3."
+    receives_requirement_categories:  # v2.2: âmbito declarado — o grounding de CLA no cap. 02 fica restrito a REQ/AGN (INT-007 caía em CLA)
+    - CLA
+    - REQ
+    - AGN
+    receives_requirements_expected:
+      primary:
+      - CLA-001
+      - CLA-002
+      - CLA-003
+      - CLA-004
+      - CLA-005
+      - CLA-006
+      - CLA-007
+      - CLA-008
+      - REQ-001
+      - REQ-002
+      - REQ-003
+      - REQ-004
+      - REQ-005
+      - REQ-006
+      - REQ-007
+      - REQ-AGN-001
+      - REQ-AGN-002
+      - REQ-AGN-003
+      - REQ-AGN-004
+      secondary: []
+    practice_assignments:
+    - 01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i
+    - 01-classificacao-aplicacoes:analise-de-risco-residual
+    - 01-classificacao-aplicacoes:aplicacao-da-matriz-de-controlo
+    - 01-classificacao-aplicacoes:classificacao-inicial-da-aplicacao
+    - 01-classificacao-aplicacoes:interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao
+    - 01-classificacao-aplicacoes:mapeamento-de-ameacas-por-nivel-de-risco
+    - 01-classificacao-aplicacoes:producao-e-manutencao-do-inventario-central-com-autoridade-de-aprovacao-proporcional
+    - 01-classificacao-aplicacoes:reforco-de-controlos-por-atributos-do-risco
+    - 01-classificacao-aplicacoes:revisao-por-alteracao-relevante-event-based
+    - 01-classificacao-aplicacoes:validacao-antes-do-go-live
+    - 02-requisitos-seguranca:catalogo-de-requisitos-do-projeto-criacao-e-manutencao
+    - 02-requisitos-seguranca:classificacao-do-tipo-de-controlo-na-matriz-de-rastreabilidade
+    - 02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai-us-15
+    - 02-requisitos-seguranca:definicao-de-criterios-de-validacao
+    - 02-requisitos-seguranca:gates-automaticos-em-ci-cd-para-requisitos-de-seguranca
+    - 02-requisitos-seguranca:gestao-de-excecoes-com-ttl-e-revalidacao-obrigatoria
+    - 02-requisitos-seguranca:intent-declaration-por-tool-call-destrutivo-de-agente-ai
+    - 02-requisitos-seguranca:rastreabilidade-de-requisitos
+    - 02-requisitos-seguranca:recolha-e-thresholds-dos-indicadores-rqs
+    - 02-requisitos-seguranca:revisao-por-alteracao-relevante
+    - 02-requisitos-seguranca:selecao-de-requisitos-por-criticidade
+    - 02-requisitos-seguranca:validacao-de-cobertura-de-testes
+    - 02-requisitos-seguranca:validacao-de-tags-sec-lx-e-requisitos-no-pipeline
+    - 02-requisitos-seguranca:validacao-e-aprovacao-final
+    - 02-requisitos-seguranca:validacao-por-requisito-dominio-req-xxx-evidencia
+  - key: threat-modeling
+    control_id: CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0
+    name: "Threat modeling e gestão de risco"
+    status: existing
+    resolution_order: 2
+    domain: governance
+    control_type: governance
+    abstraction_level: technical
+    anchor_kind: practice
+    description: "Mantém modelos de ameaça, revisões formais e decisões de risco rastreáveis ao longo do ciclo de vida."
+    defining_chapters:
+    - 03-threat-modeling
+    cited_chapters: []
+    lifecycle_phases:
+    - design
+    - develop
+    artifact_types:
+    - threat_model
+    - risk_acceptance_record
+    keywords:
+    - "threat"
+    - "ameaca"
+    - "linddun"
+    - "stride"
+    - "modelo"
+    - "risco aceite"
+    manual_anchor:
+    - "010-sbd-manual/03-threat-modeling"
+    practice_assignments:
+    - 03-threat-modeling:aplicacao-linddun-quando-existir-tratamento-de-dados-pessoais-novo
+    - 03-threat-modeling:aprovacao-formal-do-threat-model-baseline-e-revisoes
+    - 03-threat-modeling:atualizacao-do-modelo-apos-alteracao-tecnica
+    - 03-threat-modeling:controlo-de-acesso-classificacao-e-retencao-dos-artefactos-de-threat-modeling
+    - 03-threat-modeling:criacao-do-modelo-de-ameaca
+    - 03-threat-modeling:derivacao-de-abuse-misuse-cases-para-o-backlog
+    - 03-threat-modeling:gate-de-controlo-de-consistencia-no-ci-cd
+    - 03-threat-modeling:justificacao-formal-de-risco-aceite
+    - 03-threat-modeling:reutilizacao-controlada-e-revisao-de-modelos-anteriores
+    - 03-threat-modeling:revisao-independente-em-l2-e-pasta-em-alto-risco
+    - 03-threat-modeling:threat-modeling-estendido-para-componentes-ai-ml-nao-agentic
+    - 03-threat-modeling:threat-modeling-para-sistema-com-agente-ai-tool-use-us-11
+    - 03-threat-modeling:tratamento-explicito-dos-riscos-de-processo-do-threat-modeling
+    - 03-threat-modeling:validacao-de-arquitetura-com-threat-modeling
+    - 03-threat-modeling:validacao-de-impacto-no-negocio
+  - key: secure-architecture-governance
+    control_id: CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4
+    name: "Arquitetura segura e rastreável"
+    status: existing
+    resolution_order: 3
+    domain: governance
+    control_type: governance
+    abstraction_level: foundational
+    anchor_kind: practice
+    description: "Define baseline, decisões, revisões e rastreabilidade arquitetural para manter a segurança do design auditável e proporcional ao risco."
+    defining_chapters:
+    - 04-arquitetura-segura
+    cited_chapters: []
+    lifecycle_phases:
+    - design
+    - test
+    - deploy
+    artifact_types:
+    - architecture_baseline
+    - architecture_decision_record
+    - architecture_review
+    - architecture_checklist
+    keywords:
+    - "arquitetur"
+    - "baseline"
+    - "adr"
+    - "rastreabil"
+    - "decis"
+    - "excecao"
+    - "go-live"
+    - "trade-off"
+    - "nao deterministico"
+    - "review arquitetural"
+    manual_anchor:
+    - "010-sbd-manual/04-arquitetura-segura"
+    practice_assignments:
+    - 04-arquitetura-segura:atualizacao-da-baseline-apos-alteracao-arquitetural-significativa
+    - 04-arquitetura-segura:avaliacao-de-impacto-no-negocio-e-priorizacao-de-trade-offs
+    - 04-arquitetura-segura:catalogo-de-padroes-de-arquitetura-segura-reutilizacao-governada
+    - 04-arquitetura-segura:definicao-de-principios-e-baseline-de-arquitetura-segura
+    - 04-arquitetura-segura:ficha-de-solucao-com-controlos-e-rastreabilidade-arquitetural
+    - 04-arquitetura-segura:gate-arquitetural-antes-do-go-live
+    - 04-arquitetura-segura:gestao-de-decisoes-arquiteturais-adr
+    - 04-arquitetura-segura:gestao-de-excecoes-arquiteturais-com-controlos-compensatorios
+    - 04-arquitetura-segura:identificacao-e-governacao-de-componentes-nao-deterministicos
+    - 04-arquitetura-segura:padroes-arquitetonicos-para-sistemas-ai-ml-nao-agentic
+    - 04-arquitetura-segura:revisao-de-arquitectura-para-agente-ai-em-a2-us-16
+    - 04-arquitetura-segura:revisao-formal-de-arquitetura-para-l3-governacao-reforcada
+    - 04-arquitetura-segura:revisao-formal-do-design-arquitetural
+    - 04-arquitetura-segura:sincronizacao-threat-modeling-arquitetura
+    - 04-arquitetura-segura:triggers-de-arquitetura-viva-e-disciplina-de-revisao
+    - 04-arquitetura-segura:validacao-arquitetural-automatizavel-no-ci-cd-quando-aplicavel
+  - key: architecture-segmentation
+    control_id: CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b
+    name: "Segmentação e controlo arquitetural"
+    status: existing
+    resolution_order: 4
+    domain: infrastructure
+    control_type: preventive
+    abstraction_level: technical
+    anchor_kind: practice
+    description: "Protege fronteiras de confiança, fluxos e segmentação técnica da arquitetura com desenho verificável e controlo entre zonas sensíveis."
+    defining_chapters:
+    - 04-arquitetura-segura
+    cited_chapters: []
+    lifecycle_phases:
+    - design
+    - develop
+    - deploy
+    artifact_types:
+    - architecture_diagram
+    - data_flow_diagram
+    - trust_boundary_model
+    - integration_review
+    keywords:
+    - "segment"
+    - "isolamento"
+    - "topolog"
+    - "diagrama"
+    - "dfd"
+    - "fluxo"
+    - "fronteira"
+    - "trust"
+    - "boundary"
+    - "gateway"
+    - "proxy"
+    - "waf"
+    - "integrac"
+    manual_anchor:
+    - "010-sbd-manual/04-arquitetura-segura"
+    practice_assignments:
+    - 04-arquitetura-segura:revisao-de-fronteiras-de-confianca-e-integracoes
+    - 04-arquitetura-segura:segmentacao-de-ambientes-e-validacao-de-topologia-como-codigo-l3
+  - key: dependency-inventory
+    control_id: CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb
+    name: "Inventário e análise de dependências"
+    status: existing
+    resolution_order: 5
+    domain: supply_chain
+    control_type: detective
+    abstraction_level: operational
+    anchor_kind: practice
+    description: "Garante inventário de componentes, análise de vulnerabilidades e rastreabilidade de dependências terceiras."
+    defining_chapters:
+    - 05-dependencias-sbom-sca
+    cited_chapters:
+    - 02-requisitos-seguranca
+    lifecycle_phases:
+    - build
+    - deploy
+    artifact_types:
+    - sbom
+    - sca_report
+    - dependency_inventory
+    keywords:
+    - "sbom"
+    - "sca"
+    - "dependenc"
+    - "biblioteca"
+    - "cve"
+    - "vulnerab"
+    manual_anchor:
+    - "010-sbd-manual/05-dependencias-sbom-sca"
+    practice_assignments:
+    - 02-requisitos-seguranca:geracao-de-sbom-e-assinatura-de-artefactos-de-build
+    - 05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai-us-14
+    - 05-dependencias-sbom-sca:alertas-sobre-vulnerabilidades-em-componentes-usados
+    - 05-dependencias-sbom-sca:auditoria-periodica-de-bibliotecas-copiadas-manualmente
+    - 05-dependencias-sbom-sca:automacao-da-atualizacao-com-avaliacao-de-impacto
+    - 05-dependencias-sbom-sca:excecoes-a-cves-formais-e-temporarias
+    - 05-dependencias-sbom-sca:gestao-de-dependencias-seguras
+    - 05-dependencias-sbom-sca:governacao-documentada-de-politica-de-severidade-registries-e-registo-de-aprovacao
+    - 05-dependencias-sbom-sca:inventario-e-controlo-de-dependencias-emergentes
+    - 05-dependencias-sbom-sca:inventario-e-sbom-por-build
+    - 05-dependencias-sbom-sca:pinning-de-versoes-e-integridade-por-hash
+    - 05-dependencias-sbom-sca:proibir-bibliotecas-copiadas-manualmente
+    - 05-dependencias-sbom-sca:repositorios-internos-como-fonte-unica
+    - 05-dependencias-sbom-sca:sbom-em-cada-build
+    - 05-dependencias-sbom-sca:sca-automatico-com-gates
+    - 05-dependencias-sbom-sca:validacao-automatica-de-compatibilidade-de-licencas
+    - 05-dependencias-sbom-sca:validacao-de-release-go-no-go
+  - key: secure-code-practices
+    control_id: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    name: "Desenvolvimento seguro e validação de código"
+    status: existing
+    resolution_order: 6
+    domain: code_integrity
+    control_type: preventive
+    abstraction_level: technical
+    anchor_kind: practice
+    description: "Aplica guidelines, validações automáticas e gates de código para preservar integridade e qualidade do software."
+    defining_chapters:
+    - 06-desenvolvimento-seguro
+    cited_chapters: []
+    lifecycle_phases:
+    - develop
+    - test
+    artifact_types:
+    - sast_report
+    - guideline_catalog
+    - validation_evidence
+    keywords:
+    - "codigo"
+    - "guideline"
+    - "linter"
+    - "sast"
+    - "validacao"
+    - "curadoria"
+    manual_anchor:
+    - "010-sbd-manual/06-desenvolvimento-seguro"
+    note: "v2.1: define-se só no cap. 06; 6 práticas de validação de requisitos → CLA; 2 práticas GenIA → C3."
+    practice_assignments:
+    - 06-desenvolvimento-seguro:arquivo-central-de-evidencias-de-validacao
+    - 06-desenvolvimento-seguro:automatizacao-em-ci-cd-linters-sast
+    - 06-desenvolvimento-seguro:gate-de-seguranca-pre-release
+    - 06-desenvolvimento-seguro:gestao-de-dependencias-no-codigo
+    - 06-desenvolvimento-seguro:gestao-de-excecoes-tecnicas
+    - 06-desenvolvimento-seguro:governacao-e-curadoria-de-guidelines
+    - 06-desenvolvimento-seguro:guidelines-de-desenvolvimento-seguro
+    - 06-desenvolvimento-seguro:monitorizacao-de-conformidade-e-metricas-de-seguranca
+    - 06-desenvolvimento-seguro:perfis-de-validacao-por-nivel-de-risco-l1l3
+    - 06-desenvolvimento-seguro:proveniencia-e-quality-gate-com-baseline-aprovada
+    - 06-desenvolvimento-seguro:rastreabilidade-com-anotacoes-de-seguranca
+    - 06-desenvolvimento-seguro:revisao-de-codigo-segura
+    - 06-desenvolvimento-seguro:validacao-de-padroes-perigosos-e-anti-patterns
+    - 06-desenvolvimento-seguro:validacoes-locais-obrigatorias-pre-commit
+  - key: pipeline-integrity
+    control_id: CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2
+    name: "Integridade e governação de pipelines"
+    status: existing
+    resolution_order: 7
+    domain: code_integrity
+    control_type: preventive
+    abstraction_level: technical
+    anchor_kind: practice
+    description: "Protege pipelines CI/CD com determinismo, proveniência, segregação de decisão e evidência executável."
+    defining_chapters:
+    - 07-cicd-seguro
+    cited_chapters: []
+    lifecycle_phases:
+    - build
+    - deploy
+    artifact_types:
+    - pipeline_config
+    - artifact_provenance
+    - artifact_signature
+    keywords:
+    - "pipeline"
+    - "runner"
+    - "proveniencia"
+    - "assinatura"
+    - "reprodutibilidade"
+    - "nao-repudio"
+    manual_anchor:
+    - "010-sbd-manual/07-cicd-seguro"
+    practice_assignments:
+    - 07-cicd-seguro:agentes-ai-como-principals-na-pipeline-us-19
+    - 07-cicd-seguro:assinatura-e-proveniencia
+    - 07-cicd-seguro:cobertura-ampliada-containers-e-sbom
+    - 07-cicd-seguro:contencao-de-contexto-e-higiene-de-logs-outputs
+    - 07-cicd-seguro:custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas-us-23
+    - 07-cicd-seguro:design-seguro-dos-pipelines-versionamento-determinismo-e-revisao
+    - 07-cicd-seguro:evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao
+    - 07-cicd-seguro:gates-por-risco-separacao-sinal-decisao
+    - 07-cicd-seguro:gestao-de-excecoes-bypass-controlado
+    - 07-cicd-seguro:gestao-segura-de-codigo-fonte
+    - 07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20
+    - 07-cicd-seguro:isolamento-de-runners
+    - 07-cicd-seguro:metricas-e-conformidade-organizacional
+    - 07-cicd-seguro:nao-repudio-e-ownership-de-promocoes-acoes-irreversiveis
+    - 07-cicd-seguro:protecao-contra-escalonamento-de-privilegios-em-runners-us-22
+    - 07-cicd-seguro:rastreabilidade-ponta-a-ponta-commitpipelinerelease
+    - 07-cicd-seguro:reprodutibilidade-e-determinismo-do-pipeline
+    - 07-cicd-seguro:scanners-integrados-validacao-empirica-obrigatoria
+    - 07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21
+    - 07-cicd-seguro:separacao-formal-entre-sinal-automatico-e-decisao-de-promocao
+    - 07-cicd-seguro:testes-de-seguranca-dinamicos-dast
+    - 07-cicd-seguro:validacao-de-integridade-de-imagens-base
+  - key: infrastructure-as-code
+    control_id: CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905
+    name: "Infraestrutura como código governada"
+    status: existing
+    resolution_order: 8
+    domain: infrastructure
+    control_type: preventive
+    abstraction_level: technical
+    anchor_kind: practice
+    description: "Endurece IaC com rastreabilidade de planos, validações automáticas, separação de funções e controlo de drift."
+    defining_chapters:
+    - 08-iac-infraestrutura
+    cited_chapters: []
+    lifecycle_phases:
+    - design
+    - deploy
+    artifact_types:
+    - iac_plan
+    - policy_report
+    - environment_inventory
+    keywords:
+    - "iac"
+    - "infra"
+    - "plan"
+    - "apply"
+    - "drift"
+    - "modulo"
+    - "tagging"
+    - "backend remoto"
+    manual_anchor:
+    - "010-sbd-manual/08-iac-infraestrutura"
+    practice_assignments:
+    - 08-iac-infraestrutura:assinatura-e-proveniencia-de-artefactos-iac
+    - 08-iac-infraestrutura:backend-remoto-locking-e-rastreabilidade
+    - 08-iac-infraestrutura:detecao-e-correcao-de-drift
+    - 08-iac-infraestrutura:determinismo-e-reprodutibilidade-do-plan
+    - 08-iac-infraestrutura:enforcement-automatico-de-politicas
+    - 08-iac-infraestrutura:excecoes-formais-em-iac
+    - 08-iac-infraestrutura:governanca-e-origem-confiavel-de-modulos
+    - 08-iac-infraestrutura:minimizacao-de-contexto-e-protecao-de-informacao-sensivel-em-iac
+    - 08-iac-infraestrutura:proibicao-de-apply-manual-local-fora-do-pipeline
+    - 08-iac-infraestrutura:rastreabilidade-ficheiro-recurso-ambiente
+    - 08-iac-infraestrutura:rastreabilidade-versionamento-e-naming
+    - 08-iac-infraestrutura:reabertura-da-revisao-de-hardening-por-integridade-do-baseline
+    - 08-iac-infraestrutura:revisao-formal-de-plan-antes-de-apply
+    - 08-iac-infraestrutura:rollback-e-salvaguarda-de-destroy
+    - 08-iac-infraestrutura:separacao-de-funcoes-sod-e-controlo-de-execucao-de-apply
+    - 08-iac-infraestrutura:validacoes-automaticas-integradas
+  - key: container-supply-chain
+    control_id: CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d
+    name: "Supply chain segura de imagens e containers"
+    status: existing
+    resolution_order: 9
+    domain: supply_chain
+    control_type: preventive
+    abstraction_level: technical
+    anchor_kind: practice
+    description: "Assegura hardening, assinatura, promoção controlada e políticas de runtime para imagens e workloads containerizadas."
+    defining_chapters:
+    - 09-containers-imagens
+    cited_chapters: []
+    lifecycle_phases:
+    - build
+    - deploy
+    - operate
+    artifact_types:
+    - container_image
+    - sbom
+    - signature_attestation
+    keywords:
+    - "container"
+    - "imagem"
+    - "cosign"
+    - "rekor"
+    - "registry"
+    - "golden base"
+    - "networkpolicy"
+    - "runtime"
+    manual_anchor:
+    - "010-sbd-manual/09-containers-imagens"
+    note: "v2.1 (L2): recebe 10 práticas de hardening/registry/runtime do cap. 09 vindas de IDN."
+    practice_assignments:
+    - 09-containers-imagens:aplicacao-de-politicas-formais-de-seguranca-no-runtime-com-opa-kyverno
+    - 09-containers-imagens:aprovacao-depreciacao-e-revogacao-de-golden-base-images-catalogo-organizacional
+    - 09-containers-imagens:assinatura-e-verificacao-de-proveniencia-de-imagens-com-cosign-e-rekor
+    - 09-containers-imagens:builders-e-runners-ephemerais-assinados-e-com-auditoria
+    - 09-containers-imagens:construcao-de-imagens-a-partir-de-bases-seguras-minimalistas-e-pinned-por-digest
+    - 09-containers-imagens:enforcement-centralizado-e-auditavel-de-politicas-no-runtime
+    - 09-containers-imagens:excecoes-temporarias-a-findings-policies-com-ttl-compensacoes-e-revalidacao
+    - 09-containers-imagens:geracao-e-rastreabilidade-de-sbom-em-imagens
+    - 09-containers-imagens:golden-base-images-com-patching-automatico
+    - 09-containers-imagens:governacao-de-registries-com-allowlist-e-digest-only
+    - 09-containers-imagens:hardening-da-api-e-do-container-de-inferencia-ai
+    - 09-containers-imagens:isolamento-de-gpu-e-separacao-de-workloads-de-inferencia-sensiveis
+    - 09-containers-imagens:monitorizacao-e-resposta-a-incidentes-em-runtime
+    - 09-containers-imagens:perfis-seccomp-apparmor-e-verificacao-de-drift-de-hardening
+    - 09-containers-imagens:pesos-de-modelo-ai-self-hosted-tratados-como-ativo-critico
+    - 09-containers-imagens:promocao-por-estagios-com-aprovacao-explicita-e-revalidacao-por-ambiente
+    - 09-containers-imagens:retencao-e-limpeza-de-imagens-com-renovacao-periodica-por-sla
+    - 09-containers-imagens:sandboxing-avancado-com-gvisor-kata-para-workloads-criticas
+    - 09-containers-imagens:segmentacao-de-rede-e-networkpolicy
+    - 09-containers-imagens:validacao-automatica-de-vulnerabilidades-em-imagens-no-pipeline-ci-cd
+  - key: security-testing
+    control_id: CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34
+    name: "Testes de segurança baseados em risco"
+    status: existing
+    resolution_order: 10
+    domain: testing
+    control_type: detective
+    abstraction_level: operational
+    anchor_kind: practice
+    description: "Combina testes automatizados e decisão humana para validar risco real antes da promoção a produção."
+    defining_chapters:
+    - 10-testes-seguranca
+    cited_chapters: []
+    lifecycle_phases:
+    - test
+    - deploy
+    artifact_types:
+    - test_report
+    - finding_register
+    - release_gate
+    keywords:
+    - "teste"
+    - "sast"
+    - "dast"
+    - "iast"
+    - "fuzz"
+    - "finding"
+    - "release"
+    - "exploitabilidade"
+    manual_anchor:
+    - "010-sbd-manual/10-testes-seguranca"
+    practice_assignments:
+    - 10-testes-seguranca:avaliacao-critica-de-cobertura-real-e-limitacoes
+    - 10-testes-seguranca:criterios-de-release-e-aceitacao-de-risco
+    - 10-testes-seguranca:dast-autenticado-em-staging
+    - 10-testes-seguranca:decisao-assistida-para-findings-de-testes-de-seguranca
+    - 10-testes-seguranca:estrategia-formal-de-testes-por-aplicacao
+    - 10-testes-seguranca:feedback-automatico-de-findings-as-equipas
+    - 10-testes-seguranca:fuzzing-dirigido-a-apis-criticas
+    - 10-testes-seguranca:gates-de-seguranca-no-ci-cd
+    - 10-testes-seguranca:gestao-centralizada-de-findings-com-triagem-e-sla
+    - 10-testes-seguranca:governacao-do-uso-de-ia-em-testes-e-eval-suites-para-agentes
+    - 10-testes-seguranca:iast-com-instrumentacao-em-staging
+    - 10-testes-seguranca:kpis-de-eficacia-do-programa-de-testes
+    - 10-testes-seguranca:pentesting-ofensivo-baseado-em-risco
+    - 10-testes-seguranca:perfil-de-regras-sast-versionado-com-baseline-de-falsos-positivos
+    - 10-testes-seguranca:preparacao-de-readiness-para-tlpt-dora
+    - 10-testes-seguranca:protecao-dos-ativos-do-processo-de-teste
+    - 10-testes-seguranca:regressoes-de-seguranca-automatizadas
+    - 10-testes-seguranca:reprodutibilidade-de-resultados-criticos-de-testes-de-seguranca
+    - 10-testes-seguranca:sast-obrigatorio-em-pull-request
+    - 10-testes-seguranca:separacao-formal-entre-sinal-automatico-e-decisao-de-bloqueio-override
+    - 10-testes-seguranca:validacao-empirica-de-exploitabilidade-de-findings
+    - 10-testes-seguranca:validacao-humana-da-interpretacao-final-dos-resultados
+  - key: safe-deployment
+    control_id: CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0
+    name: "Deploy seguro e reversível"
+    status: existing
+    resolution_order: 11
+    domain: infrastructure
+    control_type: corrective
+    abstraction_level: operational
+    anchor_kind: practice
+    description: "Controla promoção, rollback e validação pós-deploy para reduzir impacto operacional de alterações."
+    defining_chapters:
+    - 11-deploy-seguro
+    cited_chapters: []
+    lifecycle_phases:
+    - deploy
+    - operate
+    artifact_types:
+    - deployment_plan
+    - rollback_plan
+    - operational_evidence
+    keywords:
+    - "deploy"
+    - "rollback"
+    - "staging"
+    - "feature flag"
+    - "canary"
+    - "blue-green"
+    - "pos-deploy"
+    manual_anchor:
+    - "010-sbd-manual/11-deploy-seguro"
+    practice_assignments:
+    - 11-deploy-seguro:controlo-de-execucao-com-feature-flags
+    - 11-deploy-seguro:controlo-e-validacao-de-drift-operacional
+    - 11-deploy-seguro:deploy-apenas-de-artefactos-assinados
+    - 11-deploy-seguro:deploy-progressivo-com-estrategias-canary-blue-green
+    - 11-deploy-seguro:evidencia-operacional-auditavel
+    - 11-deploy-seguro:feature-flags-avaliadas-no-backend-como-fronteira-de-confianca
+    - 11-deploy-seguro:gates-de-aprovacao-no-deploy
+    - 11-deploy-seguro:monitorizacao-pos-deploy
+    - 11-deploy-seguro:rastreabilidade-end-to-end
+    - 11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18
+    - 11-deploy-seguro:reprodutibilidade-de-incidentes-em-runtime
+    - 11-deploy-seguro:rollback-estruturado-por-tipo-binario-configuracao-bd-infra
+    - 11-deploy-seguro:rollback-rapido-e-testado
+    - 11-deploy-seguro:validacao-em-staging-antes-da-promocao
+    - 11-deploy-seguro:validacao-humana-obrigatoria-apos-deploy-automatizado
+    - 11-deploy-seguro:validacoes-tecnicas-pre-deploy-com-gates-condicionais
+    - 11-deploy-seguro:versionamento-semantico-e-changelog-tecnico
+  - key: security-monitoring
+    control_id: CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70
+    name: "Monitorização e resposta operacional"
+    status: existing
+    resolution_order: 12
+    domain: monitoring
+    control_type: detective
+    abstraction_level: operational
+    anchor_kind: practice
+    description: "Define logs, alertas, correlação e integração com resposta a incidentes para deteção operacional sustentada."
+    defining_chapters:
+    - 12-monitorizacao-operacoes
+    cited_chapters: []
+    lifecycle_phases:
+    - operate
+    artifact_types:
+    - log_stream
+    - alert_policy
+    - incident_metrics
+    keywords:
+    - "monitor"
+    - "siem"
+    - "alerta"
+    - "logging"
+    - "evento"
+    - "mttd"
+    - "mttr"
+    - "incidente"
+    manual_anchor:
+    - "010-sbd-manual/12-monitorizacao-operacoes"
+    practice_assignments:
+    - 12-monitorizacao-operacoes:alertas-com-slas-definidos
+    - 12-monitorizacao-operacoes:classificacao-e-cobertura-de-dominios-de-monitorizacao
+    - 12-monitorizacao-operacoes:cobertura-att-ck-e-priorizacao-epss-kev
+    - 12-monitorizacao-operacoes:correlacao-de-eventos-e-detecao-comportamental
+    - 12-monitorizacao-operacoes:definicao-de-eventos-e-metricas-criticas
+    - 12-monitorizacao-operacoes:detecao-de-falha-de-ingestao-e-dashboards-operacionais
+    - 12-monitorizacao-operacoes:exercicios-de-resposta-a-incidentes-end-to-end
+    - 12-monitorizacao-operacoes:governacao-de-automacao-soar-e-kill-switch-de-alertas
+    - 12-monitorizacao-operacoes:integracao-com-processos-de-resposta-a-incidentes
+    - 12-monitorizacao-operacoes:integracao-com-siem-e-normalizacao-de-eventos
+    - 12-monitorizacao-operacoes:logging-estruturado-e-centralizado
+    - 12-monitorizacao-operacoes:metricas-de-eficacia-mttd-mttr
+    - 12-monitorizacao-operacoes:nao-logging-de-secrets-e-gestao-de-excecoes-operacionais
+    - 12-monitorizacao-operacoes:proporcionalidade-de-controlos-por-risco-l1l3-e-dominios
+    - 12-monitorizacao-operacoes:rastreabilidade-e-conformidade-com-regulacoes-ssdf-nis2-iso-27001
+    - 12-monitorizacao-operacoes:seguranca-e-integridade-de-logs
+    - 12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao-us-13
+    - 12-monitorizacao-operacoes:validacao-e-tuning-de-alertas
+  - key: security-enablement
+    control_id: CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf
+    name: "Capacitação e onboarding de segurança"
+    status: existing
+    resolution_order: 13
+    domain: governance
+    control_type: governance
+    abstraction_level: foundational
+    anchor_kind: practice
+    description: "Assegura formação contínua, onboarding e medição de eficácia para competências de segurança por perfil."
+    defining_chapters:
+    - 13-formacao-onboarding
+    cited_chapters:
+    - 02-requisitos-seguranca
+    - 14-governanca-contratacao
+    lifecycle_phases:
+    - design
+    - develop
+    - operate
+    artifact_types:
+    - training_plan
+    - onboarding_checklist
+    - quiz_result
+    keywords:
+    - "formacao"
+    - "onboarding"
+    - "quiz"
+    - "champion"
+    - "clinic"
+    - "war room"
+    - "capacitacao"
+    manual_anchor:
+    - "010-sbd-manual/13-formacao-onboarding"
+    practice_assignments:
+    - 02-requisitos-seguranca:politica-formacao-e-procedimentos-operacionais
+    - 13-formacao-onboarding:acao-corretiva-sobre-desvios-de-kpis
+    - 13-formacao-onboarding:caminho-de-remediacao-abaixo-do-limiar
+    - 13-formacao-onboarding:code-clinics-estruturadas-e-recorrentes
+    - 13-formacao-onboarding:exercicios-praticos-e-simulacoes
+    - 13-formacao-onboarding:formacao-continua-por-perfil
+    - 13-formacao-onboarding:formacao-em-uso-seguro-de-ia-e-tooling
+    - 13-formacao-onboarding:formatos-de-entrega-e-dod-por-formato
+    - 13-formacao-onboarding:kpis-de-capacitacao-e-reporte-grc
+    - 13-formacao-onboarding:manutencao-e-atualizacao-de-trilhos-formativos
+    - 13-formacao-onboarding:medicao-de-eficacia-da-formacao
+    - 13-formacao-onboarding:onboarding-seguro-obrigatorio
+    - 13-formacao-onboarding:operacionalizacao-de-formacao-de-terceiros
+    - 13-formacao-onboarding:programa-de-security-champions
+    - 13-formacao-onboarding:sandbox-isolado-para-pratica-de-contractors
+    - 13-formacao-onboarding:termo-de-responsabilidade-de-terceiros
+    - 13-formacao-onboarding:threat-modeling-peer-led-e-rotativo
+    - 13-formacao-onboarding:trilhos-formativos-proporcionais-por-risco-l1l3
+    - 13-formacao-onboarding:validacao-de-conhecimento-via-quizzes-estruturados
+    - 13-formacao-onboarding:validacao-formal-de-onboarding-via-checklist
+    - 13-formacao-onboarding:war-room-e-simulacoes-de-incidentes
+    - 14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors
+  - key: organisational-governance-ownership-compliance
+    control_id: CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead
+    name: "Governação organizacional, ownership e conformidade"
+    status: new
+    resolution_order: 14
+    domain: governance
+    control_type: governance
+    abstraction_level: foundational
+    anchor_kind: practice
+    description: "Formaliza o modelo de governação de segurança — ownership por aplicação, alçadas por nível de risco, rastreabilidade organizacional de decisões, ciclo de conformidade e KPIs/maturidade — distinto da governação de terceiros."
+    defining_chapters:
+    - 14-governanca-contratacao
+    cited_chapters: []
+    lifecycle_phases:
+    - govern
+    - operate
+    artifact_types:
+    - governance_kpi
+    - approval_record
+    - review_checklist
+    keywords:
+    - "governacao"
+    - "modelo de governacao"
+    - "owner"
+    - "ownership"
+    - "alcada"
+    - "conformidade"
+    - "maturidade"
+    - "kpi"
+    - "rastreabilidade organizacional"
+    - "politica"
+    manual_anchor:
+    - "010-sbd-manual/14-governanca-contratacao (práticas: formalização de modelo de governação; designação de owners; aprovação e auditoria de políticas {#us-22}; rastreabilidade organizacional; repositório de conformidade; controlo sistemático por capítulo; validação periódica; KPIs de governação; consolidação de KPIs e maturidade)"
+    - "010-sbd-manual/14-governanca-contratacao/addon (catálogo GOV)"
+    receives_requirement_categories:
+    - GOV
+    receives_requirements_expected:
+      primary:
+      - GOV-001
+      - GOV-002
+      - GOV-003
+      - GOV-008
+      - GOV-010
+      - GOV-011
+      - GOV-012
+      secondary:
+      - GOV-009
+      - CLA-007
+    note: "Resolução de L2 (separar): IDN mantém id e nome, estreita para identidade/acesso de toolchain e operações."
+    practice_assignments:
+    - 14-governanca-contratacao:aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais-us-22
+    - 14-governanca-contratacao:consolidacao-de-kpis-de-governacao-e-maturidade
+    - 14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe
+    - 14-governanca-contratacao:designacao-formal-de-owners-de-seguranca-por-aplicacao
+    - 14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco
+    - 14-governanca-contratacao:kpis-de-governacao
+    - 14-governanca-contratacao:rastreabilidade-organizacional
+    - 14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico
+    - 14-governanca-contratacao:validacao-periodica-de-aplicacoes-ciclo-de-conformidade
+  - key: supplier-governance
+    control_id: CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628
+    name: "Governação de fornecedores e exceções"
+    status: existing
+    resolution_order: 15
+    domain: governance
+    control_type: governance
+    abstraction_level: foundational
+    anchor_kind: practice
+    description: "Formaliza validação, monitorização, exceções e accountability de terceiros com acesso ao ecossistema."
+    defining_chapters:
+    - 14-governanca-contratacao
+    cited_chapters:
+    - 02-requisitos-seguranca
+    lifecycle_phases:
+    - design
+    - operate
+    artifact_types:
+    - supplier_assessment
+    - governance_kpi
+    - exception_record
+    keywords:
+    - "fornecedor"
+    - "contractor"
+    - "clausula"
+    - "contrat"
+    - "offboarding"
+    - "excecao"
+    manual_anchor:
+    - "010-sbd-manual/14-governanca-contratacao"
+    note: "v2.1: KPIs de governação/maturidade passam a C4; excepções (cap. 14) entram vindas de IDN."
+    practice_assignments:
+    - 02-requisitos-seguranca:incorporacao-de-restricoes-legais-normativas-e-contratuais
+    - 14-governanca-contratacao:ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes
+    - 14-governanca-contratacao:clausulas-contratuais-de-seguranca
+    - 14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21
+    - 14-governanca-contratacao:execucao-de-fluxo-formal-de-validacao-de-fornecedores
+    - 14-governanca-contratacao:feedback-pos-projeto-e-rating-de-contractors
+    - 14-governanca-contratacao:monitorizacao-continua-de-conformidade-de-fornecedores-alertas-e-escalacao
+    - 14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores
+    - 14-governanca-contratacao:processo-formal-de-excecoes-com-alcadas-por-nivel-de-risco
+    - 14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding
+    - 14-governanca-contratacao:validacao-continua-de-fornecedores
+  - key: identity-access-governance
+    control_id: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    name: "Gestão de identidades, acessos e ownership"
+    status: existing
+    resolution_order: 16
+    domain: identity
+    control_type: preventive
+    abstraction_level: foundational
+    anchor_kind: practice
+    description: "Controla identidades, privilégios mínimos e segregação de acesso de pessoas e workloads em toolchains e operações (ownership de acessos e contas); a governação organizacional do cap. 14 e o hardening do cap. 09 vivem noutros controlos desde v2.1."
+    defining_chapters:
+    - 08-iac-infraestrutura
+    - 14-governanca-contratacao
+    cited_chapters:
+    - 09-containers-imagens
+    - 11-deploy-seguro
+    lifecycle_phases:
+    - design
+    - build
+    - deploy
+    - operate
+    artifact_types:
+    - identity_binding
+    - access_review
+    - approval_record
+    keywords:
+    - "acesso"
+    - "rbac"
+    - "identity"
+    - "identidade"
+    - "serviceaccount"
+    - "privilege"
+    - "permisso"
+    - "least privilege"
+    manual_anchor:
+    - "010-sbd-manual/08-iac-infraestrutura"
+    - "010-sbd-manual/14-governanca-contratacao"
+    note: "v2.1 (L2): id e nome inalterados por estabilidade de identificadores; 31 práticas reatribuídas (ver practice_reassignments); a palavra «ownership» no nome refere ownership de acessos/contas."
+    practice_assignments:
+    - 08-iac-infraestrutura:janela-de-mudanca-e-aprovacoes-por-papel
+    - 08-iac-infraestrutura:segregacao-de-ambientes-tagging-e-permissoes-minimas
+    - 09-containers-imagens:rbac-minimo-e-serviceaccounts-dedicadas
+    - 11-deploy-seguro:separacao-entre-acao-automatica-e-autorizacao-irreversivel
+    - 14-governanca-contratacao:preparacao-tecnica-e-validacao-de-contractors-pre-acesso
+    - 14-governanca-contratacao:revisao-trimestral-de-acesso-de-contractors-least-privilege
+  - key: secret-management
+    control_id: CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9
+    name: "Gestão de segredos e identidades operacionais"
+    status: existing
+    resolution_order: 17
+    domain: secrets
+    control_type: preventive
+    abstraction_level: operational
+    anchor_kind: practice
+    description: "Controla segredos, credenciais efémeras e identidades de workload para reduzir exposição e abuso operacional."
+    defining_chapters:
+    - 07-cicd-seguro
+    - 08-iac-infraestrutura
+    - 09-containers-imagens
+    - 11-deploy-seguro
+    cited_chapters: []
+    lifecycle_phases:
+    - build
+    - deploy
+    - operate
+    artifact_types:
+    - secret_config
+    - identity_binding
+    keywords:
+    - "segredo"
+    - "secret"
+    - "oidc"
+    - "credencia"
+    - "token"
+    - "vault"
+    - "keyvault"
+    manual_anchor:
+    - "010-sbd-manual/07-cicd-seguro"
+    - "010-sbd-manual/08-iac-infraestrutura"
+    - "010-sbd-manual/09-containers-imagens"
+    - "010-sbd-manual/11-deploy-seguro"
+    practice_assignments:
+    - 07-cicd-seguro:gestao-de-segredos
+    - 08-iac-infraestrutura:gestao-de-segredos-e-identidades-para-iac
+    - 09-containers-imagens:gestao-de-segredos-fora-da-imagem-com-oidc-e-workload-identity
+    - 11-deploy-seguro:credenciais-de-deploy-isoladas-por-aplicacao-e-efemeras
+    - 11-deploy-seguro:gestao-segura-de-segredos-no-deploy
+  - key: development-environment-tooling
+    control_id: CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a
+    name: "Ambiente e tooling de desenvolvimento governados"
+    status: new
+    resolution_order: 18
+    domain: code_integrity
+    control_type: preventive
+    abstraction_level: operational
+    anchor_kind: practice
+    description: "Trata o ambiente de desenvolvimento — IDEs, extensões, assistentes automatizados e ambientes locais — como superfície de risco governada: ferramentas autorizadas e actualizadas, permissões mínimas, revisão humana do que é gerado e ausência de informação sensível em prompts."
+    defining_chapters:
+    - 02-requisitos-seguranca
+    cited_chapters:
+    - 06-desenvolvimento-seguro
+    - 13-formacao-onboarding
+    lifecycle_phases:
+    - develop
+    artifact_types:
+    - guideline_catalog
+    - approval_record
+    - validation_evidence
+    aliases:  # v2.2 (F-S2-1): aliases explícitos para os linkers do tier semântico (mechanisms/patterns); controlos de catálogo não os herdam de práticas
+    - "Ambiente de desenvolvimento seguro"
+    - "IDEs e ferramentas autorizadas"
+    - "Actualização de IDEs e ferramentas"
+    - "Extensões e plugins de fontes confiáveis"
+    - "Permissões de extensões e execução sandboxed"
+    - "Assistentes de IA no desenvolvimento"
+    - "Uso controlado de assistentes automatizados"
+    - "Revisão humana de código gerado por IA"
+    - "Prompts sem informação sensível"
+    - "Ambientes locais controlados"
+    keywords:
+    - "ide"
+    - "ferramenta"
+    - "extensao"
+    - "plugin"
+    - "assistente"
+    - "copilot"
+    - "genai"
+    - "genia"
+    - "prompt"
+    - "tooling"
+    manual_anchor:
+    - "010-sbd-manual/02-requisitos-seguranca/addon/02-lista-requisitos-base.md#ide"
+    - "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md (§4 IDE)"
+    - "010-sbd-manual/02-requisitos-seguranca/addon/09-governaca-automatismos.md (Regras mínimas de governação 1–5)"
+    receives_requirement_categories:
+    - IDE
+    receives_requirements_expected:
+      primary:
+      - IDE-001
+      - IDE-002
+      - IDE-003
+      - IDE-004
+      - IDE-005
+      - IDE-006
+      secondary:
+      - DEV-007
+    practice_assignments:
+    - 02-requisitos-seguranca:uso-controlado-de-assistentes-automatizados-incluindo-ia-no-desenvolvimento
+    - 06-desenvolvimento-seguro:prompts-e-outputs-de-genai-sob-disciplina-de-codigo
+    - 06-desenvolvimento-seguro:uso-validado-de-genia
+  - key: application-identity-sessions
+    control_id: CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82
+    name: "Identidade, autenticação e sessões aplicacionais"
+    status: new
+    resolution_order: 19
+    domain: identity
+    control_type: preventive
+    abstraction_level: technical
+    anchor_kind: catalogue
+    description: "Garante que só principals legítimos — humanos ou não-humanos — acedem à aplicação, com autenticação proporcional à sensibilidade, autorização por privilégio mínimo e ciclo de vida de sessões e tokens controlado."
+    defining_chapters:
+    - 02-requisitos-seguranca
+    cited_chapters:
+    - 04-arquitetura-segura
+    - 06-desenvolvimento-seguro
+    lifecycle_phases:
+    - design
+    - develop
+    - test
+    - operate
+    artifact_types:
+    - access_review
+    - identity_binding
+    - test_report
+    - validation_evidence
+    - log_stream
+    aliases:  # v2.2 (F-S2-1): aliases explícitos para os linkers do tier semântico (mechanisms/patterns); controlos de catálogo não os herdam de práticas
+    - "Autenticação e identidade aplicacional"
+    - "Autenticação multifactor (MFA)"
+    - "Política de passwords"
+    - "Protecção contra brute force"
+    - "Autenticação federada (SAML/OIDC)"
+    - "Step-up para acções sensíveis"
+    - "Reautenticação para alterações críticas"
+    - "Controlo de acesso RBAC"
+    - "Autorização baseada em atributos (ABAC)"
+    - "Princípio do menor privilégio"
+    - "Separação de perfis"
+    - "Revisão periódica de permissões"
+    - "Revogação de acessos em tempo real"
+    - "Gestão de sessões e tokens"
+    - "Expiração automática de sessão"
+    - "Logout e revogação de sessão"
+    - "Identificadores de sessão imprevisíveis"
+    - "Tokens JWT com scope, TTL e revogação"
+    - "Ligação da sessão ao contexto do cliente"
+    - "Autenticação e autorização de chamadas API"
+    keywords:
+    - "autenticacao"
+    - "mfa"
+    - "password"
+    - "sessao"
+    - "sessoes"
+    - "token"
+    - "jwt"
+    - "logout"
+    - "rbac"
+    - "abac"
+    - "autorizacao"
+    - "federada"
+    - "oidc"
+    - "saml"
+    - "step-up"
+    - "reautenticacao"
+    manual_anchor:
+    - "010-sbd-manual/02-requisitos-seguranca/addon/02-lista-requisitos-base.md#aut"
+    - "010-sbd-manual/02-requisitos-seguranca/addon/02-lista-requisitos-base.md#acc"
+    - "010-sbd-manual/02-requisitos-seguranca/addon/02-lista-requisitos-base.md#ses"
+    - "010-sbd-manual/02-requisitos-seguranca/addon/07-validacao-requisitos.md (§4 AUT/ACC/SES)"
+    - "010-sbd-manual/02-requisitos-seguranca/intro.md (T01/T02/T04)"
+    - "010-sbd-manual/02-requisitos-seguranca/addon/06-matriz-controlos-por-risco.md (linhas 1, 2, 4)"
+    receives_requirement_categories:
+    - AUT
+    - ACC
+    - SES
+    receives_requirements_expected:
+      primary:
+      - AUT-001
+      - AUT-002
+      - AUT-003
+      - AUT-004
+      - AUT-005
+      - AUT-006
+      - AUT-007
+      - AUT-008
+      - AUT-009
+      - ACC-001
+      - ACC-002
+      - ACC-003
+      - ACC-004
+      - ACC-005
+      - ACC-006
+      - ACC-007
+      - ACC-008
+      - ACC-009
+      - ACC-010
+      - SES-001
+      - SES-002
+      - SES-003
+      - SES-004
+      - SES-005
+      - SES-006
+      - SES-007
+      - SES-008
+      - API-001
+      secondary:
+      - AUT-010
+      - ENC-004
+      - ARC-015
+      - REQ-AGN-003
+    note: "Primeiro controlo ancorado em catálogo (sem práticas definidoras): o cap. 02 prescreve por catálogo + plano de validação. ARC-015/REQ-AGN (agentes como principals) ficam para a reconciliação pós-MP4; o âmbito «principals humanos ou não-humanos» acomoda-os sem renomear."
+    practice_assignments: []
+  - key: application-cryptography-data-protection
+    control_id: CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411
+    name: "Criptografia aplicacional e protecção de dados"
+    status: new
+    resolution_order: 20
+    domain: data_protection
+    control_type: preventive
+    abstraction_level: technical
+    anchor_kind: catalogue
+    description: "Protege dados sensíveis em trânsito e em repouso com primitivas aprovadas, hashing adaptativo, integridade verificável e prevenção de exposição acidental em logs, caches e respostas."
+    defining_chapters:
+    - 02-requisitos-seguranca
+    cited_chapters:
+    - 06-desenvolvimento-seguro
+    lifecycle_phases:
+    - design
+    - develop
+    - test
+    - operate
+    artifact_types:
+    - validation_evidence
+    - test_report
+    - secret_config
+    aliases:  # v2.2 (F-S2-1): aliases explícitos para os linkers do tier semântico (mechanisms/patterns); controlos de catálogo não os herdam de práticas
+    - "Criptografia aplicacional"
+    - "Protecção de dados sensíveis"
+    - "Encriptação em trânsito (TLS)"
+    - "Encriptação de dados em repouso"
+    - "Algoritmos e primitivas criptográficas aprovadas"
+    - "Hashing adaptativo de passwords"
+    - "Gestão de chaves criptográficas"
+    - "Mascaramento de dados sensíveis em logs e respostas"
+    - "Prevenção de caching de dados sensíveis no cliente"
+    - "Integridade verificável de dados (MAC, assinatura, checksum)"
+    - "Assinatura e integridade de mensagens"
+    - "Proibição de protocolos sem cifra"
+    - "Certificados e HSTS"
+    keywords:
+    - "encripta"
+    - "cifra"
+    - "criptograf"
+    - "tls"
+    - "hashing"
+    - "chave"
+    - "mac"
+    - "integridade"
+    - "cache-control"
+    manual_anchor:
+    - "010-sbd-manual/02-requisitos-seguranca/addon/02-lista-requisitos-base.md#enc"
+    - "010-sbd-manual/02-requisitos-seguranca/intro.md (T06/T07)"
+    - "010-sbd-manual/02-requisitos-seguranca/addon/06-matriz-controlos-por-risco.md (linhas 6, 7)"
+    receives_requirement_categories:
+    - ENC
+    receives_requirements_expected:
+      primary:
+      - ENC-001
+      - ENC-002
+      - ENC-003
+      - ENC-004
+      - ENC-005
+      - ENC-008
+      - ENC-009
+      - INT-003
+      - INT-004
+      - INT-005
+      - API-005
+      secondary:
+      - ENC-006
+      - ENC-007
+      - SES-004
+    note: "Domínio novo data_protection (G-a, opção A). ENC-007 mantém SECR como primária curada (D1). Finding F2 (Author): addon-07 §4 não tem plano de validação ENC."
+    practice_assignments: []
+  practice_reassignments:
+  - practice_id: 09-containers-imagens:builders-e-runners-ephemerais-assinados-e-com-auditoria
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d
+    rationale: "L2: hardening/registry/runtime de imagens e containers (cap. 09) — não é identidade"
+  - practice_id: 09-containers-imagens:construcao-de-imagens-a-partir-de-bases-seguras-minimalistas-e-pinned-por-digest
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d
+    rationale: "L2: hardening/registry/runtime de imagens e containers (cap. 09) — não é identidade"
+  - practice_id: 09-containers-imagens:excecoes-temporarias-a-findings-policies-com-ttl-compensacoes-e-revalidacao
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d
+    rationale: "L2: hardening/registry/runtime de imagens e containers (cap. 09) — não é identidade"
+  - practice_id: 09-containers-imagens:governacao-de-registries-com-allowlist-e-digest-only
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d
+    rationale: "L2: hardening/registry/runtime de imagens e containers (cap. 09) — não é identidade"
+  - practice_id: 09-containers-imagens:isolamento-de-gpu-e-separacao-de-workloads-de-inferencia-sensiveis
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d
+    rationale: "L2: hardening/registry/runtime de imagens e containers (cap. 09) — não é identidade"
+  - practice_id: 09-containers-imagens:perfis-seccomp-apparmor-e-verificacao-de-drift-de-hardening
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d
+    rationale: "L2: hardening/registry/runtime de imagens e containers (cap. 09) — não é identidade"
+  - practice_id: 09-containers-imagens:promocao-por-estagios-com-aprovacao-explicita-e-revalidacao-por-ambiente
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d
+    rationale: "L2: hardening/registry/runtime de imagens e containers (cap. 09) — não é identidade"
+  - practice_id: 09-containers-imagens:retencao-e-limpeza-de-imagens-com-renovacao-periodica-por-sla
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d
+    rationale: "L2: hardening/registry/runtime de imagens e containers (cap. 09) — não é identidade"
+  - practice_id: 09-containers-imagens:sandboxing-avancado-com-gvisor-kata-para-workloads-criticas
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d
+    rationale: "L2: hardening/registry/runtime de imagens e containers (cap. 09) — não é identidade"
+  - practice_id: 09-containers-imagens:validacao-automatica-de-vulnerabilidades-em-imagens-no-pipeline-ci-cd
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d
+    rationale: "L2: hardening/registry/runtime de imagens e containers (cap. 09) — não é identidade"
+  - practice_id: 14-governanca-contratacao:aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais-us-22
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead
+    rationale: "L2: governação organizacional do cap. 14 (modelo, ownership, conformidade) — não é identidade"
+  - practice_id: 14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead
+    rationale: "L2: governação organizacional do cap. 14 (modelo, ownership, conformidade) — não é identidade"
+  - practice_id: 14-governanca-contratacao:designacao-formal-de-owners-de-seguranca-por-aplicacao
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead
+    rationale: "L2: governação organizacional do cap. 14 (modelo, ownership, conformidade) — não é identidade"
+  - practice_id: 14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead
+    rationale: "L2: governação organizacional do cap. 14 (modelo, ownership, conformidade) — não é identidade"
+  - practice_id: 14-governanca-contratacao:rastreabilidade-organizacional
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead
+    rationale: "L2: governação organizacional do cap. 14 (modelo, ownership, conformidade) — não é identidade"
+  - practice_id: 14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead
+    rationale: "L2: governação organizacional do cap. 14 (modelo, ownership, conformidade) — não é identidade"
+  - practice_id: 14-governanca-contratacao:validacao-periodica-de-aplicacoes-ciclo-de-conformidade
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead
+    rationale: "L2: governação organizacional do cap. 14 (modelo, ownership, conformidade) — não é identidade"
+  - practice_id: 14-governanca-contratacao:kpis-de-governacao
+    from: CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628
+    to: CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead
+    rationale: "KPIs/maturidade são governação organizacional, não de terceiros"
+  - practice_id: 14-governanca-contratacao:consolidacao-de-kpis-de-governacao-e-maturidade
+    from: CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628
+    to: CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead
+    rationale: "KPIs/maturidade são governação organizacional, não de terceiros"
+  - practice_id: 14-governanca-contratacao:processo-formal-de-excecoes-com-alcadas-por-nivel-de-risco
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628
+    rationale: "L2: excepções — o nome de FORN («fornecedores e exceções») reclama-as"
+  - practice_id: 14-governanca-contratacao:ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628
+    rationale: "L2: excepções — o nome de FORN («fornecedores e exceções») reclama-as"
+  - practice_id: 14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf
+    rationale: "L2: é formação (cap. 13 governa)"
+  - practice_id: 08-iac-infraestrutura:gestao-de-segredos-e-identidades-para-iac
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9
+    rationale: "L2: segredos e identidades operacionais de IaC"
+  - practice_id: 08-iac-infraestrutura:enforcement-automatico-de-politicas
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905
+    rationale: "L2: policy-as-code / rastreabilidade / rollback de IaC — não é identidade"
+  - practice_id: 08-iac-infraestrutura:rollback-e-salvaguarda-de-destroy
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905
+    rationale: "L2: policy-as-code / rastreabilidade / rollback de IaC — não é identidade"
+  - practice_id: 08-iac-infraestrutura:rastreabilidade-ficheiro-recurso-ambiente
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905
+    rationale: "L2: policy-as-code / rastreabilidade / rollback de IaC — não é identidade"
+  - practice_id: 08-iac-infraestrutura:rastreabilidade-versionamento-e-naming
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905
+    rationale: "L2: policy-as-code / rastreabilidade / rollback de IaC — não é identidade"
+  - practice_id: 11-deploy-seguro:controlo-e-validacao-de-drift-operacional
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0
+    rationale: "L2: deploy/operação (cap. 11) — não é identidade"
+  - practice_id: 11-deploy-seguro:evidencia-operacional-auditavel
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0
+    rationale: "L2: deploy/operação (cap. 11) — não é identidade"
+  - practice_id: 11-deploy-seguro:rastreabilidade-end-to-end
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0
+    rationale: "L2: deploy/operação (cap. 11) — não é identidade"
+  - practice_id: 11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0
+    rationale: "L2: deploy/operação (cap. 11) — não é identidade"
+  - practice_id: 11-deploy-seguro:reprodutibilidade-de-incidentes-em-runtime
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0
+    rationale: "L2: deploy/operação (cap. 11) — não é identidade"
+  - practice_id: 11-deploy-seguro:versionamento-semantico-e-changelog-tecnico
+    from: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    to: CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0
+    rationale: "L2: deploy/operação (cap. 11) — não é identidade"
+  - practice_id: 02-requisitos-seguranca:uso-controlado-de-assistentes-automatizados-incluindo-ia-no-desenvolvimento
+    from: CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29
+    to: CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a
+    rationale: "L6: governação de tooling/assistentes no desenvolvimento"
+  - practice_id: 06-desenvolvimento-seguro:uso-validado-de-genia
+    from: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    to: CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a
+    rationale: "L6: uso de assistentes de IA no ambiente de desenvolvimento"
+  - practice_id: 06-desenvolvimento-seguro:prompts-e-outputs-de-genai-sob-disciplina-de-codigo
+    from: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    to: CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a
+    rationale: "L6: uso de assistentes de IA no ambiente de desenvolvimento"
+  - practice_id: 02-requisitos-seguranca:definicao-de-criterios-de-validacao
+    from: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    to: CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29
+    rationale: "L4: ciclo de vida de requisitos (cap. 02, US-03/05/06/07/09/12) — DEV define-se só no cap. 06"
+  - practice_id: 02-requisitos-seguranca:gestao-de-excecoes-com-ttl-e-revalidacao-obrigatoria
+    from: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    to: CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29
+    rationale: "L4: ciclo de vida de requisitos (cap. 02, US-03/05/06/07/09/12) — DEV define-se só no cap. 06"
+  - practice_id: 02-requisitos-seguranca:validacao-de-cobertura-de-testes
+    from: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    to: CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29
+    rationale: "L4: ciclo de vida de requisitos (cap. 02, US-03/05/06/07/09/12) — DEV define-se só no cap. 06"
+  - practice_id: 02-requisitos-seguranca:validacao-de-tags-sec-lx-e-requisitos-no-pipeline
+    from: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    to: CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29
+    rationale: "L4: ciclo de vida de requisitos (cap. 02, US-03/05/06/07/09/12) — DEV define-se só no cap. 06"
+  - practice_id: 02-requisitos-seguranca:validacao-e-aprovacao-final
+    from: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    to: CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29
+    rationale: "L4: ciclo de vida de requisitos (cap. 02, US-03/05/06/07/09/12) — DEV define-se só no cap. 06"
+  - practice_id: 02-requisitos-seguranca:validacao-por-requisito-dominio-req-xxx-evidencia
+    from: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    to: CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29
+    rationale: "L4: ciclo de vida de requisitos (cap. 02, US-03/05/06/07/09/12) — DEV define-se só no cap. 06"
+  - practice_id: 02-requisitos-seguranca:catalogo-de-requisitos-do-projeto-criacao-e-manutencao
+    from: CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905
+    to: CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29
+    rationale: "L4: processo de requisitos (US-08) — era a única prática que dava cap. 02 a IAC"
+catalogue_rules:
+  schema_version: '1.0'
+  # v2.2 (2026-08-30, decisão do programme lead pré-G-b): os requisitos do catálogo-base do cap. 02 (type: base, 104)
+  # ligam-se a controlos por REGRA DE CATÁLOGO (categoria → controlo, com overrides por requisito), com confiança declarada
+  # como regra e justification: catalogue_rule; o scoring lexical NÃO corre sobre type: base. A curadoria prevalece sempre.
+  applies_to:
+    requirement_type: base
+    requirement_ids_count: 104
+  precedence:
+  - curation
+  - catalogue_rule
+  - scoring
+  lexical_scoring_on_base: false
+  confidence:
+    primary: 0.92
+    secondary: 0.8
+  justification:
+    primary: catalogue_rule
+    secondary: catalogue_rule_secondary
+  source_mode: catalogue_rule
+  authority_class: normative
+  confidence_model: deterministic
+  max_links_per_requirement: 2
+  curation_interaction: "Se o requisito tem primária curada (retarget/add-primary), a regra não cria primária; fornece no máximo a secundária declarada aqui, se ainda houver lugar. Arestas curadas nunca são substituídas por regra."
+  fallback_expectation: "domain_owner_fallback deve ser 0 para type: base; qualquer sobra é reportada como desvio."
+  categories:
+  - category: AUT
+    requirements: 10
+    default: CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82
+    rationale: "Autenticação e identidade da aplicação — âncora do próprio C1 (cap. 02 addon-02 §AUT; addon-07 §4). AUT-010: a primária curada MON (D1) prevalece; a regra fornece C1 como secundária."
+    overrides: []
+  - category: ACC
+    requirements: 10
+    default: CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82
+    rationale: "Controlo de acesso (RBAC/ABAC, privilégio mínimo, revisão de permissões) é autorização aplicacional — C1."
+    overrides: []
+  - category: SES
+    requirements: 8
+    default: CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82
+    rationale: "Ciclo de vida de sessões e tokens — C1 (SES-004 «transmissão por TLS» ganha C2 como secundária)."
+    overrides:
+    - requirement_id: SES-004
+      primary: CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82
+      secondary:
+      - CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411
+      rationale: "tokens só por TLS + flags de cookie: sessão (C1) com protecção de transporte (C2)"
+  - category: ENC
+    requirements: 9
+    default: CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411
+    rationale: "Dados sensíveis, criptografia, hashing e integridade — âncora do próprio C2 (§ENC; T06/T07). ENC-007: a primária curada SECR (D1) prevalece; regra fornece C2 como secundária. ENC-004 (hashing de passwords) é C2 por ser primitiva criptográfica, com C1 como secundária."
+    overrides:
+    - requirement_id: ENC-004
+      primary: CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411
+      secondary:
+      - CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82
+      rationale: "hashing adaptativo é primitiva criptográfica; protege credenciais (C1 sec.)"
+    - requirement_id: ENC-006
+      primary: CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411
+      secondary:
+      - CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+      rationale: "detecção de segredos em repositórios: exposição de dados (C2) verificada no pipeline de código (DEV sec.)"
+  - category: VAL
+    requirements: 8
+    default: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    rationale: "Validação e sanitização de input/output é disciplina de código do cap. 06 (guidelines, SAST, anti-patterns)."
+    overrides: []
+  - category: ERR
+    requirements: 7
+    default: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    rationale: "Gestão de erros e mensagens seguras é disciplina de código; ERR-007 (logs pseudonimizados) ganha MON como secundária."
+    overrides:
+    - requirement_id: ERR-007
+      primary: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+      secondary:
+      - CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70
+      rationale: "logs de erro com contexto pseudonimizado: código (DEV) + observabilidade (MON sec.)"
+  - category: LOG
+    requirements: 10
+    default: CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70
+    rationale: "Registo, retenção, centralização e detecção — o cap. 12 define-os; a regra substitui as 10 arestas «foundational_domain_unique» a 0,54–0,69."
+    overrides: []
+  - category: REQ
+    requirements: 7
+    default: CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29
+    rationale: "Definição, revisão, versionamento e rastreabilidade de requisitos são o processo de requisitos do cap. 02 (práticas US-01…12 atribuídas a CLA em v2.1). REQ-001 já é curada → CLA. REQ-005 ganha THR como secundária."
+    overrides:
+    - requirement_id: REQ-005
+      primary: CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29
+      secondary:
+      - CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0
+      rationale: "nova análise de ameaça após alteração: trigger de processo (CLA) executado pelo threat modeling (THR sec.)"
+  - category: IDE
+    requirements: 6
+    default: CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a
+    rationale: "Ferramentas, extensões, assistentes e ambientes locais — âncora do próprio C3 (§IDE; addon-09 regras 1–5)."
+    overrides:
+    - requirement_id: IDE-003
+      primary: CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a
+      secondary:
+      - CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+      rationale: "revisão de código gerado por ferramentas: governação do tooling (C3) aplicada na revisão de código (DEV sec.)"
+  - category: DST
+    requirements: 7
+    default: null
+    rationale: "Distribuição de artefactos não tem controlo único: cada requisito aponta ao controlo que o define — identidade de acesso a repositórios, custódia/assinatura em pipelines, SBOM/revogação em dependências, deploy só por pipeline. Resolve DST-002/005 (S2 divergentes)."
+    overrides:
+    - requirement_id: DST-001
+      primary: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+      secondary: []
+      rationale: "autenticação obrigatória e logs de acesso a repositórios de artefactos = identidade/acesso de toolchain (IDN)"
+    - requirement_id: DST-002
+      primary: CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2
+      secondary:
+      - CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d
+      rationale: "aprovação formal para publicação pública = não-repúdio e ownership de promoções (PIPE); registries públicos de imagens (IMG sec.)"
+    - requirement_id: DST-003
+      primary: CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2
+      secondary: []
+      rationale: "assinatura digital/checksum antes de publicação = assinatura e proveniência de artefactos (PIPE)"
+    - requirement_id: DST-004
+      primary: CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb
+      secondary: []
+      rationale: "SBOM anexado a cada release = inventário de dependências (DEPS)"
+    - requirement_id: DST-005
+      primary: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+      secondary:
+      - CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0
+      rationale: "acesso segregado por role e ambiente a artefactos de produção = identidade/acesso (IDN); segregação de ambientes no deploy (DEPL sec.)"
+    - requirement_id: DST-006
+      primary: CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0
+      secondary:
+      - CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2
+      rationale: "deploy apenas via pipeline validado = deploy seguro (DEPL); pipeline auditado (PIPE sec.)"
+    - requirement_id: DST-007
+      primary: CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb
+      secondary:
+      - CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d
+      rationale: "revogação e limpeza de artefactos comprometidos = resposta a vulnerabilidades em componentes (DEPS); retenção/revogação de imagens (IMG sec.)"
+  - category: CFG
+    requirements: 7
+    default: null
+    rationale: "Configuração segura: IaC/ambientes quando é configuração de infraestrutura e ambientes; segredos quando é material sensível; código quando é comportamento da aplicação (CFG-005, desvio justificado do enquadramento «IaC ou segredos»)."
+    overrides:
+    - requirement_id: CFG-001
+      primary: CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905
+      secondary:
+      - CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0
+      rationale: "debug/trace/dev_mode desligados em produção com verificação no pipeline = baseline de configuração validada como código (IAC); gate pré-deploy (DEPL sec.)"
+    - requirement_id: CFG-002
+      primary: CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905
+      secondary: []
+      rationale: "separação de ambientes com validação automática = segregação de ambientes, tagging e permissões mínimas (IAC)"
+    - requirement_id: CFG-003
+      primary: CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9
+      secondary:
+      - CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+      rationale: "ausência de segredos/parâmetros sensíveis no código = gestão de segredos (SECR); scan no código (DEV sec.)"
+    - requirement_id: CFG-004
+      primary: CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905
+      secondary:
+      - CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+      rationale: "configuração externa ao código com permissões restritivas = configuração governada (IAC); permissões de acesso (IDN sec.)"
+    - requirement_id: CFG-005
+      primary: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+      secondary: []
+      rationale: "falha de arranque com parâmetros em falta/incorrectos é comportamento da aplicação — validação no código (DEV); fora do par IaC/segredos por semântica do requisito"
+    - requirement_id: CFG-006
+      primary: CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9
+      secondary: []
+      rationale: "cofres e gestão segura de segredos (SECR) — coincide com a aresta curada D1, que prevalece"
+    - requirement_id: CFG-007
+      primary: CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905
+      secondary:
+      - CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70
+      rationale: "drift de configuração com baseline e alertas = controlo de drift (IAC, coincide com a curada D1); alertas (MON sec.)"
+  - category: API
+    requirements: 7
+    default: null
+    rationale: "Segurança de APIs: identidade quando é autenticação/abuso, criptografia quando é transporte, código quando é superfície/validação, dependências quando é SDK, monitorização quando é auditoria. Resolve API-007 (S2 divergente): MON primária, DEV secundária."
+    overrides:
+    - requirement_id: API-001
+      primary: CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82
+      secondary: []
+      rationale: "autenticação/autorização de chamadas API = C1 (coincide com S2)"
+    - requirement_id: API-002
+      primary: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+      secondary:
+      - CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b
+      rationale: "endpoints de debug/legacy não expostos em produção = disciplina de código (DEV); exposição minimizada de fronteiras (SEG sec.)"
+    - requirement_id: API-003
+      primary: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+      secondary: []
+      rationale: "validação de input em APIs = validação de dados (DEV)"
+    - requirement_id: API-004
+      primary: CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82
+      secondary:
+      - CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70
+      rationale: "rate limiting e detecção de abusos = protecção da superfície de autenticação/consumo (C1); detecção (MON sec.)"
+    - requirement_id: API-005
+      primary: CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411
+      secondary: []
+      rationale: "TLS, certificados, HSTS = protecção de transporte (C2)"
+    - requirement_id: API-006
+      primary: CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb
+      secondary: []
+      rationale: "SDKs e wrappers documentados em SBOM com auditoria de vulnerabilidades = dependências (DEPS)"
+    - requirement_id: API-007
+      primary: CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70
+      secondary:
+      - CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+      rationale: "logging e auditoria de chamadas externas = observabilidade (MON); implementação no código (DEV sec.)"
+  - category: INT
+    requirements: 8
+    default: null
+    rationale: "Mensagens e integrações: código para validação, identidade para autenticação mútua, criptografia para transporte/integridade, monitorização para anomalias; INT-008 é curada (FORN + SEG) e prevalece."
+    overrides:
+    - requirement_id: INT-001
+      primary: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+      secondary: []
+      rationale: "validação de mensagens entre sistemas = validação de dados (DEV)"
+    - requirement_id: INT-002
+      primary: CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82
+      secondary:
+      - CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411
+      rationale: "autenticação mútua ou tokens com TTL = identidade de integrações (C1); mTLS (C2 sec.)"
+    - requirement_id: INT-003
+      primary: CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411
+      secondary: []
+      rationale: "transmissão cifrada com TLS = transporte (C2)"
+    - requirement_id: INT-004
+      primary: CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411
+      secondary: []
+      rationale: "proibição de protocolos sem cifra = transporte (C2)"
+    - requirement_id: INT-005
+      primary: CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411
+      secondary: []
+      rationale: "assinatura e integridade de mensagens = integridade verificável (C2)"
+    - requirement_id: INT-006
+      primary: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+      secondary:
+      - CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b
+      rationale: "validação cruzada de origem e destino = allowlist no código (DEV); fronteiras de integração (SEG sec.)"
+    - requirement_id: INT-007
+      primary: CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70
+      secondary: []
+      rationale: "padrões anómalos nos canais de integração disparam alertas = monitorização (MON) — resolve a divergência S2 (caía em CLA)"
+    - requirement_id: INT-008
+      primary: CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628
+      secondary:
+      - CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b
+      rationale: "revisão de segurança e contrato em integrações — coincide com as arestas curadas D1 (FORN primária, SEG secundária), que prevalecem"
+  expected_primary_counts:
+    CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a: 6
+    CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460: 20
+    CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2: 2
+    CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411: 13
+    CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29: 7
+    CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628: 1
+    CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af: 2
+    CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82: 31
+    CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0: 1
+    CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905: 4
+    CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70: 12
+    CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9: 2
+    CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb: 3

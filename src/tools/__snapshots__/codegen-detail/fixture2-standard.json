@@ -441,20 +441,28 @@
         "description": "Aplica guidelines, validações automáticas e gates de código para preservar integridade e qualidade do software."
       },
       {
-        "control_id": "CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf",
-        "name": "Capacitação e onboarding de segurança",
-        "domain": "governance",
-        "control_type": "governance",
+        "control_id": "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+        "name": "Criptografia aplicacional e protecção de dados",
+        "domain": "data_protection",
+        "control_type": "preventive",
         "confidence": "direct",
-        "description": "Assegura formação contínua, onboarding e medição de eficácia para competências de segurança por perfil."
+        "description": "Protege dados sensíveis em trânsito e em repouso com primitivas aprovadas, hashing adaptativo, integridade verificável e prevenção de exposição acidental em logs, caches e respostas."
       },
       {
-        "control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
-        "name": "Gestão de identidades, acessos e ownership",
+        "control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
+        "name": "Identidade, autenticação e sessões aplicacionais",
         "domain": "identity",
         "control_type": "preventive",
         "confidence": "direct",
-        "description": "Controla identidades, privilégios mínimos, ownership e segregação de acesso em toolchains e operações."
+        "description": "Garante que só principals legítimos — humanos ou não-humanos — acedem à aplicação, com autenticação proporcional à sensibilidade, autorização por privilégio mínimo e ciclo de vida de sessões e tokens controlado."
+      },
+      {
+        "control_id": "CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b",
+        "name": "Segmentação e controlo arquitetural",
+        "domain": "infrastructure",
+        "control_type": "preventive",
+        "confidence": "direct",
+        "description": "Protege fronteiras de confiança, fluxos e segmentação técnica da arquitetura com desenho verificável e controlo entre zonas sensíveis."
       },
       {
         "control_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
@@ -473,6 +481,13 @@
         "description": "Garante inventário de componentes, análise de vulnerabilidades e rastreabilidade de dependências terceiras."
       },
       {
+        "control_id": "CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a",
+        "name": "Ambiente e tooling de desenvolvimento governados",
+        "domain": "code_integrity",
+        "control_type": "preventive",
+        "confidence": "derived"
+      },
+      {
         "control_id": "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
         "name": "Integridade e governação de pipelines",
         "domain": "code_integrity",
@@ -480,31 +495,17 @@
         "confidence": "derived"
       },
       {
-        "control_id": "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4",
-        "name": "Arquitetura segura e rastreável",
-        "domain": "governance",
-        "control_type": "governance",
+        "control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "name": "Gestão de identidades, acessos e ownership",
+        "domain": "identity",
+        "control_type": "preventive",
         "confidence": "derived"
       },
       {
-        "control_id": "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
-        "name": "Classificação e governação por risco",
-        "domain": "governance",
-        "control_type": "governance",
-        "confidence": "derived"
-      },
-      {
-        "control_id": "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
-        "name": "Governação de fornecedores e exceções",
-        "domain": "governance",
-        "control_type": "governance",
-        "confidence": "derived"
-      },
-      {
-        "control_id": "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0",
-        "name": "Threat modeling e gestão de risco",
-        "domain": "governance",
-        "control_type": "governance",
+        "control_id": "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d",
+        "name": "Supply chain segura de imagens e containers",
+        "domain": "supply_chain",
+        "control_type": "preventive",
         "confidence": "derived"
       }
     ],
@@ -676,7 +677,7 @@
       {
         "id": "EP-ACC-001",
         "maps_to_requirement_id": "ACC-001",
-        "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
         "evidence_expectation": "Log de rejeição. Mapeamento de roles documentado.",
         "verification_logic": "Testar acesso com role de privilégio reduzido a recurso restrito. Confirmar rejeição.",
         "expected_artifact_type_ids": [
@@ -687,7 +688,7 @@
       {
         "id": "EP-ACC-002",
         "maps_to_requirement_id": "ACC-002",
-        "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
         "evidence_expectation": "Relatório de auditoria de permissões.",
         "verification_logic": "Auditar permissões de contas de utilizador e serviço. Confirmar ausência de privilégios desnecessários.",
         "expected_artifact_type_ids": [
@@ -698,7 +699,7 @@
       {
         "id": "EP-ACC-003",
         "maps_to_requirement_id": "ACC-003",
-        "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
         "evidence_expectation": "Log de rejeição com dados de contexto.",
         "verification_logic": "Tentar acesso não autorizado. Confirmar bloqueio e registo com contexto suficiente.",
         "expected_artifact_type_ids": [
@@ -709,7 +710,7 @@
       {
         "id": "EP-ACC-004",
         "maps_to_requirement_id": "ACC-004",
-        "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
         "evidence_expectation": "Logs com perfil identificado. Teste cruzado de perfis.",
         "verification_logic": "Verificar separação efectiva de perfis. Confirmar que acções de cada perfil são rastreáveis.",
         "expected_artifact_type_ids": [
@@ -720,7 +721,7 @@
       {
         "id": "EP-ACC-005",
         "maps_to_requirement_id": "ACC-005",
-        "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
         "evidence_expectation": "Log de rejeição. Testes automatizados de endpoints.",
         "verification_logic": "Testar endpoints sem autenticação/autorização. Confirmar rejeição com código adequado.",
         "expected_artifact_type_ids": [
@@ -731,7 +732,7 @@
       {
         "id": "EP-ACC-006",
         "maps_to_requirement_id": "ACC-006",
-        "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
         "evidence_expectation": "Evidência de controlo efectivo. Log do evento.",
         "verification_logic": "Tentar acesso a dados críticos com role não autorizado. Confirmar bloqueio e log.",
         "expected_artifact_type_ids": [
@@ -742,7 +743,7 @@
       {
         "id": "EP-ACC-007",
         "maps_to_requirement_id": "ACC-007",
-        "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
         "evidence_expectation": "Documentação do modelo. Registo de revisão datada.",
         "verification_logic": "Verificar existência de modelo de permissões revisto e documentado.",
         "expected_artifact_type_ids": [
@@ -753,7 +754,7 @@
       {
         "id": "EP-ACC-008",
         "maps_to_requirement_id": "ACC-008",
-        "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
         "evidence_expectation": "Log de tentativa falhada após revogação. Timestamp de revogação.",
         "verification_logic": "Revogar acesso. Testar imediatamente após revogação. Confirmar falha.",
         "expected_artifact_type_ids": [
@@ -763,7 +764,7 @@
       {
         "id": "EP-ACC-009",
         "maps_to_requirement_id": "ACC-009",
-        "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
         "evidence_expectation": "Logs com avaliação de atributos. Teste com variação de contexto.",
         "verification_logic": "Testar decisão de acesso com atributos distintos. Confirmar aplicação de política dinâmica.",
         "expected_artifact_type_ids": [
@@ -774,7 +775,7 @@
       {
         "id": "EP-ACC-010",
         "maps_to_requirement_id": "ACC-010",
-        "maps_to_control_id": "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
+        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
         "evidence_expectation": "Registos de revisão datados. Evidência de limpeza de permissões.",
         "verification_logic": "Verificar existência de processo de revisão periódica. Confirmar remoção de permissões obsoletas.",
         "expected_artifact_type_ids": [
@@ -944,9 +945,9 @@
       "ASC-09 artifacts: declared=12 actual=8 (slice contract status=working_contract)",
       "ASC-10 mechanisms: declared=6 actual=4 (slice contract status=working_contract)"
     ],
-    "evidence_patterns_total": 205,
+    "evidence_patterns_total": 153,
     "evidence_patterns_returned": 10,
-    "evidence_patterns_capped": 195,
+    "evidence_patterns_capped": 143,
     "evidence_pattern_cap": 10,
     "evidence_patterns_rest": {
       "tool": "prepare_sbd_toe_codegen_context",

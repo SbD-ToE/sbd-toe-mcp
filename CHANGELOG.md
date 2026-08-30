@@ -3,11 +3,51 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-30
 purpose: documentation
-reasoning: v0.20.0-beta.4 (beta line, npm `beta` dist-tag) — serves the formal KG release v1.6.1 (mcp-stable, contract v1.12 §1.19 curated requirement→control layer v2, Manual v1.7.1), same content as stable 0.10.3; absorbs master 8ade07f (PR #49: acceptance regression runner, query_sbd_toe_entities filter fix, Algolia-era cache paths removed) into the v2 line; first eval:acceptance run on this line. Earlier beta entries and the stable-line entries (synced from master) below.
+reasoning: Unreleased (beta line) — dev-build KG v2.2 pin (contract v1.13, link layer v3, pre-G-b verification, master fa62f29b) with acceptance re-baseline and documented payload re-baseline; v0.20.0-beta.4 — serves the formal KG release v1.6.1 (mcp-stable, contract v1.12 §1.19 curated requirement→control layer v2, Manual v1.7.1), same content as stable 0.10.3; absorbs master 8ade07f (PR #49: acceptance regression runner, query_sbd_toe_entities filter fix, Algolia-era cache paths removed) into the v2 line; first eval:acceptance run on this line. Earlier beta entries and the stable-line entries (synced from master) below.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## Unreleased (beta line, branch `0.20-beta`)
+
+### Pin — dev-build KG v2.2 snapshot (absorbs master `fa62f29b`, PR #53; pre-G-b verification)
+
+**No release, no tag, no npm, no `mcp-stable`.** `consumed-bundle.json` identical to master:
+dev-build `kg-v1-manual-v1.7.1-aligned-2026-08-30-v2.2`, sha256
+`08d87f2e08d22edcdbf44d603ec7b267eb676c119ae84f3c569b5aff31dbc628` (verified against the
+sidecar by `sync-bundle`; idempotent over the cherry-picked data, `+0 ~0 -0 =49`), contract
+**v1.13** (ontology v2.2, curated link layer v3), Manual v1.7.1 (unchanged), `pinned_at`
+2026-08-30. Supersedes the formal `v1.6.1` pin of 0.20.0-beta.4. Scenario re-baseline from
+master taken as-is (TC-F-08 → 281 links, curated 12+3 on surface, `catalogue_rule*`
+tolerated; new TC-F-09 `data_protection` served, TC-F-10 all AUT → C1 identity, never
+CAP/DEV; runner `ctx.links`).
+
+Verified on this line (2026-08-30):
+
+- `npm run eval:acceptance` (record `docs/acceptance-runs/2026-08-30-devbuild-v2.2-v0.20.0-beta.4-acceptance.{md,json}`):
+  **104 scenarios, 81 executed — 61 PASS · 20 PART · 0 FAIL · 23 SKIP; gate (Axis E) PASS**;
+  TC-F-08/09/10 PASS; same rollup as master's run on 0.10.3. 21/22 tools —
+  `trace_sbd_toe_graph` still without a scenario (Axis G follow-up open).
+- `trace_sbd_toe_graph` deterministic; **270/270/270 rows per lens, byte-equal to beta.2**
+  (the projection covers the v1 relations; its `requirement_control_links` source
+  265 → **281**, test re-baselined).
+- `prepare_sbd_toe_codegen_context` with `concerns:["agents"]` and with the task «AI agent
+  worker with a kill-switch»: AGN ×4 (+ OPS-015 on the heuristic case) at all four `detail`
+  levels; **direct controls now carry C1 identity**
+  (`CTRL-identity-identidade-autenticacao-e-sessoes…`) for the AUT scope instead of the
+  governance control — matching the curated layer v3 re-targets (TC-F-10).
+- **Observed deviation (same as stable, informational for G-b):**
+  `get_threat_landscape(L2, auth)` scope **159 → 77** (C1 publishes different `chapter_ids`
+  than the retired IDN control); logging 15, no-concern **233** unchanged.
+- **Payload re-baseline (documented; ceilings PENDING operator ratification):** the link
+  layer v3 changes the fixtures' direct controls. f1: full 19,092 · standard 6,409/6,500 ·
+  minimal 5,763/5,800 (section `activated_scope` re-measured 3,243 → budget 3,290) ·
+  ultrathin 3,775/3,870 — totals within gates. f2: full 24,890 · standard **8,746**
+  (provisional ceiling 8,800; EPIC gate 8,500 and the ratified 8,700 kept on record) ·
+  minimal **8,019** (provisional ceiling 8,100; s3b hard 8,000 kept) · ultrathin 4,671/4,840.
+  Citable ids unchanged (112 / 151). Golden snapshots regenerated (control re-targets only;
+  `manual_commit_sha` unchanged). `npm run check` ✅ · **708/708** ✅.
 
 ## 0.20.0-beta.4 — 2026-08-30
 
