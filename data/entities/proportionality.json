@@ -1,6 +1,6 @@
 {
   "agent": "lifecycle_extractor",
-  "generated_at": "2026-08-29T16:31:43Z",
+  "generated_at": "2026-08-29T23:21:12Z",
   "items": [
     {
       "L1": "Obrigatório - Classificação simplificada, apenas eixos principais",
@@ -3083,10 +3083,10 @@
       "warnings": []
     }
   ],
-  "run_id": "20260829T163143Z",
+  "run_id": "20260829T232112Z",
   "source": {
     "branch": "HEAD",
-    "commit_sha": "d5c2586ae2cd12ab2e31b65febb2e85ed20e1bce",
+    "commit_sha": "8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac",
     "corpus_root": "manuals_src/docs/sbd-toe",
     "repo_url": "git@github.com:SbD-ToE/sbd-toe-manual.git"
   },

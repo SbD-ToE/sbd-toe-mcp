@@ -15,3 +15,5 @@
 **Handoffs no hub:** release (`2026-08-29-pontifex-release-0-10-2-formal-kg-v1.6.0.md`) · Manual content-lag (`2026-08-29-pontifex-to-manual-minisite-content-lag-lifted.md`).
 
 **Follow-ups (fora de Pontifex):** Manual — refresh do mini-site `020-assets/mcp/` (0.10.2 / v1.7.0 / AI Act indexado) e 25 IDs `REQ-NNN` ilustrativos → `EX-`; Codex — revisão das 49+5 arestas com drift; exclusão de prefixos `CWE-`/`SHA-` na captura de menções; Dependabot #40 (typescript 6), #38 (`yaml`), actions #29/#37/#44; linha beta `0.20.0-beta.3` re-pin `v1.6.0`.
+
+**Correcção (2026-08-30, handover Manual v1.7.1, verificado ao vivo em 0.10.2):** o dist-tag `beta` era **`0.20.0-beta.3`** (não beta.2) à data; o overlay AI Act tem **661** mappings (não 651); o servidor expõe **3** prompts (`setup_sbd_toe_agent`, `ask_sbd_toe_manual`, `prepare_grounded_codegen`).

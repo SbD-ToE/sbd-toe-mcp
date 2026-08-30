@@ -51,6 +51,14 @@ describe("resolve_entities — REQ-AGN-001…004 and OPS-015 resolve from the pi
     expect(handleResolveEntities({ record_type: "requirement", filters: { requirement_id: "REQ-AUTH-001" } }).total).toBe(0);
   });
 
+  it("EX-REQ-010 (Manual v1.7.1 illustrative id) never resolves — not to REQ-010, no gap, no note", () => {
+    const r = handleResolveEntities({ record_type: "requirement", filters: { requirement_id: "EX-REQ-010" } });
+    expect(r.total).toBe(0);
+    expect(r.meta.declared_gap).toBeUndefined();
+    expect(r.meta.citation_note).toBeUndefined();
+    expect(JSON.stringify(r)).not.toContain('"REQ-010"');
+  });
+
   it("a legacy REQ-<CAT>-NNN citation is no longer cited by the corpus → no declared gap (0 legacy citations in v1.7.0)", () => {
     const r = handleResolveEntities({ record_type: "requirement", filters: { requirement_id: "REQ-AUT-003" } });
     expect(r.total).toBe(0);

@@ -27,6 +27,9 @@ AI tools were used to support the development of `sbd-toe-mcp-poc`, including:
   repository documentation
 - Code review, refactoring suggestions, and test scaffolding
 - Build, release, and CI pipeline scripting
+- The acceptance regression runner (`npm run eval:acceptance`, from 0.10.3): the
+  scenario verdicts are computed by deterministic script against the live server —
+  no language model takes part in producing a verdict
 
 All AI outputs were reviewed, verified, and edited by the author before being
 committed. Where AI suggestions were accepted, they passed human review against
@@ -137,4 +140,4 @@ This disclosure will be updated if:
 - The runtime behaviour or licensing of the released software materially changes
 - Venue-specific disclosure requirements differ from this baseline
 
-Last updated: 2026-08-29
+Last updated: 2026-08-30
