@@ -19,6 +19,7 @@ const ids = (arr, k) => (arr ?? []).map((x) => x?.[k]).filter(Boolean);
 const has = (arr, v) => (arr ?? []).includes(v);
 const bundlesOf = (review, file) => (review.pathMapping ?? []).filter((m) => (m.matchedFiles ?? []).includes(file)).flatMap((m) => m.bundles ?? []);
 const stable = (v) => JSON.stringify(v);
+const ctxLinksTargeting = (ctx, controlId) => ctx ? [...ctx.knownIds].filter((rid) => /^(?:REQ-[A-Z]{3}-|[A-Z]{3}-)\d{3}$/.test(rid)).reduce((n, rid) => n + (ctx.links.targetsOf(rid).includes(controlId) ? 1 : 0), 0) : 0;
 
 export const scenarios = [
   // ───────────────────────── Axis A — Tool coverage ─────────────────────────
@@ -229,16 +230,37 @@ export const scenarios = [
       if (!d.coverage) return fail("no coverage envelope (G1)"); const act = d.data?.activated ?? []; if (act.length === 0) return fail("nothing activated"); if (act.length > 3) return fail("page > limit");
       const u = await c.tool("map_sbd_toe_regulatory_activation", { framework: "PCI" }); const honest = !u.ok || (u.data?.data?.activated?.length ?? 0) === 0;
       return ok(`DORA: ${act.length}/${d.coverage.chapters ?? d.coverage.total} chapters, mappings ${d.coverage.mappings}, obligations ${d.coverage.obligations}; unknown framework → ${honest ? "honest empty/error" : "activated?!"}`); } },
-  { id: "TC-F-08", axis: "F", title: "curated requirement→control layer v2 (KG v1.6.1): 265 links, 0 unlinked, Archon re-targets served", tool: "resolve_entities",
-    run: async (c) => { const links = await c.tool("resolve_entities", { record_type: "requirement_control_link", limit: 1 }); if (!links.ok) return fail(links.error);
+  { id: "TC-F-08", axis: "F", title: "curated requirement→control layer v3 (KG dev-build v2.2): 281 links, 0 unlinked, curated 15, catalogue rules tolerated", tool: "resolve_entities",
+    run: async (c, ctx) => { const links = await c.tool("resolve_entities", { record_type: "requirement_control_link", limit: 1 }); if (!links.ok) return fail(links.error);
       const gaps = []; for (const L of ["L1", "L2", "L3"]) { const r = await c.tool("consult_security_requirements", { risk_level: L }); gaps.push(r.data?.coverage_gaps?.requirements_without_control_link?.count); }
-      const direct = async (id) => { const r = await c.tool("consult_security_requirements", { risk_level: "L3", concerns: ["auth"] }); const req = (r.data.requirements ?? []).some((x) => x.requirement_id === id); const l = await c.tool("resolve_entities", { record_type: "requirement_control_link", filters: { source_id: id } }); return { req, targets: (l.data?.entities ?? []).map((e) => e.target_id) }; };
-      const a7 = await direct("AUT-007"), a8 = await direct("AUT-008"), a10 = await direct("AUT-010");
+      if (links.data.total !== 281) return fail(`links total ${links.data.total} (expected 281 = 118 catalogue-rule + 148 recalculated + 15 curated)`, "graph");
+      if (ctx.links.total !== 281) return fail(`published file carries ${ctx.links.total} links`, "graph");
+      if (gaps.some((g) => g !== 0)) return fail(`coverage_gaps ${gaps}`);
+      const cur = ctx.links.curationByCurator; if ((cur["archon-2026-08-29"] ?? 0) !== 12 || (cur["archon-2026-08-30"] ?? 0) !== 3) return fail(`curated on surface ${JSON.stringify(cur)} (expected 12 + 3)`, "graph");
+      const unknownJust = ctx.links.justifications.filter((j) => !["bundle_grounding", "catalogue_rule", "catalogue_rule_secondary", "chapter_grounding", "curated_semantic_review", "domain_mapping", "lexical_alignment", "requirement_domain_hint", "single_control_bundle", "domain_owner_fallback", "foundational_domain_unique", "preferred_domain_unique", "preferred_domain_strong", "preferred_domain_disambiguated", "baseline_domain_lexical"].includes(j));
+      if (unknownJust.length) return part(`justification values outside the known vocabulary (tolerated, flag for the governance doc): ${unknownJust.join(",")}`, "graph");
       const idn = (t) => t.some((x) => /^CTRL-identity-/.test(x)), mon = (t) => t.some((x) => /^CTRL-monitoring-/.test(x));
-      if (links.data.total !== 265) return fail(`links total ${links.data.total} (expected 265)`, "graph"); if (gaps.some((g) => g !== 0)) return fail(`coverage_gaps ${gaps}`);
-      if (!idn(a7.targets) || !idn(a8.targets)) return fail(`AUT-007/008 → ${a7.targets},${a8.targets} (expected identity)`, "graph"); if (!mon(a10.targets)) return fail(`AUT-010 → ${a10.targets} (expected monitoring)`, "graph");
-      const cur = await c.tool("resolve_entities", { record_type: "requirement_control_link", filters: { "curation.curator": "archon-2026-08-29" } });
-      return ok(`265 links, gaps L1/L2/L3 = ${gaps.join("/")}, AUT-007/008 → identity, AUT-010 → monitoring; curated links (curation.curator=archon-2026-08-29): ${cur.data?.total ?? "n/a"} — additive key tolerated`); } },
+      const a7 = ctx.links.targetsOf("AUT-007"), a8 = ctx.links.targetsOf("AUT-008"), a10 = ctx.links.targetsOf("AUT-010");
+      if (!idn(a7) || !idn(a8)) return fail(`AUT-007/008 → ${a7},${a8} (expected ^CTRL-identity-, now C1)`, "graph"); if (!mon(a10)) return fail(`AUT-010 → ${a10} (expected monitoring)`, "graph");
+      const mon1 = (id) => ctx.links.targetsOf(id).some((x) => /^CTRL-monitoring-/.test(x));
+      if (!idn(ctx.links.targetsOf("AUT-006"))) return fail(`AUT-006 → ${ctx.links.targetsOf("AUT-006")}`, "graph");
+      if (!mon1("INT-007") || !mon1("LOG-001")) return fail(`INT-007/LOG-001 not → monitoring`, "graph");
+      return ok(`281 links (file+surface), gaps L1/L2/L3 = ${gaps.join("/")}, curated 12+3 on surface, justifications incl. catalogue_rule/_secondary tolerated; AUT-006/007/008 → identity (C1), AUT-010 → monitoring, INT-007 + LOG → monitoring`); } },
+  { id: "TC-F-09", axis: "F", title: "data_protection domain present (ontology v2.2): control served with links", tool: "resolve_entities",
+    run: async (c, ctx) => { const r = await c.tool("resolve_entities", { record_type: "control", filters: { domain: "data_protection" } }); if (!r.ok) return fail(r.error);
+      const ids = (r.data.entities ?? []).map((e) => e.control_id); if (r.data.total < 1) return fail("no control in domain data_protection", "graph");
+      const linkCount = ids.reduce((n, id) => n + ctxLinksTargeting(ctx, id), 0);
+      const consult = await c.tool("consult_security_requirements", { risk_level: "L3" }); const active = (consult.data.controls ?? []).filter((x) => x.domain === "data_protection");
+      return linkCount >= 1 && active.length >= 1 ? ok(`${r.data.total} data_protection control(s) (${ids.join(",")}), ${linkCount} requirement links, active in consult L3 (${active.length}, _confidence ${active.map((x) => x._confidence).join(",")})`) : fail(`controls ${ids.join(",")} with ${linkCount} links; active in consult: ${active.length}`, "graph"); } },
+  { id: "TC-F-10", axis: "F", title: "AUT requirements resolve to C1 (identity) — never CAP (classificação) or DEV (desenvolvimento)", tool: "resolve_entities",
+    run: async (c, ctx) => { const auts = [...ctx.knownIds].filter((id) => /^AUT-\d{3}$/.test(id)); if (auts.length === 0) return fail("no AUT requirements in bundle");
+      const bad = [], noIdn = [];
+      for (const id of auts) { const t = ctx.links.targetsOf(id); if (t.length === 0) return fail(`${id} unlinked`, "graph");
+        if (t.some((x) => /governance-classificacao|code-integrity-desenvolvimento/.test(x))) bad.push(`${id}→${t.join("|")}`);
+        if (!t.some((x) => /^CTRL-(identity|monitoring)-/.test(x))) noIdn.push(`${id}→${t.join("|")}`); }
+      if (bad.length) return fail(`AUT linked to CAP/DEV: ${bad.join("; ")}`, "graph"); if (noIdn.length) return fail(`AUT outside identity/monitoring: ${noIdn.join("; ")}`, "graph");
+      const c1 = auts.filter((id) => ctx.links.targetsOf(id).some((x) => /identidade-autenticacao-e-sessoes/.test(x))).length;
+      return ok(`${auts.length} AUT requirements all linked; ${c1} → C1 (identity-identidade-autenticacao-e-sessoes), AUT-010 → monitoring; none to CAP/DEV`); } },
   { id: "TC-F-07", axis: "F", title: "G1 gate — every set-returning tool exposes offset/limit", tool: "tools/list",
     run: async (c) => { const setTools = ["plan_sbd_toe_repo_governance", "get_sbd_toe_chapter_implementation_checklist", "get_sbd_toe_operating_model", "get_sbd_toe_verification_matrix", "assess_sbd_toe_implementation", "plan_sbd_toe_rollout", "map_sbd_toe_regulatory_activation", "get_threat_landscape", "consult_security_requirements", "get_guide_by_role", "resolve_entities", "query_sbd_toe_entities"];
       const missing = setTools.filter((n) => { const t = c.tools.find((x) => x.name === n); const p = Object.keys(t?.inputSchema?.properties ?? {}); return !(p.includes("offset") && p.includes("limit")) && !(p.includes("limit") || p.includes("topK")); });

@@ -1,6 +1,6 @@
 {
   "agent": "lifecycle_extractor",
-  "generated_at": "2026-08-29T23:21:12Z",
+  "generated_at": "2026-08-30T08:42:03Z",
   "items": [
     {
       "confidence": 0.91,
@@ -5217,7 +5217,7 @@
       "warnings": []
     }
   ],
-  "run_id": "20260829T232112Z",
+  "run_id": "20260830T084203Z",
   "source": {
     "branch": "HEAD",
     "commit_sha": "8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac",

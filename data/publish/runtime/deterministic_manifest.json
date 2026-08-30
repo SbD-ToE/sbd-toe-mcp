@@ -13,7 +13,7 @@
       "source_artifact": "data/entities/canonical_requirements_s7.json"
     },
     {
-      "count": 16,
+      "count": 20,
       "entity_type": "Control",
       "file": "controls.json",
       "name": "controls",
@@ -118,7 +118,7 @@
       "source_artifact": "data/entities/artifact_requirements.json"
     },
     {
-      "count": 265,
+      "count": 281,
       "entity_type": "RequirementControlLink",
       "file": "requirement_control_links.json",
       "name": "requirement_control_links",

@@ -35,7 +35,19 @@ const pkg = JSON.parse(readFileSync(path.join(repoRoot, "package.json"), "utf8")
 
 const client = await startClient();
 const chapters = new Set(((await client.tool("list_sbd_toe_chapters", {})).data?.chapters ?? []).map((c) => c.id));
-const ctx = { knownIds, chapters };
+const linkRecords = readJson("data/publish/runtime/requirement_control_links.json");
+const curationByCurator = {};
+for (const l of linkRecords) if (l.curation?.curator) curationByCurator[l.curation.curator] = (curationByCurator[l.curation.curator] ?? 0) + 1;
+const ctx = {
+  knownIds,
+  chapters,
+  links: {
+    total: linkRecords.length,
+    curationByCurator,
+    justifications: [...new Set(linkRecords.flatMap((l) => String(l.justification ?? "").split(",").map((x) => x.trim()).filter(Boolean)))].sort(),
+    targetsOf: (id) => linkRecords.filter((l) => l.source_id === id).map((l) => l.target_id),
+  },
+};
 
 const results = [];
 for (const sc of scenarios) {
