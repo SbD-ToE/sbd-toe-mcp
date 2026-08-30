@@ -68,14 +68,15 @@ Prerelease tags issued on `0.20-beta` (annotated; immutable like every pushed ta
 | v0.20.0-beta.1 | cf4f011 | 2026-06-29 | KG v1.5.0 (`feaa0155…`) | `beta` (superseded) |
 | v0.20.0-beta.2 | 0cc9e14 | 2026-07-05 | KG v1.5.0 (`feaa0155…`) | `beta` (superseded) |
 | v0.20.0-beta.3 | 5b34638 (`5b346387cdfd48146d64422c0e7a217d9b3f320f`; annotated tag object `48cdd14d`) | 2026-08-29 | formal KG `v1.6.0` (`baf5913b…`, contract v1.11, Manual v1.7.0) — same pin and content as stable v0.10.2 | `beta` (superseded) |
-| v0.20.0-beta.4 | *(annotated tag on the commit that introduces this row; recorded in the close commit)* | 2026-08-30 | formal KG `v1.6.1` (`df6920cb…`, contract v1.12, Manual v1.7.1) — same pin and content as stable v0.10.3 | `beta` (`latest` = 0.10.3 untouched) |
+| v0.20.0-beta.4 | d89b30d (`d89b30dfacbc89c023ec53c1b5b882b77a9f86a9`; annotated tag object `6291f50d`) | 2026-08-30 | formal KG `v1.6.1` (`df6920cb…`, contract v1.12, Manual v1.7.1) — same pin and content as stable v0.10.3 | `beta` (`latest` = 0.10.3 untouched) |
 
 ## Current working state
 
 **Current branch:** `0.20-beta` — this copy of the registry lives on the beta branch; the
 stable-line rows mirror master (`06f8bba`, v0.10.3) and are maintained there.
-**Beta line:** most recent prerelease v0.20.0-beta.4 (2026-08-30; annotated tag on the commit introducing
-this row, recorded in the close commit), npm dist-tag `beta`; serves the same formal KG `v1.6.1` pin as
+**Beta line:** most recent prerelease v0.20.0-beta.4 → `d89b30dfacbc89c023ec53c1b5b882b77a9f86a9` (2026-08-30;
+`release.yml` run 33282763025 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.4` = `beta`, gitHead same
+commit; GitHub pre-release `v0.20.0-beta.4`; `latest` = 0.10.3 untouched), npm dist-tag `beta`; serves the same formal KG `v1.6.1` pin as
 v0.10.3 (see the beta table above). Prior: v0.20.0-beta.3 → `5b346387` (2026-08-29, KG v1.6.0). Not a
 published/frozen state.
 **Most recent published state:** icsme-2026-tool-demonstration / v0.9.0 (2026-05-21)
@@ -148,3 +149,4 @@ prohibits tag deletion without explicit authorisation):
 | 2026-08-29 | v0.20.0-beta.3 tag commit recorded (`5b346387`); npm `beta` publish + GitHub pre-release confirmed (run 33266147054). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-30 | v0.10.3 registered (protected tag list, current working state, upstream pins: KG v1.6.1, Manual v1.7.1). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-30 | Beta-line copy: stable rows synced from master (v0.10.3, KG v1.6.1); v0.20.0-beta.4 registered in the prerelease table (tag on the commit introducing this row). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-30 | v0.20.0-beta.4 tag commit recorded (`d89b30df`, fix-forward over `272d8c9`); npm `beta` publish + GitHub pre-release confirmed (run 33282763025). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
