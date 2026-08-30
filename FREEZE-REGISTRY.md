@@ -144,10 +144,7 @@ prohibits tag deletion without explicit authorisation):
 | 2026-06-25 | Initial skeleton created (file was absent). Populated from git tags + CITATION.cff; uncertain mappings marked TODO. | Claude (AI agent), under Pedro Farinha |
 | 2026-08-29 | v0.10.2 registered (protected tag list, current working state, upstream pins with exact tags/hashes: KG v1.6.0, Manual v1.7.0, ontology v1.1). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-29 | v0.10.2 tag commit recorded (`31aa22af`, squash of #47); npm publish + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
-<<<<<<< ours
 | 2026-08-29 | Beta-line copy (branch `0.20-beta`): prerelease-tag table (beta.1/beta.2/beta.3), beta current working state, `v0.2.5` local/origin divergence recorded (canonical = origin; nothing re-pointed). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-29 | v0.20.0-beta.3 tag commit recorded (`5b346387`); npm `beta` publish + GitHub pre-release confirmed (run 33266147054). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
-| 2026-08-30 | Beta-line copy: stable rows synced from master (v0.10.3, KG v1.6.1); v0.20.0-beta.4 registered in the prerelease table (tag on the commit introducing this row). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
-=======
 | 2026-08-30 | v0.10.3 registered (protected tag list, current working state, upstream pins: KG v1.6.1, Manual v1.7.1). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
->>>>>>> theirs
+| 2026-08-30 | Beta-line copy: stable rows synced from master (v0.10.3, KG v1.6.1); v0.20.0-beta.4 registered in the prerelease table (tag on the commit introducing this row). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
