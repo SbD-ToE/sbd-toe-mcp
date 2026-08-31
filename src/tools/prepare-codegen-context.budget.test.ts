@@ -238,7 +238,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       // (ratificação 2026-08-31, 0.20.0-beta.5): OPS-015 (pin v1.7.0 dev-build,
       // +223) + camada de ligações curada v3/v1.7.0 formal (controlos directos da
       // fixture com ids/descriptions mais longos, +129). Medido 8.746 (v1.7.0 formal).
-      total: 9200 // 🔴 gate hard da ESTÁVEL, re-baseline v1.8.0 FIL 2026-08-31 (medido 9.102; antes 8.900/medido 8.833 pré-FIL); a beta re-ratifica ao absorver
+      total: 9200 // 🔴 gate hard RATIFICADO E HARMONIZADO entre linhas (3 sims do lead, 2026-08-31; medido 9.102 — a fixture de upload ganha o catálogo FIL de facto)
     }
   },
   // minimal: ⟳ ADENDA s3b (2026-07-05, decisão do operador — EPIC §s3b): sem
@@ -280,7 +280,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       // Hard s3b original: 8.000 (medido 7.639 + ~5%). Re-fixado em **8.100** pelo
       // programme lead (ratificação 2026-08-31): camada curada v3/v1.7.0 formal muda
       // os controlos directos da fixture. Medido 8.019 (v1.7.0 formal).
-      total: 8450 // 🔴 hard da ESTÁVEL, re-baseline v1.8.0 FIL 2026-08-31 (medido 8.375; antes 8.200/8.107 pré-FIL)
+      total: 8450 // 🔴 gate hard RATIFICADO E HARMONIZADO entre linhas (3 sims do lead, 2026-08-31; medido 8.375)
     }
   },
   // ultrathin: s3c (ADENDA 2026-07-05 do operador, REATIVADO no mesmo dia —
@@ -458,8 +458,8 @@ function idsAtPath(payload: unknown, path: string): string[] {
 /**
  * Known, REPORTED deviations from a hard gate — never a silent raise of the gate
  * itself. Empty since 2026-08-31: the programme lead ratified the fixture-2
- * ceilings (standard 8,800 / minimal 8,100) into BUDGETS directly. The mechanism
- * stays for the next data-driven drift.
+ * ceilings — now harmonized across lines at standard 9,200 / minimal 8,450
+ * ("3 sims") — into BUDGETS directly. The mechanism stays for the next drift.
  */
 const KNOWN_TOTAL_DEVIATIONS: Readonly<
   Record<string, { measured: number; tolerated: number; since: string; reason: string }>

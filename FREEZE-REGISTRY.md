@@ -54,9 +54,12 @@ TODO — confirm with programme lead.
 - v0.10.4 → `2937236d7521d72be140dbc4d9111dae211eb14b` (2026-08-30; formal KG release v1.7.0
   pinned — see CHANGELOG; npm `@shiftleftpt/sbd-toe-mcp@0.10.4` = `latest`, gitHead same commit;
   GitHub Release `v0.10.4`)
-- v0.11.0 *(MP1 selection operation — see CHANGELOG; annotated tag to be created only after
-  the 0.20 beta absorbs P2 (0.20.0-beta.6) and Pontifex verifies both lines, per the
-  G-mp1a plan; no npm publish before that)*
+- v0.11.0 *(SUPERSEDED 2026-08-31 by v0.12.0 before tagging — the tag was never created;
+  the 0.11.0 changelog entry ships inside 0.12.0)*
+- v0.12.0 *(formal lote — KG v1.9.0 pinned (sha256 `11153c85…`), FIL/PRI/INT-009..012
+  served, contract v1.15, ceilings ratified 9.200/8.450; annotated tag created on the
+  squash commit of the PR that introduces this row, after its merge; npm `latest` via
+  release.yml on tag push — authorised by the programme lead's "3 sims", 2026-08-31)*
 
 ## Current working state
 
@@ -69,11 +72,9 @@ v1.14), ontology `sbdtoe-ontology-v2.2` (`2be86e8b`), Manual v1.7.1
 (`8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac`). Tag `v0.10.4` = squash commit of the PR
 introducing this row (recorded here once created). Prior: v0.10.3 (2026-08-30,
 `06f8bbaa`, KG v1.6.1), v0.10.2 (2026-08-29, `31aa22af`, KG v1.6.0).
-**Expected next freeze event:** tag `v0.11.0` (after 0.20.0-beta.6 absorbs the MP1
-cycle and both lines verify); then the formal KG batch v1.9.0 → MCP 0.12.0 (lead's
-call). Note: since 2026-08-31 master SERVES the dev-build `kg-v1-manual-v1.8.0-aligned-2026-08-31`
-(sha256-pinned in `consumed-bundle.json`); the last published npm release (0.10.4)
-still serves formal v1.7.0.
+**Expected next freeze event:** annotated tag `v0.12.0` on the squash commit of the
+formal-lote PR (npm `latest` via release.yml). The `v0.11.0` gate is dissolved —
+superseded by 0.12.0. Next beta absorbs the MP1 cycle + v1.8.0 wave in its own session.
 
 ## Cross-references
 
@@ -126,3 +127,4 @@ prohibits tag deletion without explicit authorisation):
 | 2026-08-31 | v0.10.4 tag commit recorded (`2937236d`, squash of #54); npm publish + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-31 | v0.11.0 registered as pending (protected-tag list; tag gated on 0.20.0-beta.6 + two-line verification). Served bundle pins unchanged (KG v1.7.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-31 | Dev-build `kg-v1-manual-v1.8.0-aligned-2026-08-31` pinned on the serving line (sha256 `ad0fc96c…`, contract v1.15, 273 req/29 cat — FIL/PRI). No frozen state touched; formal KG v1.9.0 em lote. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-31 | Re-pin `source: release` KG v1.9.0 (sha256 `11153c85…` verified; zero-delta over the dev-build; mcp-stable = `93fe9fb1`). v0.12.0 registered (protected-tag list); v0.11.0 marked superseded (tag never created). Ceilings ratified+harmonized 9.200/8.450 ("3 sims"). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |

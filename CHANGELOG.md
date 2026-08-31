@@ -3,18 +3,38 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-30
 purpose: documentation
-reasoning: v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; named rules R1 principal-não-humano + R2 narrowing SES; D1 gate um-sinal-uma-superfície; D3 activators; D4; consult mode index; v2 token diet ported with stable-measured ceilings; R3 teaching layer: guide/skills/affordances ensinam select + duas bandas); Axis H 1/3/6 → 10/10; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
+reasoning: v0.12.0 — formal lote: KG v1.9.0 pinned (FIL/PRI/INT-009..012 served, contract v1.15), selection v1.8.0-aware, ceilings ratified+harmonized (9.200/8.450), npm latest; v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; named rules R1 principal-não-humano + R2 narrowing SES; D1 gate um-sinal-uma-superfície; D3 activators; D4; consult mode index; v2 token diet ported with stable-measured ceilings; R3 teaching layer: guide/skills/affordances ensinam select + duas bandas); Axis H 1/3/6 → 10/10; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
 review_status: pending-human-review
 ---
 
 # Changelog
 
-## Unreleased — KG dev-build v1.8.0 pinned: FIL/PRI served + declared signals (2026-08-31)
+## 0.12.0 — 2026-08-31
+
+**Minor** — the served catalogue gains **FIL/PRI/INT-009..012** and the selection
+engine is v1.8.0-aware. First release published to npm since 0.10.4: it ships the
+whole MP1 cycle (the 0.11.0 entry below — its planned `v0.11.0` tag is SUPERSEDED by
+this release and will not be created) plus the v1.8.0 wave and the formal pin.
+
+### Changed — formal KG pin (lote v1.9.0; lead's "3 sims" 2026-08-31)
+
+- Served bundle re-pinned `source: release` **KG v1.9.0** (asset sha256
+  `11153c85d8cb16e022f2be2d999ba131d437275becbbe6dd6b5556915b71f069`, verified;
+  `mcp-stable` = `93fe9fb1` = `v1.9.0^{commit}`): the formal, zero-delta
+  formalization of the dev-build `kg-v1-manual-v1.8.0-aligned-2026-08-31` served
+  since #61 — graph content byte-identical, delta only in `run_manifest.release`.
+  Contract **v1.15**, Manual v1.8.0, ontology v2.3.
+- Payload ceilings **RATIFIED and HARMONIZED across lines** (lead, "3 sims"):
+  fixture 2 `standard` ≤ **9.200**, `minimal` ≤ **8.450** — gates fixed at exactly
+  these values; no declared deviations remain on this line.
+- Formal-pin re-run: suite 689/689; gate E PASS; golden cases **10/10 with zero
+  divergence** vs the 2026-08-31 v1.8.0 run (case-by-case identical).
+
+### (dev-build phase, 2026-08-31 — absorbed by this release)
 
 Serving line pinned to the dev-build **`kg-v1-manual-v1.8.0-aligned-2026-08-31`**
 (sha256 `ad0fc96c…f4df`, contract **v1.15**, Manual v1.8.0): **273 requirements / 29
-categories** (+17: FIL 8, PRI 5, INT 4), 305 links, EP 273/273. No formal release —
-the MCP release (0.12.0?) ships with the next formal batch (KG v1.9.0), lead's call.
+categories** (+17: FIL 8, PRI 5, INT 4), 305 links, EP 273/273.
 
 ### Added — selection signals for the new catalogues (declared, Manual-anchored)
 
@@ -58,7 +78,7 @@ the MCP release (0.12.0?) ships with the next formal batch (KG v1.9.0), lead's c
   0 FAIL · 23 SKIP — gate E PASS**; Axis H **10/0/0**; 22/22 tools; TC-F-14/15 added
   (capability ⇒ scenario).
 
-## 0.11.0 — 2026-08-31 (prepared — tag v0.11.0 only after the beta line absorbs, per G-mp1a)
+## 0.11.0 — 2026-08-31 (never tagged — superseded by 0.12.0, which ships all of it)
 
 **Minor** — the MP1 selection operation lands in the serving layer (new tool), closing the
 four Axis-H defects (ciclo MP1, P2; gate G-mp1a). Served bundle unchanged: formal KG
