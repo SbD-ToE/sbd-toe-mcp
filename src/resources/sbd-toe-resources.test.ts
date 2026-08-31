@@ -7,12 +7,14 @@ import {
 } from "./sbd-toe-resources.js";
 
 describe("buildChapterApplicabilityJson", () => {
-  it("L1 returns object with riskLevel, active and excluded arrays", () => {
+  it("L1 returns the graduated shape (riskLevel, semantics, anchor, 15 chapters)", () => {
     const result = buildChapterApplicabilityJson("L1") as Record<string, unknown>;
     expect(result["riskLevel"]).toBe("L1");
-    expect(Array.isArray(result["active"])).toBe(true);
-    expect(Array.isArray(result["excluded"])).toBe(true);
-    expect((result["active"] as string[]).length).toBeGreaterThan(0);
+    expect(String(result["semantics"])).toContain("graduated");
+    expect((result["canonical_anchor"] as { document_id: string }).document_id).toContain("matriz-controlos-por-risco");
+    expect((result["chapters"] as unknown[]).length).toBe(15);
+    expect(result["active"]).toBeUndefined();
+    expect(result["excluded"]).toBeUndefined();
   });
 
   it("L1 does not include conditional field", () => {
@@ -20,20 +22,18 @@ describe("buildChapterApplicabilityJson", () => {
     expect(result["conditional"]).toBeUndefined();
   });
 
-  it("L2 returns object with riskLevel and arrays", () => {
-    const result = buildChapterApplicabilityJson("L2") as Record<string, unknown>;
-    expect(result["riskLevel"]).toBe("L2");
-    expect(Array.isArray(result["active"])).toBe(true);
-    expect(Array.isArray(result["excluded"])).toBe(true);
-    expect((result["active"] as string[]).length).toBeGreaterThan(0);
+  it("L2 returns the graduated shape with derived demand on every chapter", () => {
+    const result = buildChapterApplicabilityJson("L2") as { riskLevel: string; chapters: Array<{ demand: Record<string, number>; dominant: string }> };
+    expect(result.riskLevel).toBe("L2");
+    expect(result.chapters.every((c) => c.demand && c.dominant)).toBe(true);
   });
 
-  it("L3 returns object with all chapters active and excluded empty", () => {
-    const result = buildChapterApplicabilityJson("L3") as Record<string, unknown>;
-    expect(result["riskLevel"]).toBe("L3");
-    expect((result["excluded"] as string[]).length).toBe(0);
-    // All 15 chapters (Cap. 00–14) should be active
-    expect((result["active"] as string[]).length).toBe(15);
+  it("L3 keeps every chapter present and total mandatory demand ≥ L1 (scaling)", () => {
+    const l3 = buildChapterApplicabilityJson("L3") as { chapters: Array<{ demand: { obrigatorio: number } }> };
+    const l1 = buildChapterApplicabilityJson("L1") as { chapters: Array<{ demand: { obrigatorio: number } }> };
+    expect(l3.chapters.length).toBe(15);
+    const ob = (x: { chapters: Array<{ demand: { obrigatorio: number } }> }) => x.chapters.reduce((n, c) => n + c.demand.obrigatorio, 0);
+    expect(ob(l3)).toBeGreaterThan(ob(l1));
   });
 
   it("invalid riskLevel X throws Error mentioning X", () => {
@@ -41,32 +41,35 @@ describe("buildChapterApplicabilityJson", () => {
     expect(() => buildChapterApplicabilityJson("X")).toThrow("X");
   });
 
-  it("L1 active list contains chapters with minLevel L1", () => {
-    const result = buildChapterApplicabilityJson("L1") as { active: string[] };
-    expect(result.active).toContain("Cap. 00");
-    expect(result.active).toContain("Cap. 01");
-    expect(result.active).toContain("Cap. 02");
-    expect(result.active).toContain("Cap. 05");
-    expect(result.active).toContain("Cap. 07");
-    expect(result.active).toContain("Cap. 10");
+  it("L1 presence is unconditional — 00/01/02/05/07/10 all present", () => {
+    const result = buildChapterApplicabilityJson("L1") as { chapters: Array<{ chapter_id: string }> };
+    const ids = result.chapters.map((c) => c.chapter_id);
+    for (const id of ["00-fundamentos", "01-classificacao-aplicacoes", "02-requisitos-seguranca", "05-dependencias-sbom-sca", "07-cicd-seguro", "10-testes-seguranca"]) {
+      expect(ids, id).toContain(id);
+    }
   });
 
-  it("L1 excludes Cap. 06, Cap. 11, Cap. 13 (minLevel L2/L3)", () => {
-    const result = buildChapterApplicabilityJson("L1") as { excluded: string[] };
-    expect(result.excluded).toContain("Cap. 06");
-    expect(result.excluded).toContain("Cap. 11");
-    expect(result.excluded).toContain("Cap. 13");
+  it("L1 NEVER excludes 06/11/13 — graduated demand instead (Author decision 2026-09-01)", () => {
+    const result = buildChapterApplicabilityJson("L1") as { chapters: Array<{ chapter_id: string; demand: { obrigatorio: number }; dominant: string }> };
+    const by = new Map(result.chapters.map((c) => [c.chapter_id, c]));
+    expect(by.get("06-desenvolvimento-seguro")?.demand.obrigatorio ?? 0).toBeGreaterThan(0); // cap06 dev L1 tem obrigatórios autorados
+    expect(by.get("11-deploy-seguro")).toBeDefined();
+    expect(by.get("13-formacao-onboarding")).toBeDefined();
+    expect(by.get("13-formacao-onboarding")?.dominant).not.toBe("obrigatorio");
   });
 
-  it("L2 active list includes Cap. 06 and Cap. 11 (unlocked at L2)", () => {
-    const result = buildChapterApplicabilityJson("L2") as { active: string[] };
-    expect(result.active).toContain("Cap. 06");
-    expect(result.active).toContain("Cap. 11");
+  it("L2 carries chapter-06/11 with authored demand (nothing 'unlocks' — it scales)", () => {
+    const result = buildChapterApplicabilityJson("L2") as { chapters: Array<{ chapter_id: string; demand: { obrigatorio: number } }> };
+    const by = new Map(result.chapters.map((c) => [c.chapter_id, c]));
+    expect(by.get("06-desenvolvimento-seguro")?.demand.obrigatorio ?? 0).toBeGreaterThan(0);
+    expect(by.get("11-deploy-seguro")).toBeDefined();
   });
 
-  it("L2 still excludes Cap. 13 (minLevel L3)", () => {
-    const result = buildChapterApplicabilityJson("L2") as { excluded: string[] };
-    expect(result.excluded).toContain("Cap. 13");
+  it("L2 keeps chapter-13 present with graduated demand (binary exclusion retired)", () => {
+    const result = buildChapterApplicabilityJson("L2") as { chapters: Array<{ chapter_id: string; user_stories: number }> };
+    const ch13 = result.chapters.find((c) => c.chapter_id === "13-formacao-onboarding");
+    expect(ch13).toBeDefined();
+    expect(ch13!.user_stories).toBeGreaterThan(0);
   });
 });
 
@@ -90,17 +93,18 @@ describe("buildSetupAgentPrompt", () => {
     expect(result).toContain("search_sbd_toe_manual");
   });
 
-  it("L2 includes Cap. 06 and Cap. 11 in active chapters", () => {
+  it("L2 setup prompt teaches graduated semantics and names chapter 06", () => {
     const result = buildSetupAgentPrompt("L2");
     expect(result).toContain("L2");
-    expect(result).toContain("Cap. 06");
-    expect(result).toContain("Cap. 11");
+    expect(result).toContain("GRADUATED");
+    expect(result).toContain("06-desenvolvimento-seguro");
   });
 
-  it("L3 has no excluded chapters", () => {
+  it("setup prompt never excludes a chapter (graduated wording)", () => {
     const result = buildSetupAgentPrompt("L3");
     expect(result).toContain("L3");
-    expect(result).toContain("none");
+    expect(result).toContain("No chapter is excluded");
+    expect(result).not.toContain("Excluded chapters:");
   });
 
   it("invalid L4 riskLevel throws Error mentioning L4", () => {
