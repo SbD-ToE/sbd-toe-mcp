@@ -5,13 +5,14 @@
   "consumer_contract_version": "v1.15",
   "substrate_version": "v2-draft",
   "kg_bundle": {
-    "release_tag": "kg-v1-manual-v1.8.0-aligned-2026-08-31",
-    "release_sha256": "ad0fc96c92fb9831b169c99d729b2deaaf1247928827728b4979ef4fe75f4dbf",
-    "source": "dev-build",
+    "release_tag": "v1.9.0",
+    "release_sha256": "11153c85d8cb16e022f2be2d999ba131d437275becbbe6dd6b5556915b71f069",
+    "source": "release",
+    "release_ref": "SbD-ToE/sbd-toe-knowledge-graph@v1.9.0",
     "surface_built_at": "2026-08-31T18:36:58.456540+00:00",
-    "tag_scheme": "cycle-aligned",
+    "tag_scheme": "semver",
     "synced_at": "2026-08-31",
-    "artefact": "sbd-toe-knowledge-graph-bundle-kg-v1-manual-v1.8.0-aligned-2026-08-31-snapshot.zip"
+    "artefact": "sbd-toe-knowledge-graph-bundle-v1.9.0.zip"
   },
   "inputs": {
     "manual": {

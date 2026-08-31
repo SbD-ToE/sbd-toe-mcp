@@ -3,20 +3,37 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-31
 purpose: documentation
-reasoning: Unreleased (beta line) — KG dev-build v1.8.0 pinned (contract v1.15, FIL/PRI, master 17f158e absorbed): declared selection signals, R-image homonym, SES-008-por-tecnologia, golden re-run 10/10 with 4 gap→covered transitions, fixture-2 ceilings PROPOSED 9,200/8,450 (ratification pending). v0.20.0-beta.6 published 2026-08-31 (tag on 322c38f, npm beta) after the Orchestrator's side-by-side; earlier entries below.
+reasoning: v0.20.0-beta.7 (beta line, npm `beta` dist-tag) — formal batch: serves the formal KG release v1.9.0 (mcp-stable, zero-delta formalisation of the verified v1.8.0 dev-build; contract v1.15, FIL/PRI, 273/29); fixture-2 payload gates RATIFIED and HARMONISED across lines (standard 9,200 / minimal 8,450, programme lead '3 sims' 2026-08-31), KNOWN_TOTAL_DEVIATIONS emptied; golden 10/10, gate E PASS, 727/727. Earlier entries below.
 review_status: pending-human-review
 ---
 
 # Changelog
 
-## Unreleased (beta line) — KG dev-build v1.8.0 pinned: FIL/PRI served + declared signals (2026-08-31; absorbs master `17f158e7`, PR #61)
+## 0.20.0-beta.7 — 2026-08-31
 
-**No tag, no npm** — the formal batch (KG v1.9.0 → stable 0.12.0 / next beta) is the lead's
-call. Serving line pinned to dev-build **`kg-v1-manual-v1.8.0-aligned-2026-08-31`** (sha256
-`ad0fc96c92fb9831b169c99d729b2deaaf1247928827728b4979ef4fe75f4dbf`, verified against the
-sidecar by `sync-bundle`, idempotent; contract **v1.15**; pin identical to master): **273
-requirements / 29 categories** (+FIL 8, +PRI 5, +INT 4), 305 links, EP 273/273. The npm
-`beta` (0.20.0-beta.6) still serves formal v1.7.0.
+**Prerelease (beta line), formal batch.** Published to the npm `beta` dist-tag under the
+programme lead's «3 sims» authorisation (handover manual-wave v1.8.0, «Decisões finais»;
+Codex mirror `2026-08-31-codex-release-v1.9.0-lote`). Not citable.
+
+### Served bundle — formal KG release `v1.9.0` (`mcp-stable`), `source: release`
+
+`consumed-bundle.json`: `release_tag: v1.9.0` (`SbD-ToE/sbd-toe-knowledge-graph@v1.9.0`;
+`mcp-stable` → `93fe9fb1955317a782d1774e29fc7961ecdf0f03`, verified by `ls-remote`), asset
+sha256 `11153c85d8cb16e022f2be2d999ba131d437275becbbe6dd6b5556915b71f069` (fetched and
+digest-verified by `sync-bundle --from-release`), contract **v1.15**, Manual v1.8.0 wave:
+**273 requirements / 29 categories** (FIL 8, PRI 5, INT +4), 305 links, EP 273/273.
+Zero-delta formalisation of the dev-build this line already pinned
+(`kg-v1-manual-v1.8.0-aligned-2026-08-31`): the `data/` diff is the `run_manifest.release`
+stamp only (`channel: stable, version: v1.9.0`). The KG deliberately skips a `v1.8.0` tag.
+
+### Payload gates RATIFIED and HARMONISED across lines (programme lead, «3 sims», 2026-08-31)
+
+Fixture 2 `standard` ≤ **9,200** and `minimal` ≤ **8,450** are now the hard gates in
+`BUDGETS` on BOTH lines (measured 9,102 / 8,375, identical); the PROPOSED entries left
+this line's `KNOWN_TOTAL_DEVIATIONS` (now empty; mechanism kept). The old
+"harmonise ceilings" thread closes here.
+
+### Content (the v1.8.0 wave, absorbed from master `17f158e7` in `dfd4250c`, now released on this line)
 
 Absorbed from #61 (conflict rules: beta keeps its own diet/budget gates/snapshots/agents
 heuristics; `src/index.ts` untouched by #61): `files`→FIL / `privacy`→PRI signals (EN+PT,
@@ -53,6 +70,13 @@ fix, golden-case re-baseline (273/29) and scenarios TC-F-14/15.
   line's output (`vitest -u` produced zero changes) — diff = FIL additions + bundle
   provenance (`manual_commit_sha` → `f78dfe73`).
 - Suite **727/727** · `npm run check` ✅.
+
+### Re-run on the formal pin (this release)
+
+Golden cases **10 PASS / 0 / 0** and full `eval:acceptance` **119 scenarios — 78 PASS ·
+18 PART · 0 FAIL · 23 SKIP, gate E PASS** re-run on the `v1.9.0` release pin (records
+`docs/acceptance-runs/2026-08-31-v190-*-v0.20.0-beta.7-*`); suite **727/727**;
+measured f2 9,102/8,375 inside the ratified gates.
 
 ## 0.20.0-beta.6 — 2026-08-31 (published 2026-08-31: annotated tag `v0.20.0-beta.6` on `322c38f4`, npm `beta`, after the Orchestrator side-by-side with stable 0.11.0 → `v0.11.0` on `102b8166`)
 

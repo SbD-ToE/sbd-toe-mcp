@@ -238,7 +238,11 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       // (ratificação 2026-08-31, 0.20.0-beta.5): OPS-015 (pin v1.7.0 dev-build,
       // +223) + camada de ligações curada v3/v1.7.0 formal (controlos directos da
       // fixture com ids/descriptions mais longos, +129). Medido 8.746 (v1.7.0 formal).
-      total: 8800 // 🔴 gate hard ratificado 2026-08-31
+      // 8.500 (EPIC) → 8.700 → 8.800 → **9.200**: gate RATIFICADO e HARMONIZADO com a
+      // estável pelo programme lead a 2026-08-31 («3 sims»; handover manual-wave v1.8.0,
+      // Decisões finais §1). Causa: a fixture de upload ganha o catálogo FIL de facto
+      // (medido 9.102, idêntico nas duas linhas).
+      total: 9200 // 🔴 gate hard ratificado + harmonizado 2026-08-31
     }
   },
   // minimal: ⟳ ADENDA s3b (2026-07-05, decisão do operador — EPIC §s3b): sem
@@ -280,7 +284,9 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       // Hard s3b original: 8.000 (medido 7.639 + ~5%). Re-fixado em **8.100** pelo
       // programme lead (ratificação 2026-08-31): camada curada v3/v1.7.0 formal muda
       // os controlos directos da fixture. Medido 8.019 (v1.7.0 formal).
-      total: 8100 // 🔴 hard s3b re-fixado, ratificado 2026-08-31
+      // 8.000 (s3b) → 8.100 → **8.450**: gate RATIFICADO e HARMONIZADO com a estável
+      // (programme lead 2026-08-31, «3 sims»; medido 8.375, idêntico nas duas linhas).
+      total: 8450 // 🔴 gate hard ratificado + harmonizado 2026-08-31
     }
   },
   // ultrathin: s3c (ADENDA 2026-07-05 do operador, REATIVADO no mesmo dia —
@@ -461,31 +467,15 @@ function idsAtPath(payload: unknown, path: string): string[] {
  * ceilings (standard 8,800 / minimal 8,100) into BUDGETS directly. The mechanism
  * stays for the next data-driven drift.
  */
+/**
+ * Known, REPORTED deviations from a hard gate — never a silent raise of the gate
+ * itself. Empty since 2026-08-31 ("3 sims"): the programme lead ratified and
+ * HARMONISED the fixture-2 ceilings across both lines (standard 9,200 / minimal
+ * 8,450) into BUDGETS directly. The mechanism stays for the next drift.
+ */
 const KNOWN_TOTAL_DEVIATIONS: Readonly<
   Record<string, { measured: number; tolerated: number; since: string; reason: string }>
-> = {
-  "standard:fixture2": {
-    measured: 9102,
-    tolerated: 9200,
-    since: "2026-08-31",
-    reason:
-      "dev-build KG v1.8.0 (contract v1.15): the fixture IS a file-upload endpoint and " +
-      "the new FIL catalogue correctly applies (FIL ×8 + direct control; citations 143→152). " +
-      "Measured 9,102 — identical to the stable line, whose gate re-baselined to 9,200. " +
-      "PROPOSED ceiling 9,200 (= stable); the ratified 8,800 stays the gate on record " +
-      "until the programme lead ratifies (CHANGELOG, beta.6 v1.8.0 wave)."
-  },
-  "minimal:fixture2": {
-    measured: 8375,
-    tolerated: 8450,
-    since: "2026-08-31",
-    reason:
-      "dev-build KG v1.8.0 (contract v1.15): FIL applies to the upload fixture. Measured " +
-      "8,375 — identical to the stable line (gate 8,450 there). PROPOSED ceiling 8,450 " +
-      "(= stable); the ratified 8,100 stays the gate on record until the programme lead " +
-      "ratifies (CHANGELOG, beta.6 v1.8.0 wave)."
-  }
-};
+> = {}
 
 function withKnownDeviation(
   budgets: SectionBudgets,
