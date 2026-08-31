@@ -15,6 +15,7 @@
  * Contract: agentic/em-curso/2026-06-14-pontifex-implementation-view-tool-contracts-v0.1.md
  */
 
+import { servedKgReleaseTag } from "../version-info.js";
 import { readFileSync } from "node:fs";
 import { resolveAppPath } from "../config.js";
 import { getOntologyData } from "./ontology-loader.js";
@@ -178,6 +179,7 @@ export function handleGetVerificationMatrix(
       }
     },
     provenance: {
+      kg: servedKgReleaseTag(),
       content_type: "canonical",
       produced_by: "verification_matrix_projection",
       source_data: "data/publish/runtime/evidence_patterns.json (verification_logic + evidence_expectation, structured) + requirements.json",

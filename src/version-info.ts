@@ -35,6 +35,13 @@ interface ConsumedBundlePin {
 
 let cached: { value: BundleProvenance | undefined } | undefined;
 
+let cachedKgTag: string | undefined;
+/** Compact per-response version stamp (0.13.0): the kg release_tag of the served pin. */
+export function servedKgReleaseTag(): string {
+  cachedKgTag ??= loadBundleProvenance()?.kg?.release_tag ?? "unknown";
+  return cachedKgTag;
+}
+
 export function loadBundleProvenance(): BundleProvenance | undefined {
   if (cached !== undefined) {
     return cached.value;

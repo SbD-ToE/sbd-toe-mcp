@@ -12,7 +12,7 @@ import {
   searchManualQuestion
 } from "./orchestrator/ask-manual.js";
 import { loadSystemPromptTemplate } from "./prompt/system-prompt.js";
-import { loadBundleProvenance } from "./version-info.js";
+import { loadBundleProvenance, servedKgReleaseTag } from "./version-info.js";
 import {
   handleGetSbdToeChapterBrief,
   handleListSbdToeChapters,
@@ -155,6 +155,193 @@ interface LogEvent {
   error_code?: number | string | undefined;
   error_name?: string | undefined;
   message: string;
+}
+
+/** The single source of the resource surface — resources/list AND the
+ * read_sbd_toe_resource tool derive from THIS list (never hardcoded twice). */
+const RESOURCE_CATALOG = [
+        {
+          uri: "sbd://toe/agent-guide",
+          name: "SbD-ToE Agent Guide",
+          description:
+            "READ THIS FIRST. Operational guide for AI agents: SbD-ToE identity (Security by Design — Theory of Everything), CONSULT/GUIDE modes, routing by SDLC phase and domain, tool selection, epistemic standards, chapter map, risk levels, identifier conventions.",
+          mimeType: "text/markdown"
+        },
+        {
+          uri: "sbd://toe/chapter-applicability/{riskLevel}",
+          name: "SbD-ToE Chapter Applicability",
+          description:
+            "Active, conditional and excluded chapters for a given risk level (L1/L2/L3).",
+          mimeType: "application/json"
+        },
+        {
+          uri: "sbd://toe/index-compact",
+          name: "SbD-ToE Index Compact",
+          description:
+            "Compact JSON index of the full SbD-ToE manual. Injectable into system prompt to eliminate exploratory discovery.",
+          mimeType: "application/json"
+        },
+        {
+          uri: "sbd://toe/ontology",
+          name: "SbD-ToE Ontology",
+          description:
+            "Full SbD-ToE ontology YAML: domain_mapping (requirement category → control domains), " +
+            "inference rules with priorities, resolution pipelines (consult/guide/threats/review), " +
+            "and entity schemas. Read once per session to understand the deterministic resolution model " +
+            "before calling consult_security_requirements, get_threat_landscape or get_guide_by_role.",
+          mimeType: "application/yaml"
+        },
+        {
+          uri: "sbd://toe/skill/{role}",
+          name: "SbD-ToE Role Skill",
+          description:
+            "Role-specialised SbD-ToE skill for a canonical role (default risk L2) — the role's manual " +
+            "slice as installable skill content. Same output as generate_sbd_toe_skill(role, format=skill).",
+          mimeType: "text/markdown"
+        },
+        {
+          uri: "sbd://toe/subagent/{role}",
+          name: "SbD-ToE Role Sub-agent Definition",
+          description:
+            "Installable sub-agent definition for a canonical role (default risk L2, harnessed flavour — " +
+            "grants mcp__sbd-toe__* tools). Same output as generate_sbd_toe_skill(role, format=subagent).",
+          mimeType: "text/markdown"
+        },
+        {
+          uri: "sbd://toe/codegen-instructions/{mode}",
+          name: "SbD-ToE Codegen Instructions (per mode)",
+          description:
+            "Static per-mode boilerplate of prepare_sbd_toe_codegen_context (mode: codegen, review or " +
+            "test-plan): llm_codegen_instructions slots + security_rationale_template skeleton — " +
+            "byte-identical to the detail=full inline content when assembled per the embedded rules — " +
+            "plus the detail_encoding legend for detail=standard/minimal payloads (v2 token diet). " +
+            "Referenced by codegen_instructions_ref in dieted payloads.",
+          mimeType: "application/json"
+        },
+        {
+          uri: "sbd://toe/version",
+          name: "SbD-ToE MCP Version",
+          description: "Version of the running SbD-ToE MCP server (name, version, description) plus the provenance of the served knowledge: manual {version, commit}, kg {release_tag, substrate_version, consumer_contract_version} and ontology {tag, commit}, read from the consumed-bundle pin.",
+          mimeType: "application/json"
+        },
+        {
+          uri: "sbd://toe/grounded-codegen-guide",
+          name: "SbD-ToE Grounded Codegen Guide",
+          description:
+            "Agent-facing guide for using prepare_sbd_toe_codegen_context. " +
+            "Covers workflow, branching by status (ready_for_codegen / needs_clarification / " +
+            "needs_decomposition / unsupported_scope), output discipline (cite citation_map, fill " +
+            "security_rationale, distinguish code/tests/evidence), and explicit prohibitions " +
+            "(no invented IDs, no compliance claims, no rastreabilidade-noise inside source files).",
+          mimeType: "text/markdown"
+        }
+] as const;
+
+/** Declared resource-read failure (never-silent): carries the JSON-RPC code. */
+/**
+ * Materialize any resource of RESOURCE_CATALOG by concrete URI (templated URIs
+ * take the value in the URI, e.g. sbd://toe/codegen-instructions/codegen).
+ * Shared by resources/read AND the read_sbd_toe_resource tool (0.13.0) — one
+ * implementation, no drift. Unknown URI ⇒ ResourceReadError listing the valid set.
+ */
+async function materializeResource(uri: string): Promise<{ mimeType: string; text: string }> {
+  const path = uri.startsWith("sbd:") ? uri.slice(4) : "";
+
+  const applicabilityMatch = /^\/\/toe\/chapter-applicability\/([^/]+)$/.exec(path);
+  if (applicabilityMatch !== null) {
+    const riskLevel = applicabilityMatch[1] ?? "";
+    if (!["L1", "L2", "L3"].includes(riskLevel)) {
+      throw new ResourceReadError(-32602, `Invalid riskLevel: "${riskLevel}". Allowed values: L1, L2, L3.`);
+    }
+    const data = buildChapterApplicabilityJson(riskLevel);
+    return { mimeType: "application/json", text: JSON.stringify(data, null, 2) };
+  }
+
+  const codegenInstructionsMatch = /^\/\/toe\/codegen-instructions\/([^/]+)$/.exec(path);
+  if (codegenInstructionsMatch !== null) {
+    const mode = codegenInstructionsMatch[1] ?? "";
+    if (!["codegen", "review", "test-plan"].includes(mode)) {
+      throw new ResourceReadError(-32602, `Invalid codegen-instructions mode: "${mode}". Allowed values: codegen, review, test-plan.`);
+    }
+    const content = buildCodegenInstructionsResourceContent(mode as CodegenMode);
+    return { mimeType: "application/json", text: JSON.stringify(content, null, 2) };
+  }
+
+  const roleSkillMatch = /^\/\/toe\/(skill|subagent)\/([^/]+)$/.exec(path);
+  if (roleSkillMatch !== null) {
+    const format = roleSkillMatch[1] === "subagent" ? "subagent" : "skill";
+    const role = decodeURIComponent(roleSkillMatch[2] ?? "");
+    try {
+      const result = handleGenerateSbdToeSkill({ role, format });
+      return { mimeType: "text/markdown", text: result.content };
+    } catch (error) {
+      throw new ResourceReadError(-32602, error instanceof Error ? error.message : "Could not generate role skill.");
+    }
+  }
+
+  if (uri === "sbd://toe/index-compact") {
+    try {
+      return { mimeType: "application/json", text: readFileSync(resolveAppPath("data/publish/sbd-toe-index-compact.json"), "utf-8") };
+    } catch {
+      throw new ResourceReadError(-32603, "Could not read the SbD-ToE compact index.");
+    }
+  }
+
+  if (uri === "sbd://toe/agent-guide") {
+    try {
+      return { mimeType: "text/markdown", text: readFileSync(resolveAppPath("assets/agent-guide.md"), "utf-8") };
+    } catch {
+      throw new ResourceReadError(-32603, "Could not read SbD-ToE agent guide.");
+    }
+  }
+
+  if (uri === "sbd://toe/ontology") {
+    try {
+      return { mimeType: "application/yaml", text: readFileSync(resolveAppPath("data/publish/ontology/sbdtoe-ontology.yaml"), "utf-8") };
+    } catch {
+      throw new ResourceReadError(-32603, "Could not read SbD-ToE ontology YAML.");
+    }
+  }
+
+  if (uri === "sbd://toe/grounded-codegen-guide") {
+    try {
+      return { mimeType: "text/markdown", text: readGroundedCodegenGuide() };
+    } catch {
+      throw new ResourceReadError(-32603, "Could not read SbD-ToE grounded codegen guide.");
+    }
+  }
+
+  if (uri === "sbd://toe/version") {
+    try {
+      const pkg = loadPackageMetadata();
+      const provenance = loadBundleProvenance();
+      const payload = JSON.stringify({
+        name: pkg.name,
+        version: pkg.version,
+        description: pkg.description,
+        // Provenance of the served knowledge (from the consumed-bundle.json pin).
+        // Absent if the pin cannot be read; never invented.
+        manual: provenance?.manual,
+        kg: provenance?.kg,
+        ontology: provenance?.ontology
+      });
+      return { mimeType: "application/json", text: payload };
+    } catch {
+      throw new ResourceReadError(-32603, "Could not read package.json.");
+    }
+  }
+
+  throw new ResourceReadError(-32602, `Unknown resource URI: ${uri}. Valid URIs (templated take the value in the URI): ${validResourceUris()}.`);
+}
+
+class ResourceReadError extends Error {
+  constructor(public readonly code: number, message: string) {
+    super(message);
+  }
+}
+
+function validResourceUris(): string {
+  return RESOURCE_CATALOG.map((r) => r.uri).join(", ");
 }
 
 class McpRuntime {
@@ -429,8 +616,12 @@ class McpRuntime {
       },
       instructions:
         "You are connected to the SbD-ToE MCP server (Security by Design — Theory of Everything).\n" +
-        "15 chapters (00–14). Security guidance only — does not override project rules or development standards.\n" +
+        "Chapters 00–14. Security guidance only — does not override project rules or development standards.\n" +
         "Always respond in the user's language regardless of the manual content language.\n" +
+        "\n" +
+        "At session start, identify the server: read resource sbd://toe/version — or call the\n" +
+        "read_sbd_toe_resource tool with that URI on clients without resource support — to learn\n" +
+        "the server version and the served knowledge (manual/kg/ontology, from the verified pin).\n" +
         "\n" +
         "BEFORE answering any SbD-ToE question, read resource sbd://toe/agent-guide — it contains\n" +
         "operating modes, routing by phase/domain, tool selection, epistemic standards, and chapter map.\n" +
@@ -807,7 +998,7 @@ class McpRuntime {
           title: "Get SbD-ToE Verification Matrix",
           description:
             "The EXPECTED side of verification: per requirement/control at a risk level, the validation method " +
-            "+ expected evidence + EvidencePattern reference (the 223 published patterns). The deterministic " +
+            "+ expected evidence + EvidencePattern reference (the published patterns — totals declared per response). The deterministic " +
             "complement of the auditor's expectation and the test-plan. Cited per row; coverage-preserving — " +
             "declares the requirements with no EvidencePattern. Use to answer 'how do I prove chapter/level X?'.",
           inputSchema: {
@@ -930,6 +1121,26 @@ class McpRuntime {
               }
             },
             required: ["riskLevel"],
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
+          name: "read_sbd_toe_resource",
+          title: "Read SbD-ToE Resource (mirror)",
+          description:
+            "Mirror of resources/read for clients without MCP resource support (e.g. Claude Desktop): " +
+            "returns the content of any server resource by URI — including templated ones with the value " +
+            "in the URI (e.g. sbd://toe/codegen-instructions/codegen). Makes the codegen_instructions_ref " +
+            "of dieted prepare payloads resolvable on ANY client, and sbd://toe/version readable as a tool. " +
+            `Valid URIs: ${validResourceUris()}. ` +
+            "Unknown URI returns a declared error listing the valid set (never silent).",
+          inputSchema: {
+            type: "object",
+            properties: {
+              uri: { type: "string", minLength: 1, description: "Resource URI (see the valid list in the tool description; templated URIs take the concrete value in place of {…})." }
+            },
+            required: ["uri"],
             additionalProperties: false
           },
           annotations: { readOnlyHint: true }
@@ -1530,243 +1741,21 @@ class McpRuntime {
   }
 
   private handleResourcesList(request: JsonRpcRequest): void {
-    this.sendResponse(request.id, {
-      resources: [
-        {
-          uri: "sbd://toe/agent-guide",
-          name: "SbD-ToE Agent Guide",
-          description:
-            "READ THIS FIRST. Operational guide for AI agents: SbD-ToE identity (Security by Design — Theory of Everything), CONSULT/GUIDE modes, routing by SDLC phase and domain, tool selection, epistemic standards, chapter map, risk levels, identifier conventions.",
-          mimeType: "text/markdown"
-        },
-        {
-          uri: "sbd://toe/chapter-applicability/{riskLevel}",
-          name: "SbD-ToE Chapter Applicability",
-          description:
-            "Active, conditional and excluded chapters for a given risk level (L1/L2/L3).",
-          mimeType: "application/json"
-        },
-        {
-          uri: "sbd://toe/index-compact",
-          name: "SbD-ToE Index Compact",
-          description:
-            "Compact JSON index of the full SbD-ToE manual. Injectable into system prompt to eliminate exploratory discovery.",
-          mimeType: "application/json"
-        },
-        {
-          uri: "sbd://toe/ontology",
-          name: "SbD-ToE Ontology",
-          description:
-            "Full SbD-ToE ontology YAML: domain_mapping (requirement category → control domains), " +
-            "8 inference rules with priorities, 4 resolution pipelines (consult/guide/threats/review), " +
-            "and entity schemas. Read once per session to understand the deterministic resolution model " +
-            "before calling consult_security_requirements, get_threat_landscape or get_guide_by_role.",
-          mimeType: "application/yaml"
-        },
-        {
-          uri: "sbd://toe/skill/{role}",
-          name: "SbD-ToE Role Skill",
-          description:
-            "Role-specialised SbD-ToE skill for a canonical role (default risk L2) — the role's manual " +
-            "slice as installable skill content. Same output as generate_sbd_toe_skill(role, format=skill).",
-          mimeType: "text/markdown"
-        },
-        {
-          uri: "sbd://toe/subagent/{role}",
-          name: "SbD-ToE Role Sub-agent Definition",
-          description:
-            "Installable sub-agent definition for a canonical role (default risk L2, harnessed flavour — " +
-            "grants mcp__sbd-toe__* tools). Same output as generate_sbd_toe_skill(role, format=subagent).",
-          mimeType: "text/markdown"
-        },
-        {
-          uri: "sbd://toe/codegen-instructions/{mode}",
-          name: "SbD-ToE Codegen Instructions (per mode)",
-          description:
-            "Static per-mode boilerplate of prepare_sbd_toe_codegen_context (mode: codegen, review or " +
-            "test-plan): llm_codegen_instructions slots + security_rationale_template skeleton — " +
-            "byte-identical to the detail=full inline content when assembled per the embedded rules — " +
-            "plus the detail_encoding legend for detail=standard/minimal payloads (v2 token diet). " +
-            "Referenced by codegen_instructions_ref in dieted payloads.",
-          mimeType: "application/json"
-        },
-        {
-          uri: "sbd://toe/version",
-          name: "SbD-ToE MCP Version",
-          description: "Version of the running SbD-ToE MCP server (name, version, description) plus the provenance of the served knowledge: manual {version, commit}, kg {release_tag, substrate_version, consumer_contract_version} and ontology {tag, commit}, read from the consumed-bundle pin.",
-          mimeType: "application/json"
-        },
-        {
-          uri: "sbd://toe/codegen-instructions/{mode}",
-          name: "SbD-ToE Codegen Instructions (per mode)",
-          description:
-            "Static per-mode boilerplate of prepare_sbd_toe_codegen_context (mode: codegen, review or " +
-            "test-plan): llm_codegen_instructions slots + security_rationale_template skeleton — " +
-            "byte-identical to the detail=full inline content when assembled per the embedded rules — " +
-            "plus the detail_encoding legend for detail=standard/minimal payloads (v2 token diet). " +
-            "Referenced by codegen_instructions_ref in dieted payloads.",
-          mimeType: "application/json"
-        },
-        {
-          uri: "sbd://toe/grounded-codegen-guide",
-          name: "SbD-ToE Grounded Codegen Guide",
-          description:
-            "Agent-facing guide for using prepare_sbd_toe_codegen_context. " +
-            "Covers workflow, branching by status (ready_for_codegen / needs_clarification / " +
-            "needs_decomposition / unsupported_scope), output discipline (cite citation_map, fill " +
-            "security_rationale, distinguish code/tests/evidence), and explicit prohibitions " +
-            "(no invented IDs, no compliance claims, no rastreabilidade-noise inside source files).",
-          mimeType: "text/markdown"
-        }
-      ]
-    });
+    this.sendResponse(request.id, { resources: RESOURCE_CATALOG });
   }
 
   private async handleResourcesRead(request: JsonRpcRequest): Promise<void> {
     const uri = typeof request.params?.uri === "string" ? request.params.uri : "";
-
-    const applicabilityMatch = /^\/\/toe\/chapter-applicability\/([^/]+)$/.exec(
-      uri.startsWith("sbd:") ? uri.slice(4) : ""
-    );
-    if (applicabilityMatch !== null) {
-      const riskLevel = applicabilityMatch[1] ?? "";
-      if (!["L1", "L2", "L3"].includes(riskLevel)) {
-        this.sendError(
-          request.id,
-          -32602,
-          `Invalid riskLevel: "${riskLevel}". Allowed values: L1, L2, L3.`
-        );
+    try {
+      const { mimeType, text } = await materializeResource(uri);
+      this.sendResponse(request.id, { contents: [{ uri, mimeType, text }] });
+    } catch (error) {
+      if (error instanceof ResourceReadError) {
+        this.sendError(request.id, error.code, error.message);
         return;
       }
-      const data = buildChapterApplicabilityJson(riskLevel);
-      this.sendResponse(request.id, {
-        contents: [{ uri, mimeType: "application/json", text: JSON.stringify(data, null, 2) }]
-      });
-      return;
+      this.sendError(request.id, -32603, error instanceof Error ? error.message : "Could not read resource.");
     }
-
-    const codegenInstructionsMatch = /^\/\/toe\/codegen-instructions\/([^/]+)$/.exec(
-      uri.startsWith("sbd:") ? uri.slice(4) : ""
-    );
-    if (codegenInstructionsMatch !== null) {
-      const mode = codegenInstructionsMatch[1] ?? "";
-      if (!["codegen", "review", "test-plan"].includes(mode)) {
-        this.sendError(
-          request.id,
-          -32602,
-          `Invalid codegen-instructions mode: "${mode}". Allowed values: codegen, review, test-plan.`
-        );
-        return;
-      }
-      const content = buildCodegenInstructionsResourceContent(mode as CodegenMode);
-      this.sendResponse(request.id, {
-        contents: [
-          { uri, mimeType: "application/json", text: JSON.stringify(content, null, 2) }
-        ]
-      });
-      return;
-    }
-
-    const roleSkillMatch = /^\/\/toe\/(skill|subagent)\/([^/]+)$/.exec(
-      uri.startsWith("sbd:") ? uri.slice(4) : ""
-    );
-    if (roleSkillMatch !== null) {
-      const format = roleSkillMatch[1] === "subagent" ? "subagent" : "skill";
-      const role = decodeURIComponent(roleSkillMatch[2] ?? "");
-      try {
-        const result = handleGenerateSbdToeSkill({ role, format });
-        this.sendResponse(request.id, {
-          contents: [{ uri, mimeType: "text/markdown", text: result.content }]
-        });
-      } catch (error) {
-        this.sendError(request.id, -32602, error instanceof Error ? error.message : "Could not generate role skill.");
-      }
-      return;
-    }
-
-    if (uri === "sbd://toe/index-compact") {
-      const indexPath = resolveAppPath("data/publish/sbd-toe-index-compact.json");
-      let indexText: string;
-      try {
-        indexText = readFileSync(indexPath, "utf-8");
-      } catch {
-        this.sendError(request.id, -32603, "Could not read the SbD-ToE compact index.");
-        return;
-      }
-      this.sendResponse(request.id, {
-        contents: [{ uri, mimeType: "application/json", text: indexText }]
-      });
-      return;
-    }
-
-    if (uri === "sbd://toe/agent-guide") {
-      const guidePath = resolveAppPath("assets/agent-guide.md");
-      let guideText: string;
-      try {
-        guideText = readFileSync(guidePath, "utf-8");
-      } catch {
-        this.sendError(request.id, -32603, "Could not read SbD-ToE agent guide.");
-        return;
-      }
-      this.sendResponse(request.id, {
-        contents: [{ uri, mimeType: "text/markdown", text: guideText }]
-      });
-      return;
-    }
-
-    if (uri === "sbd://toe/ontology") {
-      const ontologyPath = resolveAppPath("data/publish/ontology/sbdtoe-ontology.yaml");
-      let ontologyText: string;
-      try {
-        ontologyText = readFileSync(ontologyPath, "utf-8");
-      } catch {
-        this.sendError(request.id, -32603, "Could not read SbD-ToE ontology YAML.");
-        return;
-      }
-      this.sendResponse(request.id, {
-        contents: [{ uri, mimeType: "application/yaml", text: ontologyText }]
-      });
-      return;
-    }
-
-    if (uri === "sbd://toe/grounded-codegen-guide") {
-      let guideText: string;
-      try {
-        guideText = readGroundedCodegenGuide();
-      } catch {
-        this.sendError(request.id, -32603, "Could not read SbD-ToE grounded codegen guide.");
-        return;
-      }
-      this.sendResponse(request.id, {
-        contents: [{ uri, mimeType: "text/markdown", text: guideText }]
-      });
-      return;
-    }
-
-    if (uri === "sbd://toe/version") {
-      try {
-        const pkg = loadPackageMetadata();
-        const provenance = loadBundleProvenance();
-        const payload = JSON.stringify({
-          name: pkg.name,
-          version: pkg.version,
-          description: pkg.description,
-          // Provenance of the served knowledge (from the consumed-bundle.json pin).
-          // Absent if the pin cannot be read; never invented.
-          manual: provenance?.manual,
-          kg: provenance?.kg,
-          ontology: provenance?.ontology
-        });
-        this.sendResponse(request.id, {
-          contents: [{ uri, mimeType: "application/json", text: payload }]
-        });
-      } catch {
-        this.sendError(request.id, -32603, "Could not read package.json.");
-      }
-      return;
-    }
-
-    this.sendError(request.id, -32602, `Unknown resource URI: ${uri}`);
   }
 
   private parseStringListArg(value: unknown): string[] | undefined {
@@ -2201,6 +2190,40 @@ class McpRuntime {
             ...metadata,
             message: "Tool invocation completed"
           });
+          return;
+        }
+        case "read_sbd_toe_resource": {
+          const uriArg = typeof args?.uri === "string" ? args.uri.trim() : "";
+          if (uriArg.length === 0) {
+            this.sendError(request.id, -32602, `read_sbd_toe_resource requires "uri". Valid URIs: ${validResourceUris()}.`);
+            return;
+          }
+          try {
+            const { mimeType, text } = await materializeResource(uriArg);
+            const payload = {
+              provenance: {
+                kg: servedKgReleaseTag(),
+                content_type: "canonical" as const,
+                produced_by: "resources_read_mirror",
+                source_data: uriArg,
+                note:
+                  "Verbatim mirror of resources/read for clients without resource support — same materialization, no drift. " +
+                  "Motivation: codegen_instructions_ref of dieted payloads is resolvable on any client."
+              },
+              uri: uriArg,
+              mimeType,
+              content: text
+            };
+            this.sendResponse(request.id, {
+              content: [{ type: "text", text: JSON.stringify(payload, null, 2) }]
+            });
+          } catch (error) {
+            if (error instanceof ResourceReadError) {
+              this.sendError(request.id, error.code, error.message);
+              return;
+            }
+            this.sendError(request.id, -32603, error instanceof Error ? error.message : "Could not read resource.");
+          }
           return;
         }
         case "select_sbd_toe_requirements": {

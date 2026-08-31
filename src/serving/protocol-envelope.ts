@@ -19,6 +19,8 @@
  */
 
 export interface ProtocolProvenance {
+  /** Compact version stamp: kg release_tag of the served pin (0.13.0). */
+  kg: string;
   content_type: "canonical" | "derived" | "inferred";
   produced_by: string;
   source_data: string;

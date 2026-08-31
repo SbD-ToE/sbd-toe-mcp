@@ -14,6 +14,7 @@
  * Contract: agentic/em-curso/2026-06-14-pontifex-implementation-view-tool-contracts-v0.1.md
  */
 
+import { servedKgReleaseTag } from "../version-info.js";
 import { chapterNumber } from "./ontology-loader.js";
 import { loadRegulatoryOverlay, type RegulatoryMapping } from "./regulatory-overlay-loader.js";
 import { paginate, type PageCoverage } from "../serving/response-shaping.js";
@@ -182,6 +183,7 @@ export function handleMapRegulatoryActivation(
       }
     },
     provenance: {
+      kg: servedKgReleaseTag(),
       content_type: "canonical",
       produced_by: "regulatory_overlay_projection",
       source_data: "data/publish/overlay/overlay_mappings.jsonl + external_frameworks.json",
