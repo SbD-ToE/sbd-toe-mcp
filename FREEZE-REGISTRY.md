@@ -69,7 +69,11 @@ v1.14), ontology `sbdtoe-ontology-v2.2` (`2be86e8b`), Manual v1.7.1
 (`8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac`). Tag `v0.10.4` = squash commit of the PR
 introducing this row (recorded here once created). Prior: v0.10.3 (2026-08-30,
 `06f8bbaa`, KG v1.6.1), v0.10.2 (2026-08-29, `31aa22af`, KG v1.6.0).
-**Expected next freeze event:** none scheduled
+**Expected next freeze event:** tag `v0.11.0` (after 0.20.0-beta.6 absorbs the MP1
+cycle and both lines verify); then the formal KG batch v1.9.0 → MCP 0.12.0 (lead's
+call). Note: since 2026-08-31 master SERVES the dev-build `kg-v1-manual-v1.8.0-aligned-2026-08-31`
+(sha256-pinned in `consumed-bundle.json`); the last published npm release (0.10.4)
+still serves formal v1.7.0.
 
 ## Cross-references
 
@@ -121,3 +125,4 @@ prohibits tag deletion without explicit authorisation):
 | 2026-08-30 | v0.10.4 registered (protected tag list, current working state, upstream pins: KG v1.7.0, ontology v2.2, Manual v1.7.1). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-31 | v0.10.4 tag commit recorded (`2937236d`, squash of #54); npm publish + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-31 | v0.11.0 registered as pending (protected-tag list; tag gated on 0.20.0-beta.6 + two-line verification). Served bundle pins unchanged (KG v1.7.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-31 | Dev-build `kg-v1-manual-v1.8.0-aligned-2026-08-31` pinned on the serving line (sha256 `ad0fc96c…`, contract v1.15, 273 req/29 cat — FIL/PRI). No frozen state touched; formal KG v1.9.0 em lote. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |

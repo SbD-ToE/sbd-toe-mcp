@@ -28,7 +28,7 @@
       ],
       "source_section_ids": [
         "010-sbd-manual-01-classificacao-aplicacoes-addon-07-adopcao-drp-bia--modelo-alternativo-via-adocao-de-classificacoes-existentes-e-g-drp-bia",
-        "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-09-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
+        "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-14-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
         "010-sbd-manual-01-classificacao-aplicacoes-intro--classificacao-da-criticidade-aplicacional--prescricao-pratica-o-que-quem-como-quando-porque-e-para-que--como-deve-ser-feito"
       ],
       "warnings": []
@@ -131,7 +131,7 @@
         "summary"
       ],
       "source_section_ids": [
-        "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-08-interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
+        "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-13-interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
         "010-sbd-manual-01-classificacao-aplicacoes-intro--classificacao-da-criticidade-aplicacional--prescricao-pratica-o-que-quem-como-quando-porque-e-para-que--como-deve-ser-feito",
         "010-sbd-manual-01-classificacao-aplicacoes-intro--classificacao-da-criticidade-aplicacional--prescricao-pratica-o-que-quem-como-quando-porque-e-para-que--o-que-deve-ser-feito"
       ],
@@ -165,7 +165,7 @@
       ],
       "source_section_ids": [
         "010-sbd-manual-01-classificacao-aplicacoes-addon-06-mapeamento-ameacas-risco--mapeamento-de-ameacas-para-validacao-do-risco",
-        "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-06-mapeamento-de-ameacas-por-nivel-de-risco",
+        "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-06-mapeamento-de-ameacas-por-nivel-de-risco",
         "010-sbd-manual-01-classificacao-aplicacoes-intro--classificacao-da-criticidade-aplicacional--prescricao-pratica-o-que-quem-como-quando-porque-e-para-que--como-deve-ser-feito"
       ],
       "warnings": []
@@ -187,7 +187,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-10-producao-e-manutencao-do-inventario-central-com-autoridade-de-aprovacao-proporcional"
+        "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-15-producao-e-manutencao-do-inventario-central-com-autoridade-de-aprovacao-proporcional"
       ],
       "warnings": []
     },
@@ -213,7 +213,7 @@
         "summary"
       ],
       "source_section_ids": [
-        "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-07-reforco-de-controlos-por-atributos-do-risco",
+        "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-12-reforco-de-controlos-por-atributos-do-risco",
         "010-sbd-manual-01-classificacao-aplicacoes-intro--classificacao-da-criticidade-aplicacional--prescricao-pratica-o-que-quem-como-quando-porque-e-para-que--como-deve-ser-feito",
         "010-sbd-manual-01-classificacao-aplicacoes-intro--classificacao-da-criticidade-aplicacional--prescricao-pratica-o-que-quem-como-quando-porque-e-para-que--o-que-deve-ser-feito"
       ],

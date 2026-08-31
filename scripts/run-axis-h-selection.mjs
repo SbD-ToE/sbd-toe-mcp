@@ -68,6 +68,7 @@ for (const r of results) {
   if (r.consult?.missing?.length || r.consult?.violations?.length) md.push(`- consult: faltas ${r.consult.missing?.length ?? 0} [${(r.consult.missing ?? []).slice(0, 12).join(", ")}${(r.consult.missing?.length ?? 0) > 12 ? ", …" : ""}], violações ${(r.consult.violations ?? []).length} [${(r.consult.violations ?? []).slice(0, 12).join(", ")}${(r.consult.violations?.length ?? 0) > 12 ? ", …" : ""}]`);
   if (r.causes?.length) { md.push(`- **causas:**`); for (const cz of r.causes) md.push(`  - \`${cz.id}\` → **${cz.cause}** — ${cz.note}`); }
   if (r.gap_note) md.push(`- lacuna registada no oráculo: ${r.gap_note}`);
+  if (r.gap_transition) md.push(`- **transição lacuna → coberto:** ${r.gap_transition}`);
   md.push("");
 }
 md.push("## Leitura (Pontifex, 5 linhas)", "", "_preenchida na emissão do relatório — ver secção no espelho do hub._", "");

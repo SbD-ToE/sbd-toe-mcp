@@ -1648,10 +1648,10 @@
       "description": "Attestation artifact used as auditable evidence.",
       "evidence": [
         "control CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34 references release_gate",
-        "practice 01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i matched alias 'gates'",
-        "practice 01-classificacao-aplicacoes:interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao matched alias 'gates'",
-        "practice 01-classificacao-aplicacoes:mapeamento-de-ameacas-por-nivel-de-risco matched alias 'gates'",
-        "practice 01-classificacao-aplicacoes:producao-e-manutencao-do-inventario-central-com-autoridade-de-aprovacao-proporcional matched alias 'gates'"
+        "practice 02-requisitos-seguranca:gates-automaticos-em-ci-cd-para-requisitos-de-seguranca matched alias 'gates'",
+        "practice 03-threat-modeling:gate-de-controlo-de-consistencia-no-ci-cd matched alias 'gate'",
+        "practice 04-arquitetura-segura:gate-arquitetural-antes-do-go-live matched alias 'gate'",
+        "practice 05-dependencias-sbom-sca:sca-automatico-com-gates matched alias 'gates'"
       ],
       "lifecycle_phases": [
         "deploy"

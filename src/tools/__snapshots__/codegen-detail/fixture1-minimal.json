@@ -513,7 +513,7 @@
   },
   "manual_grounding": {
     "total_entries": 51,
-    "manual_commit_sha": "8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac",
+    "manual_commit_sha": "f78dfe734a83b01fa9283c2df5a3eb0ba9528001",
     "groups": [
       {
         "rastreabilidade_role": "substrate_landing",
@@ -589,10 +589,10 @@
     "named_v1_entities": 39,
     "unnamed_v1_entities": 12,
     "selection": {
-      "eligible": 98,
+      "eligible": 114,
       "selected": 41,
-      "narrowed_out_categories": 8,
-      "narrowed_out_requirements": 57,
+      "narrowed_out_categories": 10,
+      "narrowed_out_requirements": 73,
       "narrowed_out_ref": {
         "tool": "select_sbd_toe_requirements",
         "note": "Categorias elegíveis sem sinal na tarefa foram excluídas pelo narrowing MP1 — a lista completa (por categoria, com razão) vem de select_sbd_toe_requirements com o mesmo contexto."
@@ -606,9 +606,9 @@
       "ASC-09 artifacts: declared=12 actual=8 (slice contract status=working_contract)",
       "ASC-10 mechanisms: declared=6 actual=4 (slice contract status=working_contract)"
     ],
-    "evidence_patterns_total": 153,
+    "evidence_patterns_total": 170,
     "evidence_patterns_returned": 5,
-    "evidence_patterns_capped": 148,
+    "evidence_patterns_capped": 165,
     "evidence_pattern_cap": 5,
     "evidence_patterns_rest": {
       "tool": "prepare_sbd_toe_codegen_context",

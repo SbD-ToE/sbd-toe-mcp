@@ -1,6 +1,6 @@
 {
   "agent": "lifecycle_extractor",
-  "generated_at": "2026-08-30T22:17:31Z",
+  "generated_at": "2026-08-31T18:36:21Z",
   "items": [
     {
       "L1": "Obrigatório - Classificação simplificada, apenas eixos principais",
@@ -82,7 +82,7 @@
       ],
       "practice_id": "01-classificacao-aplicacoes:mapeamento-de-ameacas-por-nivel-de-risco",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-06-mapeamento-de-ameacas-por-nivel-de-risco",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-06-mapeamento-de-ameacas-por-nivel-de-risco",
       "user_story_id": "01-classificacao-aplicacoes-us-06",
       "warnings": []
     },
@@ -92,12 +92,12 @@
       "L3": "Já no topo; atributos exigem controlos mais fortes a montante e evidência reforçada",
       "confidence": 0.93,
       "evidence": [
-        "proportionality extracted for US-07"
+        "proportionality extracted for US-12"
       ],
       "practice_id": "01-classificacao-aplicacoes:reforco-de-controlos-por-atributos-do-risco",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-07-reforco-de-controlos-por-atributos-do-risco",
-      "user_story_id": "01-classificacao-aplicacoes-us-07",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-12-reforco-de-controlos-por-atributos-do-risco",
+      "user_story_id": "01-classificacao-aplicacoes-us-12",
       "warnings": []
     },
     {
@@ -106,12 +106,12 @@
       "L3": "Interdições obrigatórias; recusa automática se dependente de mecanismo não-determinístico ou sem revisão humana",
       "confidence": 0.93,
       "evidence": [
-        "proportionality extracted for US-08"
+        "proportionality extracted for US-13"
       ],
       "practice_id": "01-classificacao-aplicacoes:interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-08-interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
-      "user_story_id": "01-classificacao-aplicacoes-us-08",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-13-interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
+      "user_story_id": "01-classificacao-aplicacoes-us-13",
       "warnings": []
     },
     {
@@ -120,12 +120,12 @@
       "L3": "Confirmação formal por segurança; classificação por componente quando multi-módulo",
       "confidence": 0.93,
       "evidence": [
-        "proportionality extracted for US-09"
+        "proportionality extracted for US-14"
       ],
       "practice_id": "01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-09-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
-      "user_story_id": "01-classificacao-aplicacoes-us-09",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-14-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
+      "user_story_id": "01-classificacao-aplicacoes-us-14",
       "warnings": []
     },
     {
@@ -3083,17 +3083,17 @@
       "warnings": []
     }
   ],
-  "run_id": "20260830T221731Z",
+  "run_id": "20260831T183621Z",
   "source": {
     "branch": "HEAD",
-    "commit_sha": "8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac",
+    "commit_sha": "f78dfe734a83b01fa9283c2df5a3eb0ba9528001",
     "corpus_root": "manuals_src/docs/sbd-toe",
     "repo_url": "git@github.com:SbD-ToE/sbd-toe-manual.git"
   },
   "stats": {
     "errors": 0,
     "processed_files": 253,
-    "processed_sections": 2565,
+    "processed_sections": 2568,
     "skipped": 0,
     "warnings": 53
   },
@@ -3102,7 +3102,7 @@
   },
   "version": "0.1.0",
   "warnings": [
-    "010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md:US-10 missing proportionality table",
+    "010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md:US-15 missing proportionality table",
     "010-sbd-manual/02-requisitos-seguranca/aplicacao-lifecycle.md:US-02 missing proportionality table",
     "010-sbd-manual/02-requisitos-seguranca/aplicacao-lifecycle.md:US-03 role drift detected for 'Developer (proponente) e GRC/Compliance (regista)'",
     "010-sbd-manual/02-requisitos-seguranca/aplicacao-lifecycle.md:US-03 missing proportionality table",

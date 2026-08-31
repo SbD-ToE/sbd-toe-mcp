@@ -257,7 +257,7 @@
         "appsec-engineer"
       ],
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-06-mapeamento-de-ameacas-por-nivel-de-risco",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-06-mapeamento-de-ameacas-por-nivel-de-risco",
       "title": "Mapeamento de ameaças por nível de risco",
       "us_id": "US-06",
       "warnings": []
@@ -281,13 +281,13 @@
       "context": "A classificação L1–L3 é uma projeção simplificada (E/D/I); certos atributos internos do risco exigem controlos do nível imediatamente superior, independentemente do nível atribuído. Contexto. Uma aplicação L1 ou L2 com baixa detetabilidade, baixa evidenciabilidade, comportamento não-determinístico ou delegação/execução automática com impacto real fica subprotegida se os controlos seguirem apenas o nível nominal.",
       "document_path": "010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md",
       "evidence": [
-        "user story heading detected: US-07 - Reforço de controlos por atributos do risco",
+        "user story heading detected: US-12 - Reforço de controlos por atributos do risco",
         ":::userstory block extracted",
         "proportionality table extracted",
         "sdlc integration table extracted"
       ],
       "goal": "avaliar os atributos do risco (detetabilidade, evidenciabilidade, reprodutibilidade, delegação/execução automática) e escalar os controlos para o nível imediatamente superior quando indicado",
-      "id": "01-classificacao-aplicacoes-us-07",
+      "id": "01-classificacao-aplicacoes-us-12",
       "links": [],
       "practice_id": "01-classificacao-aplicacoes:reforco-de-controlos-por-atributos-do-risco",
       "role_raw": "AppSec Engineer",
@@ -295,9 +295,9 @@
         "appsec-engineer"
       ],
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-07-reforco-de-controlos-por-atributos-do-risco",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-12-reforco-de-controlos-por-atributos-do-risco",
       "title": "Reforço de controlos por atributos do risco",
-      "us_id": "US-07",
+      "us_id": "US-12",
       "warnings": []
     },
     {
@@ -319,13 +319,13 @@
       "context": "Há situações em que a aceitação de risco (e de risco residual) é categoricamente proibida, independentemente da urgência, custo ou nível da aplicação. Contexto. Sem um gate explícito de interdição, decisões/ações automatizadas com impacto real podem ser aceites sem revisão humana efetiva, ou com resultados não reproduzíveis, contornando os critérios formais de aceitação.",
       "document_path": "010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md",
       "evidence": [
-        "user story heading detected: US-08 - Interdições de aceitação de risco em automação e apoio à decisão",
+        "user story heading detected: US-13 - Interdições de aceitação de risco em automação e apoio à decisão",
         ":::userstory block extracted",
         "proportionality table extracted",
         "sdlc integration table extracted"
       ],
       "goal": "bloquear qualquer aceitação de risco que recaia numa das situações interditas de automação/apoio à decisão",
-      "id": "01-classificacao-aplicacoes-us-08",
+      "id": "01-classificacao-aplicacoes-us-13",
       "links": [],
       "practice_id": "01-classificacao-aplicacoes:interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
       "role_raw": "GRC/Compliance",
@@ -333,9 +333,9 @@
         "grc-compliance"
       ],
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-08-interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-13-interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
       "title": "Interdições de aceitação de risco em automação e apoio à decisão",
-      "us_id": "US-08",
+      "us_id": "US-13",
       "warnings": []
     },
     {
@@ -358,13 +358,13 @@
       "context": "A organização pode reutilizar uma classificação de impacto já existente (DRP/BIA ou outro método formal) desde que mapeie os seus resultados para o contexto de desenvolvimento aplicacional. Contexto. Reutilizar uma classificação DRP/BIA sem mapeamento confirmado por análise de segurança pode importar uma criticidade desalinhada da exposição e da natureza dos dados da aplicação.",
       "document_path": "010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md",
       "evidence": [
-        "user story heading detected: US-09 - Adoção de modelo de classificação alternativo (DRP/BIA) mapeado para E/D/I",
+        "user story heading detected: US-14 - Adoção de modelo de classificação alternativo (DRP/BIA) mapeado para E/D/I",
         ":::userstory block extracted",
         "proportionality table extracted",
         "sdlc integration table extracted"
       ],
       "goal": "adotar a classificação DRP/BIA existente como input e mapeá-la para o nível de risco L1–L3, confirmando o resultado por análise de segurança",
-      "id": "01-classificacao-aplicacoes-us-09",
+      "id": "01-classificacao-aplicacoes-us-14",
       "links": [],
       "practice_id": "01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
       "role_raw": "GRC/Compliance",
@@ -372,9 +372,9 @@
         "grc-compliance"
       ],
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-09-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-14-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
       "title": "Adoção de modelo de classificação alternativo (DRP/BIA) mapeado para E/D/I",
-      "us_id": "US-09",
+      "us_id": "US-14",
       "warnings": []
     },
     {
@@ -396,12 +396,12 @@
       "context": "O inventário central/GRC (CLA-008) é o artefacto de evidência primário em auditoria; tem de ser produzido e mantido atualizado, com a autoridade de aprovação proporcional ao nível (CLA-002) registada por aplicação. Contexto. As US existentes consomem o inventário central mas nenhuma o produz; sem registo atualizado de nível, owner, data de revisão e autoridade aprovadora, a evidência de conformidade não é defensável em auditoria.",
       "document_path": "010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md",
       "evidence": [
-        "user story heading detected: US-10 - Produção e manutenção do inventário central com autoridade de aprovação proporcional",
+        "user story heading detected: US-15 - Produção e manutenção do inventário central com autoridade de aprovação proporcional",
         ":::userstory block extracted",
         "sdlc integration table extracted"
       ],
       "goal": "manter um inventário central (ou GRC) atualizado com nível de classificação, data de última revisão, owner de segurança, estado de conformidade e autoridade de aprovação proporcional ao nível",
-      "id": "01-classificacao-aplicacoes-us-10",
+      "id": "01-classificacao-aplicacoes-us-15",
       "links": [],
       "practice_id": "01-classificacao-aplicacoes:producao-e-manutencao-do-inventario-central-com-autoridade-de-aprovacao-proporcional",
       "role_raw": "GRC/Compliance",
@@ -409,9 +409,9 @@
         "grc-compliance"
       ],
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-10-producao-e-manutencao-do-inventario-central-com-autoridade-de-aprovacao-proporcional",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-15-producao-e-manutencao-do-inventario-central-com-autoridade-de-aprovacao-proporcional",
       "title": "Produção e manutenção do inventário central com autoridade de aprovação proporcional",
-      "us_id": "US-10",
+      "us_id": "US-15",
       "warnings": []
     },
     {

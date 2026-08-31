@@ -417,7 +417,7 @@
       "risk_level": "L1",
       "role": "appsec-engineer",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-06-mapeamento-de-ameacas-por-nivel-de-risco",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-06-mapeamento-de-ameacas-por-nivel-de-risco",
       "user_story_id": "01-classificacao-aplicacoes-us-06",
       "warnings": []
     },
@@ -436,7 +436,7 @@
       "risk_level": "L2",
       "role": "appsec-engineer",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-06-mapeamento-de-ameacas-por-nivel-de-risco",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-06-mapeamento-de-ameacas-por-nivel-de-risco",
       "user_story_id": "01-classificacao-aplicacoes-us-06",
       "warnings": []
     },
@@ -455,7 +455,7 @@
       "risk_level": "L3",
       "role": "appsec-engineer",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-06-mapeamento-de-ameacas-por-nivel-de-risco",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-06-mapeamento-de-ameacas-por-nivel-de-risco",
       "user_story_id": "01-classificacao-aplicacoes-us-06",
       "warnings": []
     },
@@ -465,17 +465,17 @@
       "chapter_id": "01-classificacao-aplicacoes",
       "confidence": 0.86,
       "evidence": [
-        "practice assignment derived from US-07"
+        "practice assignment derived from US-12"
       ],
-      "id": "01-classificacao-aplicacoes-appsec-engineer-l1-us-07",
+      "id": "01-classificacao-aplicacoes-appsec-engineer-l1-us-12",
       "phase": "design",
       "practice_id": "01-classificacao-aplicacoes:reforco-de-controlos-por-atributos-do-risco",
       "proportionality": "Obrigatório avaliar; reforça para L2 quando atributo desencadeia",
       "risk_level": "L1",
       "role": "appsec-engineer",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-07-reforco-de-controlos-por-atributos-do-risco",
-      "user_story_id": "01-classificacao-aplicacoes-us-07",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-12-reforco-de-controlos-por-atributos-do-risco",
+      "user_story_id": "01-classificacao-aplicacoes-us-12",
       "warnings": []
     },
     {
@@ -484,17 +484,17 @@
       "chapter_id": "01-classificacao-aplicacoes",
       "confidence": 0.86,
       "evidence": [
-        "practice assignment derived from US-07"
+        "practice assignment derived from US-12"
       ],
-      "id": "01-classificacao-aplicacoes-appsec-engineer-l2-us-07",
+      "id": "01-classificacao-aplicacoes-appsec-engineer-l2-us-12",
       "phase": "design",
       "practice_id": "01-classificacao-aplicacoes:reforco-de-controlos-por-atributos-do-risco",
       "proportionality": "Obrigatório avaliar; reforça para L3 quando atributo desencadeia",
       "risk_level": "L2",
       "role": "appsec-engineer",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-07-reforco-de-controlos-por-atributos-do-risco",
-      "user_story_id": "01-classificacao-aplicacoes-us-07",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-12-reforco-de-controlos-por-atributos-do-risco",
+      "user_story_id": "01-classificacao-aplicacoes-us-12",
       "warnings": []
     },
     {
@@ -503,17 +503,17 @@
       "chapter_id": "01-classificacao-aplicacoes",
       "confidence": 0.86,
       "evidence": [
-        "practice assignment derived from US-07"
+        "practice assignment derived from US-12"
       ],
-      "id": "01-classificacao-aplicacoes-appsec-engineer-l3-us-07",
+      "id": "01-classificacao-aplicacoes-appsec-engineer-l3-us-12",
       "phase": "design",
       "practice_id": "01-classificacao-aplicacoes:reforco-de-controlos-por-atributos-do-risco",
       "proportionality": "Já no topo; atributos exigem controlos mais fortes a montante e evidência reforçada",
       "risk_level": "L3",
       "role": "appsec-engineer",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-07-reforco-de-controlos-por-atributos-do-risco",
-      "user_story_id": "01-classificacao-aplicacoes-us-07",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-12-reforco-de-controlos-por-atributos-do-risco",
+      "user_story_id": "01-classificacao-aplicacoes-us-12",
       "warnings": []
     },
     {
@@ -522,17 +522,17 @@
       "chapter_id": "01-classificacao-aplicacoes",
       "confidence": 0.86,
       "evidence": [
-        "practice assignment derived from US-08"
+        "practice assignment derived from US-13"
       ],
-      "id": "01-classificacao-aplicacoes-grc-compliance-l1-us-08",
+      "id": "01-classificacao-aplicacoes-grc-compliance-l1-us-13",
       "phase": "govern",
       "practice_id": "01-classificacao-aplicacoes:interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
       "proportionality": "Aplicar interdições; aceitação informal só fora das condições interditas",
       "risk_level": "L1",
       "role": "grc-compliance",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-08-interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
-      "user_story_id": "01-classificacao-aplicacoes-us-08",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-13-interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
+      "user_story_id": "01-classificacao-aplicacoes-us-13",
       "warnings": []
     },
     {
@@ -541,17 +541,17 @@
       "chapter_id": "01-classificacao-aplicacoes",
       "confidence": 0.86,
       "evidence": [
-        "practice assignment derived from US-08"
+        "practice assignment derived from US-13"
       ],
-      "id": "01-classificacao-aplicacoes-grc-compliance-l2-us-08",
+      "id": "01-classificacao-aplicacoes-grc-compliance-l2-us-13",
       "phase": "govern",
       "practice_id": "01-classificacao-aplicacoes:interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
       "proportionality": "Interdições obrigatórias; aceitação com validação formal e registo",
       "risk_level": "L2",
       "role": "grc-compliance",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-08-interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
-      "user_story_id": "01-classificacao-aplicacoes-us-08",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-13-interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
+      "user_story_id": "01-classificacao-aplicacoes-us-13",
       "warnings": []
     },
     {
@@ -560,17 +560,17 @@
       "chapter_id": "01-classificacao-aplicacoes",
       "confidence": 0.86,
       "evidence": [
-        "practice assignment derived from US-08"
+        "practice assignment derived from US-13"
       ],
-      "id": "01-classificacao-aplicacoes-grc-compliance-l3-us-08",
+      "id": "01-classificacao-aplicacoes-grc-compliance-l3-us-13",
       "phase": "govern",
       "practice_id": "01-classificacao-aplicacoes:interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
       "proportionality": "Interdições obrigatórias; recusa automática se dependente de mecanismo não-determinístico ou sem revisão humana",
       "risk_level": "L3",
       "role": "grc-compliance",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-08-interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
-      "user_story_id": "01-classificacao-aplicacoes-us-08",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-13-interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
+      "user_story_id": "01-classificacao-aplicacoes-us-13",
       "warnings": []
     },
     {
@@ -579,17 +579,17 @@
       "chapter_id": "01-classificacao-aplicacoes",
       "confidence": 0.86,
       "evidence": [
-        "practice assignment derived from US-09"
+        "practice assignment derived from US-14"
       ],
-      "id": "01-classificacao-aplicacoes-grc-compliance-l1-us-09",
+      "id": "01-classificacao-aplicacoes-grc-compliance-l1-us-14",
       "phase": "plan",
       "practice_id": "01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
       "proportionality": "Mapeamento direto admissível; confirmação leve",
       "risk_level": "L1",
       "role": "grc-compliance",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-09-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
-      "user_story_id": "01-classificacao-aplicacoes-us-09",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-14-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
+      "user_story_id": "01-classificacao-aplicacoes-us-14",
       "warnings": []
     },
     {
@@ -598,17 +598,17 @@
       "chapter_id": "01-classificacao-aplicacoes",
       "confidence": 0.86,
       "evidence": [
-        "practice assignment derived from US-09"
+        "practice assignment derived from US-14"
       ],
-      "id": "01-classificacao-aplicacoes-grc-compliance-l2-us-09",
+      "id": "01-classificacao-aplicacoes-grc-compliance-l2-us-14",
       "phase": "plan",
       "practice_id": "01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
       "proportionality": "Mapeamento confirmado por análise de segurança e registado",
       "risk_level": "L2",
       "role": "grc-compliance",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-09-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
-      "user_story_id": "01-classificacao-aplicacoes-us-09",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-14-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
+      "user_story_id": "01-classificacao-aplicacoes-us-14",
       "warnings": []
     },
     {
@@ -617,17 +617,17 @@
       "chapter_id": "01-classificacao-aplicacoes",
       "confidence": 0.86,
       "evidence": [
-        "practice assignment derived from US-09"
+        "practice assignment derived from US-14"
       ],
-      "id": "01-classificacao-aplicacoes-grc-compliance-l3-us-09",
+      "id": "01-classificacao-aplicacoes-grc-compliance-l3-us-14",
       "phase": "plan",
       "practice_id": "01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
       "proportionality": "Confirmação formal por segurança; classificação por componente quando multi-módulo",
       "risk_level": "L3",
       "role": "grc-compliance",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--cascata-de-gates-de-validacao-us-05-em-contexto--us-09-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
-      "user_story_id": "01-classificacao-aplicacoes-us-09",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-14-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
+      "user_story_id": "01-classificacao-aplicacoes-us-14",
       "warnings": []
     },
     {

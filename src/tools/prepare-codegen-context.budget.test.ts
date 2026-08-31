@@ -94,7 +94,9 @@ const FIXTURES: readonly BaselineFixture[] = [
     // → +1 requirement in the activated set. Data growth, not a serving change.
     // 143 since P3 do ciclo MP1 (2026-08-31): R2:narrowing-de-sinais-SES (−8,
     // SES-001..008) — sem sinais de sessão na tarefa; regra de serving declarada.
-    citationIds: 143
+    // 152 since the v1.8.0 dev-build pin (2026-08-31): FIL-001..008 (catálogo novo,
+    // sinal uploading→files) + 1 da re-publicação do bundle. Data + declared signal.
+    citationIds: 152
   }
 ];
 
@@ -202,7 +204,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       citation_map: 3900,
       activated_scope: 3150,
       g2_entities: 3050,
-      rest: 1550,
+      rest: 1600, // re-baseline v1.8.0 FIL 2026-08-31 (medido 1.560; antes 1.550)
       total: 26700
     }
   },
@@ -229,14 +231,14 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       manual_grounding: 510,
       "g2_context.evidence_patterns": 1150,
       citation_map: 200,
-      activated_scope: 5200,
+      activated_scope: 5500, // re-baseline v1.8.0 FIL 2026-08-31 (medido 5.396; antes 5.200)
       g2_entities: 1000,
       rest: 980, // idem fixture2 (medido 914)
       // Gate original do EPIC: 8.500. Re-fixado em **8.800** pelo programme lead
       // (ratificação 2026-08-31, 0.20.0-beta.5): OPS-015 (pin v1.7.0 dev-build,
       // +223) + camada de ligações curada v3/v1.7.0 formal (controlos directos da
       // fixture com ids/descriptions mais longos, +129). Medido 8.746 (v1.7.0 formal).
-      total: 8900 // 🔴 gate hard da ESTÁVEL, medido P2 MP1 2026-08-31 (8.833 = 8.800 + selection ≈+33); a beta re-ratifica ao absorver
+      total: 9200 // 🔴 gate hard da ESTÁVEL, re-baseline v1.8.0 FIL 2026-08-31 (medido 9.102; antes 8.900/medido 8.833 pré-FIL); a beta re-ratifica ao absorver
     }
   },
   // minimal: ⟳ ADENDA s3b (2026-07-05, decisão do operador — EPIC §s3b): sem
@@ -272,13 +274,13 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       "g2_context.evidence_patterns": 560,
       citation_map: 180,
       // 5.070 até v1.6.1; 5.180 desde o dev-build v2.2 (medido 5.127, 2026-08-30).
-      activated_scope: 5180,
+      activated_scope: 5500, // re-baseline v1.8.0 FIL 2026-08-31 (medido 5.396; antes 5.180)
       g2_entities: 950,
       rest: 985, // idem fixture2
       // Hard s3b original: 8.000 (medido 7.639 + ~5%). Re-fixado em **8.100** pelo
       // programme lead (ratificação 2026-08-31): camada curada v3/v1.7.0 formal muda
       // os controlos directos da fixture. Medido 8.019 (v1.7.0 formal).
-      total: 8200 // 🔴 hard da ESTÁVEL, medido P2 MP1 2026-08-31 (8.107)
+      total: 8450 // 🔴 hard da ESTÁVEL, re-baseline v1.8.0 FIL 2026-08-31 (medido 8.375; antes 8.200/8.107 pré-FIL)
     }
   },
   // ultrathin: s3c (ADENDA 2026-07-05 do operador, REATIVADO no mesmo dia —
@@ -312,7 +314,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       manual_grounding: 165,
       "g2_context.evidence_patterns": 5,
       citation_map: 180,
-      activated_scope: 2410,
+      activated_scope: 2500, // re-baseline v1.8.0 FIL 2026-08-31 (medido 2.423; antes 2.410)
       g2_entities: 950,
       rest: 1055, // idem fixture2
       total: 4840 // 🔴 hard s3c (medido 4.606 + ~5%)
