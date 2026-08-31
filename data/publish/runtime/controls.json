@@ -132,7 +132,7 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.8,
         "mode": "derived",
-        "n_links": 33,
+        "n_links": 45,
         "source_requirement_ids": [
           "API-002",
           "API-003",
@@ -156,9 +156,21 @@
           "ERR-005",
           "ERR-006",
           "ERR-007",
+          "FIL-001",
+          "FIL-002",
+          "FIL-003",
+          "FIL-004",
+          "FIL-005",
+          "FIL-006",
+          "FIL-007",
+          "FIL-008",
           "IDE-003",
           "INT-001",
           "INT-006",
+          "INT-009",
+          "INT-010",
+          "INT-011",
+          "INT-012",
           "VAL-001",
           "VAL-002",
           "VAL-003",
@@ -416,8 +428,10 @@
       "abstraction_level": "technical",
       "aliases": [
         "Algoritmos e primitivas criptográficas aprovadas",
+        "Apagamento e exportação de dados pessoais a pedido do titular",
         "Assinatura e integridade de mensagens",
         "Certificados e HSTS",
+        "Conceito de PII em registos (logging de dados pessoais)",
         "Criptografia aplicacional",
         "Encriptação de dados em repouso",
         "Encriptação em trânsito (TLS)",
@@ -425,6 +439,7 @@
         "Hashing adaptativo de passwords",
         "Integridade verificável de dados (MAC, assinatura, checksum)",
         "Mascaramento de dados sensíveis em logs e respostas",
+        "Minimização e retenção de dados pessoais",
         "Prevenção de caching de dados sensíveis no cliente",
         "Proibição de protocolos sem cifra",
         "Protecção de dados sensíveis"
@@ -438,7 +453,7 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.8,
         "mode": "derived",
-        "n_links": 15,
+        "n_links": 21,
         "source_requirement_ids": [
           "API-005",
           "ENC-001",
@@ -454,6 +469,12 @@
           "INT-003",
           "INT-004",
           "INT-005",
+          "INT-011",
+          "PRI-001",
+          "PRI-002",
+          "PRI-003",
+          "PRI-004",
+          "PRI-005",
           "SES-004"
         ],
         "via": "requirement_control_links"
@@ -1169,9 +1190,9 @@
         "L3": true
       },
       "applicable_levels_provenance": {
-        "min_link_confidence": 0.87,
+        "min_link_confidence": 0.8,
         "mode": "derived",
-        "n_links": 7,
+        "n_links": 8,
         "source_requirement_ids": [
           "GOV-001",
           "GOV-002",
@@ -1179,7 +1200,8 @@
           "GOV-008",
           "GOV-010",
           "GOV-011",
-          "GOV-012"
+          "GOV-012",
+          "PRI-004"
         ],
         "via": "requirement_control_links"
       },
@@ -1810,14 +1832,15 @@
         "L3": true
       },
       "applicable_levels_provenance": {
-        "min_link_confidence": 0.87,
+        "min_link_confidence": 0.8,
         "mode": "derived",
-        "n_links": 16,
+        "n_links": 17,
         "source_requirement_ids": [
           "CFG-001",
           "CFG-002",
           "CFG-004",
           "CFG-007",
+          "FIL-005",
           "IAC-001",
           "IAC-002",
           "IAC-003",
@@ -2027,14 +2050,16 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.8,
         "mode": "derived",
-        "n_links": 31,
+        "n_links": 34,
         "source_requirement_ids": [
           "API-004",
           "API-007",
           "AUT-010",
           "CFG-007",
           "ERR-007",
+          "FIL-007",
           "INT-007",
+          "INT-010",
           "LOG-001",
           "LOG-002",
           "LOG-003",
@@ -2059,7 +2084,8 @@
           "OPS-012",
           "OPS-013",
           "OPS-014",
-          "OPS-015"
+          "OPS-015",
+          "PRI-005"
         ],
         "via": "requirement_control_links"
       },

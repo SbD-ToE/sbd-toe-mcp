@@ -94,7 +94,9 @@ const FIXTURES: readonly BaselineFixture[] = [
     // → +1 requirement in the activated set. Data growth, not a serving change.
     // 143 since P3 do ciclo MP1 (2026-08-31): R2:narrowing-de-sinais-SES (−8,
     // SES-001..008) — sem sinais de sessão na tarefa; regra de serving declarada.
-    citationIds: 143
+    // 143 até v1.7.0; 152 desde o dev-build v1.8.0 (a fixture é um endpoint de
+    // upload — o catálogo FIL aplica-se-lhe de facto: FIL ×8 + 1 controlo directo).
+    citationIds: 152
   }
 ];
 
@@ -202,7 +204,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       citation_map: 3900,
       activated_scope: 3150,
       g2_entities: 3050,
-      rest: 1550,
+      rest: 1600, // v1.8.0: FIL na fixture (medido 1.560; = estável)
       total: 26700
     }
   },
@@ -229,7 +231,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       manual_grounding: 510,
       "g2_context.evidence_patterns": 1150,
       citation_map: 200,
-      activated_scope: 5200,
+      activated_scope: 5500, // v1.8.0 FIL (medido 5.396; = estável)
       g2_entities: 1000,
       rest: 980, // MP1 (beta.6): completeness_report.selection vive em `rest` (medidos 918/914; = estável)
       // Gate original do EPIC: 8.500. Re-fixado em **8.800** pelo programme lead
@@ -272,7 +274,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       "g2_context.evidence_patterns": 560,
       citation_map: 180,
       // 5.070 até v1.6.1; 5.180 desde o dev-build v2.2 (medido 5.127, 2026-08-30).
-      activated_scope: 5180,
+      activated_scope: 5500, // v1.8.0 FIL (medido 5.396; = estável)
       g2_entities: 950,
       rest: 985, // MP1 selection em `rest` (medidos 917/913; = estável) // s4: +53 medidos (repeat_call_hint)
       // Hard s3b original: 8.000 (medido 7.639 + ~5%). Re-fixado em **8.100** pelo
@@ -312,7 +314,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       manual_grounding: 165,
       "g2_context.evidence_patterns": 5,
       citation_map: 180,
-      activated_scope: 2410,
+      activated_scope: 2500, // v1.8.0 FIL (medido 2.423; = estável)
       g2_entities: 950,
       rest: 1055, // MP1 selection em `rest` (medidos 981/977; = estável)
       total: 4840 // 🔴 hard s3c (medido 4.606 + ~5%)
@@ -461,7 +463,29 @@ function idsAtPath(payload: unknown, path: string): string[] {
  */
 const KNOWN_TOTAL_DEVIATIONS: Readonly<
   Record<string, { measured: number; tolerated: number; since: string; reason: string }>
-> = {};
+> = {
+  "standard:fixture2": {
+    measured: 9102,
+    tolerated: 9200,
+    since: "2026-08-31",
+    reason:
+      "dev-build KG v1.8.0 (contract v1.15): the fixture IS a file-upload endpoint and " +
+      "the new FIL catalogue correctly applies (FIL ×8 + direct control; citations 143→152). " +
+      "Measured 9,102 — identical to the stable line, whose gate re-baselined to 9,200. " +
+      "PROPOSED ceiling 9,200 (= stable); the ratified 8,800 stays the gate on record " +
+      "until the programme lead ratifies (CHANGELOG, beta.6 v1.8.0 wave)."
+  },
+  "minimal:fixture2": {
+    measured: 8375,
+    tolerated: 8450,
+    since: "2026-08-31",
+    reason:
+      "dev-build KG v1.8.0 (contract v1.15): FIL applies to the upload fixture. Measured " +
+      "8,375 — identical to the stable line (gate 8,450 there). PROPOSED ceiling 8,450 " +
+      "(= stable); the ratified 8,100 stays the gate on record until the programme lead " +
+      "ratifies (CHANGELOG, beta.6 v1.8.0 wave)."
+  }
+};
 
 function withKnownDeviation(
   budgets: SectionBudgets,

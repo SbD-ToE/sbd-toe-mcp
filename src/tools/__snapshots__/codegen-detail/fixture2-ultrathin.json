@@ -8,7 +8,7 @@
     "detail": "ultrathin"
   },
   "activation_trace_ref": {
-    "entries": 13,
+    "entries": 15,
     "note": "activation_trace elided at detail=ultrathin — re-call with debug=true to include it (always inline at detail=full)."
   },
   "provenance_legend": {
@@ -182,6 +182,46 @@
         "type": "base"
       },
       {
+        "requirement_id": "FIL-001",
+        "name": "Limite de tamanho processável por upload",
+        "type": "base"
+      },
+      {
+        "requirement_id": "FIL-002",
+        "name": "Validação de tipo por conteúdo, não só por extensão",
+        "type": "base"
+      },
+      {
+        "requirement_id": "FIL-003",
+        "name": "Tratamento seguro de arquivos comprimidos",
+        "type": "base"
+      },
+      {
+        "requirement_id": "FIL-004",
+        "name": "Quota de armazenamento por utilizador",
+        "type": "base"
+      },
+      {
+        "requirement_id": "FIL-005",
+        "name": "Armazenamento fora da árvore servida, com nomes gerados",
+        "type": "base"
+      },
+      {
+        "requirement_id": "FIL-006",
+        "name": "Serving de ficheiros em contexto inerte",
+        "type": "base"
+      },
+      {
+        "requirement_id": "FIL-007",
+        "name": "Rastreio anti-malware de ficheiros de origem não confiável",
+        "type": "base"
+      },
+      {
+        "requirement_id": "FIL-008",
+        "name": "Limite de dimensão de imagens (pixel flood)",
+        "type": "base"
+      },
+      {
         "requirement_id": "LOG-001",
         "name": "Registo de eventos críticos",
         "type": "base"
@@ -341,6 +381,13 @@
         "control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
         "name": "Identidade, autenticação e sessões aplicacionais",
         "domain": "identity",
+        "control_type": "preventive",
+        "confidence": "direct"
+      },
+      {
+        "control_id": "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+        "name": "Infraestrutura como código governada",
+        "domain": "infrastructure",
         "control_type": "preventive",
         "confidence": "direct"
       },
@@ -569,7 +616,7 @@
   },
   "manual_grounding": {
     "total_entries": 69,
-    "manual_commit_sha": "8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac",
+    "manual_commit_sha": "f78dfe734a83b01fa9283c2df5a3eb0ba9528001",
     "groups_ref": {
       "tool": "prepare_sbd_toe_codegen_context",
       "with": {
@@ -587,8 +634,8 @@
   "citations": {
     "runtime_v0": {
       "source_data": {
-        "data/publish/runtime/requirements.json": 61,
-        "data/publish/runtime/controls.json": 10
+        "data/publish/runtime/requirements.json": 69,
+        "data/publish/runtime/controls.json": 11
       },
       "ids_from": [
         "activated_scope.requirements[].requirement_id",
@@ -625,18 +672,18 @@
     "named_v1_entities": 55,
     "unnamed_v1_entities": 14,
     "selection": {
-      "eligible": 109,
-      "selected": 61,
-      "narrowed_out_categories": 7,
-      "narrowed_out_requirements": 48,
+      "eligible": 125,
+      "selected": 69,
+      "narrowed_out_categories": 8,
+      "narrowed_out_requirements": 56,
       "narrowed_out_ref": {
         "tool": "select_sbd_toe_requirements",
         "note": "Categorias elegíveis sem sinal na tarefa foram excluídas pelo narrowing MP1 — a lista completa (por categoria, com razão) vem de select_sbd_toe_requirements com o mesmo contexto."
       }
     },
-    "evidence_patterns_total": 153,
+    "evidence_patterns_total": 186,
     "evidence_patterns_returned": 0,
-    "evidence_patterns_capped": 153,
+    "evidence_patterns_capped": 186,
     "evidence_pattern_cap": 0,
     "evidence_patterns_rest": {
       "tool": "prepare_sbd_toe_codegen_context",

@@ -1877,13 +1877,13 @@
         "14-governanca-contratacao"
       ],
       "confidence": null,
-      "description": "Release Gate must be produced and retained as auditable evidence for practices such as Adoção de modelo de classificação alternativo (DRP/BIA) mapeado para E/D/I, Interdições de aceitação de risco em automação e apoio à decisão, Mapeamento de ameaças por nível de risco.",
+      "description": "Release Gate must be produced and retained as auditable evidence for practices such as Gates automáticos em CI/CD para requisitos de segurança, Gate de controlo de consistência no CI/CD, Gate arquitetural antes do Go live.",
       "evidence": [
         "control CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34 references release_gate",
-        "practice 01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i matched alias 'gates'",
-        "practice 01-classificacao-aplicacoes:interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao matched alias 'gates'",
-        "practice 01-classificacao-aplicacoes:mapeamento-de-ameacas-por-nivel-de-risco matched alias 'gates'",
-        "practice 01-classificacao-aplicacoes:producao-e-manutencao-do-inventario-central-com-autoridade-de-aprovacao-proporcional matched alias 'gates'"
+        "practice 02-requisitos-seguranca:gates-automaticos-em-ci-cd-para-requisitos-de-seguranca matched alias 'gates'",
+        "practice 03-threat-modeling:gate-de-controlo-de-consistencia-no-ci-cd matched alias 'gate'",
+        "practice 04-arquitetura-segura:gate-arquitetural-antes-do-go-live matched alias 'gate'",
+        "practice 05-dependencias-sbom-sca:sca-automatico-com-gates matched alias 'gates'"
       ],
       "mandatory": true,
       "requirement_id": "REQ-release-000",
@@ -1891,11 +1891,6 @@
         "CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34"
       ],
       "source_practice_ids": [
-        "01-classificacao-aplicacoes:adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
-        "01-classificacao-aplicacoes:interdicoes-de-aceitacao-de-risco-em-automacao-e-apoio-a-decisao",
-        "01-classificacao-aplicacoes:mapeamento-de-ameacas-por-nivel-de-risco",
-        "01-classificacao-aplicacoes:producao-e-manutencao-do-inventario-central-com-autoridade-de-aprovacao-proporcional",
-        "01-classificacao-aplicacoes:reforco-de-controlos-por-atributos-do-risco",
         "02-requisitos-seguranca:gates-automaticos-em-ci-cd-para-requisitos-de-seguranca",
         "03-threat-modeling:gate-de-controlo-de-consistencia-no-ci-cd",
         "04-arquitetura-segura:gate-arquitetural-antes-do-go-live",

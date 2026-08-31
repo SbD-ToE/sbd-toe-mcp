@@ -77,16 +77,17 @@ Prerelease tags issued on `0.20-beta` (annotated; immutable like every pushed ta
 | v0.20.0-beta.3 | 5b34638 (`5b346387cdfd48146d64422c0e7a217d9b3f320f`; annotated tag object `48cdd14d`) | 2026-08-29 | formal KG `v1.6.0` (`baf5913b…`, contract v1.11, Manual v1.7.0) — same pin and content as stable v0.10.2 | `beta` (superseded) |
 | v0.20.0-beta.4 | d89b30d (`d89b30dfacbc89c023ec53c1b5b882b77a9f86a9`; annotated tag object `6291f50d`) | 2026-08-30 | formal KG `v1.6.1` (`df6920cb…`, contract v1.12, Manual v1.7.1) — same pin and content as stable v0.10.3 | `beta` (superseded) |
 | v0.20.0-beta.5 | 62a1eda (`62a1eda3982147e44369c8a9271ca3697af2680f`; annotated tag object `5165a04a`) | 2026-08-31 | formal KG `v1.7.0` (`29156b86…`, contract v1.14, ontology v2.2, Manual v1.7.1) — same pin and content as stable v0.10.4 | `beta` (superseded) |
-| v0.20.0-beta.6 | *(prepared — annotated tag only after the Orchestrator verifies both lines side by side, per the MP1 cycle rule)* | 2026-08-31 | formal KG `v1.7.0` (unchanged) + MP1 selection operation (= stable 0.11.0 prepared) | *(pending)* |
+| v0.20.0-beta.6 | 322c38f (`322c38f4dc440aad40bf110b8e20d3d40f623318`; annotated tag object `71098136`) | 2026-08-31 | formal KG `v1.7.0` + MP1 selection operation (= stable 0.11.0 → `102b8166`) | `beta` (`latest` = 0.11.0) |
 
 ## Current working state
 
 **Current branch:** `0.20-beta` — this copy of the registry lives on the beta branch; the
 stable-line rows mirror master (`102b816`, 0.11.0 prepared) and are maintained there.
-**Beta line:** working state v0.20.0-beta.6 **prepared** (2026-08-31; MP1 cycle absorbed — engine,
-select tool, R1/R2, teaching layer; same KG `v1.7.0` pin); tag `v0.20.0-beta.6` and npm publish only
-after the Orchestrator verifies stable 0.11.0 and this line side by side. Last published prerelease:
-v0.20.0-beta.5 → `62a1eda3` (npm `beta`). Not a published/frozen state.
+**Beta line:** v0.20.0-beta.6 published 2026-08-31 (tag on `322c38f4` after the Orchestrator's
+side-by-side with stable 0.11.0; npm `beta`). Since 2026-08-31 the beta serving line is pinned to
+the dev-build `kg-v1-manual-v1.8.0-aligned-2026-08-31` (sha256 `ad0fc96c…`, contract v1.15, 273
+req/29 cat — FIL/PRI), unreleased: the npm `beta` still serves formal v1.7.0. Not a
+published/frozen state.
 **Most recent published state:** icsme-2026-tool-demonstration / v0.9.0 (2026-05-21)
 **Most recent release:** v0.10.4 (2026-08-30) — served bundle: formal KG release
 `v1.7.0` (commit `894af32a85d6a50f648f10d8a643848e806e533e` = `mcp-stable`; asset sha256
@@ -95,7 +96,9 @@ v1.14), ontology `sbdtoe-ontology-v2.2` (`2be86e8b`), Manual v1.7.1
 (`8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac`). Tag `v0.10.4` = squash commit of the PR
 introducing this row (recorded here once created). Prior: v0.10.3 (2026-08-30,
 `06f8bbaa`, KG v1.6.1), v0.10.2 (2026-08-29, `31aa22af`, KG v1.6.0).
-**Expected next freeze event:** none scheduled
+**Expected next freeze event:** the formal KG batch v1.9.0 → stable 0.12.0 / next beta
+(lead's call). Tags `v0.11.0` (`102b8166`) and `v0.20.0-beta.6` (`322c38f4`) were cut
+2026-08-31 after the two-line side-by-side verification.
 
 ## Cross-references
 
@@ -167,3 +170,4 @@ prohibits tag deletion without explicit authorisation):
 | 2026-08-31 | Beta-line copy: stable rows synced from master (v0.10.4, KG v1.7.0); v0.20.0-beta.5 registered in the prerelease table (tag on the commit introducing this row). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-31 | v0.20.0-beta.5 tag commit recorded (`62a1eda3`); npm `beta` publish + GitHub pre-release confirmed (run 33376552153). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-31 | Beta-line copy: MP1 cycle absorbed (beta.6 prepared row; stable rows synced incl. 0.11.0 prepared). No published/frozen-state rows changed; no tag yet. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-31 | v0.20.0-beta.6 tag commit recorded (`322c38f4`; npm `beta` confirmed; stable `v0.11.0` → `102b8166`). Dev-build `kg-v1-manual-v1.8.0-aligned-2026-08-31` pinned on the beta serving line (sha256 `ad0fc96c…`, contract v1.15, FIL/PRI). No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |

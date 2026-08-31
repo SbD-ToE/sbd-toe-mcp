@@ -86,6 +86,15 @@ const R2_RULE_ID = "R2:narrowing-de-sinais-SES";
 const SESSION_SIGNAL_PATTERN =
   /sess[ãa]o|session|login|logout|sign.?in|\bjwt\b|cookie|token de utilizador|user token|refresh token|autentica[çc][ãa]o de utilizador|user authentication|utilizador(es)? autenticado/i;
 
+/**
+ * SES-008-por-tecnologia (decisão do Author, 2026-08-31 — fecha o paradoxo GC-08):
+ * o sinal JWT/token de utilizador activa SES-008 (scope/TTL/revogação de tokens JWT)
+ * INDEPENDENTEMENTE do nível, declarado no trace — a tecnologia impõe a guidance,
+ * o filtro de nível continua a mandar em tudo o resto.
+ */
+const SES008_RULE_ID = "SES-008-por-tecnologia";
+const SES008_TECH_PATTERN = /\bjwt\b|token de utilizador|user token|bearer token|refresh token/i;
+
 const AGENTIC_WAVE_PATTERN = /\bagente|\bagent\b|agêntic|agentic|autonom|kill.?switch|mandate|tool.?call/i;
 
 export interface SelectionTraceEntry {
@@ -335,6 +344,32 @@ export function runSelectionWithActivation(
     }
   }
 
+  // SES-008-por-tecnologia (Author): JWT/user-token signal selects SES-008 at any level.
+  let ses008Applied = false;
+  if (SES008_TECH_PATTERN.test(input.task ?? "") && !selected.some((s) => s.requirement_id === "SES-008")) {
+    const r = ontology.requirements.find((x) => x.requirement_id === "SES-008");
+    if (r) {
+      pushSelected(r, [
+        {
+          layer: "named_rule",
+          source: "named_rule",
+          trigger: SES008_RULE_ID,
+          score: 0.95,
+          reason:
+            "regra nomeada SES-008-por-tecnologia (decisão do Author, 2026-08-31): o sinal JWT/token de utilizador activa SES-008 independentemente do nível — a tecnologia impõe a guidance de scope/TTL/revogação",
+        },
+      ]);
+      ses008Applied = true;
+      const parked = narrowedByCategory.get("SES");
+      if (parked) {
+        const at = parked.indexOf("SES-008");
+        if (at >= 0) parked.splice(at, 1);
+        if (parked.length === 0) narrowedByCategory.delete("SES");
+      }
+      if (!baselineEligible.includes(r) && !domainEligible.includes(r)) extraEligible += 1;
+    }
+  }
+
   selected.sort((a, b) => a.requirement_id.localeCompare(b.requirement_id));
   const narrowed_out: NarrowedOutGroup[] = [...narrowedByCategory.entries()]
     .sort(([a], [b]) => a.localeCompare(b))
@@ -354,6 +389,9 @@ export function runSelectionWithActivation(
   }
   if (r2Applied) {
     notes.push(`${R2_RULE_ID}: categoria SES excluída por narrowing de sinais — sem sinais de sessão/login/token de utilizador na tarefa.`);
+  }
+  if (ses008Applied) {
+    notes.push(`${SES008_RULE_ID}: SES-008 seleccionado por sinal de tecnologia (JWT/token de utilizador), independente do nível — decisão do Author 2026-08-31.`);
   }
   if (agentsActive && agentsWave.length > 0) {
     notes.push(`agents_wave: ${agentsWave.length} requisitos domain-specific seleccionados pelo vocabulário agêntico publicado.`);

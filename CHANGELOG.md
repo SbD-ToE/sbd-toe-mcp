@@ -3,15 +3,60 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-31
 purpose: documentation
-reasoning: v0.20.0-beta.6 (beta line, prepared — tag only after the Orchestrator verifies both lines) — absorbs the complete MP1 cycle from master (ef52089 P2 engine+select tool+scope gate+consult mode:index, 7368dcb P3 named rules R1/R2+signals+one-signal-one-surface, 102b816 R3 teaching layer, plus the #56 Axis H runner base): beta keeps its own diet (budgets, snapshots, requirementCategoryOf elision) and concerns:["agents"]; Axis H 10/10; payload re-baseline limited to the `rest` section (MP1 selection summary), totals unchanged. v0.20.0-beta.5 and earlier below.
+reasoning: Unreleased (beta line) — KG dev-build v1.8.0 pinned (contract v1.15, FIL/PRI, master 17f158e absorbed): declared selection signals, R-image homonym, SES-008-por-tecnologia, golden re-run 10/10 with 4 gap→covered transitions, fixture-2 ceilings PROPOSED 9,200/8,450 (ratification pending). v0.20.0-beta.6 published 2026-08-31 (tag on 322c38f, npm beta) after the Orchestrator's side-by-side; earlier entries below.
 review_status: pending-human-review
 ---
 
 # Changelog
 
-## 0.20.0-beta.6 — 2026-08-31 (prepared — tag v0.20.0-beta.6 only after the Orchestrator verifies both lines, per the MP1 cycle rule)
+## Unreleased (beta line) — KG dev-build v1.8.0 pinned: FIL/PRI served + declared signals (2026-08-31; absorbs master `17f158e7`, PR #61)
 
-**Prerelease (beta line), prepared.** Absorbs the complete **MP1 cycle** from `master` —
+**No tag, no npm** — the formal batch (KG v1.9.0 → stable 0.12.0 / next beta) is the lead's
+call. Serving line pinned to dev-build **`kg-v1-manual-v1.8.0-aligned-2026-08-31`** (sha256
+`ad0fc96c92fb9831b169c99d729b2deaaf1247928827728b4979ef4fe75f4dbf`, verified against the
+sidecar by `sync-bundle`, idempotent; contract **v1.15**; pin identical to master): **273
+requirements / 29 categories** (+FIL 8, +PRI 5, +INT 4), 305 links, EP 273/273. The npm
+`beta` (0.20.0-beta.6) still serves formal v1.7.0.
+
+Absorbed from #61 (conflict rules: beta keeps its own diet/budget gates/snapshots/agents
+heuristics; `src/index.ts` untouched by #61): `files`→FIL / `privacy`→PRI signals (EN+PT,
+Manual-anchored; `data_sensitivity: personal|regulated` → PRI), **R-image** homonym
+disambiguation (docker/registry/container → CNT vs file/upload/photo → FIL; TC-F-14),
+**`SES-008-por-tecnologia`** (JWT/user-token selects SES-008 at any level, named in the
+trace; declared levelGuard exemption in the Axis-H runner; TC-F-15), the "uploading" gerund
+fix, golden-case re-baseline (273/29) and scenarios TC-F-14/15.
+
+### Verified on this line (2026-08-31)
+
+- **Golden re-run: 10 PASS / 0 / 0** (coverage 100%, strict precision 100%; oracle
+  untouched) — the four registered gaps flip to **covered**: GC-01 → FIL (29/29),
+  GC-06 → PRI (16/16), GC-08 → SES-008 by named rule (35/35), GC-10 → INT-009..012
+  (10/10); "transição lacuna → coberto" lines in
+  `docs/acceptance-runs/2026-08-31-v180-axis-h-selection-v0.20.0-beta.6.{md,json}`.
+- Live: FIL upload case → FIL ×8 at all 4 `detail` levels; PRI case
+  (`data_sensitivity: personal` + «dados pessoais») → PRI ×5 at all 4 levels; R-image:
+  docker → CNT ×11 / FIL 0, photo → FIL ×8 / CNT 0.
+- `eval:acceptance` (`2026-08-31-v180-v0.20.0-beta.6-acceptance`): **119 scenarios, 96
+  executed — 78 PASS · 18 PART · 0 FAIL · 23 SKIP; gate E PASS, no regression**;
+  TC-F-14/15 PASS; Axis H 10/10; 22/23 tools (`trace_sbd_toe_graph` scenario = Axis G,
+  still open).
+- `trace_sbd_toe_graph` deterministic; RDF-projection source `requirement_control_links`
+  282 → **305**, test re-baselined (141 rule + 148 recalc + 16 curated).
+- **Payload budgets — fixture 2 is a file-upload endpoint and FIL correctly applies**
+  (citations 143 → **152**; f1 unchanged 104): measured f2 standard **9,102** / minimal
+  **8,375** — identical to the stable line — **above the ratified 8,800/8,100**. Handled as
+  PROPOSED ceilings in `KNOWN_TOTAL_DEVIATIONS` (9,200 / 8,450, = the stable's
+  re-baselined gates; the ratified gates stay on record) — **ratification by the programme
+  lead requested**. Sections re-baselined (= stable): rest-full 1,600 (1,560),
+  activated_scope 5,500/5,500/2,500 (5,396/5,396/2,423). Ultrathin 4,829/4,840 within.
+  Golden snapshots: taken from master's regeneration and verified byte-identical to this
+  line's output (`vitest -u` produced zero changes) — diff = FIL additions + bundle
+  provenance (`manual_commit_sha` → `f78dfe73`).
+- Suite **727/727** · `npm run check` ✅.
+
+## 0.20.0-beta.6 — 2026-08-31 (published 2026-08-31: annotated tag `v0.20.0-beta.6` on `322c38f4`, npm `beta`, after the Orchestrator side-by-side with stable 0.11.0 → `v0.11.0` on `102b8166`)
+
+**Prerelease (beta line).** Absorbs the complete **MP1 cycle** from `master` —
 `ef52089` (#58, P2: selection engine + `select_sbd_toe_requirements` + new scope gate +
 declared activators + `consult` `mode:"index"`), `7368dcb` (#59, P3: named rules
 `R1:principal-nao-humano` / `R2:narrowing-de-sinais-SES` + missing signals +
