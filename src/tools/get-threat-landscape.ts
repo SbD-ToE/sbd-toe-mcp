@@ -22,6 +22,7 @@ import {
   resolveRequirementBundle,
   resolveThreatChapterNumber
 } from "./ontology-loader.js";
+import { servedKgReleaseTag } from "../version-info.js";
 import { _resolveConsultResult } from "./consult-security-requirements.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { threatLandscapeAffordances } from "../serving/affordances.js";
@@ -47,6 +48,8 @@ export interface ThreatWithConfidence extends Threat {
 }
 
 export interface McpProvenance {
+  /** Compact version stamp: kg release_tag of the served pin (0.13.0). */
+  kg: string;
   content_type: "canonical" | "derived" | "inferred";
   produced_by: string;
   source_data: string;
@@ -327,6 +330,7 @@ export function handleGetThreatLandscape(
   return {
     ...full,
     provenance: {
+      kg: servedKgReleaseTag(),
       content_type: "derived",
       produced_by: "threat_resolution_pipeline",
       source_data:

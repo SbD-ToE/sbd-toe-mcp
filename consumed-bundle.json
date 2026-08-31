@@ -8,7 +8,7 @@
     "release_tag": "v1.9.0",
     "release_sha256": "11153c85d8cb16e022f2be2d999ba131d437275becbbe6dd6b5556915b71f069",
     "source": "release",
-    "release_ref": "Shiftleftpt/sbd-toe-knowledge-graph@v1.9.0",
+    "release_ref": "SbD-ToE/sbd-toe-knowledge-graph@v1.9.0",
     "surface_built_at": "2026-08-31T18:36:58.456540+00:00",
     "tag_scheme": "semver",
     "synced_at": "2026-08-31",

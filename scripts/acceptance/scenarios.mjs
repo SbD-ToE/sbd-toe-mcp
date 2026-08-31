@@ -383,6 +383,29 @@ export const scenarios = [
       const b = await c.tool("select_sbd_toe_requirements", { risk_level: "L1", task: "SPA com login e sessão de utilizador; app interna de baixo risco" }); if (!b.ok) return fail(b.error);
       if (b.data.selection.selected.some((x) => x.requirement_id === "SES-008")) return fail("SES-008 selected without a JWT/user-token signal (level filter must rule)");
       return ok("JWT@L1 → SES-008 com regra nomeada no trace; sem JWT → nível manda (SES-008 fora)"); } },
+  { id: "TC-F-16", axis: "F", title: "read_sbd_toe_resource (0.13.0): espelho de resources/read — estático, templado e URI desconhecido declarado", tool: "read_sbd_toe_resource",
+    run: async (c) => {
+      const v = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/version" }); if (!v.ok) return fail(v.error);
+      const vp = JSON.parse(v.data.content); if (!vp.kg?.release_tag || !vp.manual?.tag) return fail("version payload without kg/manual provenance");
+      if (v.data.provenance?.kg !== vp.kg.release_tag) return fail("tool provenance.kg stamp mismatch");
+      const t = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/codegen-instructions/codegen" }); if (!t.ok) return fail(`templated URI failed: ${t.error}`);
+      const tp = JSON.parse(t.data.content); if (!tp || t.data.mimeType !== "application/json") return fail("codegen-instructions not materialized as JSON");
+      const u = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/nope" });
+      if (u.ok) return fail("unknown URI did not error");
+      if (!String(u.error).includes("sbd://toe/version") || !String(u.error).includes("codegen-instructions")) return fail("unknown-URI error does not list the valid URIs (never-silent)");
+      return ok(`version (kg=${vp.kg.release_tag}) + templated codegen-instructions via tool; unknown URI → erro declarado com lista derivada`); } },
+  { id: "TC-F-17", axis: "F", title: "stamp de versão por resposta + inspect com proveniência do pin (0.13.0)", tool: "consult_security_requirements + inspect_sbd_toe_retrieval",
+    run: async (c) => {
+      const pin = JSON.parse((await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/version" })).data.content);
+      const r = await c.tool("consult_security_requirements", { risk_level: "L2", concerns: ["logging"] }); if (!r.ok) return fail(r.error);
+      if (r.data.provenance?.kg !== pin.kg.release_tag) return fail(`consult provenance.kg=${r.data.provenance?.kg} ≠ pin ${pin.kg.release_tag}`);
+      const s = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Adicionar logging de auditoria ao serviço" }); if (!s.ok) return fail(s.error);
+      if (s.data.provenance?.kg !== pin.kg.release_tag) return fail("select provenance.kg missing");
+      const i = await c.tool("inspect_sbd_toe_retrieval", { question: "session token TTL" }); if (!i.ok) return fail(i.error);
+      const txt = typeof i.data === "string" ? i.data : (i.data ? JSON.stringify(i.data) : String(i.text ?? i.raw ?? ""));
+      if (!txt.includes("Pin servido") || !txt.includes(pin.kg.release_tag)) return fail("inspect does not present the consumed-bundle pin provenance");
+      if (/run_id=n\/d/.test(txt)) return fail("inspect still shows run_id=n/d (undeclared)");
+      return ok(`provenance.kg=${pin.kg.release_tag} em consult+select; inspect apresenta o Pin servido (fim do n/d não-declarado)`); } },
 
   // ───────────────────────── Axis H — selection vs golden oracle (measurement, NOT gate) ─────────────────────────
   // Oracle: golden-selection-cases.md v1 (programme lead's, read-only). One scenario per

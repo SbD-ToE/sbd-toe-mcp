@@ -11,6 +11,7 @@
  *   4. Normalize role and phase using canonical runtime entities
  */
 
+import { servedKgReleaseTag } from "../version-info.js";
 import type { Practice, PracticeAssignment, UserStory } from "./ontology-loader.js";
 import { getOntologyData, resolvePhaseId, resolveRoleId } from "./ontology-loader.js";
 import { _resolveConsultResult } from "./consult-security-requirements.js";
@@ -129,6 +130,8 @@ export interface GetGuideByRoleResult {
 }
 
 export interface McpProvenance {
+  /** Compact version stamp: kg release_tag of the served pin (0.13.0). */
+  kg: string;
   content_type: "canonical" | "derived" | "inferred";
   produced_by: string;
   source_data: string;
@@ -356,6 +359,7 @@ export function handleGetGuideByRole(
 
   return {
     provenance: {
+      kg: servedKgReleaseTag(),
       content_type: "derived",
       produced_by: "guide_resolution_pipeline",
       source_data:

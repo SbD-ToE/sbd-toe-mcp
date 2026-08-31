@@ -10,3 +10,7 @@
 ## Update — lote formal (2026-08-31)
 - [x] Re-pin release v1.9.0 (sha ✓; zero-delta); tectos ratificados 9.200/8.450; re-corrida: 10/10 sem divergência, gate E PASS, 689/689
 - [ ] PR → merge → tag `v0.12.0` → npm `latest` → verificação e report final
+
+## Update — serving batch 0.13.0 (2026-09-01)
+- [x] read_sbd_toe_resource + stamp provenance.kg + inspect pin + varrimento + release_ref + ensino; eval 121 cenários 0 FAIL, ouro 10/10, 23/23 tools; tectos intactos
+- [ ] PR → merge → tag v0.13.0 → npm latest → report

@@ -54,6 +54,7 @@ import {
   type RegulatoryPlaybook,
   resolveRegulatoryFramework
 } from "./regulatory-overlay-loader.js";
+import { servedKgReleaseTag } from "../version-info.js";
 import { expandQueryWithAliases } from "../backend/semantic-index-gateway.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { requirementCategoryOf } from "../serving/requirement-id.js";
@@ -395,6 +396,8 @@ export interface PrepareCodegenContextResultReady {
   llm_codegen_instructions: string[];
   security_rationale_template: SecurityRationaleTemplate;
   provenance: {
+    /** Compact version stamp: kg release_tag of the served pin (0.13.0). */
+    kg: string;
     runtime_v0: string;
     runtime_v1: string;
     overlay: string | "absent";
@@ -3793,6 +3796,7 @@ function prepareCodegenContextCore(
     llm_codegen_instructions,
     security_rationale_template,
     provenance: {
+      kg: servedKgReleaseTag(),
       runtime_v0: PROVENANCE_V0,
       runtime_v1: PROVENANCE_V1,
       overlay:

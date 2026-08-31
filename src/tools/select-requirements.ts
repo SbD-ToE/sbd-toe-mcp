@@ -9,6 +9,7 @@
  * `selected[]` (with per-item selection_trace) and `narrowed_out[]` (grouped by
  * category, with reason) — never silent. Deterministic; paginated (G1).
  */
+import { servedKgReleaseTag } from "../version-info.js";
 import { runSelection, type SelectionContextInput, type SelectionResult } from "../serving/selection.js";
 import { getRegulatoryOverlay, type RegulatoryObligation } from "./regulatory-overlay-loader.js";
 import { selectRequirementsAffordances } from "../serving/affordances.js";
@@ -18,6 +19,7 @@ const DEFAULT_LIMIT = 100;
 
 export interface SelectRequirementsOutput {
   provenance: {
+    kg: string;
     content_type: "derived";
     produced_by: "mp1_selection_engine";
     source_data: string;
@@ -110,6 +112,7 @@ export function handleSelectRequirements(args: Record<string, unknown>): SelectR
 
   return {
     provenance: {
+      kg: servedKgReleaseTag(),
       content_type: "derived",
       produced_by: "mp1_selection_engine",
       source_data:

@@ -19,6 +19,7 @@ import {
   chapterBundleIds,
   type ManualChunk
 } from "../serving/chunk-index.js";
+import { servedKgReleaseTag } from "../version-info.js";
 import { paginate, type PageCoverage } from "../serving/response-shaping.js";
 import { boundAffordances, type ProtocolEnvelope } from "../serving/protocol-envelope.js";
 
@@ -106,6 +107,7 @@ export function handleGetChapterImplementationChecklist(
       totals: { items: chunks.length }
     },
     provenance: {
+      kg: servedKgReleaseTag(),
       content_type: "canonical",
       produced_by: "implementation_checklist_projection",
       source_data: `data/publish/indexes/mcp_chunks.jsonl (chunk_kind=${kind}, bundle=${bundle})`,

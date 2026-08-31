@@ -56,10 +56,12 @@ TODO — confirm with programme lead.
   GitHub Release `v0.10.4`)
 - v0.11.0 *(SUPERSEDED 2026-08-31 by v0.12.0 before tagging — the tag was never created;
   the 0.11.0 changelog entry ships inside 0.12.0)*
-- v0.12.0 *(formal lote — KG v1.9.0 pinned (sha256 `11153c85…`), FIL/PRI/INT-009..012
-  served, contract v1.15, ceilings ratified 9.200/8.450; annotated tag created on the
-  squash commit of the PR that introduces this row, after its merge; npm `latest` via
-  release.yml on tag push — authorised by the programme lead's "3 sims", 2026-08-31)*
+- v0.12.0 → `b475900e87a3035d36a16201dd80d5e5b36c396d` (2026-08-31; formal lote — KG
+  v1.9.0 pinned, sha256 `11153c85…`, contract v1.15; npm `@shiftleftpt/sbd-toe-mcp@0.12.0`
+  = published, gitHead same commit; GitHub Release `v0.12.0`)
+- v0.13.0 *(serving batch — read_sbd_toe_resource + provenance.kg stamp + inspect pin
+  provenance; bundle pin UNCHANGED (KG v1.9.0); annotated tag on the squash commit of
+  the PR that introduces this row, after its merge; npm `latest` via release.yml)*
 
 ## Current working state
 
@@ -128,3 +130,4 @@ prohibits tag deletion without explicit authorisation):
 | 2026-08-31 | v0.11.0 registered as pending (protected-tag list; tag gated on 0.20.0-beta.6 + two-line verification). Served bundle pins unchanged (KG v1.7.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-31 | Dev-build `kg-v1-manual-v1.8.0-aligned-2026-08-31` pinned on the serving line (sha256 `ad0fc96c…`, contract v1.15, 273 req/29 cat — FIL/PRI). No frozen state touched; formal KG v1.9.0 em lote. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-31 | Re-pin `source: release` KG v1.9.0 (sha256 `11153c85…` verified; zero-delta over the dev-build; mcp-stable = `93fe9fb1`). v0.12.0 registered (protected-tag list); v0.11.0 marked superseded (tag never created). Ceilings ratified+harmonized 9.200/8.450 ("3 sims"). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-01 | v0.12.0 tag commit recorded (`b475900e`, squash of #62); npm publish (`latest`) + GitHub Release confirmed. v0.13.0 registered (protected-tag list; serving batch, bundle pin unchanged). `release_ref` owner normalized SbD-ToE (cosmetic). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
