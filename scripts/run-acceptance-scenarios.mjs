@@ -64,8 +64,8 @@ const unexercisedTools = exposedTools.filter((t) => !client.calls.has(t));
 client.stop();
 
 // ---- rollup -----------------------------------------------------------------
-const axes = ["A", "B", "C", "D", "E", "F", "H"];
-const axisName = { A: "Tool coverage", B: "By role", C: "By surface (AC)", D: "Negatives / invariants", E: "Regression (gate)", F: "0.10.0 tools + G1 (added 2026-08-29)", H: "Selection vs golden oracle (measurement, not gate; added 2026-08-31)" };
+const axes = ["A", "B", "C", "D", "E", "F", "G", "H"];
+const axisName = { A: "Tool coverage", B: "By role", C: "By surface (AC)", D: "Negatives / invariants", E: "Regression (gate)", F: "0.10.0 tools + G1 (added 2026-08-29)", G: "Beta-line tools (added 2026-09-01)", H: "Selection vs golden oracle (measurement, not gate; added 2026-08-31)" };
 const count = (rs, s) => rs.filter((r) => r.status === s).length;
 const rollup = axes.map((a) => { const rs = results.filter((r) => r.axis === a); return { axis: a, name: axisName[a], total: rs.length, PASS: count(rs, "PASS"), PART: count(rs, "PART"), FAIL: count(rs, "FAIL"), SKIP: count(rs, "SKIP") }; });
 const totals = { total: results.length, PASS: count(results, "PASS"), PART: count(results, "PART"), FAIL: count(results, "FAIL"), SKIP: count(results, "SKIP") };

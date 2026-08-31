@@ -171,7 +171,7 @@ const RESOURCE_CATALOG = [
           uri: "sbd://toe/chapter-applicability/{riskLevel}",
           name: "SbD-ToE Chapter Applicability",
           description:
-            "Active, conditional and excluded chapters for a given risk level (L1/L2/L3).",
+            "Graduated chapter applicability for a risk level (L1/L2/L3): presence always, demand scales — derived from authored assignment proportionality (0.14.0).",
           mimeType: "application/json"
         },
         {
@@ -1085,7 +1085,7 @@ class McpRuntime {
           name: "map_sbd_toe_applicability",
           title: "Map SbD-ToE Applicability",
           description:
-            "Maps active, conditional and excluded chapters/controls for a given risk level L1/L2/L3. Supports project context to activate relevant bundles.",
+            "GRADUATED applicability (0.14.0): every chapter applies at every level — returns per-chapter authored demand (obrigatório/recomendado/opcional/specific) derived from the bundle, anchored on the chapter-01 canonical matrix; plus context-conditional bundles for the given technologies. projectRole adds a per-role view. Nothing is excluded by level.",
           inputSchema: {
             type: "object",
             properties: {

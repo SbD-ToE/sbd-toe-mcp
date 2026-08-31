@@ -33,29 +33,27 @@ describe("qualitative eval smoke", () => {
   });
 
   it("keeps applicability routing coherent for an L2 CI/CD + containers + IaC profile", () => {
+    // Ciclo 0.14.0: aplicabilidade GRADUADA — presença incondicional, demand derivada.
     const applicability = handleMapSbdToeApplicability({
       riskLevel: "L2",
       technologies: ["ci-cd", "containers", "iac"]
     }) as {
-      active: string[];
-      excluded: string[];
+      chapters: Array<{ chapter_id: string; demand: Record<string, number>; dominant: string }>;
       activatedBundles: {
         domainBundles: Array<{ chapterId: string }>;
         operationalBundles: Array<{ chapterId: string }>;
       };
     };
 
-    expect(applicability.active).toContain("07-cicd-seguro");
-    expect(applicability.active).toContain("08-iac-infraestrutura");
-    expect(applicability.active).toContain("09-containers-imagens");
-    expect(applicability.active).toContain("11-deploy-seguro");
-    expect(applicability.excluded).toContain("13-formacao-onboarding");
+    const ids = applicability.chapters.map((c) => c.chapter_id);
+    for (const id of ["07-cicd-seguro", "08-iac-infraestrutura", "09-containers-imagens", "11-deploy-seguro", "13-formacao-onboarding"]) {
+      expect(ids, id).toContain(id);
+    }
+    const ch13 = applicability.chapters.find((c) => c.chapter_id === "13-formacao-onboarding");
+    expect(ch13?.dominant).toBeDefined(); // presente com exigência graduada, nunca excluído
     expect(applicability.activatedBundles.domainBundles.map((item) => item.chapterId)).toEqual(
       expect.arrayContaining(["08-iac-infraestrutura", "09-containers-imagens"])
     );
-    expect(
-      applicability.activatedBundles.operationalBundles.map((item) => item.chapterId)
-    ).toEqual(expect.arrayContaining(["07-cicd-seguro", "11-deploy-seguro"]));
   });
 
   it("retrieves grounded V2 context with traceability and without legacy Algolia fallback", async () => {

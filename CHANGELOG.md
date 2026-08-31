@@ -3,11 +3,53 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-31
 purpose: documentation
-reasoning: v0.20.0-beta.7 (beta line, npm `beta` dist-tag) — formal batch: serves the formal KG release v1.9.0 (mcp-stable, zero-delta formalisation of the verified v1.8.0 dev-build; contract v1.15, FIL/PRI, 273/29); fixture-2 payload gates RATIFIED and HARMONISED across lines (standard 9,200 / minimal 8,450, programme lead '3 sims' 2026-08-31), KNOWN_TOTAL_DEVIATIONS emptied; golden 10/10, gate E PASS, 727/727. Earlier entries below.
+reasoning: v0.20.0-beta.9 (beta line, npm `beta`) — absorbs stable 0.14.0 (graduated applicability: the binary chapter exclusion dies, demand derived from authored assignment proportionality; Author decision 2026-09-01 verbatim) and fills Axis G (three trace_sbd_toe_graph scenarios in the runner AND the governance doc, same change): 24/24 tools exercised, gate E PASS, golden 10/10, budgets inside the harmonised gates. Bundle pin unchanged (release KG v1.9.0).
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.9 — 2026-09-01
+
+Absorbs the stable **0.14.0** (squash `1f199ccb` = tag v0.14.0 = npm `latest`, verified)
+and closes **Axis G**. Bundle pin UNCHANGED (release KG `v1.9.0`, sha `11153c85…`).
+
+### Absorbed — graduated applicability (0.14.0; Author decision 2026-09-01, verbatim)
+
+«capítulo nunca se exclui por nível; a exigência escala L1→L3 conforme a matriz do cap. 01
+e a proporcionalidade das user stories. A noção binária desaparece do serving.» The binary
+lists die (`RISK_LEVEL_CHAPTERS`, `ACTIVE_CHAPTERS_BY_RISK`, `minLevel` theory, the
+"13 apenas L3" hack); `src/serving/applicability.ts` derives demand from authored
+assignment proportionality per chapter × level, anchored to the chapter-01 canonical
+matrix with the declared ch-00 fallback. `map_sbd_toe_applicability` serves
+`chapters[15]` (presence unconditional) + semantics + `canonical_anchor`;
+`list_sbd_toe_chapters` annotates, never filters. Shared files verified byte-identical
+to master; **no beta-only surface read the binary list** (audited: selection engine,
+prepare, trace/SPARQL — none did, nothing else to kill). Re-baselined scenarios
+TC-A-06/07/12 + TC-E-10 re-run on this line: all PASS.
+
+### Added — Axis G: `trace_sbd_toe_graph` acceptance scenarios (runner + governance doc, same change)
+
+- **TC-G-01** — valid trace: determinism (two identical calls byte-equal), G1 pagination
+  (`total` + `cursor` = next-row offset, `null` at the declared end; full walk = total on
+  all three lenses, 270/270/270), no IRI leaks. **TC-G-02** — declared empty: anchor
+  outside the v1 projection (`REQ-AGN-001`) → `rows: []`, `total: 0`, anchor echoed,
+  `provenance.note` declares the scope — never silent. **TC-G-03** — invalid/missing
+  `lens` → declared JSON-RPC `-32602` naming the field, never an empty success.
+- `DevelopmentGovernance/docs/mcp-acceptance-test-scenarios.md` Axis-G placeholder filled
+  in the same change (maintenance rule).
+- **Exit criterion met: 24/24 exposed tools exercised** — the beta.8 gap (24/23,
+  `trace_sbd_toe_graph` uncovered) closes.
+
+### Verification (record `docs/acceptance-runs/2026-09-01-v0140-*-v0.20.0-beta.9-*`)
+
+`eval:acceptance`: **124 scenarios, 101 executed — 84 PASS · 17 PART · 0 FAIL · 23 SKIP;
+gate E PASS (16/1/0, TC-E-10 full PASS)**; Axis G 3/3; golden cases **10/10** (selection
+untouched by 0.14.0). Suite **727/727** · `npm run check` ✅. Budgets inside the
+harmonised gates: f1 18,749 / 6,113 / 5,467 / 3,688; f2 25,169 / **9,105**/9,200 /
+**8,379**/8,450 / 4,833/4,840 (the graduated-applicability metadata adds ~+4 tokens per
+payload; ids 104/152 unchanged; snapshots untouched — `prepare` does not serve the
+applicability surface).
 
 ## 0.20.0-beta.8 — 2026-09-01
 
