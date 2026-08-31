@@ -123,7 +123,10 @@ describe("query_sbd_toe_entities — exact id, informative citation, illustrativ
     }
   });
 
-  it("no legacy REQ-<CAT>-NNN citation yields a declared gap in v1.7.0 (0 unresolvable)", async () => {
+  // Beta line: 20s timeout — the three semantic retrievals measure ~5.1s under the
+  // full 42-file v2 suite (vs master's 31 files), tripping vitest's 5s default.
+  // Result-correct in isolation; timeout is test infra, not serving behaviour.
+  it("no legacy REQ-<CAT>-NNN citation yields a declared gap in v1.7.0 (0 unresolvable)", { timeout: 20000 }, async () => {
     for (const q of ["REQ-AUT-003", "REQ-DAT-005", "REQ-IAM-001"]) {
       const r = (await handleQuerySbdToeEntities({ query: q })) as { match?: string };
       expect(r.match, q).not.toBe("declared_gap");

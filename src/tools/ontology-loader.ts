@@ -39,6 +39,8 @@ export interface Control {
   abstraction_level: string;
   applicable_lifecycle_phases: string[];
   chapter_ids?: string[];
+  /** Chapters this control DEFINES (contract v1.13+); counts as threat-scope per G-b decision 2. */
+  defining_chapter_ids?: string[];
   description?: string;
   source_practice_ids?: string[];
   artifact_types?: string[];
@@ -71,6 +73,12 @@ export interface Threat {
   mitigated_threat_id?: string;
   threat_label_raw?: string;
   associated_controls: string[];
+  /** Structural CTRL-* ids derived threat→chapter→primary control (contract v1.14 §1.21). */
+  associated_control_ids?: string[];
+  /** The Manual column's prose, duplicated (contract v1.14 §1.21); associated_controls unchanged for compat. */
+  associated_controls_text?: string;
+  /** Declared derivation of associated_control_ids (e.g. chapter_requirements_primary_controls). */
+  associated_control_ids_derivation?: string;
   /** STRIDE | LINDDUN | PASTA | other — consumer contract v1.3 §1.8 (v1 tier). */
   threat_category?: string;
   /** forte | parcial | dependente_de_outros_capitulos — consumer contract v1.3 §1.8. */
@@ -377,6 +385,7 @@ export function getOntologyData(): OntologyData {
       abstraction_level: strOf(item, "abstraction_level"),
       applicable_lifecycle_phases: arrStr(item, "applicable_lifecycle_phases"),
       chapter_ids: arrStr(item, "chapter_ids"),
+      defining_chapter_ids: arrStr(item, "defining_chapter_ids"),
       ...(strOf(item, "description") ? { description: strOf(item, "description") } : {}),
       source_practice_ids: arrStr(item, "source_practice_ids"),
       artifact_types: arrStr(item, "artifact_types"),
@@ -556,6 +565,14 @@ export function getOntologyData(): OntologyData {
           : {}),
         canonical_control_ids: arrStr(item, "canonical_control_ids"),
         associated_controls: assocStr ? [assocStr] : arrStr(item, "associated_controls"),
+        // Contract v1.14 §1.21 — structural control ids per threat, with declared derivation.
+        associated_control_ids: arrStr(item, "associated_control_ids"),
+        ...(strOf(item, "associated_controls_text")
+          ? { associated_controls_text: strOf(item, "associated_controls_text") }
+          : {}),
+        ...(strOf(item, "associated_control_ids_derivation")
+          ? { associated_control_ids_derivation: strOf(item, "associated_control_ids_derivation") }
+          : {}),
       };
     })
     .filter((item) => item.id || item.mitigated_threat_id);

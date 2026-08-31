@@ -227,7 +227,11 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       activated_scope: 5200,
       g2_entities: 1000,
       rest: 850,
-      total: 8500 // 🔴 gate hard do EPIC (payload 3-famílias)
+      // Gate original do EPIC: 8.500. Re-fixado em **8.800** pelo programme lead
+      // (ratificação 2026-08-31, 0.20.0-beta.5): OPS-015 (pin v1.7.0 dev-build,
+      // +223) + camada de ligações curada v3/v1.7.0 formal (controlos directos da
+      // fixture com ids/descriptions mais longos, +129). Medido 8.746 (v1.7.0 formal).
+      total: 8800 // 🔴 gate hard ratificado 2026-08-31
     }
   },
   // minimal: ⟳ ADENDA s3b (2026-07-05, decisão do operador — EPIC §s3b): sem
@@ -266,7 +270,10 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       activated_scope: 5180,
       g2_entities: 950,
       rest: 853, // s4: +53 medidos (repeat_call_hint)
-      total: 8000 // 🔴 hard s3b revisto (medido 7.639 + ~5%)
+      // Hard s3b original: 8.000 (medido 7.639 + ~5%). Re-fixado em **8.100** pelo
+      // programme lead (ratificação 2026-08-31): camada curada v3/v1.7.0 formal muda
+      // os controlos directos da fixture. Medido 8.019 (v1.7.0 formal).
+      total: 8100 // 🔴 hard s3b re-fixado, ratificado 2026-08-31
     }
   },
   // ultrathin: s3c (ADENDA 2026-07-05 do operador, REATIVADO no mesmo dia —
@@ -441,32 +448,15 @@ function idsAtPath(payload: unknown, path: string): string[] {
  * names the measurement, the tolerated ceiling and the cause; it is removed
  * when the EPIC gate itself is re-set or the data shrinks back.
  */
+/**
+ * Known, REPORTED deviations from a hard gate — never a silent raise of the gate
+ * itself. Empty since 2026-08-31: the programme lead ratified the fixture-2
+ * ceilings (standard 8,800 / minimal 8,100) into BUDGETS directly. The mechanism
+ * stays for the next data-driven drift.
+ */
 const KNOWN_TOTAL_DEVIATIONS: Readonly<
   Record<string, { measured: number; tolerated: number; since: string; reason: string }>
-> = {
-  "standard:fixture2": {
-    measured: 8746, // 8,645 v1.7.0 / 8,617 v1.6.1 (≤8,700 RATIFIED 2026-08-29) / 8,746 dev-build v2.2
-    tolerated: 8800,
-    since: "2026-08-30",
-    reason:
-      "OPS-015 activation (v1.7.0 pin, +223 tokens; tolerance ≤8,700 ratified by the " +
-      "programme lead 2026-08-29) plus the dev-build v2.2 curated link layer v3 " +
-      "(contract v1.13, pre-G-b verification: the fixture's direct controls change, with " +
-      "longer ids/descriptions — +129 tokens). Data growth, not an encoding regression; " +
-      "EPIC hard gate 8,500 unchanged. Ceiling 8,800 PENDING operator ratification " +
-      "(CHANGELOG, beta line Unreleased)."
-  },
-  "minimal:fixture2": {
-    measured: 8019,
-    tolerated: 8100,
-    since: "2026-08-30",
-    reason:
-      "dev-build v2.2 curated link layer v3 (contract v1.13): the fixture's direct " +
-      "controls change and their published descriptions lengthen — total 7,926 (v1.6.1) " +
-      "→ 8,019. Data growth, not an encoding regression; s3b hard total 8,000 unchanged. " +
-      "Ceiling 8,100 PENDING operator ratification (CHANGELOG, beta line Unreleased)."
-  }
-};
+> = {};
 
 function withKnownDeviation(
   budgets: SectionBudgets,

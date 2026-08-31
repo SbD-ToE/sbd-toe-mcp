@@ -48,7 +48,10 @@ TODO — confirm with programme lead.
 - v0.10.2 → `31aa22af780d56f958b220258ffa82ca46f1d7c7` (2026-08-29; formal KG release v1.6.0
   pinned — see CHANGELOG; npm `@shiftleftpt/sbd-toe-mcp@0.10.2` = `latest`, gitHead same commit;
   GitHub Release `v0.10.2`)
-- v0.10.3 *(formal KG release v1.6.1 pinned — see CHANGELOG; annotated tag created on the
+- v0.10.3 → `06f8bbaa5e4d5f3ac6ddda890a6fbebd78f6be9b` (2026-08-30; formal KG release v1.6.1
+  pinned — see CHANGELOG; npm `@shiftleftpt/sbd-toe-mcp@0.10.3` = `latest`, gitHead same commit;
+  GitHub Release `v0.10.3`)
+- v0.10.4 *(formal KG release v1.7.0 pinned — see CHANGELOG; annotated tag created on the
   squash commit of the PR that introduces this row, after its merge to master)*
 
 ### Beta line (`0.20.x-beta`) — NOT citable, NOT a freeze candidate
@@ -68,25 +71,25 @@ Prerelease tags issued on `0.20-beta` (annotated; immutable like every pushed ta
 | v0.20.0-beta.1 | cf4f011 | 2026-06-29 | KG v1.5.0 (`feaa0155…`) | `beta` (superseded) |
 | v0.20.0-beta.2 | 0cc9e14 | 2026-07-05 | KG v1.5.0 (`feaa0155…`) | `beta` (superseded) |
 | v0.20.0-beta.3 | 5b34638 (`5b346387cdfd48146d64422c0e7a217d9b3f320f`; annotated tag object `48cdd14d`) | 2026-08-29 | formal KG `v1.6.0` (`baf5913b…`, contract v1.11, Manual v1.7.0) — same pin and content as stable v0.10.2 | `beta` (superseded) |
-| v0.20.0-beta.4 | d89b30d (`d89b30dfacbc89c023ec53c1b5b882b77a9f86a9`; annotated tag object `6291f50d`) | 2026-08-30 | formal KG `v1.6.1` (`df6920cb…`, contract v1.12, Manual v1.7.1) — same pin and content as stable v0.10.3 | `beta` (`latest` = 0.10.3 untouched) |
+| v0.20.0-beta.4 | d89b30d (`d89b30dfacbc89c023ec53c1b5b882b77a9f86a9`; annotated tag object `6291f50d`) | 2026-08-30 | formal KG `v1.6.1` (`df6920cb…`, contract v1.12, Manual v1.7.1) — same pin and content as stable v0.10.3 | `beta` (superseded) |
+| v0.20.0-beta.5 | *(annotated tag on the commit that introduces this row; recorded in the close commit)* | 2026-08-31 | formal KG `v1.7.0` (`29156b86…`, contract v1.14, ontology v2.2, Manual v1.7.1) — same pin and content as stable v0.10.4 | `beta` (`latest` = 0.10.4 untouched) |
 
 ## Current working state
 
 **Current branch:** `0.20-beta` — this copy of the registry lives on the beta branch; the
-stable-line rows mirror master (`06f8bba`, v0.10.3) and are maintained there.
-**Beta line:** most recent prerelease v0.20.0-beta.4 → `d89b30dfacbc89c023ec53c1b5b882b77a9f86a9` (2026-08-30;
-`release.yml` run 33282763025 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.4` = `beta`, gitHead same
-commit; GitHub pre-release `v0.20.0-beta.4`; `latest` = 0.10.3 untouched), npm dist-tag `beta`; serves the same formal KG `v1.6.1` pin as
-v0.10.3 (see the beta table above). Prior: v0.20.0-beta.3 → `5b346387` (2026-08-29, KG v1.6.0). Not a
-published/frozen state.
+stable-line rows mirror master (`2937236`, v0.10.4) and are maintained there.
+**Beta line:** most recent prerelease v0.20.0-beta.5 (2026-08-31; annotated tag on the commit
+introducing this row, recorded in the close commit), npm dist-tag `beta`; serves the same formal
+KG `v1.7.0` pin as v0.10.4. Prior: v0.20.0-beta.4 → `d89b30df` (KG v1.6.1), v0.20.0-beta.3 →
+`5b346387` (KG v1.6.0). Not a published/frozen state.
 **Most recent published state:** icsme-2026-tool-demonstration / v0.9.0 (2026-05-21)
-**Most recent release:** v0.10.3 (2026-08-30) — served bundle: formal KG release
-`v1.6.1` (commit `e9fc54f312829c632ecd50e2306bfa356e9e457c` = `mcp-stable`; asset sha256
-`df6920cbef5bbd6f2b723708efe0b48ca5017abf8928bc800db0609536ef547b`; consumer contract
-v1.12), Manual v1.7.1 (`8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac`), ontology
-`ontology-v1.1-fair-baseline` (`84fe8bf6f5de1443d778f9b2f0555b722540bbff`). Tag
-`v0.10.3` = squash commit of the PR introducing this row (recorded here once created).
-Prior: v0.10.2 (2026-08-29, `31aa22af`, KG v1.6.0), v0.10.1 (2026-06-25), v0.10.0 (2026-06-17).
+**Most recent release:** v0.10.4 (2026-08-30) — served bundle: formal KG release
+`v1.7.0` (commit `894af32a85d6a50f648f10d8a643848e806e533e` = `mcp-stable`; asset sha256
+`29156b86ef7785966f099f02bb67dd84fcb471d64092944038a3da906c72fb9a`; consumer contract
+v1.14), ontology `sbdtoe-ontology-v2.2` (`2be86e8b`), Manual v1.7.1
+(`8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac`). Tag `v0.10.4` = squash commit of the PR
+introducing this row (recorded here once created). Prior: v0.10.3 (2026-08-30,
+`06f8bbaa`, KG v1.6.1), v0.10.2 (2026-08-29, `31aa22af`, KG v1.6.0).
 **Expected next freeze event:** none scheduled
 
 ## Cross-references
@@ -103,13 +106,15 @@ Programme papers cited by this tool (upstream, see CITATION.cff):
 - P8 = 10.17605/OSF.IO/TXW8P (Coverage-Preserving Compilation v2)
 
 This repository depends on (upstream, pinned in `consumed-bundle.json`, digest-verified):
-- sbd-toe-knowledge-graph — formal release `v1.6.1` @ `e9fc54f312829c632ecd50e2306bfa356e9e457c`
-  (asset sha256 `df6920cbef5bbd6f2b723708efe0b48ca5017abf8928bc800db0609536ef547b`) since v0.10.3;
+- sbd-toe-knowledge-graph — formal release `v1.7.0` @ `894af32a85d6a50f648f10d8a643848e806e533e`
+  (asset sha256 `29156b86ef7785966f099f02bb67dd84fcb471d64092944038a3da906c72fb9a`) since v0.10.4;
+  `v1.6.1` @ `e9fc54f312829c632ecd50e2306bfa356e9e457c`
+  (asset sha256 `df6920cbef5bbd6f2b723708efe0b48ca5017abf8928bc800db0609536ef547b`) for v0.10.3;
   `v1.6.0` @ `aad4e962cd20b105cd0a4840a5dea6f7011dcd5d` (sha256 `baf5913b596fdeb17c77d9c3a1d9394738c4c9319a8bcf0ec03972ba5db1d93b`) for v0.10.2;
   `v1.5.0` (sha256 `feaa0155b64d78fe529d805c6e17430fb3ce9fe1c5b5900eb6e267e2fa077294`) for v0.10.0/v0.10.1
 - SbD-ToE/sbd-toe-manual — `v1.7.1` @ `8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac` (via the KG bundle) since v0.10.3;
   `v1.7.0` @ `d5c2586ae2cd12ab2e31b65febb2e85ed20e1bce` for v0.10.2
-- SbD-ToE/sbd-toe-ontology — `ontology-v1.1-fair-baseline` @ `84fe8bf6f5de1443d778f9b2f0555b722540bbff`
+- SbD-ToE/sbd-toe-ontology — `sbdtoe-ontology-v2.2` @ `2be86e8b` (via the KG bundle, sync tag `corpus-v2-ontology-sync-2be86e8`) since v0.10.4; `ontology-v1.1-fair-baseline` @ `84fe8bf6f5de1443d778f9b2f0555b722540bbff` (AppSec Core anchor)
 - appsec-core-ontology-research (programme papers P1/P6/P7/P8, see CITATION.cff)
 
 ## Violations / anomalies detected
@@ -148,5 +153,8 @@ prohibits tag deletion without explicit authorisation):
 | 2026-08-29 | Beta-line copy (branch `0.20-beta`): prerelease-tag table (beta.1/beta.2/beta.3), beta current working state, `v0.2.5` local/origin divergence recorded (canonical = origin; nothing re-pointed). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-29 | v0.20.0-beta.3 tag commit recorded (`5b346387`); npm `beta` publish + GitHub pre-release confirmed (run 33266147054). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-30 | v0.10.3 registered (protected tag list, current working state, upstream pins: KG v1.6.1, Manual v1.7.1). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-30 | v0.10.3 tag commit recorded (`06f8bbaa`, squash of #51); npm publish + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-30 | v0.10.4 registered (protected tag list, current working state, upstream pins: KG v1.7.0, ontology v2.2, Manual v1.7.1). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-30 | Beta-line copy: stable rows synced from master (v0.10.3, KG v1.6.1); v0.20.0-beta.4 registered in the prerelease table (tag on the commit introducing this row). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-30 | v0.20.0-beta.4 tag commit recorded (`d89b30df`, fix-forward over `272d8c9`); npm `beta` publish + GitHub pre-release confirmed (run 33282763025). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-31 | Beta-line copy: stable rows synced from master (v0.10.4, KG v1.7.0); v0.20.0-beta.5 registered in the prerelease table (tag on the commit introducing this row). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
