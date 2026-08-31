@@ -338,6 +338,10 @@ export const scenarios = [
   { id: "TC-F-12", axis: "F", title: "select (MP1): activadores declarados (agents, data_sensitivity) + overlay extend", tool: "select_sbd_toe_requirements",
     run: async (c) => { const a = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", task: "Worker agêntico com mandate, kill-switch e audit por tool-call" }); if (!a.ok) return fail(a.error);
       const aid = a.data.selection.selected.map((x) => x.requirement_id); for (const id of ["REQ-AGN-001", "REQ-AGN-002", "REQ-AGN-003", "REQ-AGN-004"]) if (!aid.includes(id)) return fail(`${id} not selected for an agentic task`);
+      for (const id of ["ACC-002", "AUT-006", "ENC-006", "DEP-011", "DEP-013", "DEP-014"]) if (!aid.includes(id)) return fail(`R1 principal set missing ${id}`);
+      const r1 = a.data.selection.selected.find((x) => x.requirement_id === "ACC-002");
+      if (!(r1?.selection_trace ?? []).some((t) => String(t.trigger ?? "").startsWith("R1:"))) return fail("R1 not named in selection_trace");
+      if (aid.some((id) => id.startsWith("SES-"))) return fail("SES selected for an agentic task (R2)");
       const b = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", task: "Formulário de registo com dados pessoais", data_sensitivity: "regulated", include_regulatory_overlay: true, regulatory_frameworks: ["EXT-AI-ACT"] }); if (!b.ok) return fail(b.error);
       const bid = b.data.selection.selected.map((x) => x.requirement_id); if (!bid.some((id) => id.startsWith("ENC-"))) return fail("data_sensitivity=regulated did not activate ENC");
       if (b.data.overlay.status !== "resolved" || b.data.overlay.obligations.length === 0) return fail(`overlay extend not resolved: ${b.data.overlay.status}`);

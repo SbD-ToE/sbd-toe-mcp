@@ -74,8 +74,11 @@ const FIXTURES: readonly BaselineFixture[] = [
     // 111 on bundle v1.5.0 … v1.6.0 (EPIC baseline). 112 since the formal KG v1.6.1
     // pin (0.20.0-beta.4, contract v1.12 curated requirement→control layer v2):
     // one re-targeted link adds a direct control (9 → 10) to this fixture's
-    // activated set. Data change, not a serving change.
-    citationIds: 112
+    // activated set. Data change, not a serving change. 104 since P3 do ciclo MP1
+    // (2026-08-31): R2:narrowing-de-sinais-SES — a tarefa não tem sinais de
+    // sessão/login/token de utilizador, SES-001..008 saem por narrowing declarado
+    // (regra de serving, decisão pós-P2 do lead; não é alteração de dados).
+    citationIds: 104
   },
   {
     name: "fixture2",
@@ -89,7 +92,9 @@ const FIXTURES: readonly BaselineFixture[] = [
     // kg-v1-manual-v1.7.0-aligned-2026-08-29 pin (0.20.0-beta.3): the bundle
     // publishes OPS-015 (ch. 12), which this fixture activates via `logging`
     // → +1 requirement in the activated set. Data growth, not a serving change.
-    citationIds: 151
+    // 143 since P3 do ciclo MP1 (2026-08-31): R2:narrowing-de-sinais-SES (−8,
+    // SES-001..008) — sem sinais de sessão na tarefa; regra de serving declarada.
+    citationIds: 143
   }
 ];
 

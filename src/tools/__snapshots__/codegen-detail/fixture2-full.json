@@ -486,62 +486,6 @@
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "SES-001",
-        "name": "Expiração automática por inactividade",
-        "category": "SES",
-        "type": "base",
-        "source": "runtime_v0"
-      },
-      {
-        "requirement_id": "SES-002",
-        "name": "Logout manual e após alteração de credenciais",
-        "category": "SES",
-        "type": "base",
-        "source": "runtime_v0"
-      },
-      {
-        "requirement_id": "SES-003",
-        "name": "Identificadores de sessão imprevisíveis",
-        "category": "SES",
-        "type": "base",
-        "source": "runtime_v0"
-      },
-      {
-        "requirement_id": "SES-004",
-        "name": "Transmissão segura dos tokens",
-        "category": "SES",
-        "type": "base",
-        "source": "runtime_v0"
-      },
-      {
-        "requirement_id": "SES-005",
-        "name": "Ligação da sessão ao contexto do cliente",
-        "category": "SES",
-        "type": "base",
-        "source": "runtime_v0"
-      },
-      {
-        "requirement_id": "SES-006",
-        "name": "Revogação explícita da sessão",
-        "category": "SES",
-        "type": "base",
-        "source": "runtime_v0"
-      },
-      {
-        "requirement_id": "SES-007",
-        "name": "Prevenção de sessões long-lived",
-        "category": "SES",
-        "type": "base",
-        "source": "runtime_v0"
-      },
-      {
-        "requirement_id": "SES-008",
-        "name": "Scope, TTL e revogação de tokens JWT",
-        "category": "SES",
-        "type": "base",
-        "source": "runtime_v0"
-      },
-      {
         "requirement_id": "VAL-001",
         "name": "Validação geral de entradas externas",
         "category": "VAL",
@@ -3611,38 +3555,6 @@
       "source": "runtime_v0",
       "source_data": "data/publish/runtime/requirements.json"
     },
-    "SES-001": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "SES-002": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "SES-003": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "SES-004": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "SES-005": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "SES-006": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "SES-007": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "SES-008": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
     "VAL-001": {
       "source": "runtime_v0",
       "source_data": "data/publish/runtime/requirements.json"
@@ -4018,9 +3930,9 @@
     "unnamed_v1_entities": 14,
     "selection": {
       "eligible": 109,
-      "selected": 69,
-      "narrowed_out_categories": 6,
-      "narrowed_out_requirements": 40,
+      "selected": 61,
+      "narrowed_out_categories": 7,
+      "narrowed_out_requirements": 48,
       "narrowed_out_ref": {
         "tool": "select_sbd_toe_requirements",
         "note": "Categorias elegíveis sem sinal na tarefa foram excluídas pelo narrowing MP1 — a lista completa (por categoria, com razão) vem de select_sbd_toe_requirements com o mesmo contexto."

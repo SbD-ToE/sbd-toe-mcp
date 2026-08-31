@@ -9,3 +9,7 @@
 - [x] P2 na estável: ver `agentic/briefs/2026-08-31-pontifex-p2-mp1-selection-implemented.md` — Eixo H 1/3/6 → **6/4/0**, eval 0 FAIL gate E PASS, 684/684; tectos medidos (8.900/5.950/8.200)
 - [ ] Merge (Orchestrator) → beta.6 absorve (sessão própria) → verificação das duas linhas → tag `v0.11.0` + npm
 - [ ] P3 (10/10): depende das decisões do lead (GC-07 regra do principal; concernsMap auth→SES; DST-006/CFG-006/LOG-001)
+
+## Update — P3 executada (2026-08-31)
+- [x] P3: R1/R2 nomeadas + sinais DST/CFG/LOG + gate um-sinal-uma-superfície → **Eixo H 10/10 PASS** (100% cobertura, 100% precisão-estrita); 689/689; eval 0 FAIL gate E PASS; tectos com folga (8.446/5.463/7.720)
+- [ ] Merge (Orchestrator) → beta.6 absorve P2+P3 → verificação das duas linhas → tag `v0.11.0` + npm
