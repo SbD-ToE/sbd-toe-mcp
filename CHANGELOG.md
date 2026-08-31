@@ -3,7 +3,7 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-30
 purpose: documentation
-reasoning: v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; D1 gate, D3 activators, D4; consult mode index; v2 token diet ported from the beta with stable-measured ceilings); Axis H 1/3/6 → 6/4/0; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
+reasoning: v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; named rules R1 principal-não-humano + R2 narrowing SES; D1 gate um-sinal-uma-superfície; D3 activators; D4; consult mode index; v2 token diet ported with stable-measured ceilings); Axis H 1/3/6 → 10/10; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
 review_status: pending-human-review
 ---
 
@@ -19,15 +19,37 @@ four Axis-H defects (ciclo MP1, P2; gate G-mp1a). Served bundle unchanged: forma
 
 | | 0.10.4 (baseline) | **0.11.0** |
 |---|---|---|
-| Verdicts | 1 PASS · 3 PART · 6 FAIL | **6 PASS · 4 PART · 0 FAIL** |
-| prepare coverage (avg) | 41 % | **≈96 %** (9 of 10 cases ≥ 95 %; GC-07 72 %, GC-10 80 %) |
+| Verdicts | 1 PASS · 3 PART · 6 FAIL | **10 PASS · 0 PART · 0 FAIL** |
+| prepare coverage (avg) | 41 % | **100 %** (strict precision 100 % — 0 must-NOT selected) |
 | Negative case (GC-09) | PASS | PASS (`needs_clarification`, 0 requirements) |
 
-Remaining PART causes (measured, not forced — `docs/acceptance-runs/2026-08-31-axis-h-selection-v0.11.0.md`):
-GC-02 SES ×8 selected via the loader's `auth → [AUT, ACC, SES]` concern map (data-level
-coupling, next cycle); GC-03 DST-006 / GC-10 CFG-006 + LOG-001 / GC-06→0 (closed);
-GC-07 agent-principal hygiene (AUT-006/ACC-002/ENC-006) and DEP-013/014 lack a declared
-signal — candidates for a lead-ratified rule, not guessed here.
+P2 landed the engine at 6 PASS · 4 PART · 0 FAIL; P3 (lead's post-P2 rule decisions,
+same day) closed the remaining four via NAMED, declared rules — final record
+`docs/acceptance-runs/2026-08-31-p3-axis-h-selection-v0.11.0.md`. The oracle was never
+edited and nothing was tuned to it: every change is a declared serving rule.
+
+### Added — P3: named selection rules (post-P2 lead decisions, 2026-08-31)
+
+- **R1 `R1:principal-nao-humano`** (GC-07): the `agents` concern also selects, as a
+  named rule declared in each item's `selection_trace`, the non-human-principal set
+  {ACC-002, AUT-006, ENC-006} ∪ {DEP-011, DEP-013, DEP-014} — the agent is a principal
+  (ARC-015: least privilege for agents).
+- **R2 `R2:narrowing-de-sinais-SES`** (GC-02): SES-* resolves by signal narrowing —
+  without user-session/login/token signals in the task the SES category leaves to
+  `narrowed_out` with a declared reason; with them (GC-01, GC-08) it stays. The
+  loader's `concernsMap` (`auth → [AUT, ACC, SES]`) is untouched this cycle (data lane
+  annotated for future loader work). Fixture effect: −8 citations each (SES-001..008),
+  snapshots regenerated, `citationIds` 112→104 / 151→143.
+- **Missing signals**: `deployment` also activates the base DST category (GC-03
+  DST-006 — deploy only via validated pipeline); `mtls` carries cryptographic-material
+  management → `secrets` (GC-10 CFG-006); `message queue` integration carries
+  critical-event logging → `logging` (GC-10 LOG-001).
+- **Scope gate: one signal = one surface.** The decomposition gate now counts
+  `decompositionFamilies` — the slice families of each signal's PRIMARY concern —
+  instead of all activated families: supporting concerns of the same signal
+  (mtls→secrets, mensageria→logging) activate categories but are not new surfaces.
+  `sliceFamilies` (grounding) is untouched; genuinely multi-surface asks still
+  decompose (existing negatives all green).
 
 ### Added — `select_sbd_toe_requirements` (MP1, consultive L3, OSS)
 
@@ -80,9 +102,12 @@ signal — candidates for a lead-ratified rule, not guessed here.
 
 ### Verification
 
-- `npm run check` green; **684/684** tests (engine + select suites added; diet suite
-  ported); full `eval:acceptance`: 116 scenarios, 93 executed, **71 PASS · 22 PART ·
-  0 FAIL · 23 SKIP — gate E PASS** (no regression); 22/22 tools exercised.
+- `npm run check` green; **689/689** tests (engine + select + P3 rule suites; diet
+  suite ported); full `eval:acceptance` (P3 record): 116 scenarios, 93 executed,
+  **75 PASS · 18 PART · 0 FAIL · 23 SKIP — gate E PASS** (no regression); 22/22 tools.
+- Stable payload ceilings hold with margin after R2 (measured P3): `standard` f2
+  8.446 ≤ 8.900, `minimal` 5.463 ≤ 5.950 and 7.720 ≤ 8.200, `standard` f1 6.109 ≤ 6.500,
+  ultrathin 3.684/4.581.
 
 ## 0.10.4 — 2026-08-30
 

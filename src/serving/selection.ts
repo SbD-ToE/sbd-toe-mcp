@@ -65,11 +65,32 @@ const TECHNOLOGY_TO_CHAPTERS: Readonly<Record<string, readonly string[]>> = {
  * autonomy, kill-switch, tool-call, AI agent). Deterministic lexical rule over
  * published fields — declared per match, never a model call.
  */
+/**
+ * R1 (decisão pós-P2 do programme lead, 2026-08-31, GC-07): o concern `agents` activa,
+ * como regra NOMEADA e declarada no selection_trace, o conjunto "principal não-humano" —
+ * o agente é um principal (ARC-015: least privilege para agentes): {ACC-002 menor
+ * privilégio, AUT-006 credenciais em claro, ENC-006 segredos expostos} ∪ {DEP-011,
+ * DEP-013, DEP-014 — supply chain AI do cap. 05}.
+ */
+const R1_RULE_ID = "R1:principal-nao-humano";
+const R1_PRINCIPAL_SET: readonly string[] = ["ACC-002", "AUT-006", "ENC-006", "DEP-011", "DEP-013", "DEP-014"];
+
+/**
+ * R2 (decisão pós-P2 do programme lead, 2026-08-31, GC-02): SES-* resolve-se por
+ * narrowing de sinais — sem sinais de sessão/login/token DE UTILIZADOR na tarefa, a
+ * categoria SES sai para `narrowed_out` com razão declarada; com eles, fica. O
+ * `concernsMap` do loader (`auth → [AUT, ACC, SES]`) NÃO é alterado neste ciclo; a via
+ * de dados fica anotada para avaliação futura no loader.
+ */
+const R2_RULE_ID = "R2:narrowing-de-sinais-SES";
+const SESSION_SIGNAL_PATTERN =
+  /sess[ãa]o|session|login|logout|sign.?in|\bjwt\b|cookie|token de utilizador|user token|refresh token|autentica[çc][ãa]o de utilizador|user authentication|utilizador(es)? autenticado/i;
+
 const AGENTIC_WAVE_PATTERN = /\bagente|\bagent\b|agêntic|agentic|autonom|kill.?switch|mandate|tool.?call/i;
 
 export interface SelectionTraceEntry {
-  layer: "baseline" | "domain_specific" | "agents_wave";
-  source: ActivationTraceEntry["source"] | "context_chapter" | "agents_wave";
+  layer: "baseline" | "domain_specific" | "agents_wave" | "named_rule";
+  source: ActivationTraceEntry["source"] | "context_chapter" | "agents_wave" | "named_rule";
   trigger: string;
   score: number;
   reason: string;
@@ -221,8 +242,18 @@ export function runSelectionWithActivation(
     });
   };
 
+  const sessionSignals = SESSION_SIGNAL_PATTERN.test(input.task ?? "");
+  let r2Applied = false;
   for (const r of baselineEligible) {
     const signal = concernByCategory.get(r.category);
+    if (r.category === "SES" && !sessionSignals && (signal || activatedCategories.has(r.category))) {
+      // R2: SES elegível com sinal de categoria (via auth) mas SEM sinal de sessão na tarefa.
+      r2Applied = true;
+      const list = narrowedByCategory.get(r.category) ?? [];
+      list.push(r.requirement_id);
+      narrowedByCategory.set(r.category, list);
+      continue;
+    }
     if (signal || activatedCategories.has(r.category)) {
       const entry = signal ?? {
         source: "explicit_concern" as const,
@@ -274,6 +305,36 @@ export function runSelectionWithActivation(
     ]);
   }
 
+  // R1 — named rule: the agent is a non-human principal.
+  let extraEligible = 0;
+  let r1Added = 0;
+  if (agentsActive) {
+    const already = new Set(selected.map((s) => s.requirement_id));
+    for (const rid of R1_PRINCIPAL_SET) {
+      if (already.has(rid)) continue;
+      const r = ontology.requirements.find((x) => x.requirement_id === rid);
+      if (!r || !atLevel(r)) continue;
+      pushSelected(r, [
+        {
+          layer: "named_rule",
+          source: "named_rule",
+          trigger: R1_RULE_ID,
+          score: 0.95,
+          reason:
+            `regra nomeada ${R1_RULE_ID} (decisão pós-P2 2026-08-31): o agente é um principal não-humano (ARC-015 — least privilege para agentes); conjunto {ACC-002, AUT-006, ENC-006} ∪ {DEP-011, DEP-013, DEP-014}`,
+        },
+      ]);
+      r1Added += 1;
+      const parked = narrowedByCategory.get(r.category);
+      if (parked) {
+        const at = parked.indexOf(rid);
+        if (at >= 0) parked.splice(at, 1);
+        if (parked.length === 0) narrowedByCategory.delete(r.category);
+      }
+      if (!baselineEligible.includes(r) && !domainEligible.includes(r)) extraEligible += 1;
+    }
+  }
+
   selected.sort((a, b) => a.requirement_id.localeCompare(b.requirement_id));
   const narrowed_out: NarrowedOutGroup[] = [...narrowedByCategory.entries()]
     .sort(([a], [b]) => a.localeCompare(b))
@@ -281,17 +342,26 @@ export function runSelectionWithActivation(
       category,
       count: ids.length,
       requirement_ids: ids.sort(),
-      reason: `elegível na baseline ${level} (cap. 02) sem sinal na tarefa/contexto — excluído pelo narrowing, nunca em silêncio`,
+      reason:
+        category === "SES" && r2Applied
+          ? `${R2_RULE_ID} (decisão pós-P2 2026-08-31): sem sinais de sessão/login/token de utilizador na tarefa, SES-* sai por narrowing declarado (o concernsMap do loader mantém auth → [AUT, ACC, SES]); com esses sinais na tarefa, fica`
+          : `elegível na baseline ${level} (cap. 02) sem sinal na tarefa/contexto — excluído pelo narrowing, nunca em silêncio`,
     }));
 
   const notes: string[] = [];
+  if (r1Added > 0) {
+    notes.push(`${R1_RULE_ID}: ${r1Added} requisitos do principal não-humano seleccionados por regra nomeada (decisão pós-P2 2026-08-31).`);
+  }
+  if (r2Applied) {
+    notes.push(`${R2_RULE_ID}: categoria SES excluída por narrowing de sinais — sem sinais de sessão/login/token de utilizador na tarefa.`);
+  }
   if (agentsActive && agentsWave.length > 0) {
     notes.push(`agents_wave: ${agentsWave.length} requisitos domain-specific seleccionados pelo vocabulário agêntico publicado.`);
   }
 
   return {
     risk_level: level,
-    eligible_count: baselineEligible.length + domainEligible.length + agentsWave.length,
+    eligible_count: baselineEligible.length + domainEligible.length + agentsWave.length + extraEligible,
     selected,
     narrowed_out,
     activated_chapters: activatedChapters,

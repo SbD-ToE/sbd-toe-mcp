@@ -1075,8 +1075,10 @@ const TASK_TERM_TO_CONCERNS: ReadonlyArray<readonly [string, readonly Concern[]]
   ["rpc", ["integration", "api"]],
   ["webhook", ["integration", "api"]],
   ["queue", ["integration"]],
-  ["message queue", ["integration"]],
-  ["mtls", ["encryption", "integration"]],
+  // pós-P2 2026-08-31: integração por mensageria exige registo de eventos críticos → logging.
+  ["message queue", ["integration", "logging"]],
+  // pós-P2 2026-08-31: mTLS = gestão de material criptográfico → secrets (CFG/ENC).
+  ["mtls", ["encryption", "integration", "secrets"]],
   ["signature", ["integrity", "encryption"]],
   ["signing", ["integrity"]],
   ["image", ["deployment", "distribution"]],
@@ -1116,7 +1118,9 @@ const CONCERN_TO_V0_CATEGORIES_SUPPLEMENT: Readonly<Record<Concern, string[]>> =
   threat_modeling: ["THR"],
   monitoring: ["LOG", "OPS"],
   release: ["DPL", "OPS"],
-  deployment: ["DPL", "IAC", "CNT"],
+  // pós-P2 2026-08-31: deploy activa também a categoria base DST (cap. 02 — "Deploy
+  // apenas via pipeline validado" e afins); supplement do serving, loader inalterado.
+  deployment: ["DPL", "IAC", "CNT", "DST"],
   integration: ["API", "INT"],
   // `agents` → AGN comes from ontology.concernsMap (loader); nothing to supplement.
   agents: []
@@ -1414,6 +1418,13 @@ function inputEcho(
 export interface ActivationResult {
   concerns: Concern[];
   sliceFamilies: string[];
+  /** P3 do ciclo MP1 (2026-08-31): famílias contadas para o gate de decomposição —
+   * UM SINAL = UMA SUPERFÍCIE. Só o concern PRIMÁRIO de cada sinal (posição 0 do
+   * mapeamento do termo/frase; explícitos/intents/ficheiros contam por si) contribui
+   * a sua família; concerns de suporte (posições secundárias, ex.: mtls→secrets,
+   * message queue→logging) activam categorias mas não são superfícies novas.
+   * `sliceFamilies` (grounding) fica intocado. */
+  decompositionFamilies: string[];
   trace: ActivationTraceEntry[];
   rejected: ActivationTraceEntry[];
   notes: string[];
@@ -1706,8 +1717,41 @@ export function activate(input: NormalizedInput): ActivationResult {
     });
   }
 
+  // P3 (2026-08-31): primary-concern families for the decomposition gate.
+  const primaryOfSignal = new Map<string, Concern>();
+  for (const [term, mapped] of TASK_TERM_TO_CONCERNS) {
+    if (mapped.length > 0) primaryOfSignal.set(term, mapped[0]!);
+  }
+  for (const [phrase, mapped] of COMPOUND_TERM_TO_CONCERNS) {
+    if (mapped.length > 0) primaryOfSignal.set(phrase, mapped[0]!);
+  }
+  const primaryConcerns = new Set<Concern>();
+  for (const entry of trace) {
+    if (
+      entry.source === "risk_level" ||
+      entry.source === "exposure" ||
+      entry.source === "data_sensitivity" ||
+      entry.source === "scope_gate"
+    ) {
+      continue; // contexto/informativos — não são superfícies
+    }
+    if (!concerns.has(entry.produced as Concern)) continue;
+    const rowPrimary = primaryOfSignal.get(entry.trigger);
+    if (rowPrimary === undefined || rowPrimary === entry.produced) {
+      primaryConcerns.add(entry.produced as Concern);
+    }
+  }
+  const decompositionFamilies = [
+    ...new Set(
+      [...primaryConcerns]
+        .map((concern) => CONCERN_TO_SLICE_FAMILY[concern])
+        .filter((family): family is string => typeof family === "string")
+    )
+  ].sort();
+
   return {
     concerns: [...concerns],
+    decompositionFamilies,
     sliceFamilies: [...sliceFamilyScores.keys()].sort(
       (a, b) =>
         (sliceFamilyScores.get(b) ?? 0) - (sliceFamilyScores.get(a) ?? 0) ||
@@ -1787,11 +1831,15 @@ function gateAfterActivation(args: PostActivationGateInput): GateDecision | null
   const reasons: string[] = [];
   const suggestions: string[] = [];
 
-  if (activation.sliceFamilies.length > 3) {
+  // P3 do ciclo MP1 (2026-08-31): o gate conta SUPERFÍCIES (famílias dos concerns
+  // primários de cada sinal), não o total de famílias activadas — concerns de
+  // suporte de um mesmo sinal (mtls→secrets, mensageria→logging) não pedem
+  // decomposição. GC-10 é o caso de referência: 1 integração legítima.
+  if (activation.decompositionFamilies.length > 3) {
     reasons.push(
-      `Pedido activa ${activation.sliceFamilies.length} slice families (${activation.sliceFamilies.join(
+      `Pedido activa ${activation.decompositionFamilies.length} superfícies (famílias primárias: ${activation.decompositionFamilies.join(
         ", "
-      )}) — máximo recomendado: 3.`
+      )}) — máximo recomendado: 3. Concerns de suporte do mesmo sinal não contam.`
     );
     suggestions.push(
       "Reparte por slice family. Cada PR/PR-step deve ficar em 1–3 slices."

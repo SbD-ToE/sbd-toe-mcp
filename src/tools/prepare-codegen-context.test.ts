@@ -94,7 +94,8 @@ describe("handlePrepareCodegenContext — needs_decomposition", () => {
     });
     expectBlocked(result);
     expect(result.status).toBe("needs_decomposition");
-    expect(result.reasons.some((r) => /slice families/i.test(r))).toBe(true);
+    // P3 (2026-08-31): a mensagem do gate passou a contar SUPERFÍCIES (famílias primárias).
+    expect(result.reasons.some((r) => /superfícies|famílias primárias/i.test(r))).toBe(true);
   });
 });
 

@@ -215,54 +215,6 @@
         "description": "Logs incluem IDs contextuais; dados pessoais ou credenciais nunca registados em logs de erro."
       },
       {
-        "requirement_id": "SES-001",
-        "name": "Expiração automática por inactividade",
-        "type": "base",
-        "description": "Sessão termina após período configurado de inactividade; redirect para autenticação."
-      },
-      {
-        "requirement_id": "SES-002",
-        "name": "Logout manual e após alteração de credenciais",
-        "type": "base",
-        "description": "Logout termina todas as sessões activas; alteração de password invalida tokens anteriores."
-      },
-      {
-        "requirement_id": "SES-003",
-        "name": "Identificadores de sessão imprevisíveis",
-        "type": "base",
-        "description": "Tokens/sessões com entropia adequada; análise de previsibilidade não revela padrão."
-      },
-      {
-        "requirement_id": "SES-004",
-        "name": "Transmissão segura dos tokens",
-        "type": "base",
-        "description": "Tokens transmitidos apenas por canais TLS; cookies com flags Secure e HttpOnly."
-      },
-      {
-        "requirement_id": "SES-005",
-        "name": "Ligação da sessão ao contexto do cliente",
-        "type": "base",
-        "description": "Mudança de IP ou user-agent termina sessão ou exige revalidação; teste evidencia comportamento."
-      },
-      {
-        "requirement_id": "SES-006",
-        "name": "Revogação explícita da sessão",
-        "type": "base",
-        "description": "Sessão pode ser terminada a pedido do utilizador ou do sistema; token fica inválido imediatamente."
-      },
-      {
-        "requirement_id": "SES-007",
-        "name": "Prevenção de sessões long-lived",
-        "type": "base",
-        "description": "TTL máximo configurado e aplicado; sessões com duração excessiva não são possíveis."
-      },
-      {
-        "requirement_id": "SES-008",
-        "name": "Scope, TTL e revogação de tokens JWT",
-        "type": "base",
-        "description": "JWTs incluem claims de âmbito e expiração; mecanismo de revogação implementado e testado."
-      },
-      {
         "requirement_id": "VAL-001",
         "name": "Validação geral de entradas externas",
         "type": "base",
@@ -702,7 +654,7 @@
   "citations": {
     "runtime_v0": {
       "source_data": {
-        "data/publish/runtime/requirements.json": 49,
+        "data/publish/runtime/requirements.json": 41,
         "data/publish/runtime/controls.json": 10
       },
       "ids_from": [
@@ -741,9 +693,9 @@
     "unnamed_v1_entities": 12,
     "selection": {
       "eligible": 98,
-      "selected": 49,
-      "narrowed_out_categories": 7,
-      "narrowed_out_requirements": 49,
+      "selected": 41,
+      "narrowed_out_categories": 8,
+      "narrowed_out_requirements": 57,
       "narrowed_out_ref": {
         "tool": "select_sbd_toe_requirements",
         "note": "Categorias elegíveis sem sinal na tarefa foram excluídas pelo narrowing MP1 — a lista completa (por categoria, com razão) vem de select_sbd_toe_requirements com o mesmo contexto."

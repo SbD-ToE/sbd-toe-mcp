@@ -282,46 +282,6 @@
         "type": "domain-specific"
       },
       {
-        "requirement_id": "SES-001",
-        "name": "Expiração automática por inactividade",
-        "type": "base"
-      },
-      {
-        "requirement_id": "SES-002",
-        "name": "Logout manual e após alteração de credenciais",
-        "type": "base"
-      },
-      {
-        "requirement_id": "SES-003",
-        "name": "Identificadores de sessão imprevisíveis",
-        "type": "base"
-      },
-      {
-        "requirement_id": "SES-004",
-        "name": "Transmissão segura dos tokens",
-        "type": "base"
-      },
-      {
-        "requirement_id": "SES-005",
-        "name": "Ligação da sessão ao contexto do cliente",
-        "type": "base"
-      },
-      {
-        "requirement_id": "SES-006",
-        "name": "Revogação explícita da sessão",
-        "type": "base"
-      },
-      {
-        "requirement_id": "SES-007",
-        "name": "Prevenção de sessões long-lived",
-        "type": "base"
-      },
-      {
-        "requirement_id": "SES-008",
-        "name": "Scope, TTL e revogação de tokens JWT",
-        "type": "base"
-      },
-      {
         "requirement_id": "VAL-001",
         "name": "Validação geral de entradas externas",
         "type": "base"
@@ -627,7 +587,7 @@
   "citations": {
     "runtime_v0": {
       "source_data": {
-        "data/publish/runtime/requirements.json": 69,
+        "data/publish/runtime/requirements.json": 61,
         "data/publish/runtime/controls.json": 10
       },
       "ids_from": [
@@ -666,9 +626,9 @@
     "unnamed_v1_entities": 14,
     "selection": {
       "eligible": 109,
-      "selected": 69,
-      "narrowed_out_categories": 6,
-      "narrowed_out_requirements": 40,
+      "selected": 61,
+      "narrowed_out_categories": 7,
+      "narrowed_out_requirements": 48,
       "narrowed_out_ref": {
         "tool": "select_sbd_toe_requirements",
         "note": "Categorias elegíveis sem sinal na tarefa foram excluídas pelo narrowing MP1 — a lista completa (por categoria, com razão) vem de select_sbd_toe_requirements com o mesmo contexto."

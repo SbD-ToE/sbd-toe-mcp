@@ -335,54 +335,6 @@
         "description": "Serviços e aplicações críticas em produção expõem um sinal explícito de saúde, prontidão ou disponibilidade, ou mecanismo equivalente da plataforma, monitorizado continuamente fora da instância. Exemplos incluem endpoint de saúde, heartbeat, readiness/liveness probes, health checks de load balancer ou watchdog do supervisor. Falhas persistentes geram alerta accionável e integram, quando aplicável, rollback ([DPL-008](/sbd-toe/sbd-manual/deploy-seguro/addon/catalogo-requisitos-deploy)) ou resposta a incidente ([OPS-007](/sbd-toe/sbd-manual/monitorizacao-operacoes/addon/catalogo-requisitos-operacoes)). O sinal não expõe segredos, configuração sensível nem diagnósticos internos não autorizados; a cobertura é verificável por inventário de serviços."
       },
       {
-        "requirement_id": "SES-001",
-        "name": "Expiração automática por inactividade",
-        "type": "base",
-        "description": "Sessão termina após período configurado de inactividade; redirect para autenticação."
-      },
-      {
-        "requirement_id": "SES-002",
-        "name": "Logout manual e após alteração de credenciais",
-        "type": "base",
-        "description": "Logout termina todas as sessões activas; alteração de password invalida tokens anteriores."
-      },
-      {
-        "requirement_id": "SES-003",
-        "name": "Identificadores de sessão imprevisíveis",
-        "type": "base",
-        "description": "Tokens/sessões com entropia adequada; análise de previsibilidade não revela padrão."
-      },
-      {
-        "requirement_id": "SES-004",
-        "name": "Transmissão segura dos tokens",
-        "type": "base",
-        "description": "Tokens transmitidos apenas por canais TLS; cookies com flags Secure e HttpOnly."
-      },
-      {
-        "requirement_id": "SES-005",
-        "name": "Ligação da sessão ao contexto do cliente",
-        "type": "base",
-        "description": "Mudança de IP ou user-agent termina sessão ou exige revalidação; teste evidencia comportamento."
-      },
-      {
-        "requirement_id": "SES-006",
-        "name": "Revogação explícita da sessão",
-        "type": "base",
-        "description": "Sessão pode ser terminada a pedido do utilizador ou do sistema; token fica inválido imediatamente."
-      },
-      {
-        "requirement_id": "SES-007",
-        "name": "Prevenção de sessões long-lived",
-        "type": "base",
-        "description": "TTL máximo configurado e aplicado; sessões com duração excessiva não são possíveis."
-      },
-      {
-        "requirement_id": "SES-008",
-        "name": "Scope, TTL e revogação de tokens JWT",
-        "type": "base",
-        "description": "JWTs incluem claims de âmbito e expiração; mecanismo de revogação implementado e testado."
-      },
-      {
         "requirement_id": "VAL-001",
         "name": "Validação geral de entradas externas",
         "type": "base",
@@ -777,7 +729,7 @@
   "citations": {
     "runtime_v0": {
       "source_data": {
-        "data/publish/runtime/requirements.json": 69,
+        "data/publish/runtime/requirements.json": 61,
         "data/publish/runtime/controls.json": 10
       },
       "ids_from": [
@@ -816,9 +768,9 @@
     "unnamed_v1_entities": 14,
     "selection": {
       "eligible": 109,
-      "selected": 69,
-      "narrowed_out_categories": 6,
-      "narrowed_out_requirements": 40,
+      "selected": 61,
+      "narrowed_out_categories": 7,
+      "narrowed_out_requirements": 48,
       "narrowed_out_ref": {
         "tool": "select_sbd_toe_requirements",
         "note": "Categorias elegíveis sem sinal na tarefa foram excluídas pelo narrowing MP1 — a lista completa (por categoria, com razão) vem de select_sbd_toe_requirements com o mesmo contexto."
