@@ -51,8 +51,9 @@ TODO — confirm with programme lead.
 - v0.10.3 → `06f8bbaa5e4d5f3ac6ddda890a6fbebd78f6be9b` (2026-08-30; formal KG release v1.6.1
   pinned — see CHANGELOG; npm `@shiftleftpt/sbd-toe-mcp@0.10.3` = `latest`, gitHead same commit;
   GitHub Release `v0.10.3`)
-- v0.10.4 *(formal KG release v1.7.0 pinned — see CHANGELOG; annotated tag created on the
-  squash commit of the PR that introduces this row, after its merge to master)*
+- v0.10.4 → `2937236d7521d72be140dbc4d9111dae211eb14b` (2026-08-30; formal KG release v1.7.0
+  pinned — see CHANGELOG; npm `@shiftleftpt/sbd-toe-mcp@0.10.4` = `latest`, gitHead same commit;
+  GitHub Release `v0.10.4`)
 
 ## Current working state
 
@@ -62,8 +63,9 @@ TODO — confirm with programme lead.
 `v1.7.0` (commit `894af32a85d6a50f648f10d8a643848e806e533e` = `mcp-stable`; asset sha256
 `29156b86ef7785966f099f02bb67dd84fcb471d64092944038a3da906c72fb9a`; consumer contract
 v1.14), ontology `sbdtoe-ontology-v2.2` (`2be86e8b`), Manual v1.7.1
-(`8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac`). Tag `v0.10.4` = squash commit of the PR
-introducing this row (recorded here once created). Prior: v0.10.3 (2026-08-30,
+(`8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac`). Tag `v0.10.4` → `2937236d7521d72be140dbc4d9111dae211eb14b` (squash of PR #54; annotated;
+created and pushed by Pontifex under programme-lead authorisation; `release.yml` run
+33375625898 published npm 0.10.4 = latest). Prior: v0.10.3 (2026-08-30,
 `06f8bbaa`, KG v1.6.1), v0.10.2 (2026-08-29, `31aa22af`, KG v1.6.0).
 **Expected next freeze event:** none scheduled
 
@@ -115,3 +117,4 @@ prohibits tag deletion without explicit authorisation):
 | 2026-08-30 | v0.10.3 registered (protected tag list, current working state, upstream pins: KG v1.6.1, Manual v1.7.1). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-30 | v0.10.3 tag commit recorded (`06f8bbaa`, squash of #51); npm publish + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-30 | v0.10.4 registered (protected tag list, current working state, upstream pins: KG v1.7.0, ontology v2.2, Manual v1.7.1). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-31 | v0.10.4 tag commit recorded (`2937236d`, squash of #54); npm publish + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
