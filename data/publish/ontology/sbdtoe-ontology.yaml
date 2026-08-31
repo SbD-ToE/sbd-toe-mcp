@@ -1,12 +1,15 @@
 meta:
   name: SbD-ToE Manual Ontology
-  version: '2.2'
+  version: '2.3'
   status: current
   scope: Manual ontology
-  tag: sbdtoe-ontology-v2.2
+  tag: sbdtoe-ontology-v2.3
   history:
   - version: '2.0'
     note: V2 backbone + semantic layer (imported baseline from sbd-toe-knowledge-graph)
+  - version: '2.3'
+    date: '2026-08-31'
+    note: "Aditiva sobre 2.2 (vaga v1.8.0 do Manual, f78dfe73): catalogue_rules para FIL (8, tratamento de ficheiros), PRI (5, dados pessoais/engenharia) e INT-009…012 (mensageria) — 104 → 121 requisitos type base; domain_mapping FIL → [code_integrity], PRI → [data_protection]; hints de selecção (ficheiro/upload → code_integrity; pessoais/pii/finalidade → data_protection); 3 aliases de privacidade em C2; baseline note. Ids dos 20 controlos, resolution_order e as 260 practice_assignments inalterados."
   - version: '2.2'
     date: '2026-08-30'
     note: "Aditiva sobre 2.1 (pré-G-b, decisão programme-lead 2026-08-30 sobre o scorecard S2): catalogue_rules (regra de catálogo categoria→controlo para os 104 requisitos type base, confiança declarada, sem scoring lexical), requirement_selection_model (baseline ∪ específicos ⊕ overlay; lacuna replace/extend → ADR 0014), aliases em C1/C2/C3 (F-S2-1), hints hash* fora de data_protection, AUT-006 fora das secundárias de C2, receives_* em CLA, Requirement.type. Ids dos 20 controlos e resolution_order inalterados."
@@ -95,6 +98,7 @@ requirement_selection_model:
     baseline:
       source: 02-requisitos-seguranca
       requirement_type: base
+      note: "v2.3: FIL e PRI (Manual v1.8.0) são membros de pleno direito da baseline type: base — a semântica do cap. 02 aplica-se-lhes por inteiro; INT-009…012 idem (categoria INT, type base)."
       selection: always (por nível de risco L1–L3), salvo overlay
       control_linking: catalogue_rules (categoria → controlo; confiança declarada)
     domain_specific:
@@ -878,6 +882,13 @@ domain_mapping:
   AGN:
   - governance
   - identity
+  # v2.3 (Manual v1.8.0): categorias novas do catálogo-base do cap. 02.
+  # FIL fica só em code_integrity — a prosa do Manual declara «um ficheiro é input; a forma de o validar é que difere»;
+  # o par sugerido [code_integrity, data_protection] tornaria C2 candidato a requisitos de handling de ficheiros, que não são protecção de dados.
+  FIL:
+  - code_integrity
+  PRI:
+  - data_protection
   AUT:
   - identity
   ACC:
@@ -1032,6 +1043,14 @@ domain_profile_registry:
       - mac
       - integridade
       - cache
+      # v2.3 — PRI (dados pessoais / engenharia de privacidade)
+      - pessoais
+      - pii
+      - titular
+      - finalidade
+      - minimizacao
+      - pseudonimizacao
+      - retencao
       code_integrity:
       - validacao
       - validar
@@ -1051,6 +1070,13 @@ domain_profile_registry:
       - erro
       - erros
       - api
+      # v2.3 — FIL (coordenar com o sinal de selecção do Pontifex: file/upload → FIL)
+      - ficheiro
+      - ficheiros
+      - upload
+      - anexo
+      - mime
+      - descompress
       infrastructure:
       - ambiente
       - ambientes
@@ -2244,6 +2270,9 @@ controls:
     - "Assinatura e integridade de mensagens"
     - "Proibição de protocolos sem cifra"
     - "Certificados e HSTS"
+    - "Minimização e retenção de dados pessoais"
+    - "Apagamento e exportação de dados pessoais a pedido do titular"
+    - "Conceito de PII em registos (logging de dados pessoais)"
     keywords:
     - "encripta"
     - "cifra"
@@ -2459,7 +2488,7 @@ catalogue_rules:
   # como regra e justification: catalogue_rule; o scoring lexical NÃO corre sobre type: base. A curadoria prevalece sempre.
   applies_to:
     requirement_type: base
-    requirement_ids_count: 104
+    requirement_ids_count: 121  # v2.3: 104 (Manual v1.7.1) + 17 (Manual v1.8.0 `f78dfe734a83b01fa9283c2df5a3eb0ba9528001`: FIL 8 + PRI 5 + INT-009…012)
   precedence:
   - curation
   - catalogue_rule
@@ -2664,7 +2693,7 @@ catalogue_rules:
       - CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
       rationale: "logging e auditoria de chamadas externas = observabilidade (MON); implementação no código (DEV sec.)"
   - category: INT
-    requirements: 8
+    requirements: 12
     default: null
     rationale: "Mensagens e integrações: código para validação, identidade para autenticação mútua, criptografia para transporte/integridade, monitorização para anomalias; INT-008 é curada (FORN + SEG) e prevalece."
     overrides:
@@ -2703,17 +2732,65 @@ catalogue_rules:
       secondary:
       - CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b
       rationale: "revisão de segurança e contrato em integrações — coincide com as arestas curadas D1 (FORN primária, SEG secundária), que prevalecem"
+    - requirement_id: INT-009
+      primary: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+      secondary: []
+      rationale: "v2.3 (mensageria): consumidores idempotentes — lógica de processamento testada no código do consumidor (DEV)"
+    - requirement_id: INT-010
+      primary: CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70
+      secondary:
+      - CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+      rationale: "v2.3 (mensageria): DLQ com tratamento e alarme activo — «nunca cresce em silêncio» é observabilidade operacional (MON); o tratamento é desenho do consumo (DEV sec.)"
+    - requirement_id: INT-011
+      primary: CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411
+      secondary:
+      - CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+      rationale: "v2.3 (mensageria): anti-replay de mensagens — identificador único + janela de validade = integridade de mensagens (C2, par de INT-005); o próprio Manual demarca-o do replay de tokens (SES-008), por isso NÃO é C1/sessões; implementação no consumidor (DEV sec.)"
+    - requirement_id: INT-012
+      primary: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+      secondary: []
+      rationale: "v2.3 (mensageria): ordem de processamento onde exigida — chave de partição/sequenciação é desenho do consumo (DEV); L3"
+  - category: FIL
+    requirements: 8
+    default: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    rationale: "v2.3 (Manual v1.8.0 §FIL): «um ficheiro é input — a forma de o validar é que difere» (prosa do próprio catálogo). Aceitação, validação de conteúdo (magic bytes), arquivos comprimidos (zip slip), quotas, armazenamento não-executável, serving inerte e pixel flood são disciplina de tratamento de input no código — DEV, irmãos de VAL-*. Derivação ASVS v5 V5.x + CWE-434. Desvio declarado face ao preliminar «dev-seguro ou C2 conforme»: nenhum FIL é protecção de dados; C2 não recebe FIL."
+    overrides:
+    - requirement_id: FIL-005
+      primary: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+      secondary:
+      - CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905
+      rationale: "armazenamento fora da árvore servida com nomes gerados: handling no código (DEV); a localização/permissões do armazenamento são configuração de infraestrutura (IAC sec.)"
+    - requirement_id: FIL-007
+      primary: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+      secondary:
+      - CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70
+      rationale: "rastreio anti-malware no fluxo de aceitação (DEV); «detecção bloqueia e gera registo» — alarme/registo operacional (MON sec.)"
+  - category: PRI
+    requirements: 5
+    default: CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411
+    rationale: "v2.3 (Manual v1.8.0 §PRI): engenharia de dados pessoais — minimização, retenção máxima com apagamento efectivo, apagamento/exportação a pedido, finalidade, PII em registos — é protecção de dados aplicacional (C2, domínio data_protection). O lado legal fica no overlay regulatório (a própria prosa o diz). Fontes: autoria SbD-ToE + DSOMM «PII logging concept» + CWE-359."
+    overrides:
+    - requirement_id: PRI-004
+      primary: CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411
+      secondary:
+      - CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead
+      rationale: "registo de finalidade por conjunto de dados = inventário com rastreabilidade organizacional (C4 sec.)"
+    - requirement_id: PRI-005
+      primary: CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411
+      secondary:
+      - CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70
+      rationale: "conceito de PII em registos aplicado e verificado — vive nos logs (MON sec.); vizinhos ENC-005/ERR-007/LOG-005 mantêm o seu objecto (a prosa demarca-os)"
   expected_primary_counts:
     CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a: 6
-    CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460: 20
+    CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460: 30
     CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2: 2
-    CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411: 13
+    CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411: 19
     CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29: 7
     CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628: 1
     CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af: 2
     CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82: 31
     CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0: 1
     CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905: 4
-    CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70: 12
+    CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70: 13
     CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9: 2
     CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb: 3

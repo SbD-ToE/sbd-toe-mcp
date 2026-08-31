@@ -1,7 +1,7 @@
 /**
  * Serving verification over the pinned dev-build
  * kg-v1-manual-v1.7.0-aligned-2026-08-29 (consumer contract v1.11 §1.19):
- * 256 requirements / 27 categories (AGN + OPS-015), curated requirement→control layer
+ * 273 requirements / 29 categories (v1.8.0: FIL/PRI/INT-009..012) (AGN + OPS-015), curated requirement→control layer
  * (0 requirements without a link), 0 legacy REQ-<CAT>-NNN citations, illustrative REQ-NNN
  * ids informative (not gaps), EX- illustrative ids rejected, macro-processos page in the
  * guide profile, guide-by-role still answering.
@@ -83,10 +83,10 @@ describe("resolve_entities — REQ-AGN-001…004 and OPS-015 resolve from the pi
 });
 
 describe("consult_security_requirements — full catalogue served, curated control layer (0 gaps)", () => {
-  it("L3 serves 256 requirements across 27 categories, AGN and OPS-015 included", () => {
+  it("L3 serves 273 requirements across 29 categories, AGN and OPS-015 included", () => {
     const r = handleConsultSecurityRequirements({ risk_level: "L3" });
-    expect(r.meta.requirementCount).toBe(256);
-    expect(r.active_categories).toHaveLength(27);
+    expect(r.meta.requirementCount).toBe(273);
+    expect(r.active_categories).toHaveLength(29);
     expect(r.active_categories).toContain("AGN");
     const ids = r.requirements.map((x) => x.requirement_id);
     for (const id of [...AGN_IDS, "OPS-015"]) expect(ids).toContain(id);
@@ -102,7 +102,7 @@ describe("consult_security_requirements — full catalogue served, curated contr
     expect(l1).not.toContain("OPS-015");
   });
 
-  it("coverage_gaps.requirements_without_control_link is 0 at every level (curated layer, 263 links)", () => {
+  it("coverage_gaps.requirements_without_control_link is 0 at every level (curated layer, 305 links)", () => {
     for (const level of ["L1", "L2", "L3"]) {
       const r = handleConsultSecurityRequirements({ risk_level: level });
       expect(r.coverage_gaps.requirements_without_control_link.count, level).toBe(0);
@@ -172,10 +172,10 @@ describe("guide profile — 00-fundamentos/macro-processos is served in guide (n
   });
 });
 
-describe("verification matrix — EvidencePattern coverage complete (256/256)", () => {
+describe("verification matrix — EvidencePattern coverage complete (273/273)", () => {
   it("L3 has 0 requirements without an EvidencePattern and 256 patterns", () => {
     const r = handleGetVerificationMatrix({ risk_level: "L3" });
     expect(r.data.coverage_gaps.requirements_without_evidence_pattern).toBe(0);
-    expect(r.data.totals.evidence_patterns).toBe(256);
+    expect(r.data.totals.evidence_patterns).toBe(273);
   });
 });

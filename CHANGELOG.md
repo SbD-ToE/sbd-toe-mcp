@@ -9,6 +9,55 @@ review_status: pending-human-review
 
 # Changelog
 
+## Unreleased — KG dev-build v1.8.0 pinned: FIL/PRI served + declared signals (2026-08-31)
+
+Serving line pinned to the dev-build **`kg-v1-manual-v1.8.0-aligned-2026-08-31`**
+(sha256 `ad0fc96c…f4df`, contract **v1.15**, Manual v1.8.0): **273 requirements / 29
+categories** (+17: FIL 8, PRI 5, INT 4), 305 links, EP 273/273. No formal release —
+the MCP release (0.12.0?) ships with the next formal batch (KG v1.9.0), lead's call.
+
+### Added — selection signals for the new catalogues (declared, Manual-anchored)
+
+- `files` concern → FIL: task terms file/upload/uploading/attachment/photo + PT
+  aliases ficheiro(s)/anexo(s)/fotografia(s); `privacy` concern → PRI: pii/personal
+  data + PT dados pessoais/finalidade, and `data_sensitivity: personal|regulated`
+  now also activates PRI.
+- **R-image** (closes the DualGauge replay finding): "image"/"imagem" is a homonym —
+  disambiguated by declared context: image+docker/registry/container → container sense
+  (deployment/distribution → CNT via ch. 09); image+file/upload/photo → FIL; both →
+  both; neither → historical sense. Proven by TC-F-14 (docker → CNT ×11 with 0 FIL;
+  file → FIL ×8 with 0 CNT; GC-05 "push da imagem" unchanged).
+- **`SES-008-por-tecnologia`** (Author's decision): the JWT/user-token signal selects
+  SES-008 at ANY level, named in the `selection_trace` — closes the GC-08 paradox; the
+  level filter still rules everything else (TC-F-15: JWT@L1 → SES-008 in;
+  no JWT → out). The Axis-H runner carries a DECLARED levelGuard exemption for it —
+  the oracle v1 is untouched (the closure annotation is the lead's, v1.1).
+
+### Changed — golden re-run with declared re-baseline (oracle untouched)
+
+- **Axis H stays 10 PASS / 0 / 0** (coverage 100%, strict precision 100%) over the
+  273/29 catalogue, and the oracle's four registered gaps flip to **covered**:
+  GC-01 → FIL-001..008 (upload/file signals); GC-06 → PRI-001..005 (data_sensitivity +
+  personal-data signals); GC-08 → SES-008-por-tecnologia; GC-10 → INT-009..012
+  (messaging: poison messages/DLQ/replay). The per-case reports carry the
+  "transição lacuna → coberto" lines; the oracle file was never edited.
+- Count re-baselines: 256→273 / 27→29 (req-agn suite), links 282→305 (TC-F-08:
+  141 catalogue-rule + 148 recalculated + 16 curated).
+- Payload re-baseline (fixture2 is a file-upload endpoint — FIL now correctly
+  applies, +8 requirements + the ~+1 republished-bundle delta; citationIds 143→152):
+  stable ceilings standard f2 8.900 → **9.200** (measured 9.102), minimal f2
+  8.200 → **8.450** (8.375); sections rest-full 1.600 (1.560), activated_scope
+  5.500/5.500/2.500 (5.396/5.396/2.423). Fixture1 unchanged (104 citations; 6.110 /
+  5.463 / 3.685). Golden snapshots regenerated (diff = FIL additions + bundle
+  provenance).
+
+### Verification
+
+- `npm run check` green (pin sha256-verified); **689/689** tests; `eval:acceptance`
+  (record `2026-08-31-v180-*`): **119 scenarios, 96 executed, 78 PASS · 18 PART ·
+  0 FAIL · 23 SKIP — gate E PASS**; Axis H **10/0/0**; 22/22 tools; TC-F-14/15 added
+  (capability ⇒ scenario).
+
 ## 0.11.0 — 2026-08-31 (prepared — tag v0.11.0 only after the beta line absorbs, per G-mp1a)
 
 **Minor** — the MP1 selection operation lands in the serving layer (new tool), closing the

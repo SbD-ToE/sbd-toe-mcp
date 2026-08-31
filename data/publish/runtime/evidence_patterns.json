@@ -1,6 +1,6 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 256,
+  "count": 273,
   "entity_type": "EvidencePattern",
   "items": [
     {
@@ -5853,6 +5853,282 @@
       "detectable_in": [
         "ci_cd"
       ],
+      "evidence_expectation": "Ficheiros acima do limite definido por funcionalidade são rejeitados antes de qualquer processamento; o limite está documentado.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [],
+      "expected_artifacts": [],
+      "id": "EP-FIL-001",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_requirement_id": "FIL-001",
+      "requirement_category": "FIL",
+      "requirement_name": "Limite de tamanho processável por upload",
+      "responsible_roles": [],
+      "risk_level_hint": "L1+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [],
+      "evidence_expectation": "A extensão confere com o tipo esperado e o conteúdo corresponde ao tipo (verificação de *magic bytes*, *re-writing* de imagens ou biblioteca de validação de conteúdo); ficheiros não conformes são rejeitados.",
+      "evidence_type": "artifact",
+      "expected_artifact_type_ids": [
+        "ART-container-image-51e2624252",
+        "ART-validation-evidence-79f6aaf0ec"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-container-image-51e2624252",
+          "confidence": 0.64,
+          "name": "Container Image",
+          "shared_salient_tokens": [
+            "imagem"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-validation-evidence-79f6aaf0ec",
+          "confidence": 0.54,
+          "name": "Validation Evidence",
+          "shared_salient_tokens": [
+            "validacao"
+          ]
+        }
+      ],
+      "id": "EP-FIL-002",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_requirement_id": "FIL-002",
+      "requirement_category": "FIL",
+      "requirement_name": "Validação de tipo por conteúdo, não só por extensão",
+      "responsible_roles": [],
+      "risk_level_hint": "L1+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Antes de descomprimir: tamanho máximo descomprimido e número máximo de ficheiros verificados; *symlinks* rejeitados salvo allowlist explícita; a descompressão ignora caminhos fornecidos pelo utilizador (*zip slip*).",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [],
+      "expected_artifacts": [],
+      "id": "EP-FIL-003",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_requirement_id": "FIL-003",
+      "requirement_category": "FIL",
+      "requirement_name": "Tratamento seguro de arquivos comprimidos",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "documentation"
+      ],
+      "evidence_expectation": "Quota de espaço e número máximo de ficheiros por utilizador activos; tentativa de exceder é rejeitada com registo.",
+      "evidence_type": "document",
+      "expected_artifact_type_ids": [
+        "ART-approval-record-6fe32eb803",
+        "ART-finding-register-b39d52b4e7"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-approval-record-6fe32eb803",
+          "confidence": 0.54,
+          "name": "Approval Record",
+          "shared_salient_tokens": [
+            "registo"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-finding-register-b39d52b4e7",
+          "confidence": 0.54,
+          "name": "Finding Register",
+          "shared_salient_tokens": [
+            "registo"
+          ]
+        }
+      ],
+      "id": "EP-FIL-004",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_requirement_id": "FIL-004",
+      "requirement_category": "FIL",
+      "requirement_name": "Quota de armazenamento por utilizador",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [],
+      "evidence_expectation": "Ficheiros de origem não confiável não são executáveis como código do servidor quando acedidos por HTTP; caminhos de operações de ficheiro usam nomes gerados internamente, ou validação estrita quando o nome do utilizador é inevitável.",
+      "evidence_type": "artifact",
+      "expected_artifact_type_ids": [
+        "ART-validation-evidence-79f6aaf0ec"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-validation-evidence-79f6aaf0ec",
+          "confidence": 0.54,
+          "name": "Validation Evidence",
+          "shared_salient_tokens": [
+            "validacao"
+          ]
+        }
+      ],
+      "id": "EP-FIL-005",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_requirement_id": "FIL-005",
+      "requirement_category": "FIL",
+      "requirement_name": "Armazenamento fora da árvore servida, com nomes gerados",
+      "responsible_roles": [],
+      "risk_level_hint": "L1+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [],
+      "evidence_expectation": "Nomes de ficheiro servidos são validados ou sanitizados e declarados em Content-Disposition (RFC 6266); conteúdo de utilizador é servido de forma não interpretável como HTML ou script no domínio da aplicação.",
+      "evidence_type": "artifact",
+      "expected_artifact_type_ids": [],
+      "expected_artifacts": [],
+      "id": "EP-FIL-006",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_requirement_id": "FIL-006",
+      "requirement_category": "FIL",
+      "requirement_name": "Serving de ficheiros em contexto inerte",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "documentation"
+      ],
+      "evidence_expectation": "Ficheiros recebidos de fontes não confiáveis passam por rastreio anti-malware antes de serem disponibilizados; detecção bloqueia a disponibilização e gera registo.",
+      "evidence_type": "document",
+      "expected_artifact_type_ids": [
+        "ART-approval-record-6fe32eb803",
+        "ART-finding-register-b39d52b4e7"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-approval-record-6fe32eb803",
+          "confidence": 0.54,
+          "name": "Approval Record",
+          "shared_salient_tokens": [
+            "registo"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-finding-register-b39d52b4e7",
+          "confidence": 0.54,
+          "name": "Finding Register",
+          "shared_salient_tokens": [
+            "registo"
+          ]
+        }
+      ],
+      "id": "EP-FIL-007",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_requirement_id": "FIL-007",
+      "requirement_category": "FIL",
+      "requirement_name": "Rastreio anti-malware de ficheiros de origem não confiável",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Imagens com dimensão em píxeis acima do máximo definido são rejeitadas onde a aplicação processa imagens.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-container-image-51e2624252"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-container-image-51e2624252",
+          "confidence": 0.64,
+          "name": "Container Image",
+          "shared_salient_tokens": [
+            "imagem"
+          ]
+        }
+      ],
+      "id": "EP-FIL-008",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_requirement_id": "FIL-008",
+      "requirement_category": "FIL",
+      "requirement_name": "Limite de dimensão de imagens (pixel flood)",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
       "evidence_expectation": "Modelo documentado e aprovado formalmente pela direcção, com papéis, responsabilidades e ciclo de decisão definidos; acessível e comunicado às equipas relevantes; revisto pelo menos anualmente ou após alteração organizacional significativa.",
       "evidence_type": "workflow",
       "expected_artifact_type_ids": [
@@ -7574,6 +7850,126 @@
       "authority_class": "normative",
       "confidence_model": "deterministic",
       "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Reprocessar a mesma mensagem não produz efeitos duplicados; a idempotência é testada.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [],
+      "expected_artifacts": [],
+      "id": "EP-INT-009",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_requirement_id": "INT-009",
+      "requirement_category": "INT",
+      "requirement_name": "Consumidores idempotentes",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Mensagens não processáveis vão para DLQ; a DLQ tem tratamento definido e alarme activo — nunca cresce em silêncio.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [],
+      "expected_artifacts": [],
+      "id": "EP-INT-010",
+      "maps_to_control_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "maps_to_control_name": "Monitorização e resposta operacional",
+      "maps_to_requirement_id": "INT-010",
+      "requirement_category": "INT",
+      "requirement_name": "Fila de mensagens mortas com tratamento e alarme",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "documentation"
+      ],
+      "evidence_expectation": "Mensagens têm identificador único e janela de validade; a reinjeção fora da janela ou duplicada é rejeitada com registo.",
+      "evidence_type": "document",
+      "expected_artifact_type_ids": [
+        "ART-approval-record-6fe32eb803",
+        "ART-finding-register-b39d52b4e7"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-approval-record-6fe32eb803",
+          "confidence": 0.54,
+          "name": "Approval Record",
+          "shared_salient_tokens": [
+            "registo"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-finding-register-b39d52b4e7",
+          "confidence": 0.54,
+          "name": "Finding Register",
+          "shared_salient_tokens": [
+            "registo"
+          ]
+        }
+      ],
+      "id": "EP-INT-011",
+      "maps_to_control_id": "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+      "maps_to_control_name": "Criptografia aplicacional e protecção de dados",
+      "maps_to_requirement_id": "INT-011",
+      "requirement_category": "INT",
+      "requirement_name": "Protecção contra replay de mensagens",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Onde a semântica do negócio exige ordem, o processamento garante-a (chave de partição, sequenciação) e a violação é detectável.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [],
+      "expected_artifacts": [],
+      "id": "EP-INT-012",
+      "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "maps_to_control_name": "Desenvolvimento seguro e validação de código",
+      "maps_to_requirement_id": "INT-012",
+      "requirement_category": "INT",
+      "requirement_name": "Ordem de processamento onde semanticamente exigida",
+      "responsible_roles": [],
+      "risk_level_hint": "L3",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
         "logs",
         "config"
       ],
@@ -8664,6 +9060,189 @@
       "source_mode": "explicit",
       "supported_signal_ids": [],
       "verification_logic": "Serviços e aplicações críticas em produção expõem um sinal explícito de saúde, prontidão ou disponibilidade, ou mecanismo equivalente da plataforma, monitorizado continuamente fora da instância. Exemplos incluem endpoint de saúde, heartbeat, readiness/liveness probes, health checks de load balancer ou watchdog do supervisor. Falhas persistentes geram alerta accionável e integram, quando aplicável, rollback (DPL-008) ou resposta a incidente (OPS-007). O sinal não expõe segredos, configuração sensível nem diagnósticos internos não autorizados; a cobertura é verificável por inventário de serviços.",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Cada campo de dados pessoais recolhido está associado a uma finalidade registada; campos sem finalidade são removidos do fluxo de recolha.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [],
+      "expected_artifacts": [],
+      "id": "EP-PRI-001",
+      "maps_to_control_id": "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+      "maps_to_control_name": "Criptografia aplicacional e protecção de dados",
+      "maps_to_requirement_id": "PRI-001",
+      "requirement_category": "PRI",
+      "requirement_name": "Minimização dos dados pessoais recolhidos",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Conjuntos de dados pessoais têm prazo de retenção definido; o apagamento no fim do prazo é executado e verificável por amostragem ou evidência automática.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-operational-evidence-f5e852756f",
+        "ART-validation-evidence-79f6aaf0ec"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-operational-evidence-f5e852756f",
+          "confidence": 0.54,
+          "name": "Operational Evidence",
+          "shared_salient_tokens": [
+            "evidencia"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-validation-evidence-79f6aaf0ec",
+          "confidence": 0.54,
+          "name": "Validation Evidence",
+          "shared_salient_tokens": [
+            "evidencia"
+          ]
+        }
+      ],
+      "id": "EP-PRI-002",
+      "maps_to_control_id": "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+      "maps_to_control_name": "Criptografia aplicacional e protecção de dados",
+      "maps_to_requirement_id": "PRI-002",
+      "requirement_category": "PRI",
+      "requirement_name": "Retenção de dados pessoais com prazo e apagamento efectivo",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [],
+      "evidence_expectation": "Existe mecanismo testado para apagar e para exportar os dados pessoais de um titular identificado, sem intervenção manual em base de dados.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [],
+      "expected_artifacts": [],
+      "id": "EP-PRI-003",
+      "maps_to_control_id": "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+      "maps_to_control_name": "Criptografia aplicacional e protecção de dados",
+      "maps_to_requirement_id": "PRI-003",
+      "requirement_category": "PRI",
+      "requirement_name": "Capacidade técnica de apagamento e exportação a pedido",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd"
+      ],
+      "evidence_expectation": "Inventário associa cada conjunto de dados pessoais à finalidade e ao sistema que o trata; alterações de finalidade são registadas.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-approval-record-6fe32eb803",
+        "ART-dependency-inventory-4ddd43ae4f"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-approval-record-6fe32eb803",
+          "confidence": 0.54,
+          "name": "Approval Record",
+          "shared_salient_tokens": [
+            "registo"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-dependency-inventory-4ddd43ae4f",
+          "confidence": 0.54,
+          "name": "Dependency Inventory",
+          "shared_salient_tokens": [
+            "inventario"
+          ]
+        }
+      ],
+      "id": "EP-PRI-004",
+      "maps_to_control_id": "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+      "maps_to_control_name": "Criptografia aplicacional e protecção de dados",
+      "maps_to_requirement_id": "PRI-004",
+      "requirement_category": "PRI",
+      "requirement_name": "Registo de finalidade por conjunto de dados pessoais",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "documentation"
+      ],
+      "evidence_expectation": "Existe um conceito documentado de tratamento de PII em registos (o que se regista, mascarado como, por quanto tempo) e a sua aplicação é verificada.",
+      "evidence_type": "document",
+      "expected_artifact_type_ids": [
+        "ART-approval-record-6fe32eb803",
+        "ART-finding-register-b39d52b4e7"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-approval-record-6fe32eb803",
+          "confidence": 0.54,
+          "name": "Approval Record",
+          "shared_salient_tokens": [
+            "registo"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-finding-register-b39d52b4e7",
+          "confidence": 0.54,
+          "name": "Finding Register",
+          "shared_salient_tokens": [
+            "registo"
+          ]
+        }
+      ],
+      "id": "EP-PRI-005",
+      "maps_to_control_id": "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+      "maps_to_control_name": "Criptografia aplicacional e protecção de dados",
+      "maps_to_requirement_id": "PRI-005",
+      "requirement_category": "PRI",
+      "requirement_name": "Conceito documentado e aplicado de PII em registos",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_document": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "source_mode": "catalog_criterion",
+      "supported_signal_ids": [],
+      "verification_logic": "",
       "verification_when": null
     },
     {

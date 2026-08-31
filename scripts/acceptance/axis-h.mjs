@@ -87,7 +87,8 @@ export const goldenCases = [
     mustHave: ["AUT-003", "AUT-006", "AUT-009", "ACC-001", "ACC-002", "ACC-005", "ACC-006", "ACC-008", "SES-001..004", "SES-006", "VAL-001", "VAL-002", "VAL-004", "VAL-005", "VAL-006", "ERR-001", "ERR-002", "API-001", "API-003", "API-005", "ENC-001", "ENC-002", "ENC-005", "LOG-001", "LOG-002", "LOG-003"],
     debatable: ["AUT-001", "AUT-008", "SES-008", "VAL-003"],
     mustNot: ["TRN-*", "GOV-*", "CLA-*", "REQ-*", "THR-*", "IDE-*", "CIC-*", "IAC-*", "CNT-*", "DST-*", "DEP-*", "AGN", "OPS-*"],
-    gapNote: "tratamento de ficheiros (tipo/magic bytes, tamanho, anti-malware, armazenamento, nomes) — sem categoria no catálogo" },
+    gapNote: "tratamento de ficheiros (tipo/magic bytes, tamanho, anti-malware, armazenamento, nomes) — sem categoria no catálogo",
+    gapTransition: "coberto (v1.8.0): FIL-001..008 publicados no catálogo (cap. 02); sinal upload/file/ficheiro → FIL selecciona-os" },
   { id: "GC-02", title: "API REST pública com rate limiting", level: "L3",
     prepare: { task: "Expor API pública de consulta com chaves de cliente e rate limiting", risk_level: "L3", stack: "Python/FastAPI", exposure: "public" },
     concerns: ["api", "auth", "validation"], // task: API pública + chaves de cliente
@@ -123,7 +124,8 @@ export const goldenCases = [
     debatable: [],
     mustNot: ["CNT-*", "IAC-*", "CIC-*", "DST-*", "DEP-*", "AGN", "TRN-*"],
     expectsOverlay: true, // oracle: EXT-* activated obligations > 0, coherent, not enumerated
-    gapNote: "minimização/consentimento/retenção de dados pessoais sem requisitos próprios (DAT-*/PRI-* eram ilustrativos)" },
+    gapNote: "minimização/consentimento/retenção de dados pessoais sem requisitos próprios (DAT-*/PRI-* eram ilustrativos)",
+    gapTransition: "coberto (v1.8.0): PRI-001..005 publicados; data_sensitivity personal/regulated e sinais dados pessoais/pii/finalidade → PRI" },
   { id: "GC-07", title: "Agente AI com tool-calls e kill-switch", level: "L3",
     prepare: { task: "Worker agêntico que abre PRs e faz deploys, com mandate, kill-switch e audit por tool-call", risk_level: "L3" },
     concerns: ["agents"],
@@ -139,7 +141,12 @@ export const goldenCases = [
     // the case's point: nothing L2+/L3-only may appear — encoded as levelGuard below
     mustNot: [],
     levelGuard: true, // any selected requirement not applicable at L1 is a must-NOT hit
-    gapNote: "paradoxo SES-008: guidance JWT para L1 não existe — lead decide" },
+    // Decisão do Author (2026-08-31): SES-008-por-tecnologia — o sinal JWT activa
+    // SES-008 independentemente do nível. Isenção DECLARADA do levelGuard (runner
+    // semantics; o oráculo v1 fica intocado — a anotação de fecho v1.1 é do lead).
+    levelGuardExemptions: ["SES-008"],
+    gapNote: "paradoxo SES-008: guidance JWT para L1 não existe — lead decide",
+    gapTransition: "coberto (v1.8.0/decisão do Author): SES-008-por-tecnologia — sinal JWT activa SES-008 a qualquer nível, declarado no trace; isenção declarada no runner, oráculo intocado" },
   { id: "GC-09", title: "Alteração só de documentação (caso NEGATIVO)", level: null,
     prepare: { task: "Actualizar README e docs de arquitectura; sem código", risk_level: "L1", changed_files: ["README.md", "docs/architecture.md"] },
     concerns: null, // consult n/a: the case defines no meaningful selection context
@@ -151,7 +158,8 @@ export const goldenCases = [
     mustHave: ["INT-001..006", "ENC-001", "ENC-003", "CFG-006", "LOG-001"],
     debatable: [],
     mustNot: ["AUT-*", "SES-*", "VAL-008", "CNT-*", "IAC-*", "CIC-*", "TRN-*", "GOV-*", "AGN"],
-    gapNote: "mensageria (poison messages, DLQ, replay) sem requisitos" },
+    gapNote: "mensageria (poison messages, DLQ, replay) sem requisitos",
+    gapTransition: "coberto (v1.8.0): INT-009..012 publicados (cap. 02, categoria INT alargada); o concern integration selecciona-os" },
 ];
 
 function metrics(selected, mustHave, mustNot, debatable) {
@@ -187,6 +195,7 @@ export async function runGoldenCase(client, gc, catalogue) {
   let mustNot = expandSet(gc.mustNot, gc.level, catalogue);
   if (gc.levelGuard) {
     for (const r of catalogue) if (r.levels[gc.level] !== true) mustNot.add(r.id);
+    for (const id of gc.levelGuardExemptions ?? []) mustNot.delete(id); // decisões declaradas (ver caso)
   }
   for (const id of debatable) mustNot.delete(id); // neutral wins over wildcard overlap
   for (const id of mustHave) mustNot.delete(id);
@@ -236,5 +245,6 @@ export async function runGoldenCase(client, gc, catalogue) {
         ? [{ id: "(caso inteiro)", cause: "mcp", note: `prepare devolveu ${pd.status} para uma tarefa legítima do oráculo — o scope gate travou antes de seleccionar; reasons: ${(pd.reasons ?? []).join(" | ").slice(0, 160)}` }]
         : causesFor(pM.missing, gc.level, catalogue, gc.gapNote),
     ...(gc.gapNote ? { gap_note: gc.gapNote } : {}),
+    ...(gc.gapTransition ? { gap_transition: gc.gapTransition } : {}),
   };
 }

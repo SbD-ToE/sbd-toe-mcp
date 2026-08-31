@@ -1,6 +1,6 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 282,
+  "count": 305,
   "entity_type": "RequirementControlLink",
   "items": [
     {
@@ -5027,6 +5027,316 @@
     },
     {
       "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.92,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule"
+      ],
+      "link_id": "FIL-001|maps_to_control|CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "v2.3 (Manual v1.8.0 §FIL): «um ficheiro é input — a forma de o validar é que difere» (prosa do próprio catálogo). Aceitação, validação de conteúdo (magic bytes), arquivos comprimidos (zip slip), quotas, armazenamento não-executável, serving inerte e pixel flood são disciplina de tratamento de input no código — DEV, irmãos de VAL-*. Derivação ASVS v5 V5.x + CWE-434. Desvio declarado face ao preliminar «dev-seguro ou C2 conforme»: nenhum FIL é protecção de dados; C2 não recebe FIL.",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "primary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "FIL-001",
+      "source_label": "Limite de tamanho processável por upload",
+      "source_type": "Requirement",
+      "target_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "target_label": "Desenvolvimento seguro e validação de código",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.92,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule"
+      ],
+      "link_id": "FIL-002|maps_to_control|CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "v2.3 (Manual v1.8.0 §FIL): «um ficheiro é input — a forma de o validar é que difere» (prosa do próprio catálogo). Aceitação, validação de conteúdo (magic bytes), arquivos comprimidos (zip slip), quotas, armazenamento não-executável, serving inerte e pixel flood são disciplina de tratamento de input no código — DEV, irmãos de VAL-*. Derivação ASVS v5 V5.x + CWE-434. Desvio declarado face ao preliminar «dev-seguro ou C2 conforme»: nenhum FIL é protecção de dados; C2 não recebe FIL.",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "primary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "FIL-002",
+      "source_label": "Validação de tipo por conteúdo, não só por extensão",
+      "source_type": "Requirement",
+      "target_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "target_label": "Desenvolvimento seguro e validação de código",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.92,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule"
+      ],
+      "link_id": "FIL-003|maps_to_control|CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "v2.3 (Manual v1.8.0 §FIL): «um ficheiro é input — a forma de o validar é que difere» (prosa do próprio catálogo). Aceitação, validação de conteúdo (magic bytes), arquivos comprimidos (zip slip), quotas, armazenamento não-executável, serving inerte e pixel flood são disciplina de tratamento de input no código — DEV, irmãos de VAL-*. Derivação ASVS v5 V5.x + CWE-434. Desvio declarado face ao preliminar «dev-seguro ou C2 conforme»: nenhum FIL é protecção de dados; C2 não recebe FIL.",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "primary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "FIL-003",
+      "source_label": "Tratamento seguro de arquivos comprimidos",
+      "source_type": "Requirement",
+      "target_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "target_label": "Desenvolvimento seguro e validação de código",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.92,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule"
+      ],
+      "link_id": "FIL-004|maps_to_control|CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "v2.3 (Manual v1.8.0 §FIL): «um ficheiro é input — a forma de o validar é que difere» (prosa do próprio catálogo). Aceitação, validação de conteúdo (magic bytes), arquivos comprimidos (zip slip), quotas, armazenamento não-executável, serving inerte e pixel flood são disciplina de tratamento de input no código — DEV, irmãos de VAL-*. Derivação ASVS v5 V5.x + CWE-434. Desvio declarado face ao preliminar «dev-seguro ou C2 conforme»: nenhum FIL é protecção de dados; C2 não recebe FIL.",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "primary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "FIL-004",
+      "source_label": "Quota de armazenamento por utilizador",
+      "source_type": "Requirement",
+      "target_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "target_label": "Desenvolvimento seguro e validação de código",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.92,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule"
+      ],
+      "link_id": "FIL-005|maps_to_control|CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "armazenamento fora da árvore servida com nomes gerados: handling no código (DEV); a localização/permissões do armazenamento são configuração de infraestrutura (IAC sec.)",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "primary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "FIL-005",
+      "source_label": "Armazenamento fora da árvore servida, com nomes gerados",
+      "source_type": "Requirement",
+      "target_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "target_label": "Desenvolvimento seguro e validação de código",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.8,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule_secondary"
+      ],
+      "link_id": "FIL-005|maps_to_control|CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "armazenamento fora da árvore servida com nomes gerados: handling no código (DEV); a localização/permissões do armazenamento são configuração de infraestrutura (IAC sec.)",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "secondary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "FIL-005",
+      "source_label": "Armazenamento fora da árvore servida, com nomes gerados",
+      "source_type": "Requirement",
+      "target_id": "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+      "target_label": "Infraestrutura como código governada",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.92,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule"
+      ],
+      "link_id": "FIL-006|maps_to_control|CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "v2.3 (Manual v1.8.0 §FIL): «um ficheiro é input — a forma de o validar é que difere» (prosa do próprio catálogo). Aceitação, validação de conteúdo (magic bytes), arquivos comprimidos (zip slip), quotas, armazenamento não-executável, serving inerte e pixel flood são disciplina de tratamento de input no código — DEV, irmãos de VAL-*. Derivação ASVS v5 V5.x + CWE-434. Desvio declarado face ao preliminar «dev-seguro ou C2 conforme»: nenhum FIL é protecção de dados; C2 não recebe FIL.",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "primary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "FIL-006",
+      "source_label": "Serving de ficheiros em contexto inerte",
+      "source_type": "Requirement",
+      "target_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "target_label": "Desenvolvimento seguro e validação de código",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.92,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule"
+      ],
+      "link_id": "FIL-007|maps_to_control|CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "rastreio anti-malware no fluxo de aceitação (DEV); «detecção bloqueia e gera registo» — alarme/registo operacional (MON sec.)",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "primary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "FIL-007",
+      "source_label": "Rastreio anti-malware de ficheiros de origem não confiável",
+      "source_type": "Requirement",
+      "target_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "target_label": "Desenvolvimento seguro e validação de código",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.8,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule_secondary"
+      ],
+      "link_id": "FIL-007|maps_to_control|CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "rastreio anti-malware no fluxo de aceitação (DEV); «detecção bloqueia e gera registo» — alarme/registo operacional (MON sec.)",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "secondary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "FIL-007",
+      "source_label": "Rastreio anti-malware de ficheiros de origem não confiável",
+      "source_type": "Requirement",
+      "target_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "target_label": "Monitorização e resposta operacional",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.92,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule"
+      ],
+      "link_id": "FIL-008|maps_to_control|CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "v2.3 (Manual v1.8.0 §FIL): «um ficheiro é input — a forma de o validar é que difere» (prosa do próprio catálogo). Aceitação, validação de conteúdo (magic bytes), arquivos comprimidos (zip slip), quotas, armazenamento não-executável, serving inerte e pixel flood são disciplina de tratamento de input no código — DEV, irmãos de VAL-*. Derivação ASVS v5 V5.x + CWE-434. Desvio declarado face ao preliminar «dev-seguro ou C2 conforme»: nenhum FIL é protecção de dados; C2 não recebe FIL.",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "primary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "FIL-008",
+      "source_label": "Limite de dimensão de imagens (pixel flood)",
+      "source_type": "Requirement",
+      "target_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "target_label": "Desenvolvimento seguro e validação de código",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
         "14-governanca-contratacao"
       ],
       "confidence": 0.8795,
@@ -6652,6 +6962,192 @@
       "justification": [
         "catalogue_rule"
       ],
+      "link_id": "INT-009|maps_to_control|CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "v2.3 (mensageria): consumidores idempotentes — lógica de processamento testada no código do consumidor (DEV)",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "primary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "INT-009",
+      "source_label": "Consumidores idempotentes",
+      "source_type": "Requirement",
+      "target_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "target_label": "Desenvolvimento seguro e validação de código",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.92,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule"
+      ],
+      "link_id": "INT-010|maps_to_control|CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "v2.3 (mensageria): DLQ com tratamento e alarme activo — «nunca cresce em silêncio» é observabilidade operacional (MON); o tratamento é desenho do consumo (DEV sec.)",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "primary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "INT-010",
+      "source_label": "Fila de mensagens mortas com tratamento e alarme",
+      "source_type": "Requirement",
+      "target_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "target_label": "Monitorização e resposta operacional",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.8,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule_secondary"
+      ],
+      "link_id": "INT-010|maps_to_control|CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "v2.3 (mensageria): DLQ com tratamento e alarme activo — «nunca cresce em silêncio» é observabilidade operacional (MON); o tratamento é desenho do consumo (DEV sec.)",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "secondary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "INT-010",
+      "source_label": "Fila de mensagens mortas com tratamento e alarme",
+      "source_type": "Requirement",
+      "target_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "target_label": "Desenvolvimento seguro e validação de código",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.92,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule"
+      ],
+      "link_id": "INT-011|maps_to_control|CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "v2.3 (mensageria): anti-replay de mensagens — identificador único + janela de validade = integridade de mensagens (C2, par de INT-005); o próprio Manual demarca-o do replay de tokens (SES-008), por isso NÃO é C1/sessões; implementação no consumidor (DEV sec.)",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "primary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "INT-011",
+      "source_label": "Protecção contra replay de mensagens",
+      "source_type": "Requirement",
+      "target_id": "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+      "target_label": "Criptografia aplicacional e protecção de dados",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.8,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule_secondary"
+      ],
+      "link_id": "INT-011|maps_to_control|CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "v2.3 (mensageria): anti-replay de mensagens — identificador único + janela de validade = integridade de mensagens (C2, par de INT-005); o próprio Manual demarca-o do replay de tokens (SES-008), por isso NÃO é C1/sessões; implementação no consumidor (DEV sec.)",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "secondary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "INT-011",
+      "source_label": "Protecção contra replay de mensagens",
+      "source_type": "Requirement",
+      "target_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "target_label": "Desenvolvimento seguro e validação de código",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.92,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule"
+      ],
+      "link_id": "INT-012|maps_to_control|CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "v2.3 (mensageria): ordem de processamento onde exigida — chave de partição/sequenciação é desenho do consumo (DEV); L3",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "primary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "INT-012",
+      "source_label": "Ordem de processamento onde semanticamente exigida",
+      "source_type": "Requirement",
+      "target_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
+      "target_label": "Desenvolvimento seguro e validação de código",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.92,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule"
+      ],
       "link_id": "LOG-001|maps_to_control|CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
       "link_type": "maps_to_control",
       "matched_control_field": "catalogue_rule",
@@ -7426,6 +7922,223 @@
       },
       "source_id": "OPS-015",
       "source_label": "Sinais contínuos de saúde e disponibilidade operacional",
+      "source_type": "Requirement",
+      "target_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "target_label": "Monitorização e resposta operacional",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.92,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule"
+      ],
+      "link_id": "PRI-001|maps_to_control|CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "v2.3 (Manual v1.8.0 §PRI): engenharia de dados pessoais — minimização, retenção máxima com apagamento efectivo, apagamento/exportação a pedido, finalidade, PII em registos — é protecção de dados aplicacional (C2, domínio data_protection). O lado legal fica no overlay regulatório (a própria prosa o diz). Fontes: autoria SbD-ToE + DSOMM «PII logging concept» + CWE-359.",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "primary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "PRI-001",
+      "source_label": "Minimização dos dados pessoais recolhidos",
+      "source_type": "Requirement",
+      "target_id": "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+      "target_label": "Criptografia aplicacional e protecção de dados",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.92,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule"
+      ],
+      "link_id": "PRI-002|maps_to_control|CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "v2.3 (Manual v1.8.0 §PRI): engenharia de dados pessoais — minimização, retenção máxima com apagamento efectivo, apagamento/exportação a pedido, finalidade, PII em registos — é protecção de dados aplicacional (C2, domínio data_protection). O lado legal fica no overlay regulatório (a própria prosa o diz). Fontes: autoria SbD-ToE + DSOMM «PII logging concept» + CWE-359.",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "primary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "PRI-002",
+      "source_label": "Retenção de dados pessoais com prazo e apagamento efectivo",
+      "source_type": "Requirement",
+      "target_id": "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+      "target_label": "Criptografia aplicacional e protecção de dados",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.92,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule"
+      ],
+      "link_id": "PRI-003|maps_to_control|CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "v2.3 (Manual v1.8.0 §PRI): engenharia de dados pessoais — minimização, retenção máxima com apagamento efectivo, apagamento/exportação a pedido, finalidade, PII em registos — é protecção de dados aplicacional (C2, domínio data_protection). O lado legal fica no overlay regulatório (a própria prosa o diz). Fontes: autoria SbD-ToE + DSOMM «PII logging concept» + CWE-359.",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "primary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "PRI-003",
+      "source_label": "Capacidade técnica de apagamento e exportação a pedido",
+      "source_type": "Requirement",
+      "target_id": "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+      "target_label": "Criptografia aplicacional e protecção de dados",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.92,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule"
+      ],
+      "link_id": "PRI-004|maps_to_control|CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "registo de finalidade por conjunto de dados = inventário com rastreabilidade organizacional (C4 sec.)",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "primary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "PRI-004",
+      "source_label": "Registo de finalidade por conjunto de dados pessoais",
+      "source_type": "Requirement",
+      "target_id": "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+      "target_label": "Criptografia aplicacional e protecção de dados",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.8,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule_secondary"
+      ],
+      "link_id": "PRI-004|maps_to_control|CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "registo de finalidade por conjunto de dados = inventário com rastreabilidade organizacional (C4 sec.)",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "secondary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "PRI-004",
+      "source_label": "Registo de finalidade por conjunto de dados pessoais",
+      "source_type": "Requirement",
+      "target_id": "CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead",
+      "target_label": "Governação organizacional, ownership e conformidade",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.92,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule"
+      ],
+      "link_id": "PRI-005|maps_to_control|CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "conceito de PII em registos aplicado e verificado — vive nos logs (MON sec.); vizinhos ENC-005/ERR-007/LOG-005 mantêm o seu objecto (a prosa demarca-os)",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "primary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "PRI-005",
+      "source_label": "Conceito documentado e aplicado de PII em registos",
+      "source_type": "Requirement",
+      "target_id": "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
+      "target_label": "Criptografia aplicacional e protecção de dados",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "02-requisitos-seguranca"
+      ],
+      "confidence": 0.8,
+      "evidence_unit_ids": [],
+      "justification": [
+        "catalogue_rule_secondary"
+      ],
+      "link_id": "PRI-005|maps_to_control|CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
+      "link_type": "maps_to_control",
+      "matched_control_field": "catalogue_rule",
+      "matched_control_text": "conceito de PII em registos aplicado e verificado — vive nos logs (MON sec.); vizinhos ENC-005/ERR-007/LOG-005 mantêm o seu objecto (a prosa demarca-os)",
+      "score_components": {
+        "chapter_overlap": [],
+        "rule": {
+          "confidence_model": "deterministic",
+          "role": "secondary",
+          "source": "ontology/sbdtoe-ontology.yaml#catalogue_rules"
+        },
+        "runner_up_margin": null,
+        "shared_salient_tokens": [],
+        "token_similarity": 0.0
+      },
+      "source_id": "PRI-005",
+      "source_label": "Conceito documentado e aplicado de PII em registos",
       "source_type": "Requirement",
       "target_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
       "target_label": "Monitorização e resposta operacional",

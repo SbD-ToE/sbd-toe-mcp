@@ -8,7 +8,7 @@
     "detail": "standard"
   },
   "activation_trace_ref": {
-    "entries": 13,
+    "entries": 15,
     "note": "activation_trace elided at detail=standard/minimal — re-call with debug=true to include it (always inline at detail=full)."
   },
   "provenance_legend": {
@@ -215,6 +215,54 @@
         "description": "Logs incluem IDs contextuais; dados pessoais ou credenciais nunca registados em logs de erro."
       },
       {
+        "requirement_id": "FIL-001",
+        "name": "Limite de tamanho processável por upload",
+        "type": "base",
+        "description": "Ficheiros acima do limite definido por funcionalidade são rejeitados antes de qualquer processamento; o limite está documentado."
+      },
+      {
+        "requirement_id": "FIL-002",
+        "name": "Validação de tipo por conteúdo, não só por extensão",
+        "type": "base",
+        "description": "A extensão confere com o tipo esperado e o conteúdo corresponde ao tipo (verificação de magic bytes, re-writing de imagens ou biblioteca de validação de conteúdo); ficheiros não conformes são rejeitados."
+      },
+      {
+        "requirement_id": "FIL-003",
+        "name": "Tratamento seguro de arquivos comprimidos",
+        "type": "base",
+        "description": "Antes de descomprimir: tamanho máximo descomprimido e número máximo de ficheiros verificados; symlinks rejeitados salvo allowlist explícita; a descompressão ignora caminhos fornecidos pelo utilizador (zip slip)."
+      },
+      {
+        "requirement_id": "FIL-004",
+        "name": "Quota de armazenamento por utilizador",
+        "type": "base",
+        "description": "Quota de espaço e número máximo de ficheiros por utilizador activos; tentativa de exceder é rejeitada com registo."
+      },
+      {
+        "requirement_id": "FIL-005",
+        "name": "Armazenamento fora da árvore servida, com nomes gerados",
+        "type": "base",
+        "description": "Ficheiros de origem não confiável não são executáveis como código do servidor quando acedidos por HTTP; caminhos de operações de ficheiro usam nomes gerados internamente, ou validação estrita quando o nome do utilizador é inevitável."
+      },
+      {
+        "requirement_id": "FIL-006",
+        "name": "Serving de ficheiros em contexto inerte",
+        "type": "base",
+        "description": "Nomes de ficheiro servidos são validados ou sanitizados e declarados em Content-Disposition (RFC 6266); conteúdo de utilizador é servido de forma não interpretável como HTML ou script no domínio da aplicação."
+      },
+      {
+        "requirement_id": "FIL-007",
+        "name": "Rastreio anti-malware de ficheiros de origem não confiável",
+        "type": "base",
+        "description": "Ficheiros recebidos de fontes não confiáveis passam por rastreio anti-malware antes de serem disponibilizados; detecção bloqueia a disponibilização e gera registo."
+      },
+      {
+        "requirement_id": "FIL-008",
+        "name": "Limite de dimensão de imagens (pixel flood)",
+        "type": "base",
+        "description": "Imagens com dimensão em píxeis acima do máximo definido são rejeitadas onde a aplicação processa imagens."
+      },
+      {
         "requirement_id": "LOG-001",
         "name": "Registo de eventos críticos",
         "type": "base",
@@ -407,6 +455,14 @@
         "control_type": "preventive",
         "confidence": "direct",
         "description": "Garante que só principals legítimos — humanos ou não-humanos — acedem à aplicação, com autenticação proporcional à sensibilidade, autorização por privilégio mínimo e ciclo de vida de sessões e tokens controlado."
+      },
+      {
+        "control_id": "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905",
+        "name": "Infraestrutura como código governada",
+        "domain": "infrastructure",
+        "control_type": "preventive",
+        "confidence": "direct",
+        "description": "Endurece IaC com rastreabilidade de planos, validações automáticas, separação de funções e controlo de drift."
       },
       {
         "control_id": "CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b",
@@ -744,7 +800,7 @@
         "rastreabilidade_role": "substrate_landing",
         "manual_chapter": "04-arquitetura-segura",
         "manual_file": "canon/25-rastreabilidade.md",
-        "manual_commit_sha": "8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac",
+        "manual_commit_sha": "f78dfe734a83b01fa9283c2df5a3eb0ba9528001",
         "v1_entity_ids": [
           "ACO-IAT-001",
           "ACO-IAT-002",
@@ -771,7 +827,7 @@
         "rastreabilidade_role": "substrate_landing",
         "manual_chapter": "06-desenvolvimento-seguro",
         "manual_file": "canon/25-rastreabilidade.md",
-        "manual_commit_sha": "8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac",
+        "manual_commit_sha": "f78dfe734a83b01fa9283c2df5a3eb0ba9528001",
         "v1_entity_ids": [
           "ACO-IVF-001",
           "ACO-IVF-002",
@@ -799,7 +855,7 @@
         "rastreabilidade_role": "substrate_landing",
         "manual_chapter": "12-monitorizacao-operacoes",
         "manual_file": "canon/25-rastreabilidade.md",
-        "manual_commit_sha": "8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac",
+        "manual_commit_sha": "f78dfe734a83b01fa9283c2df5a3eb0ba9528001",
         "v1_entity_ids": [
           "ACO-SLG-001",
           "ACO-SLG-002",
@@ -823,7 +879,7 @@
         "rastreabilidade_role": "placeholder",
         "manual_chapter": null,
         "manual_file": null,
-        "manual_commit_sha": "8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac",
+        "manual_commit_sha": "f78dfe734a83b01fa9283c2df5a3eb0ba9528001",
         "v1_entity_ids": [
           "ACA-IAT-001",
           "ACA-IAT-002",
@@ -852,8 +908,8 @@
   "citations": {
     "runtime_v0": {
       "source_data": {
-        "data/publish/runtime/requirements.json": 61,
-        "data/publish/runtime/controls.json": 10
+        "data/publish/runtime/requirements.json": 69,
+        "data/publish/runtime/controls.json": 11
       },
       "ids_from": [
         "activated_scope.requirements[].requirement_id",
@@ -890,10 +946,10 @@
     "named_v1_entities": 55,
     "unnamed_v1_entities": 14,
     "selection": {
-      "eligible": 109,
-      "selected": 61,
-      "narrowed_out_categories": 7,
-      "narrowed_out_requirements": 48,
+      "eligible": 125,
+      "selected": 69,
+      "narrowed_out_categories": 8,
+      "narrowed_out_requirements": 56,
       "narrowed_out_ref": {
         "tool": "select_sbd_toe_requirements",
         "note": "Categorias elegíveis sem sinal na tarefa foram excluídas pelo narrowing MP1 — a lista completa (por categoria, com razão) vem de select_sbd_toe_requirements com o mesmo contexto."
@@ -907,9 +963,9 @@
       "ASC-09 artifacts: declared=12 actual=8 (slice contract status=working_contract)",
       "ASC-10 mechanisms: declared=6 actual=4 (slice contract status=working_contract)"
     ],
-    "evidence_patterns_total": 153,
+    "evidence_patterns_total": 186,
     "evidence_patterns_returned": 10,
-    "evidence_patterns_capped": 143,
+    "evidence_patterns_capped": 176,
     "evidence_pattern_cap": 10,
     "evidence_patterns_rest": {
       "tool": "prepare_sbd_toe_codegen_context",

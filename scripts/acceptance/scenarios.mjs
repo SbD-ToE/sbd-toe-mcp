@@ -233,11 +233,11 @@ export const scenarios = [
       if (!d.coverage) return fail("no coverage envelope (G1)"); const act = d.data?.activated ?? []; if (act.length === 0) return fail("nothing activated"); if (act.length > 3) return fail("page > limit");
       const u = await c.tool("map_sbd_toe_regulatory_activation", { framework: "PCI" }); const honest = !u.ok || (u.data?.data?.activated?.length ?? 0) === 0;
       return ok(`DORA: ${act.length}/${d.coverage.chapters ?? d.coverage.total} chapters, mappings ${d.coverage.mappings}, obligations ${d.coverage.obligations}; unknown framework → ${honest ? "honest empty/error" : "activated?!"}`); } },
-  { id: "TC-F-08", axis: "F", title: "curated requirement→control layer v3 (KG v1.7.0): 282 links, 0 unlinked, curated 16, catalogue rules tolerated", tool: "resolve_entities",
+  { id: "TC-F-08", axis: "F", title: "curated requirement→control layer v3 (KG v1.8.0 dev-build): 305 links, 0 unlinked, curated 16, catalogue rules tolerated", tool: "resolve_entities",
     run: async (c, ctx) => { const links = await c.tool("resolve_entities", { record_type: "requirement_control_link", limit: 1 }); if (!links.ok) return fail(links.error);
       const gaps = []; for (const L of ["L1", "L2", "L3"]) { const r = await c.tool("consult_security_requirements", { risk_level: L }); gaps.push(r.data?.coverage_gaps?.requirements_without_control_link?.count); }
-      if (links.data.total !== 282) return fail(`links total ${links.data.total} (expected 282 = 118 catalogue-rule + 148 recalculated + 16 curated)`, "graph");
-      if (ctx.links.total !== 282) return fail(`published file carries ${ctx.links.total} links`, "graph");
+      if (links.data.total !== 305) return fail(`links total ${links.data.total} (expected 305 = 141 catalogue-rule + 148 recalculated + 16 curated; v1.8.0 dev-build)`, "graph");
+      if (ctx.links.total !== 305) return fail(`published file carries ${ctx.links.total} links`, "graph");
       if (gaps.some((g) => g !== 0)) return fail(`coverage_gaps ${gaps}`);
       const cur = ctx.links.curationByCurator; if ((cur["archon-2026-08-29"] ?? 0) !== 12 || (cur["archon-2026-08-30"] ?? 0) !== 4) return fail(`curated on surface ${JSON.stringify(cur)} (expected 12 + 4, incl. GOV-013 CAP secondary)`, "graph");
       const unknownJust = ctx.links.justifications.filter((j) => !["bundle_grounding", "catalogue_rule", "catalogue_rule_secondary", "chapter_grounding", "curated_semantic_review", "domain_mapping", "lexical_alignment", "requirement_domain_hint", "single_control_bundle", "domain_owner_fallback", "foundational_domain_unique", "preferred_domain_unique", "preferred_domain_strong", "preferred_domain_disambiguated", "baseline_domain_lexical"].includes(j));
@@ -248,7 +248,7 @@ export const scenarios = [
       const mon1 = (id) => ctx.links.targetsOf(id).some((x) => /^CTRL-monitoring-/.test(x));
       if (!idn(ctx.links.targetsOf("AUT-006"))) return fail(`AUT-006 → ${ctx.links.targetsOf("AUT-006")}`, "graph");
       if (!mon1("INT-007") || !mon1("LOG-001")) return fail(`INT-007/LOG-001 not → monitoring`, "graph");
-      return ok(`282 links (file+surface), gaps L1/L2/L3 = ${gaps.join("/")}, curated 12+4 on surface, justifications incl. catalogue_rule/_secondary tolerated; AUT-006/007/008 → identity (C1), AUT-010 → monitoring, INT-007 + LOG → monitoring`); } },
+      return ok(`305 links (file+surface), gaps L1/L2/L3 = ${gaps.join("/")}, curated 12+4 on surface, justifications incl. catalogue_rule/_secondary tolerated; AUT-006/007/008 → identity (C1), AUT-010 → monitoring, INT-007 + LOG → monitoring`); } },
   { id: "TC-F-09", axis: "F", title: "data_protection domain present (ontology v2.2): control served with links", tool: "resolve_entities",
     run: async (c, ctx) => { const r = await c.tool("resolve_entities", { record_type: "control", filters: { domain: "data_protection" } }); if (!r.ok) return fail(r.error);
       const ids = (r.data.entities ?? []).map((e) => e.control_id); if (r.data.total < 1) return fail("no control in domain data_protection", "graph");
@@ -363,6 +363,26 @@ export const scenarios = [
       const bids = b.data.selection.selected.map((x) => x.requirement_id);
       if (!bids.some((id) => id.startsWith("SES-"))) return fail("re-call with the missing session signal did not recover SES");
       return ok(`guide teaches select+bands+index; SES narrowed with reason → recovered by adding the session signal (${bids.filter((i) => i.startsWith("SES-")).length} SES back); next[] → prepare+consult`); } },
+  { id: "TC-F-14", axis: "F", title: "R-image (v1.8.0): 'imagem' docker → CNT, 'imagem' ficheiro → FIL (desambiguação declarada)", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      const a = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Publicar a imagem Docker no registry do cluster" }); if (!a.ok) return fail(a.error);
+      const aid = a.data.selection.selected.map((x) => x.requirement_id);
+      if (!aid.some((id) => id.startsWith("CNT-"))) return fail(`docker sense did not reach CNT: ${aid.slice(0, 8)}`);
+      if (aid.some((id) => id.startsWith("FIL-"))) return fail("docker sense wrongly selected FIL (homonym misfire)");
+      const b = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Endpoint de upload de imagens de perfil (fotografias) com pré-visualização" }); if (!b.ok) return fail(b.error);
+      const bid = b.data.selection.selected.map((x) => x.requirement_id);
+      if (!bid.some((id) => id.startsWith("FIL-"))) return fail(`file sense did not reach FIL: ${bid.slice(0, 8)}`);
+      if (bid.some((id) => id.startsWith("CNT-"))) return fail("file sense wrongly selected CNT (homonym misfire)");
+      return ok(`docker → CNT ×${aid.filter((i) => i.startsWith("CNT-")).length} sem FIL; ficheiro → FIL ×${bid.filter((i) => i.startsWith("FIL-")).length} sem CNT`); } },
+  { id: "TC-F-15", axis: "F", title: "SES-008-por-tecnologia (Author): JWT activa SES-008 a qualquer nível, nomeado no trace", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      const a = await c.tool("select_sbd_toe_requirements", { risk_level: "L1", task: "SPA com login e sessão JWT; app interna de baixo risco" }); if (!a.ok) return fail(a.error);
+      const hit = a.data.selection.selected.find((x) => x.requirement_id === "SES-008");
+      if (!hit) return fail("SES-008 not selected for a JWT task at L1");
+      if (!(hit.selection_trace ?? []).some((t) => String(t.trigger ?? "").startsWith("SES-008-por-tecnologia"))) return fail("SES-008 selected but the named rule is not in the trace");
+      const b = await c.tool("select_sbd_toe_requirements", { risk_level: "L1", task: "SPA com login e sessão de utilizador; app interna de baixo risco" }); if (!b.ok) return fail(b.error);
+      if (b.data.selection.selected.some((x) => x.requirement_id === "SES-008")) return fail("SES-008 selected without a JWT/user-token signal (level filter must rule)");
+      return ok("JWT@L1 → SES-008 com regra nomeada no trace; sem JWT → nível manda (SES-008 fora)"); } },
 
   // ───────────────────────── Axis H — selection vs golden oracle (measurement, NOT gate) ─────────────────────────
   // Oracle: golden-selection-cases.md v1 (programme lead's, read-only). One scenario per

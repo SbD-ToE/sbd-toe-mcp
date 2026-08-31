@@ -1,6 +1,6 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 256,
+  "count": 273,
   "entity_type": "Requirement",
   "items": [
     {
@@ -2321,6 +2321,142 @@
         "L2": true,
         "L3": true
       },
+      "category": "FIL",
+      "description": "Ficheiros acima do limite definido por funcionalidade são rejeitados antes de qualquer processamento; o limite está documentado.",
+      "domain": "application-security-requirements",
+      "evidence_types": [],
+      "name": "Limite de tamanho processável por upload",
+      "requirement_id": "FIL-001",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_chapter": 2,
+      "source_file": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "type": "base"
+    },
+    {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "category": "FIL",
+      "description": "A extensão confere com o tipo esperado e o conteúdo corresponde ao tipo (verificação de magic bytes, re-writing de imagens ou biblioteca de validação de conteúdo); ficheiros não conformes são rejeitados.",
+      "domain": "application-security-requirements",
+      "evidence_types": [],
+      "name": "Validação de tipo por conteúdo, não só por extensão",
+      "requirement_id": "FIL-002",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_chapter": 2,
+      "source_file": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "type": "base"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "FIL",
+      "description": "Antes de descomprimir: tamanho máximo descomprimido e número máximo de ficheiros verificados; symlinks rejeitados salvo allowlist explícita; a descompressão ignora caminhos fornecidos pelo utilizador (zip slip).",
+      "domain": "application-security-requirements",
+      "evidence_types": [],
+      "name": "Tratamento seguro de arquivos comprimidos",
+      "requirement_id": "FIL-003",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_chapter": 2,
+      "source_file": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "type": "base"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "FIL",
+      "description": "Quota de espaço e número máximo de ficheiros por utilizador activos; tentativa de exceder é rejeitada com registo.",
+      "domain": "application-security-requirements",
+      "evidence_types": [],
+      "name": "Quota de armazenamento por utilizador",
+      "requirement_id": "FIL-004",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_chapter": 2,
+      "source_file": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "type": "base"
+    },
+    {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "category": "FIL",
+      "description": "Ficheiros de origem não confiável não são executáveis como código do servidor quando acedidos por HTTP; caminhos de operações de ficheiro usam nomes gerados internamente, ou validação estrita quando o nome do utilizador é inevitável.",
+      "domain": "application-security-requirements",
+      "evidence_types": [],
+      "name": "Armazenamento fora da árvore servida, com nomes gerados",
+      "requirement_id": "FIL-005",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_chapter": 2,
+      "source_file": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "type": "base"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "FIL",
+      "description": "Nomes de ficheiro servidos são validados ou sanitizados e declarados em Content-Disposition (RFC 6266); conteúdo de utilizador é servido de forma não interpretável como HTML ou script no domínio da aplicação.",
+      "domain": "application-security-requirements",
+      "evidence_types": [],
+      "name": "Serving de ficheiros em contexto inerte",
+      "requirement_id": "FIL-006",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_chapter": 2,
+      "source_file": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "type": "base"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "FIL",
+      "description": "Ficheiros recebidos de fontes não confiáveis passam por rastreio anti-malware antes de serem disponibilizados; detecção bloqueia a disponibilização e gera registo.",
+      "domain": "application-security-requirements",
+      "evidence_types": [],
+      "name": "Rastreio anti-malware de ficheiros de origem não confiável",
+      "requirement_id": "FIL-007",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_chapter": 2,
+      "source_file": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "type": "base"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "FIL",
+      "description": "Imagens com dimensão em píxeis acima do máximo definido são rejeitadas onde a aplicação processa imagens.",
+      "domain": "application-security-requirements",
+      "evidence_types": [],
+      "name": "Limite de dimensão de imagens (pixel flood)",
+      "requirement_id": "FIL-008",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_chapter": 2,
+      "source_file": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "type": "base"
+    },
+    {
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "category": "GOV",
       "description": "Modelo documentado e aprovado formalmente pela direcção, com papéis, responsabilidades e ciclo de decisão definidos; acessível e comunicado às equipas relevantes; revisto pelo menos anualmente ou após alteração organizacional significativa.",
       "domain": "governance-and-procurement",
@@ -3014,6 +3150,74 @@
     },
     {
       "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "INT",
+      "description": "Reprocessar a mesma mensagem não produz efeitos duplicados; a idempotência é testada.",
+      "domain": "application-security-requirements",
+      "evidence_types": [],
+      "name": "Consumidores idempotentes",
+      "requirement_id": "INT-009",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_chapter": 2,
+      "source_file": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "type": "base"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "INT",
+      "description": "Mensagens não processáveis vão para DLQ; a DLQ tem tratamento definido e alarme activo — nunca cresce em silêncio.",
+      "domain": "application-security-requirements",
+      "evidence_types": [],
+      "name": "Fila de mensagens mortas com tratamento e alarme",
+      "requirement_id": "INT-010",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_chapter": 2,
+      "source_file": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "type": "base"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "INT",
+      "description": "Mensagens têm identificador único e janela de validade; a reinjeção fora da janela ou duplicada é rejeitada com registo.",
+      "domain": "application-security-requirements",
+      "evidence_types": [],
+      "name": "Protecção contra replay de mensagens",
+      "requirement_id": "INT-011",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_chapter": 2,
+      "source_file": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "type": "base"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "category": "INT",
+      "description": "Onde a semântica do negócio exige ordem, o processamento garante-a (chave de partição, sequenciação) e a violação é detectável.",
+      "domain": "application-security-requirements",
+      "evidence_types": [],
+      "name": "Ordem de processamento onde semanticamente exigida",
+      "requirement_id": "INT-012",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_chapter": 2,
+      "source_file": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "type": "base"
+    },
+    {
+      "applicable_levels": {
         "L1": true,
         "L2": true,
         "L3": true
@@ -3436,6 +3640,91 @@
       "source_chapter": 12,
       "source_file": "12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "type": "domain-specific"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "PRI",
+      "description": "Cada campo de dados pessoais recolhido está associado a uma finalidade registada; campos sem finalidade são removidos do fluxo de recolha.",
+      "domain": "application-security-requirements",
+      "evidence_types": [],
+      "name": "Minimização dos dados pessoais recolhidos",
+      "requirement_id": "PRI-001",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_chapter": 2,
+      "source_file": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "type": "base"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "PRI",
+      "description": "Conjuntos de dados pessoais têm prazo de retenção definido; o apagamento no fim do prazo é executado e verificável por amostragem ou evidência automática.",
+      "domain": "application-security-requirements",
+      "evidence_types": [],
+      "name": "Retenção de dados pessoais com prazo e apagamento efectivo",
+      "requirement_id": "PRI-002",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_chapter": 2,
+      "source_file": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "type": "base"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "PRI",
+      "description": "Existe mecanismo testado para apagar e para exportar os dados pessoais de um titular identificado, sem intervenção manual em base de dados.",
+      "domain": "application-security-requirements",
+      "evidence_types": [],
+      "name": "Capacidade técnica de apagamento e exportação a pedido",
+      "requirement_id": "PRI-003",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_chapter": 2,
+      "source_file": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "type": "base"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "PRI",
+      "description": "Inventário associa cada conjunto de dados pessoais à finalidade e ao sistema que o trata; alterações de finalidade são registadas.",
+      "domain": "application-security-requirements",
+      "evidence_types": [],
+      "name": "Registo de finalidade por conjunto de dados pessoais",
+      "requirement_id": "PRI-004",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_chapter": 2,
+      "source_file": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "type": "base"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "PRI",
+      "description": "Existe um conceito documentado de tratamento de PII em registos (o que se regista, mascarado como, por quanto tempo) e a sua aplicação é verificada.",
+      "domain": "application-security-requirements",
+      "evidence_types": [],
+      "name": "Conceito documentado e aplicado de PII em registos",
+      "requirement_id": "PRI-005",
+      "source_bundle": "02-requisitos-seguranca",
+      "source_chapter": 2,
+      "source_file": "02-requisitos-seguranca/addon/02-lista-requisitos-base.md",
+      "type": "base"
     },
     {
       "applicable_levels": {

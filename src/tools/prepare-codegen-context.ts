@@ -991,6 +991,10 @@ const VALID_CONCERNS = [
   "release",
   "deployment",
   "integration",
+  // v1.8.0 wave (2026-08-31, contract v1.15): file-handling (FIL) and personal-data
+  // privacy (PRI) catalogues — new base categories of ch. 02.
+  "files",
+  "privacy",
   // AI-agent / automation governance catalogue (REQ-AGN-001…004, category AGN;
   // consumer contract v1.10 §1.18) — maps through the loader's concernsMap
   // (`agents: ["AGN"]`, absorbed from master bc8c9189 in 0.20.0-beta.3).
@@ -1079,9 +1083,17 @@ const TASK_TERM_TO_CONCERNS: ReadonlyArray<readonly [string, readonly Concern[]]
   ["message queue", ["integration", "logging"]],
   // pós-P2 2026-08-31: mTLS = gestão de material criptográfico → secrets (CFG/ENC).
   ["mtls", ["encryption", "integration", "secrets"]],
+  // v1.8.0 wave (FIL/PRI, léxico ancorado no Manual cap. 02):
+  ["file", ["files"]],
+  ["upload", ["files", "validation"]],
+  ["uploading", ["files", "validation"]],
+  ["attachment", ["files"]],
+  ["photo", ["files"]],
+  ["pii", ["privacy"]],
+  ["personal data", ["privacy"]],
   ["signature", ["integrity", "encryption"]],
   ["signing", ["integrity"]],
-  ["image", ["deployment", "distribution"]],
+  // "image" saiu da tabela: homónimo desambiguado por contexto (bloco R-image em activate()).
   ["spa", ["validation", "api"]],
   ["frontend", ["validation"]],
   ["pubsub", ["integration"]],
@@ -1122,6 +1134,9 @@ const CONCERN_TO_V0_CATEGORIES_SUPPLEMENT: Readonly<Record<Concern, string[]>> =
   // apenas via pipeline validado" e afins); supplement do serving, loader inalterado.
   deployment: ["DPL", "IAC", "CNT", "DST"],
   integration: ["API", "INT"],
+  // v1.8.0 wave: the loader concernsMap predates FIL/PRI — served-side supplement.
+  files: ["FIL"],
+  privacy: ["PRI"],
   // `agents` → AGN comes from ontology.concernsMap (loader); nothing to supplement.
   agents: []
 };
@@ -1148,6 +1163,11 @@ const CONCERN_TO_SLICE_FAMILY: Readonly<Record<Concern, string | null>> = {
   release: "ACO-RPR",
   deployment: "ACO-RPR",
   integration: "ACO-ITS",
+  // No published AppSec Core slice family yet for the v1.8.0 FIL/PRI catalogues —
+  // anchor when AppSec Core publishes one; null = no grounding family, and the
+  // decomposition gate ignores null families.
+  files: null,
+  privacy: null,
   // No AppSec Core slice family for the AGN catalogue (no published control link
   // for REQ-AGN-001…004 — declared gap, never invented).
   agents: null
@@ -1179,6 +1199,15 @@ const CODEGEN_PT_ALIASES: ReadonlyArray<readonly [string, readonly string[]]> = 
   // categoria SES = sessões; nunca por caso do oráculo): sessão/sessões → session.
   ["sessão", ["session"]],
   ["sessões", ["session"]],
+  // v1.8.0 (FIL/PRI):
+  ["ficheiro", ["file"]],
+  ["ficheiros", ["file"]],
+  ["anexo", ["attachment"]],
+  ["anexos", ["attachment"]],
+  ["fotografia", ["photo"]],
+  ["fotografias", ["photo"]],
+  ["dados pessoais", ["personal data"]],
+  ["finalidade", ["personal data"]],
   ["chave de api", ["api key"]],
   ["chave de cliente", ["api key"]],
   ["chaves de cliente", ["api key"]],
@@ -1580,6 +1609,34 @@ export function activate(input: NormalizedInput): ActivationResult {
     }
   }
 
+  // 2b-bis) R-image (vaga v1.8.0, 2026-08-31): "image"/"imagem" é homónimo —
+  // imagem de container vs ficheiro de imagem (finding do replay DualGauge).
+  // Desambiguação DECLARADA por contexto: image+docker/registry/container → sentido
+  // container (deployment/distribution); image+file/upload/photo → FIL (files);
+  // ambos os contextos → ambos; nenhum → sentido histórico (deployment/distribution).
+  if (taskMatchesKeyword(expanded, "image")) {
+    const containerCtx = /docker|registry|container|kubernetes|k8s|\boci\b/.test(expanded);
+    const fileCtx = /upload|file|photo|picture|png|jpe?g|gif|avatar|galeria|gallery|perfil|profile/.test(expanded);
+    const senses: Array<{ concern: Concern; reason: string }> = [];
+    if (fileCtx) {
+      senses.push({ concern: "files", reason: "R-image: 'image' em contexto file/upload/photo → ficheiro de imagem (FIL)" });
+    }
+    if (containerCtx || !fileCtx) {
+      senses.push(
+        { concern: "deployment", reason: containerCtx ? "R-image: 'image' em contexto docker/registry/container → imagem de container" : "R-image: 'image' sem contexto discriminante → sentido histórico (deployment)" },
+        { concern: "distribution", reason: containerCtx ? "R-image: 'image' em contexto docker/registry/container → distribuição de imagem" : "R-image: 'image' sem contexto discriminante → sentido histórico (distribution)" }
+      );
+    }
+    for (const { concern, reason } of senses) {
+      recordActivation(
+        trace, concerns, concernScores, rejected,
+        { source: "task_term", produced: concern, trigger: "image", score: 0.8, confidence: "deterministic", reason },
+        concern,
+        { capDuplicates: true }
+      );
+    }
+  }
+
   // 2c) Whole-word intent classification (codegen-specific; stricter than the
   // gateway's substring matcher to avoid PT/EN false positives).
   for (const intentEntry of CODEGEN_INTENTS) {
@@ -1687,8 +1744,9 @@ export function activate(input: NormalizedInput): ActivationResult {
     }
   }
   const SENSITIVITY_CONCERNS: Readonly<Record<string, readonly Concern[]>> = {
-    personal: ["encryption", "validation", "logging"],
-    regulated: ["encryption", "validation", "logging"],
+    // v1.8.0: personal/regulated data now also activates the PRI catalogue (privacy).
+    personal: ["encryption", "validation", "logging", "privacy"],
+    regulated: ["encryption", "validation", "logging", "privacy"],
     secrets: ["secrets"]
   };
   if (input.data_sensitivity && SENSITIVITY_CONCERNS[input.data_sensitivity]) {
