@@ -182,46 +182,6 @@
         "type": "base"
       },
       {
-        "requirement_id": "SES-001",
-        "name": "Expiração automática por inactividade",
-        "type": "base"
-      },
-      {
-        "requirement_id": "SES-002",
-        "name": "Logout manual e após alteração de credenciais",
-        "type": "base"
-      },
-      {
-        "requirement_id": "SES-003",
-        "name": "Identificadores de sessão imprevisíveis",
-        "type": "base"
-      },
-      {
-        "requirement_id": "SES-004",
-        "name": "Transmissão segura dos tokens",
-        "type": "base"
-      },
-      {
-        "requirement_id": "SES-005",
-        "name": "Ligação da sessão ao contexto do cliente",
-        "type": "base"
-      },
-      {
-        "requirement_id": "SES-006",
-        "name": "Revogação explícita da sessão",
-        "type": "base"
-      },
-      {
-        "requirement_id": "SES-007",
-        "name": "Prevenção de sessões long-lived",
-        "type": "base"
-      },
-      {
-        "requirement_id": "SES-008",
-        "name": "Scope, TTL e revogação de tokens JWT",
-        "type": "base"
-      },
-      {
         "requirement_id": "VAL-001",
         "name": "Validação geral de entradas externas",
         "type": "base"
@@ -475,7 +435,7 @@
   "citations": {
     "runtime_v0": {
       "source_data": {
-        "data/publish/runtime/requirements.json": 49,
+        "data/publish/runtime/requirements.json": 41,
         "data/publish/runtime/controls.json": 10
       },
       "ids_from": [
@@ -512,6 +472,16 @@
     "returned_artifacts": 12,
     "named_v1_entities": 39,
     "unnamed_v1_entities": 12,
+    "selection": {
+      "eligible": 98,
+      "selected": 41,
+      "narrowed_out_categories": 8,
+      "narrowed_out_requirements": 57,
+      "narrowed_out_ref": {
+        "tool": "select_sbd_toe_requirements",
+        "note": "Categorias elegíveis sem sinal na tarefa foram excluídas pelo narrowing MP1 — a lista completa (por categoria, com razão) vem de select_sbd_toe_requirements com o mesmo contexto."
+      }
+    },
     "evidence_patterns_total": 153,
     "evidence_patterns_returned": 0,
     "evidence_patterns_capped": 153,

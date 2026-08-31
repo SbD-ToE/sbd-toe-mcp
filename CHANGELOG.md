@@ -3,11 +3,62 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-31
 purpose: documentation
-reasoning: v0.20.0-beta.5 (beta line, npm `beta` dist-tag) — serves the formal KG release v1.7.0 (mcp-stable, contract v1.14 §1.21, ontology sbdtoe-ontology-v2.2, Manual v1.7.1), same content as stable 0.10.4; absorbs master 2937236d (PR #54: G-b defining-chapters threat routing, structural threat control ids, acceptance re-baseline); payload gates re-fixed at the ratified ceilings (f2 standard 8,800 / minimal 8,100). Earlier beta entries and stable-line entries below.
+reasoning: v0.20.0-beta.6 (beta line, prepared — tag only after the Orchestrator verifies both lines) — absorbs the complete MP1 cycle from master (ef52089 P2 engine+select tool+scope gate+consult mode:index, 7368dcb P3 named rules R1/R2+signals+one-signal-one-surface, 102b816 R3 teaching layer, plus the #56 Axis H runner base): beta keeps its own diet (budgets, snapshots, requirementCategoryOf elision) and concerns:["agents"]; Axis H 10/10; payload re-baseline limited to the `rest` section (MP1 selection summary), totals unchanged. v0.20.0-beta.5 and earlier below.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.6 — 2026-08-31 (prepared — tag v0.20.0-beta.6 only after the Orchestrator verifies both lines, per the MP1 cycle rule)
+
+**Prerelease (beta line), prepared.** Absorbs the complete **MP1 cycle** from `master` —
+`ef52089` (#58, P2: selection engine + `select_sbd_toe_requirements` + new scope gate +
+declared activators + `consult` `mode:"index"`), `7368dcb` (#59, P3: named rules
+`R1:principal-nao-humano` / `R2:narrowing-de-sinais-SES` + missing signals +
+one-signal-one-surface gate), `102b816` (#60, R3: the teaching layer — guide, skills,
+`next[]`, TC-F-13) — plus the Axis-H runner base of #56 (`axis-h.mjs`,
+`run-axis-h-selection.mjs`, `eval:axis-h`), which the three squashes assume. Served bundle
+unchanged: formal KG `v1.7.0` (sha256 `29156b86…fb9a`, contract v1.14). **No tag, no npm.**
+
+### Conflict rules applied (this line is the diet's origin)
+
+- Diet parts (budget gates incl. the ratified 8,800/8,100, golden snapshots, the
+  `requirementCategoryOf` elision, `detail`/`include_relations` schema text): **beta version
+  kept**; only the new engine/tool/gate/teaching absorbed. The stable's port note
+  («relations_ref names the beta-line trace tool») does not apply here — `trace_sbd_toe_graph`
+  ships on this line.
+- `agents`: the engine now governs (R1 named in `selection_trace`); `concerns:["agents"]`
+  and the beta task heuristics remain the signal source — no duplication (single
+  `VALID_CONCERNS`/`TASK_TERM` entries, verified).
+- `src/index.ts` resolved by hand: SPARQL/`trace_sbd_toe_graph` untouched; beta descriptions
+  kept; `select_sbd_toe_requirements` + `consult` `mode:"index"` registered.
+
+### Verified on this line (2026-08-31)
+
+- **Axis H 10/10 PASS** (`docs/acceptance-runs/2026-08-31-axis-h-selection-v0.20.0-beta.6.{md,json}`)
+  — coverage 100%, strict precision 100%, oracle untouched; = stable P3/R3.
+- **`npm run eval:acceptance`** (`…/2026-08-31-v0.20.0-beta.6-acceptance.{md,json}`): **117
+  scenarios, 94 executed — 76 PASS · 18 PART · 0 FAIL · 23 SKIP; gate E PASS (15/2/0), no
+  regression**; TC-F-11/12 PASS, **TC-F-13 (taught path) PASS** — SES narrowed with a
+  teachable R2 reason, recovered with the session signal, `next[]` → prepare+consult.
+  **22/23 tools** — `trace_sbd_toe_graph` still without a scenario (Axis G follow-up).
+- Live: `select` on an agentic task → AGN ×4 + the full R1 principal set (ACC-002, AUT-006,
+  ENC-006, DEP-011/013/014) with R1 in `selection_trace`; `prepare` kill-switch task at all
+  4 `detail` levels → AGN ×4 + OPS-015 with `completeness_report.selection` (eligible 120 →
+  selected 34, narrowed_out 86 declared); `concerns:["agents"]` unchanged.
+  `trace_sbd_toe_graph` deterministic, 270/270/270 byte-equal to beta.2.
+- **Payload budgets (MP1 re-measurement; beta = stable measurements exactly):** f1 full
+  18,745 · standard **6,109**/6,500 · minimal **5,463**/5,800 · ultrathin **3,684**/3,870;
+  f2 full 24,544 · standard **8,446**/8,800 · minimal **7,720**/8,100 · ultrathin
+  **4,581**/4,840; citable ids **104/143** (R2 narrows SES ×8 out of both fixtures — golden
+  snapshots regenerated: −8 SES requirement entries per fixture + the `selection` summary
+  block; nothing else). **The only budget re-baseline is the `rest` section** (the MP1
+  selection summary lives there): standard 850 → **980**, minimal 853 → **985**, ultrathin
+  935 → **1,055** — the stable's exact section values (line parity). **Totals untouched; no
+  new ratification needed** — measured totals now sit inside the ratified gates (8,800/8,100)
+  and even the original ones (8,500/8,000); restoring the original gates is the lead's call,
+  flagged, not taken.
+- Suite **727/727** · `npm run check` ✅ · version 0.20.0-beta.6.
 
 ## 0.20.0-beta.5 — 2026-08-31
 
@@ -415,6 +466,131 @@ record per `PROGRAMME-PRESERVATION-PROTOCOL.md`.
 
 > The IRI scheme is **provisional/local**; canonical IRIs are an upstream (ontology)
 > decision required before any graduation of this line to stable.
+## 0.11.0 — 2026-08-31 (prepared — tag v0.11.0 only after the beta line absorbs, per G-mp1a)
+
+**Minor** — the MP1 selection operation lands in the serving layer (new tool), closing the
+four Axis-H defects (ciclo MP1, P2; gate G-mp1a). Served bundle unchanged: formal KG
+`v1.7.0` (sha256 `29156b86…fb9a`, contract v1.14, Manual v1.7.1).
+
+### Axis H — before / after (oracle v1 untouched)
+
+| | 0.10.4 (baseline) | **0.11.0** |
+|---|---|---|
+| Verdicts | 1 PASS · 3 PART · 6 FAIL | **10 PASS · 0 PART · 0 FAIL** |
+| prepare coverage (avg) | 41 % | **100 %** (strict precision 100 % — 0 must-NOT selected) |
+| Negative case (GC-09) | PASS | PASS (`needs_clarification`, 0 requirements) |
+
+P2 landed the engine at 6 PASS · 4 PART · 0 FAIL; P3 (lead's post-P2 rule decisions,
+same day) closed the remaining four via NAMED, declared rules — final record
+`docs/acceptance-runs/2026-08-31-p3-axis-h-selection-v0.11.0.md`. The oracle was never
+edited and nothing was tuned to it: every change is a declared serving rule.
+
+### Added — P3: named selection rules (post-P2 lead decisions, 2026-08-31)
+
+- **R1 `R1:principal-nao-humano`** (GC-07): the `agents` concern also selects, as a
+  named rule declared in each item's `selection_trace`, the non-human-principal set
+  {ACC-002, AUT-006, ENC-006} ∪ {DEP-011, DEP-013, DEP-014} — the agent is a principal
+  (ARC-015: least privilege for agents).
+- **R2 `R2:narrowing-de-sinais-SES`** (GC-02): SES-* resolves by signal narrowing —
+  without user-session/login/token signals in the task the SES category leaves to
+  `narrowed_out` with a declared reason; with them (GC-01, GC-08) it stays. The
+  loader's `concernsMap` (`auth → [AUT, ACC, SES]`) is untouched this cycle (data lane
+  annotated for future loader work). Fixture effect: −8 citations each (SES-001..008),
+  snapshots regenerated, `citationIds` 112→104 / 151→143.
+- **Missing signals**: `deployment` also activates the base DST category (GC-03
+  DST-006 — deploy only via validated pipeline); `mtls` carries cryptographic-material
+  management → `secrets` (GC-10 CFG-006); `message queue` integration carries
+  critical-event logging → `logging` (GC-10 LOG-001).
+- **Scope gate: one signal = one surface.** The decomposition gate now counts
+  `decompositionFamilies` — the slice families of each signal's PRIMARY concern —
+  instead of all activated families: supporting concerns of the same signal
+  (mtls→secrets, mensageria→logging) activate categories but are not new surfaces.
+  `sliceFamilies` (grounding) is untouched; genuinely multi-surface asks still
+  decompose (existing negatives all green).
+
+### Added — `select_sbd_toe_requirements` (MP1, consultive L3, OSS)
+
+- Single selection engine `src/serving/selection.ts`: eligibility from the PUBLISHED
+  `requirement_selection_model` (baseline cap. 02 `type: base` by level ∪ domain chapters
+  activated by context — changed_files via the review-scope path map, technologies/stack,
+  concern-derived chapters ⊕ overlay `extend`; `replace` awaits ADR 0014), then
+  deterministic narrowing into two DECLARED bands: `selected[]` (per-item
+  `selection_trace`: source/trigger/score) and `narrowed_out[]` (grouped by category,
+  with reason) — never silent. Paginated (G1). `prepare_sbd_toe_codegen_context` now
+  consumes the engine (its `completeness_report.selection` declares
+  eligible/selected/narrowed-out with an executable ref).
+- Acceptance scenarios in the same change (factory rule): TC-F-11/12.
+
+### Changed — scope gate (D1) + activators (D3) + lexicon role (D4)
+
+- The "max 50 activated requirements" cap is GONE (a legitimate L2 task activates >50 by
+  design). The gate now guards task scope — vague/multi-family asks still return
+  `needs_clarification`/`needs_decomposition`, and a task with NO real signal (only the
+  informational risk_level) is `needs_clarification` — and payload (diet + budgets).
+- `exposure` and `data_sensitivity` stop being decorative: declared activators
+  (internal/authenticated → auth+logging; public → +api/validation/architecture;
+  personal/regulated → encryption+validation+logging; secrets → secrets), each with its
+  own `activation_trace` source. `agents` heuristics (mandate/kill-switch/tool-call/
+  autonomy) reach the stable line (beta parity); new audited PT/EN signals (mtls,
+  mensageria/fila de mensagens, assinatura → integrity+encryption, imagem/image,
+  spa/frontend, formulário de registo; terraform/ansible narrowed to iac).
+- The concern lexicon is now ONE signal among seven — the reference-semantics composition
+  is the engine (D4).
+
+### Changed — teaching layer (R3, pre-release requirement, 2026-08-31)
+
+- **`sbd://toe/agent-guide`** now teaches the selection operation: when to use
+  `select_sbd_toe_requirements` vs `consult` vs `prepare` ("choosing between the three
+  requirement surfaces"); the two-band semantics — `selected[]` is the recommendation,
+  `narrowed_out[]` lists what was eligible and why it left, and *if you need something
+  from there, call again with the missing signal*; `mode: "index"`; new rows in the
+  question-type routing table and in "Interpreting tool output". No reference to the
+  old max-50 scope-gate semantics anywhere in the teaching surface (scenario-guarded).
+- **Skills/subagents** (`generate_sbd_toe_skill` + plugin SKILL.md): intent routing
+  gains *"which requirements apply to this task?"* → `select`; the harnessed tool
+  list ships the new tool; the non-harnessed path teaches the operation for connected
+  clients. The historical s4 guard ("no variant mentions the codegen tool") was
+  deliberately retired by R3 — the guard is now positive (variants teach selection).
+- **`next[]` affordances**: `map_sbd_toe_applicability`, `consult_security_requirements`
+  and `list_sbd_toe_chapters` now suggest `select_sbd_toe_requirements`; select already
+  points back to `prepare` (codegen) and `consult` (detail).
+- **TC-F-13** (capability ⇒ scenario): walks the taught path — reads the guide,
+  selects for an API-keys task (SES narrowed with a teachable reason), re-calls with
+  the session signal (SES ×8 recovered), asserts `next[]` suggests prepare+consult and
+  that the old gate semantics is gone from the guide.
+- Lexicon (Manual-anchored growth, per the cycle's anti-overfitting principle — never
+  from an oracle case): PT aliases `sessão`/`sessões` → `session` (ch. 02 category SES).
+
+### Changed — `consult_security_requirements`
+
+- `mode: "index"` opt-in (G-mp1a decision 3, option c): per-category requirement index
+  (ids + counts) with the same filters/totals; default mode byte-unchanged.
+  Index-by-default stays flagged for a future major.
+
+### Added — v2 token diet ported from the 0.20 beta line (byte-identical)
+
+- `detail: full | standard | minimal | ultrathin` + `include_relations` on `prepare`,
+  the `sbd://toe/codegen-instructions/{mode}` resource, golden snapshots, and the diet
+  test suite (detail/minimal/ultrathin/caps-resource/reuse-hint/budget; the
+  relations-ref suite stays beta-only — `relations_ref` names `trace_sbd_toe_graph`,
+  which ships on the 0.20 line; on this line use `include_relations: true`, as the tool
+  schema documents).
+- **Stable payload ceilings fixed by measurement (P2)** — the MP1 selection summary adds
+  ≈+50 tokens to `completeness_report`: totals `standard` fixture2 8.800 → **8.900**
+  (measured 8.833), `minimal` 5.800 → **5.950** (5.850) and 8.100 → **8.200** (8.107);
+  `rest` section budgets re-measured (980/985/1055). All other totals hold, including
+  `standard` fixture1 ≤ 6.500. The beta re-ratifies its own ceilings when it absorbs P2.
+
+### Verification
+
+- `npm run check` green; **689/689** tests (engine + select + P3 rule suites; diet
+  suite ported); full `eval:acceptance` (R3 record `2026-08-31-r3-*`): 117 scenarios,
+  94 executed, **76 PASS · 18 PART · 0 FAIL · 23 SKIP — gate E PASS** (no regression);
+  22/22 tools; Axis H re-run unchanged at **10 PASS / 0 / 0**.
+- Stable payload ceilings hold with margin after R2 (measured P3): `standard` f2
+  8.446 ≤ 8.900, `minimal` 5.463 ≤ 5.950 and 7.720 ≤ 8.200, `standard` f1 6.109 ≤ 6.500,
+  ultrathin 3.684/4.581.
+
 ## 0.10.4 — 2026-08-30
 
 **Patch** — formal KG release `v1.7.0` (D2 cycle close) + the G-b routing decision in the

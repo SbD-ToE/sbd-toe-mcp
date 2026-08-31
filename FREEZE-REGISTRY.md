@@ -13,7 +13,7 @@
   (formerly `Shiftleftpt/sbd-toe-mcp-poc`; relocated 2026-06)
 **Part of programme:** SbD-ToE / AppSec Core (P0 DOI 10.17605/OSF.IO/7T849)
 **Governed by:** PROGRAMME-PRESERVATION-PROTOCOL.md v1.0
-**Last updated:** 2026-08-30
+**Last updated:** 2026-08-31
 **Status:** skeleton — pending human verification
 
 ## Published states
@@ -51,8 +51,12 @@ TODO — confirm with programme lead.
 - v0.10.3 → `06f8bbaa5e4d5f3ac6ddda890a6fbebd78f6be9b` (2026-08-30; formal KG release v1.6.1
   pinned — see CHANGELOG; npm `@shiftleftpt/sbd-toe-mcp@0.10.3` = `latest`, gitHead same commit;
   GitHub Release `v0.10.3`)
-- v0.10.4 *(formal KG release v1.7.0 pinned — see CHANGELOG; annotated tag created on the
-  squash commit of the PR that introduces this row, after its merge to master)*
+- v0.10.4 → `2937236d7521d72be140dbc4d9111dae211eb14b` (2026-08-30; formal KG release v1.7.0
+  pinned — see CHANGELOG; npm `@shiftleftpt/sbd-toe-mcp@0.10.4` = `latest`, gitHead same commit;
+  GitHub Release `v0.10.4`)
+- v0.11.0 *(MP1 selection operation — see CHANGELOG; annotated tag to be created only after
+  the 0.20 beta absorbs P2 (0.20.0-beta.6) and Pontifex verifies both lines, per the
+  G-mp1a plan; no npm publish before that)*
 
 ### Beta line (`0.20.x-beta`) — NOT citable, NOT a freeze candidate
 
@@ -72,17 +76,17 @@ Prerelease tags issued on `0.20-beta` (annotated; immutable like every pushed ta
 | v0.20.0-beta.2 | 0cc9e14 | 2026-07-05 | KG v1.5.0 (`feaa0155…`) | `beta` (superseded) |
 | v0.20.0-beta.3 | 5b34638 (`5b346387cdfd48146d64422c0e7a217d9b3f320f`; annotated tag object `48cdd14d`) | 2026-08-29 | formal KG `v1.6.0` (`baf5913b…`, contract v1.11, Manual v1.7.0) — same pin and content as stable v0.10.2 | `beta` (superseded) |
 | v0.20.0-beta.4 | d89b30d (`d89b30dfacbc89c023ec53c1b5b882b77a9f86a9`; annotated tag object `6291f50d`) | 2026-08-30 | formal KG `v1.6.1` (`df6920cb…`, contract v1.12, Manual v1.7.1) — same pin and content as stable v0.10.3 | `beta` (superseded) |
-| v0.20.0-beta.5 | 62a1eda (`62a1eda3982147e44369c8a9271ca3697af2680f`; annotated tag object `5165a04a`) | 2026-08-31 | formal KG `v1.7.0` (`29156b86…`, contract v1.14, ontology v2.2, Manual v1.7.1) — same pin and content as stable v0.10.4 | `beta` (`latest` = 0.10.4 untouched) |
+| v0.20.0-beta.5 | 62a1eda (`62a1eda3982147e44369c8a9271ca3697af2680f`; annotated tag object `5165a04a`) | 2026-08-31 | formal KG `v1.7.0` (`29156b86…`, contract v1.14, ontology v2.2, Manual v1.7.1) — same pin and content as stable v0.10.4 | `beta` (superseded) |
+| v0.20.0-beta.6 | *(prepared — annotated tag only after the Orchestrator verifies both lines side by side, per the MP1 cycle rule)* | 2026-08-31 | formal KG `v1.7.0` (unchanged) + MP1 selection operation (= stable 0.11.0 prepared) | *(pending)* |
 
 ## Current working state
 
 **Current branch:** `0.20-beta` — this copy of the registry lives on the beta branch; the
-stable-line rows mirror master (`2937236`, v0.10.4) and are maintained there.
-**Beta line:** most recent prerelease v0.20.0-beta.5 → `62a1eda3982147e44369c8a9271ca3697af2680f`
-(2026-08-31; `release.yml` run 33376552153 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.5`
-= `beta`, gitHead same commit; GitHub pre-release; `latest` = 0.10.4 untouched), npm dist-tag `beta`; serves the same formal
-KG `v1.7.0` pin as v0.10.4. Prior: v0.20.0-beta.4 → `d89b30df` (KG v1.6.1), v0.20.0-beta.3 →
-`5b346387` (KG v1.6.0). Not a published/frozen state.
+stable-line rows mirror master (`102b816`, 0.11.0 prepared) and are maintained there.
+**Beta line:** working state v0.20.0-beta.6 **prepared** (2026-08-31; MP1 cycle absorbed — engine,
+select tool, R1/R2, teaching layer; same KG `v1.7.0` pin); tag `v0.20.0-beta.6` and npm publish only
+after the Orchestrator verifies stable 0.11.0 and this line side by side. Last published prerelease:
+v0.20.0-beta.5 → `62a1eda3` (npm `beta`). Not a published/frozen state.
 **Most recent published state:** icsme-2026-tool-demonstration / v0.9.0 (2026-05-21)
 **Most recent release:** v0.10.4 (2026-08-30) — served bundle: formal KG release
 `v1.7.0` (commit `894af32a85d6a50f648f10d8a643848e806e533e` = `mcp-stable`; asset sha256
@@ -156,7 +160,10 @@ prohibits tag deletion without explicit authorisation):
 | 2026-08-30 | v0.10.3 registered (protected tag list, current working state, upstream pins: KG v1.6.1, Manual v1.7.1). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-30 | v0.10.3 tag commit recorded (`06f8bbaa`, squash of #51); npm publish + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-30 | v0.10.4 registered (protected tag list, current working state, upstream pins: KG v1.7.0, ontology v2.2, Manual v1.7.1). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-31 | v0.10.4 tag commit recorded (`2937236d`, squash of #54); npm publish + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-31 | v0.11.0 registered as pending (protected-tag list; tag gated on 0.20.0-beta.6 + two-line verification). Served bundle pins unchanged (KG v1.7.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-30 | Beta-line copy: stable rows synced from master (v0.10.3, KG v1.6.1); v0.20.0-beta.4 registered in the prerelease table (tag on the commit introducing this row). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-30 | v0.20.0-beta.4 tag commit recorded (`d89b30df`, fix-forward over `272d8c9`); npm `beta` publish + GitHub pre-release confirmed (run 33282763025). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-31 | Beta-line copy: stable rows synced from master (v0.10.4, KG v1.7.0); v0.20.0-beta.5 registered in the prerelease table (tag on the commit introducing this row). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-31 | v0.20.0-beta.5 tag commit recorded (`62a1eda3`); npm `beta` publish + GitHub pre-release confirmed (run 33376552153). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-31 | Beta-line copy: MP1 cycle absorbed (beta.6 prepared row; stable rows synced incl. 0.11.0 prepared). No published/frozen-state rows changed; no tag yet. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |

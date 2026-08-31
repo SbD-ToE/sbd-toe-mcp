@@ -19,6 +19,9 @@ const ids = (arr, k) => (arr ?? []).map((x) => x?.[k]).filter(Boolean);
 const has = (arr, v) => (arr ?? []).includes(v);
 const bundlesOf = (review, file) => (review.pathMapping ?? []).filter((m) => (m.matchedFiles ?? []).includes(file)).flatMap((m) => m.bundles ?? []);
 const stable = (v) => JSON.stringify(v);
+import { goldenCases, loadCatalogue, runGoldenCase } from "./axis-h.mjs";
+let _hCatalogue;
+const hCatalogue = () => (_hCatalogue ??= loadCatalogue());
 const ctxLinksTargeting = (ctx, controlId) => ctx ? [...ctx.knownIds].filter((rid) => /^(?:REQ-[A-Z]{3}-|[A-Z]{3}-)\d{3}$/.test(rid)).reduce((n, rid) => n + (ctx.links.targetsOf(rid).includes(controlId) ? 1 : 0), 0) : 0;
 
 export const scenarios = [
@@ -321,4 +324,51 @@ export const scenarios = [
     run: async (c) => { const r = await c.tool("resolve_entities", { record_type: "user_story", filters: { us_id: "US-02", chapter_id: "12-monitorizacao-operacoes" } }); if (!r.ok) return fail(r.error); const u = r.data.entities?.[0]; return u && (u.bdd?.length ?? 0) >= 3 && (u.checklist_items?.length ?? 0) >= 1 ? ok(`bdd ${u.bdd.length} clauses, checklist ${u.checklist_items.length}`) : fail(`bdd ${u?.bdd?.length}, checklist ${u?.checklist_items?.length}`); } },
   { id: "TC-E-17", axis: "E", title: "rich US: US-01 ch.01 foundational bdd + checklist", tool: "resolve_entities",
     run: async (c) => { const r = await c.tool("resolve_entities", { record_type: "user_story", filters: { us_id: "US-01", chapter_id: "01-classificacao-aplicacoes" } }); if (!r.ok) return fail(r.error); const u = r.data.entities?.[0]; return u && (u.bdd?.length ?? 0) >= 3 && (u.checklist_items?.length ?? 0) >= 1 ? ok(`bdd ${u.bdd.length}, checklist ${u.checklist_items.length}`) : fail(`bdd ${u?.bdd?.length}, checklist ${u?.checklist_items?.length}`); } },
+  { id: "TC-F-11", axis: "F", title: "select_sbd_toe_requirements (MP1): baseline ∪ contexto, narrowing declarado, G1", tool: "select_sbd_toe_requirements",
+    run: async (c, ctx) => { const r = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Empacotar o serviço em Docker e preparar deploy em K8s", changed_files: ["Dockerfile", "deploy/k8s/service.yaml"], limit: 25 }); if (!r.ok) return fail(r.error); const d = r.data;
+      if (!d.coverage || d.coverage.total === undefined || d.coverage.hasMore === undefined) return fail("no coverage envelope (G1)");
+      const ids = []; let offset = 0; for (;;) { const p = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Empacotar o serviço em Docker e preparar deploy em K8s", changed_files: ["Dockerfile", "deploy/k8s/service.yaml"], offset, limit: 25 }); ids.push(...p.data.selection.selected.map((x) => x.requirement_id)); if (!p.data.coverage.hasMore) break; offset = p.data.coverage.nextOffset; }
+      if (new Set(ids).size !== ids.length) return fail("pagination duplicates");
+      const bad = ids.filter((id) => !ctx.knownIds.has(id)); if (bad.length) return fail(`ids not in bundle: ${bad.slice(0, 3)}`);
+      if (!ids.some((id) => id.startsWith("CNT-")) || !ids.some((id) => id.startsWith("DPL-"))) return fail(`context chapters not selected: ${ids.slice(0, 8)}`);
+      if (ids.some((id) => id.startsWith("AUT-"))) return fail("AUT selected without a task signal (no narrowing)");
+      const nar = d.selection.narrowed_out; if (!Array.isArray(nar) || !nar.some((g) => g.category === "AUT")) return fail("narrowed_out does not list AUT (silent narrowing)");
+      if (!d.selection.selected.every((x) => (x.selection_trace ?? []).length > 0)) return fail("selected item without selection_trace");
+      return ok(`walk ${ids.length} selected (CNT/DPL in, AUT narrowed with reason), traces on all, narrowed_out ${d.coverage.narrowed_out_requirements} declared`); } },
+  { id: "TC-F-12", axis: "F", title: "select (MP1): activadores declarados (agents, data_sensitivity) + overlay extend", tool: "select_sbd_toe_requirements",
+    run: async (c) => { const a = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", task: "Worker agêntico com mandate, kill-switch e audit por tool-call" }); if (!a.ok) return fail(a.error);
+      const aid = a.data.selection.selected.map((x) => x.requirement_id); for (const id of ["REQ-AGN-001", "REQ-AGN-002", "REQ-AGN-003", "REQ-AGN-004"]) if (!aid.includes(id)) return fail(`${id} not selected for an agentic task`);
+      for (const id of ["ACC-002", "AUT-006", "ENC-006", "DEP-011", "DEP-013", "DEP-014"]) if (!aid.includes(id)) return fail(`R1 principal set missing ${id}`);
+      const r1 = a.data.selection.selected.find((x) => x.requirement_id === "ACC-002");
+      if (!(r1?.selection_trace ?? []).some((t) => String(t.trigger ?? "").startsWith("R1:"))) return fail("R1 not named in selection_trace");
+      if (aid.some((id) => id.startsWith("SES-"))) return fail("SES selected for an agentic task (R2)");
+      const b = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", task: "Formulário de registo com dados pessoais", data_sensitivity: "regulated", include_regulatory_overlay: true, regulatory_frameworks: ["EXT-AI-ACT"] }); if (!b.ok) return fail(b.error);
+      const bid = b.data.selection.selected.map((x) => x.requirement_id); if (!bid.some((id) => id.startsWith("ENC-"))) return fail("data_sensitivity=regulated did not activate ENC");
+      if (b.data.overlay.status !== "resolved" || b.data.overlay.obligations.length === 0) return fail(`overlay extend not resolved: ${b.data.overlay.status}`);
+      return ok(`agents → AGN ×4 + wave; regulated → ENC in; overlay extend ${b.data.overlay.obligations.length} AI Act obligations`); } },
+  { id: "TC-F-13", axis: "F", title: "camada de ensino (R3): guide → select → aprofundar via narrowed_out/sinal", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      const g = await c.resource("sbd://toe/agent-guide");
+      const raw = typeof g === "string" ? g : (g?.contents?.[0]?.text ?? g?.text ?? JSON.stringify(g));
+      const text = String(raw).replace(/\\"/g, '"');
+      if (!text.includes("select_sbd_toe_requirements")) return fail("guide does not teach select");
+      if (!text.includes("narrowed_out")) return fail("guide does not teach the two bands");
+      if (!text.includes('mode=\"index\"') && !text.includes('mode: \"index\"')) return fail("guide does not teach consult mode index");
+      if (/m[áa]x(imo)?\s*50|max\s*50|50 activated/i.test(text)) return fail("guide still references the old max-50 scope gate");
+      const a = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Expor API de consulta com chaves de cliente e rate limiting" }); if (!a.ok) return fail(a.error);
+      const ses = (a.data.selection.narrowed_out ?? []).find((x) => x.category === "SES");
+      if (!ses || !ses.reason) return fail("narrowed_out has no teachable SES group/reason");
+      const next = a.data.next ?? []; if (!next.some((n) => n.tool === "prepare_sbd_toe_codegen_context") || !next.some((n) => n.tool === "consult_security_requirements")) return fail("select.next does not suggest prepare+consult");
+      const b = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Expor API de consulta com chaves de cliente, rate limiting e sessões de utilizador autenticado" }); if (!b.ok) return fail(b.error);
+      const bids = b.data.selection.selected.map((x) => x.requirement_id);
+      if (!bids.some((id) => id.startsWith("SES-"))) return fail("re-call with the missing session signal did not recover SES");
+      return ok(`guide teaches select+bands+index; SES narrowed with reason → recovered by adding the session signal (${bids.filter((i) => i.startsWith("SES-")).length} SES back); next[] → prepare+consult`); } },
+
+  // ───────────────────────── Axis H — selection vs golden oracle (measurement, NOT gate) ─────────────────────────
+  // Oracle: golden-selection-cases.md v1 (programme lead's, read-only). One scenario per
+  // golden case; semantics in scripts/acceptance/axis-h.mjs. Axis E remains the only gate.
+  ...goldenCases.map((gc, i) => ({
+    id: `TC-H-${String(i + 1).padStart(2, "0")}`, axis: "H", title: `${gc.id} — ${gc.title}`, tool: "prepare_sbd_toe_codegen_context + consult_security_requirements",
+    run: async (c) => { const r = await runGoldenCase(c, gc, hCatalogue()); return { status: r.status, note: r.note, ...(r.status !== "PASS" ? { owner: r.causes.some((x) => x.cause === "manual") ? "manual" : r.causes.some((x) => x.cause === "oracle?") ? "oracle?" : "mcp" } : {}) }; },
+  })),
 ];

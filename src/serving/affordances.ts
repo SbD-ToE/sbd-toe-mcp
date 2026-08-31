@@ -20,23 +20,33 @@ const concernsHint = (concerns: string[] | undefined): string =>
 export function listChaptersAffordances(): Affordance[] {
   return boundAffordances([
     { intent: "open a chapter's operational brief", tool: "get_sbd_toe_chapter_brief", with: "chapterId", kind: "structural" },
-    { intent: "filter chapters by what's active at a risk level", tool: "map_sbd_toe_applicability", with: "riskLevel", kind: "semantic" }
+    { intent: "filter chapters by what's active at a risk level", tool: "map_sbd_toe_applicability", with: "riskLevel", kind: "semantic" },
+    { intent: "select the requirements for one concrete task", tool: "select_sbd_toe_requirements", with: "risk_level + task (+ changed_files)", kind: "semantic" }
   ]);
 }
 
 export function mapApplicabilityAffordances(riskLevel: string | undefined): Affordance[] {
   const L = riskLevel ?? "L2";
   return boundAffordances([
+    { intent: "select the requirements for one concrete task in this scope", tool: "select_sbd_toe_requirements", with: `risk_level="${L}", task (+ changed_files)`, kind: "structural" },
     { intent: "get the requirements for the active areas", tool: "consult_security_requirements", with: `risk_level="${L}", <=3 concerns`, kind: "structural" },
     { intent: "list the governance artefacts to produce", tool: "plan_sbd_toe_repo_governance", with: `riskLevel="${L}"`, kind: "semantic" }
   ]);
 }
 
+export function selectRequirementsAffordances(riskLevel: string): Affordance[] {
+  return boundAffordances([
+    { intent: "get the controls/artifacts behind the selected requirements", tool: "consult_security_requirements", with: `risk_level="${riskLevel}", <=3 concerns`, kind: "structural" },
+    { intent: "prepare grounded codegen context for one concrete task", tool: "prepare_sbd_toe_codegen_context", with: "task + risk_level (+ changed_files)", kind: "semantic" },
+    { intent: "check the threats relevant to this scope", tool: "get_threat_landscape", with: `risk_level="${riskLevel}"`, kind: "semantic" }
+  ]);
+}
+
 export function consultAffordances(riskLevel: string, concerns: string[] | undefined): Affordance[] {
   return boundAffordances([
+    { intent: "narrow to what applies to ONE concrete task (two declared bands)", tool: "select_sbd_toe_requirements", with: `risk_level="${riskLevel}", task`, kind: "structural" },
     { intent: "see the threats these requirements mitigate", tool: "get_threat_landscape", with: `risk_level="${riskLevel}", ${concernsHint(concerns)}`, kind: "semantic" },
-    { intent: "turn the requirements into per-role work", tool: "get_guide_by_role", with: `risk_level="${riskLevel}", role`, kind: "semantic" },
-    { intent: "resolve a control id to its full detail", tool: "resolve_entities", with: 'record_type="control", filters', kind: "structural" }
+    { intent: "turn the requirements into per-role work", tool: "get_guide_by_role", with: `risk_level="${riskLevel}", role`, kind: "semantic" }
   ]);
 }
 

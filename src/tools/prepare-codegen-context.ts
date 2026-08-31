@@ -58,6 +58,7 @@ import { expandQueryWithAliases } from "../backend/semantic-index-gateway.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { requirementCategoryOf } from "../serving/requirement-id.js";
 import { prepareCodegenAffordances } from "../serving/affordances.js";
+import { runSelectionWithActivation, type SelectionResult } from "../serving/selection.js";
 
 // ---------------------------------------------------------------------------
 // Public types
@@ -133,6 +134,9 @@ export interface ActivationTraceEntry {
     | "changed_file"
     | "regulatory_framework"
     | "risk_level"
+    | "exposure"
+    | "data_sensitivity"
+    | "context_chapter"
     | "scope_gate";
   /** What the activation produced (concern, slice_family, framework_id, decision). */
   produced: string;
@@ -339,6 +343,19 @@ export interface CompletenessReport {
   evidence_patterns_capped: number;
   /** Cap value applied during this resolution. */
   evidence_pattern_cap: number;
+  /**
+   * MP1 selection summary (G-mp1a O2, 2026-08-31): the requirement set comes from
+   * the selection engine (baseline ∪ context-activated chapters, narrowed by the
+   * task's declared signals). Never-silent: what the narrowing excluded is counted
+   * here and fully listed by the executable ref. Additive key.
+   */
+  selection?: {
+    eligible: number;
+    selected: number;
+    narrowed_out_categories: number;
+    narrowed_out_requirements: number;
+    narrowed_out_ref: { tool: "select_sbd_toe_requirements"; note: string };
+  };
 }
 
 export interface SecurityRationaleTemplate {
@@ -993,7 +1010,7 @@ const TASK_TERM_TO_CONCERNS: ReadonlyArray<readonly [string, readonly Concern[]]
   ["auth", ["auth"]],
   ["authentication", ["auth"]],
   ["authorization", ["auth"]],
-  ["login", ["auth"]],
+  ["login", ["auth", "encryption"]],
   ["session", ["auth"]],
   ["jwt", ["auth"]],
   ["oauth", ["auth"]],
@@ -1029,8 +1046,8 @@ const TASK_TERM_TO_CONCERNS: ReadonlyArray<readonly [string, readonly Concern[]]
   ["release", ["release"]],
   ["deploy", ["deployment", "release"]],
   ["rollback", ["release"]],
-  ["terraform", ["iac", "deployment"]],
-  ["ansible", ["iac", "deployment"]],
+  ["terraform", ["iac"]],
+  ["ansible", ["iac"]],
   ["kubernetes", ["deployment", "config"]],
   ["docker", ["deployment", "config"]],
   ["container", ["deployment"]],
@@ -1058,6 +1075,15 @@ const TASK_TERM_TO_CONCERNS: ReadonlyArray<readonly [string, readonly Concern[]]
   ["rpc", ["integration", "api"]],
   ["webhook", ["integration", "api"]],
   ["queue", ["integration"]],
+  // pós-P2 2026-08-31: integração por mensageria exige registo de eventos críticos → logging.
+  ["message queue", ["integration", "logging"]],
+  // pós-P2 2026-08-31: mTLS = gestão de material criptográfico → secrets (CFG/ENC).
+  ["mtls", ["encryption", "integration", "secrets"]],
+  ["signature", ["integrity", "encryption"]],
+  ["signing", ["integrity"]],
+  ["image", ["deployment", "distribution"]],
+  ["spa", ["validation", "api"]],
+  ["frontend", ["validation"]],
   ["pubsub", ["integration"]],
   ["monitoring", ["monitoring", "logging"]],
   ["metric", ["monitoring"]],
@@ -1092,7 +1118,9 @@ const CONCERN_TO_V0_CATEGORIES_SUPPLEMENT: Readonly<Record<Concern, string[]>> =
   threat_modeling: ["THR"],
   monitoring: ["LOG", "OPS"],
   release: ["DPL", "OPS"],
-  deployment: ["DPL", "IAC", "CNT"],
+  // pós-P2 2026-08-31: deploy activa também a categoria base DST (cap. 02 — "Deploy
+  // apenas via pipeline validado" e afins); supplement do serving, loader inalterado.
+  deployment: ["DPL", "IAC", "CNT", "DST"],
   integration: ["API", "INT"],
   // `agents` → AGN comes from ontology.concernsMap (loader); nothing to supplement.
   agents: []
@@ -1147,7 +1175,17 @@ const CODEGEN_PT_ALIASES: ReadonlyArray<readonly [string, readonly string[]]> = 
   ["integração", ["integration"]],
   ["fronteira", ["boundary"]],
   ["arquitetura", ["architecture"]],
+  // R3 do ciclo MP1 (2026-08-31, crescimento por semântica do Manual — cap. 02
+  // categoria SES = sessões; nunca por caso do oráculo): sessão/sessões → session.
+  ["sessão", ["session"]],
+  ["sessões", ["session"]],
   ["chave de api", ["api key"]],
+  ["chave de cliente", ["api key"]],
+  ["chaves de cliente", ["api key"]],
+  ["mensageria", ["message queue"]],
+  ["fila de mensagens", ["message queue"]],
+  ["assinatura", ["signature"]],
+  ["imagem", ["image"]],
   ["variável de ambiente", ["environment variable"]]
 ] as const;
 
@@ -1170,6 +1208,8 @@ const COMPOUND_TERM_TO_CONCERNS: ReadonlyArray<readonly [string, readonly Concer
   ["ci pipeline", ["build", "supply_chain"]],
   ["trust boundary", ["architecture"]],
   ["fronteira de confiança", ["architecture"]],
+  ["formulário de registo", ["auth", "validation"]],
+  ["registration form", ["auth", "validation"]],
   ["service to service", ["integration", "architecture"]],
   ["serviço a serviço", ["integration", "architecture"]],
   ["secret rotation", ["secrets"]],
@@ -1217,7 +1257,7 @@ function taskMatchesKeyword(taskLower: string, keyword: string): boolean {
 
 const VAGUE_PATTERNS: ReadonlyArray<{ pattern: RegExp; reason: string }> = [
   {
-    pattern: /\b(torna|make).{0,40}\b(seguro|secure)\b/i,
+    pattern: /\b(torna|make).{0,40}\b(segur[ao]|secure)\b/i,
     reason: "Pedido excessivamente abrangente ('make secure' / 'tornar seguro')"
   },
   {
@@ -1258,7 +1298,7 @@ const UNSUPPORTED_TECH_PATTERN =
 // Input normalization
 // ---------------------------------------------------------------------------
 
-interface NormalizedInput {
+export interface NormalizedInput {
   task: string;
   taskTrimmed: string;
   taskLower: string;
@@ -1276,7 +1316,7 @@ interface NormalizedInput {
   debug: boolean;
 }
 
-function normalizeInput(raw: unknown): NormalizedInput {
+export function normalizeInput(raw: unknown): NormalizedInput {
   const data = (typeof raw === "object" && raw !== null ? raw : {}) as Record<
     string,
     unknown
@@ -1379,9 +1419,16 @@ function inputEcho(
 // Activation engine
 // ---------------------------------------------------------------------------
 
-interface ActivationResult {
+export interface ActivationResult {
   concerns: Concern[];
   sliceFamilies: string[];
+  /** P3 do ciclo MP1 (2026-08-31): famílias contadas para o gate de decomposição —
+   * UM SINAL = UMA SUPERFÍCIE. Só o concern PRIMÁRIO de cada sinal (posição 0 do
+   * mapeamento do termo/frase; explícitos/intents/ficheiros contam por si) contribui
+   * a sua família; concerns de suporte (posições secundárias, ex.: mtls→secrets,
+   * message queue→logging) activam categorias mas não são superfícies novas.
+   * `sliceFamilies` (grounding) fica intocado. */
+  decompositionFamilies: string[];
   trace: ActivationTraceEntry[];
   rejected: ActivationTraceEntry[];
   notes: string[];
@@ -1435,7 +1482,7 @@ function recordActivation(
   }
 }
 
-function activate(input: NormalizedInput): ActivationResult {
+export function activate(input: NormalizedInput): ActivationResult {
   const trace: ActivationTraceEntry[] = [];
   const rejected: ActivationTraceEntry[] = [];
   const notes: string[] = [];
@@ -1612,6 +1659,56 @@ function activate(input: NormalizedInput): ActivationResult {
     });
   }
 
+  // 4b) Declared context activators (G-mp1a / D3, 2026-08-31): exposure and
+  // data_sensitivity stop being decorative — they activate concerns by DECLARED
+  // rule (each with its own trace source), because the reference selection
+  // semantics says an authenticated/public surface must be auditable and a
+  // personal/regulated data context must carry crypto+masking+validation.
+  const EXPOSURE_CONCERNS: Readonly<Record<string, readonly Concern[]>> = {
+    internal: ["auth", "logging"],
+    authenticated: ["auth", "logging"],
+    public: ["auth", "logging", "api", "validation", "architecture"]
+  };
+  if (input.exposure && EXPOSURE_CONCERNS[input.exposure]) {
+    for (const concern of EXPOSURE_CONCERNS[input.exposure] ?? []) {
+      recordActivation(
+        trace, concerns, concernScores, rejected,
+        {
+          source: "exposure",
+          produced: concern,
+          trigger: input.exposure,
+          score: 0.9,
+          confidence: "deterministic",
+          reason: `exposure='${input.exposure}' activates ${concern} by declared rule (auditable exposed surface).`
+        },
+        concern,
+        { capDuplicates: true }
+      );
+    }
+  }
+  const SENSITIVITY_CONCERNS: Readonly<Record<string, readonly Concern[]>> = {
+    personal: ["encryption", "validation", "logging"],
+    regulated: ["encryption", "validation", "logging"],
+    secrets: ["secrets"]
+  };
+  if (input.data_sensitivity && SENSITIVITY_CONCERNS[input.data_sensitivity]) {
+    for (const concern of SENSITIVITY_CONCERNS[input.data_sensitivity] ?? []) {
+      recordActivation(
+        trace, concerns, concernScores, rejected,
+        {
+          source: "data_sensitivity",
+          produced: concern,
+          trigger: input.data_sensitivity,
+          score: 0.9,
+          confidence: "deterministic",
+          reason: `data_sensitivity='${input.data_sensitivity}' activates ${concern} by declared rule (ENC/masking/validation for personal or regulated data).`
+        },
+        concern,
+        { capDuplicates: true }
+      );
+    }
+  }
+
   // 5) Risk level (informational trace entry, no concern activation).
   if (input.risk_level) {
     trace.push({
@@ -1624,8 +1721,41 @@ function activate(input: NormalizedInput): ActivationResult {
     });
   }
 
+  // P3 (2026-08-31): primary-concern families for the decomposition gate.
+  const primaryOfSignal = new Map<string, Concern>();
+  for (const [term, mapped] of TASK_TERM_TO_CONCERNS) {
+    if (mapped.length > 0) primaryOfSignal.set(term, mapped[0]!);
+  }
+  for (const [phrase, mapped] of COMPOUND_TERM_TO_CONCERNS) {
+    if (mapped.length > 0) primaryOfSignal.set(phrase, mapped[0]!);
+  }
+  const primaryConcerns = new Set<Concern>();
+  for (const entry of trace) {
+    if (
+      entry.source === "risk_level" ||
+      entry.source === "exposure" ||
+      entry.source === "data_sensitivity" ||
+      entry.source === "scope_gate"
+    ) {
+      continue; // contexto/informativos — não são superfícies
+    }
+    if (!concerns.has(entry.produced as Concern)) continue;
+    const rowPrimary = primaryOfSignal.get(entry.trigger);
+    if (rowPrimary === undefined || rowPrimary === entry.produced) {
+      primaryConcerns.add(entry.produced as Concern);
+    }
+  }
+  const decompositionFamilies = [
+    ...new Set(
+      [...primaryConcerns]
+        .map((concern) => CONCERN_TO_SLICE_FAMILY[concern])
+        .filter((family): family is string => typeof family === "string")
+    )
+  ].sort();
+
   return {
     concerns: [...concerns],
+    decompositionFamilies,
     sliceFamilies: [...sliceFamilyScores.keys()].sort(
       (a, b) =>
         (sliceFamilyScores.get(b) ?? 0) - (sliceFamilyScores.get(a) ?? 0) ||
@@ -1705,35 +1835,32 @@ function gateAfterActivation(args: PostActivationGateInput): GateDecision | null
   const reasons: string[] = [];
   const suggestions: string[] = [];
 
-  if (activation.sliceFamilies.length > 3) {
+  // P3 do ciclo MP1 (2026-08-31): o gate conta SUPERFÍCIES (famílias dos concerns
+  // primários de cada sinal), não o total de famílias activadas — concerns de
+  // suporte de um mesmo sinal (mtls→secrets, mensageria→logging) não pedem
+  // decomposição. GC-10 é o caso de referência: 1 integração legítima.
+  if (activation.decompositionFamilies.length > 3) {
     reasons.push(
-      `Pedido activa ${activation.sliceFamilies.length} slice families (${activation.sliceFamilies.join(
+      `Pedido activa ${activation.decompositionFamilies.length} superfícies (famílias primárias: ${activation.decompositionFamilies.join(
         ", "
-      )}) — máximo recomendado: 3.`
+      )}) — máximo recomendado: 3. Concerns de suporte do mesmo sinal não contam.`
     );
     suggestions.push(
       "Reparte por slice family. Cada PR/PR-step deve ficar em 1–3 slices."
     );
   }
 
-  // Hard requirement cap: above ~50 requirements the LLM context becomes
-  // unfocused and asks should be decomposed. Slice-family count (max 3) is the
-  // primary decomposition signal; this cap catches multi-concern asks that
-  // sneak under the slice-family threshold.
-  if (estimatedRequirements > 50) {
-    reasons.push(
-      `Pedido activaria ${estimatedRequirements} requisitos v0 — máximo permitido para codegen: 50.`
-    );
-    suggestions.push(
-      "Reduz o âmbito (risk_level mais baixo, concerns mais específicos, ou divide o endpoint)."
-    );
-  }
+  // G-mp1a decision 2 (2026-08-31, D1): the former hard cap "max 50 activated
+  // requirements" is GONE — a legitimate L2 task activates >50 by design (the
+  // cap 02 baseline is a real catalogue). The gate guards TASK scope (vague /
+  // multi-family asks above) and PAYLOAD (the detail diet + budgets), never a
+  // requirement count. estimatedRequirements stays as a debug figure only.
+  void estimatedRequirements;
 
-  if (
-    activation.concerns.length === 0 &&
-    input.tokenCount >= 4 &&
-    activation.trace.length === 0
-  ) {
+  // D1 (G-mp1a): with the requirement-count cap gone, the no-signal guard is the
+  // vagueness catch-all. The informational risk_level trace entry must not defeat
+  // it — only real signals (concerns) count.
+  if (activation.concerns.length === 0 && input.tokenCount >= 4) {
     return {
       status: "needs_clarification",
       reasons: [
@@ -1801,7 +1928,7 @@ function projectRelation(relation: AppSecRelation): G2ContextRelation {
   };
 }
 
-function categoriesForConcerns(concerns: Concern[]): Set<string> {
+export function categoriesForConcerns(concerns: Concern[]): Set<string> {
   const ontology = getOntologyData();
   const categories = new Set<string>();
   for (const concern of concerns) {
@@ -1818,6 +1945,8 @@ function categoriesForConcerns(concerns: Concern[]): Set<string> {
 function resolveRuntimeV0(args: {
   riskLevel: RiskLevel | undefined;
   concerns: Concern[];
+  /** MP1 engine override: when given, this exact requirement set is used instead of the category filter. */
+  selectedRequirements?: Requirement[];
 }): {
   requirements: Requirement[];
   controls: Array<Control & { confidence: "direct" | "derived" }>;
@@ -1827,16 +1956,23 @@ function resolveRuntimeV0(args: {
   const ontology = getOntologyData();
   const concernCategories = categoriesForConcerns(args.concerns);
 
-  let filteredRequirements = ontology.requirements;
-  if (args.riskLevel) {
-    filteredRequirements = filteredRequirements.filter(
-      (requirement) => requirement.applicable_levels?.[args.riskLevel as RiskLevel] === true
-    );
-  }
-  if (concernCategories.size > 0) {
-    filteredRequirements = filteredRequirements.filter((requirement) =>
-      concernCategories.has(requirement.category)
-    );
+  let filteredRequirements: Requirement[];
+  if (args.selectedRequirements) {
+    // MP1 engine (G-mp1a O2): the selection operation already produced the set
+    // (baseline ∪ context ⊕ narrowing, all declared) — use it verbatim.
+    filteredRequirements = args.selectedRequirements;
+  } else {
+    filteredRequirements = ontology.requirements;
+    if (args.riskLevel) {
+      filteredRequirements = filteredRequirements.filter(
+        (requirement) => requirement.applicable_levels?.[args.riskLevel as RiskLevel] === true
+      );
+    }
+    if (concernCategories.size > 0) {
+      filteredRequirements = filteredRequirements.filter((requirement) =>
+        concernCategories.has(requirement.category)
+      );
+    }
   }
 
   const links = ontology.requirementControlLinks ?? [];
@@ -3245,7 +3381,11 @@ function prepareCodegenContextCore(
         ? deterministicConcerns
         : activation.concerns;
 
-  const estimatedRequirements = estimateV0RequirementCount(input.risk_level, focusConcerns);
+  void focusConcerns; // kept for the debug notes below; the gate no longer counts requirements
+  // MP1 selection (G-mp1a O2): the engine composes baseline ∪ context and narrows
+  // by the task's declared signals — this is the requirement set served.
+  const selection: SelectionResult = runSelectionWithActivation(input, activation);
+  const estimatedRequirements = selection.selected.length;
 
   const postGate = gateAfterActivation({
     input,
@@ -3304,9 +3444,12 @@ function prepareCodegenContextCore(
   }
 
   // ----- Resolve activated scope ----------------------------------------
+  const ontologyForSelection = getOntologyData();
+  const selectedIds = new Set(selection.selected.map((r) => r.requirement_id));
   const v0 = resolveRuntimeV0({
     riskLevel: input.risk_level,
-    concerns: activation.concerns
+    concerns: activation.concerns,
+    selectedRequirements: ontologyForSelection.requirements.filter((r) => selectedIds.has(r.requirement_id))
   });
 
   const activatedSlices = resolveActivatedSlices(g2Data, activation.sliceFamilies);
@@ -3545,6 +3688,18 @@ function prepareCodegenContextCore(
     returned_artifacts: activatedArtifacts.length,
     named_v1_entities: namedV1,
     unnamed_v1_entities: totalV1 - namedV1,
+    selection: {
+      eligible: selection.eligible_count,
+      selected: selection.selected.length,
+      narrowed_out_categories: selection.narrowed_out.length,
+      narrowed_out_requirements: selection.narrowed_out.reduce((n, g) => n + g.count, 0),
+      narrowed_out_ref: {
+        tool: "select_sbd_toe_requirements",
+        note:
+          "Categorias elegíveis sem sinal na tarefa foram excluídas pelo narrowing MP1 — " +
+          "a lista completa (por categoria, com razão) vem de select_sbd_toe_requirements com o mesmo contexto."
+      }
+    },
     v1_consistency_mismatches: g2Data.consistency.mismatches,
     v1_manifest_warnings: g2Data.consistency.warnings,
     evidence_patterns_total: scoredEvidencePatterns.length,

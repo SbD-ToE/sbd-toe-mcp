@@ -74,8 +74,11 @@ const FIXTURES: readonly BaselineFixture[] = [
     // 111 on bundle v1.5.0 … v1.6.0 (EPIC baseline). 112 since the formal KG v1.6.1
     // pin (0.20.0-beta.4, contract v1.12 curated requirement→control layer v2):
     // one re-targeted link adds a direct control (9 → 10) to this fixture's
-    // activated set. Data change, not a serving change.
-    citationIds: 112
+    // activated set. Data change, not a serving change. 104 since P3 do ciclo MP1
+    // (2026-08-31): R2:narrowing-de-sinais-SES — a tarefa não tem sinais de
+    // sessão/login/token de utilizador, SES-001..008 saem por narrowing declarado
+    // (regra de serving, decisão pós-P2 do lead; não é alteração de dados).
+    citationIds: 104
   },
   {
     name: "fixture2",
@@ -89,7 +92,9 @@ const FIXTURES: readonly BaselineFixture[] = [
     // kg-v1-manual-v1.7.0-aligned-2026-08-29 pin (0.20.0-beta.3): the bundle
     // publishes OPS-015 (ch. 12), which this fixture activates via `logging`
     // → +1 requirement in the activated set. Data growth, not a serving change.
-    citationIds: 151
+    // 143 since P3 do ciclo MP1 (2026-08-31): R2:narrowing-de-sinais-SES (−8,
+    // SES-001..008) — sem sinais de sessão na tarefa; regra de serving declarada.
+    citationIds: 143
   }
 ];
 
@@ -216,7 +221,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       citation_map: 200, // s1+s3: citations invertido, ids via ids_from
       activated_scope: 3350, // núcleo mantém + `description` publicada (s3)
       g2_entities: 720, // núcleo — agrupado por slice (s3)
-      rest: 850, // s3: instructions→resource, trace só com debug
+      rest: 980, // MP1 (beta.6): completeness_report.selection vive em `rest` (medidos 918/914; = estável) // s3: instructions→resource, trace só com debug
       total: 6500 // 🔴 gate hard do EPIC (payload típico)
     },
     fixture2: {
@@ -226,7 +231,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       citation_map: 200,
       activated_scope: 5200,
       g2_entities: 1000,
-      rest: 850,
+      rest: 980, // MP1 (beta.6): completeness_report.selection vive em `rest` (medidos 918/914; = estável)
       // Gate original do EPIC: 8.500. Re-fixado em **8.800** pelo programme lead
       // (ratificação 2026-08-31, 0.20.0-beta.5): OPS-015 (pin v1.7.0 dev-build,
       // +223) + camada de ligações curada v3/v1.7.0 formal (controlos directos da
@@ -258,7 +263,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       // muda os controlos directos da fixture — medido 3.243, 2026-08-30).
       activated_scope: 3290, // COMPLETO com description (byte-igual a standard)
       g2_entities: 680, // COMPLETO (byte-igual a standard)
-      rest: 853, // s4: +53 medidos (repeat_call_hint)
+      rest: 985, // MP1 selection em `rest` (medidos 917/913; = estável) // s4: +53 medidos (repeat_call_hint)
       total: 5800 // 🔴 hard s3b revisto (medido 5.518 + ~5%)
     },
     fixture2: {
@@ -269,7 +274,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       // 5.070 até v1.6.1; 5.180 desde o dev-build v2.2 (medido 5.127, 2026-08-30).
       activated_scope: 5180,
       g2_entities: 950,
-      rest: 853, // s4: +53 medidos (repeat_call_hint)
+      rest: 985, // MP1 selection em `rest` (medidos 917/913; = estável) // s4: +53 medidos (repeat_call_hint)
       // Hard s3b original: 8.000 (medido 7.639 + ~5%). Re-fixado em **8.100** pelo
       // programme lead (ratificação 2026-08-31): camada curada v3/v1.7.0 formal muda
       // os controlos directos da fixture. Medido 8.019 (v1.7.0 formal).
@@ -299,7 +304,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       citation_map: 180, // citations invertido (byte-igual aos outros dieted)
       activated_scope: 1800, // COMPLETO, sem description (+descriptions_ref)
       g2_entities: 680, // COMPLETO (byte-igual a standard/minimal)
-      rest: 935, // completeness com contagens + refs executáveis
+      rest: 1055, // MP1 selection em `rest` (medidos 981/977; = estável) // completeness com contagens + refs executáveis
       total: 3870 // 🔴 hard s3c (medido 3.688 + ~5%)
     },
     fixture2: {
@@ -309,7 +314,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       citation_map: 180,
       activated_scope: 2410,
       g2_entities: 950,
-      rest: 935,
+      rest: 1055, // MP1 selection em `rest` (medidos 981/977; = estável)
       total: 4840 // 🔴 hard s3c (medido 4.606 + ~5%)
     }
   }

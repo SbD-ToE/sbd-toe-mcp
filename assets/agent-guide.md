@@ -55,7 +55,24 @@ get_sbd_toe_chapter_brief        ← what a specific chapter covers (phases, art
 list_sbd_toe_chapters            ← chapter discovery and navigation
 query_sbd_toe_entities           ← specific controls (CTRL-*), artefacts (ART-*), practices
 
+select_sbd_toe_requirements      ← MP1 selection: which requirements apply to THIS task in THIS
+                                    context — baseline (ch. 02, by level) ∪ context-activated
+                                    chapters ⊕ overlay(extend), narrowed by declared task signals;
+                                    params: risk_level (required), task?, changed_files?,
+                                    technologies?, exposure?, data_sensitivity?, concerns?
+                                    returns TWO bands, both always listed:
+                                      selected[]     — the recommendation for the task (each item
+                                                       carries its selection_trace: source/trigger/
+                                                       score, incl. named rules like
+                                                       R1:principal-nao-humano)
+                                      narrowed_out[] — what was ELIGIBLE and why it left (grouped
+                                                       by category, with reason). Nothing is dropped
+                                                       silently: if you need something from there,
+                                                       call again WITH the missing signal (e.g. the
+                                                       SES group returns when the task mentions the
+                                                       user session/login/token surface)
 consult_security_requirements    ← deterministic: requirements + controls for a risk level
+                                    (mode: "index" opt-in returns a per-category id index)
                                     params: risk_level (L1|L2|L3), concerns? (string[])
                                     returns: requirements[], controls[], active_domains[],
                                              active_categories[], rule_trace[]
@@ -65,6 +82,17 @@ resolve_entities                 ← low-level ontology filter engine
                                     use for: enumerating roles, finding controls by domain,
                                     listing requirements by category, exploring the ontology
 ```
+
+**Choosing between the three requirement surfaces:**
+- `select_sbd_toe_requirements` — *"which requirements apply to THIS task / this change?"*
+  Task-scoped recommendation with declared narrowing (two bands, above). Start here for
+  any concrete piece of work.
+- `consult_security_requirements` — *"what does the catalogue hold at this level?"*
+  Level-wide, deterministic. `mode: "index"` (opt-in) returns a compact per-category id
+  index first — expand later with the default mode + `concerns`.
+- `prepare_sbd_toe_codegen_context` — the codegen/review instrument: grounded context +
+  `citation_map` for one concrete task (it consumes the same selection engine; its
+  `completeness_report.selection` declares eligible/selected/narrowed-out counts).
 
 **Prefer `consult_security_requirements` over `search_sbd_toe_manual`** when the question
 is structured ("what requirements apply at L2?", "which controls are active for auth?").
@@ -137,6 +165,9 @@ Canonical role IDs (pass exact or common alias — resolved automatically):
 | `coverage_gaps.requirements_without_control_link` (consult) | Those requirements are active but have **no published control link** — say so (declared gap, routed to Codex); do not invent controls |
 | `match: "declared_gap"` / `meta.declared_gap` (query_sbd_toe_entities, resolve_entities) | Cite `declared_gap.note` verbatim — a legacy / unresolvable citation, not a missing requirement |
 | `citation_note` / `meta.citation_note` (informative) | The id is an illustrative example (`REQ-NNN`) or a non-requirement token (`CWE-`, `SHA-`) cited by the Manual — say so; it is not a requirement and not a gap |
+| `selection.selected[]` (select) | The recommendation for the task — cite each item's `selection_trace` when asked *why* |
+| `selection.narrowed_out[]` (select) | Eligible-but-narrowed, grouped with reason — never treat as "not applicable"; re-call with the missing signal to recover a group |
+| `completeness_report.selection` (prepare) | The same two-band summary behind the codegen context — `narrowed_out_ref` names the tool to inspect it |
 
 #### Pattern for complex answers (threat model / security plan / checklist)
 
@@ -240,6 +271,8 @@ Always distinguish between:
 | "List all chapters" | `list_sbd_toe_chapters` |
 | "Find control / artefact / practice" | `query_sbd_toe_entities` |
 | "What requirements apply at L1/L2/L3?" | `consult_security_requirements(risk_level)` |
+| "Which requirements apply to THIS task / this change?" | `select_sbd_toe_requirements(risk_level, task, changed_files?)` — `selected[]` is the recommendation; `narrowed_out[]` explains what left and why (re-call with the missing signal to recover it) |
+| "Give me a compact id map of the catalogue by category" | `consult_security_requirements(risk_level, mode="index")` |
 | "Which controls are active for auth / logging / …?" | `consult_security_requirements(risk_level, concerns=[…])` |
 | "What threats apply to this project?" | `get_threat_landscape(risk_level)` |
 | "What threats are relevant for auth / logging / …?" | `get_threat_landscape(risk_level, concerns=[…])` |
