@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-31T10:34:30.776Z",
+  "generated_at": "2026-08-31T10:38:23.273Z",
   "package_version": "0.10.4",
   "consumed_bundle": {
     "release_tag": "v1.7.0",
@@ -9,7 +9,7 @@
   },
   "oracle": {
     "version": "v1 (closed 2026-08-31, ratified in block)",
-    "path": "/Volumes/G-DRIVE/Shared/SecurityByDesign-TheoryOfEverything/DevelopmentGovernance/docs/golden-selection-cases.md"
+    "path": "DevelopmentGovernance/docs/golden-selection-cases.md"
   },
   "gate": "not-in-gate (Axis E remains the only promotion gate)",
   "verdicts": {

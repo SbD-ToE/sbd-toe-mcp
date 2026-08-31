@@ -155,9 +155,9 @@ Verdicts: **1 PASS · 3 PART · 6 FAIL**. Médias (prepare): cobertura 41%, prec
 
 ## Leitura (Pontifex, 5 linhas)
 
-1. **O scope gate é hoje o maior custo de selecção:** `prepare` devolve `needs_decomposition` em 4 tarefas legítimas do oráculo (GC-02 API, GC-05 CI, GC-10 mensageria; GC-09 é o único desejado) — cobertura 0 % por recusa, não por má selecção.
+1. **O scope gate é hoje o maior custo de selecção:** `prepare` devolve `needs_decomposition` em 4 tarefas legítimas do oráculo (GC-02 API, GC-05 CI, GC-10 mensageria; GC-09 é o único desejado) — cobertura 0 % por recusa («activaria 256 requisitos — máx. 50»), não por má selecção.
 2. **Quando responde, activa categorias inteiras sem narrowing por tarefa:** GC-01 reproduz quantificado o achado do lead — AUT/ACC/SES/API entram por atacado (15 em excesso) e VAL/ERR/ENC/LOG ficam de fora porque «upload» não activa validação/crypto/logging.
 3. **Duas falhas de activação graves e específicas:** GC-07 (mandate/kill-switch/tool-calls **não** activa `agents`/AGN — 0/18) e GC-06 (dados pessoais/AI Act não activa ENC/VAL — 2/16), ambas `mcp`/composição; o overlay em si funciona (14 obrigações AI Act ✓).
 4. **`consult` com concerns certos é o melhor selector actual** (cobertura média alta, precisão-estrita ~95 %), mas paga em excesso (categoria inteira; GC-03 sem concern de containers: 133 em excesso) e o vocabulário não cobre containers/deploy/CI — confirma a necessidade da operação de selecção MP1 (baseline ∪ contexto ⊕ overlay) do dispatcher, lane d).
-5. **O filtro de nível funciona** (GC-08: 0 violações L2+/L3, excesso 1) e o caso negativo passa; nenhuma divergência exigiu requisito inexistente no catálogo (0 causas `manual` — as lacunas de conteúdo do oráculo continuam qualitativas, para o Author) e 0 expectativas marcadas `oracle?`.
+5. **O filtro de nível funciona** (GC-08: 0 violações L2+/L3, excesso 1) e o caso negativo passa; nenhuma divergência exigiu requisito inexistente no catálogo (0 causas `manual`) e 0 expectativas marcadas `oracle?` — as lacunas de conteúdo do oráculo continuam qualitativas, para o Author.
 

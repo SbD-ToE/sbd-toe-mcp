@@ -35,8 +35,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 export const ORACLE_VERSION = "v1 (closed 2026-08-31, ratified in block)";
-export const ORACLE_PATH =
-  "/Volumes/G-DRIVE/Shared/SecurityByDesign-TheoryOfEverything/DevelopmentGovernance/docs/golden-selection-cases.md";
+// Programme-relative reference only — never an absolute private path (the release-bundle
+// guard rejects those, and the report ships in the bundle).
+export const ORACLE_PATH = "DevelopmentGovernance/docs/golden-selection-cases.md";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 
