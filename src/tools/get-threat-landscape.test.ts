@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { _resolveThreatLandscape, handleGetThreatLandscape } from "./get-threat-landscape.js";
 import type { OntologyData } from "./ontology-loader.js";
+import { getOntologyData } from "./ontology-loader.js";
 
 // ---------------------------------------------------------------------------
 // Minimal fixture
@@ -107,6 +108,41 @@ describe("_resolveThreatLandscape", () => {
     expect(ids).not.toContain("MT-001"); // ch.12 not in auth scope
   });
 
+  it("counts the DEFINING chapters of activated controls as in-scope — incl. ch.02 (G-b decision 2, 2026-08-30)", () => {
+    // C1-style control: catalogued AND defining in ch.02. Its defining chapter brings the
+    // ch.02 threats into scope for the concern, with the control as mitigated_by.
+    const data = makeOntologyData({
+      controls: [
+        { control_id: "CTRL-AUTH-C1", name: "Identidade e sessões", domain: "identity", control_type: "preventive", abstraction_level: "technical", applicable_lifecycle_phases: [], chapter_ids: ["02-requisitos-seguranca"], defining_chapter_ids: ["02-requisitos-seguranca"] }
+      ],
+      threats: [
+        { mitigated_threat_id: "MT-002", threat_label_raw: "Ameaça de auth no catálogo do cap.02", chapter_id: "02-requisitos-seguranca", associated_controls: [], confidence: 0.8 }
+      ]
+    });
+    const result = _resolveThreatLandscape({ risk_level: "L2", concerns: ["auth"] }, data);
+    const mt002 = result.threats.find((t) => t.mitigated_threat_id === "MT-002");
+    expect(mt002).toBeDefined();
+    expect(result.meta.activeBundles).toContain("02-requisitos-seguranca");
+    expect(mt002?.mitigated_by.map((c) => c.control_id)).toContain("CTRL-AUTH-C1");
+  });
+
+  it("a control merely CATALOGUED in ch.02 (defining elsewhere) still does not bring the meta-threats in", () => {
+    const data = makeOntologyData({
+      controls: [
+        { control_id: "CTRL-AUTH", name: "Identity", domain: "identity", control_type: "preventive", abstraction_level: "technical", applicable_lifecycle_phases: [], chapter_ids: ["02-requisitos-seguranca", "04-arquitetura-segura"], defining_chapter_ids: ["04-arquitetura-segura"] }
+      ],
+      threats: [
+        { mitigated_threat_id: "MT-002", threat_label_raw: "Meta-threat", chapter_id: "02-requisitos-seguranca", associated_controls: [], confidence: 0.8 },
+        { mitigated_threat_id: "MT-004", threat_label_raw: "Domain threat", chapter_id: "04-arquitetura-segura", associated_controls: [], confidence: 0.85 }
+      ]
+    });
+    const result = _resolveThreatLandscape({ risk_level: "L2", concerns: ["auth"] }, data);
+    const ids = result.threats.map((t) => t.mitigated_threat_id);
+    expect(ids).toContain("MT-004");
+    expect(ids).not.toContain("MT-002");
+    expect(result.meta.activeBundles).not.toContain("02-requisitos-seguranca");
+  });
+
   it("keeps the requirements-process meta-threats for the explicit 'requirements' concern", () => {
     const result = _resolveThreatLandscape(
       { risk_level: "L2", concerns: ["requirements"] },
@@ -198,19 +234,33 @@ describe("handleGetThreatLandscape surface", () => {
     expect(result.threats.some((t) => typeof t.mitigation_strength === "string" && t.mitigation_strength.length > 0)).toBe(true);
   });
 
-  // Regression (real bundle): base/domain concerns must surface DOMAIN threats, not the
-  // chapter-02 requirements-process meta-threats (MT-021..038). Bug fix 2026-06-15.
-  it("does NOT collapse a base concern onto the ch.02 requirements-process meta-threats", () => {
-    const META = /^MT-0(2[1-9]|3[0-8])$/; // MT-021..038
-    for (const concern of ["encryption", "validation", "auth"]) {
+  // Real bundle, post G-b (2026-08-30): ch.02 enters a concern's scope exactly when an
+  // activated control DEFINES in ch.02 (C1 identity/auth, C2 data_protection, C3 tooling)
+  // — not as a side effect of cataloguing. Concerns whose controls define elsewhere
+  // (logging → monitoring ch.12, iac → infrastructure ch.08) still exclude ch.02.
+  it("brings ch.02 into scope for concerns whose activated controls DEFINE there (auth via C1)", () => {
+    const r = handleGetThreatLandscape({ risk_level: "L2", concerns: ["auth"] });
+    expect(r.meta.activeBundles).toContain("02-requisitos-seguranca");
+    expect(r.threats.some((t) => /^MT-0(2[1-9]|3[0-8])$/.test(t.id ?? ""))).toBe(true);
+  });
+
+  it("still excludes ch.02 for concerns with no ch.02-defining control (logging, iac)", () => {
+    for (const concern of ["logging", "iac"]) {
       const r = handleGetThreatLandscape({ risk_level: "L2", concerns: [concern] });
       expect(r.threats.length, `${concern} should surface domain threats`).toBeGreaterThan(0);
-      expect(
-        r.threats.every((t) => !META.test(t.id ?? "")),
-        `${concern} must not return ch.02 meta-threats`
-      ).toBe(true);
-      expect(r.meta.activeBundles).not.toContain("02-requisitos-seguranca");
+      expect(r.meta.activeBundles, `${concern} must not include ch.02`).not.toContain("02-requisitos-seguranca");
     }
+  });
+
+  it("serves associated_control_ids (structural, declared derivation) + associated_controls_text on the v1.7.0 tier", () => {
+    const knownControls = new Set(getOntologyData().controls.map((c) => c.control_id));
+    const r = handleGetThreatLandscape({ risk_level: "L2" });
+    expect(r.threats.length).toBeGreaterThan(0);
+    for (const t of r.threats) expect(Array.isArray(t.associated_control_ids), t.id).toBe(true);
+    const withIds = r.threats.filter((t) => (t.associated_control_ids ?? []).length > 0);
+    expect(withIds.length).toBe(r.threats.length); // 233/233 in v1.7.0 — all derivable
+    const badIds = withIds.flatMap((t) => t.associated_control_ids ?? []).filter((id) => !knownControls.has(id));
+    expect(badIds).toEqual([]);
   });
 
   it("still surfaces ch.02 meta-threats for the explicit 'requirements' concern", () => {

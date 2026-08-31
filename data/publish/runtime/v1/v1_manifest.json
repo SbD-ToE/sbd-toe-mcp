@@ -1,7 +1,7 @@
 {
   "artifact_type": "v1_runtime_surface_manifest",
   "build": {
-    "generated_at": "2026-08-30T08:43:37.324528+00:00",
+    "generated_at": "2026-08-30T22:18:08.383958+00:00",
     "generator": "sbdtoe_indexing.workflows.build_v1_runtime_surface"
   },
   "drift_note": "Counts sourced from slice contracts (authoritative actual). Declared sum from consolidated index. Drift concentrated in working_contract slices (notably ASC-09 RPR); upstream V1 enumeration incomplete in some slices. Flagged for Archon visibility via Step 8 delivery handover.",
@@ -45,7 +45,7 @@
     },
     "manual_threat_mitigation": {
       "path": "v1/manual_threat_mitigation.jsonl",
-      "sha256": "8be2d06282ba918d52f29bfa763aaa0da51b23a14a1d4f66198649213d37190f"
+      "sha256": "88cbfec43c83b71eb46c3d105d528df4849a81937025b48831126e00e64e4fb4"
     },
     "mechanisms": {
       "path": "v1/mechanisms.json",
@@ -111,9 +111,11 @@
       "cwe_supporting": 3,
       "manual_v2_entity": 282,
       "threat_mitigation": 233,
-      "total": 523
+      "threat_mitigation_total": 233,
+      "total": 523,
+      "with_associated_control_ids": 233
     },
-    "format_note": "Run 2 6-section structure (Manual ontology V2 entities (Threat + AntiPattern + Signal) + Threat surfaces (Manual + CAPEC primary) + AntiPattern exposure mapping + CWE references (supporting only) + V1 overlay mitigation pathway + Future-work register). Mitigation strength labelled per threat row (forte / parcial / dependente_de_outros_capitulos).",
+    "format_note": "Run 2 6-section structure (Manual ontology V2 entities (Threat + AntiPattern + Signal) + Threat surfaces (Manual + CAPEC primary) + AntiPattern exposure mapping + CWE references (supporting only) + V1 overlay mitigation pathway + Future-work register). Mitigation strength labelled per threat row (forte / parcial / dependente_de_outros_capitulos). Since S3 (2026-08-30) each threat_mitigation row also carries `associated_control_ids` (chapter-grained: chapter requirements -> primary control in the curated Requirement->Control layer v3; derivation declared per record) and `associated_controls_text` (prose duplicated; `associated_controls` kept for compatibility).",
     "source_files": "<chapter>/canon/50-ameacas-mitigadas.md × 14 (Cap 00 fundamentos excluded)"
   },
   "methodology_label_distribution": {

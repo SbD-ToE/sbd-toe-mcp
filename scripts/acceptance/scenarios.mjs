@@ -230,13 +230,13 @@ export const scenarios = [
       if (!d.coverage) return fail("no coverage envelope (G1)"); const act = d.data?.activated ?? []; if (act.length === 0) return fail("nothing activated"); if (act.length > 3) return fail("page > limit");
       const u = await c.tool("map_sbd_toe_regulatory_activation", { framework: "PCI" }); const honest = !u.ok || (u.data?.data?.activated?.length ?? 0) === 0;
       return ok(`DORA: ${act.length}/${d.coverage.chapters ?? d.coverage.total} chapters, mappings ${d.coverage.mappings}, obligations ${d.coverage.obligations}; unknown framework → ${honest ? "honest empty/error" : "activated?!"}`); } },
-  { id: "TC-F-08", axis: "F", title: "curated requirement→control layer v3 (KG dev-build v2.2): 281 links, 0 unlinked, curated 15, catalogue rules tolerated", tool: "resolve_entities",
+  { id: "TC-F-08", axis: "F", title: "curated requirement→control layer v3 (KG v1.7.0): 282 links, 0 unlinked, curated 16, catalogue rules tolerated", tool: "resolve_entities",
     run: async (c, ctx) => { const links = await c.tool("resolve_entities", { record_type: "requirement_control_link", limit: 1 }); if (!links.ok) return fail(links.error);
       const gaps = []; for (const L of ["L1", "L2", "L3"]) { const r = await c.tool("consult_security_requirements", { risk_level: L }); gaps.push(r.data?.coverage_gaps?.requirements_without_control_link?.count); }
-      if (links.data.total !== 281) return fail(`links total ${links.data.total} (expected 281 = 118 catalogue-rule + 148 recalculated + 15 curated)`, "graph");
-      if (ctx.links.total !== 281) return fail(`published file carries ${ctx.links.total} links`, "graph");
+      if (links.data.total !== 282) return fail(`links total ${links.data.total} (expected 282 = 118 catalogue-rule + 148 recalculated + 16 curated)`, "graph");
+      if (ctx.links.total !== 282) return fail(`published file carries ${ctx.links.total} links`, "graph");
       if (gaps.some((g) => g !== 0)) return fail(`coverage_gaps ${gaps}`);
-      const cur = ctx.links.curationByCurator; if ((cur["archon-2026-08-29"] ?? 0) !== 12 || (cur["archon-2026-08-30"] ?? 0) !== 3) return fail(`curated on surface ${JSON.stringify(cur)} (expected 12 + 3)`, "graph");
+      const cur = ctx.links.curationByCurator; if ((cur["archon-2026-08-29"] ?? 0) !== 12 || (cur["archon-2026-08-30"] ?? 0) !== 4) return fail(`curated on surface ${JSON.stringify(cur)} (expected 12 + 4, incl. GOV-013 CAP secondary)`, "graph");
       const unknownJust = ctx.links.justifications.filter((j) => !["bundle_grounding", "catalogue_rule", "catalogue_rule_secondary", "chapter_grounding", "curated_semantic_review", "domain_mapping", "lexical_alignment", "requirement_domain_hint", "single_control_bundle", "domain_owner_fallback", "foundational_domain_unique", "preferred_domain_unique", "preferred_domain_strong", "preferred_domain_disambiguated", "baseline_domain_lexical"].includes(j));
       if (unknownJust.length) return part(`justification values outside the known vocabulary (tolerated, flag for the governance doc): ${unknownJust.join(",")}`, "graph");
       const idn = (t) => t.some((x) => /^CTRL-identity-/.test(x)), mon = (t) => t.some((x) => /^CTRL-monitoring-/.test(x));
@@ -245,7 +245,7 @@ export const scenarios = [
       const mon1 = (id) => ctx.links.targetsOf(id).some((x) => /^CTRL-monitoring-/.test(x));
       if (!idn(ctx.links.targetsOf("AUT-006"))) return fail(`AUT-006 → ${ctx.links.targetsOf("AUT-006")}`, "graph");
       if (!mon1("INT-007") || !mon1("LOG-001")) return fail(`INT-007/LOG-001 not → monitoring`, "graph");
-      return ok(`281 links (file+surface), gaps L1/L2/L3 = ${gaps.join("/")}, curated 12+3 on surface, justifications incl. catalogue_rule/_secondary tolerated; AUT-006/007/008 → identity (C1), AUT-010 → monitoring, INT-007 + LOG → monitoring`); } },
+      return ok(`282 links (file+surface), gaps L1/L2/L3 = ${gaps.join("/")}, curated 12+4 on surface, justifications incl. catalogue_rule/_secondary tolerated; AUT-006/007/008 → identity (C1), AUT-010 → monitoring, INT-007 + LOG → monitoring`); } },
   { id: "TC-F-09", axis: "F", title: "data_protection domain present (ontology v2.2): control served with links", tool: "resolve_entities",
     run: async (c, ctx) => { const r = await c.tool("resolve_entities", { record_type: "control", filters: { domain: "data_protection" } }); if (!r.ok) return fail(r.error);
       const ids = (r.data.entities ?? []).map((e) => e.control_id); if (r.data.total < 1) return fail("no control in domain data_protection", "graph");
@@ -267,20 +267,26 @@ export const scenarios = [
       return missing.length ? part(`set-returning tools without offset/limit: ${missing.join(", ")} (declared totals only)`) : ok("all set-returning tools paginate"); } },
 
   // ───────────────────────── Axis E — Regression (promotion gate) ─────────────────────────
-  // Criterion revised by the programme lead 2026-08-30: the structural mitigation link is
-  // `mitigated_by` (derived from the resolved controls, must be populated); the substrate's
-  // `associated_controls` is textual prose (passed through) → PART when present as text,
-  // never a FAIL of the serving layer.
-  { id: "TC-E-01", axis: "E", title: "threat mitigation links populated (L2, logging) — mitigated_by structural; associated_controls textual", tool: "get_threat_landscape",
+  // Criterion (v1.7.0, contract v1.14 §1.21 + G-b decision 8): threats carry BOTH the
+  // serving-derived `mitigated_by` (structural, from the resolved controls) AND the
+  // substrate's `associated_control_ids` (CTRL-* ids, chapter-grained, derivation declared
+  // per record); `associated_controls`/`associated_controls_text` remain the Manual prose.
+  // PASS requires both structural sides populated with ids that resolve in the bundle.
+  { id: "TC-E-01", axis: "E", title: "threat mitigation structural (L2, logging): mitigated_by + associated_control_ids resolve", tool: "get_threat_landscape",
     run: async (c, ctx) => { const r = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["logging"] }); if (!r.ok) return fail(r.error); const th = r.data.threats;
-      const mit = th.filter((t) => (t.mitigated_by ?? []).length).length; const badIds = th.flatMap((t) => t.mitigated_by ?? []).filter((m) => !ctx.knownIds.has(m.control_id)); const assoc = th.filter((t) => (t.associated_controls ?? []).length).length;
-      if (mit !== th.length) return fail(`${mit}/${th.length} threats carry mitigated_by`); if (badIds.length) return fail(`mitigated_by ids not in bundle: ${badIds.slice(0, 3).map((m) => m.control_id)}`, "mixed");
-      return assoc === th.length ? ok(`${mit}/${th.length} mitigated_by (ids resolve); associated_controls on all`) : part(`${mit}/${th.length} threats mitigated_by structural (ids resolve); associated_controls textual/empty on ${th.length - assoc} (substrate prose field)`, "graph"); } },
-  { id: "TC-E-02", axis: "E", title: "threat mitigation coherent (L2, auth) — mitigated_by ids resolve; associated_controls textual", tool: "get_threat_landscape",
+      const mit = th.filter((t) => (t.mitigated_by ?? []).length).length; const badMit = th.flatMap((t) => t.mitigated_by ?? []).filter((m) => !ctx.knownIds.has(m.control_id));
+      const withIds = th.filter((t) => (t.associated_control_ids ?? []).length).length; const badAssoc = th.flatMap((t) => t.associated_control_ids ?? []).filter((id) => !ctx.knownIds.has(id));
+      if (mit !== th.length) return fail(`${mit}/${th.length} threats carry mitigated_by`); if (badMit.length) return fail(`mitigated_by ids not in bundle: ${badMit.slice(0, 3).map((m) => m.control_id)}`, "mixed");
+      if (withIds !== th.length) return part(`associated_control_ids on ${withIds}/${th.length} (declared-empty derivations tolerated)`, "graph"); if (badAssoc.length) return fail(`associated_control_ids not in bundle: ${badAssoc.slice(0, 3)}`, "graph");
+      return ok(`${th.length}/${th.length} threats with mitigated_by AND associated_control_ids, all ids resolve`); } },
+  { id: "TC-E-02", axis: "E", title: "threat mitigation structural (L2, auth incl. ch.02 via C1): mitigated_by + associated_control_ids resolve", tool: "get_threat_landscape",
     run: async (c, ctx) => { const r = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["auth"] }); if (!r.ok) return fail(r.error); const th = r.data.threats;
-      const mit = th.filter((t) => (t.mitigated_by ?? []).length).length; const badIds = th.flatMap((t) => t.mitigated_by ?? []).filter((m) => !ctx.knownIds.has(m.control_id)); const assocText = th.filter((t) => (t.associated_controls ?? []).some((x) => !/^CTRL-/.test(String(x)))).length;
-      if (mit !== th.length) return fail(`${mit}/${th.length} threats carry mitigated_by`); if (badIds.length) return fail(`mitigated_by ids not in bundle: ${badIds.length}`, "mixed");
-      return assocText ? part(`${mit}/${th.length} mitigated_by structural (ids resolve); associated_controls is prose on ${assocText} threats (not control ids — substrate field)`, "graph") : ok(`${mit}/${th.length} mitigated_by; associated_controls empty or ids`); } },
+      if (!(r.data.meta.activeBundles ?? []).includes("02-requisitos-seguranca")) return fail("ch.02 not in auth scope although C1 defines there (G-b decision 2)");
+      const mit = th.filter((t) => (t.mitigated_by ?? []).length).length; const badMit = th.flatMap((t) => t.mitigated_by ?? []).filter((m) => !ctx.knownIds.has(m.control_id));
+      const withIds = th.filter((t) => (t.associated_control_ids ?? []).length).length; const badAssoc = th.flatMap((t) => t.associated_control_ids ?? []).filter((id) => !ctx.knownIds.has(id));
+      if (mit !== th.length) return fail(`${mit}/${th.length} threats carry mitigated_by`); if (badMit.length) return fail(`mitigated_by ids not in bundle: ${badMit.length}`, "mixed");
+      if (withIds !== th.length) return part(`associated_control_ids on ${withIds}/${th.length}`, "graph"); if (badAssoc.length) return fail(`associated_control_ids not in bundle: ${badAssoc.length}`, "graph");
+      return ok(`${th.length} threats (ch.02 in scope via C1's defining chapter) with mitigated_by AND associated_control_ids, all resolve`); } },
   { id: "TC-E-03", axis: "E", title: "review path-map: containers → ch.09", tool: "map_sbd_toe_review_scope",
     run: async (c) => { const f = ["Dockerfile", "docker-compose.yml", "k8s/deploy.yaml", "helm/app/values.yaml"]; const r = await c.tool("map_sbd_toe_review_scope", { riskLevel: "L2", changedFiles: f }); if (!r.ok) return fail(r.error); const miss = f.filter((x) => !has(bundlesOf(r.data, x), "09-containers-imagens")); return miss.length ? fail(`not → 09: ${miss}`) : ok("all 4 → 09 with reason"); } },
   { id: "TC-E-04", axis: "E", title: "review path-map: *.tf/*.bicep → ch.08", tool: "map_sbd_toe_review_scope",

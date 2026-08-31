@@ -166,10 +166,12 @@ describe("qualitative eval smoke", () => {
       concerns: ["auth"]
     });
 
-    // Bug fix 2026-06-15: a domain concern routes by the threat domain, NOT the
-    // requirements catalog's ch.02 — it must NOT collapse onto ch.02's
-    // requirements-process meta-threats.
-    expect(threats.meta.activeBundles).not.toContain("02-requisitos-seguranca");
+    // G-b 2026-08-30: ch.02 is in auth's scope because C1 (identity/auth) DEFINES there;
+    // a concern with no ch.02-defining control (logging) still excludes it (2026-06-15 fix,
+    // narrowed to cataloguing-only controls).
+    expect(threats.meta.activeBundles).toContain("02-requisitos-seguranca");
+    const logging = handleGetThreatLandscape({ risk_level: "L2", concerns: ["logging"] });
+    expect(logging.meta.activeBundles).not.toContain("02-requisitos-seguranca");
     expect(threats.meta.activeBundles.length).toBeGreaterThan(0);
     expect(threats.meta.concernsApplied).toEqual(["auth"]);
     expect(threats.threats.length).toBeGreaterThan(0);

@@ -51,20 +51,20 @@ TODO — confirm with programme lead.
 - v0.10.3 → `06f8bbaa5e4d5f3ac6ddda890a6fbebd78f6be9b` (2026-08-30; formal KG release v1.6.1
   pinned — see CHANGELOG; npm `@shiftleftpt/sbd-toe-mcp@0.10.3` = `latest`, gitHead same commit;
   GitHub Release `v0.10.3`)
+- v0.10.4 *(formal KG release v1.7.0 pinned — see CHANGELOG; annotated tag created on the
+  squash commit of the PR that introduces this row, after its merge to master)*
 
 ## Current working state
 
 **Current branch:** master
 **Most recent published state:** icsme-2026-tool-demonstration / v0.9.0 (2026-05-21)
-**Most recent release:** v0.10.3 (2026-08-30) — served bundle: formal KG release
-`v1.6.1` (commit `e9fc54f312829c632ecd50e2306bfa356e9e457c` = `mcp-stable`; asset sha256
-`df6920cbef5bbd6f2b723708efe0b48ca5017abf8928bc800db0609536ef547b`; consumer contract
-v1.12), Manual v1.7.1 (`8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac`), ontology
-`ontology-v1.1-fair-baseline` (`84fe8bf6f5de1443d778f9b2f0555b722540bbff`). Tag
-`v0.10.3` → `06f8bbaa5e4d5f3ac6ddda890a6fbebd78f6be9b` (squash of PR #51; annotated; created and
-pushed 2026-08-30 by Pontifex under programme-lead authorisation; `release.yml` run
-33282343956 published npm 0.10.3 = latest).
-Prior: v0.10.2 (2026-08-29, `31aa22af`, KG v1.6.0), v0.10.1 (2026-06-25), v0.10.0 (2026-06-17).
+**Most recent release:** v0.10.4 (2026-08-30) — served bundle: formal KG release
+`v1.7.0` (commit `894af32a85d6a50f648f10d8a643848e806e533e` = `mcp-stable`; asset sha256
+`29156b86ef7785966f099f02bb67dd84fcb471d64092944038a3da906c72fb9a`; consumer contract
+v1.14), ontology `sbdtoe-ontology-v2.2` (`2be86e8b`), Manual v1.7.1
+(`8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac`). Tag `v0.10.4` = squash commit of the PR
+introducing this row (recorded here once created). Prior: v0.10.3 (2026-08-30,
+`06f8bbaa`, KG v1.6.1), v0.10.2 (2026-08-29, `31aa22af`, KG v1.6.0).
 **Expected next freeze event:** none scheduled
 
 ## Cross-references
@@ -81,13 +81,15 @@ Programme papers cited by this tool (upstream, see CITATION.cff):
 - P8 = 10.17605/OSF.IO/TXW8P (Coverage-Preserving Compilation v2)
 
 This repository depends on (upstream, pinned in `consumed-bundle.json`, digest-verified):
-- sbd-toe-knowledge-graph — formal release `v1.6.1` @ `e9fc54f312829c632ecd50e2306bfa356e9e457c`
-  (asset sha256 `df6920cbef5bbd6f2b723708efe0b48ca5017abf8928bc800db0609536ef547b`) since v0.10.3;
+- sbd-toe-knowledge-graph — formal release `v1.7.0` @ `894af32a85d6a50f648f10d8a643848e806e533e`
+  (asset sha256 `29156b86ef7785966f099f02bb67dd84fcb471d64092944038a3da906c72fb9a`) since v0.10.4;
+  `v1.6.1` @ `e9fc54f312829c632ecd50e2306bfa356e9e457c`
+  (asset sha256 `df6920cbef5bbd6f2b723708efe0b48ca5017abf8928bc800db0609536ef547b`) for v0.10.3;
   `v1.6.0` @ `aad4e962cd20b105cd0a4840a5dea6f7011dcd5d` (sha256 `baf5913b596fdeb17c77d9c3a1d9394738c4c9319a8bcf0ec03972ba5db1d93b`) for v0.10.2;
   `v1.5.0` (sha256 `feaa0155b64d78fe529d805c6e17430fb3ce9fe1c5b5900eb6e267e2fa077294`) for v0.10.0/v0.10.1
 - SbD-ToE/sbd-toe-manual — `v1.7.1` @ `8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac` (via the KG bundle) since v0.10.3;
   `v1.7.0` @ `d5c2586ae2cd12ab2e31b65febb2e85ed20e1bce` for v0.10.2
-- SbD-ToE/sbd-toe-ontology — `ontology-v1.1-fair-baseline` @ `84fe8bf6f5de1443d778f9b2f0555b722540bbff`
+- SbD-ToE/sbd-toe-ontology — `sbdtoe-ontology-v2.2` @ `2be86e8b` (via the KG bundle, sync tag `corpus-v2-ontology-sync-2be86e8`) since v0.10.4; `ontology-v1.1-fair-baseline` @ `84fe8bf6f5de1443d778f9b2f0555b722540bbff` (AppSec Core anchor)
 - appsec-core-ontology-research (programme papers P1/P6/P7/P8, see CITATION.cff)
 
 ## Violations / anomalies detected
@@ -112,3 +114,4 @@ prohibits tag deletion without explicit authorisation):
 | 2026-08-29 | v0.10.2 tag commit recorded (`31aa22af`, squash of #47); npm publish + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-30 | v0.10.3 registered (protected tag list, current working state, upstream pins: KG v1.6.1, Manual v1.7.1). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-30 | v0.10.3 tag commit recorded (`06f8bbaa`, squash of #51); npm publish + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-30 | v0.10.4 registered (protected tag list, current working state, upstream pins: KG v1.7.0, ontology v2.2, Manual v1.7.1). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |

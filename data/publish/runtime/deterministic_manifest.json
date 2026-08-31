@@ -118,7 +118,7 @@
       "source_artifact": "data/entities/artifact_requirements.json"
     },
     {
-      "count": 281,
+      "count": 282,
       "entity_type": "RequirementControlLink",
       "file": "requirement_control_links.json",
       "name": "requirement_control_links",
