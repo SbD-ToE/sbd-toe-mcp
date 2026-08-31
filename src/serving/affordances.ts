@@ -32,6 +32,14 @@ export function mapApplicabilityAffordances(riskLevel: string | undefined): Affo
   ]);
 }
 
+export function selectRequirementsAffordances(riskLevel: string): Affordance[] {
+  return boundAffordances([
+    { intent: "get the controls/artifacts behind the selected requirements", tool: "consult_security_requirements", with: `risk_level="${riskLevel}", <=3 concerns`, kind: "structural" },
+    { intent: "prepare grounded codegen context for one concrete task", tool: "prepare_sbd_toe_codegen_context", with: "task + risk_level (+ changed_files)", kind: "semantic" },
+    { intent: "check the threats relevant to this scope", tool: "get_threat_landscape", with: `risk_level="${riskLevel}"`, kind: "semantic" }
+  ]);
+}
+
 export function consultAffordances(riskLevel: string, concerns: string[] | undefined): Affordance[] {
   return boundAffordances([
     { intent: "see the threats these requirements mitigate", tool: "get_threat_landscape", with: `risk_level="${riskLevel}", ${concernsHint(concerns)}`, kind: "semantic" },

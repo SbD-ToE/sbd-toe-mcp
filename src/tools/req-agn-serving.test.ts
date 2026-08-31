@@ -6,7 +6,15 @@
  * ids informative (not gaps), EX- illustrative ids rejected, macro-processos page in the
  * guide profile, guide-by-role still answering.
  */
-import { describe, it, expect } from "vitest";
+import { beforeAll, describe, it, expect } from "vitest";
+import { _resetRequirementCitationCacheForTests } from "../serving/requirement-id.js";
+
+// The ported beta prepare tests swap SBD_TOE_APP_ROOT to a scratch dir mid-file;
+// under unlucky worker scheduling the citation index could be built against that
+// root. Rebuild it inside THIS file's environment (order-flake seen 2026-08-31).
+beforeAll(() => {
+  _resetRequirementCitationCacheForTests();
+});
 import { handleResolveEntities } from "./resolve-entities.js";
 import { handleConsultSecurityRequirements } from "./consult-security-requirements.js";
 import { handleQuerySbdToeEntities } from "./structured-tools.js";

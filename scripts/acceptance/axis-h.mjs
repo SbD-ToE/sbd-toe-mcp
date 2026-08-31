@@ -30,7 +30,7 @@
  * domains have no concern in the vocabulary run consult with risk level only — the
  * precision cost is the finding.
  */
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 

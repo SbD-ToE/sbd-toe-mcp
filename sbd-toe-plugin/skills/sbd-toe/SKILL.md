@@ -37,6 +37,13 @@ Pick the entry point that matches the task:
   `ready_for_codegen`, `needs_clarification`, `needs_decomposition`,
   `unsupported_scope`. **It does not generate code** — only after it returns
   `ready_for_codegen` do you write code, staying within the returned context.
+  Call it once per task — it is deterministic, so the payload already in
+  context is the source for the write-test-edit loop: test and fix against the
+  citations you already received, do NOT re-call the tool with the same task.
+  Legitimate re-consultations (refining `concerns`, deepening one requirement)
+  use `detail: "minimal"` or a targeted `consult_security_requirements` —
+  never re-request the full payload. Use `mode: "review"` only if the review
+  runs in a new session.
 - **Produce a reusable skill / playbook** for a chapter or topic →
   `generate_sbd_toe_skill` (emits a grounded, versioned skill — prefer this over
   hand-writing one).

@@ -29,10 +29,15 @@ import { handleAssessImplementation } from "./tools/assess-implementation.js";
 import { handleGetVerificationMatrix } from "./tools/get-verification-matrix.js";
 import { handlePlanRepoGovernance } from "./tools/plan-repo-governance.js";
 import { handleConsultSecurityRequirements } from "./tools/consult-security-requirements.js";
+import { handleSelectRequirements } from "./tools/select-requirements.js";
 import { handleGetThreatLandscape } from "./tools/get-threat-landscape.js";
 import { handleGetGuideByRole } from "./tools/get-guide-by-role.js";
 import { handleResolveEntities } from "./tools/resolve-entities.js";
-import { handlePrepareCodegenContext } from "./tools/prepare-codegen-context.js";
+import {
+  handlePrepareCodegenContext,
+  buildCodegenInstructionsResourceContent,
+  type CodegenMode
+} from "./tools/prepare-codegen-context.js";
 import {
   buildChapterApplicabilityJson,
   buildGroundedCodegenPrompt,
@@ -929,6 +934,38 @@ class McpRuntime {
           annotations: { readOnlyHint: true }
         },
         {
+          name: "select_sbd_toe_requirements",
+          title: "Select SbD-ToE Requirements (MP1)",
+          description:
+            "The MP1 selection operation (Classificar → Seleccionar): which requirements apply to THIS task in THIS " +
+            "context. Composes the reference semantics the published ontology declares — baseline (cap. 02 base " +
+            "catalogue, by risk level) ∪ domain chapters activated by the context (changed_files, technologies, stack, " +
+            "task) ⊕ regulatory overlay (extend) — then narrows deterministically by the task's declared signals. " +
+            "Returns BOTH bands: selected[] (each with its selection_trace: source/trigger/score) and narrowed_out[] " +
+            "(eligible-without-signal, grouped by category, with reason) — never silent. Paginated. " +
+            "All data from the published deterministic runtime bundle — nothing is invented.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              risk_level: { type: "string", enum: ["L1", "L2", "L3"], description: "Application risk level (drives the baseline)." },
+              task: { type: "string", description: "The task being performed — drives the narrowing signals (verbs/objects, PT/EN)." },
+              stack: { type: "string", description: "Tech stack hint (e.g. 'Node.js/Express', 'Terraform')." },
+              exposure: { type: "string", enum: ["local", "internal", "authenticated", "public"], description: "Declared activator: authenticated/public activate auth+logging (+api/validation/architecture for public)." },
+              data_sensitivity: { type: "string", enum: ["low", "personal", "regulated", "secrets"], description: "Declared activator: personal/regulated activate encryption+validation+logging." },
+              concerns: { type: "array", items: { type: "string" }, description: "Explicit concerns (full WP5 lexicon incl. agents)." },
+              changed_files: { type: "array", items: { type: "string" }, description: "Changed paths — activate domain chapters via the review-scope path map." },
+              technologies: { type: "array", items: { type: "string" }, description: "Technology hints (containers, kubernetes, iac, ci-cd, sca-sbom, sast, dast, monitoring) — activate domain chapters." },
+              regulatory_frameworks: { type: "array", items: { type: "string" }, description: "Overlay frameworks to EXTEND with (e.g. 'EXT-AI-ACT')." },
+              include_regulatory_overlay: { type: "boolean", description: "When true, resolves overlay obligations (operator extend; replace awaits ADR 0014)." },
+              offset: { type: "integer", minimum: 0, description: "Pagination offset over selected[]." },
+              limit: { type: "integer", minimum: 1, description: "Page size over selected[] (default 100)." }
+            },
+            required: ["risk_level"],
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
           name: "consult_security_requirements",
           title: "Consult SbD-ToE Security Requirements",
           description:
@@ -961,7 +998,12 @@ class McpRuntime {
               data_sensitivity: {
                 type: "string",
                 enum: ["low", "personal", "regulated", "secrets"],
-                description: "Data sensitivity level (informational — not yet used in filtering)."
+                description: "Data sensitivity level (informational here — used as a declared activator by select_sbd_toe_requirements/prepare)."
+              },
+              mode: {
+                type: "string",
+                enum: ["full", "index"],
+                description: "Optional. 'index' (additive opt-in) returns a per-category requirement index (ids + counts) instead of the full bodies — same filters and totals; default 'full' is byte-unchanged."
               }
             },
             required: ["risk_level"],
@@ -1197,6 +1239,33 @@ class McpRuntime {
                 type: "boolean",
                 description:
                   "When true (and overlay is published), enriches the response with regulatory_overlay context."
+              },
+              detail: {
+                type: "string",
+                enum: ["ultrathin", "minimal", "standard", "full"],
+                description:
+                  "Response encoding level (v2 token diet, ported from the 0.20 beta line). 'full' (default) returns " +
+                  "the classic payload, byte-identical to previous releases. 'standard'/'minimal' return the SAME " +
+                  "citable ID set with a deduplicated encoding: inverted `citations` replaces `citation_map`, " +
+                  "`manual_grounding` is grouped, derivable fields are elided per the `provenance_legend`/resource " +
+                  "legend, and `g2_context.relations` is replaced by `g2_context.relations_ref` (set " +
+                  "include_relations=true to keep relations inline). Additionally: evidence_patterns are capped " +
+                  "(deterministic prefix; counts + rest-reference in completeness_report), llm_codegen_instructions + " +
+                  "security_rationale_template move to the MCP resource sbd://toe/codegen-instructions/{mode}, " +
+                  "activation_trace is included only with debug=true (activation_trace_ref keeps the count), and " +
+                  "requirements + direct controls carry the verbatim published `description`. Nothing is silently " +
+                  "dropped. 'minimal' keeps the SAME complete activated scope and trims only traceability " +
+                  "serialization (evidence cap 5, minimal manual_grounding). 'ultrathin' additionally drops the " +
+                  "published descriptions (executable activated_scope.descriptions_ref) and inlines 0 evidence " +
+                  "patterns (counts + rest-ref)."
+              },
+              include_relations: {
+                type: "boolean",
+                description:
+                  "When true at detail='standard'/'minimal', keeps g2_context.relations inline (dieted) instead of " +
+                  "the relations_ref reference. Default false. Ignored at detail='full'. NOTE (stable line): the " +
+                  "trace_sbd_toe_graph tool that executes relations_ref lenses ships on the 0.20 beta line — on this " +
+                  "line use include_relations=true to keep the edges inline."
               },
               debug: {
                 type: "boolean",
@@ -1459,6 +1528,17 @@ class McpRuntime {
           mimeType: "text/markdown"
         },
         {
+          uri: "sbd://toe/codegen-instructions/{mode}",
+          name: "SbD-ToE Codegen Instructions (per mode)",
+          description:
+            "Static per-mode boilerplate of prepare_sbd_toe_codegen_context (mode: codegen, review or " +
+            "test-plan): llm_codegen_instructions slots + security_rationale_template skeleton — " +
+            "byte-identical to the detail=full inline content when assembled per the embedded rules — " +
+            "plus the detail_encoding legend for detail=standard/minimal payloads (v2 token diet). " +
+            "Referenced by codegen_instructions_ref in dieted payloads.",
+          mimeType: "application/json"
+        },
+        {
           uri: "sbd://toe/version",
           name: "SbD-ToE MCP Version",
           description: "Version of the running SbD-ToE MCP server (name, version, description) plus the provenance of the served knowledge: manual {version, commit}, kg {release_tag, substrate_version, consumer_contract_version} and ontology {tag, commit}, read from the consumed-bundle pin.",
@@ -1498,6 +1578,28 @@ class McpRuntime {
       const data = buildChapterApplicabilityJson(riskLevel);
       this.sendResponse(request.id, {
         contents: [{ uri, mimeType: "application/json", text: JSON.stringify(data, null, 2) }]
+      });
+      return;
+    }
+
+    const codegenInstructionsMatch = /^\/\/toe\/codegen-instructions\/([^/]+)$/.exec(
+      uri.startsWith("sbd:") ? uri.slice(4) : ""
+    );
+    if (codegenInstructionsMatch !== null) {
+      const mode = codegenInstructionsMatch[1] ?? "";
+      if (!["codegen", "review", "test-plan"].includes(mode)) {
+        this.sendError(
+          request.id,
+          -32602,
+          `Invalid codegen-instructions mode: "${mode}". Allowed values: codegen, review, test-plan.`
+        );
+        return;
+      }
+      const content = buildCodegenInstructionsResourceContent(mode as CodegenMode);
+      this.sendResponse(request.id, {
+        contents: [
+          { uri, mimeType: "application/json", text: JSON.stringify(content, null, 2) }
+        ]
       });
       return;
     }
@@ -2026,6 +2128,20 @@ class McpRuntime {
         }
         case "map_sbd_toe_applicability": {
           const result = handleMapSbdToeApplicability(args);
+          this.sendResponse(request.id, {
+            content: [{ type: "text", text: JSON.stringify(result) }]
+          });
+          await this.log("info", {
+            event_type: "tool.call",
+            outcome: "succeeded",
+            duration_ms: Date.now() - startedAt,
+            ...metadata,
+            message: "Tool invocation completed"
+          });
+          return;
+        }
+        case "select_sbd_toe_requirements": {
+          const result = handleSelectRequirements(args);
           this.sendResponse(request.id, {
             content: [{ type: "text", text: JSON.stringify(result) }]
           });

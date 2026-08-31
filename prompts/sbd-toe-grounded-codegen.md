@@ -57,6 +57,16 @@ Do NOT fabricate IDs, slices, or obligations to keep working.
 
 ---
 
+## Context reuse — one call per task, then loop on it
+
+The tool is deterministic: an identical call returns an identical payload. Re-calling it with the same task only re-buys context you already hold.
+
+- The payload already in context is the source for the whole write-test-edit loop: test and fix against the citations and requirements you already received — do NOT re-call the tool with the same task.
+- Legitimate re-consultations (refining `concerns`, deepening one requirement) use `detail: "minimal"` or a targeted `consult_security_requirements` call — never re-request the full payload.
+- Use `mode: "review"` for the review step only if it runs in a new session; in the same session, review against the context already received.
+
+---
+
 ## Output discipline — what to ALWAYS do
 
 - Treat `citation_map` as the closed world of valid identifiers for this task.
