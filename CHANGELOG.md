@@ -9,6 +9,29 @@ review_status: pending-human-review
 
 # Changelog
 
+## 0.20.0-beta.8 — 2026-09-01
+
+Absorbs the stable serving batch **0.13.0** (squash `8a3a9a90` = tag v0.13.0 = npm
+`latest`; cherry-pick `079bb35`, pattern of #61→dfd4250 — beta keeps its own diet and
+heuristics; the only conflict was the resources/list body, resolved to the new shared
+`RESOURCE_CATALOG` after verifying the URI sets are identical). Bundle pin UNCHANGED
+(release KG v1.9.0, sha `11153c85…`). Release commit `4681fd20`, tag `v0.20.0-beta.8`,
+npm dist-tag `beta`. *(This entry landed in the closing chore — the release-day edit
+script aborted on the changelog frontmatter before writing it; declared, not hidden.)*
+
+- `read_sbd_toe_resource(uri)` — resources/read mirror, shared `materializeResource`,
+  URIs derived from the single catalog, never-silent unknown-URI error (TC-F-16).
+- `provenance.kg` stamp on every response. Measured on THIS line: std f2 9.105 ≤ 9.200,
+  min f2 8.379 ≤ 8.450, ultrathin 4.833 ≤ 4.840 — no beta ceiling touched; snapshots
+  regenerated (+1 line each).
+- inspect: "Pin servido (consumed-bundle.json)" + declared checkout fallbacks;
+  v2-draft fossil untouched (TC-F-17).
+- prose-number sweep re-run on the beta base: ZERO beta-own occurrences;
+  `release_ref`/sync-bundle owner already SbD-ToE here; teaching Step 0 absorbed.
+- Verification: **727/727**; eval `2026-09-01-beta8`: 121 scenarios, 80/18/0 FAIL/23 —
+  gate E PASS; golden **10/10**; tools 24 exposed / 23 exercised (known Axis-G tail:
+  `trace_sbd_toe_graph` without a scenario — reported, out of scope).
+
 ## 0.20.0-beta.7 — 2026-08-31
 
 **Prerelease (beta line), formal batch.** Published to the npm `beta` dist-tag under the
