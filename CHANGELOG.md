@@ -3,11 +3,71 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-30
 purpose: documentation
-reasoning: v0.12.0 — formal lote: KG v1.9.0 pinned (FIL/PRI/INT-009..012 served, contract v1.15), selection v1.8.0-aware, ceilings ratified+harmonized (9.200/8.450), npm latest; v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; named rules R1 principal-não-humano + R2 narrowing SES; D1 gate um-sinal-uma-superfície; D3 activators; D4; consult mode index; v2 token diet ported with stable-measured ceilings; R3 teaching layer: guide/skills/affordances ensinam select + duas bandas); Axis H 1/3/6 → 10/10; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
+reasoning: v0.13.0 — serving batch: read_sbd_toe_resource (espelho de resources/read, catálogo derivado), stamp provenance.kg por resposta (tectos intactos), inspect com Pin servido (causa do n/d confirmada e corrigida), varrimento de contagens em prosa, release_ref normalizado, ensino Step 0 identidade; v0.12.0 — formal lote: KG v1.9.0 pinned (FIL/PRI/INT-009..012 served, contract v1.15), selection v1.8.0-aware, ceilings ratified+harmonized (9.200/8.450), npm latest; v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; named rules R1 principal-não-humano + R2 narrowing SES; D1 gate um-sinal-uma-superfície; D3 activators; D4; consult mode index; v2 token diet ported with stable-measured ceilings; R3 teaching layer: guide/skills/affordances ensinam select + duas bandas); Axis H 1/3/6 → 10/10; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.13.0 — 2026-09-01
+
+**Minor** — serving batch: canalização + 1 capacidade. Bundle UNCHANGED: pin release
+**KG v1.9.0** (sha256 `11153c85…`) intacto. Authorised by the programme lead
+(2026-08-31/09-01, «sim confirmo»), incl. the new-tool-on-stable gate.
+
+### Added — `read_sbd_toe_resource(uri)` (mirror of resources/read)
+
+- For clients WITHOUT MCP resource support (real case: Claude Desktop): returns any
+  server resource by URI, templated ones included (value in the URI, e.g.
+  `sbd://toe/codegen-instructions/codegen`) — the `codegen_instructions_ref` of dieted
+  prepare payloads becomes resolvable on ANY client, and `sbd://toe/version` readable
+  as a tool. One shared materializer (`materializeResource`) now backs BOTH
+  resources/read and the tool — no drift; the valid URI set DERIVES from the single
+  `RESOURCE_CATALOG` (also the source of resources/list). Unknown URI ⇒ declared
+  error listing the valid URIs (never-silent). Scenarios TC-F-16 in the same change
+  (§4.4), mirrored to the governance doc.
+
+### Added — per-response version stamp `provenance.kg`
+
+- Every response provenance object carries the compact stamp `kg: <release_tag>` of
+  the served pin (`v1.9.0`), via a cached `servedKgReleaseTag()` — 13 tools + the
+  protocol envelope + prepare. Measured against the payload budgets: fixture totals
+  +3–4 tokens (std f2 9.105 ≤ 9.200, min f2 8.379 ≤ 8.450, ultrathin f2 4.833 ≤
+  4.840) — **no ceiling touched, no re-baseline needed**. Golden snapshots
+  regenerated (diff = +1 provenance line each). Scenario TC-F-17.
+
+### Changed — `inspect_sbd_toe_retrieval` presents the pin provenance
+
+- New "Pin servido (consumed-bundle.json)" line: kg release_tag/source/sha256/
+  contract + manual tag/commit + ontology tag. Root cause of the production
+  `run_id/commit_sha=n/d` CONFIRMED with a correction to the hypothesis: the
+  gateway reads the upstream CHECKOUT's run_manifest (dev-only, absent in
+  production) — `data/reports/run_manifest.json` does ship in the tarball but that
+  code path never read it. The checkout fields now fall back DECLARED ("ausente —
+  identidade de produção no Pin servido"), never a bare "n/d". The
+  "Substrate version: v2-draft" fossil is intentionally untouched (KG manifest
+  lane).
+
+### Changed — number sweep in served prose + cosmetics + teaching
+
+- Data-governed counts no longer live in code prose: verification-matrix description
+  "the 223 published patterns" (real: 273) → "the published patterns — totals
+  declared per response"; ontology resource description drops "8 inference rules /
+  4 resolution pipelines"; server instructions "15 chapters (00–14)" → "Chapters
+  00–14" (range = identity, not a count).
+- `consumed-bundle.json` `release_ref` owner normalized `Shiftleftpt` → `SbD-ToE`
+  (cosmetic; sha unchanged) — AND the generator default in `scripts/sync-bundle.mjs`
+  fixed so the typo cannot regress on the next pin.
+- Teaching: server instructions + agent-guide "Session setup" gain **Step 0 —
+  identify the server** (read `sbd://toe/version`, or the new tool on clients
+  without resources); guide Resources table lists `sbd://toe/version`; routing rows
+  for "what version is this?" and "client cannot read resources".
+
+### Verification
+
+- 689/689 tests; `eval:acceptance` (record `2026-09-01-*`): **121 scenarios, 98
+  executed, 80 PASS · 18 PART · 0 FAIL · 23 SKIP — gate E PASS**; golden cases
+  **10/10** (no divergence — would have been a STOP); **23/23 tools** exercised.
 
 ## 0.12.0 — 2026-08-31
 

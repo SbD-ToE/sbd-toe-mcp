@@ -29,6 +29,15 @@ because the retrieved context is in Portuguese.
 
 ## Session setup
 
+**Step 0 — identify the server.** Read resource `sbd://toe/version` (via `resources/read`),
+or — on clients without resource support — call `read_sbd_toe_resource(uri="sbd://toe/version")`.
+It returns the server name/version plus the served knowledge identity from the verified pin:
+`manual {tag, commit}`, `kg {release_tag, sha256, source, consumer_contract_version}`,
+`ontology {tag, commit}`. Every tool response also carries the compact stamp
+`provenance.kg` (the served kg release_tag). The same tool mirrors ANY resource of the
+list below — including the templated ones (e.g. `sbd://toe/codegen-instructions/codegen`,
+the target of `codegen_instructions_ref` in dieted payloads).
+
 After reading this guide, run:
 
 ```
@@ -285,6 +294,8 @@ Always distinguish between:
 | "Governance plan for this repo" | `plan_sbd_toe_repo_governance` → generate plan from returned artefact list |
 | "What to review given these changed files?" | `map_sbd_toe_review_scope` |
 | "Set up SbD-ToE for this client / create a skill" | `generate_sbd_toe_skill` |
+| "What server / manual / KG version is this?" | resource `sbd://toe/version`, or `read_sbd_toe_resource(uri="sbd://toe/version")` on clients without resources |
+| "Client cannot read MCP resources" | `read_sbd_toe_resource(uri)` — verbatim mirror of any resource, templated URIs included |
 
 ---
 
@@ -296,6 +307,7 @@ Always distinguish between:
 | `sbd://toe/index-compact` | Full chapter map as JSON — fast structured lookup |
 | `sbd://toe/chapter-applicability/{riskLevel}` | Active/excluded chapters for a risk level |
 | `sbd://toe/ontology` | Full ontology YAML — domain_mapping, concerns, inference rules |
+| `sbd://toe/version` | Server identity + served knowledge provenance (manual/kg/ontology, from the pin) — read at session start |
 
 ---
 

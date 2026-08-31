@@ -15,6 +15,7 @@
  * Contract: agentic/em-curso/2026-06-14-pontifex-implementation-view-tool-contracts-v0.1.md
  */
 
+import { servedKgReleaseTag } from "../version-info.js";
 import { readFileSync } from "node:fs";
 import { resolveAppPath } from "../config.js";
 import { resolveChapterBundle } from "../serving/chunk-index.js";
@@ -203,6 +204,7 @@ export function handleAssessImplementation(args: Record<string, unknown>): Proto
     },
     coverage: page.coverage,
     provenance: {
+      kg: servedKgReleaseTag(),
       content_type: "derived",
       produced_by: "implementation_assessment_self_report",
       source_data:

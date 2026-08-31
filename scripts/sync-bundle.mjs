@@ -11,7 +11,7 @@
  *   --from-release <tag>     FORMAL release: fetch the bundle + .sha256 assets from the
  *                            KG GitHub Release via `gh` (immutable, verifiable); pins
  *                            source=release + the release ref. --repo defaults to
- *                            Shiftleftpt/sbd-toe-knowledge-graph.
+ *                            SbD-ToE/sbd-toe-knowledge-graph.
  * The digest-verify contract is identical for both.
  *
  * Usage:
@@ -50,7 +50,7 @@ let releaseRef;
 let downloadDir;
 const fromRelease = opt("--from-release");
 if (fromRelease) {
-  const repo = opt("--repo") ?? "Shiftleftpt/sbd-toe-knowledge-graph";
+  const repo = opt("--repo") ?? "SbD-ToE/sbd-toe-knowledge-graph";
   source = "release";
   tag = tag ?? fromRelease;
   releaseRef = `${repo}@${fromRelease}`;

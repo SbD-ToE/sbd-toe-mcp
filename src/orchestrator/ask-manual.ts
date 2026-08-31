@@ -1,3 +1,4 @@
+import { loadBundleProvenance } from "../version-info.js";
 import { getConfig } from "../config.js";
 import { retrievePublishedContext } from "../backend/semantic-index-gateway.js";
 import { buildAnswerPrompt } from "../prompt/build-answer-prompt.js";
@@ -117,6 +118,7 @@ function formatDebugAppendix(
   samplingModel?: string,
   shaping?: DebugShaping
 ): string {
+  const pin = loadBundleProvenance();
   const chapters =
     retrieval.promptChapters.length > 0 ? retrieval.promptChapters.join(", ") : "n/d";
 
@@ -124,7 +126,10 @@ function formatDebugAppendix(
     "## Debug",
     `- Query: ${query}`,
     `- Artefactos consultados: ${retrieval.consultedIndices.join(", ") || "n/d"}`,
-    `- Snapshot upstream: run_id=${retrieval.backendSnapshot.runId ?? "n/d"} commit_sha=${retrieval.backendSnapshot.commitSha ?? "n/d"}`,
+    // 0.13.0: production identity comes from the verified consumed-bundle pin — the
+    // upstream checkout (dev-only) may be absent; its fields fall back DECLARED, never "n/d".
+    `- Pin servido (consumed-bundle.json): kg=${pin?.kg.release_tag ?? "?"} (${pin?.kg.source ?? "?"}, sha256 ${pin?.kg.sha256 ? pin.kg.sha256.slice(0, 12) + "…" : "?"}, contrato ${pin?.kg.consumer_contract_version ?? "?"}) · manual=${pin?.manual.tag ?? "?"} (${pin?.manual.commit ? pin.manual.commit.slice(0, 8) : "?"}) · ontologia=${pin?.ontology.tag ?? "?"}`,
+    `- Snapshot upstream (checkout dev): run_id=${retrieval.backendSnapshot.runId ?? "ausente — identidade de produção no Pin servido acima"} commit_sha=${retrieval.backendSnapshot.commitSha ?? (pin?.manual.commit ? "ver pin: " + pin.manual.commit.slice(0, 8) : "ausente")}`,
     `- Clone upstream: ${retrieval.backendSnapshot.upstreamRepoPath ?? "n/d"}`,
     `- Publication manifest: ${retrieval.backendSnapshot.publicationManifestFile ?? "n/d"}`,
     `- Deterministic manifest: ${retrieval.backendSnapshot.deterministicManifestFile ?? "n/d"}`,

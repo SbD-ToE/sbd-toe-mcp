@@ -10,6 +10,7 @@
  * Contract: agentic/em-curso/2026-06-14-pontifex-implementation-view-tool-contracts-v0.1.md
  */
 
+import { servedKgReleaseTag } from "../version-info.js";
 import { readFileSync } from "node:fs";
 import { resolveAppPath } from "../config.js";
 import { resolveChapterBundle } from "../serving/chunk-index.js";
@@ -104,6 +105,7 @@ export function handlePlanRollout(args: Record<string, unknown>): ProtocolEnvelo
       model: "phase-ordered-mvp"
     },
     provenance: {
+      kg: servedKgReleaseTag(),
       content_type: "derived",
       produced_by: "rollout_planner_mvp",
       source_data: "data/publish/runtime/phases.json (phase-order I-2) + chapter mapping",
