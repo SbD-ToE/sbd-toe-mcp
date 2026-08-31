@@ -54,14 +54,18 @@ TODO — confirm with programme lead.
 - v0.10.4 → `2937236d7521d72be140dbc4d9111dae211eb14b` (2026-08-30; formal KG release v1.7.0
   pinned — see CHANGELOG; npm `@shiftleftpt/sbd-toe-mcp@0.10.4` = `latest`, gitHead same commit;
   GitHub Release `v0.10.4`)
-- v0.11.0 *(SUPERSEDED 2026-08-31 by v0.12.0 before tagging — the tag was never created;
-  the 0.11.0 changelog entry ships inside 0.12.0)*
+- v0.11.0 → `102b8166608717aea8baea2534c05a907175ae7c` (2026-08-31 14:56Z; MP1 cycle —
+  tag DOES exist and npm 0.11.0 was published with that gitHead, same minute as
+  0.20.0-beta.6: the G-mp1a two-line gate was fulfilled. CORRECTION 2026-09-01: earlier
+  rows/notes claiming "superseded — tag never created" were written on stale knowledge
+  during the 0.12.0 lote and are amended by this entry; history append-only.)*
 - v0.12.0 → `b475900e87a3035d36a16201dd80d5e5b36c396d` (2026-08-31; formal lote — KG
   v1.9.0 pinned, sha256 `11153c85…`, contract v1.15; npm `@shiftleftpt/sbd-toe-mcp@0.12.0`
   = published, gitHead same commit; GitHub Release `v0.12.0`)
-- v0.13.0 *(serving batch — read_sbd_toe_resource + provenance.kg stamp + inspect pin
-  provenance; bundle pin UNCHANGED (KG v1.9.0); annotated tag on the squash commit of
-  the PR that introduces this row, after its merge; npm `latest` via release.yml)*
+- v0.13.0 → `8a3a9a90fac66ddcfa2395296d0c763eaa6bc105` (2026-09-01; serving batch —
+  read_sbd_toe_resource + provenance.kg stamp + inspect pin provenance; bundle pin
+  unchanged KG v1.9.0; npm `@shiftleftpt/sbd-toe-mcp@0.13.0` = `latest`, gitHead same
+  commit; GitHub Release `v0.13.0`)*
 
 ## Current working state
 
@@ -131,3 +135,5 @@ prohibits tag deletion without explicit authorisation):
 | 2026-08-31 | Dev-build `kg-v1-manual-v1.8.0-aligned-2026-08-31` pinned on the serving line (sha256 `ad0fc96c…`, contract v1.15, 273 req/29 cat — FIL/PRI). No frozen state touched; formal KG v1.9.0 em lote. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-31 | Re-pin `source: release` KG v1.9.0 (sha256 `11153c85…` verified; zero-delta over the dev-build; mcp-stable = `93fe9fb1`). v0.12.0 registered (protected-tag list); v0.11.0 marked superseded (tag never created). Ceilings ratified+harmonized 9.200/8.450 ("3 sims"). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-01 | v0.12.0 tag commit recorded (`b475900e`, squash of #62); npm publish (`latest`) + GitHub Release confirmed. v0.13.0 registered (protected-tag list; serving batch, bundle pin unchanged). `release_ref` owner normalized SbD-ToE (cosmetic). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-01 | CORRECTION (lead-approved): v0.11.0 WAS tagged (`102b8166`) and published to npm on 2026-08-31 14:56Z alongside 0.20.0-beta.6 — the G-mp1a gate was fulfilled; the "superseded/never tagged" notes from the 0.12.0 lote were stale. Protected-tag entry amended. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-01 | v0.13.0 tag commit recorded (`8a3a9a90`, squash of #63); npm publish (`latest`) + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |

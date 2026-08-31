@@ -72,9 +72,10 @@ review_status: pending-human-review
 ## 0.12.0 — 2026-08-31
 
 **Minor** — the served catalogue gains **FIL/PRI/INT-009..012** and the selection
-engine is v1.8.0-aware. First release published to npm since 0.10.4: it ships the
-whole MP1 cycle (the 0.11.0 entry below — its planned `v0.11.0` tag is SUPERSEDED by
-this release and will not be created) plus the v1.8.0 wave and the formal pin.
+engine is v1.8.0-aware. Ships the v1.8.0 wave and the formal pin on top of the MP1 cycle (0.11.0 below).
+*(Correction 2026-09-01: this intro previously claimed the v0.11.0 tag "will not be
+created" — in fact v0.11.0 WAS tagged and published on 2026-08-31, fulfilling the
+G-mp1a two-line gate; see FREEZE-REGISTRY.)*
 
 ### Changed — formal KG pin (lote v1.9.0; lead's "3 sims" 2026-08-31)
 
@@ -138,7 +139,7 @@ categories** (+17: FIL 8, PRI 5, INT 4), 305 links, EP 273/273.
   0 FAIL · 23 SKIP — gate E PASS**; Axis H **10/0/0**; 22/22 tools; TC-F-14/15 added
   (capability ⇒ scenario).
 
-## 0.11.0 — 2026-08-31 (never tagged — superseded by 0.12.0, which ships all of it)
+## 0.11.0 — 2026-08-31 (published: tag v0.11.0 = `102b8166`, npm 0.11.0 — correction 2026-09-01, the earlier "never tagged" note was stale)
 
 **Minor** — the MP1 selection operation lands in the serving layer (new tool), closing the
 four Axis-H defects (ciclo MP1, P2; gate G-mp1a). Served bundle unchanged: formal KG
