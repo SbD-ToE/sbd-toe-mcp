@@ -19,6 +19,9 @@ const ids = (arr, k) => (arr ?? []).map((x) => x?.[k]).filter(Boolean);
 const has = (arr, v) => (arr ?? []).includes(v);
 const bundlesOf = (review, file) => (review.pathMapping ?? []).filter((m) => (m.matchedFiles ?? []).includes(file)).flatMap((m) => m.bundles ?? []);
 const stable = (v) => JSON.stringify(v);
+import { goldenCases, loadCatalogue, runGoldenCase } from "./axis-h.mjs";
+let _hCatalogue;
+const hCatalogue = () => (_hCatalogue ??= loadCatalogue());
 const ctxLinksTargeting = (ctx, controlId) => ctx ? [...ctx.knownIds].filter((rid) => /^(?:REQ-[A-Z]{3}-|[A-Z]{3}-)\d{3}$/.test(rid)).reduce((n, rid) => n + (ctx.links.targetsOf(rid).includes(controlId) ? 1 : 0), 0) : 0;
 
 export const scenarios = [
@@ -321,4 +324,11 @@ export const scenarios = [
     run: async (c) => { const r = await c.tool("resolve_entities", { record_type: "user_story", filters: { us_id: "US-02", chapter_id: "12-monitorizacao-operacoes" } }); if (!r.ok) return fail(r.error); const u = r.data.entities?.[0]; return u && (u.bdd?.length ?? 0) >= 3 && (u.checklist_items?.length ?? 0) >= 1 ? ok(`bdd ${u.bdd.length} clauses, checklist ${u.checklist_items.length}`) : fail(`bdd ${u?.bdd?.length}, checklist ${u?.checklist_items?.length}`); } },
   { id: "TC-E-17", axis: "E", title: "rich US: US-01 ch.01 foundational bdd + checklist", tool: "resolve_entities",
     run: async (c) => { const r = await c.tool("resolve_entities", { record_type: "user_story", filters: { us_id: "US-01", chapter_id: "01-classificacao-aplicacoes" } }); if (!r.ok) return fail(r.error); const u = r.data.entities?.[0]; return u && (u.bdd?.length ?? 0) >= 3 && (u.checklist_items?.length ?? 0) >= 1 ? ok(`bdd ${u.bdd.length}, checklist ${u.checklist_items.length}`) : fail(`bdd ${u?.bdd?.length}, checklist ${u?.checklist_items?.length}`); } },
+  // ───────────────────────── Axis H — selection vs golden oracle (measurement, NOT gate) ─────────────────────────
+  // Oracle: golden-selection-cases.md v1 (programme lead's, read-only). One scenario per
+  // golden case; semantics in scripts/acceptance/axis-h.mjs. Axis E remains the only gate.
+  ...goldenCases.map((gc, i) => ({
+    id: `TC-H-${String(i + 1).padStart(2, "0")}`, axis: "H", title: `${gc.id} — ${gc.title}`, tool: "prepare_sbd_toe_codegen_context + consult_security_requirements",
+    run: async (c) => { const r = await runGoldenCase(c, gc, hCatalogue()); return { status: r.status, note: r.note, ...(r.status !== "PASS" ? { owner: r.causes.some((x) => x.cause === "manual") ? "manual" : r.causes.some((x) => x.cause === "oracle?") ? "oracle?" : "mcp" } : {}) }; },
+  })),
 ];
