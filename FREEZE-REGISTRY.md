@@ -78,14 +78,15 @@ Prerelease tags issued on `0.20-beta` (annotated; immutable like every pushed ta
 | v0.20.0-beta.4 | d89b30d (`d89b30dfacbc89c023ec53c1b5b882b77a9f86a9`; annotated tag object `6291f50d`) | 2026-08-30 | formal KG `v1.6.1` (`df6920cb…`, contract v1.12, Manual v1.7.1) — same pin and content as stable v0.10.3 | `beta` (superseded) |
 | v0.20.0-beta.5 | 62a1eda (`62a1eda3982147e44369c8a9271ca3697af2680f`; annotated tag object `5165a04a`) | 2026-08-31 | formal KG `v1.7.0` (`29156b86…`, contract v1.14, ontology v2.2, Manual v1.7.1) — same pin and content as stable v0.10.4 | `beta` (superseded) |
 | v0.20.0-beta.6 | 322c38f (`322c38f4dc440aad40bf110b8e20d3d40f623318`; annotated tag object `71098136`) | 2026-08-31 | formal KG `v1.7.0` + MP1 selection operation (= stable 0.11.0 → `102b8166`) | `beta` (superseded) |
-| v0.20.0-beta.7 | *(annotated tag on the commit that introduces this row; recorded in the close commit)* | 2026-08-31 | formal KG `v1.9.0` (`11153c85…`, contract v1.15, 273/29 FIL/PRI — zero-delta over the verified v1.8.0 dev-build) | `beta` (formal batch, «3 sims») |
+| v0.20.0-beta.7 | 4256ee0 (`4256ee0f09386a45e69012ec565375965f49b0de`; annotated tag object `6e75ef23`) | 2026-08-31 | formal KG `v1.9.0` (`11153c85…`, contract v1.15, 273/29 FIL/PRI — zero-delta over the verified v1.8.0 dev-build) | `beta` (formal batch, «3 sims») |
 
 ## Current working state
 
 **Current branch:** `0.20-beta` — this copy of the registry lives on the beta branch; the
 stable-line rows mirror master (`102b816`, 0.11.0 prepared) and are maintained there.
-**Beta line:** v0.20.0-beta.7 (2026-08-31, formal batch «3 sims»; annotated tag on the commit
-introducing this row, recorded in the close commit) serves the **formal KG `v1.9.0`** (sha256
+**Beta line:** v0.20.0-beta.7 → `4256ee0f09386a45e69012ec565375965f49b0de` (2026-08-31, formal batch
+«3 sims»; `release.yml` run 33433883272 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.7` =
+`beta`, gitHead same commit; GitHub pre-release; `latest` = 0.12.0, stable lane) serves the **formal KG `v1.9.0`** (sha256
 `11153c85…`, contract v1.15, FIL/PRI 273/29); fixture-2 payload gates ratified + harmonised
 (9,200/8,450). Prior: v0.20.0-beta.6 → `322c38f4` (KG v1.7.0 + MP1). Not a published/frozen state.
 **Most recent published state:** icsme-2026-tool-demonstration / v0.9.0 (2026-05-21)
@@ -172,3 +173,4 @@ prohibits tag deletion without explicit authorisation):
 | 2026-08-31 | Beta-line copy: MP1 cycle absorbed (beta.6 prepared row; stable rows synced incl. 0.11.0 prepared). No published/frozen-state rows changed; no tag yet. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-31 | v0.20.0-beta.6 tag commit recorded (`322c38f4`; npm `beta` confirmed; stable `v0.11.0` → `102b8166`). Dev-build `kg-v1-manual-v1.8.0-aligned-2026-08-31` pinned on the beta serving line (sha256 `ad0fc96c…`, contract v1.15, FIL/PRI). No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-31 | Formal batch («3 sims»): v0.20.0-beta.7 registered — formal KG `v1.9.0` pinned (`source: release`, sha256 `11153c85…`); fixture-2 gates ratified + harmonised (9,200/8,450), deviations emptied. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-31 | v0.20.0-beta.7 tag commit recorded (`4256ee0f`); npm `beta` publish + GitHub pre-release confirmed (run 33433883272). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
