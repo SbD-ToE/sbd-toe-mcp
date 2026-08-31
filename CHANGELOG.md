@@ -3,7 +3,7 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-30
 purpose: documentation
-reasoning: v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; named rules R1 principal-não-humano + R2 narrowing SES; D1 gate um-sinal-uma-superfície; D3 activators; D4; consult mode index; v2 token diet ported with stable-measured ceilings); Axis H 1/3/6 → 10/10; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
+reasoning: v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; named rules R1 principal-não-humano + R2 narrowing SES; D1 gate um-sinal-uma-superfície; D3 activators; D4; consult mode index; v2 token diet ported with stable-measured ceilings; R3 teaching layer: guide/skills/affordances ensinam select + duas bandas); Axis H 1/3/6 → 10/10; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
 review_status: pending-human-review
 ---
 
@@ -80,6 +80,30 @@ edited and nothing was tuned to it: every change is a declared serving rule.
 - The concern lexicon is now ONE signal among seven — the reference-semantics composition
   is the engine (D4).
 
+### Changed — teaching layer (R3, pre-release requirement, 2026-08-31)
+
+- **`sbd://toe/agent-guide`** now teaches the selection operation: when to use
+  `select_sbd_toe_requirements` vs `consult` vs `prepare` ("choosing between the three
+  requirement surfaces"); the two-band semantics — `selected[]` is the recommendation,
+  `narrowed_out[]` lists what was eligible and why it left, and *if you need something
+  from there, call again with the missing signal*; `mode: "index"`; new rows in the
+  question-type routing table and in "Interpreting tool output". No reference to the
+  old max-50 scope-gate semantics anywhere in the teaching surface (scenario-guarded).
+- **Skills/subagents** (`generate_sbd_toe_skill` + plugin SKILL.md): intent routing
+  gains *"which requirements apply to this task?"* → `select`; the harnessed tool
+  list ships the new tool; the non-harnessed path teaches the operation for connected
+  clients. The historical s4 guard ("no variant mentions the codegen tool") was
+  deliberately retired by R3 — the guard is now positive (variants teach selection).
+- **`next[]` affordances**: `map_sbd_toe_applicability`, `consult_security_requirements`
+  and `list_sbd_toe_chapters` now suggest `select_sbd_toe_requirements`; select already
+  points back to `prepare` (codegen) and `consult` (detail).
+- **TC-F-13** (capability ⇒ scenario): walks the taught path — reads the guide,
+  selects for an API-keys task (SES narrowed with a teachable reason), re-calls with
+  the session signal (SES ×8 recovered), asserts `next[]` suggests prepare+consult and
+  that the old gate semantics is gone from the guide.
+- Lexicon (Manual-anchored growth, per the cycle's anti-overfitting principle — never
+  from an oracle case): PT aliases `sessão`/`sessões` → `session` (ch. 02 category SES).
+
 ### Changed — `consult_security_requirements`
 
 - `mode: "index"` opt-in (G-mp1a decision 3, option c): per-category requirement index
@@ -103,8 +127,9 @@ edited and nothing was tuned to it: every change is a declared serving rule.
 ### Verification
 
 - `npm run check` green; **689/689** tests (engine + select + P3 rule suites; diet
-  suite ported); full `eval:acceptance` (P3 record): 116 scenarios, 93 executed,
-  **75 PASS · 18 PART · 0 FAIL · 23 SKIP — gate E PASS** (no regression); 22/22 tools.
+  suite ported); full `eval:acceptance` (R3 record `2026-08-31-r3-*`): 117 scenarios,
+  94 executed, **76 PASS · 18 PART · 0 FAIL · 23 SKIP — gate E PASS** (no regression);
+  22/22 tools; Axis H re-run unchanged at **10 PASS / 0 / 0**.
 - Stable payload ceilings hold with margin after R2 (measured P3): `standard` f2
   8.446 ≤ 8.900, `minimal` 5.463 ≤ 5.950 and 7.720 ≤ 8.200, `standard` f1 6.109 ≤ 6.500,
   ultrathin 3.684/4.581.

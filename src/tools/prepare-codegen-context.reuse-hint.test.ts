@@ -143,12 +143,15 @@ describe("s4 — templates codegen instruem reutilização de contexto (a)-(c)",
       const result = handleGenerateSbdToeSkill({ ...args, risk_level: "L2" });
       expect(result.content.length).toBeGreaterThan(100);
       expect(result.meta?.canonical_role).toBe("developer");
-      // Achado s4 (documentado): nenhuma variante do generate_sbd_toe_skill
-      // menciona o tool de codegen — as instruções (a)-(c) vivem nos
-      // templates codegen acima. Guard para detetar quando isto mudar:
-      expect(result.content).not.toContain("prepare_sbd_toe_codegen_context");
+      // Achado s4 (histórico): até 0.11.0 nenhuma variante mencionava o tool de
+      // codegen. Mudou DE PROPÓSITO no R3 do ciclo MP1 (2026-08-31): a camada de
+      // ensino (agent-guide embebido) passou a ensinar select vs consult vs
+      // prepare. O guard é agora positivo: as variantes ensinam a operação de
+      // selecção (duas bandas declaradas).
+      expect(result.content).toContain("select_sbd_toe_requirements");
     }
-    expect(generic.content).not.toContain("prepare_sbd_toe_codegen_context");
+    expect(generic.content).toContain("select_sbd_toe_requirements");
+    expect(generic.content).toContain("narrowed_out");
   });
 });
 

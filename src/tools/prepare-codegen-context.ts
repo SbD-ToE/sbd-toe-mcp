@@ -1175,6 +1175,10 @@ const CODEGEN_PT_ALIASES: ReadonlyArray<readonly [string, readonly string[]]> = 
   ["integração", ["integration"]],
   ["fronteira", ["boundary"]],
   ["arquitetura", ["architecture"]],
+  // R3 do ciclo MP1 (2026-08-31, crescimento por semântica do Manual — cap. 02
+  // categoria SES = sessões; nunca por caso do oráculo): sessão/sessões → session.
+  ["sessão", ["session"]],
+  ["sessões", ["session"]],
   ["chave de api", ["api key"]],
   ["chave de cliente", ["api key"]],
   ["chaves de cliente", ["api key"]],

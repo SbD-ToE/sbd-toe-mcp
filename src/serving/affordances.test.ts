@@ -16,7 +16,7 @@ import { handleMapSbdToeReviewScope } from "../tools/map-review-scope.js";
 const REAL_TOOLS = new Set([
   "search_sbd_toe_manual", "answer_sbd_toe_manual", "list_sbd_toe_chapters",
   "query_sbd_toe_entities", "get_sbd_toe_chapter_brief", "map_sbd_toe_applicability",
-  "consult_security_requirements", "get_threat_landscape", "get_guide_by_role",
+  "consult_security_requirements", "select_sbd_toe_requirements", "get_threat_landscape", "get_guide_by_role",
   "resolve_entities", "prepare_sbd_toe_codegen_context", "map_sbd_toe_review_scope",
   "plan_sbd_toe_repo_governance", "generate_sbd_toe_skill", "inspect_sbd_toe_retrieval",
   "map_sbd_toe_regulatory_activation", "get_sbd_toe_chapter_implementation_checklist",

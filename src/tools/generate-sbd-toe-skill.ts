@@ -35,6 +35,7 @@ const CLIENT_LOCAL_TOOLS = "Read, Write, Edit, Grep, Glob, Bash";
 const HARNESSED_MCP_TOOLS = [
   "mcp__sbd-toe__get_guide_by_role",
   "mcp__sbd-toe__consult_security_requirements",
+  "mcp__sbd-toe__select_sbd_toe_requirements",
   "mcp__sbd-toe__get_threat_landscape",
   "mcp__sbd-toe__query_sbd_toe_entities",
   "mcp__sbd-toe__resolve_entities",
@@ -169,10 +170,14 @@ function renderCoverageBlock(
 ): string {
   const pathToRest = harnessed
     ? `For the full Definition-of-Done call \`get_guide_by_role(risk_level="${riskLevel}", role="${canonicalRole}", include_detail=true)\`; ` +
-      `for requirements use \`consult_security_requirements\`; for threats \`get_threat_landscape\`; ` +
+      `for *which requirements apply to a concrete task* use \`select_sbd_toe_requirements\` ` +
+      `(selected[] is the recommendation; narrowed_out[] lists what left and why — re-call with the missing signal to recover it); ` +
+      `for the catalogue at a level use \`consult_security_requirements\` (mode="index" for a compact id map); for threats \`get_threat_landscape\`; ` +
       `for the chapters outside your slice \`list_sbd_toe_chapters\` + \`get_sbd_toe_chapter_brief\`.`
     : `To reach beyond it, re-generate via the SbD-ToE MCP (\`generate_sbd_toe_skill\`) or consult the manual ` +
-      `chapters listed by \`list_sbd_toe_chapters\` on a connected client.`;
+      `chapters listed by \`list_sbd_toe_chapters\` on a connected client — where ` +
+      `\`select_sbd_toe_requirements\` narrows the requirements to a concrete task ` +
+      `(selected[] recommendation + narrowed_out[] with reasons, never silent).`;
   return (
     `## Coverage (declared — nothing hidden)\n` +
     `This is the **${canonicalRole}** slice at **${riskLevel}**: ${coverage.assignments} assignments, ` +

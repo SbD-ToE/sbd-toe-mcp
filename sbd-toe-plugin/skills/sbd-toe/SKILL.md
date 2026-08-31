@@ -44,6 +44,15 @@ Pick the entry point that matches the task:
   use `detail: "minimal"` or a targeted `consult_security_requirements` —
   never re-request the full payload. Use `mode: "review"` only if the review
   runs in a new session.
+- **"Which requirements apply to this task / this change?"** →
+  `select_sbd_toe_requirements` (risk_level + task, optionally changed_files /
+  technologies / exposure / data_sensitivity). `selected[]` is the recommendation
+  for the task — each item carries its `selection_trace`; `narrowed_out[]` lists
+  what was eligible and why it left, grouped with a reason — never silent. If you
+  need something from `narrowed_out`, call again WITH the missing signal (e.g. the
+  SES group returns when the task names the user session/login/token surface).
+  For a compact per-category id map of the whole catalogue at a level use
+  `consult_security_requirements(mode: "index")`.
 - **Produce a reusable skill / playbook** for a chapter or topic →
   `generate_sbd_toe_skill` (emits a grounded, versioned skill — prefer this over
   hand-writing one).

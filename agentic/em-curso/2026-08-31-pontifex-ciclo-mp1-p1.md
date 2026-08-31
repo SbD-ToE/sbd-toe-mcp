@@ -13,3 +13,7 @@
 ## Update — P3 executada (2026-08-31)
 - [x] P3: R1/R2 nomeadas + sinais DST/CFG/LOG + gate um-sinal-uma-superfície → **Eixo H 10/10 PASS** (100% cobertura, 100% precisão-estrita); 689/689; eval 0 FAIL gate E PASS; tectos com folga (8.446/5.463/7.720)
 - [ ] Merge (Orchestrator) → beta.6 absorve P2+P3 → verificação das duas linhas → tag `v0.11.0` + npm
+
+## Update — R3 executada (2026-08-31)
+- [x] R3 camada de ensino: guide (3 superfícies + 2 bandas + recuperação por sinal + mode index), skills/subagents (routing por intenção), next[] (map_applicability/consult/list_chapters → select), TC-F-13 PASS; eval 117 cenários 0 FAIL gate E PASS; Eixo H 10/10 sem regressão
+- [ ] Merge (Orchestrator) → beta.6 absorve P2+P3+R3 → duas linhas verificadas → tag `v0.11.0` + npm

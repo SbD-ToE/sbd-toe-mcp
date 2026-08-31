@@ -346,6 +346,23 @@ export const scenarios = [
       const bid = b.data.selection.selected.map((x) => x.requirement_id); if (!bid.some((id) => id.startsWith("ENC-"))) return fail("data_sensitivity=regulated did not activate ENC");
       if (b.data.overlay.status !== "resolved" || b.data.overlay.obligations.length === 0) return fail(`overlay extend not resolved: ${b.data.overlay.status}`);
       return ok(`agents → AGN ×4 + wave; regulated → ENC in; overlay extend ${b.data.overlay.obligations.length} AI Act obligations`); } },
+  { id: "TC-F-13", axis: "F", title: "camada de ensino (R3): guide → select → aprofundar via narrowed_out/sinal", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      const g = await c.resource("sbd://toe/agent-guide");
+      const raw = typeof g === "string" ? g : (g?.contents?.[0]?.text ?? g?.text ?? JSON.stringify(g));
+      const text = String(raw).replace(/\\"/g, '"');
+      if (!text.includes("select_sbd_toe_requirements")) return fail("guide does not teach select");
+      if (!text.includes("narrowed_out")) return fail("guide does not teach the two bands");
+      if (!text.includes('mode=\"index\"') && !text.includes('mode: \"index\"')) return fail("guide does not teach consult mode index");
+      if (/m[áa]x(imo)?\s*50|max\s*50|50 activated/i.test(text)) return fail("guide still references the old max-50 scope gate");
+      const a = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Expor API de consulta com chaves de cliente e rate limiting" }); if (!a.ok) return fail(a.error);
+      const ses = (a.data.selection.narrowed_out ?? []).find((x) => x.category === "SES");
+      if (!ses || !ses.reason) return fail("narrowed_out has no teachable SES group/reason");
+      const next = a.data.next ?? []; if (!next.some((n) => n.tool === "prepare_sbd_toe_codegen_context") || !next.some((n) => n.tool === "consult_security_requirements")) return fail("select.next does not suggest prepare+consult");
+      const b = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Expor API de consulta com chaves de cliente, rate limiting e sessões de utilizador autenticado" }); if (!b.ok) return fail(b.error);
+      const bids = b.data.selection.selected.map((x) => x.requirement_id);
+      if (!bids.some((id) => id.startsWith("SES-"))) return fail("re-call with the missing session signal did not recover SES");
+      return ok(`guide teaches select+bands+index; SES narrowed with reason → recovered by adding the session signal (${bids.filter((i) => i.startsWith("SES-")).length} SES back); next[] → prepare+consult`); } },
 
   // ───────────────────────── Axis H — selection vs golden oracle (measurement, NOT gate) ─────────────────────────
   // Oracle: golden-selection-cases.md v1 (programme lead's, read-only). One scenario per
