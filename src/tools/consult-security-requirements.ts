@@ -114,6 +114,12 @@ export interface McpProvenance {
   note: string;
 }
 
+export interface ConsultRequirementsIndexEntry {
+  category: string;
+  count: number;
+  requirement_ids: string[];
+}
+
 export interface ConsultSecurityRequirementsOutput {
   provenance: McpProvenance;
   risk_level: string;
@@ -124,6 +130,8 @@ export interface ConsultSecurityRequirementsOutput {
   artifacts: ArtifactSlim[];
   rule_trace: string[];
   coverage_gaps: ConsultCoverageGaps;
+  /** mode: "index" (opt-in, additive): per-category index replacing the full requirement bodies. */
+  index?: ConsultRequirementsIndexEntry[];
   meta: {
     requirementCount: number;
     controlCount: number;
@@ -424,6 +432,44 @@ export function handleConsultSecurityRequirements(
   args: Record<string, unknown>
 ): ConsultSecurityRequirementsOutput {
   const full = _resolveConsultResult(args, getOntologyData());
+  // mode: "index" (G-mp1a decision 3, option (c)) — additive opt-in: same filters,
+  // same totals, but requirements come back as a per-category index (ids + counts)
+  // instead of the full bodies. Default behaviour is byte-unchanged (retro-compat);
+  // index-by-default stays flagged for a future major.
+  const modeArg = args["mode"];
+  const indexMode = modeArg === "index";
+  if (modeArg !== undefined && modeArg !== "index" && modeArg !== "full") {
+    throw Object.assign(new Error(`Invalid mode: "${String(modeArg)}". Allowed: full, index.`), {
+      rpcError: { code: -32602, message: `Invalid mode: "${String(modeArg)}"` }
+    });
+  }
+  if (indexMode) {
+    const byCategory = new Map<string, string[]>();
+    for (const r of full.requirements) {
+      const list = byCategory.get(r.category) ?? [];
+      list.push(r.requirement_id);
+      byCategory.set(r.category, list);
+    }
+    return {
+      provenance: {
+        content_type: "derived",
+        produced_by: "deterministic_runtime_resolution",
+        source_data: "runtime/requirements.json (index projection)",
+        note: "mode=index: per-category requirement index (ids + counts) — same filters and totals as the full mode; fetch bodies with mode omitted or resolve_entities."
+      },
+      risk_level: full.risk_level,
+      active_categories: full.active_categories,
+      active_domains: full.active_domains,
+      requirements: [],
+      controls: [],
+      artifacts: [],
+      rule_trace: [...full.rule_trace, "MODE_INDEX: requirement bodies elided — per-category index returned (declared, not silent)"],
+      coverage_gaps: full.coverage_gaps,
+      index: [...byCategory.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([category, ids]) => ({ category, count: ids.length, requirement_ids: ids.sort() })),
+      meta: { ...full.meta, note: `${full.meta.note} mode=index: controls/artifacts counts in meta; bodies via the default mode.` },
+      next: consultAffordances(full.risk_level, full.meta.concernsApplied ?? undefined)
+    };
+  }
   return {
     provenance: {
       content_type: "derived",

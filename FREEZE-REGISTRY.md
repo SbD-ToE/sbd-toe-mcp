@@ -13,7 +13,7 @@
   (formerly `Shiftleftpt/sbd-toe-mcp-poc`; relocated 2026-06)
 **Part of programme:** SbD-ToE / AppSec Core (P0 DOI 10.17605/OSF.IO/7T849)
 **Governed by:** PROGRAMME-PRESERVATION-PROTOCOL.md v1.0
-**Last updated:** 2026-08-30
+**Last updated:** 2026-08-31
 **Status:** skeleton — pending human verification
 
 ## Published states
@@ -51,8 +51,12 @@ TODO — confirm with programme lead.
 - v0.10.3 → `06f8bbaa5e4d5f3ac6ddda890a6fbebd78f6be9b` (2026-08-30; formal KG release v1.6.1
   pinned — see CHANGELOG; npm `@shiftleftpt/sbd-toe-mcp@0.10.3` = `latest`, gitHead same commit;
   GitHub Release `v0.10.3`)
-- v0.10.4 *(formal KG release v1.7.0 pinned — see CHANGELOG; annotated tag created on the
-  squash commit of the PR that introduces this row, after its merge to master)*
+- v0.10.4 → `2937236d7521d72be140dbc4d9111dae211eb14b` (2026-08-30; formal KG release v1.7.0
+  pinned — see CHANGELOG; npm `@shiftleftpt/sbd-toe-mcp@0.10.4` = `latest`, gitHead same commit;
+  GitHub Release `v0.10.4`)
+- v0.11.0 *(MP1 selection operation — see CHANGELOG; annotated tag to be created only after
+  the 0.20 beta absorbs P2 (0.20.0-beta.6) and Pontifex verifies both lines, per the
+  G-mp1a plan; no npm publish before that)*
 
 ## Current working state
 
@@ -115,3 +119,5 @@ prohibits tag deletion without explicit authorisation):
 | 2026-08-30 | v0.10.3 registered (protected tag list, current working state, upstream pins: KG v1.6.1, Manual v1.7.1). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-30 | v0.10.3 tag commit recorded (`06f8bbaa`, squash of #51); npm publish + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-30 | v0.10.4 registered (protected tag list, current working state, upstream pins: KG v1.7.0, ontology v2.2, Manual v1.7.1). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-31 | v0.10.4 tag commit recorded (`2937236d`, squash of #54); npm publish + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-31 | v0.11.0 registered as pending (protected-tag list; tag gated on 0.20.0-beta.6 + two-line verification). Served bundle pins unchanged (KG v1.7.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |

@@ -55,7 +55,13 @@ get_sbd_toe_chapter_brief        ← what a specific chapter covers (phases, art
 list_sbd_toe_chapters            ← chapter discovery and navigation
 query_sbd_toe_entities           ← specific controls (CTRL-*), artefacts (ART-*), practices
 
+select_sbd_toe_requirements      ← MP1 selection: which requirements apply to THIS task in THIS
+                                    context — baseline (ch. 02, by level) ∪ context-activated
+                                    chapters ⊕ overlay(extend), narrowed by declared task signals;
+                                    returns selected[] (with selection_trace) AND narrowed_out[]
+                                    (grouped, with reason — never silent)
 consult_security_requirements    ← deterministic: requirements + controls for a risk level
+                                    (mode: "index" opt-in returns a per-category id index)
                                     params: risk_level (L1|L2|L3), concerns? (string[])
                                     returns: requirements[], controls[], active_domains[],
                                              active_categories[], rule_trace[]

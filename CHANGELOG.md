@@ -3,11 +3,86 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-30
 purpose: documentation
-reasoning: v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
+reasoning: v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; D1 gate, D3 activators, D4; consult mode index; v2 token diet ported from the beta with stable-measured ceilings); Axis H 1/3/6 → 6/4/0; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.11.0 — 2026-08-31 (prepared — tag v0.11.0 only after the beta line absorbs, per G-mp1a)
+
+**Minor** — the MP1 selection operation lands in the serving layer (new tool), closing the
+four Axis-H defects (ciclo MP1, P2; gate G-mp1a). Served bundle unchanged: formal KG
+`v1.7.0` (sha256 `29156b86…fb9a`, contract v1.14, Manual v1.7.1).
+
+### Axis H — before / after (oracle v1 untouched)
+
+| | 0.10.4 (baseline) | **0.11.0** |
+|---|---|---|
+| Verdicts | 1 PASS · 3 PART · 6 FAIL | **6 PASS · 4 PART · 0 FAIL** |
+| prepare coverage (avg) | 41 % | **≈96 %** (9 of 10 cases ≥ 95 %; GC-07 72 %, GC-10 80 %) |
+| Negative case (GC-09) | PASS | PASS (`needs_clarification`, 0 requirements) |
+
+Remaining PART causes (measured, not forced — `docs/acceptance-runs/2026-08-31-axis-h-selection-v0.11.0.md`):
+GC-02 SES ×8 selected via the loader's `auth → [AUT, ACC, SES]` concern map (data-level
+coupling, next cycle); GC-03 DST-006 / GC-10 CFG-006 + LOG-001 / GC-06→0 (closed);
+GC-07 agent-principal hygiene (AUT-006/ACC-002/ENC-006) and DEP-013/014 lack a declared
+signal — candidates for a lead-ratified rule, not guessed here.
+
+### Added — `select_sbd_toe_requirements` (MP1, consultive L3, OSS)
+
+- Single selection engine `src/serving/selection.ts`: eligibility from the PUBLISHED
+  `requirement_selection_model` (baseline cap. 02 `type: base` by level ∪ domain chapters
+  activated by context — changed_files via the review-scope path map, technologies/stack,
+  concern-derived chapters ⊕ overlay `extend`; `replace` awaits ADR 0014), then
+  deterministic narrowing into two DECLARED bands: `selected[]` (per-item
+  `selection_trace`: source/trigger/score) and `narrowed_out[]` (grouped by category,
+  with reason) — never silent. Paginated (G1). `prepare_sbd_toe_codegen_context` now
+  consumes the engine (its `completeness_report.selection` declares
+  eligible/selected/narrowed-out with an executable ref).
+- Acceptance scenarios in the same change (factory rule): TC-F-11/12.
+
+### Changed — scope gate (D1) + activators (D3) + lexicon role (D4)
+
+- The "max 50 activated requirements" cap is GONE (a legitimate L2 task activates >50 by
+  design). The gate now guards task scope — vague/multi-family asks still return
+  `needs_clarification`/`needs_decomposition`, and a task with NO real signal (only the
+  informational risk_level) is `needs_clarification` — and payload (diet + budgets).
+- `exposure` and `data_sensitivity` stop being decorative: declared activators
+  (internal/authenticated → auth+logging; public → +api/validation/architecture;
+  personal/regulated → encryption+validation+logging; secrets → secrets), each with its
+  own `activation_trace` source. `agents` heuristics (mandate/kill-switch/tool-call/
+  autonomy) reach the stable line (beta parity); new audited PT/EN signals (mtls,
+  mensageria/fila de mensagens, assinatura → integrity+encryption, imagem/image,
+  spa/frontend, formulário de registo; terraform/ansible narrowed to iac).
+- The concern lexicon is now ONE signal among seven — the reference-semantics composition
+  is the engine (D4).
+
+### Changed — `consult_security_requirements`
+
+- `mode: "index"` opt-in (G-mp1a decision 3, option c): per-category requirement index
+  (ids + counts) with the same filters/totals; default mode byte-unchanged.
+  Index-by-default stays flagged for a future major.
+
+### Added — v2 token diet ported from the 0.20 beta line (byte-identical)
+
+- `detail: full | standard | minimal | ultrathin` + `include_relations` on `prepare`,
+  the `sbd://toe/codegen-instructions/{mode}` resource, golden snapshots, and the diet
+  test suite (detail/minimal/ultrathin/caps-resource/reuse-hint/budget; the
+  relations-ref suite stays beta-only — `relations_ref` names `trace_sbd_toe_graph`,
+  which ships on the 0.20 line; on this line use `include_relations: true`, as the tool
+  schema documents).
+- **Stable payload ceilings fixed by measurement (P2)** — the MP1 selection summary adds
+  ≈+50 tokens to `completeness_report`: totals `standard` fixture2 8.800 → **8.900**
+  (measured 8.833), `minimal` 5.800 → **5.950** (5.850) and 8.100 → **8.200** (8.107);
+  `rest` section budgets re-measured (980/985/1055). All other totals hold, including
+  `standard` fixture1 ≤ 6.500. The beta re-ratifies its own ceilings when it absorbs P2.
+
+### Verification
+
+- `npm run check` green; **684/684** tests (engine + select suites added; diet suite
+  ported); full `eval:acceptance`: 116 scenarios, 93 executed, **71 PASS · 22 PART ·
+  0 FAIL · 23 SKIP — gate E PASS** (no regression); 22/22 tools exercised.
 
 ## 0.10.4 — 2026-08-30
 

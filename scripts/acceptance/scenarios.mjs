@@ -324,6 +324,25 @@ export const scenarios = [
     run: async (c) => { const r = await c.tool("resolve_entities", { record_type: "user_story", filters: { us_id: "US-02", chapter_id: "12-monitorizacao-operacoes" } }); if (!r.ok) return fail(r.error); const u = r.data.entities?.[0]; return u && (u.bdd?.length ?? 0) >= 3 && (u.checklist_items?.length ?? 0) >= 1 ? ok(`bdd ${u.bdd.length} clauses, checklist ${u.checklist_items.length}`) : fail(`bdd ${u?.bdd?.length}, checklist ${u?.checklist_items?.length}`); } },
   { id: "TC-E-17", axis: "E", title: "rich US: US-01 ch.01 foundational bdd + checklist", tool: "resolve_entities",
     run: async (c) => { const r = await c.tool("resolve_entities", { record_type: "user_story", filters: { us_id: "US-01", chapter_id: "01-classificacao-aplicacoes" } }); if (!r.ok) return fail(r.error); const u = r.data.entities?.[0]; return u && (u.bdd?.length ?? 0) >= 3 && (u.checklist_items?.length ?? 0) >= 1 ? ok(`bdd ${u.bdd.length}, checklist ${u.checklist_items.length}`) : fail(`bdd ${u?.bdd?.length}, checklist ${u?.checklist_items?.length}`); } },
+  { id: "TC-F-11", axis: "F", title: "select_sbd_toe_requirements (MP1): baseline ∪ contexto, narrowing declarado, G1", tool: "select_sbd_toe_requirements",
+    run: async (c, ctx) => { const r = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Empacotar o serviço em Docker e preparar deploy em K8s", changed_files: ["Dockerfile", "deploy/k8s/service.yaml"], limit: 25 }); if (!r.ok) return fail(r.error); const d = r.data;
+      if (!d.coverage || d.coverage.total === undefined || d.coverage.hasMore === undefined) return fail("no coverage envelope (G1)");
+      const ids = []; let offset = 0; for (;;) { const p = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Empacotar o serviço em Docker e preparar deploy em K8s", changed_files: ["Dockerfile", "deploy/k8s/service.yaml"], offset, limit: 25 }); ids.push(...p.data.selection.selected.map((x) => x.requirement_id)); if (!p.data.coverage.hasMore) break; offset = p.data.coverage.nextOffset; }
+      if (new Set(ids).size !== ids.length) return fail("pagination duplicates");
+      const bad = ids.filter((id) => !ctx.knownIds.has(id)); if (bad.length) return fail(`ids not in bundle: ${bad.slice(0, 3)}`);
+      if (!ids.some((id) => id.startsWith("CNT-")) || !ids.some((id) => id.startsWith("DPL-"))) return fail(`context chapters not selected: ${ids.slice(0, 8)}`);
+      if (ids.some((id) => id.startsWith("AUT-"))) return fail("AUT selected without a task signal (no narrowing)");
+      const nar = d.selection.narrowed_out; if (!Array.isArray(nar) || !nar.some((g) => g.category === "AUT")) return fail("narrowed_out does not list AUT (silent narrowing)");
+      if (!d.selection.selected.every((x) => (x.selection_trace ?? []).length > 0)) return fail("selected item without selection_trace");
+      return ok(`walk ${ids.length} selected (CNT/DPL in, AUT narrowed with reason), traces on all, narrowed_out ${d.coverage.narrowed_out_requirements} declared`); } },
+  { id: "TC-F-12", axis: "F", title: "select (MP1): activadores declarados (agents, data_sensitivity) + overlay extend", tool: "select_sbd_toe_requirements",
+    run: async (c) => { const a = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", task: "Worker agêntico com mandate, kill-switch e audit por tool-call" }); if (!a.ok) return fail(a.error);
+      const aid = a.data.selection.selected.map((x) => x.requirement_id); for (const id of ["REQ-AGN-001", "REQ-AGN-002", "REQ-AGN-003", "REQ-AGN-004"]) if (!aid.includes(id)) return fail(`${id} not selected for an agentic task`);
+      const b = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", task: "Formulário de registo com dados pessoais", data_sensitivity: "regulated", include_regulatory_overlay: true, regulatory_frameworks: ["EXT-AI-ACT"] }); if (!b.ok) return fail(b.error);
+      const bid = b.data.selection.selected.map((x) => x.requirement_id); if (!bid.some((id) => id.startsWith("ENC-"))) return fail("data_sensitivity=regulated did not activate ENC");
+      if (b.data.overlay.status !== "resolved" || b.data.overlay.obligations.length === 0) return fail(`overlay extend not resolved: ${b.data.overlay.status}`);
+      return ok(`agents → AGN ×4 + wave; regulated → ENC in; overlay extend ${b.data.overlay.obligations.length} AI Act obligations`); } },
+
   // ───────────────────────── Axis H — selection vs golden oracle (measurement, NOT gate) ─────────────────────────
   // Oracle: golden-selection-cases.md v1 (programme lead's, read-only). One scenario per
   // golden case; semantics in scripts/acceptance/axis-h.mjs. Axis E remains the only gate.

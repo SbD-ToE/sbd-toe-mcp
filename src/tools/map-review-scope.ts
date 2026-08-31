@@ -138,6 +138,24 @@ function hasSegment(normalizedPath: string, names: string[]): boolean {
   return names.some((name) => segments.includes(name));
 }
 
+/**
+ * Chapters a set of changed files maps to, per the audited PATTERN_RULES table
+ * (exported for the MP1 selection engine — the same path→bundle knowledge the
+ * review scope uses; single source of truth).
+ */
+export function bundlesForChangedFiles(files: readonly string[]): Map<string, string[]> {
+  const out = new Map<string, string[]>();
+  for (const file of files) {
+    const normalized = file.replace(/\\/g, "/").replace(/^\.\//, "").toLowerCase();
+    const bundles = new Set<string>();
+    for (const rule of PATTERN_RULES) {
+      if (rule.matches(normalized)) for (const b of rule.bundles) bundles.add(b);
+    }
+    out.set(file, [...bundles]);
+  }
+  return out;
+}
+
 const PATTERN_RULES: PatternRule[] = [
   {
     pattern: "src/config.ts",
