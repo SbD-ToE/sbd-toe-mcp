@@ -79,12 +79,15 @@ Prerelease tags issued on `0.20-beta` (annotated; immutable like every pushed ta
 | v0.20.0-beta.5 | 62a1eda (`62a1eda3982147e44369c8a9271ca3697af2680f`; annotated tag object `5165a04a`) | 2026-08-31 | formal KG `v1.7.0` (`29156b86…`, contract v1.14, ontology v2.2, Manual v1.7.1) — same pin and content as stable v0.10.4 | `beta` (superseded) |
 | v0.20.0-beta.6 | 322c38f (`322c38f4dc440aad40bf110b8e20d3d40f623318`; annotated tag object `71098136`) | 2026-08-31 | formal KG `v1.7.0` + MP1 selection operation (= stable 0.11.0 → `102b8166`) | `beta` (superseded) |
 | v0.20.0-beta.7 | 4256ee0 (`4256ee0f09386a45e69012ec565375965f49b0de`; annotated tag object `6e75ef23`) | 2026-08-31 | formal KG `v1.9.0` (`11153c85…`, contract v1.15, 273/29 FIL/PRI — zero-delta over the verified v1.8.0 dev-build) | `beta` (formal batch, «3 sims») |
+| v0.20.0-beta.8 | 4681fd2 (`4681fd2039c443e6628162bb822d083a1885504c`) | 2026-09-01 | absorbs stable 0.13.0 (`8a3a9a90` via cherry-pick `079bb35`): read_sbd_toe_resource + provenance.kg stamp + inspect pin provenance; bundle pin unchanged (KG `v1.9.0`) | `beta` |
 
 ## Current working state
 
 **Current branch:** `0.20-beta` — this copy of the registry lives on the beta branch; the
 stable-line rows mirror master (`102b816`, 0.11.0 prepared) and are maintained there.
-**Beta line:** v0.20.0-beta.7 → `4256ee0f09386a45e69012ec565375965f49b0de` (2026-08-31, formal batch
+**Beta line:** v0.20.0-beta.8 → `4681fd2039c443e6628162bb822d083a1885504c` (2026-09-01, absorbs
+stable 0.13.0; npm `beta` = 0.20.0-beta.8, gitHead confirmed; 727/727, gate E PASS, golden 10/10,
+ceilings intact). Prior: v0.20.0-beta.7 → `4256ee0f09386a45e69012ec565375965f49b0de` (2026-08-31, formal batch
 «3 sims»; `release.yml` run 33433883272 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.7` =
 `beta`, gitHead same commit; GitHub pre-release; `latest` = 0.12.0, stable lane) serves the **formal KG `v1.9.0`** (sha256
 `11153c85…`, contract v1.15, FIL/PRI 273/29); fixture-2 payload gates ratified + harmonised
