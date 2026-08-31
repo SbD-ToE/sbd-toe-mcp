@@ -305,7 +305,7 @@ Always distinguish between:
 |---|---|
 | `sbd://toe/agent-guide` | This document — full operational guide |
 | `sbd://toe/index-compact` | Full chapter map as JSON — fast structured lookup |
-| `sbd://toe/chapter-applicability/{riskLevel}` | Active/excluded chapters for a risk level |
+| `sbd://toe/chapter-applicability/{riskLevel}` | Graduated applicability: every chapter present, per-chapter demand for the level |
 | `sbd://toe/ontology` | Full ontology YAML — domain_mapping, concerns, inference rules |
 | `sbd://toe/version` | Server identity + served knowledge provenance (manual/kg/ontology, from the pin) — read at session start |
 
@@ -346,7 +346,7 @@ Always distinguish between:
 
 | Level | Scope | Unlocks |
 |---|---|---|
-| `L1` | Low risk — internal, no sensitive data | Chapters marked minLevel L1 |
+| `L1` | Low risk — internal, no sensitive data | ALL chapters — demand mostly recomendado/opcional |
 | `L2` | Medium risk — public APIs, user data | + chapters 06, 11 |
 | `L3` | High risk — PII, regulated systems | + chapter 13 |
 

@@ -60,14 +60,12 @@ describe("handleListSbdToeChapters (runtime bundle)", () => {
     expect(result.chapters.every((c) => c.id && c.title && c.readableTitle)).toBe(true);
   });
 
-  it("riskLevel narrows to the chapters applicable at that level (L1 ⊂ L2 ⊂ L3)", () => {
-    const ids = (level: string) => (handleListSbdToeChapters({ riskLevel: level }) as { chapters: Array<{ id: string }> }).chapters.map((c) => c.id);
-    const l1 = ids("L1"), l2 = ids("L2"), l3 = ids("L3");
-    expect(l1.length).toBeLessThan(l2.length);
-    expect(l2.length).toBeLessThan(l3.length);
-    expect(l1.every((id) => l2.includes(id))).toBe(true);
-    expect(l2.every((id) => l3.includes(id))).toBe(true);
-    expect(l2).not.toContain("13-formacao-onboarding");
+  it("riskLevel annotates but NEVER filters (graduated, 0.14.0)", () => {
+    const ids = (level?: string) => (handleListSbdToeChapters(level ? { riskLevel: level } : {}) as { chapters: Array<{ id: string }> }).chapters.map((c) => c.id);
+    const all = ids(), l1 = ids("L1"), l3 = ids("L3");
+    expect(l1).toEqual(all);
+    expect(l3).toEqual(all);
+    expect(l1).toContain("13-formacao-onboarding");
   });
 });
 
@@ -286,19 +284,19 @@ describe("handleMapSbdToeApplicability — activatedBundles", () => {
     expect(opIds).not.toContain("13-formacao-onboarding");
   });
 
-  it("activates 13-formacao-onboarding for L3", () => {
-    const result = handleMapSbdToeApplicability(
-      { riskLevel: "L3" }
-    ) as { activatedBundles: ActivatedBundles };
-    const opIds = result.activatedBundles.operationalBundles.map((b) => b.chapterId);
-    expect(opIds).toContain("13-formacao-onboarding");
+  it("chapter-13 needs no L3 hack — it is present in the graduated chapters at every level", () => {
+    for (const level of ["L1", "L2", "L3"]) {
+      const result = handleMapSbdToeApplicability({ riskLevel: level }) as { chapters: Array<{ chapter_id: string }> };
+      expect(result.chapters.map((c) => c.chapter_id), level).toContain("13-formacao-onboarding");
+    }
   });
 
-  it("does not activate domain/operational bundles for L1 without technologies", () => {
+  it("L1 without technologies: no context bundles beyond the graduated ch-06 presence", () => {
     const result = handleMapSbdToeApplicability({ riskLevel: "L1" }) as {
       activatedBundles: ActivatedBundles;
     };
-    expect(result.activatedBundles.domainBundles).toHaveLength(0);
+    expect(result.activatedBundles.domainBundles.map((b) => b.chapterId)).toEqual(["06-desenvolvimento-seguro"]);
+    expect(result.activatedBundles.domainBundles[0]?.reason).toContain("graduada");
     expect(result.activatedBundles.operationalBundles).toHaveLength(0);
   });
 
@@ -325,18 +323,17 @@ describe("handleMapSbdToeApplicability — activatedBundles", () => {
     expect((caughtError as Error & { rpcError?: { code: number } }).rpcError?.code).toBe(-32602);
   });
 
-  it("retro-compatible: input {riskLevel: 'L1'} without optional fields still works (runtime bundle)", () => {
+  it("minimal input {riskLevel: 'L1'} returns the graduated shape (runtime bundle)", () => {
     const result = handleMapSbdToeApplicability({ riskLevel: "L1" }) as {
       riskLevel: string;
-      active: string[];
+      semantics: string;
+      chapters: Array<{ chapter_id: string }>;
       conditional: unknown[];
-      excluded: string[];
       activatedBundles: ActivatedBundles;
     };
     expect(result.riskLevel).toBe("L1");
-    expect(result.active).toContain("01-classificacao-aplicacoes");
-    expect(result.active).toContain("02-requisitos-seguranca");
-    expect(result.excluded).toContain("13-formacao-onboarding");
+    expect(result.semantics).toContain("graduated");
+    expect(result.chapters.map((c) => c.chapter_id)).toContain("13-formacao-onboarding");
     expect(result.conditional).toEqual([]);
     expect(result.activatedBundles.foundationBundles).toHaveLength(3);
   });
@@ -358,24 +355,21 @@ describe("handleListSbdToeChapters — applicability", () => {
     return (handleListSbdToeChapters({}) as { chapters: Chapter[] }).chapters;
   }
 
-  it("exposes applicability + minLevel on every chapter (the promised-but-missing fields)", () => {
+  it("exposes graduated applicability (all levels true) + demand_by_level; minLevel retired", () => {
     for (const c of listAll()) {
-      expect(c.applicability).toBeDefined();
-      expect(typeof c.applicability.L1).toBe("boolean");
-      expect(["L1", "L2", "L3", null]).toContain(c.minLevel);
+      expect(c.applicability).toEqual({ L1: true, L2: true, L3: true });
+      expect((c as { demand_by_level?: Record<string, string> }).demand_by_level?.L2).toBeDefined();
+      expect((c as { minLevel?: unknown }).minLevel).toBeUndefined();
     }
   });
 
-  it("derives minLevel from the lowest active risk level", () => {
-    const byId = new Map(listAll().map((c) => [c.id, c]));
-    // Foundation chapter active at every level.
-    expect(byId.get("02-requisitos-seguranca")?.minLevel).toBe("L1");
-    // Secure-development activates at L2 (not L1).
-    expect(byId.get("06-desenvolvimento-seguro")?.applicability.L1).toBe(false);
-    expect(byId.get("06-desenvolvimento-seguro")?.minLevel).toBe("L2");
-    // Training/onboarding is L3-only.
-    expect(byId.get("13-formacao-onboarding")?.applicability).toEqual({ L1: false, L2: false, L3: true });
-    expect(byId.get("13-formacao-onboarding")?.minLevel).toBe("L3");
+  it("derives demand_by_level from authored proportionality (ch06 L1 has authored mandatory work)", () => {
+    const byId = new Map(listAll().map((c) => [c.id, c as { demand_by_level?: Record<string, string> }]));
+    expect(byId.get("02-requisitos-seguranca")?.demand_by_level?.L1).toBeDefined();
+    // Secure-development is PRESENT at L1 with authored proportionality (US-01 Obrigatório …).
+    expect(byId.get("06-desenvolvimento-seguro")?.demand_by_level?.L1).toBe("obrigatorio");
+    // Chapter 00 is the declared foundational fallback.
+    expect(byId.get("00-fundamentos")?.demand_by_level?.L1).toBe("foundational");
   });
 
   it("keeps readableTitle clean even when the canonical title carries editorial noise", () => {

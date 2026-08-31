@@ -1,3 +1,10 @@
+import {
+  CANONICAL_ANCHOR,
+  CURATED_TITLES,
+  GRADUATED_SEMANTICS,
+  demandByLevel,
+  gradedChapters
+} from "../serving/applicability.js";
 import { readFileSync } from "node:fs";
 import { retrievePublishedContext } from "../backend/semantic-index-gateway.js";
 import { resolveAppPath } from "../config.js";
@@ -14,79 +21,31 @@ import {
 const VALID_RISK_LEVELS = ["L1", "L2", "L3"] as const;
 type RiskLevel = (typeof VALID_RISK_LEVELS)[number];
 
-const READABLE_TITLES: Record<string, string> = {
-  "00-fundamentos":             "Fundamentos SbD-ToE",
-  "01-classificacao-aplicacoes": "Classificação de Aplicações",
-  "02-requisitos-seguranca":     "Requisitos de Segurança",
-  "03-threat-modeling":          "Threat Modeling",
-  "04-arquitetura-segura":       "Arquitetura Segura",
-  "05-dependencias-sbom-sca":    "Dependências, SBOM e SCA",
-  "06-desenvolvimento-seguro":   "Desenvolvimento Seguro",
-  "07-cicd-seguro":              "CI/CD Seguro",
-  "08-iac-infraestrutura":       "IaC e Infraestrutura",
-  "09-containers-imagens":       "Containers e Imagens",
-  "10-testes-seguranca":         "Testes de Segurança",
-  "11-deploy-seguro":            "Deploy Seguro",
-  "12-monitorizacao-operacoes":  "Monitorização e Operações",
-  "13-formacao-onboarding":      "Formação e Onboarding",
-  "14-governanca-contratacao":   "Governança e Contratação"
-};
+// Curated display titles live in ONE place now (serving/applicability.ts).
+const READABLE_TITLES: Record<string, string> = CURATED_TITLES;
 
-const ACTIVE_CHAPTERS_BY_RISK: Record<RiskLevel, string[]> = {
-  L1: [
-    "00-fundamentos",
-    "01-classificacao-aplicacoes",
-    "02-requisitos-seguranca",
-    "03-threat-modeling",
-    "04-arquitetura-segura",
-    "05-dependencias-sbom-sca",
-    "07-cicd-seguro",
-    "08-iac-infraestrutura",
-    "09-containers-imagens",
-    "10-testes-seguranca",
-    "12-monitorizacao-operacoes",
-    "14-governanca-contratacao"
-  ],
-  L2: [
-    "00-fundamentos",
-    "01-classificacao-aplicacoes",
-    "02-requisitos-seguranca",
-    "03-threat-modeling",
-    "04-arquitetura-segura",
-    "05-dependencias-sbom-sca",
-    "06-desenvolvimento-seguro",
-    "07-cicd-seguro",
-    "08-iac-infraestrutura",
-    "09-containers-imagens",
-    "10-testes-seguranca",
-    "11-deploy-seguro",
-    "12-monitorizacao-operacoes",
-    "14-governanca-contratacao"
-  ],
-  L3: Object.keys(READABLE_TITLES),
-};
+// (ciclo 0.14.0) ACTIVE_CHAPTERS_BY_RISK morreu — a noção binária desaparece do
+// serving (decisão do Author, 2026-09-01). A aplicabilidade é GRADUADA e derivada
+// dos dados: ver src/serving/applicability.ts.
 
 const RISK_ORDER: readonly RiskLevel[] = ["L1", "L2", "L3"];
 
 interface ChapterApplicability {
   applicability: { L1: boolean; L2: boolean; L3: boolean };
-  minLevel: RiskLevel | null;
+  /** Dominant authored demand per level (obrigatorio/recomendado/opcional/specific;
+   * foundational = no assignments) — replaces the retired binary `minLevel` theory. */
+  demand_by_level: Record<RiskLevel, string>;
 }
 
 /**
- * Per-risk-level applicability for a chapter, derived from ACTIVE_CHAPTERS_BY_RISK.
- * `minLevel` is the lowest level at which the chapter activates (null if never).
- * Bundle-independent — driven by the in-code risk model, not the runtime bundle.
+ * Graduated applicability (ciclo 0.14.0): a chapter is NEVER excluded by level —
+ * presence is unconditional and the demand scales, derived from the authored
+ * assignment proportionality (src/serving/applicability.ts).
  */
 function chapterApplicability(chapterId: string): ChapterApplicability {
-  const applicability = {
-    L1: ACTIVE_CHAPTERS_BY_RISK.L1.includes(chapterId),
-    L2: ACTIVE_CHAPTERS_BY_RISK.L2.includes(chapterId),
-    L3: ACTIVE_CHAPTERS_BY_RISK.L3.includes(chapterId),
-  };
   return {
-    applicability,
-    minLevel: RISK_ORDER.find((level) => applicability[level]) ?? null,
+    applicability: { L1: true, L2: true, L3: true },
+    demand_by_level: demandByLevel(chapterId)
   };
 }
 
@@ -162,9 +121,10 @@ function handleListSbdToeChaptersCore(
       .filter((entry): entry is [string, string] => Boolean(entry[0] && entry[1]))
   );
 
-  const chapterIds = Object.keys(READABLE_TITLES).filter((chapterId) =>
-    riskLevel === undefined ? true : ACTIVE_CHAPTERS_BY_RISK[riskLevel].includes(chapterId)
-  );
+  // Ciclo 0.14.0 (graduated): NUNCA filtrar capítulos por nível — presença sempre;
+  // cada linha carrega demand_by_level; riskLevel passa a ser anotação, não filtro.
+  void riskLevel;
+  const chapterIds = Object.keys(READABLE_TITLES);
 
   const chapters = chapterIds.map((id) => {
     const title = titleByChapter.get(id) ?? READABLE_TITLES[id] ?? id;
@@ -487,13 +447,11 @@ function buildActivatedBundles(
       reason: `technologies inclui ${(["sca-sbom", "sast", "dast"] as const).filter((t) => techSet.has(t)).join(", ")}`
     });
   }
-  if (riskLevel === "L2" || riskLevel === "L3") {
-    domainBundles.push({
-      chapterId: "06-desenvolvimento-seguro",
-      status: "active",
-      reason: `Sempre para ${riskLevel}+`
-    });
-  }
+  domainBundles.push({
+    chapterId: "06-desenvolvimento-seguro",
+    status: "active",
+    reason: `presença graduada em ${riskLevel} — exigência conforme proportionality autorada (ciclo 0.14.0)`
+  });
   if (techSet.has("iac") || techSet.has("containers") || techSet.has("kubernetes")) {
     domainBundles.push({
       chapterId: "08-iac-infraestrutura",
@@ -593,26 +551,12 @@ function handleMapSbdToeApplicabilityCore(
     throw Object.assign(new Error(err.message), { rpcError: err });
   }
 
-  let active: string[];
-  let excluded: string[];
-
-  // Risk baseline (in-code risk model) — the only path since the Algolia-era snapshot
-  // cache was retired; context activation lives in activatedBundles / conditional below.
-  active = [...ACTIVE_CHAPTERS_BY_RISK[riskLevel]].sort();
-  excluded = Object.keys(READABLE_TITLES)
-    .filter((id) => !ACTIVE_CHAPTERS_BY_RISK[riskLevel].includes(id))
-    .sort();
+  // Ciclo 0.14.0 (decisão do Author): aplicabilidade GRADUADA — presença sempre,
+  // exigência derivada dos assignments autorados; active/excluded binários morreram.
+  const projectRoleForView = typeof args["projectRole"] === "string" ? (args["projectRole"] as string) : undefined;
+  const chapters = gradedChapters(riskLevel, projectRoleForView);
 
   const activatedBundles = buildActivatedBundles(riskLevel, technologies);
-
-  // 13-formacao-onboarding: apenas L3
-  if (riskLevel === "L3") {
-    activatedBundles.operationalBundles.push({
-      chapterId: "13-formacao-onboarding",
-      status: "active",
-      reason: "L3"
-    });
-  }
 
   // conditional = chapters activated by the provided CONTEXT (technologies),
   // beyond the risk baseline. Previously hardcoded [] (a dead field while the
@@ -638,9 +582,10 @@ function handleMapSbdToeApplicabilityCore(
 
   return {
     riskLevel,
-    active,
+    semantics: GRADUATED_SEMANTICS,
+    canonical_anchor: CANONICAL_ANCHOR,
+    chapters,
     conditional,
-    excluded,
     activatedBundles
   };
 }

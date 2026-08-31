@@ -3,11 +3,53 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-30
 purpose: documentation
-reasoning: v0.13.0 — serving batch: read_sbd_toe_resource (espelho de resources/read, catálogo derivado), stamp provenance.kg por resposta (tectos intactos), inspect com Pin servido (causa do n/d confirmada e corrigida), varrimento de contagens em prosa, release_ref normalizado, ensino Step 0 identidade; v0.12.0 — formal lote: KG v1.9.0 pinned (FIL/PRI/INT-009..012 served, contract v1.15), selection v1.8.0-aware, ceilings ratified+harmonized (9.200/8.450), npm latest; v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; named rules R1 principal-não-humano + R2 narrowing SES; D1 gate um-sinal-uma-superfície; D3 activators; D4; consult mode index; v2 token diet ported with stable-measured ceilings; R3 teaching layer: guide/skills/affordances ensinam select + duas bandas); Axis H 1/3/6 → 10/10; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
+reasoning: v0.14.0 — aplicabilidade GRADUADA (decisão do Author: capítulo nunca se exclui; exigência deriva dos assignments autorados + matriz cap. 01; listas binárias/minLevel mortos; module applicability.ts); v0.13.0 — serving batch: read_sbd_toe_resource (espelho de resources/read, catálogo derivado), stamp provenance.kg por resposta (tectos intactos), inspect com Pin servido (causa do n/d confirmada e corrigida), varrimento de contagens em prosa, release_ref normalizado, ensino Step 0 identidade; v0.12.0 — formal lote: KG v1.9.0 pinned (FIL/PRI/INT-009..012 served, contract v1.15), selection v1.8.0-aware, ceilings ratified+harmonized (9.200/8.450), npm latest; v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; named rules R1 principal-não-humano + R2 narrowing SES; D1 gate um-sinal-uma-superfície; D3 activators; D4; consult mode index; v2 token diet ported with stable-measured ceilings; R3 teaching layer: guide/skills/affordances ensinam select + duas bandas); Axis H 1/3/6 → 10/10; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.14.0 — 2026-09-01
+
+**Minor** — served SEMANTICS change: applicability becomes **GRADUATED**. Author's
+decision (programme lead, 2026-09-01, verbatim): «Sim: capítulo nunca se exclui por
+nível; a exigência escala L1→L3 conforme a matriz do cap. 01 e a proporcionalidade
+das user stories. A noção binária desaparece do serving.» Bundle pin UNCHANGED
+(release KG v1.9.0, sha `11153c85…`).
+
+### Changed — graduated chapter applicability (the binary lists die)
+
+- `RISK_LEVEL_CHAPTERS` (resources) and `ACTIVE_CHAPTERS_BY_RISK` (structured-tools)
+  are GONE, along with the `minLevel` theory, the "13 apenas L3" hack and the ch-06
+  "Sempre para L2+" reason — the 4th content-in-code instance closed. New derivation
+  module `src/serving/applicability.ts`: chapter set ← bundle_catalog (+ the DECLARED
+  `00-fundamentos` fallback — foundational, no bundle entry; precedent: the KG
+  base-set rule); demand ← aggregation of the AUTHORED assignment `proportionality`
+  per chapter × level (obrigatório/recomendado/opcional; free-text counts as
+  `specific`, never re-classified); anchor ← the chapter-01 canonical matrix
+  (addon 05-matriz-controlos-por-risco).
+- `map_sbd_toe_applicability`: `active`/`excluded` REPLACED by `chapters[]` (15,
+  presence unconditional, per-chapter `demand`+`dominant`+roles/user_stories) +
+  `semantics` + `canonical_anchor`; `conditional` (context/technologies overlay)
+  unchanged; `projectRole` now yields a per-role `role_view` (US + authored
+  proportionality) — coherent with `get_guide_by_role` (same assignments).
+  Measured: ≈1.470 tokens (L1), ≈2.325 with role view.
+- Resource `sbd://toe/chapter-applicability/{riskLevel}` and
+  `setup_sbd_toe_agent` prompt: same graduated derivation; the "Excluded chapters"
+  line dies ("No chapter is excluded").
+- `list_sbd_toe_chapters`: riskLevel ANNOTATES, never filters — all chapters with
+  `applicability {L1,L2,L3} = true` and derived `demand_by_level`; `minLevel` retired.
+- The demand really scales in the data: mandatory assignments L1 76 → L2 234;
+  cap. 06 at L1 = 10 obrigatórios / 3 recomendados / 3 opcionais (authored);
+  cap. 13 at L1 present with light demand.
+
+### Verification
+
+- 689/689 tests (16 legacy binary tests re-baselined graduated); scenarios
+  TC-A-06/07/12 + TC-E-10 re-baselined in the SAME change (runner + governance doc);
+  `eval:acceptance` (record `2026-09-01-v0140-*`): 121 scenarios, **80/17/0 FAIL/23 —
+  gate E PASS** (E now 16 PASS/1 PART — TC-E-10 upgraded to full PASS); golden cases
+  **10/10** (selection untouched — would have been a STOP).
 
 ## 0.13.0 — 2026-09-01
 

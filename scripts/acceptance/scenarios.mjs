@@ -59,17 +59,28 @@ export const scenarios = [
       const b = r.data.bundlesToReview ?? []; const domain = b.filter((x) => x.category === "domain");
       if (domain.length) return fail(`domain bundles forced for docs: ${ids(domain, "chapterId")}`);
       return b.length ? part(`${b.length} foundation/operational bundles (${ids(b, "chapterId").join(",")}) with explicit README reasons — low scope, not zero`) : ok("zero bundles"); } },
-  { id: "TC-A-06", axis: "A", title: "applicability L2 + containers/ci-cd/iac/api-gateway", tool: "map_sbd_toe_applicability",
+  { id: "TC-A-06", axis: "A", title: "applicability GRADUADA L2 + containers/ci-cd/iac/api-gateway (0.14.0)", tool: "map_sbd_toe_applicability",
     run: async (c) => { const r = await c.tool("map_sbd_toe_applicability", { riskLevel: "L2", technologies: ["containers", "ci-cd", "iac", "api-gateway"] }); if (!r.ok) return fail(r.error);
-      const d = r.data; if (!Array.isArray(d.active) || !Array.isArray(d.conditional) || !Array.isArray(d.excluded)) return fail("missing active/conditional/excluded");
+      const d = r.data; if (!Array.isArray(d.chapters) || !Array.isArray(d.conditional)) return fail("missing chapters/conditional (graduated shape)");
+      if (d.active || d.excluded) return fail("binary active/excluded still present (must die per Author decision)");
+      if (d.chapters.length < 15) return fail(`chapters ${d.chapters.length} < 15 (presence must be unconditional)`);
+      if (!d.chapters.every((x) => x.demand && x.dominant)) return fail("chapter without derived demand/dominant");
+      if (!d.canonical_anchor?.document_id?.includes("matriz-controlos-por-risco")) return fail("canonical matrix anchor missing");
       const r2 = await c.tool("map_sbd_toe_applicability", { riskLevel: "L2", technologies: ["containers", "ci-cd", "iac", "api-gateway"], hasPersonalData: true, isPublicFacing: true });
-      if (stable(r2.data?.active) !== stable(d.active)) return part("informational fields changed active scope");
-      return d.conditional.length ? ok(`active ${d.active.length}, conditional ${d.conditional.length} (tech-reasoned), excluded ${d.excluded.length}`) : part("no conditional entries for 4 technologies"); } },
-  { id: "TC-A-07", axis: "A", title: "applicability L1 minimal", tool: "map_sbd_toe_applicability",
+      if (stable(r2.data?.chapters?.map((x) => [x.chapter_id, x.dominant])) !== stable(d.chapters.map((x) => [x.chapter_id, x.dominant]))) return part("informational fields changed the graduated scope");
+      return d.conditional.length ? ok(`15 capítulos graduados (âncora matriz cap. 01), conditional ${d.conditional.length} (tech-reasoned), 0 excluídos por semântica`) : part("no conditional entries for 4 technologies"); } },
+  { id: "TC-A-07", axis: "A", title: "applicability GRADUADA L1: presença total, exigência escalada (0.14.0)", tool: "map_sbd_toe_applicability",
     run: async (c) => { const r = await c.tool("map_sbd_toe_applicability", { riskLevel: "L1" }); if (!r.ok) return fail(r.error); const d = r.data;
+      if (d.excluded) return fail("excluded field still present at L1 (binary must be gone)");
+      const ch06 = d.chapters?.find((x) => x.chapter_id === "06-desenvolvimento-seguro");
+      const ch13 = d.chapters?.find((x) => x.chapter_id === "13-formacao-onboarding");
+      if (!ch06 || !ch13) return fail("ch06/ch13 absent at L1 — chapter excluded by level (defect regressed)");
+      if (!(ch06.demand.obrigatorio > 0)) return fail(`ch06 L1 sem obrigatórios derivados: ${JSON.stringify(ch06.demand)}`);
+      if (ch13.dominant === "obrigatorio") return fail("ch13 L1 dominant=obrigatório — expected lighter demand (recomendado/opcional/specific)");
       const l2 = await c.tool("map_sbd_toe_applicability", { riskLevel: "L2" });
-      if (d.active.length >= l2.data.active.length) return fail("L1 not narrower than L2"); if (d.excluded.length === 0) return fail("nothing excluded at L1");
-      return ok(`active ${d.active.length} < L2 ${l2.data.active.length}; excluded ${d.excluded.join(",")}`); } },
+      const ob = (x) => x.data.chapters.reduce((n, y) => n + y.demand.obrigatorio, 0);
+      if (!(ob(l2) > ob(r))) return fail(`demand does not scale: L2 obrig ${ob(l2)} ≤ L1 ${ob(r)}`);
+      return ok(`15 capítulos presentes em L1 (ch06 dominant=${ch06.dominant}, ch13=${ch13.dominant}); obrigatórios L1 ${ob(r)} < L2 ${ob(l2)} — exigência escala, nada excluído`); } },
   { id: "TC-A-08", axis: "A", title: "generate_skill deterministic canonical agent-guide", tool: "generate_sbd_toe_skill",
     run: async (c) => { const a = await c.tool("generate_sbd_toe_skill", { clientType: "claude-code" }); const b = await c.tool("generate_sbd_toe_skill", { clientType: "claude-code" }); if (!a.ok) return fail(a.error);
       const g = await c.resource("sbd://toe/agent-guide"); const guideCore = (g.text ?? "").slice(0, 200);
@@ -91,8 +102,12 @@ export const scenarios = [
       return ok(`${pages} pages of ≤3 cover all ${all.length} chapters, no loss/duplication`); } },
   { id: "TC-A-12", axis: "A", title: "list_chapters L2 with applicability/minLevel", tool: "list_sbd_toe_chapters",
     run: async (c) => { const r = await c.tool("list_sbd_toe_chapters", { riskLevel: "L2" }); if (!r.ok) return fail(r.error); const ch = r.data.chapters ?? [];
-      if (ch.some((x) => !x.applicability || !x.readableTitle)) return fail("missing applicability/readableTitle"); if (ch.some((x) => x.applicability.L2 !== true)) return fail("non-L2 chapter listed for L2");
-      const all = await c.tool("list_sbd_toe_chapters", {}); return ok(`${ch.length} L2 chapters of ${all.data.chapters.length}; minLevel present ${ch.every((x) => "minLevel" in x)}`); } },
+      if (ch.some((x) => !x.applicability || !x.readableTitle)) return fail("missing applicability/readableTitle");
+      if (ch.some((x) => x.applicability.L1 !== true || x.applicability.L3 !== true)) return fail("chapter with level=false — graduated presence must be unconditional (0.14.0)");
+      if (ch.some((x) => "minLevel" in x)) return fail("minLevel still served (retired binary theory)");
+      if (ch.some((x) => !x.demand_by_level?.L2)) return fail("demand_by_level missing");
+      const all = await c.tool("list_sbd_toe_chapters", {}); if (ch.length !== all.data.chapters.length) return fail(`riskLevel filtered chapters (${ch.length} vs ${all.data.chapters.length}) — must annotate, not filter`);
+      return ok(`${ch.length} chapters, all levels true, demand_by_level graduado (ex. 06→${ch.find((x)=>x.id?.startsWith("06"))?.demand_by_level?.L2 ?? "?"})`); } },
   { id: "TC-A-13", axis: "A", title: "query_entities by text with type/chapter/risk filters", tool: "query_sbd_toe_entities",
     run: async (c) => { const a = await c.tool("query_sbd_toe_entities", { query: "autenticação", entityType: "requirement", chapterId: "02-requisitos-seguranca", riskLevel: "L2", topK: 5 }); const b = await c.tool("query_sbd_toe_entities", { query: "autenticação", entityType: "control_objective", topK: 5 }); if (!a.ok || !b.ok) return fail(a.error ?? b.error);
       if ((a.data.entities?.length ?? 0) === 0) return fail(`typed+chapter+risk query returns nothing (filters=${stable(a.data.filters)})`);
@@ -309,7 +324,9 @@ export const scenarios = [
       return c8 && c9 && /technolog/i.test(c8.reason + c9.reason) ? ok(`08/09 conditional with technology reasons`) : fail(`conditional=${stable(cond)}`); } },
   { id: "TC-E-10", axis: "E", title: "applicability sensitivity: technologies=[] → no conditional 08/09", tool: "map_sbd_toe_applicability",
     run: async (c) => { const r = await c.tool("map_sbd_toe_applicability", { riskLevel: "L2", technologies: [] }); if (!r.ok) return fail(r.error); const cond = ids(r.data.conditional, "chapterId"); const act = r.data.active ?? [];
-      if (cond.length) return fail(`conditional not empty: ${cond}`); return has(act, "08-iac-infraestrutura") || has(act, "09-containers-imagens") ? part("conditional empty (context-sensitive vs E-09) but 08/09 remain in `active` via the L2 risk model (base chapters), not de-activated") : ok("08/09 not activated"); } },
+      if (cond.length) return fail(`conditional not empty: ${cond}`);
+      const c8 = (r.data.chapters ?? []).find((x) => x.chapter_id === "08-iac-infraestrutura");
+      return c8 ? ok(`conditional vazio sem technologies (sensibilidade vs E-09); 08 presente com demand graduada (${c8.dominant}) — presença nunca é exclusão (0.14.0)`) : fail("ch08 absent from graduated chapters"); } },
   { id: "TC-E-11", axis: "E", title: "chapter brief ch.12 carries role + honest topics", tool: "get_sbd_toe_chapter_brief",
     run: async (c) => { const r = await c.tool("get_sbd_toe_chapter_brief", { chapterId: "12-monitorizacao-operacoes" }); if (!r.ok) return fail(r.error); return r.data.role?.length ? ok(`role ${r.data.role.length}, phases ${r.data.phases?.length}, artifacts ${r.data.artifacts?.length}`) : fail("no role"); } },
   { id: "TC-E-12", axis: "E", title: "chapter brief ch.08 role present without over-promise", tool: "get_sbd_toe_chapter_brief",

@@ -62,6 +62,10 @@ TODO — confirm with programme lead.
 - v0.12.0 → `b475900e87a3035d36a16201dd80d5e5b36c396d` (2026-08-31; formal lote — KG
   v1.9.0 pinned, sha256 `11153c85…`, contract v1.15; npm `@shiftleftpt/sbd-toe-mcp@0.12.0`
   = published, gitHead same commit; GitHub Release `v0.12.0`)
+- v0.14.0 *(graduated applicability — Author decision 2026-09-01: «capítulo nunca se
+  exclui por nível»; binary lists retired, demand derived from authored assignment
+  proportionality; bundle pin unchanged KG v1.9.0; annotated tag on the squash commit
+  after merge; npm `latest` via release.yml)*
 - v0.13.0 → `8a3a9a90fac66ddcfa2395296d0c763eaa6bc105` (2026-09-01; serving batch —
   read_sbd_toe_resource + provenance.kg stamp + inspect pin provenance; bundle pin
   unchanged KG v1.9.0; npm `@shiftleftpt/sbd-toe-mcp@0.13.0` = `latest`, gitHead same
@@ -137,3 +141,4 @@ prohibits tag deletion without explicit authorisation):
 | 2026-09-01 | v0.12.0 tag commit recorded (`b475900e`, squash of #62); npm publish (`latest`) + GitHub Release confirmed. v0.13.0 registered (protected-tag list; serving batch, bundle pin unchanged). `release_ref` owner normalized SbD-ToE (cosmetic). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-01 | CORRECTION (lead-approved): v0.11.0 WAS tagged (`102b8166`) and published to npm on 2026-08-31 14:56Z alongside 0.20.0-beta.6 — the G-mp1a gate was fulfilled; the "superseded/never tagged" notes from the 0.12.0 lote were stale. Protected-tag entry amended. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-01 | v0.13.0 tag commit recorded (`8a3a9a90`, squash of #63); npm publish (`latest`) + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-01 | v0.14.0 registered (protected-tag list): graduated applicability cycle — binary chapter exclusion retired from the serving per the Author's verbatim decision; derivation from bundle assignments + chapter-01 matrix anchor. Pins unchanged (KG v1.9.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
