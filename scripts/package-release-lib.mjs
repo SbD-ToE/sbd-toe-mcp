@@ -21,7 +21,6 @@ export const PROJECT_NAME = "sbd-toe-mcp";
 export const REQUIRED_PUBLISH_FILES = [
   "data/publish/ontology/appsec-core-ontology.yaml",
   "data/publish/ontology/sbdtoe-ontology.yaml",
-  "data/publish/sbd-toe-index-compact.json",
   "data/publish/indexes/publication_manifest.json",
   "data/publish/indexes/bundle_catalog.jsonl",
   "data/publish/indexes/mcp_chunks.jsonl",
@@ -74,11 +73,6 @@ export const REQUIRED_BUNDLE_ENTRIES = [
     kind: "file",
     src: "data/publish/ontology/sbdtoe-ontology.yaml",
     dest: "data/publish/ontology/sbdtoe-ontology.yaml"
-  },
-  {
-    kind: "file",
-    src: "data/publish/sbd-toe-index-compact.json",
-    dest: "data/publish/sbd-toe-index-compact.json"
   },
   {
     kind: "file",

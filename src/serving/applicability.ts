@@ -206,3 +206,29 @@ export function clearApplicabilityCacheForTests(): void {
   cachedRows = undefined;
   cachedChapters = undefined;
 }
+
+
+/** 0.15.0 (P0-2): index-compact DERIVADO do bundle — o estático de Março (minLevel)
+ * morreu (5ª instância de conteúdo-em-código). */
+export function buildDerivedIndexCompact(technologyToChapters: Readonly<Record<string, readonly string[]>>): object {
+  const techByChapter = new Map<string, string[]>();
+  for (const [tech, chapters] of Object.entries(technologyToChapters)) {
+    for (const ch of chapters) {
+      const list = techByChapter.get(ch) ?? [];
+      list.push(tech);
+      techByChapter.set(ch, list);
+    }
+  }
+  return {
+    version: "2.0-derived",
+    source: "Derivado no arranque do bundle servido (assignments + bundle_catalog); o campo estático de nível mínimo morreu — aplicabilidade graduada (0.14.0).",
+    semantics: GRADUATED_SEMANTICS,
+    canonical_anchor: CANONICAL_ANCHOR,
+    chapters: chapterSet().map((chapterId) => ({
+      chapterId,
+      readableTitle: chapterTitle(chapterId),
+      demand_by_level: demandByLevel(chapterId),
+      technologies: (techByChapter.get(chapterId) ?? []).sort(),
+    })),
+  };
+}

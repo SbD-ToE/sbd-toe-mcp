@@ -208,7 +208,8 @@ describe("_resolveThreatLandscape", () => {
 
 describe("handleGetThreatLandscape surface", () => {
   it("passes through associated_controls carried by the bundle (not hardcoded [])", () => {
-    const result = handleGetThreatLandscape({ risk_level: "L2" });
+    // 0.15.0: paginado por default — pedir página larga para varrer o conjunto.
+    const result = handleGetThreatLandscape({ risk_level: "L2", limit: 500 });
     const withAssoc = result.threats.filter(
       (t) => Array.isArray(t.associated_controls) && t.associated_controls.length > 0
     );

@@ -44,19 +44,20 @@ describe("handlePlanRepoGovernance (runtime bundle)", () => {
 
 // Coverage-preserving pagination wiring (Front 2b) — against the real bundle.
 describe("handlePlanRepoGovernance — pagination", () => {
-  it("returns coverage + size_estimate; default page covers every chapter (non-breaking)", () => {
+  it("default é PAGINADO (0.15.0): 5 capítulos, coverage declara o resto", () => {
     const result = handlePlanRepoGovernance({ riskLevel: "L2" });
     expect(result.coverage).toBeDefined();
     expect(typeof result.size_estimate.chars).toBe("number");
-    expect(typeof result.size_estimate.approx_tokens).toBe("number");
-    expect(result.coverage.returned).toBe(result.byChapter.length);
-    expect(result.coverage.returned).toBe(result.coverage.total);
-    expect(result.coverage.hasMore).toBe(false);
-    expect(result.coverage.nextOffset).toBeNull();
+    expect(result.byChapter.length).toBe(5);
+    expect(result.coverage.returned).toBe(5);
+    expect(result.coverage.total).toBeGreaterThan(5);
+    expect(result.coverage.hasMore).toBe(true);
+    expect(result.coverage.nextOffset).toBe(5);
+    expect(result.totalArtefacts).toBeGreaterThan(0); // total declarado apesar da página
   });
 
   it("limit produces a smaller page with a forward cursor", () => {
-    const full = handlePlanRepoGovernance({ riskLevel: "L2" });
+    const full = handlePlanRepoGovernance({ riskLevel: "L2", limit: 100 });
     const page = handlePlanRepoGovernance({ riskLevel: "L2", offset: 0, limit: 3 });
     expect(page.byChapter.length).toBe(3);
     expect(page.coverage.total).toBe(full.coverage.total);
@@ -66,7 +67,7 @@ describe("handlePlanRepoGovernance — pagination", () => {
   });
 
   it("is coverage-preserving: paging yields every chapter once, in order", () => {
-    const all = handlePlanRepoGovernance({ riskLevel: "L2" }).byChapter.map((c) => c.chapterId);
+    const all = handlePlanRepoGovernance({ riskLevel: "L2", limit: 100 }).byChapter.map((c) => c.chapterId);
     const collected: string[] = [];
     let offset: number | null = 0;
     let guard = 0;

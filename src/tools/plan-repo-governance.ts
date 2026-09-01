@@ -146,7 +146,8 @@ export function handlePlanRepoGovernance(args: Record<string, unknown>): PlanRep
     byChapter,
     {
       offset: typeof offsetArg === "number" ? offsetArg : undefined,
-      limit: typeof limitArg === "number" ? limitArg : undefined,
+      // 0.15.0: default PAGINADO (5 capítulos).
+      limit: typeof limitArg === "number" ? limitArg : 5,
     },
     byChapter.length || 1
   );

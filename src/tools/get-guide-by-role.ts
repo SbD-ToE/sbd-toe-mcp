@@ -111,6 +111,7 @@ export interface RoleChecklistEntry {
 }
 
 export interface GetGuideByRoleResult {
+  phase_warning?: { requested: string; resolved: null; note: string; knownPhases: string[] };
   risk_level: string;
   roleFilter: string | null;
   canonicalRole: string | null;
@@ -139,6 +140,7 @@ export interface McpProvenance {
 }
 
 export interface GetGuideByRoleOutput {
+  phase_warning?: { requested: string; resolved: null; note: string; knownPhases: string[] };
   provenance: McpProvenance;
   risk_level: string;
   roleFilter: string | null;
@@ -191,9 +193,22 @@ export function _resolveGuideByRole(
     : null;
 
   const phaseArg = typeof args["phase"] === "string" ? args["phase"].trim() : null;
-  const canonicalPhase = phaseArg
-    ? resolvePhaseId(phaseArg, phases) ?? normalizeToken(phaseArg)
-    : null;
+  // 0.15.0 (P0-5): alias implement→develop; fase desconhecida ⇒ aviso DECLARADO.
+  const PHASE_ALIASES: Record<string, string> = { implement: "develop", implementation: "develop", implementacao: "develop" };
+  // canon-first: se o vocabulário canónico já tiver a fase, o alias NÃO se aplica.
+  const resolvedDirect = phaseArg ? resolvePhaseId(phaseArg, phases) : null;
+  const aliasCandidate = phaseArg ? PHASE_ALIASES[phaseArg.toLowerCase()] : undefined;
+  const resolvedPhase = resolvedDirect ?? (aliasCandidate ? resolvePhaseId(aliasCandidate, phases) : null);
+  const canonicalPhase = phaseArg ? resolvedPhase ?? normalizeToken(phaseArg) : null;
+  const phaseWarning =
+    phaseArg && resolvedPhase === null
+      ? {
+          requested: phaseArg,
+          resolved: null,
+          note: "Fase desconhecida — o filtro devolve 0 assignments; usa uma das knownPhases (alias: implement→develop).",
+          knownPhases: phases.map((p) => p.phase_id).filter((x): x is string => typeof x === "string"),
+        }
+      : null;
 
   const activePracticeIds = new Set(
     consult.controls.flatMap((control) => control.source_practice_ids ?? [])
@@ -264,6 +279,7 @@ export function _resolveGuideByRole(
     canonicalRole,
     phaseFilter: phaseArg,
     canonicalPhase,
+    ...(phaseWarning ? { phase_warning: phaseWarning } : {}),
     assignments: filteredAssignments,
     by_role,
     by_phase,
@@ -358,6 +374,7 @@ export function handleGetGuideByRole(
   }
 
   return {
+    ...(full.phase_warning ? { phase_warning: full.phase_warning } : {}),
     provenance: {
       kg: servedKgReleaseTag(),
       content_type: "derived",

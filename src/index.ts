@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+import { buildDerivedIndexCompact } from "./serving/applicability.js";
+import { TECHNOLOGY_TO_CHAPTERS } from "./serving/selection.js";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import readline from "node:readline";
@@ -177,7 +179,7 @@ const RESOURCE_CATALOG = [
           uri: "sbd://toe/index-compact",
           name: "SbD-ToE Index Compact",
           description:
-            "Compact JSON index of the full SbD-ToE manual. Injectable into system prompt to eliminate exploratory discovery.",
+            "Compact JSON index of the manual, DERIVED at read-time from the served bundle (graduated demand_by_level; no minLevel). Injectable into system prompt to eliminate exploratory discovery.",
           mimeType: "application/json"
         },
         {
@@ -194,8 +196,8 @@ const RESOURCE_CATALOG = [
           uri: "sbd://toe/skill/{role}",
           name: "SbD-ToE Role Skill",
           description:
-            "Role-specialised SbD-ToE skill for a canonical role (default risk L2) — the role's manual " +
-            "slice as installable skill content. Same output as generate_sbd_toe_skill(role, format=skill).",
+            "Role-specialised SbD-ToE skill for a canonical role — RISK LEVEL FIXED AT L2 neste URI; " +
+            "para outro nível usa generate_sbd_toe_skill(role, risk_level=…). Same output as generate_sbd_toe_skill(role, format=skill).",
           mimeType: "text/markdown"
         },
         {
@@ -279,11 +281,8 @@ async function materializeResource(uri: string): Promise<{ mimeType: string; tex
   }
 
   if (uri === "sbd://toe/index-compact") {
-    try {
-      return { mimeType: "application/json", text: readFileSync(resolveAppPath("data/publish/sbd-toe-index-compact.json"), "utf-8") };
-    } catch {
-      throw new ResourceReadError(-32603, "Could not read the SbD-ToE compact index.");
-    }
+    // 0.15.0 (P0-2): DERIVADO do bundle no arranque — o estático de Março morreu.
+    return { mimeType: "application/json", text: JSON.stringify(buildDerivedIndexCompact(TECHNOLOGY_TO_CHAPTERS), null, 2) };
   }
 
   if (uri === "sbd://toe/agent-guide") {
@@ -776,7 +775,7 @@ class McpRuntime {
           name: "list_sbd_toe_chapters",
           title: "List SbD-ToE Chapters",
           description:
-            "Lists SbD-ToE manual chapters with id, canonical title, a clean readableTitle for display, and per-risk-level applicability (L1/L2/L3) plus minLevel.",
+            "Lists SbD-ToE manual chapters with id, canonical title, a clean readableTitle, graduated applicability (all levels true) and derived demand_by_level (0.14.0 — the binary minLevel theory is retired).",
           inputSchema: {
             type: "object",
             properties: {
@@ -902,6 +901,7 @@ class McpRuntime {
                 type: "string",
                 description: "Optional lifecycle phase to narrow the slice (canonical resolution as in get_guide_by_role)."
               },
+              tool_prefix: { type: "string", description: "0.15.0: prefixo das tools MCP no frontmatter dos subagentes harnessed (default mcp__sbd-toe__) — o prefixo real depende do deployment do cliente." },
               clientType: {
                 type: "string",
                 description: "Optional client hint (claude, copilot, cursor) — affects suggested_path only."
@@ -1137,7 +1137,10 @@ class McpRuntime {
           inputSchema: {
             type: "object",
             properties: {
-              uri: { type: "string", minLength: 1, description: "Resource URI (see the valid list in the tool description; templated URIs take the concrete value in place of {…})." }
+              uri: { type: "string", minLength: 1, description: "Resource URI (see the valid list in the tool description; templated URIs take the concrete value in place of {…})." },
+              slot: { type: "string", description: "0.15.0: para recursos JSON com slots (codegen-instructions): devolve só o slot pedido; slot desconhecido ⇒ erro com a lista de slots." },
+              char_offset: { type: "number", description: "0.15.0: paginação por caracteres sobre o texto do recurso (coverage + size_estimate sempre)." },
+              char_limit: { type: "number", description: "Máx. caracteres por página (default: texto completo)." }
             },
             required: ["uri"],
             additionalProperties: false
@@ -1184,6 +1187,7 @@ class McpRuntime {
             "Filters requirements by risk level, optionally narrows by concern domains (auth, logging, api, etc.), " +
             "then resolves controls via the published runtime bundle, complementing with ontology domain_mapping when needed. " +
             "Requirements with no published control link are served and declared in coverage_gaps (never omitted). " +
+            "Os corpos devolvidos são PROJECÇÕES (id/name/category/type) — detalhe completo via resolve_entities; ≤3 concerns por chamada (âmbito recomendado; maxItems no schema). " +
             "All data comes from the published SbD-ToE deterministic runtime bundle — nothing is invented.",
           inputSchema: {
             type: "object",
@@ -1199,6 +1203,7 @@ class McpRuntime {
                   type: "string",
                   enum: ["auth", "logging", "validation", "api", "config", "integrity", "distribution", "ide", "requirements", "architecture", "iac", "encryption", "agents"]
                 },
+                maxItems: 3,
                 description: "Optional concern domains to narrow scope (intersects with risk-level filter, does not replace). 'agents' = AI-agent / automation governance catalogue (REQ-AGN-001…004)."
               },
               exposure: {
@@ -1244,10 +1249,12 @@ class McpRuntime {
                 type: "array",
                 items: {
                   type: "string",
-                  enum: ["auth", "logging", "validation", "api", "config", "integrity", "distribution", "ide", "requirements", "architecture", "iac", "encryption"]
+                  enum: ["auth", "logging", "validation", "api", "config", "integrity", "distribution", "ide", "requirements", "architecture", "iac", "encryption", "agents"]
                 },
-                description: "Optional concern domains to narrow which chapters are in scope."
-              }
+                description: "Optional concern domains to narrow which chapters are in scope ('agents' = AI-agent governance, harmonizado com consult)."
+              },
+              offset: { type: "number", description: "Página de threats (0.15.0): índice inicial; ver coverage.nextOffset." },
+              limit: { type: "number", description: "Máx. threats por página (default 25). coverage{total,hasMore} + size_estimate sempre presentes." }
             },
             required: ["risk_level"],
             additionalProperties: false
@@ -1276,7 +1283,7 @@ class McpRuntime {
               },
               phase: {
                 type: "string",
-                description: "Lifecycle phase to filter by (e.g. 'design', 'implement', 'test', 'operate')."
+                description: "Lifecycle phase to filter by (canonical: e.g. 'design', 'develop', 'test', 'operate'; alias aceite: implement→develop). Fase desconhecida devolve phase_warning com knownPhases."
               },
               include_detail: {
                 type: "boolean",
@@ -1843,6 +1850,12 @@ class McpRuntime {
       typeof params.arguments === "object" && params.arguments !== null
         ? (params.arguments as Record<string, unknown>)
         : {};
+      // 0.15.0 (P2-1): aliases ADITIVOS risk_level↔riskLevel (convenção no guide; nunca renomear).
+      if (args && typeof args === "object") {
+        const aliasBag = args as Record<string, unknown>;
+        if (aliasBag["riskLevel"] === undefined && typeof aliasBag["risk_level"] === "string") aliasBag["riskLevel"] = aliasBag["risk_level"];
+        if (aliasBag["risk_level"] === undefined && typeof aliasBag["riskLevel"] === "string") aliasBag["risk_level"] = aliasBag["riskLevel"];
+      }
     const requestId = this.getRequestId(request.id);
     const startedAt = Date.now();
     const metadata = {
@@ -2147,8 +2160,32 @@ class McpRuntime {
             return;
           }
           try {
-            const { mimeType, text } = await materializeResource(uriArg);
+            const { mimeType, text: fullText } = await materializeResource(uriArg);
+            // 0.15.0: slot picker (JSON com slots) + paginação por caracteres, declaradas.
+            let text = fullText;
+            const slotArg = typeof args?.slot === "string" ? args.slot.trim() : "";
+            if (slotArg) {
+              let parsed: unknown;
+              try { parsed = JSON.parse(fullText); } catch { parsed = undefined; }
+              const slots = (parsed as { llm_codegen_instructions?: { slots?: Array<{ id?: string }> } })?.llm_codegen_instructions?.slots;
+              if (!Array.isArray(slots)) {
+                this.sendError(request.id, -32602, `O recurso ${uriArg} não tem slots pedíveis (slot aplica-se a sbd://toe/codegen-instructions/{mode}).`);
+                return;
+              }
+              const hit = slots.find((x) => x?.id === slotArg);
+              if (!hit) {
+                this.sendError(request.id, -32602, `Slot desconhecido: "${slotArg}". Slots válidos: ${slots.map((x) => x?.id).filter(Boolean).join(", ")}.`);
+                return;
+              }
+              text = JSON.stringify(hit, null, 2);
+            }
+            const co = typeof args?.char_offset === "number" ? Math.max(0, Math.floor(args.char_offset)) : 0;
+            const cl = typeof args?.char_limit === "number" ? Math.max(1, Math.floor(args.char_limit)) : undefined;
+            const totalChars = text.length;
+            if (co > 0 || cl !== undefined) text = text.slice(co, cl !== undefined ? co + cl : undefined);
             const payload = {
+              coverage: { total_chars: totalChars, returned_chars: text.length, char_offset: co, next_char_offset: co + text.length < totalChars ? co + text.length : null, hasMore: co + text.length < totalChars },
+              size_estimate: { chars: text.length, approx_tokens: Math.ceil(text.length / 4) },
               provenance: {
                 kg: servedKgReleaseTag(),
                 content_type: "canonical" as const,

@@ -18,3 +18,7 @@
 ## Update — ciclo 0.14.0 (2026-09-01)
 - [x] Aplicabilidade graduada: listas binárias/minLevel mortos; derivação assignments+matriz cap. 01; 689/689; eval 0 FAIL gate E PASS; ouro 10/10; map ≈1.470 tk
 - [ ] PR → merge → tag v0.14.0 → npm latest → report
+
+## Update — ciclo 0.15.0 (2026-09-01)
+- [x] Auditoria Desktop P0 completo + paginação + excluded_by_level; eval 126 cenários 0 FAIL; ouro 10/10; tectos intactos (ultrathin por dieta)
+- [ ] PR → merge → tag v0.15.0 → npm latest; 0.15.1 = assess (deferido)

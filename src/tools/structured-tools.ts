@@ -338,23 +338,32 @@ function handleGetSbdToeChapterBriefCore(
     throw new Error('O argumento "chapterId" é obrigatório e não pode ser vazio.');
   }
 
-  const bundle = loadBundleCatalog().find((item) => getStr(item, "bundle_id") === chapterId);
-  if (!bundle && READABLE_TITLES[chapterId] === undefined) {
-    return { id: chapterId, found: false };
+  const byNumber = /^\d{1,2}$/.test(chapterId)
+    ? Object.keys(READABLE_TITLES).find((id) => id.startsWith(chapterId.padStart(2, "0") + "-"))
+    : undefined;
+  const chapterIdEff = byNumber ?? chapterId;
+  const bundle = loadBundleCatalog().find((item) => getStr(item, "bundle_id") === chapterIdEff);
+  if (!bundle && READABLE_TITLES[chapterIdEff] === undefined) {
+    return {
+      id: chapterIdEff,
+      found: false,
+      error: `chapterId desconhecido: "${chapterId}". Aceita o id completo (ex.: 08-iac-infraestrutura) ou o número (ex.: 8).`,
+      valid_chapter_ids: Object.keys(READABLE_TITLES).sort(),
+    };
   }
 
   const ontology = getOntologyData();
   const phases = Array.from(
     new Set(
       ontology.assignments
-        .filter((assignment) => assignment.chapter_id === chapterId && assignment.phase.length > 0)
+        .filter((assignment) => assignment.chapter_id === chapterIdEff && assignment.phase.length > 0)
         .map((assignment) => assignment.phase)
     )
   ).sort();
   const roles = Array.from(
     new Set(
       ontology.assignments
-        .filter((assignment) => assignment.chapter_id === chapterId && assignment.role.length > 0)
+        .filter((assignment) => assignment.chapter_id === chapterIdEff && assignment.role.length > 0)
         .map((assignment) => assignment.role)
     )
   ).sort();
@@ -382,7 +391,7 @@ function handleGetSbdToeChapterBriefCore(
   );
 
   return {
-    id: chapterId,
+    id: chapterIdEff,
     found: true,
     title: READABLE_TITLES[chapterId] ?? (bundle ? getStr(bundle, "title") : undefined) ?? chapterId,
     ...(objective !== undefined ? { objective } : {}),
