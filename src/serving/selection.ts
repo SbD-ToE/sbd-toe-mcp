@@ -48,7 +48,7 @@ const CONCERN_TO_DOMAIN_CHAPTERS: Readonly<Partial<Record<Concern, readonly stri
 };
 
 /** Technology vocabulary → chapters (mirrors map_sbd_toe_applicability). */
-const TECHNOLOGY_TO_CHAPTERS: Readonly<Record<string, readonly string[]>> = {
+export const TECHNOLOGY_TO_CHAPTERS: Readonly<Record<string, readonly string[]>> = {
   containers: ["08-iac-infraestrutura", "09-containers-imagens"],
   kubernetes: ["08-iac-infraestrutura", "09-containers-imagens"],
   iac: ["08-iac-infraestrutura"],
@@ -132,6 +132,10 @@ export interface SelectionResult {
   eligible_count: number;
   selected: SelectedRequirement[];
   narrowed_out: NarrowedOutGroup[];
+  /** 0.15.0 (P0-3): requisitos DENTRO do âmbito (base ou capítulo activado) mas não
+   * aplicáveis a este nível (applicable_levels) — declarados com a mesma dignidade
+   * do narrowed_out; nunca invisíveis. */
+  excluded_by_level: NarrowedOutGroup[];
   activated_chapters: ActivatedChapter[];
   activated_categories: string[];
   activation: ActivationResult;
@@ -371,6 +375,27 @@ export function runSelectionWithActivation(
   }
 
   selected.sort((a, b) => a.requirement_id.localeCompare(b.requirement_id));
+
+  // 0.15.0 (P0-3): banda excluded_by_level — o filtro de nível deixa de ser silencioso.
+  const excludedByCategory = new Map<string, string[]>();
+  const selectedIds = new Set(selected.map((s) => s.requirement_id));
+  for (const r of ontology.requirements) {
+    if (atLevel(r) || selectedIds.has(r.requirement_id)) continue;
+    const inScope = r.type === "base" || (r.source_bundle !== undefined && chapterSet.has(r.source_bundle));
+    if (!inScope) continue;
+    const list = excludedByCategory.get(r.category) ?? [];
+    list.push(r.requirement_id);
+    excludedByCategory.set(r.category, list);
+  }
+  const excluded_by_level: NarrowedOutGroup[] = [...excludedByCategory.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([category, ids]) => ({
+      category,
+      count: ids.length,
+      requirement_ids: ids.sort(),
+      reason: `no âmbito (base/capítulo activado) mas não aplicável a ${level} por applicable_levels — excluído pelo nível, DECLARADO (nunca em silêncio)`,
+    }));
+
   const narrowed_out: NarrowedOutGroup[] = [...narrowedByCategory.entries()]
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([category, ids]) => ({
@@ -402,6 +427,7 @@ export function runSelectionWithActivation(
     eligible_count: baselineEligible.length + domainEligible.length + agentsWave.length + extraEligible,
     selected,
     narrowed_out,
+    excluded_by_level,
     activated_chapters: activatedChapters,
     activated_categories: [...new Set([...activatedCategories, ...selected.map((s) => s.category)])].sort(),
     activation,

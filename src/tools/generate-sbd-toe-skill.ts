@@ -33,6 +33,7 @@ type SkillFormat = (typeof VALID_FORMATS)[number];
 type SubagentFlavour = (typeof VALID_FLAVOURS)[number];
 
 const CLIENT_LOCAL_TOOLS = "Read, Write, Edit, Grep, Glob, Bash";
+const DEFAULT_TOOL_PREFIX = "mcp__sbd-toe__";
 const HARNESSED_MCP_TOOLS = [
   "mcp__sbd-toe__get_guide_by_role",
   "mcp__sbd-toe__consult_security_requirements",
@@ -215,7 +216,8 @@ function buildRoleContent(args: {
   guideOutput: GetGuideByRoleOutput;
   chapters: Map<string, ChapterInfo>;
   coverage: GenerateSkillCoverage;
-}): string {
+},
+  toolPrefix: string): string {
   const { canonicalRole, riskLevel, format, flavour, includeDetail, guideOutput, chapters, coverage } = args;
   const name = `sbd-${canonicalRole}`;
   const harnessed = format === "subagent" && flavour === "harnessed";
@@ -237,7 +239,7 @@ function buildRoleContent(args: {
   const tools =
     format === "subagent"
       ? harnessed
-        ? `${CLIENT_LOCAL_TOOLS}, ${HARNESSED_MCP_TOOLS.join(", ")}`
+        ? `${CLIENT_LOCAL_TOOLS}, ${HARNESSED_MCP_TOOLS.map((t) => t.replace(DEFAULT_TOOL_PREFIX, toolPrefix)).join(", ")}`
         : CLIENT_LOCAL_TOOLS
       : undefined;
 
@@ -277,6 +279,8 @@ function buildRoleContent(args: {
 }
 
 export function handleGenerateSbdToeSkill(args: Record<string, unknown> = {}): GenerateSkillOutput {
+  const toolPrefixArg = args && typeof (args as Record<string, unknown>)["tool_prefix"] === "string" ? String((args as Record<string, unknown>)["tool_prefix"]).trim() : "";
+  const toolPrefix = toolPrefixArg.length > 0 ? toolPrefixArg : DEFAULT_TOOL_PREFIX;
   const roleArg = typeof args["role"] === "string" ? args["role"].trim() : "";
 
   // No role → original behaviour: the generic agent guide, unchanged.
@@ -340,7 +344,7 @@ export function handleGenerateSbdToeSkill(args: Record<string, unknown> = {}): G
     guideOutput,
     chapters,
     coverage
-  });
+  }, toolPrefix);
 
   return {
     content,

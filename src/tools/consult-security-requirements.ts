@@ -19,6 +19,7 @@ import type {
   Requirement,
   RequirementControlLink
 } from "./ontology-loader.js";
+import { estimateSize } from "../serving/response-shaping.js";
 import { servedKgReleaseTag } from "../version-info.js";
 import { getOntologyData } from "./ontology-loader.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
@@ -124,6 +125,8 @@ export interface ConsultRequirementsIndexEntry {
 }
 
 export interface ConsultSecurityRequirementsOutput {
+  size_estimate?: { chars: number; approx_tokens: number };
+  projection_note?: string;
   provenance: McpProvenance;
   risk_level: string;
   active_categories: string[];
@@ -470,6 +473,9 @@ export function handleConsultSecurityRequirements(
       rule_trace: [...full.rule_trace, "MODE_INDEX: requirement bodies elided — per-category index returned (declared, not silent)"],
       coverage_gaps: full.coverage_gaps,
       index: [...byCategory.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([category, ids]) => ({ category, count: ids.length, requirement_ids: ids.sort() })),
+      size_estimate: estimateSize(full.requirements),
+      projection_note:
+        "requirements/controls são PROJECÇÕES (id/name/category/type) — corpo completo via resolve_entities; mode:'index' devolve só ids por categoria.",
       meta: { ...full.meta, note: `${full.meta.note} mode=index: controls/artifacts counts in meta; bodies via the default mode.` },
       next: consultAffordances(full.risk_level, full.meta.concernsApplied ?? undefined)
     };

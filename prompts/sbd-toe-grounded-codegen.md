@@ -49,7 +49,7 @@ Never silently pick one sub-task and proceed.
 
 STOP. Report the missing capability verbatim:
 
-- AppSec Core v1 runtime ausente → the deployment is incomplete; the user must re-run `npm run checkout:backend` or pin a different KG snapshot.
+- AppSec Core v1 runtime ausente → the deployment is incomplete: report it to the operator of this MCP deployment (reinstall/upgrade the published package, or repair the served bundle). Consumer sessions cannot fix this locally.
 - Overlay regulatório ausente → the deployment does not publish overlay artefacts; the user must remove `regulatory_frameworks` / `include_regulatory_overlay` or wait for the overlay to be published.
 - Framework regulatório desconhecida → list the supported short codes from `regulatory_overlay.frameworks` if present.
 

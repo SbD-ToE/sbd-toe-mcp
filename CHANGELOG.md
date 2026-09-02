@@ -3,11 +3,64 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-30
 purpose: documentation
-reasoning: v0.14.0 — aplicabilidade GRADUADA (decisão do Author: capítulo nunca se exclui; exigência deriva dos assignments autorados + matriz cap. 01; listas binárias/minLevel mortos; module applicability.ts); v0.13.0 — serving batch: read_sbd_toe_resource (espelho de resources/read, catálogo derivado), stamp provenance.kg por resposta (tectos intactos), inspect com Pin servido (causa do n/d confirmada e corrigida), varrimento de contagens em prosa, release_ref normalizado, ensino Step 0 identidade; v0.12.0 — formal lote: KG v1.9.0 pinned (FIL/PRI/INT-009..012 served, contract v1.15), selection v1.8.0-aware, ceilings ratified+harmonized (9.200/8.450), npm latest; v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; named rules R1 principal-não-humano + R2 narrowing SES; D1 gate um-sinal-uma-superfície; D3 activators; D4; consult mode index; v2 token diet ported with stable-measured ceilings; R3 teaching layer: guide/skills/affordances ensinam select + duas bandas); Axis H 1/3/6 → 10/10; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
+reasoning: v0.15.0 — auditoria Desktop: paginação universal (threat 25/233+size_estimate; plan default 5; slot/char no read_resource), banda excluded_by_level declarada (select+prepare; ultrathin dieta), index-compact derivado (estático morto), tool_prefix, fases canon-first+phase_warning, erros harmonizados com listas de válidos, consult projecção declarada+maxItems, aliases risk_level↔riskLevel; v0.14.0 — aplicabilidade GRADUADA (decisão do Author: capítulo nunca se exclui; exigência deriva dos assignments autorados + matriz cap. 01; listas binárias/minLevel mortos; module applicability.ts); v0.13.0 — serving batch: read_sbd_toe_resource (espelho de resources/read, catálogo derivado), stamp provenance.kg por resposta (tectos intactos), inspect com Pin servido (causa do n/d confirmada e corrigida), varrimento de contagens em prosa, release_ref normalizado, ensino Step 0 identidade; v0.12.0 — formal lote: KG v1.9.0 pinned (FIL/PRI/INT-009..012 served, contract v1.15), selection v1.8.0-aware, ceilings ratified+harmonized (9.200/8.450), npm latest; v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; named rules R1 principal-não-humano + R2 narrowing SES; D1 gate um-sinal-uma-superfície; D3 activators; D4; consult mode index; v2 token diet ported with stable-measured ceilings; R3 teaching layer: guide/skills/affordances ensinam select + duas bandas); Axis H 1/3/6 → 10/10; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.15.0 — 2026-09-01
+
+**Minor** — Desktop-audit cycle: P0 completo + paginação universal + banda por nível.
+Autorização: programme lead («avança»); triagem calibrada pelo Orchestrator (spot-checks
+confirmados). Bundle UNCHANGED (pin release KG v1.9.0). Tudo determinístico.
+
+### Item-a-item (lane Pontifex 1–10)
+
+1. **index-compact DERIVADO** do bundle no arranque (`buildDerivedIndexCompact`):
+   demand_by_level + technologies (reverso da tabela de serving); o estático de Março
+   com minLevel MORREU (ficheiro + 3 listas de empacotamento) — 5ª instância de
+   conteúdo-em-código fechada. activatedBundles: hack «13 apenas L3» e «Sempre para
+   L2+» já tinham morrido em 0.14.0; plan_repo_governance ch. 13 JÁ era igual em
+   L1/L2 via requirement-ladder (verificado: 32 artefactos em ambos) — reportado.
+2. **Paginação universal**: get_threat_landscape com limit/offset (default 25;
+   coverage + size_estimate SEMPRE — L2 inteiro era ≈59k tokens, página default
+   ≈7,1k); plan_repo_governance default paginado (5 capítulos; antes ≈13,7k);
+   read_sbd_toe_resource ganha `slot` (codegen-instructions) e char_offset/char_limit
+   com coverage; consult devolve size_estimate.
+3. **Banda `excluded_by_level[]`** no select (grupos por categoria com razão + ids) e
+   counts aditivos no completeness do prepare — o filtro de nível (selection.ts:210)
+   deixa de ser silencioso. Exemplo L1: 15 categorias / 60 requisitos declarados.
+   ultrathin DIETA os dois counts (tecto 4.840 vigiado: 4.833 medido — near-miss
+   4.850 evitado por dieta, não por tecto novo). Ouro 10/10 mantido.
+4. **generate_sbd_toe_skill `tool_prefix`** (default `mcp__sbd-toe__`) — o prefixo
+   real depende do deployment do cliente.
+5. **Fases**: alias implement→develop CANON-FIRST (se o vocabulário canónico tiver a
+   fase, o alias não se aplica); fase desconhecida ⇒ `phase_warning` com knownPhases
+   (nunca [] silencioso); exemplo 'implement' corrigido na descrição.
+6. **Erros harmonizados**: brief desconhecido ⇒ found:false + erro + valid_chapter_ids
+   (e aceita número '8', convenção unificada com o checklist); orgScope sem match ⇒
+   warning declarado com sample_section_titles; slot inválido ⇒ lista de slots.
+7. **consult**: projecção DECLARADA (projection_note + descrição: corpos completos via
+   resolve_entities); concerns maxItems 3 no schema; enum harmonizado (agents no
+   threat_landscape); checklist risk_level já era «informational» no schema.
+8. **codegen-instructions**: `line_note` com a ressalva de linha (trace_sbd_toe_graph
+   só na 0.20; nesta linha include_relations=true); remediação interna
+   (checkout:backend) removida do texto servido (prompt + resolve_entities).
+9. **skill/{role}**: L2 fixo DECLARADO na descrição (outro nível via
+   generate_sbd_toe_skill).
+10. **Naming**: aliases ADITIVOS risk_level↔riskLevel nos dois sentidos (shim no
+    dispatch; nada renomeado) + convenção declarada no agent-guide.
+
+**Opcional (assess gaps/per_kpi/kpi_values={})**: DEFERIDO para 0.15.1 — reportado,
+não corrigido (orçamento da sessão).
+
+### Verificação
+
+- 689/689 testes; eval `2026-09-01-v0150`: **126 cenários, 87 PASS · 16 PART ·
+  0 FAIL · 23 SKIP — gate E PASS**; ouro **10/10**; TC-F-18..22 novos + TC-D-10/
+  TC-E-02/TC-C-14/TC-A-10/TC-A-11 re-baselinados (runner + doc §4.4). Orçamentos:
+  std f2 9.123 ≤ 9.200 · min 8.396 ≤ 8.450 · ultrathin 4.833 ≤ 4.840 (dieta).
 
 ## 0.14.0 — 2026-09-01
 

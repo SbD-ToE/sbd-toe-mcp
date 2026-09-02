@@ -29,6 +29,7 @@ export interface SelectRequirementsOutput {
   selection: {
     selected: SelectionResult["selected"];
     narrowed_out: SelectionResult["narrowed_out"];
+    excluded_by_level: SelectionResult["excluded_by_level"];
   };
   context: {
     activated_chapters: SelectionResult["activated_chapters"];
@@ -48,6 +49,7 @@ export interface SelectRequirementsOutput {
     nextOffset: number | null;
     hasMore: boolean;
     narrowed_out_requirements: number;
+    excluded_by_level_requirements: number;
   };
   meta: { eligible: number; note: string; notes: string[] };
   next?: Affordance[];
@@ -123,7 +125,7 @@ export function handleSelectRequirements(args: Record<string, unknown>): SelectR
         "narrowed_out com razão — nunca em silêncio. Nada é inventado."
     },
     risk_level: risk,
-    selection: { selected: page, narrowed_out: result.narrowed_out },
+    selection: { selected: page, narrowed_out: result.narrowed_out, excluded_by_level: result.excluded_by_level },
     context: { activated_chapters: result.activated_chapters, activated_categories: result.activated_categories },
     activation_trace: result.activation.trace,
     overlay,
@@ -133,6 +135,7 @@ export function handleSelectRequirements(args: Record<string, unknown>): SelectR
       offset: offsetArg,
       nextOffset,
       hasMore: nextOffset !== null,
+      excluded_by_level_requirements: result.excluded_by_level.reduce((n, g) => n + g.count, 0),
       narrowed_out_requirements: result.narrowed_out.reduce((n, g) => n + g.count, 0)
     },
     meta: {

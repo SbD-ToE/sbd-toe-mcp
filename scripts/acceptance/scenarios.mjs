@@ -90,14 +90,14 @@ export const scenarios = [
     run: async (c) => { const a = await c.tool("generate_sbd_toe_skill", { clientType: "github-copilot" }); const b = await c.tool("generate_sbd_toe_skill", { clientType: "claude-code" }); if (!a.ok || !b.ok) return fail(a.error ?? b.error);
       return a.data.content === b.data.content ? part("gap confirmed: content identical across clientType (no per-client differentiation)", "roadmap") : ok("content differs per clientType"); } },
   { id: "TC-A-10", axis: "A", title: "repo governance artefacts L3 by chapter", tool: "plan_sbd_toe_repo_governance",
-    run: async (c, ctx) => { const r = await c.tool("plan_sbd_toe_repo_governance", { riskLevel: "L3" }); if (!r.ok) return fail(r.error); const d = r.data;
+    run: async (c, ctx) => { const r = await c.tool("plan_sbd_toe_repo_governance", { riskLevel: "L3", limit: 100 }); if (!r.ok) return fail(r.error); const d = r.data;
       if (!d.byChapter?.length) return fail("no byChapter"); const bad = d.byChapter.filter((x) => !ctx.chapters.has(x.chapterId)); if (bad.length) return fail("unknown chapter ids");
       const arts = d.byChapter.reduce((n, x) => n + (x.artefacts?.length ?? 0), 0); return ok(`${d.byChapter.length} chapters, ${arts} artefacts (total ${d.totalArtefacts}), sourced note present: ${!!d.note}`); } },
   { id: "TC-A-11", axis: "A", title: "repo governance pagination walk (offset/limit, coverage-preserving)", tool: "plan_sbd_toe_repo_governance",
     run: async (c) => { const seen = []; let offset = 0, pages = 0; for (;;) { const r = await c.tool("plan_sbd_toe_repo_governance", { riskLevel: "L3", offset, limit: 3 }); if (!r.ok) return fail(r.error); const d = r.data; pages++;
         if ((d.byChapter?.length ?? 0) > 3) return fail("page > limit"); if (!d.coverage || !d.size_estimate) return fail("missing coverage/size_estimate"); seen.push(...ids(d.byChapter, "chapterId"));
         if (!d.coverage.hasMore) break; if (d.coverage.nextOffset === null || d.coverage.nextOffset <= offset) return fail("bad nextOffset"); offset = d.coverage.nextOffset; if (pages > 20) return fail("runaway"); }
-      const full = await c.tool("plan_sbd_toe_repo_governance", { riskLevel: "L3" }); const all = ids(full.data.byChapter, "chapterId");
+      const full = await c.tool("plan_sbd_toe_repo_governance", { riskLevel: "L3", limit: 100 }); const all = ids(full.data.byChapter, "chapterId");
       if (new Set(seen).size !== seen.length) return fail("duplicates across pages"); if (stable([...seen].sort()) !== stable([...all].sort())) return fail("walk ≠ full set");
       return ok(`${pages} pages of ≤3 cover all ${all.length} chapters, no loss/duplication`); } },
   { id: "TC-A-12", axis: "A", title: "list_chapters L2 with applicability/minLevel", tool: "list_sbd_toe_chapters",
@@ -167,7 +167,7 @@ export const scenarios = [
       return cites && urls && ttl ? ok(`${cites} cited chunks with URLs; session/TTL content present`) : part(`cites ${cites}, urls ${urls}, ttl-content ${ttl}`); } },
   ...["04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "16", "17", "18", "19", "20", "21", "22", "23", "24", "27", "28"].map((n) => ({ id: `TC-C-${n}`, axis: "C", title: `AC-${n} — commercial / stateful surface (L4a/L4b)`, tool: "—", run: async () => skip("commercial roadmap (interventive/stateful) — documented, not run") })),
   { id: "TC-C-14", axis: "C", title: "AC-14 architecture: threats contextualised (not a ch.02 dump)", tool: "get_threat_landscape",
-    run: async (c) => { const t = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["architecture"] }); if (!t.ok) return fail(t.error); const chs = new Set(ids(t.data.threats, "chapter_id"));
+    run: async (c) => { const t = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["architecture"], limit: 300 }); if (!t.ok) return fail(t.error); const chs = new Set(ids(t.data.threats, "chapter_id"));
       if (chs.size === 1 && chs.has("02-requisitos-seguranca")) return fail("ch.02 dump"); return chs.has("04-arquitetura-segura") ? ok(`${t.data.threats.length} threats over ${[...chs].join(",")}`) : part(`threats over ${[...chs].join(",")} (no ch.04)`); } },
   { id: "TC-C-15", axis: "C", title: "AC-15 pentester role → assignments", tool: "get_guide_by_role",
     run: async (c) => { const r = await c.tool("get_guide_by_role", { risk_level: "L3", role: "pentester" }); if (!r.ok) return fail(r.error); const n = r.data.assignments?.length ?? 0;
@@ -199,9 +199,10 @@ export const scenarios = [
     run: async (c) => { const r = await c.tool("get_sbd_toe_chapter_brief", { chapterId: "09-containers-imagens" }); if (!r.ok) return fail(r.error); const nx = r.data.next ?? []; return nx.length && nx.every((n) => n.tool) ? ok(`${nx.length} actionable affordances (${ids(nx, "tool").join(", ")}); artifacts ${r.data.artifacts?.length}`) : fail("no affordance handles"); } },
   { id: "TC-D-09", axis: "D", title: "never-silent-trunc: consult declares totals", tool: "consult_security_requirements",
     run: async (c) => { const r = await c.tool("consult_security_requirements", { risk_level: "L3", concerns: ["api"], exposure: "public" }); if (!r.ok) return fail(r.error); const m = r.data.meta; return m.requirementCount === r.data.requirements.length && m.controlCount === r.data.controls.length ? ok(`N=M declared (${m.requirementCount} req, ${m.controlCount} controls); gaps declared ${r.data.coverage_gaps?.requirements_without_control_link?.count}`) : fail("counts ≠ returned"); } },
-  { id: "TC-D-10", axis: "D", title: "never-silent-trunc: threat landscape total/remaining", tool: "get_threat_landscape",
-    run: async (c) => { const r = await c.tool("get_threat_landscape", { risk_level: "L2" }); if (!r.ok) return fail(r.error); const tools = c.tools.find((t) => t.name === "get_threat_landscape"); const paginated = "limit" in (tools?.inputSchema?.properties ?? {});
-      return r.data.meta?.threatCount === r.data.threats.length ? (paginated ? ok("total declared + paginated") : part(`returns all ${r.data.threats.length} threats with threatCount declared (no silent truncation) but no offset/limit — not paginated (rule: every set-returning tool paginates)`)) : fail("threatCount ≠ returned"); } },
+  { id: "TC-D-10", axis: "D", title: "never-silent-trunc: threat landscape PAGINADO com coverage+size_estimate (0.15.0)", tool: "get_threat_landscape",
+    run: async (c) => { const r = await c.tool("get_threat_landscape", { risk_level: "L2" }); if (!r.ok) return fail(r.error);
+      const d = r.data; if (!d.coverage?.total || d.threats.length > 25) return fail(`default não paginado: ${d.threats.length}`);
+      if (!d.size_estimate) return fail("sem size_estimate"); return ok(`paginado: ${d.threats.length}/${d.coverage.total} + size_estimate (regra G1 fechada)`); } },
   { id: "TC-D-11", axis: "D", title: "determinism: resolve ×2 byte-identical", tool: "resolve_entities",
     run: async (c) => { const a = await c.tool("resolve_entities", { record_type: "requirement", filters: { category: "AUT" } }); const b = await c.tool("resolve_entities", { record_type: "requirement", filters: { category: "AUT" } }); return a.text === b.text ? ok(`identical (${a.data.total} records)`) : fail("differs between runs"); } },
   { id: "TC-D-12", axis: "D", title: "determinism: consult ×2 same ids same order", tool: "consult_security_requirements",
@@ -298,7 +299,7 @@ export const scenarios = [
       if (withIds !== th.length) return part(`associated_control_ids on ${withIds}/${th.length} (declared-empty derivations tolerated)`, "graph"); if (badAssoc.length) return fail(`associated_control_ids not in bundle: ${badAssoc.slice(0, 3)}`, "graph");
       return ok(`${th.length}/${th.length} threats with mitigated_by AND associated_control_ids, all ids resolve`); } },
   { id: "TC-E-02", axis: "E", title: "threat mitigation structural (L2, auth incl. ch.02 via C1): mitigated_by + associated_control_ids resolve", tool: "get_threat_landscape",
-    run: async (c, ctx) => { const r = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["auth"] }); if (!r.ok) return fail(r.error); const th = r.data.threats;
+    run: async (c, ctx) => { const r = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["auth"], limit: 300 }); if (!r.ok) return fail(r.error); const th = r.data.threats;
       if (!(r.data.meta.activeBundles ?? []).includes("02-requisitos-seguranca")) return fail("ch.02 not in auth scope although C1 defines there (G-b decision 2)");
       const mit = th.filter((t) => (t.mitigated_by ?? []).length).length; const badMit = th.flatMap((t) => t.mitigated_by ?? []).filter((m) => !ctx.knownIds.has(m.control_id));
       const withIds = th.filter((t) => (t.associated_control_ids ?? []).length).length; const badAssoc = th.flatMap((t) => t.associated_control_ids ?? []).filter((id) => !ctx.knownIds.has(id));
@@ -423,6 +424,60 @@ export const scenarios = [
       if (!txt.includes("Pin servido") || !txt.includes(pin.kg.release_tag)) return fail("inspect does not present the consumed-bundle pin provenance");
       if (/run_id=n\/d/.test(txt)) return fail("inspect still shows run_id=n/d (undeclared)");
       return ok(`provenance.kg=${pin.kg.release_tag} em consult+select; inspect apresenta o Pin servido (fim do n/d não-declarado)`); } },
+  { id: "TC-F-18", axis: "F", title: "threat_landscape paginado (0.15.0): default 25, coverage+size_estimate, enum agents", tool: "get_threat_landscape",
+    run: async (c) => {
+      const r = await c.tool("get_threat_landscape", { risk_level: "L2" }); if (!r.ok) return fail(r.error);
+      const d = r.data; if (!d.coverage || d.coverage.total === undefined) return fail("sem coverage");
+      if (d.threats.length > 25) return fail(`default devolveu ${d.threats.length} > 25`);
+      if (!d.size_estimate?.approx_tokens) return fail("sem size_estimate");
+      if (d.coverage.total > 25 && !d.coverage.hasMore) return fail("hasMore incoerente");
+      const p2 = await c.tool("get_threat_landscape", { risk_level: "L2", offset: d.coverage.nextOffset ?? 0, limit: 25 });
+      if (!p2.ok || p2.data.threats[0]?.id === d.threats[0]?.id) return fail("página 2 não avança");
+      const ag = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["agents"], limit: 5 });
+      if (!ag.ok) return fail(`concern agents rejeitado: ${ag.error}`);
+      return ok(`default ${d.threats.length}/${d.coverage.total} threats, size≈${d.size_estimate.approx_tokens}tk, página 2 avança, enum agents aceite`); } },
+  { id: "TC-F-19", axis: "F", title: "banda excluded_by_level (0.15.0): select declara exclusões de nível; prepare com counts", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      const r = await c.tool("select_sbd_toe_requirements", { risk_level: "L1", task: "SPA com login e sessão de utilizador; app interna" }); if (!r.ok) return fail(r.error);
+      const ex = r.data.selection.excluded_by_level; if (!Array.isArray(ex) || ex.length === 0) return fail("excluded_by_level vazio em L1 (há requisitos L2+/L3-only)");
+      if (!ex.every((g) => g.reason && g.requirement_ids?.length === g.count)) return fail("grupo sem razão/ids coerentes");
+      if (typeof r.data.coverage.excluded_by_level_requirements !== "number") return fail("coverage sem o total da banda");
+      const p = await c.tool("prepare_sbd_toe_codegen_context", { task: "Adicionar logging de auditoria ao serviço interno", risk_level: "L1" }); if (!p.ok) return fail(p.error);
+      const sel = p.data.completeness_report?.selection;
+      if (typeof sel?.excluded_by_level_requirements !== "number") return fail("prepare sem counts da banda");
+      return ok(`select L1: ${ex.length} categorias excluídas por nível (${r.data.coverage.excluded_by_level_requirements} reqs) DECLARADAS; prepare counts ✓`); } },
+  { id: "TC-F-20", axis: "F", title: "fases (0.15.0): alias implement→develop; desconhecida ⇒ phase_warning; tool_prefix", tool: "get_guide_by_role",
+    run: async (c) => {
+      const a = await c.tool("get_guide_by_role", { risk_level: "L2", role: "developer", phase: "implement" }); if (!a.ok) return fail(a.error);
+      if ((a.data.assignments ?? []).length === 0) return fail("alias implement→develop não produziu assignments");
+      const b = await c.tool("get_guide_by_role", { risk_level: "L2", role: "developer", phase: "fase-banana" }); if (!b.ok) return fail(b.error);
+      if (!b.data.phase_warning?.knownPhases?.length) return fail("fase desconhecida sem phase_warning.knownPhases (silêncio)");
+      const g = await c.tool("generate_sbd_toe_skill", { role: "developer", format: "subagent", flavour: "harnessed", tool_prefix: "mcp__custom__" }); if (!g.ok) return fail(g.error);
+      if (!g.data.content.includes("mcp__custom__consult_security_requirements")) return fail("tool_prefix não aplicado ao frontmatter");
+      if (g.data.content.includes("mcp__sbd-toe__consult")) return fail("prefixo default residual com tool_prefix custom");
+      return ok(`implement→develop (${a.data.assignments.length} assignments); banana → warning c/ ${b.data.phase_warning.knownPhases.length} knownPhases; tool_prefix aplicado`); } },
+  { id: "TC-F-21", axis: "F", title: "erros harmonizados (0.15.0): brief/orgScope/slot declarados com listas de válidos", tool: "get_sbd_toe_chapter_brief",
+    run: async (c) => {
+      const b = await c.tool("get_sbd_toe_chapter_brief", { chapterId: "capitulo-fantasma" }); if (!b.ok) return fail(b.error);
+      if (b.data.found !== false || !b.data.valid_chapter_ids?.length) return fail("brief desconhecido sem erro declarado + lista");
+      const n = await c.tool("get_sbd_toe_chapter_brief", { chapterId: "8" }); if (!n.ok || n.data.found === false) return fail("alias numérico '8' não resolve");
+      const o = await c.tool("get_sbd_toe_operating_model", { orgScope: "zzz-inexistente" }); if (!o.ok) return fail(o.error);
+      if (!o.data.data?.warning?.org_scope_not_matched) return fail("orgScope sem correspondência ficou mudo");
+      const sBad = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/codegen-instructions/codegen", slot: "slot-fantasma" });
+      if (sBad.ok || !/Slots válidos/.test(String(sBad.error))) return fail("slot inválido sem lista de slots");
+      const sOk = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/agent-guide", char_offset: 0, char_limit: 500 });
+      if (!sOk.ok || sOk.data.coverage?.total_chars <= 500 || sOk.data.content.length !== 500) return fail("char paging não corta/declara");
+      return ok(`brief fantasma → lista de ${b.data.valid_chapter_ids.length} ids; '8' resolve; orgScope warning; slot inválido lista slots; char paging 500/${sOk.data.coverage.total_chars}`); } },
+  { id: "TC-F-22", axis: "F", title: "index-compact DERIVADO (0.15.0) + aliases de naming risk_level↔riskLevel", tool: "read_sbd_toe_resource",
+    run: async (c) => {
+      const r = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/index-compact" }); if (!r.ok) return fail(r.error);
+      const idx = JSON.parse(r.data.content);
+      if (idx.version !== "2.0-derived") return fail(`version=${idx.version} (estático vivo?)`);
+      if (/"minLevel"\s*:/.test(JSON.stringify(idx))) return fail("chave minLevel ainda servida");
+      if (!idx.chapters?.every((ch) => ch.demand_by_level?.L1)) return fail("capítulo sem demand_by_level");
+      const m = await c.tool("map_sbd_toe_applicability", { risk_level: "L2" }); if (!m.ok) return fail("alias risk_level→riskLevel falhou no map");
+      const q = await c.tool("consult_security_requirements", { riskLevel: "L2", concerns: ["logging"] }); if (!q.ok) return fail("alias riskLevel→risk_level falhou no consult");
+      return ok(`index 2.0-derived (${idx.chapters.length} caps, demand_by_level, 0 minLevel); aliases de nível nos 2 sentidos ✓`); } },
 
   // ───────────────────────── Axis H — selection vs golden oracle (measurement, NOT gate) ─────────────────────────
   // Oracle: golden-selection-cases.md v1 (programme lead's, read-only). One scenario per
