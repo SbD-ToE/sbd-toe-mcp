@@ -30,3 +30,7 @@
 ## Update — ciclo 0.16.0 (2026-09-02)
 - [x] Re-pin dev-build 2026-09-02 (v1.16) + joins expostos (artifacts 25/25, names 95/95, totais 45/469); stamp dev:<sha12>; eval 129 cenários 0 FAIL; ouro 10/10
 - [ ] PR → merge → tag v0.16.0 → npm latest
+
+## Update — lote formal 0.16.1 (2026-09-02)
+- [x] Re-pin release v1.10.0 (sha ✓, byte-igual); stamp v1.10.0 verificado; tectos intactos; eval 129 cenários 0 FAIL; ouro 10/10
+- [ ] PR → merge → tag v0.16.1 → npm latest; depois beta.13 (dispatch próprio) fecha o lote
