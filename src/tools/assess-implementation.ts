@@ -86,12 +86,13 @@ export interface KpiResult {
 
 export interface AssessData {
   risk_level: string;
-  posture: "above" | "at" | "below";
+  posture: "above" | "at" | "below" | "not_assessed";
   per_kpi: KpiResult[];
   gaps: KpiResult[];
   totals: { applicable: number; meets: number; gaps: number; not_reported: number };
   /** Count of gaps actually returned in `gaps` (≤ totals.gaps — page per_kpi for the rest). */
   gaps_returned: number;
+  gaps_coverage: { total: number; returned: number; offset: number; nextOffset: number | null; hasMore: boolean };
   unknown_metrics: string[];
   mode: "self_report_stateless";
 }
@@ -120,6 +121,17 @@ export function handleAssessImplementation(args: Record<string, unknown>): Proto
   }
 
   const metrics = loadMetrics();
+  // 0.15.1 (item 5): auto-relato VAZIO é rejeitado com erro instrutivo — um objecto {}
+  // não é uma avaliação; a lista de metric_ids válidos é derivada do catálogo.
+  if (kpiValuesArg && typeof kpiValuesArg === "object" && Object.keys(kpiValuesArg as object).length === 0) {
+    const sampleIds = metrics.slice(0, 5).map((mt) => mt.metric_id);
+    throw Object.assign(
+      new Error(
+        `kpi_values vazio — fornece pelo menos uma métrica (ex.: {"${sampleIds[0] ?? "ARC-K01"}": 85}). metric_ids válidos (amostra derivada do catálogo): ${sampleIds.join(", ")}…`
+      ),
+      { rpcError: { code: -32602, message: "kpi_values vazio (auto-relato sem valores não é uma avaliação)", data: { sample_metric_ids: sampleIds } } }
+    );
+  }
   const knownIds = new Set(metrics.map((m) => m.metric_id));
   const perKpi: KpiResult[] = [];
 
@@ -165,9 +177,15 @@ export function handleAssessImplementation(args: Record<string, unknown>): Proto
 
   // posture: below if any applicable KPI is unmet/unreported; above if all met AND
   // at least one strictly exceeds its threshold; otherwise at.
+  // 0.15.1 (item 5): o agregado distingue AVALIADO-abaixo de NÃO-avaliado.
+  const belowCount = perKpi.filter((k) => k.status === "below").length;
   let posture: AssessData["posture"];
-  if (gaps.length > 0 || applicable === 0) {
-    posture = applicable === 0 ? "below" : "below";
+  if (belowCount > 0) {
+    posture = "below";
+  } else if (meets === 0 || applicable === 0) {
+    posture = "not_assessed";
+  } else if (notReported > 0) {
+    posture = "at"; // met everything evaluated; extent declared em totals.not_reported
   } else {
     const exceeds = perKpi.some(
       (k) => k.operator === "gte" && k.value !== undefined && k.threshold_value !== undefined && k.value > k.threshold_value
@@ -187,9 +205,13 @@ export function handleAssessImplementation(args: Record<string, unknown>): Proto
     offset: typeof offsetArg === "number" ? offsetArg : undefined,
     limit: typeof limitArg === "number" ? limitArg : undefined
   });
-  const boundedGaps = [...gaps]
-    .sort((a, b) => GAP_SEVERITY[a.status] - GAP_SEVERITY[b.status])
-    .slice(0, page.coverage.returned || gaps.length);
+  // 0.15.1 (item 5): paginação PRÓPRIA dos gaps (gaps_offset/gaps_limit) — o destaque
+  // deixa de ser um corte sem caminho (2 de 91): coverage própria, walk completo.
+  const gapsSorted = [...gaps].sort((a, b) => GAP_SEVERITY[a.status] - GAP_SEVERITY[b.status]);
+  const gapsOffset = typeof args["gaps_offset"] === "number" ? Math.max(0, Math.floor(args["gaps_offset"] as number)) : 0;
+  const gapsLimit = typeof args["gaps_limit"] === "number" ? Math.max(1, Math.floor(args["gaps_limit"] as number)) : 10;
+  const boundedGaps = gapsSorted.slice(gapsOffset, gapsOffset + gapsLimit);
+  const gapsNext = gapsOffset + boundedGaps.length < gapsSorted.length ? gapsOffset + boundedGaps.length : null;
 
   return {
     data: {
@@ -199,6 +221,7 @@ export function handleAssessImplementation(args: Record<string, unknown>): Proto
       gaps: boundedGaps,
       totals: { applicable, meets, gaps: gaps.length, not_reported: notReported },
       gaps_returned: boundedGaps.length,
+      gaps_coverage: { total: gapsSorted.length, returned: boundedGaps.length, offset: gapsOffset, nextOffset: gapsNext, hasMore: gapsNext !== null },
       unknown_metrics: unknownMetrics,
       mode: "self_report_stateless"
     },

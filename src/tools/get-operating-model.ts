@@ -67,17 +67,22 @@ export function handleGetOperatingModel(
     sections: operating.length
   };
 
-  // 0.15.0 (P0-7): orgScope sem correspondência ⇒ aviso DECLARADO.
+  // 0.15.1 (item 4): orgScope sem correspondência ⇒ ERRO accionável com a lista de
+  // scopes válidos DERIVADA dos dados (padrão generate_skill) — o sucesso-vazio morreu.
   const unfilteredOM = all.filter((c) => OPERATING_MODEL_RE.test(`${c.title} ${c.section_path}`));
-  const scopeWarning =
-    orgScope && operating.length === 0
-      ? { org_scope_not_matched: orgScope, note: "Nenhuma secção contém esse orgScope (substring sobre título/section_path/texto).", sample_section_titles: unfilteredOM.slice(0, 8).map((c) => c.title) }
-      : null;
+  if (orgScope && operating.length === 0) {
+    const validTitles = [...new Set(unfilteredOM.map((c) => c.title))].slice(0, 10);
+    throw Object.assign(
+      new Error(
+        `orgScope sem correspondência: "${orgScope}". O filtro é substring sobre título/section_path/texto. Secções válidas (amostra derivada): ${validTitles.join(" | ")}.`
+      ),
+      { rpcError: { code: -32602, message: `orgScope "${orgScope}" não corresponde a nenhuma secção (filtro substring). Secções válidas (amostra derivada): ${validTitles.join(" | ")}`, data: { valid_section_titles: validTitles } } }
+    );
+  }
 
   return {
     data: {
       ...(orgScope ? { org_scope: orgScope } : {}),
-      ...(scopeWarning ? { warning: scopeWarning } : {}),
       sections: page.items.map((c) => ({
         chunk_id: c.chunk_id,
         title: c.title,

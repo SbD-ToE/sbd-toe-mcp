@@ -15,7 +15,7 @@
 import { boundAffordances, type Affordance } from "./protocol-envelope.js";
 
 const concernsHint = (concerns: string[] | undefined): string =>
-  concerns && concerns.length > 0 ? `concerns=[${concerns.slice(0, 3).join(", ")}]` : "<=3 concerns";
+  concerns && concerns.length > 0 ? `concerns=[${concerns.slice(0, 5).join(", ")}]` : "<=3 concerns";
 
 export function listChaptersAffordances(): Affordance[] {
   return boundAffordances([
@@ -29,14 +29,14 @@ export function mapApplicabilityAffordances(riskLevel: string | undefined): Affo
   const L = riskLevel ?? "L2";
   return boundAffordances([
     { intent: "select the requirements for one concrete task in this scope", tool: "select_sbd_toe_requirements", with: `risk_level="${L}", task (+ changed_files)`, kind: "structural" },
-    { intent: "get the requirements for the active areas", tool: "consult_security_requirements", with: `risk_level="${L}", <=3 concerns`, kind: "structural" },
+    { intent: "get the requirements for the active areas", tool: "consult_security_requirements", with: `risk_level="${L}", <=5 concerns (recomendado <=3; compostas → select)`, kind: "structural" },
     { intent: "list the governance artefacts to produce", tool: "plan_sbd_toe_repo_governance", with: `riskLevel="${L}"`, kind: "semantic" }
   ]);
 }
 
 export function selectRequirementsAffordances(riskLevel: string): Affordance[] {
   return boundAffordances([
-    { intent: "get the controls/artifacts behind the selected requirements", tool: "consult_security_requirements", with: `risk_level="${riskLevel}", <=3 concerns`, kind: "structural" },
+    { intent: "get the controls/artifacts behind the selected requirements", tool: "consult_security_requirements", with: `risk_level="${riskLevel}", <=5 concerns (recomendado <=3)`, kind: "structural" },
     { intent: "prepare grounded codegen context for one concrete task", tool: "prepare_sbd_toe_codegen_context", with: "task + risk_level (+ changed_files)", kind: "semantic" },
     { intent: "check the threats relevant to this scope", tool: "get_threat_landscape", with: `risk_level="${riskLevel}"`, kind: "semantic" }
   ]);
@@ -96,7 +96,7 @@ export function planRepoGovernanceAffordances(riskLevel: string | null): Afforda
 
 export function reviewScopeAffordances(riskLevel: string): Affordance[] {
   return boundAffordances([
-    { intent: "get the requirements for the bundles in scope", tool: "consult_security_requirements", with: `risk_level="${riskLevel}", <=3 concerns`, kind: "semantic" },
+    { intent: "get the requirements for the bundles in scope", tool: "consult_security_requirements", with: `risk_level="${riskLevel}", <=5 concerns (recomendado <=3)`, kind: "semantic" },
     { intent: "prepare grounded review context for the changed files", tool: "prepare_sbd_toe_codegen_context", with: "mode=review", kind: "semantic" }
   ]);
 }
@@ -107,7 +107,7 @@ export function prepareCodegenAffordances(status: string): Affordance[] {
       ? { intent: "split into 2-4 subtasks and call again per subtask", tool: "prepare_sbd_toe_codegen_context", with: "one subtask scope", kind: "structural" }
       : status === "ready_for_codegen"
         ? { intent: "cite the citation_map and fill the rationale as you implement", tool: "resolve_entities", with: "the cited ids", kind: "structural" }
-        : { intent: "narrow the scope or consult requirements to unblock", tool: "consult_security_requirements", with: "risk_level + <=3 concerns", kind: "structural" };
+        : { intent: "narrow the scope or consult requirements to unblock", tool: "consult_security_requirements", with: "risk_level + <=5 concerns (recomendado <=3)", kind: "structural" };
   return boundAffordances([
     byStatus,
     { intent: "check the threats relevant to this work", tool: "get_threat_landscape", with: "risk_level + concerns", kind: "semantic" }
