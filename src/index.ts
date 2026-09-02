@@ -999,11 +999,12 @@ class McpRuntime {
             "The EXPECTED side of verification: per requirement/control at a risk level, the validation method " +
             "+ expected evidence + EvidencePattern reference (the published patterns — totals declared per response). The deterministic " +
             "complement of the auditor's expectation and the test-plan. Cited per row; coverage-preserving — " +
-            "declares the requirements with no EvidencePattern. Use to answer 'how do I prove chapter/level X?'.",
+            "declares the requirements with no EvidencePattern. Use to answer 'how do I prove chapter/level X?' — or 'how do I prove THESE requirements?' via requirement_ids (o fecho requisito→prova a partir do select).",
           inputSchema: {
             type: "object",
             properties: {
               risk_level: { type: "string", enum: ["L1", "L2", "L3"], description: "Risk level (filters via the pattern's risk_level_hint; unhinted patterns apply broadly)." },
+              requirement_ids: { type: "array", items: { type: "string" }, description: "0.17.0: «como provo ESTES?» — filtra a matriz pelos requisitos concretos (ex.: os selected do select_sbd_toe_requirements); ids sem EvidencePattern vêm DECLARADOS em unknown_requirement_ids." },
               offset: { type: "number" },
               limit: { type: "number" }
             },

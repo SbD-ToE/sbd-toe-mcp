@@ -34,11 +34,13 @@ export function mapApplicabilityAffordances(riskLevel: string | undefined): Affo
   ]);
 }
 
-export function selectRequirementsAffordances(riskLevel: string): Affordance[] {
+export function selectRequirementsAffordances(riskLevel: string, selectedIds: readonly string[] = []): Affordance[] {
+  const idsHint = selectedIds.length > 0 ? `requirement_ids=[${selectedIds.slice(0, 3).join(", ")}${selectedIds.length > 3 ? ", …" : ""}]` : "requirement_ids=[…os selected…]";
   return boundAffordances([
+    // 0.17.0 (achado 3): o fecho requisito → PROVA deixa de depender de inferência.
+    { intent: "provar os requisitos seleccionados (requisito → prova)", tool: "get_sbd_toe_verification_matrix", with: `risk_level="${riskLevel}", ${idsHint}`, kind: "structural" },
     { intent: "get the controls/artifacts behind the selected requirements", tool: "consult_security_requirements", with: `risk_level="${riskLevel}", <=5 concerns (recomendado <=3)`, kind: "structural" },
-    { intent: "prepare grounded codegen context for one concrete task", tool: "prepare_sbd_toe_codegen_context", with: "task + risk_level (+ changed_files)", kind: "semantic" },
-    { intent: "check the threats relevant to this scope", tool: "get_threat_landscape", with: `risk_level="${riskLevel}"`, kind: "semantic" }
+    { intent: "prepare grounded codegen context for one concrete task", tool: "prepare_sbd_toe_codegen_context", with: "task + risk_level (+ changed_files)", kind: "semantic" }
   ]);
 }
 

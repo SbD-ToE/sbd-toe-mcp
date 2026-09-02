@@ -93,6 +93,9 @@ export interface VerificationRow {
 export interface VerificationMatrixData {
   risk_level: string;
   rows: VerificationRow[];
+  requested_requirement_ids?: string[];
+  /** Ids pedidos SEM EvidencePattern mapeado — declarados, nunca omitidos. */
+  unknown_requirement_ids?: string[];
   totals: { evidence_patterns: number; requirements_covered: number; unhinted: number };
   coverage_gaps: {
     requirements_without_evidence_pattern: number;
@@ -138,7 +141,18 @@ export function handleGetVerificationMatrix(
     if (applies) scoped.push({ ep, hinted });
   }
 
-  const rows = scoped.map(({ ep, hinted }) => toRow(ep, hinted));
+  // 0.17.0 (achado 3): «como provo ESTES requisitos» — filtro por ids concretos,
+  // com os pedidos-sem-linha DECLARADOS (nunca silencioso).
+  const reqIdsArg = Array.isArray(args["requirement_ids"])
+    ? (args["requirement_ids"] as unknown[]).filter((x): x is string => typeof x === "string" && x.length > 0)
+    : [];
+  const reqIdSet = new Set(reqIdsArg);
+  const scopedByReq = reqIdsArg.length > 0
+    ? scoped.filter(({ ep }) => ep.maps_to_requirement_id !== undefined && reqIdSet.has(ep.maps_to_requirement_id))
+    : scoped;
+  const coveredReqIds = new Set(scopedByReq.map(({ ep }) => ep.maps_to_requirement_id).filter(Boolean));
+  const unknownRequirementIds = reqIdsArg.filter((id) => !coveredReqIds.has(id));
+  const rows = scopedByReq.map(({ ep, hinted }) => toRow(ep, hinted));
   const requirementsCovered = new Set(rows.map((r) => r.requirement_id).filter(Boolean)).size;
   const unhinted = scoped.filter((s) => !s.hinted).length;
 
@@ -169,6 +183,12 @@ export function handleGetVerificationMatrix(
     data: {
       risk_level: riskLevel,
       rows: page.items,
+      ...(reqIdsArg.length > 0
+        ? {
+            requested_requirement_ids: reqIdsArg,
+            unknown_requirement_ids: unknownRequirementIds,
+          }
+        : {}),
       totals: { evidence_patterns: rows.length, requirements_covered: requirementsCovered, unhinted },
       coverage_gaps: {
         requirements_without_evidence_pattern: missing.length,

@@ -34,3 +34,7 @@
 ## Update — lote formal 0.16.1 (2026-09-02)
 - [x] Re-pin release v1.10.0 (sha ✓, byte-igual); stamp v1.10.0 verificado; tectos intactos; eval 129 cenários 0 FAIL; ouro 10/10
 - [ ] PR → merge → tag v0.16.1 → npm latest; depois beta.13 (dispatch próprio) fecha o lote
+
+## Update — ciclo 0.17.0 (2026-09-02)
+- [x] Ronda 2: resolve never-silent (valid_fields derivados; caso do lead) + matrix requirement_ids + next select→matrix; eval 131 cenários 0 FAIL; ouro 10/10
+- [ ] PR → merge → tag v0.17.0 → npm latest; achado 1 (classificação) aguarda ratificação de desenho
