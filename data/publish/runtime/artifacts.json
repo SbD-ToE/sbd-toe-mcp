@@ -1,6 +1,9 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
+  "chapter_relation_count": 469,
   "count": 45,
+  "count_semantics": "`count` = distinct Artifact records (45); `chapter_occurrences` rows form the chapter<->artifact relation (469 rows) — sum them for relation edges, never for totals.",
+  "distinct_count": 45,
   "entity_type": "Artifact",
   "items": [
     {

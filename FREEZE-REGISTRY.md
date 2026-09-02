@@ -62,10 +62,13 @@ TODO — confirm with programme lead.
 - v0.12.0 → `b475900e87a3035d36a16201dd80d5e5b36c396d` (2026-08-31; formal lote — KG
   v1.9.0 pinned, sha256 `11153c85…`, contract v1.15; npm `@shiftleftpt/sbd-toe-mcp@0.12.0`
   = published, gitHead same commit; GitHub Release `v0.12.0`)
-- v0.15.1 *(reverificação Desktop fechada — tool_prefix placeholder (decisão c),
-  orgScope erro accionável, assess completo (gaps_coverage, posture not_assessed),
-  maxItems 5 por medição; bundle pin unchanged KG v1.9.0; annotated tag on the squash
-  after merge; npm `latest` via release.yml)*
+- v0.16.0 *(re-pin dev-build kg-v1-manual-v1.8.0-aligned-2026-09-02 (sha `c832fd97…`,
+  contract v1.16) + exposição dos joins: artifacts nos assignments, control_names nas
+  ameaças, artefact_totals 45/469 c/ semântica; stamp dev:<sha12>; annotated tag on the
+  squash after merge; npm `latest`)*
+- v0.15.1 → `a3536fdee12612dd307994d4cdf62a7a9d33a2c1` (2026-09-02; reverificação Desktop
+  fechada; npm `@shiftleftpt/sbd-toe-mcp@0.15.1` = published, gitHead same commit;
+  GitHub Release `v0.15.1`)
 - v0.15.0 → `7c4d6a7918df988865f801373c07d4bd1a614367` (2026-09-02; Desktop-audit cycle —
   universal pagination, excluded_by_level band, derived index-compact; npm
   `@shiftleftpt/sbd-toe-mcp@0.15.0` = published, gitHead same commit; GitHub Release
@@ -153,3 +156,4 @@ prohibits tag deletion without explicit authorisation):
 | 2026-09-01 | v0.14.0 tag commit recorded (`1f199ccb`); npm latest + Release confirmed. v0.15.0 registered (Desktop-audit cycle; static index-compact retired from the package lists). Pins unchanged (KG v1.9.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 
 | 2026-09-02 | v0.15.0 tag commit recorded (`7c4d6a79`, squash of #66); npm latest + Release confirmed. v0.15.1 registered (reverificação Desktop; pins unchanged KG v1.9.0). REPAIR NOTE: the 0.15.1 release commit briefly truncated this file by a bad splice — restored from master and re-applied cleanly in the same PR (declared). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-02 | v0.15.1 tag commit recorded (`a3536fde`, squash of #67); npm latest + Release confirmed. v0.16.0 registered — re-pin dev-build 2026-09-02 (`c832fd97…`, v1.16, digest-verified) with the data-debt joins exposed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |

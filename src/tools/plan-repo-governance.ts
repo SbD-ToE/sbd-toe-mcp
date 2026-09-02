@@ -11,6 +11,8 @@
  */
 
 import { chapterNumber, getOntologyData, type Requirement } from "./ontology-loader.js";
+import { readFileSync } from "node:fs";
+import { resolveAppPath } from "../config.js";
 import { paginate, type PageCoverage, type SizeEstimate } from "../serving/response-shaping.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { planRepoGovernanceAffordances } from "../serving/affordances.js";
@@ -70,6 +72,8 @@ export interface ArtefactsByChapter {
 export interface PlanRepoGovernanceResult {
   riskLevel: string | null;
   totalArtefacts: number;
+  /** 0.16.0 (v1.16 §1.23): totais com SEMÂNTICA declarada — distinct vs relações capítulo×artefacto. */
+  artefact_totals: { distinct_count: number; chapter_relation_count: number; count_semantics: string };
   byChapter: ArtefactsByChapter[];
   /** Coverage-preserving page cursor over `byChapter` (follow `nextOffset`). */
   coverage: PageCoverage;
@@ -155,14 +159,30 @@ export function handlePlanRepoGovernance(args: Record<string, unknown>): PlanRep
   return {
     riskLevel,
     totalArtefacts: artefacts.length,
+    artefact_totals: loadArtefactTotals(),
     byChapter: page.items,
     coverage: page.coverage,
     size_estimate: page.size_estimate,
     note:
-      "Artefacts sourced from the published SbD-ToE runtime and manual chapter applicability model. " +
+      "Artefacts sourced from the published SbD-ToE runtime. totalArtefacts conta relações capítulo×artefacto na página-filtro; artefact_totals traz distinct_count vs chapter_relation_count com a semântica declarada pelo bundle (v1.16). " +
       "The manual does not provide document templates — if a template is needed, " +
       "ask the LLM to generate one based on the artefact description. " +
       "byChapter is coverage-preserving paginated — follow coverage.nextOffset to page.",
     next: planRepoGovernanceAffordances(riskLevel)
   };
+}
+
+
+let cachedTotals: { distinct_count: number; chapter_relation_count: number; count_semantics: string } | undefined;
+/** Meta do runtime/artifacts.json (v1.16 §1.23) — nunca recontado em código. */
+function loadArtefactTotals() {
+  if (!cachedTotals) {
+    const j = JSON.parse(readFileSync(resolveAppPath("data/publish/runtime/artifacts.json"), "utf-8")) as Record<string, unknown>;
+    cachedTotals = {
+      distinct_count: typeof j["distinct_count"] === "number" ? (j["distinct_count"] as number) : -1,
+      chapter_relation_count: typeof j["chapter_relation_count"] === "number" ? (j["chapter_relation_count"] as number) : -1,
+      count_semantics: typeof j["count_semantics"] === "string" ? (j["count_semantics"] as string) : "n/d (bundle sem meta)"
+    };
+  }
+  return cachedTotals;
 }
