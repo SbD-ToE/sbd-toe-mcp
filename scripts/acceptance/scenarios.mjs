@@ -532,9 +532,10 @@ export const scenarios = [
       if (!(s.data.next ?? []).some((n) => n.tool === "get_sbd_toe_verification_matrix" && /requirement_ids/.test(n.with ?? ""))) return fail("next do select não aponta à matriz com ids");
       const ids = s.data.selection.selected.slice(0, 4).map((x) => x.requirement_id);
       const m = await c.tool("get_sbd_toe_verification_matrix", { risk_level: "L2", requirement_ids: [...ids, "REQ-XXX-999"], limit: 50 }); if (!m.ok) return fail(m.error);
-      const rowIds = new Set(m.data.rows.map((r) => r.requirement_id).filter(Boolean));
+      const md = m.data.data ?? m.data; // envelope RF-E5: rows vivem em data.data via MCP
+      const rowIds = new Set(md.rows.map((r) => r.requirement_id).filter(Boolean));
       if (![...rowIds].every((id) => ids.includes(id))) return fail(`rows fora dos ids pedidos: ${[...rowIds].slice(0,4)}`);
-      if (!m.data.unknown_requirement_ids?.includes("REQ-XXX-999")) return fail("id sem prova não declarado em unknown_requirement_ids");
+      if (!md.unknown_requirement_ids?.includes("REQ-XXX-999")) return fail("id sem prova não declarado em unknown_requirement_ids");
       return ok(`select→matrix: ${rowIds.size} requisitos com prova de ${ids.length} pedidos; REQ-XXX-999 declarado sem EvidencePattern; next fecha a cadeia`); } },
 
   // ───────────────────────── Axis H — selection vs golden oracle (measurement, NOT gate) ─────────────────────────
