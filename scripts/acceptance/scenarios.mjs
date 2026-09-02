@@ -406,7 +406,8 @@ export const scenarios = [
     run: async (c) => {
       const v = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/version" }); if (!v.ok) return fail(v.error);
       const vp = JSON.parse(v.data.content); if (!vp.kg?.release_tag || !vp.manual?.tag) return fail("version payload without kg/manual provenance");
-      if (v.data.provenance?.kg !== vp.kg.release_tag) return fail("tool provenance.kg stamp mismatch");
+      const stampOk = (x) => x === vp.kg.release_tag || x === "dev:" + String(vp.kg.sha256 ?? "").slice(0, 12);
+      if (!stampOk(v.data.provenance?.kg)) return fail("tool provenance.kg stamp mismatch");
       const t = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/codegen-instructions/codegen" }); if (!t.ok) return fail(`templated URI failed: ${t.error}`);
       const tp = JSON.parse(t.data.content); if (!tp || t.data.mimeType !== "application/json") return fail("codegen-instructions not materialized as JSON");
       const u = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/nope" });
@@ -417,12 +418,13 @@ export const scenarios = [
     run: async (c) => {
       const pin = JSON.parse((await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/version" })).data.content);
       const r = await c.tool("consult_security_requirements", { risk_level: "L2", concerns: ["logging"] }); if (!r.ok) return fail(r.error);
-      if (r.data.provenance?.kg !== pin.kg.release_tag) return fail(`consult provenance.kg=${r.data.provenance?.kg} ≠ pin ${pin.kg.release_tag}`);
+      const stampOk17 = (x) => x === pin.kg.release_tag || x === "dev:" + String(pin.kg.sha256 ?? "").slice(0, 12);
+      if (!stampOk17(r.data.provenance?.kg)) return fail(`consult provenance.kg=${r.data.provenance?.kg} ≠ pin`);
       const s = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Adicionar logging de auditoria ao serviço" }); if (!s.ok) return fail(s.error);
-      if (s.data.provenance?.kg !== pin.kg.release_tag) return fail("select provenance.kg missing");
+      if (!stampOk17(s.data.provenance?.kg)) return fail("select provenance.kg missing");
       const i = await c.tool("inspect_sbd_toe_retrieval", { question: "session token TTL" }); if (!i.ok) return fail(i.error);
       const txt = typeof i.data === "string" ? i.data : (i.data ? JSON.stringify(i.data) : String(i.text ?? i.raw ?? ""));
-      if (!txt.includes("Pin servido") || !txt.includes(pin.kg.release_tag)) return fail("inspect does not present the consumed-bundle pin provenance");
+      if (!txt.includes("Pin servido") || !(txt.includes(pin.kg.release_tag) || txt.includes(String(pin.kg.sha256 ?? "").slice(0, 12)))) return fail("inspect does not present the consumed-bundle pin provenance");
       if (/run_id=n\/d/.test(txt)) return fail("inspect still shows run_id=n/d (undeclared)");
       return ok(`provenance.kg=${pin.kg.release_tag} em consult+select; inspect apresenta o Pin servido (fim do n/d não-declarado)`); } },
   { id: "TC-F-18", axis: "F", title: "threat_landscape paginado (0.15.0): default 25, coverage+size_estimate, enum agents", tool: "get_threat_landscape",
@@ -500,6 +502,18 @@ export const scenarios = [
         if (!gc.hasMore) { if (seen.length !== gc.total) return fail(`walk ${seen.length} ≠ total ${gc.total}`); break; }
         go = gc.nextOffset; if (guard++ > 10) return fail("runaway"); }
       return ok(`{} → erro instrutivo; posture not_assessed sem avaliação; gaps walk ${seen.length}/${seen.length} com coverage própria`); } },
+  { id: "TC-F-25", axis: "F", title: "0.16.0: dívida de dados exposta — artifacts nos assignments, control_names nas ameaças, totais com semântica", tool: "get_guide_by_role + get_threat_landscape + plan_repo_governance",
+    run: async (c) => {
+      const g = await c.tool("get_guide_by_role", { risk_level: "L2", role: "developer", include_detail: true }); if (!g.ok) return fail(g.error);
+      const total = (g.data.assignments ?? []).length; const withArts = (g.data.assignments ?? []).filter((a) => (a.artifacts ?? []).length > 0).length;
+      if (total === 0 || withArts !== total) return fail(`artifacts ${withArts}/${total} — o elo requisito→prova continua vazio`);
+      const t = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["auth"], limit: 300 }); if (!t.ok) return fail(t.error);
+      const names = t.data.threats.filter((x) => (x.associated_control_names ?? []).length > 0).length;
+      if (names < 90) return fail(`control_names em ${names}/${t.data.threats.length} (esperado ~todos, 233/233 no bundle)`);
+      const p = await c.tool("plan_sbd_toe_repo_governance", { riskLevel: "L2", limit: 3 }); if (!p.ok) return fail(p.error);
+      const at = p.data.artefact_totals;
+      if (!at || at.distinct_count !== 45 || at.chapter_relation_count !== 469 || !at.count_semantics) return fail(`artefact_totals=${JSON.stringify(at)}`);
+      return ok(`artifacts ${withArts}/${total} no guide; control_names ${names}/${t.data.threats.length}; totais 45 distinct / 469 relações com semântica declarada`); } },
 
   // ───────────────────────── Axis G — beta-line tools (added 2026-09-01; closes the 24/23 gap) ─────────────────────────
   // trace_sbd_toe_graph exists only on the 0.20-beta line (SPARQL/Oxigraph over the RDF

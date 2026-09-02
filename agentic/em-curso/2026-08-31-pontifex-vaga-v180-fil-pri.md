@@ -26,3 +26,7 @@
 ## Update — ciclo 0.15.1 (2026-09-02)
 - [x] Reverificação fechada 7/7 (placeholder tool_prefix; orgScope erro; assess completo; maxItems 5 medido); eval 128 cenários 0 FAIL; ouro 10/10
 - [ ] PR → merge → tag v0.15.1 → npm latest
+
+## Update — ciclo 0.16.0 (2026-09-02)
+- [x] Re-pin dev-build 2026-09-02 (v1.16) + joins expostos (artifacts 25/25, names 95/95, totais 45/469); stamp dev:<sha12>; eval 129 cenários 0 FAIL; ouro 10/10
+- [ ] PR → merge → tag v0.16.0 → npm latest

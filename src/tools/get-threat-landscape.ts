@@ -46,6 +46,8 @@ export interface ThreatWithConfidence extends Threat {
   mitigation_confidence: "direct" | "derived" | "heuristic";
   mitigated_by: MitigatingControl[];
   related_antipatterns: RelatedAntiPattern[];
+  /** v1.16 §1.23: nomes legíveis dos controlos (233/233 no bundle). */
+  associated_control_names: string[];
 }
 
 export interface McpProvenance {
@@ -300,6 +302,7 @@ export function _resolveThreatLandscape(
       mitigation_confidence,
       mitigated_by,
       related_antipatterns,
+      associated_control_names: threat.associated_control_names ?? [],
     });
   }
 
@@ -358,6 +361,8 @@ export function handleGetThreatLandscape(
       // DECLARED derivation; associated_controls_text is the Manual's prose;
       // associated_controls stays as-is for compatibility. Nothing invented.
       associated_controls: threat.associated_controls ?? [],
+      // 0.16.0 (v1.16 §1.23): nomes legíveis expostos — os dados subiram, a promessa diz a verdade nova.
+      associated_control_names: threat.associated_control_names ?? [],
       associated_control_ids: threat.associated_control_ids ?? [],
       ...(threat.associated_controls_text ? { associated_controls_text: threat.associated_controls_text } : {}),
       ...(threat.associated_control_ids_derivation

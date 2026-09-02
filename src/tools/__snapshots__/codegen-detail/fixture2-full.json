@@ -4105,7 +4105,7 @@
     "residual_risk": "<fill: anything NOT addressed by this change>"
   },
   "provenance": {
-    "kg": "v1.9.0",
+    "kg": "dev:c832fd978169",
     "runtime_v0": "data/publish/runtime/*.json + data/publish/ontology/*",
     "runtime_v1": "data/publish/runtime/v1/*",
     "overlay": "absent"

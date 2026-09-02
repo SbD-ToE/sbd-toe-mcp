@@ -36,9 +36,20 @@ interface ConsumedBundlePin {
 let cached: { value: BundleProvenance | undefined } | undefined;
 
 let cachedKgTag: string | undefined;
-/** Compact per-response version stamp (0.13.0): the kg release_tag of the served pin. */
+/** Compact per-response version stamp (0.13.0; forma 0.16.0): releases estampam a tag
+ * (ex. "v1.9.0"); dev-builds estampam "dev:<sha12>" — identidade honesta com
+ * comprimento ESTÁVEL (as tags longas de dev-build tocavam tectos de payload por ~7
+ * tokens). Verificável contra sbd://toe/version (tag + sha completos do pin). */
 export function servedKgReleaseTag(): string {
-  cachedKgTag ??= loadBundleProvenance()?.kg?.release_tag ?? "unknown";
+  if (!cachedKgTag) {
+    const kg = loadBundleProvenance()?.kg;
+    cachedKgTag =
+      kg?.source === "release"
+        ? kg.release_tag ?? "unknown"
+        : kg?.sha256
+          ? `dev:${kg.sha256.slice(0, 12)}`
+          : kg?.release_tag ?? "unknown";
+  }
   return cachedKgTag;
 }
 

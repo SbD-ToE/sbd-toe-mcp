@@ -77,6 +77,8 @@ export interface Threat {
   associated_control_ids?: string[];
   /** The Manual column's prose, duplicated (contract v1.14 §1.21); associated_controls unchanged for compat. */
   associated_controls_text?: string;
+  /** Nomes legíveis dos controlos associados (contract v1.16 §1.23, aditivo — 233/233). */
+  associated_control_names?: string[];
   /** Declared derivation of associated_control_ids (e.g. chapter_requirements_primary_controls). */
   associated_control_ids_derivation?: string;
   /** STRIDE | LINDDUN | PASTA | other — consumer contract v1.3 §1.8 (v1 tier). */
@@ -565,6 +567,7 @@ export function getOntologyData(): OntologyData {
           : {}),
         canonical_control_ids: arrStr(item, "canonical_control_ids"),
         associated_controls: assocStr ? [assocStr] : arrStr(item, "associated_controls"),
+        associated_control_names: Array.isArray(item["associated_control_names"]) ? (item["associated_control_names"] as unknown[]).filter((x): x is string => typeof x === "string") : [],
         // Contract v1.14 §1.21 — structural control ids per threat, with declared derivation.
         associated_control_ids: arrStr(item, "associated_control_ids"),
         ...(strOf(item, "associated_controls_text")

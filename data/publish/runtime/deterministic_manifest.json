@@ -76,7 +76,9 @@
       "source_artifact": "data/entities/sdlc_phases_canonical_s6.json"
     },
     {
+      "chapter_relation_count": 469,
       "count": 45,
+      "distinct_count": 45,
       "entity_type": "Artifact",
       "file": "artifacts.json",
       "name": "artifacts",
@@ -107,7 +109,9 @@
       "source_artifact": "data/entities/evidence_patterns.json"
     },
     {
+      "chapter_relation_count": 469,
       "count": 45,
+      "distinct_count": 45,
       "entity_type": "ArtifactRequirement",
       "file": "artifact_requirements.json",
       "name": "artifact_requirements",
@@ -251,5 +255,5 @@
       ]
     }
   },
-  "version": "v2-draft"
+  "version": "manual-v1.8.0+sbdtoe-ontology-v2.3"
 }

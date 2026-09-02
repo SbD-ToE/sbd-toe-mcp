@@ -1,7 +1,7 @@
 {
   "artifact_type": "v1_runtime_surface_manifest",
   "build": {
-    "generated_at": "2026-08-31T18:36:58.456540+00:00",
+    "generated_at": "2026-09-02T10:45:42.426697+00:00",
     "generator": "sbdtoe_indexing.workflows.build_v1_runtime_surface"
   },
   "drift_note": "Counts sourced from slice contracts (authoritative actual). Declared sum from consolidated index. Drift concentrated in working_contract slices (notably ASC-09 RPR); upstream V1 enumeration incomplete in some slices. Flagged for Archon visibility via Step 8 delivery handover.",
@@ -45,7 +45,7 @@
     },
     "manual_threat_mitigation": {
       "path": "v1/manual_threat_mitigation.jsonl",
-      "sha256": "980b3177e02c8adc9274f4f2c01cf448c2442fd7d86a42273ed3877c11b4e0c7"
+      "sha256": "3a3eab39f956069f3a4842c4860d1e715e3bf4f4b0a54cdd9af5dba8cedfd4d8"
     },
     "mechanisms": {
       "path": "v1/mechanisms.json",
@@ -113,9 +113,10 @@
       "threat_mitigation": 233,
       "threat_mitigation_total": 233,
       "total": 523,
-      "with_associated_control_ids": 233
+      "with_associated_control_ids": 233,
+      "with_related_antipatterns": 5
     },
-    "format_note": "Run 2 6-section structure (Manual ontology V2 entities (Threat + AntiPattern + Signal) + Threat surfaces (Manual + CAPEC primary) + AntiPattern exposure mapping + CWE references (supporting only) + V1 overlay mitigation pathway + Future-work register). Mitigation strength labelled per threat row (forte / parcial / dependente_de_outros_capitulos). Since S3 (2026-08-30) each threat_mitigation row also carries `associated_control_ids` (chapter-grained: chapter requirements -> primary control in the curated Requirement->Control layer v3; derivation declared per record) and `associated_controls_text` (prose duplicated; `associated_controls` kept for compatibility).",
+    "format_note": "Run 2 6-section structure (Manual ontology V2 entities (Threat + AntiPattern + Signal) + Threat surfaces (Manual + CAPEC primary) + AntiPattern exposure mapping + CWE references (supporting only) + V1 overlay mitigation pathway + Future-work register). Mitigation strength labelled per threat row (forte / parcial / dependente_de_outros_capitulos). Since S3 (2026-08-30) each threat_mitigation row also carries `associated_control_ids` (chapter-grained: chapter requirements -> primary control in the curated Requirement->Control layer v3; derivation declared per record) and `associated_controls_text` (prose duplicated; `associated_controls` kept for compatibility). Since the data-debt cycle (2026-09-02) each row also materializes the joins: `associated_control_names` (id->name join, chapter-grained like the ids) and `related_antipatterns` (semantic AntiPattern->Threat links, per-threat grain, confidence declared per link; [] = no semantic link, coverage declared in counts).",
     "source_files": "<chapter>/canon/50-ameacas-mitigadas.md × 14 (Cap 00 fundamentos excluded)"
   },
   "methodology_label_distribution": {

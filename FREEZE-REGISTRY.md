@@ -79,6 +79,7 @@ Prerelease tags issued on `0.20-beta` (annotated; immutable like every pushed ta
 | v0.20.0-beta.5 | 62a1eda (`62a1eda3982147e44369c8a9271ca3697af2680f`; annotated tag object `5165a04a`) | 2026-08-31 | formal KG `v1.7.0` (`29156b86…`, contract v1.14, ontology v2.2, Manual v1.7.1) — same pin and content as stable v0.10.4 | `beta` (superseded) |
 | v0.20.0-beta.6 | 322c38f (`322c38f4dc440aad40bf110b8e20d3d40f623318`; annotated tag object `71098136`) | 2026-08-31 | formal KG `v1.7.0` + MP1 selection operation (= stable 0.11.0 → `102b8166`) | `beta` (superseded) |
 | v0.20.0-beta.7 | 4256ee0 (`4256ee0f09386a45e69012ec565375965f49b0de`; annotated tag object `6e75ef23`) | 2026-08-31 | formal KG `v1.9.0` (`11153c85…`, contract v1.15, 273/29 FIL/PRI — zero-delta over the verified v1.8.0 dev-build) | `beta` (formal batch, «3 sims») |
+| v0.20.0-beta.12 | *(annotated tag on the commit that introduces this row; recorded in the close commit)* | 2026-09-02 | absorbs stable 0.16.0 — re-pin dev-build `kg-v1-manual-v1.8.0-aligned-2026-09-02` (`c832fd97…`, contract v1.16, joins served, stamp dev:<sha12>) | `beta` (pending) |
 | v0.20.0-beta.11 | df78dd2 (`df78dd2967190468a167156bf3ff72562130adc2`; annotated tag object `e607435c`) | 2026-09-02 | absorbs stable 0.15.1 (Desktop reverification closed on both lines); bundle pin unchanged (KG `v1.9.0`) | `beta` (`latest` = 0.15.1 untouched) |
 | v0.20.0-beta.10 | acba784 (`acba78458cf43ed837602662213ee6187f80bc62`; annotated tag object `a5665f4a`) | 2026-09-02 | absorbs stable 0.15.0 (Desktop-audit cycle; line_note inverted for this line); bundle pin unchanged (KG `v1.9.0`) | `beta` (`latest` = 0.15.0 untouched) |
 | v0.20.0-beta.9 | 3f035b2 (`3f035b213c75f245cc7c61735adda475efbab5c1`; annotated tag object `48d6a6f2`) | 2026-09-01 | absorbs stable 0.14.0 (graduated applicability) + Axis G scenarios (24/24 tools); bundle pin unchanged (KG `v1.9.0`) | `beta` (`latest` = 0.14.0 untouched) |
@@ -88,7 +89,10 @@ Prerelease tags issued on `0.20-beta` (annotated; immutable like every pushed ta
 
 **Current branch:** `0.20-beta` — this copy of the registry lives on the beta branch; the
 stable-line rows mirror master (`102b816`, 0.11.0 prepared) and are maintained there.
-**Beta line:** v0.20.0-beta.11 → `df78dd2967190468a167156bf3ff72562130adc2` (2026-09-02;
+**Beta line:** v0.20.0-beta.12 (2026-09-02; tag on the commit introducing this row, recorded in the
+close commit) absorbs stable 0.16.0 — the serving line re-pins the dev-build
+`kg-v1-manual-v1.8.0-aligned-2026-09-02` (sha256 `c832fd97…`, contract v1.16 «data debt» served);
+the v1.16 join fields are outside the RDF projection (declared). Prior: v0.20.0-beta.11 → `df78dd2967190468a167156bf3ff72562130adc2` (2026-09-02;
 `release.yml` run 33619034393 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.11` = `beta`,
 gitHead same commit; GitHub pre-release; `latest` = 0.15.1) absorbs stable 0.15.1 — the Desktop-audit reverification series closes on both lines
 (tool_prefix placeholder, assess complete, maxItems 5 measured). Prior: v0.20.0-beta.10 → `acba78458cf43ed837602662213ee6187f80bc62` (2026-09-02;
@@ -197,3 +201,4 @@ prohibits tag deletion without explicit authorisation):
 | 2026-09-02 | v0.20.0-beta.10 tag commit recorded (`acba7845`); npm `beta` publish + GitHub pre-release confirmed (run 33609792488). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-02 | v0.20.0-beta.11 registered (absorbs stable 0.15.1; beta-only surfaces audited clean; bundle pin unchanged KG v1.9.0). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-02 | v0.20.0-beta.11 tag commit recorded (`df78dd29`); npm `beta` publish + GitHub pre-release confirmed (run 33619034393). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-02 | v0.20.0-beta.12 registered (absorbs stable 0.16.0; dev-build 2026-09-02 pinned, sha256 `c832fd97…`, contract v1.16; v1.16 join fields declared outside the RDF projection). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
