@@ -2,13 +2,13 @@
   "branch": "HEAD",
   "commit_sha": "f78dfe734a83b01fa9283c2df5a3eb0ba9528001",
   "corpus_root": "manuals_src/docs/sbd-toe",
-  "generated_at": "2026-08-31T18:36:21Z",
+  "generated_at": "2026-09-02T10:45:05Z",
   "llm_backend": "mock",
   "llm_model": "mock-heuristic",
   "manual": {
     "branch": "HEAD",
     "commit": "f78dfe734a83b01fa9283c2df5a3eb0ba9528001",
-    "generated_at": "2026-08-31T18:36:21Z",
+    "generated_at": "2026-09-02T10:45:05Z",
     "provenance": "derived-from-git",
     "repo": "SbD-ToE/sbd-toe-manual",
     "repo_url": "git@github.com:SbD-ToE/sbd-toe-manual.git",
@@ -17,13 +17,13 @@
   },
   "project_root": ".",
   "repo_url": "git@github.com:SbD-ToE/sbd-toe-manual.git",
-  "run_id": "20260831T183621Z",
+  "run_id": "20260902T104505Z",
   "source_repo_dir": "data/source/SbD-ToE-Manual",
   "sync_mode": "reuse",
   "tool_version": "0.1.0",
   "version": "0.1.0",
   "release": {
-    "channel": "stable",
-    "version": "v1.9.0"
+    "channel": "dev-build",
+    "version": "kg-v1-manual-v1.8.0-aligned-2026-09-02"
   }
 }

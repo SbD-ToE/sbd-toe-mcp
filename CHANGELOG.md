@@ -3,11 +3,55 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-30
 purpose: documentation
-reasoning: v0.15.1 — fecho da reverificação Desktop: tool_prefix placeholder visível (decisão c), next sem id inválido, mode do consult verdadeiro, orgScope→erro com lista derivada, assess completo (rejeição {}, gaps_coverage, posture not_assessed), maxItems 5 por medição; v0.15.0 — auditoria Desktop: paginação universal (threat 25/233+size_estimate; plan default 5; slot/char no read_resource), banda excluded_by_level declarada (select+prepare; ultrathin dieta), index-compact derivado (estático morto), tool_prefix, fases canon-first+phase_warning, erros harmonizados com listas de válidos, consult projecção declarada+maxItems, aliases risk_level↔riskLevel; v0.14.0 — aplicabilidade GRADUADA (decisão do Author: capítulo nunca se exclui; exigência deriva dos assignments autorados + matriz cap. 01; listas binárias/minLevel mortos; module applicability.ts); v0.13.0 — serving batch: read_sbd_toe_resource (espelho de resources/read, catálogo derivado), stamp provenance.kg por resposta (tectos intactos), inspect com Pin servido (causa do n/d confirmada e corrigida), varrimento de contagens em prosa, release_ref normalizado, ensino Step 0 identidade; v0.12.0 — formal lote: KG v1.9.0 pinned (FIL/PRI/INT-009..012 served, contract v1.15), selection v1.8.0-aware, ceilings ratified+harmonized (9.200/8.450), npm latest; v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; named rules R1 principal-não-humano + R2 narrowing SES; D1 gate um-sinal-uma-superfície; D3 activators; D4; consult mode index; v2 token diet ported with stable-measured ceilings; R3 teaching layer: guide/skills/affordances ensinam select + duas bandas); Axis H 1/3/6 → 10/10; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
+reasoning: v0.16.0 — re-pin dev-build 2026-09-02 (v1.16): artifacts 25/25 no guide (requisito→prova), control_names 95/95 no threat, artefact_totals 45/469 com semântica; stamp dev:<sha12> (comprimento estável, tectos intactos); v0.15.1 — fecho da reverificação Desktop: tool_prefix placeholder visível (decisão c), next sem id inválido, mode do consult verdadeiro, orgScope→erro com lista derivada, assess completo (rejeição {}, gaps_coverage, posture not_assessed), maxItems 5 por medição; v0.15.0 — auditoria Desktop: paginação universal (threat 25/233+size_estimate; plan default 5; slot/char no read_resource), banda excluded_by_level declarada (select+prepare; ultrathin dieta), index-compact derivado (estático morto), tool_prefix, fases canon-first+phase_warning, erros harmonizados com listas de válidos, consult projecção declarada+maxItems, aliases risk_level↔riskLevel; v0.14.0 — aplicabilidade GRADUADA (decisão do Author: capítulo nunca se exclui; exigência deriva dos assignments autorados + matriz cap. 01; listas binárias/minLevel mortos; module applicability.ts); v0.13.0 — serving batch: read_sbd_toe_resource (espelho de resources/read, catálogo derivado), stamp provenance.kg por resposta (tectos intactos), inspect com Pin servido (causa do n/d confirmada e corrigida), varrimento de contagens em prosa, release_ref normalizado, ensino Step 0 identidade; v0.12.0 — formal lote: KG v1.9.0 pinned (FIL/PRI/INT-009..012 served, contract v1.15), selection v1.8.0-aware, ceilings ratified+harmonized (9.200/8.450), npm latest; v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; named rules R1 principal-não-humano + R2 narrowing SES; D1 gate um-sinal-uma-superfície; D3 activators; D4; consult mode index; v2 token diet ported with stable-measured ceilings; R3 teaching layer: guide/skills/affordances ensinam select + duas bandas); Axis H 1/3/6 → 10/10; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.16.0 — 2026-09-02
+
+**Minor** — re-pin dev-build «dívida de dados» + exposição dos joins (ciclo Codex
+autorizado pelo lead, verificado pelo Orchestrator).
+
+### Changed — served bundle re-pinned (dev-build 2026-09-02, contract v1.16 §1.23 aditivo)
+
+- Pin `source: dev-build` **kg-v1-manual-v1.8.0-aligned-2026-09-02** (KG master
+  `6f73417`; snapshot sha256 `c832fd97…6a107`, VERIFICADO por digest). Substrato
+  `manual-v1.8.0 + sbdtoe-ontology-v2.3`; 273/29 e 305 arestas inalterados.
+
+### Added — a dívida de dados exposta nos payloads (antes → depois)
+
+- **guide_by_role**: `artifacts` por assignment servidos — o elo requisito→prova que o
+  auditor pediu. Dev L2 detail: **0/25 → 25/25** assignments com artefactos (ex.:
+  `ficheiro_classificacao_aplicacao_yaml…`); payload 14.798 → 15.486 tk (medido,
+  declarado; guide não tem tecto formal). Descrição da tool actualizada.
+- **get_threat_landscape**: `associated_control_names` (233/233 no bundle) expostos —
+  fatia auth95: **0 → 95/95** com nomes; `related_antipatterns` agora com dados (5
+  não-vazios no bundle; 2 na fatia auth). auth95: 22.846 → 27.294 tk (limit 300);
+  página default 25 ≈ 8.2k tk. Descrição alinhada ao grão real: promete ids+derivation
+  **+ names** (a promessa `associated_controls_text` de v1.14 mantém-se — 233/233
+  presentes neste bundle).
+- **plan_repo_governance**: `artefact_totals` com SEMÂNTICA declarada do bundle —
+  `{distinct_count: 45, chapter_relation_count: 469, count_semantics}` (o «469» deixa
+  de circular sem qualificação; nota da tool actualizada; nunca recontado em código).
+
+### Changed — forma do stamp `provenance.kg` (0.16.0)
+
+- Releases estampam a tag (`v1.9.0`); **dev-builds estampam `dev:<sha12>`**
+  (ex. `dev:c832fd978169`) — identidade honesta com comprimento ESTÁVEL: a tag longa
+  de dev-build somava ~7 tk por resposta e tocava dois tectos por 1 token
+  (rest f1 1.351>1.350; ultrathin f2 4.841>4.840). Com a forma curta: 1.345/4.836 —
+  tectos INTACTOS, sem paragem nem tecto novo. Verificável contra `sbd://toe/version`
+  (tag + sha completos).
+
+### Verificação
+
+- 691/691; eval `2026-09-02-v0160`: **129 cenários, 90 PASS · 16 PART · 0 FAIL — gate
+  E PASS**; ouro **10/10**; TC-F-25 novo (25/25 artifacts; 95/95 names; totais 45/469
+  c/ semântica) + TC-F-16/17 ajustados à regra do stamp (runner + doc §4.4). Snapshots
+  regenerados (diff = só o stamp). Orçamentos: std f2 9.125 ≤ 9.200 · min 8.399 ≤
+  8.450 · ultrathin 4.836 ≤ 4.840.
 
 ## 0.15.1 — 2026-09-02
 

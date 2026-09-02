@@ -1238,8 +1238,9 @@ class McpRuntime {
             "Deterministic threat resolution for an application context using the SbD-ToE ontology threats pipeline. " +
             "Returns threats from the published runtime bundle relevant to the active requirement/chapter scope " +
             "(the defining chapters of activated controls count as in-scope), with structural mitigation confidence, " +
-            "antipattern enrichment, and per-threat associated_control_ids (structural CTRL-* ids with declared " +
-            "derivation) + associated_controls_text. Optionally narrowed by concern domains. " +
+            "antipattern enrichment, per-threat associated_control_ids (structural CTRL-* ids with declared " +
+            "derivation) and associated_control_names (readable control names, 233/233 since contract v1.16). " +
+            "Optionally narrowed by concern domains. " +
             "All data comes from the published SbD-ToE deterministic runtime bundle — nothing is invented.",
           inputSchema: {
             type: "object",
@@ -1271,7 +1272,7 @@ class McpRuntime {
           description:
             "Returns runtime-grounded practices, assignments and user stories for a given risk level, " +
             "optionally filtered by role and/or lifecycle phase. " +
-            "Roles are resolved via canonical aliases (e.g. 'appsec' → 'appsec-engineer', 'sre' → 'devops-sre', 'security-engineer' → 'appsec-engineer'). " +
+            "Each assignment carries its required ARTIFACTS (the requirement→evidence link, served from the bundle since contract v1.16). Roles are resolved via canonical aliases (e.g. 'appsec' → 'appsec-engineer', 'sre' → 'devops-sre', 'security-engineer' → 'appsec-engineer'). " +
             "Results grouped by role and phase. All data from the published SbD-ToE deterministic runtime bundle — nothing is invented.",
           inputSchema: {
             type: "object",
