@@ -72,6 +72,10 @@ export interface McpProvenance {
 }
 
 export interface ResolveEntitiesResult {
+  /** 0.17.0 (never-silent): chaves de filtro que NÃO existem no esquema do record_type. */
+  unknown_filter_fields?: string[];
+  /** Campos válidos DERIVADOS dos próprios registos (união de chaves; dot-notation = 1º segmento). */
+  valid_fields?: string[];
   provenance: McpProvenance;
   record_type: string;
   entities: unknown[];
@@ -300,6 +304,22 @@ export function _resolveEntities(
       ? (rawFilters as Record<string, unknown>)
       : {};
 
+  // 0.17.0 (never-silent, achado 2 da ronda 2): valida as CHAVES de filtro contra o
+  // esquema real do record_type — derivado da união de chaves dos próprios registos
+  // (nada hardcoded; dot-notation valida o 1º segmento: applicable_levels.L2 ✓).
+  let unknownFilterFields: string[] = [];
+  let validFieldsForType: string[] = [];
+  if (filters && typeof filters === "object" && Object.keys(filters as object).length > 0) {
+    const fieldSet = new Set<string>();
+    for (const it of (items as Array<Record<string, unknown>>).slice(0, 100)) {
+      if (it && typeof it === "object") for (const k of Object.keys(it)) fieldSet.add(k);
+    }
+    validFieldsForType = [...fieldSet].sort();
+    unknownFilterFields = Object.keys(filters as Record<string, unknown>).filter(
+      (k) => !fieldSet.has(k.split(".")[0] ?? k)
+    );
+  }
+
   const matched = items.filter((item) => {
     if (typeof item !== "object" || item === null) return false;
     const rt = (item as Record<string, unknown>)["record_type"];
@@ -321,13 +341,19 @@ export function _resolveEntities(
   });
 
   return {
+    ...(unknownFilterFields.length > 0
+      ? {
+          unknown_filter_fields: unknownFilterFields,
+          valid_fields: validFieldsForType,
+        }
+      : {}),
     record_type: recordType,
     entities,
     total: matched.length,
     limit,
     meta: {
       filtersApplied: filters,
-      note: options.note ?? DEFAULT_NOTE
+      note: options.note ?? DEFAULT_NOTE + (unknownFilterFields.length > 0 ? " AVISO: unknown_filter_fields presentes — o total NÃO reflecte esses campos; usa valid_fields." : ""),
     }
   };
 }

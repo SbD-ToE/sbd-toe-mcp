@@ -144,6 +144,6 @@ export function handleSelectRequirements(args: Record<string, unknown>): SelectR
         "coverage pagina `selected`; `narrowed_out` vem completo (agrupado por categoria). O veredicto de nível usa o catálogo publicado.",
       notes: result.notes
     },
-    next: selectRequirementsAffordances(risk)
+    next: selectRequirementsAffordances(risk, page.map((x) => x.requirement_id))
   };
 }
