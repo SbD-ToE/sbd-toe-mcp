@@ -3,11 +3,51 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-31
 purpose: documentation
-reasoning: v0.20.0-beta.10 (beta line, npm `beta`) — absorbs stable 0.15.0 (Desktop-audit cycle: universal pagination, excluded_by_level band, derived index-compact — static file dies here too, tool_prefix, canon-first phase alias + phase_warning, harmonized declared errors, risk_level aliases); the codegen-instructions line_note INVERTED for this line (the trace tool exists here). Bundle pin unchanged (release KG v1.9.0). Golden 10/10, gate E PASS, 24/24 tools, budgets inside the harmonised gates.
+reasoning: v0.20.0-beta.11 (beta line, npm `beta`) — absorbs stable 0.15.1 (Desktop reverification closed on both lines: tool_prefix placeholder <MCP_TOOL_PREFIX>, next without invalid id, truthful consult mode description, orgScope -32602 with derived list, assess complete — {} rejected, gaps walk 92/92, posture below/not_assessed/at, plan offset description, concerns maxItems 5 by measurement). Bundle pin unchanged (release KG v1.9.0). Golden 10/10, gate E PASS, 24/24 tools, budgets inside gates.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.11 — 2026-09-02
+
+Absorbs the stable **0.15.1** (squash `a3536fde` = tag v0.15.1 = npm `latest`, verified;
+lead «vale a pena então estas alterações», 02-09) — the Desktop-audit reverification
+closes on BOTH lines. Bundle pin UNCHANGED (release KG `v1.9.0`).
+
+### Absorption map (items 1–7 → this line)
+
+1. **`tool_prefix` placeholder** — without the parameter, `generate_sbd_toe_skill` emits
+   `<MCP_TOOL_PREFIX>` in the `tools:` frontmatter plus a VISIBLE substitution instruction
+   (decision c: never a silent install); with the parameter, 0.15.0 behaviour (TC-F-23 ✓).
+2. **`next` without the invalid id** — a `found:false` brief suggests the generic
+   placeholder, never the id that just failed (TC-F-23 ✓).
+3. **Truthful `mode` description on consult** — default = PROJECTIONS (bodies via
+   `resolve_entities`; `index` = ids per category), coherent with `projection_note`.
+4. **Unknown `orgScope` → actionable `-32602`** with the derived section sample in the
+   message (+ `data.valid_section_titles`) (TC-F-21 re-run ✓).
+5. **assess complete** — `kpi_values: {}` rejected with sample `metric_ids`;
+   `gaps_offset`/`gaps_limit` + `gaps_coverage` (walk **92/92** on this line);
+   posture `below` vs `not_assessed`, `at` declared when the assessed part complies
+   (TC-F-24 ✓, TC-F-05 re-run ✓).
+6. **plan `offset` description corrected** (default = first page of 5).
+7. **`concerns` `maxItems` = 5 by measurement** (1/3/5/8 → 2.0/3.6/4.3/6.6k tk — payload
+   rules, not count); the teaching keeps «≤3; compostas → select»; the server never cut
+   silently (verified on the stable, schema absorbed here).
+
+Beta-only surfaces audited for the old patterns (mode/orgScope/next): the selection
+engine, `select`, `trace_sbd_toe_graph` and the RDF projection carry none of them —
+nothing to change beyond the absorption.
+
+### Verification (records `docs/acceptance-runs/2026-09-02-v0151-*-v0.20.0-beta.11-*`)
+
+`eval:acceptance`: **131 scenarios, 108 executed — 92 PASS · 16 PART · 0 FAIL · 23 SKIP;
+gate E PASS (16/1/0)**; TC-F-23/24 + re-baselined TC-F-05/21 PASS on this line; Axis G
+3/3; **24/24 tools**; golden cases **10/10**. Suite **729/729** (+2 assess tests from the
+stable) · `npm run check` ✅. Budgets inside the unchanged gates: f1 18,766 / 6,130 /
+5,484 / 3,688; f2 25,186 / **9,122**/9,200 / **8,396**/8,450 / **4,833**/4,840 (ids
+104/152; +17 tokens on the dieted totals from the 0.15.1 note texts — same drift as the
+stable measured; no ceiling touched).
 
 ## 0.20.0-beta.10 — 2026-09-02
 

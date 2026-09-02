@@ -217,7 +217,8 @@ function buildRoleContent(args: {
   chapters: Map<string, ChapterInfo>;
   coverage: GenerateSkillCoverage;
 },
-  toolPrefix: string): string {
+  toolPrefix: string,
+  prefixProvided: boolean): string {
   const { canonicalRole, riskLevel, format, flavour, includeDetail, guideOutput, chapters, coverage } = args;
   const name = `sbd-${canonicalRole}`;
   const harnessed = format === "subagent" && flavour === "harnessed";
@@ -264,8 +265,18 @@ function buildRoleContent(args: {
     ? chapterIds.map((id) => `- ${id} — ${chapters.get(id as string)?.readableTitle ?? id}`).join("\n")
     : renderSlice(guideOutput, chapters, includeDetail);
 
+  const prefixInstruction =
+    format === "subagent" && harnessed && !prefixProvided
+      ? "> ⚠️ **SUBSTITUI `<MCP_TOOL_PREFIX>` no frontmatter `tools:` acima** pelo prefixo real das " +
+        "tools SbD-ToE no TEU cliente (ex.: `mcp__sbd-toe__` no Claude Code local; confirma via a " +
+        "lista de tools do cliente). Sem substituição este subagente instala-se SEM tools — o " +
+        "placeholder é deliberadamente visível para nunca falhar em silêncio. Alternativa: gera de " +
+        "novo com `generate_sbd_toe_skill(..., tool_prefix=\"<prefixo>\")`."
+      : null;
+
   return [
     frontmatter,
+    ...(prefixInstruction ? ["", prefixInstruction] : []),
     "",
     mission,
     "",
@@ -280,7 +291,11 @@ function buildRoleContent(args: {
 
 export function handleGenerateSbdToeSkill(args: Record<string, unknown> = {}): GenerateSkillOutput {
   const toolPrefixArg = args && typeof (args as Record<string, unknown>)["tool_prefix"] === "string" ? String((args as Record<string, unknown>)["tool_prefix"]).trim() : "";
-  const toolPrefix = toolPrefixArg.length > 0 ? toolPrefixArg : DEFAULT_TOOL_PREFIX;
+  // 0.15.1 (P0-4, decisão (c)): o servidor NÃO observa o prefixo do cliente. Sem
+  // parâmetro → PLACEHOLDER visível + instrução de substituição — nunca uma instalação
+  // silenciosa com tools erradas (b) nem um erro que quebre o fluxo comum (a).
+  const prefixProvided = toolPrefixArg.length > 0;
+  const toolPrefix = prefixProvided ? toolPrefixArg : "<MCP_TOOL_PREFIX>";
   const roleArg = typeof args["role"] === "string" ? args["role"].trim() : "";
 
   // No role → original behaviour: the generic agent guide, unchanged.
@@ -344,7 +359,7 @@ export function handleGenerateSbdToeSkill(args: Record<string, unknown> = {}): G
     guideOutput,
     chapters,
     coverage
-  }, toolPrefix);
+  }, toolPrefix, prefixProvided);
 
   return {
     content,

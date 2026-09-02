@@ -17,17 +17,29 @@ describe("assess_sbd_toe_implementation", () => {
   });
 
   it("marks an applicable KPI with no submitted value as not_reported (never a pass)", () => {
-    const r = handleAssessImplementation({ risk_level: "L2", kpi_values: {} });
+    const r = handleAssessImplementation({ risk_level: "L2", kpi_values: { "XX-PROBE": 1 } });
     const arc = r.data.per_kpi.find((k) => k.metric_id === "ARC-K01");
     expect(arc?.status).toBe("not_reported");
     expect(r.data.gaps.some((g) => g.metric_id === "ARC-K01")).toBe(true);
   });
 
-  it("posture is below when any applicable KPI is unmet/unreported", () => {
+  it("posture distingue AVALIADO de NÃO-avaliado (0.15.1): meets+not_reported → 'at' declarado", () => {
     const r = handleAssessImplementation({ risk_level: "L2", kpi_values: { "ARC-K01": 85 } });
-    expect(r.data.posture).toBe("below"); // other KPIs not reported
+    expect(r.data.posture).toBe("at"); // cumpriu o avaliado; extensão declarada em totals
     expect(r.data.totals.meets).toBeGreaterThanOrEqual(1);
     expect(r.data.totals.not_reported).toBeGreaterThan(0);
+  });
+
+  it("posture é 'below' apenas com avaliação abaixo do threshold (0.15.1)", () => {
+    const r = handleAssessImplementation({ risk_level: "L2", kpi_values: { "ARC-K01": 1 } });
+    expect(r.data.posture).toBe("below");
+  });
+
+  it("kpi_values {} é rejeitado com erro instrutivo; só not_reported ⇒ posture not_assessed (0.15.1)", () => {
+    expect(() => handleAssessImplementation({ risk_level: "L2", kpi_values: {} })).toThrow(/kpi_values vazio/);
+    const r = handleAssessImplementation({ risk_level: "L2", kpi_values: { "XX-PROBE": 1 } });
+    expect(r.data.posture).toBe("not_assessed");
+    expect(r.data.gaps_coverage.total).toBeGreaterThan(0);
   });
 
   it("surfaces unknown metric ids without counting them in posture", () => {
@@ -43,14 +55,14 @@ describe("assess_sbd_toe_implementation", () => {
   });
 
   it("is stateless self-report and declares it; thresholds come from the bundle", () => {
-    const r = handleAssessImplementation({ risk_level: "L3", kpi_values: {} });
+    const r = handleAssessImplementation({ risk_level: "L3", kpi_values: { "XX-PROBE": 1 } });
     expect(r.data.mode).toBe("self_report_stateless");
     expect(r.provenance.source_data).toContain("metrics.json");
     expect(r.provenance.note.toLowerCase()).toContain("nothing persisted");
   });
 
   it("next affordance routes each gap to its chapter implementation checklist", () => {
-    const r = handleAssessImplementation({ risk_level: "L2", kpi_values: {} });
+    const r = handleAssessImplementation({ risk_level: "L2", kpi_values: { "XX-PROBE": 1 } });
     expect((r.next ?? []).some((a) => a.tool === "get_sbd_toe_chapter_implementation_checklist")).toBe(true);
     expect((r.next ?? []).length).toBeLessThanOrEqual(3);
   });
@@ -63,14 +75,14 @@ describe("assess_sbd_toe_implementation", () => {
   });
 
   it("validates risk_level and kpi_values shape", () => {
-    expect(() => handleAssessImplementation({ risk_level: "L9", kpi_values: {} })).toThrowError(/risk_level/);
+    expect(() => handleAssessImplementation({ risk_level: "L9", kpi_values: { "XX-PROBE": 1 } })).toThrowError(/risk_level/);
     expect(() => handleAssessImplementation({ risk_level: "L2", kpi_values: [] })).toThrowError(/kpi_values/);
     expect(() => handleAssessImplementation({ risk_level: "L2" })).toThrowError(/kpi_values/);
   });
 
   // Coverage-preserving pagination (the per_kpi list must never be an unbounded dump).
   it("paginates per_kpi with a bounded default + coverage cursor; totals stay whole", () => {
-    const r = handleAssessImplementation({ risk_level: "L2", kpi_values: {} });
+    const r = handleAssessImplementation({ risk_level: "L2", kpi_values: { "XX-PROBE": 1 } });
     expect(r.coverage).toBeDefined();
     const cov = r.coverage as { total: number; returned: number; nextOffset: number | null; hasMore: boolean };
     // default page is bounded (agentic budget = 15), not the full applicable set.
@@ -89,7 +101,7 @@ describe("assess_sbd_toe_implementation", () => {
     let total = 0;
     let guard = 0;
     while (offset !== null && guard++ < 100) {
-      const r = handleAssessImplementation({ risk_level: "L3", kpi_values: {}, offset, limit: 20 });
+      const r = handleAssessImplementation({ risk_level: "L3", kpi_values: { "XX-PROBE": 1 }, offset, limit: 20 });
       const cov = r.coverage as { total: number; nextOffset: number | null };
       total = cov.total;
       seen.push(...r.data.per_kpi.map((k) => k.metric_id));

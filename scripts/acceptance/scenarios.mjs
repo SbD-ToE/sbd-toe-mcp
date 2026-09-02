@@ -240,10 +240,11 @@ export const scenarios = [
     run: async (c) => { const r = await c.tool("plan_sbd_toe_rollout", {}); if (!r.ok) return fail(r.error); const d = r.data; const phases = d.data?.phases ?? [];
       if (!d.coverage) return fail("no coverage envelope (G1)"); if (phases.length === 0) return fail("no phases");
       const withChapter = phases.filter((p) => typeof p.chapter === "string" && p.chapter.length > 0).length; const ordered = phases.every((p, i) => p.order === i + 1); if (withChapter === 0) return fail("phases carry no chapter"); return ok(`${phases.length} phases, ${withChapter} with a chapter anchor, canonical order ${ordered}, model ${d.data.model ?? "absent"}, total ${d.coverage.total}`); } },
-  { id: "TC-F-05", axis: "F", title: "assess implementation — not_reported never a pass; thresholds cited", tool: "assess_sbd_toe_implementation",
-    run: async (c) => { const r = await c.tool("assess_sbd_toe_implementation", { risk_level: "L2", kpi_values: {}, limit: 5 }); if (!r.ok) return fail(r.error); const d = r.data; const s = JSON.stringify(d);
-      if (!d.coverage) return fail("no coverage envelope (G1)"); if (!/not_reported/.test(s)) return fail("empty self-report not flagged not_reported"); if (/"pass"/.test(s) && !/not_reported/.test(s)) return fail("pass without values");
-      return ok(`envelope ok; empty kpi_values → not_reported; total ${d.coverage.total}, hasMore ${d.coverage.hasMore}`); } },
+  { id: "TC-F-05", axis: "F", title: "assess — not_reported nunca é pass; {} rejeitado (0.15.1); thresholds citados", tool: "assess_sbd_toe_implementation",
+    run: async (c) => { const r = await c.tool("assess_sbd_toe_implementation", { risk_level: "L2", kpi_values: { "XX-PROBE": 1 }, limit: 5 }); if (!r.ok) return fail(r.error); const d = r.data; const s = JSON.stringify(d);
+      if (!d.coverage) return fail("no coverage envelope (G1)"); if (!/not_reported/.test(s)) return fail("catálogo sem valores não ficou not_reported"); if (/"posture":"(at|above)"/.test(s)) return fail("pass sem valores avaliados");
+      const e = await c.tool("assess_sbd_toe_implementation", { risk_level: "L2", kpi_values: {} }); if (e.ok) return fail("{} aceite (0.15.1 exige rejeição)");
+      return ok(`not_reported ✓, posture=${d.data.posture}; {} rejeitado; total ${d.coverage.total}, hasMore ${d.coverage.hasMore}`); } },
   { id: "TC-F-06", axis: "F", title: "regulatory activation DORA — chapters activated, counts, paginated", tool: "map_sbd_toe_regulatory_activation",
     run: async (c) => { const r = await c.tool("map_sbd_toe_regulatory_activation", { framework: "DORA", limit: 3 }); if (!r.ok) return fail(r.error); const d = r.data;
       if (!d.coverage) return fail("no coverage envelope (G1)"); const act = d.data?.activated ?? []; if (act.length === 0) return fail("nothing activated"); if (act.length > 3) return fail("page > limit");
@@ -461,8 +462,9 @@ export const scenarios = [
       const b = await c.tool("get_sbd_toe_chapter_brief", { chapterId: "capitulo-fantasma" }); if (!b.ok) return fail(b.error);
       if (b.data.found !== false || !b.data.valid_chapter_ids?.length) return fail("brief desconhecido sem erro declarado + lista");
       const n = await c.tool("get_sbd_toe_chapter_brief", { chapterId: "8" }); if (!n.ok || n.data.found === false) return fail("alias numérico '8' não resolve");
-      const o = await c.tool("get_sbd_toe_operating_model", { orgScope: "zzz-inexistente" }); if (!o.ok) return fail(o.error);
-      if (!o.data.data?.warning?.org_scope_not_matched) return fail("orgScope sem correspondência ficou mudo");
+      const o = await c.tool("get_sbd_toe_operating_model", { orgScope: "zzz-inexistente" });
+      if (o.ok) return fail("orgScope sem correspondência devolveu sucesso (0.15.1 exige erro)");
+      if (!/Secções válidas|section/.test(String(o.error))) return fail("erro orgScope sem lista derivada de válidos");
       const sBad = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/codegen-instructions/codegen", slot: "slot-fantasma" });
       if (sBad.ok || !/Slots válidos/.test(String(sBad.error))) return fail("slot inválido sem lista de slots");
       const sOk = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/agent-guide", char_offset: 0, char_limit: 500 });
@@ -478,6 +480,26 @@ export const scenarios = [
       const m = await c.tool("map_sbd_toe_applicability", { risk_level: "L2" }); if (!m.ok) return fail("alias risk_level→riskLevel falhou no map");
       const q = await c.tool("consult_security_requirements", { riskLevel: "L2", concerns: ["logging"] }); if (!q.ok) return fail("alias riskLevel→risk_level falhou no consult");
       return ok(`index 2.0-derived (${idx.chapters.length} caps, demand_by_level, 0 minLevel); aliases de nível nos 2 sentidos ✓`); } },
+  { id: "TC-F-23", axis: "F", title: "0.15.1: tool_prefix placeholder visível + brief.next sem id inválido + mode verdadeiro", tool: "generate_sbd_toe_skill",
+    run: async (c) => {
+      const g = await c.tool("generate_sbd_toe_skill", { role: "developer", format: "subagent", flavour: "harnessed" }); if (!g.ok) return fail(g.error);
+      if (!g.data.content.includes("<MCP_TOOL_PREFIX>consult_security_requirements")) return fail("sem parâmetro: frontmatter não usa placeholder");
+      if (!/SUBSTITUI `<MCP_TOOL_PREFIX>`/.test(g.data.content)) return fail("placeholder sem instrução de substituição (instalação silenciosa possível)");
+      const b = await c.tool("get_sbd_toe_chapter_brief", { chapterId: "capitulo-fantasma" }); if (!b.ok) return fail(b.error);
+      if (JSON.stringify(b.data.next ?? []).includes("capitulo-fantasma")) return fail("next sugere o id que a resposta invalidou");
+      return ok("placeholder+instrução sem parâmetro; next do brief inválido usa placeholder genérico"); } },
+  { id: "TC-F-24", axis: "F", title: "0.15.1: assess — kpi_values {} rejeitado; gaps_offset walk; posture below vs not_assessed", tool: "assess_sbd_toe_implementation",
+    run: async (c) => {
+      const e = await c.tool("assess_sbd_toe_implementation", { risk_level: "L2", kpi_values: {} });
+      if (e.ok || !/kpi_values vazio|metric_ids/.test(String(e.error))) return fail("{} não rejeitado com erro instrutivo");
+      const n = await c.tool("assess_sbd_toe_implementation", { risk_level: "L2", kpi_values: { "XX-FAKE": 1 } }); if (!n.ok) return fail(n.error);
+      if (n.data.data.posture !== "not_assessed") return fail(`só not_reported ⇒ posture=${n.data.data.posture} (esperado not_assessed)`);
+      const seen = []; let go = 0, guard = 0;
+      for (;;) { const p = await c.tool("assess_sbd_toe_implementation", { risk_level: "L2", kpi_values: { "XX-FAKE": 1 }, gaps_offset: go, gaps_limit: 40 }); if (!p.ok) return fail(p.error);
+        seen.push(...p.data.data.gaps.map((x) => x.metric_id)); const gc = p.data.data.gaps_coverage; if (!gc) return fail("sem gaps_coverage");
+        if (!gc.hasMore) { if (seen.length !== gc.total) return fail(`walk ${seen.length} ≠ total ${gc.total}`); break; }
+        go = gc.nextOffset; if (guard++ > 10) return fail("runaway"); }
+      return ok(`{} → erro instrutivo; posture not_assessed sem avaliação; gaps walk ${seen.length}/${seen.length} com coverage própria`); } },
 
   // ───────────────────────── Axis G — beta-line tools (added 2026-09-01; closes the 24/23 gap) ─────────────────────────
   // trace_sbd_toe_graph exists only on the 0.20-beta line (SPARQL/Oxigraph over the RDF

@@ -843,7 +843,7 @@ class McpRuntime {
               offset: {
                 type: "integer",
                 minimum: 0,
-                description: "Optional. 0-based chapter offset for coverage-preserving pagination of byChapter. Follow `coverage.nextOffset` to page; default covers all chapters."
+                description: "Optional. 0-based chapter offset for coverage-preserving pagination of byChapter. Follow `coverage.nextOffset`; o DEFAULT devolve a 1ª página de 5 capítulos (0.15.0) — coverage/size_estimate declaram o resto."
               },
               limit: {
                 type: "integer",
@@ -1032,6 +1032,8 @@ class McpRuntime {
               risk_level: { type: "string", enum: ["L1", "L2", "L3"], description: "Target/'compliant' band." },
               offset: { type: "number", description: "Coverage-preserving page offset over per_kpi." },
               limit: { type: "number", description: "Max per_kpi rows per page (default 15; follow coverage.nextOffset)." }
+              ,gaps_offset: { type: "number", description: "0.15.1: paginação própria dos gaps (highlight severity-first); ver gaps_coverage." },
+              gaps_limit: { type: "number", description: "Máx. gaps por página (default 10)." }
             },
             required: ["kpi_values", "risk_level"],
             additionalProperties: false
@@ -1204,7 +1206,9 @@ class McpRuntime {
                   type: "string",
                   enum: ["auth", "logging", "validation", "api", "config", "integrity", "distribution", "ide", "requirements", "architecture", "iac", "encryption", "agents"]
                 },
-                maxItems: 3,
+                // 0.15.1 (item 7): re-avaliado POR MEDIÇÃO — 5 concerns ≈4,3k tk (payload manda,
+                // não a contagem); recomendação de ensino continua ≤3; sem corte no servidor.
+                maxItems: 5,
                 description: "Optional concern domains to narrow scope (intersects with risk-level filter, does not replace). 'agents' = AI-agent / automation governance catalogue (REQ-AGN-001…004)."
               },
               exposure: {
@@ -1220,7 +1224,7 @@ class McpRuntime {
               mode: {
                 type: "string",
                 enum: ["full", "index"],
-                description: "Optional. 'index' (additive opt-in) returns a per-category requirement index (ids + counts) instead of the full bodies — same filters and totals; default 'full' is byte-unchanged."
+                description: "Optional. 'index' (additive opt-in) devolve só ids por categoria (+counts). O default 'full' devolve PROJECÇÕES (id/name/category/type — ver projection_note); corpos completos via resolve_entities. Mesmos filtros e totais nos dois modos."
               }
             },
             required: ["risk_level"],

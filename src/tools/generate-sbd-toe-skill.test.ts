@@ -77,7 +77,12 @@ describe("generate_sbd_toe_skill — RF-S role serving", () => {
 
   it("harnessed flavour grants mcp__sbd-toe__* and points to live querying", () => {
     const result = handleGenerateSbdToeSkill({ role: "devops-sre", format: "subagent", flavour: "harnessed" });
-    expect(frontmatterOf(result.content)).toContain("mcp__sbd-toe__get_guide_by_role");
+    // 0.15.1: sem tool_prefix → placeholder VISÍVEL + instrução (nunca instalação silenciosa).
+    expect(frontmatterOf(result.content)).toContain("<MCP_TOOL_PREFIX>get_guide_by_role");
+    expect(result.content).toContain("SUBSTITUI `<MCP_TOOL_PREFIX>`");
+    const withPrefix = handleGenerateSbdToeSkill({ role: "devops-sre", format: "subagent", flavour: "harnessed", tool_prefix: "mcp__sbd-toe__" });
+    expect(frontmatterOf(withPrefix.content)).toContain("mcp__sbd-toe__get_guide_by_role");
+    expect(withPrefix.content).not.toContain("<MCP_TOOL_PREFIX>");
     expect(result.content).toContain("include_detail=true");
     expect(result.meta?.flavour).toBe("harnessed");
   });
