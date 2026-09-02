@@ -22,3 +22,7 @@
 ## Update — ciclo 0.15.0 (2026-09-01)
 - [x] Auditoria Desktop P0 completo + paginação + excluded_by_level; eval 126 cenários 0 FAIL; ouro 10/10; tectos intactos (ultrathin por dieta)
 - [ ] PR → merge → tag v0.15.0 → npm latest; 0.15.1 = assess (deferido)
+
+## Update — ciclo 0.15.1 (2026-09-02)
+- [x] Reverificação fechada 7/7 (placeholder tool_prefix; orgScope erro; assess completo; maxItems 5 medido); eval 128 cenários 0 FAIL; ouro 10/10
+- [ ] PR → merge → tag v0.15.1 → npm latest

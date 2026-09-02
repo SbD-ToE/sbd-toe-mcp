@@ -3,11 +3,61 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-30
 purpose: documentation
-reasoning: v0.15.0 — auditoria Desktop: paginação universal (threat 25/233+size_estimate; plan default 5; slot/char no read_resource), banda excluded_by_level declarada (select+prepare; ultrathin dieta), index-compact derivado (estático morto), tool_prefix, fases canon-first+phase_warning, erros harmonizados com listas de válidos, consult projecção declarada+maxItems, aliases risk_level↔riskLevel; v0.14.0 — aplicabilidade GRADUADA (decisão do Author: capítulo nunca se exclui; exigência deriva dos assignments autorados + matriz cap. 01; listas binárias/minLevel mortos; module applicability.ts); v0.13.0 — serving batch: read_sbd_toe_resource (espelho de resources/read, catálogo derivado), stamp provenance.kg por resposta (tectos intactos), inspect com Pin servido (causa do n/d confirmada e corrigida), varrimento de contagens em prosa, release_ref normalizado, ensino Step 0 identidade; v0.12.0 — formal lote: KG v1.9.0 pinned (FIL/PRI/INT-009..012 served, contract v1.15), selection v1.8.0-aware, ceilings ratified+harmonized (9.200/8.450), npm latest; v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; named rules R1 principal-não-humano + R2 narrowing SES; D1 gate um-sinal-uma-superfície; D3 activators; D4; consult mode index; v2 token diet ported with stable-measured ceilings; R3 teaching layer: guide/skills/affordances ensinam select + duas bandas); Axis H 1/3/6 → 10/10; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
+reasoning: v0.15.1 — fecho da reverificação Desktop: tool_prefix placeholder visível (decisão c), next sem id inválido, mode do consult verdadeiro, orgScope→erro com lista derivada, assess completo (rejeição {}, gaps_coverage, posture not_assessed), maxItems 5 por medição; v0.15.0 — auditoria Desktop: paginação universal (threat 25/233+size_estimate; plan default 5; slot/char no read_resource), banda excluded_by_level declarada (select+prepare; ultrathin dieta), index-compact derivado (estático morto), tool_prefix, fases canon-first+phase_warning, erros harmonizados com listas de válidos, consult projecção declarada+maxItems, aliases risk_level↔riskLevel; v0.14.0 — aplicabilidade GRADUADA (decisão do Author: capítulo nunca se exclui; exigência deriva dos assignments autorados + matriz cap. 01; listas binárias/minLevel mortos; module applicability.ts); v0.13.0 — serving batch: read_sbd_toe_resource (espelho de resources/read, catálogo derivado), stamp provenance.kg por resposta (tectos intactos), inspect com Pin servido (causa do n/d confirmada e corrigida), varrimento de contagens em prosa, release_ref normalizado, ensino Step 0 identidade; v0.12.0 — formal lote: KG v1.9.0 pinned (FIL/PRI/INT-009..012 served, contract v1.15), selection v1.8.0-aware, ceilings ratified+harmonized (9.200/8.450), npm latest; v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; named rules R1 principal-não-humano + R2 narrowing SES; D1 gate um-sinal-uma-superfície; D3 activators; D4; consult mode index; v2 token diet ported with stable-measured ceilings; R3 teaching layer: guide/skills/affordances ensinam select + duas bandas); Axis H 1/3/6 → 10/10; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.15.1 — 2026-09-02
+
+**Patch** — fecho da reverificação Desktop (lead: «vale a pena então estas alterações»).
+Bundle UNCHANGED (pin release KG v1.9.0). Nenhuma capacidade nova.
+
+### Item-a-item (1–7, com a decisão tomada)
+
+1. **tool_prefix default → decisão (c), placeholder visível**: sem parâmetro, o
+   frontmatter `tools:` usa `<MCP_TOOL_PREFIX>…` e o corpo abre com a instrução de
+   substituição (⚠ SUBSTITUI …). Justificação: (b) default proxied instalaria
+   SILENCIOSAMENTE com tools erradas fora do Desktop; (a) erro quebraria o fluxo
+   comum; o placeholder torna o esquecimento VISÍVEL — um subagente sem substituição
+   instala-se sem tools de forma óbvia, nunca silenciosa. Com `tool_prefix`, comportamento
+   de 0.15.0.
+2. **next sem id inválido**: o brief com `found:false` deixa de sugerir tools com o id
+   que a própria resposta invalidou (placeholder genérico).
+3. **mode do consult conta a verdade**: o default 'full' devolve PROJECÇÕES
+   (id/name/category/type — ver projection_note; corpos via resolve_entities); 'index'
+   devolve só ids por categoria. As duas descrições dizem o mesmo.
+4. **orgScope desconhecido → ERRO accionável** (-32602) com a amostra de secções
+   válidas DERIVADA dos dados na própria mensagem (+ data.valid_section_titles) —
+   o aviso-com-sucesso-vazio morreu.
+5. **assess completo**: `kpi_values: {}` REJEITADO com erro instrutivo (metric_ids de
+   amostra derivados do catálogo); `gaps_offset`/`gaps_limit` com `gaps_coverage`
+   própria (o destaque 2-de-91 sem caminho morreu — walk 92/92 provado); posture
+   distingue **below** (avaliado, abaixo) de **not_assessed** (nada avaliado; `at`
+   quando o avaliado cumpre com not_reported declarado em totals).
+6. **Descrição do offset do plan** corrigida (default real = 1ª página de 5).
+7. **maxItems dos concerns re-avaliado POR MEDIÇÃO**: 1→2,0k · 3→3,6k · 5→4,3k ·
+   8→6,6k tokens — o payload manda: **sobe para 5** (justificado; ≈metade do prepare
+   std), recomendação de ensino continua ≤3 no next ("compostas → select; exploração
+   ampla → lotes"). O servidor nunca cortou concerns (verificado) — sem corte
+   silencioso em nenhum cenário.
+
+### Notas de contrato (0.15.0 → consumidores; reafirmadas)
+
+- `get_threat_landscape` é PAGINADO POR DEFAULT desde 0.15.0 (25/página;
+  `coverage.hasMore` + `size_estimate` sempre) — quem consumia a lista inteira segue
+  `coverage.nextOffset`.
+- `concerns` do consult: schema declara o limite (agora **maxItems 5**, medido;
+  recomendado ≤3).
+
+### Verificação
+
+- 691/691 testes (6 sondas substituem `{}` nos unitários do assess + 3 novos);
+  eval `2026-09-02-v0151`: **128 cenários, 89 PASS · 16 PART · 0 FAIL ·
+  23 SKIP — gate E PASS**; ouro **10/10**; TC-F-23/24 novos + TC-F-05/TC-F-21
+  re-baselinados (runner + doc de governança, §4.4). Orçamentos intocados (prepare
+  inalterado; snapshots idênticos).
 
 ## 0.15.0 — 2026-09-01
 

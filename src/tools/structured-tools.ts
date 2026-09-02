@@ -327,7 +327,9 @@ function chunkRiskLevels(raw: LooseRecord): string[] {
 
 export function handleGetSbdToeChapterBrief(args: Record<string, unknown>): unknown {
   const chapterId = typeof args["chapterId"] === "string" ? args["chapterId"] : undefined;
-  return { ...(handleGetSbdToeChapterBriefCore(args) as Record<string, unknown>), next: chapterBriefAffordances(chapterId) };
+  const briefCore = handleGetSbdToeChapterBriefCore(args) as Record<string, unknown>;
+  // 0.15.1 (P0-7b): nunca sugerir tools com o id que ESTA resposta acabou de invalidar.
+  return { ...briefCore, next: chapterBriefAffordances(briefCore["found"] === false ? undefined : chapterId) };
 }
 
 function handleGetSbdToeChapterBriefCore(
