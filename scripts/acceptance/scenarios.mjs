@@ -514,6 +514,29 @@ export const scenarios = [
       const at = p.data.artefact_totals;
       if (!at || at.distinct_count !== 45 || at.chapter_relation_count !== 469 || !at.count_semantics) return fail(`artefact_totals=${JSON.stringify(at)}`);
       return ok(`artifacts ${withArts}/${total} no guide; control_names ${names}/${t.data.threats.length}; totais 45 distinct / 469 relações com semântica declarada`); } },
+  { id: "TC-F-26", axis: "F", title: "0.17.0: resolve_entities valida chaves de filtro (caso do lead ACC-001/ACC-003)", tool: "resolve_entities",
+    run: async (c) => {
+      const bad = await c.tool("resolve_entities", { record_type: "requirement", filters: { id: { in: ["ACC-001", "ACC-003"] } } }); if (!bad.ok) return fail(bad.error);
+      if (!Array.isArray(bad.data.unknown_filter_fields) || !bad.data.unknown_filter_fields.includes("id")) return fail("campo desconhecido 'id' não declarado (total:0 silencioso persiste)");
+      if (!bad.data.valid_fields?.includes("requirement_id")) return fail("valid_fields sem requirement_id (derivação falhou)");
+      const dotOk = await c.tool("resolve_entities", { record_type: "requirement", filters: { "applicable_levels.L2": true }, limit: 2 }); if (!dotOk.ok) return fail(dotOk.error);
+      if (dotOk.data.unknown_filter_fields?.length) return fail("dot-notation válida marcada como desconhecida");
+      const dotBad = await c.tool("resolve_entities", { record_type: "requirement", filters: { "applicable_level.L2": true } }); if (!dotBad.ok) return fail(dotBad.error);
+      if (!dotBad.data.unknown_filter_fields?.includes("applicable_level.L2")) return fail("dot-notation inválida não declarada");
+      const good = await c.tool("resolve_entities", { record_type: "requirement", filters: { requirement_id: { in: ["ACC-001", "ACC-003"] } } });
+      if (good.data.total !== 2 || good.data.unknown_filter_fields) return fail("caminho válido regrediu");
+      return ok(`'id' → unknown_filter_fields + ${bad.data.valid_fields.length} valid_fields derivados; dot-notation ✓/✗ declarada; requirement_id → 2 (o 0-silencioso do lead morreu)`); } },
+  { id: "TC-F-27", axis: "F", title: "0.17.0: cadeia requisito→prova — select → verification_matrix(requirement_ids)", tool: "get_sbd_toe_verification_matrix",
+    run: async (c) => {
+      const s = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Empacotar o serviço em Docker e preparar deploy em K8s", changed_files: ["Dockerfile"] }); if (!s.ok) return fail(s.error);
+      if (!(s.data.next ?? []).some((n) => n.tool === "get_sbd_toe_verification_matrix" && /requirement_ids/.test(n.with ?? ""))) return fail("next do select não aponta à matriz com ids");
+      const ids = s.data.selection.selected.slice(0, 4).map((x) => x.requirement_id);
+      const m = await c.tool("get_sbd_toe_verification_matrix", { risk_level: "L2", requirement_ids: [...ids, "REQ-XXX-999"], limit: 50 }); if (!m.ok) return fail(m.error);
+      const md = m.data.data ?? m.data; // envelope RF-E5: rows vivem em data.data via MCP
+      const rowIds = new Set(md.rows.map((r) => r.requirement_id).filter(Boolean));
+      if (![...rowIds].every((id) => ids.includes(id))) return fail(`rows fora dos ids pedidos: ${[...rowIds].slice(0,4)}`);
+      if (!md.unknown_requirement_ids?.includes("REQ-XXX-999")) return fail("id sem prova não declarado em unknown_requirement_ids");
+      return ok(`select→matrix: ${rowIds.size} requisitos com prova de ${ids.length} pedidos; REQ-XXX-999 declarado sem EvidencePattern; next fecha a cadeia`); } },
 
   // ───────────────────────── Axis G — beta-line tools (added 2026-09-01; closes the 24/23 gap) ─────────────────────────
   // trace_sbd_toe_graph exists only on the 0.20-beta line (SPARQL/Oxigraph over the RDF

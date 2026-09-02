@@ -281,6 +281,7 @@ Always distinguish between:
 | "Find control / artefact / practice" | `query_sbd_toe_entities` |
 | "What requirements apply at L1/L2/L3?" | `consult_security_requirements(risk_level)` |
 | "Which requirements apply to THIS task / this change?" | `select_sbd_toe_requirements(risk_level, task, changed_files?)` — `selected[]` is the recommendation; `narrowed_out[]` explains what left and why (re-call with the missing signal to recover it) |
+| "How do I PROVE these requirements?" | `get_sbd_toe_verification_matrix(risk_level, requirement_ids=[…os selected…])` — o fecho requisito → prova; ids sem EvidencePattern vêm declarados |
 | "Give me a compact id map of the catalogue by category" | `consult_security_requirements(risk_level, mode="index")` |
 | "Which controls are active for auth / logging / …?" | `consult_security_requirements(risk_level, concerns=[…])` |
 | "What threats apply to this project?" | `get_threat_landscape(risk_level)` |

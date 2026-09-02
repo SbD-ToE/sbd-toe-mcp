@@ -3,11 +3,48 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-31
 purpose: documentation
-reasoning: v0.20.0-beta.13 (beta line, npm `beta`) — formal batch closed on both lines: absorbs stable 0.16.1, re-pins source: release KG v1.10.0 (byte-identical to the pinned dev-build; contract v1.16), stamp transition dev:<sha12> → "v1.10.0" verified live; ceilings intact; golden 10/10, gate E PASS, 24/24 tools.
+reasoning: v0.20.0-beta.14 (beta line, npm `beta`) — absorbs stable 0.17.0 (evaluator round 2): never-silent filter-key validation on resolve_entities (unknown_filter_fields + valid_fields derived from the records themselves) and the requirement→proof chain (verification_matrix requirement_ids[] + unknown_requirement_ids declared; select next → prove). Beta-only surfaces audited: none accept field-filter objects — the principle closes line-wide. Bundle pin unchanged (release KG v1.10.0). Golden 10/10, gate E PASS, 24/24 tools, budgets untouched.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.14 — 2026-09-02
+
+Absorbs the stable **0.17.0** (squash `61183f06` = tag v0.17.0 = npm `latest`, verified;
+evaluator round 2, lead «avança» 02-09 — findings 2+3; finding 1 stays out, its own design
+pending ratification). Bundle pin UNCHANGED (release KG `v1.10.0`, sha `d8df472b…204e`).
+
+### Absorption map (→ this line)
+
+1. **Never-silent `resolve_entities` filters** — filter keys validated against the REAL
+   record shape (union of the records' own keys, 26 record_types; dot-notation = first
+   segment; nothing hardcoded); unknown keys → declared WARNING (`unknown_filter_fields`
+   + `valid_fields`), never a hard error, never a silent 0. Reproduced live on this line:
+   `{"id":{"in":["ACC-001","ACC-003"]}}` → `unknown_filter_fields: ["id"]` + 12
+   `valid_fields` (incl. `requirement_id`); the corrected filter returns the 2 records
+   (TC-F-26 PASS — «o 0-silencioso do lead morreu»).
+2. **Requirement→proof chain** — `get_sbd_toe_verification_matrix` accepts
+   `requirement_ids[]` («how do I prove THESE»), requests without an EvidencePattern are
+   DECLARED in `unknown_requirement_ids`; the `select` `next[]` now leads with «prove the
+   selected requirements» (verified live: select next = matrix → consult → prepare);
+   guide carries the route (TC-F-27 PASS: 4-of-4 proved, fake id declared).
+3. **Teaching on this line's surfaces** — the select→matrix affordance ships in the
+   absorbed `affordances.ts`/`select-requirements.ts`; the beta-only teaching surfaces
+   (codegen-instructions line_note, Axis G scenarios) need no change.
+4. **Beta-only surfaces audited for the line-wide principle**: `trace_sbd_toe_graph`
+   takes `lens`/`anchor`/paging only and `select_sbd_toe_requirements` takes declared
+   signals — **no beta-only surface accepts field-filter objects**, so the key-validation
+   pattern has nowhere else to apply; invalid enum/missing inputs already answer with
+   declared -32602 errors (TC-G-03).
+
+### Verification (records `docs/acceptance-runs/2026-09-02-v0170-*-v0.20.0-beta.14-*`)
+
+`eval:acceptance`: **134 scenarios, 111 executed — 95 PASS · 16 PART · 0 FAIL · 23 SKIP;
+gate E PASS (16/1/0)**; TC-F-26/27 PASS on this line; Axis G 3/3; **24/24 tools**; golden
+cases **10/10**. Suite **729/729** · `npm run check` ✅. Budgets untouched (prepare
+unchanged): f1 18,767 / 6,130 / 5,484 / 3,688; f2 25,186 / 9,123/9,200 / 8,396/8,450 /
+4,833/4,840; ids 104/152.
 
 ## 0.20.0-beta.13 — 2026-09-02
 
