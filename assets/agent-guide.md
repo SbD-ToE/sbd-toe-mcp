@@ -354,6 +354,12 @@ Always distinguish between:
 
 ## Identifier conventions
 
+**Naming convention (0.15.0, declarada):** o nome canónico do parâmetro de nível é
+`risk_level`; as tools mais antigas usam `riskLevel` — AMBOS são aceites em todas as
+tools (alias aditivo, nunca renomeámos nada). Capítulos aceitam o id completo
+(`08-iac-infraestrutura`) ou o número (`8`) em brief/checklist. Fases canónicas:
+ver `knownPhases` do get_guide_by_role (alias aceite: `implement`→`develop`).
+
 - **Requirements**: `<CAT>-NNN` (e.g. `AUT-001`) or the namespaced transversal form `REQ-<CAT>-NNN` (e.g. `REQ-AGN-001…004`, the AI-agent governance catalogue). Grammar (consumer contract v1.10 §1.18, fullmatch): `^(?:REQ-[A-Z]{3}-\d{3}|[A-Z]{3}-\d{3})$`. The category is the segment immediately before the number (`AGN`, never `REQ`). `REQ-AUT-003` is **not** an alias of `AUT-003`, and an `EX-` prefix marks an illustrative identifier that never resolves: legacy `REQ-<CAT>-NNN` citations of base requirements (or of non-existent categories such as `DAT`, `PRI`, `DOS`, `IAM`) resolve to a **declared gap** (`match: "declared_gap"` — «citação legada não resolvível (finding editorial em curso)»). Report it as such, never as "requirement does not exist".
 - **Controls**: `CTRL-<domain>-<slug>-<hash>` (e.g. `CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4`). There is **no** `CTRL-<chapter>-<number>` form.
 - **Threats**: `MT-<number>` (e.g. `MT-001`)

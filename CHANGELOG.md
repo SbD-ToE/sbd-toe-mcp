@@ -3,11 +3,55 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-31
 purpose: documentation
-reasoning: v0.20.0-beta.9 (beta line, npm `beta`) — absorbs stable 0.14.0 (graduated applicability: the binary chapter exclusion dies, demand derived from authored assignment proportionality; Author decision 2026-09-01 verbatim) and fills Axis G (three trace_sbd_toe_graph scenarios in the runner AND the governance doc, same change): 24/24 tools exercised, gate E PASS, golden 10/10, budgets inside the harmonised gates. Bundle pin unchanged (release KG v1.9.0).
+reasoning: v0.20.0-beta.10 (beta line, npm `beta`) — absorbs stable 0.15.0 (Desktop-audit cycle: universal pagination, excluded_by_level band, derived index-compact — static file dies here too, tool_prefix, canon-first phase alias + phase_warning, harmonized declared errors, risk_level aliases); the codegen-instructions line_note INVERTED for this line (the trace tool exists here). Bundle pin unchanged (release KG v1.9.0). Golden 10/10, gate E PASS, 24/24 tools, budgets inside the harmonised gates.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.10 — 2026-09-02
+
+Absorbs the stable **0.15.0** (squash `7c4d6a79` = tag v0.15.0 = npm `latest`, verified;
+Desktop-audit cycle, lead «avança» 01-09). Bundle pin UNCHANGED (release KG `v1.9.0`).
+The 0.14.0 was already absorbed in beta.9 — this wave takes ONLY 0.15.0.
+
+### Absorption map (items 1–10 of the stable cycle → this line)
+
+- **index-compact DERIVED** at read-time; the March static file
+  (`data/publish/sbd-toe-index-compact.json`) is deleted here too (file + the `files[]`
+  packaging entry kept by this line's package.json — removed by hand, the conflict kept
+  ours); TC-F-22: 15 chapters, `demand_by_level`, 0 `minLevel`.
+- **Universal pagination**: threat default 25/233 + `size_estimate` (full L2 ≈7.1k
+  tokens/page), plan default 5 chapters, `read_sbd_toe_resource` slot picker +
+  `char_offset`/`char_limit` with coverage, consult `size_estimate` (TC-D-10, TC-F-18,
+  TC-F-21 char-paging PASS here).
+- **`excluded_by_level[]` band** on select (L1: 15 categories / 60 reqs declared) +
+  additive counts on prepare completeness; **ultrathin diets the two counts** — measured
+  4,833 ≤ 4,840, the stable's near-miss solved by diet, no new ceiling (TC-F-19).
+- **`tool_prefix`** on generate_sbd_toe_skill; **canon-first `implement→develop`** alias +
+  `phase_warning` with `knownPhases` (silent zero-filter dies; TC-F-20); **harmonized
+  declared errors** (brief unknown → `valid_chapter_ids`, numeric alias; orgScope warning;
+  unknown slot → slots list; TC-F-21); consult projection declared + `maxItems 3` + threat
+  `concerns` enum gains `agents`; skill resource L2 declared; **`risk_level↔riskLevel`
+  aliases** both ways (TC-F-22).
+- **Line note INVERTED for this line (dispatch rule):** the absorbed
+  `codegen-instructions` `line_note` said «trace pertence à linha 0.20; nesta linha
+  estável use include_relations» — false here. It now tells the 0.20 truth: the
+  `trace_sbd_toe_graph` tool EXISTS on this line — execute the `relations_ref` directly;
+  `include_relations=true` stays as the inline shortcut.
+- Beta-only surfaces audited (selection engine, select tool, trace/SPARQL, RDF
+  projection): **none serve `minLevel` or their own per-level chapter lists** — nothing
+  else to kill.
+
+### Verification (records `docs/acceptance-runs/2026-09-02-v0150-*-v0.20.0-beta.10-*`)
+
+`eval:acceptance`: **129 scenarios, 106 executed — 90 PASS · 16 PART · 0 FAIL · 23 SKIP;
+gate E PASS (16/1/0)**; re-baselined TC-F-18..22 + TC-D-10 all PASS on this line; Axis G
+3/3; **24/24 tools**; golden cases **10/10**. Suite **727/727** · `npm run check` ✅.
+Budgets inside the harmonised gates: f1 18,749 / 6,113 / 5,467 / 3,688; f2 25,169 /
+**9,105**/9,200 / **8,379**/8,450 / **4,833**/4,840 (ids 104/152; the six golden
+snapshots gained the two additive excluded-by-level counts, +2 lines each, from the
+cherry-pick — verified by the suite).
 
 ## 0.20.0-beta.9 — 2026-09-01
 

@@ -22,6 +22,7 @@ import {
   resolveRequirementBundle,
   resolveThreatChapterNumber
 } from "./ontology-loader.js";
+import { estimateSize } from "../serving/response-shaping.js";
 import { servedKgReleaseTag } from "../version-info.js";
 import { _resolveConsultResult } from "./consult-security-requirements.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
@@ -327,8 +328,16 @@ export function handleGetThreatLandscape(
   args: Record<string, unknown>
 ): GetThreatLandscapeResult {
   const full = _resolveThreatLandscape(args, getOntologyData());
-  return {
+  // 0.15.0 (P0-1): paginação universal — default 25; coverage + size_estimate sempre.
+  const offsetArg = typeof args["offset"] === "number" ? Math.max(0, Math.floor(args["offset"] as number)) : 0;
+  const limitArg = typeof args["limit"] === "number" ? Math.max(1, Math.floor(args["limit"] as number)) : 25;
+  const totalThreats = full.threats.length;
+  const pagedThreats = full.threats.slice(offsetArg, offsetArg + limitArg);
+  const nextOffset = offsetArg + pagedThreats.length < totalThreats ? offsetArg + pagedThreats.length : null;
+  full.threats = pagedThreats;
+  const shaped = {
     ...full,
+    coverage: { total: totalThreats, returned: pagedThreats.length, offset: offsetArg, nextOffset, hasMore: nextOffset !== null },
     provenance: {
       kg: servedKgReleaseTag(),
       content_type: "derived",
@@ -365,4 +374,5 @@ export function handleGetThreatLandscape(
     })),
     next: threatLandscapeAffordances(full.risk_level, full.meta.concernsApplied ?? undefined),
   };
+  return { ...shaped, size_estimate: estimateSize(shaped) } as unknown as GetThreatLandscapeResult;
 }

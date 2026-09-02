@@ -355,6 +355,10 @@ export interface CompletenessReport {
     selected: number;
     narrowed_out_categories: number;
     narrowed_out_requirements: number;
+    /** Opcionais no perfil ultrathin (dieta s3c): a banda continua declarada no
+     * select e nos perfis standard/minimal/full; recuperação via narrowed_out_ref. */
+    excluded_by_level_categories?: number;
+    excluded_by_level_requirements?: number;
     narrowed_out_ref: { tool: "select_sbd_toe_requirements"; note: string };
   };
 }
@@ -2539,6 +2543,7 @@ const DETAIL_ENCODING_LEGEND = {
 
 export interface CodegenInstructionsResourceContent {
   resource: string;
+  line_note: string;
   mode: CodegenMode;
   note: string;
   llm_codegen_instructions: {
@@ -2572,6 +2577,11 @@ export function buildCodegenInstructionsResourceContent(
       "Static per-mode boilerplate for prepare_sbd_toe_codegen_context at " +
       "detail=standard/minimal (kept inline at detail=full). Also carries the " +
       "detail_encoding legend for the dieted payload.",
+    // 0.15.0 item 8, invertido para esta linha (0.20-beta): aqui o trace EXISTE.
+    line_note:
+      "Nesta linha 0.20 (beta) o trace_sbd_toe_graph existe: execute os " +
+      "relations_ref directamente ({lens, anchor}). include_relations=true no " +
+      "prepare continua disponível como atalho para relações inline.",
     llm_codegen_instructions: {
       assembly:
         "Include each slot whose `when` is 'always' or appears in this call's " +
@@ -3117,6 +3127,12 @@ function trimCompletenessForUltrathin(
   report: DietedCompletenessReport
 ): UltrathinCompletenessReport {
   const { v1_consistency_mismatches, v1_manifest_warnings, ...kept } = report;
+  // 0.15.0: ultrathin OMITE os counts excluded_by_level (dieta; tecto 4.840 vigia) —
+  // a banda fica declarada no select e nos perfis standard/minimal/full.
+  if (kept.selection) {
+    const { excluded_by_level_categories: _c, excluded_by_level_requirements: _r, ...selRest } = kept.selection;
+    kept.selection = selRest as typeof kept.selection;
+  }
   return {
     ...kept,
     v1_consistency_mismatches_count: v1_consistency_mismatches.length,
@@ -3480,7 +3496,7 @@ function prepareCodegenContextCore(
           `Ficheiros em falta: ${error.missingPaths.join(", ")}.`
         ],
         [
-          "Regenera o checkout (npm run checkout:backend) ou usa apenas record types runtime v0 noutras tools."
+          "Deployment incompleto (runtime v1 ausente) — reporta ao operador do MCP (reinstalar/actualizar o pacote publicado); em alternativa usa record types runtime v0 noutras tools."
         ],
         activation.trace,
         { rejected: activation.rejected, notes: activation.notes }
@@ -3754,6 +3770,8 @@ function prepareCodegenContextCore(
       selected: selection.selected.length,
       narrowed_out_categories: selection.narrowed_out.length,
       narrowed_out_requirements: selection.narrowed_out.reduce((n, g) => n + g.count, 0),
+      excluded_by_level_categories: selection.excluded_by_level.length,
+      excluded_by_level_requirements: selection.excluded_by_level.reduce((n, g) => n + g.count, 0),
       narrowed_out_ref: {
         tool: "select_sbd_toe_requirements",
         note:

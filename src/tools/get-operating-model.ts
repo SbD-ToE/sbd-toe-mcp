@@ -67,9 +67,17 @@ export function handleGetOperatingModel(
     sections: operating.length
   };
 
+  // 0.15.0 (P0-7): orgScope sem correspondência ⇒ aviso DECLARADO.
+  const unfilteredOM = all.filter((c) => OPERATING_MODEL_RE.test(`${c.title} ${c.section_path}`));
+  const scopeWarning =
+    orgScope && operating.length === 0
+      ? { org_scope_not_matched: orgScope, note: "Nenhuma secção contém esse orgScope (substring sobre título/section_path/texto).", sample_section_titles: unfilteredOM.slice(0, 8).map((c) => c.title) }
+      : null;
+
   return {
     data: {
       ...(orgScope ? { org_scope: orgScope } : {}),
+      ...(scopeWarning ? { warning: scopeWarning } : {}),
       sections: page.items.map((c) => ({
         chunk_id: c.chunk_id,
         title: c.title,

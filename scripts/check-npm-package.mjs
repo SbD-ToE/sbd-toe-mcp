@@ -53,7 +53,6 @@ const REQUIRED_PATHS = [
   "data/publish/overlay/overlay_playbooks.json",
   "data/publish/overlay/overlay_mappings.jsonl",
   "data/publish/overlay/framework_overlay_index.json",
-  "data/publish/sbd-toe-index-compact.json",
   "data/publish/ontology/appsec-core-ontology.yaml",
   "data/publish/ontology/sbdtoe-ontology.yaml",
   "prompts/sbd-toe-chat-system.md",
