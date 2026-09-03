@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { handleTraceRequirementSources } from "./tools/trace-requirement-sources.js";
 import { buildDerivedIndexCompact } from "./serving/applicability.js";
 import { TECHNOLOGY_TO_CHAPTERS } from "./serving/selection.js";
 import { createHash } from "node:crypto";
@@ -1152,6 +1153,27 @@ class McpRuntime {
           annotations: { readOnlyHint: true }
         },
         {
+          name: "trace_sbd_toe_requirement_sources",
+          title: "Trace SbD-ToE Requirement Sources (estação 3)",
+          description:
+            "Onde está a FONTE de cada requisito: fontes DIRECTAS (source_anchors — autoria do Manual, marcador «Fontes») " +
+            "e cadeia COMPENSADA REQ→CTRL→ACO→fontes com tipo/confiança por salto (rótulo coverage_compensated — " +
+            "COBERTURA por correspondência entre modelos, NÃO autoria; related não cobre). Servida verbatim da superfície " +
+            "publicada (contrato v1.17 §1.24); os sem-fonte-declarada vêm DECLARADOS; ids desconhecidos idem.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              requirement_ids: { type: "array", items: { type: "string" }, minItems: 1, maxItems: 50, description: "Ids concretos (ex.: os selected do select)." },
+              include_chains: { type: "boolean", description: "default true; false devolve contagens + ref (dieta)." },
+              offset: { type: "number" },
+              limit: { type: "number", description: "default 20 (pagina sobre os ids pedidos; G1)." }
+            },
+            required: ["requirement_ids"],
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
           name: "select_sbd_toe_requirements",
           title: "Select SbD-ToE Requirements (MP1)",
           description:
@@ -2266,6 +2288,16 @@ class McpRuntime {
               return;
             }
             this.sendError(request.id, -32603, error instanceof Error ? error.message : "Could not read resource.");
+          }
+          return;
+        }
+        case "trace_sbd_toe_requirement_sources": {
+          try {
+            const result = handleTraceRequirementSources(args ?? {});
+            this.sendResponse(request.id, { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] });
+          } catch (error) {
+            const rpc = (error as { rpcError?: { code: number; message: string } }).rpcError;
+            this.sendError(request.id, rpc?.code ?? -32603, error instanceof Error ? error.message : "trace failed");
           }
           return;
         }

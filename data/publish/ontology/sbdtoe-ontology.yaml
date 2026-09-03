@@ -1,12 +1,15 @@
 meta:
   name: SbD-ToE Manual Ontology
-  version: '2.3'
+  version: '2.4'
   status: current
   scope: Manual ontology
-  tag: sbdtoe-ontology-v2.3
+  tag: sbdtoe-ontology-v2.4
   history:
   - version: '2.0'
     note: V2 backbone + semantic layer (imported baseline from sbd-toe-knowledge-graph)
+  - version: '2.4'
+    date: '2026-09-03'
+    note: "Aditiva sobre 2.3 (walkthrough CTRL↔ACore, gate ratificado pelo programme lead 2026-09-03): secção acore_alignment — 102 alinhamentos curados CTRL(20)↔ACO(75) com taxonomia exact/partial/related (0,95/0,85/0,70), derivação ACP via supports_objectives, ACM deferidos (F-W1), CAP/C4/C3 e rollups *-007 declarados; nota epistémica: correspondência entre modelos, não autoria — o composto é cobertura compensada. Ids dos 20 controlos, resolution_order, 260 práticas e catalogue_rules inalterados."
   - version: '2.3'
     date: '2026-08-31'
     note: "Aditiva sobre 2.2 (vaga v1.8.0 do Manual, f78dfe73): catalogue_rules para FIL (8, tratamento de ficheiros), PRI (5, dados pessoais/engenharia) e INT-009…012 (mensageria) — 104 → 121 requisitos type base; domain_mapping FIL → [code_integrity], PRI → [data_protection]; hints de selecção (ficheiro/upload → code_integrity; pessoais/pii/finalidade → data_protection); 3 aliases de privacidade em C2; baseline note. Ids dos 20 controlos, resolution_order e as 260 practice_assignments inalterados."
@@ -2794,3 +2797,553 @@ catalogue_rules:
     CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70: 13
     CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9: 2
     CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb: 3
+
+# ---------------------------------------------------------------------------
+# acore_alignment — camada de alinhamento curada CTRL(20) ↔ AppSec Core V1 (v2.4, 2026-09-03)
+# Ratificada pelo programme lead 2026-09-03 (gate do walkthrough): mapa (102), taxonomia e decisões de grão.
+# ---------------------------------------------------------------------------
+acore_alignment:
+  schema_version: '1.0'
+  # Nota epistémica (normativa para consumidores): este alinhamento afirma CORRESPONDÊNCIA entre o modelo
+  # operacional SbD-ToE (controls, v2.3) e o AppSec Core V1.1 — não autoria de conteúdo. A rastreabilidade
+  # composta REQ→CTRL→ACO→fonte externa que ele habilita é «cobertura, compensada», distinta das âncoras
+  # directas autoradas (source_anchors). Nenhum elo desta camada converte cobertura compensada em autoria.
+  epistemic_status:
+    asserts: model_correspondence
+    does_not_assert: content_authorship
+    composed_traceability: coverage_compensated
+  source_models:
+    ctrl: {ontology: sbdtoe-ontology, version: '2.3', tag: sbdtoe-ontology-v2.3, entities: 20}
+    acore: {ontology: appsec-core, version: V1.1, tag: ontology-v1.1-fair-baseline, commit: 84fe8bf, entities: {control_objectives: 75, practices: 69, mechanisms: 58}}
+  taxonomy:
+    exact: "o CTRL e o CO afirmam o mesmo objecto de controlo; correspondência 1:1 no essencial"
+    partial: "sobreposição material sem cobertura total (CO repartido por vários CTRL, ou CTRL que excede o CO)"
+    related: "adjacência semântica que suporta rastreabilidade composta sem afirmar cobertura; inclui os CO de coerência de slice (*-007)"
+  confidence: {exact: 0.95, partial: 0.85, related: 0.7}
+  coverage_rule: "um CO conta como coberto se tiver >=1 alinhamento exact ou partial; related não cobre"
+  derivation:
+    acp: "cada ACP herda os alinhamentos dos ACO em supports_objectives (69/69 têm a aresta); derivação determinística, não curada"
+    acm: null  # ver unaligned.acm
+  curation: {curator: archon-2026-09-03, ratified_by: programme-lead, ratified_on: '2026-09-03', source: agentic/briefs/2026-09-03-archon-walkthrough-ctrl-acore-alinhamento.md}
+  counts: {alignments: 102, exact: 52, partial: 21, related: 29, aco_covered: 66, aco_related_only: 9}
+  alignments:
+  - aco: ACO-SCBI-001
+    ctrl: CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb
+    type: exact
+    confidence: 0.95
+    rationale: "inventário de dependências ligado ao build + SBOM rastreável — o objecto de DEPS"
+  - aco: ACO-SCBI-001
+    ctrl: CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d
+    type: related
+    confidence: 0.7
+    rationale: "a vertente SBOM/inventário de imagens vive em IMG"
+  - aco: ACO-SCBI-002
+    ctrl: CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb
+    type: exact
+    confidence: 0.95
+    rationale: "avaliação automática de risco de dependências com bloqueio por política = SCA com gates (DEPS)"
+  - aco: ACO-SCBI-002
+    ctrl: CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d
+    type: related
+    confidence: 0.7
+    rationale: "scanning de imagens como gate"
+  - aco: ACO-SCBI-003
+    ctrl: CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb
+    type: partial
+    confidence: 0.85
+    rationale: "fontes de dependências aprovadas (repositórios internos como fonte única)"
+  - aco: ACO-SCBI-003
+    ctrl: CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d
+    type: partial
+    confidence: 0.85
+    rationale: "fontes de imagens aprovadas (registries allowlist, golden bases) — o CO reparte-se pelos dois"
+  - aco: ACO-SCBI-004
+    ctrl: CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2
+    type: exact
+    confidence: 0.95
+    rationale: "builds como código revisto, execução determinística controlada — desenho seguro dos pipelines"
+  - aco: ACO-SCBI-005
+    ctrl: CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2
+    type: partial
+    confidence: 0.85
+    rationale: "gates de promoção e separação sinal/decisão no pipeline"
+  - aco: ACO-SCBI-005
+    ctrl: CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0
+    type: related
+    confidence: 0.7
+    rationale: "a aprovação humana de promoção também vive no deploy"
+  - aco: ACO-SCBI-006
+    ctrl: CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2
+    type: exact
+    confidence: 0.95
+    rationale: "proveniência verificável e assinatura/attestation de artefactos — assinatura e proveniência (PIPE)"
+  - aco: ACO-SCBI-006
+    ctrl: CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d
+    type: related
+    confidence: 0.7
+    rationale: "cosign/rekor para imagens"
+  - aco: ACO-SCBI-007
+    ctrl: CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d
+    type: exact
+    confidence: 0.95
+    rationale: "integridade de supply de imagens de container — o objecto de IMG"
+  - aco: ACO-IAT-001
+    ctrl: CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82
+    type: exact
+    confidence: 0.95
+    rationale: "força de autenticação: MFA, brute-force, federação, step-up — AUT-* de C1"
+  - aco: ACO-IAT-002
+    ctrl: CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82
+    type: exact
+    confidence: 0.95
+    rationale: "política de autorização explícita e least privilege (RBAC/ABAC) — ACC-* de C1"
+  - aco: ACO-IAT-002
+    ctrl: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    type: related
+    confidence: 0.7
+    rationale: "modelos de permissão de toolchain"
+  - aco: ACO-IAT-003
+    ctrl: CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82
+    type: partial
+    confidence: 0.85
+    rationale: "revogação e revisão de acessos da aplicação (ACC-008/010)"
+  - aco: ACO-IAT-003
+    ctrl: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    type: partial
+    confidence: 0.85
+    rationale: "ciclo de vida de privilégios e revisões em toolchains/operações — o CO cobre ambos os planos"
+  - aco: ACO-IAT-004
+    ctrl: CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82
+    type: exact
+    confidence: 0.95
+    rationale: "fronteiras de confiança de sessões e tokens (SES-*)"
+  - aco: ACO-IAT-005
+    ctrl: CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82
+    type: exact
+    confidence: 0.95
+    rationale: "autenticação/autorização de chamadas na fronteira API (API-001)"
+  - aco: ACO-IAT-006
+    ctrl: CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70
+    type: partial
+    confidence: 0.85
+    rationale: "telemetria e detecção de abuso de acesso"
+  - aco: ACO-IAT-006
+    ctrl: CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82
+    type: related
+    confidence: 0.7
+    rationale: "AUT-010/ACC-003 geram o sinal na aplicação"
+  - aco: ACO-IAT-007
+    ctrl: CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82
+    type: related
+    confidence: 0.7
+    rationale: "CO de coerência do slice ASC-02 — agrega os CO específicos já alinhados; não afirma um objecto próprio"
+  - aco: ACO-ATB-001
+    ctrl: CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4
+    type: exact
+    confidence: 0.95
+    rationale: "baseline versionada, ADRs e padrões aprovados — o objecto de ARQ"
+  - aco: ACO-ATB-002
+    ctrl: CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b
+    type: exact
+    confidence: 0.95
+    rationale: "zonas de confiança e fluxos protegidos com controlos nos cruzamentos"
+  - aco: ACO-ATB-003
+    ctrl: CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b
+    type: exact
+    confidence: 0.95
+    rationale: "exposição externa minimizada, justificada e mediada na fronteira"
+  - aco: ACO-ATB-004
+    ctrl: CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b
+    type: exact
+    confidence: 0.95
+    rationale: "segmentação técnica e isolamento de domínios sensíveis"
+  - aco: ACO-ATB-005
+    ctrl: CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4
+    type: exact
+    confidence: 0.95
+    rationale: "revisão de arquitectura com triggers de mudança disciplinados"
+  - aco: ACO-ATB-006
+    ctrl: CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b
+    type: partial
+    confidence: 0.85
+    rationale: "validação de topologia como código (técnica)"
+  - aco: ACO-ATB-006
+    ctrl: CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4
+    type: partial
+    confidence: 0.85
+    rationale: "conformidade com padrões aprovados e validação automatizável em CI/CD (governança)"
+  - aco: ACO-ATB-007
+    ctrl: CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4
+    type: related
+    confidence: 0.7
+    rationale: "CO de coerência do slice ASC-03"
+  - aco: ACO-ATB-007
+    ctrl: CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b
+    type: related
+    confidence: 0.7
+    rationale: "idem — agrega os CO já alinhados"
+  - aco: ACO-TSV-001
+    ctrl: CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34
+    type: exact
+    confidence: 0.95
+    rationale: "estratégia de testes proporcional ao risco"
+  - aco: ACO-TSV-002
+    ctrl: CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34
+    type: exact
+    confidence: 0.95
+    rationale: "perfis SAST geridos com baseline de falsos positivos"
+  - aco: ACO-TSV-002
+    ctrl: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    type: related
+    confidence: 0.7
+    rationale: "SAST também corre como validação de código no fluxo de desenvolvimento"
+  - aco: ACO-TSV-003
+    ctrl: CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34
+    type: exact
+    confidence: 0.95
+    rationale: "triagem, SLA e fecho de findings com revalidação"
+  - aco: ACO-TSV-004
+    ctrl: CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34
+    type: exact
+    confidence: 0.95
+    rationale: "evidência de teste reproduzível e ligada ao build"
+  - aco: ACO-TSV-005
+    ctrl: CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34
+    type: exact
+    confidence: 0.95
+    rationale: "validação dinâmica em staging sob política de gates"
+  - aco: ACO-TSV-006
+    ctrl: CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34
+    type: exact
+    confidence: 0.95
+    rationale: "regressões de segurança + pentesting/fuzzing por risco"
+  - aco: ACO-TSV-007
+    ctrl: CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34
+    type: related
+    confidence: 0.7
+    rationale: "CO de coerência do slice ASC-04"
+  - aco: ACO-TMR-001
+    ctrl: CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0
+    type: exact
+    confidence: 0.95
+    rationale: "âmbito e triggers de threat modeling por nível de risco"
+  - aco: ACO-TMR-002
+    ctrl: CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0
+    type: exact
+    confidence: 0.95
+    rationale: "representação da arquitectura real (DFDs, fronteiras) como base da análise"
+  - aco: ACO-TMR-002
+    ctrl: CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b
+    type: related
+    confidence: 0.7
+    rationale: "os modelos de fronteira são artefactos de SEG"
+  - aco: ACO-TMR-003
+    ctrl: CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0
+    type: exact
+    confidence: 0.95
+    rationale: "método estruturado com cobertura mínima"
+  - aco: ACO-TMR-004
+    ctrl: CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0
+    type: exact
+    confidence: 0.95
+    rationale: "disposição, aceitação de risco e ownership por ameaça"
+  - aco: ACO-TMR-004
+    ctrl: CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29
+    type: related
+    confidence: 0.7
+    rationale: "aceitação formal de risco/risco residual (CLA-007)"
+  - aco: ACO-TMR-005
+    ctrl: CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0
+    type: partial
+    confidence: 0.85
+    rationale: "rastreabilidade ameaça→mitigação do lado do modelo"
+  - aco: ACO-TMR-005
+    ctrl: CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29
+    type: partial
+    confidence: 0.85
+    rationale: "rastreabilidade risco→requisito→controlo→validação (REQ-006) — o CO atravessa os dois"
+  - aco: ACO-TMR-006
+    ctrl: CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0
+    type: exact
+    confidence: 0.95
+    rationale: "revisão independente e ciclo de vida do modelo"
+  - aco: ACO-TMR-007
+    ctrl: CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0
+    type: related
+    confidence: 0.7
+    rationale: "CO de coerência do slice ASC-05"
+  - aco: ACO-TMR-008
+    ctrl: CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29
+    type: exact
+    confidence: 0.95
+    rationale: "ciclo de vida de requisitos de segurança: identificar, documentar, comunicar, manter (processo de requisitos do cap. 02, lane CLA)"
+  - aco: ACO-TMR-008
+    ctrl: CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628
+    type: related
+    confidence: 0.7
+    rationale: "comunicação de requisitos a terceiros"
+  - aco: ACO-SPC-001
+    ctrl: CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9
+    type: exact
+    confidence: 0.95
+    rationale: "prevenção de fuga e exclusão de segredos hardcoded (CFG-003/ENC-006 na lane SECR)"
+  - aco: ACO-SPC-002
+    ctrl: CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9
+    type: exact
+    confidence: 0.95
+    rationale: "armazenamento protegido em cofres e retrieval controlado (CFG-006)"
+  - aco: ACO-SPC-003
+    ctrl: CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9
+    type: exact
+    confidence: 0.95
+    rationale: "rotação e expiração disciplinadas (ENC-007 curada → SECR)"
+  - aco: ACO-SPC-004
+    ctrl: CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9
+    type: partial
+    confidence: 0.85
+    rationale: "credenciais efémeras e OIDC"
+  - aco: ACO-SPC-004
+    ctrl: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    type: partial
+    confidence: 0.85
+    rationale: "binding de identidades operacionais de pipeline/workload/deploy — o CO cobre ambos"
+  - aco: ACO-SPC-005
+    ctrl: CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9
+    type: partial
+    confidence: 0.85
+    rationale: "isolamento de uso de segredos por ambiente/superfície"
+  - aco: ACO-SPC-005
+    ctrl: CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af
+    type: related
+    confidence: 0.7
+    rationale: "segregação de identidades operacionais"
+  - aco: ACO-SPC-006
+    ctrl: CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9
+    type: partial
+    confidence: 0.85
+    rationale: "auditabilidade e governança de mudanças de segredos — SECR cobre a gestão; o registo auditável excede-o"
+  - aco: ACO-SPC-007
+    ctrl: CTRL-secrets-gestao-de-segredos-e-identidades-operacionais-e2c86cdfe9
+    type: related
+    confidence: 0.7
+    rationale: "CO de coerência do slice ASC-06"
+  - aco: ACO-IVF-001
+    ctrl: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    type: exact
+    confidence: 0.95
+    rationale: "validação de contrato de input nas entradas (VAL-001)"
+  - aco: ACO-IVF-002
+    ctrl: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    type: exact
+    confidence: 0.95
+    rationale: "schema, tipos e allowlists (VAL-002/003)"
+  - aco: ACO-IVF-003
+    ctrl: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    type: exact
+    confidence: 0.95
+    rationale: "resistência a injecção e exclusão de padrões perigosos (VAL-004)"
+  - aco: ACO-IVF-004
+    ctrl: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    type: exact
+    confidence: 0.95
+    rationale: "validação antes do uso interno e de cruzamentos de confiança (VAL-005)"
+  - aco: ACO-IVF-005
+    ctrl: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    type: exact
+    confidence: 0.95
+    rationale: "falha controlada e erros não-reveladores (ERR-001..004/VAL-006)"
+  - aco: ACO-IVF-006
+    ctrl: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    type: exact
+    confidence: 0.95
+    rationale: "gestão centralizada de erros com higiene de logging sensível (ERR-005/007)"
+  - aco: ACO-IVF-006
+    ctrl: CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411
+    type: related
+    confidence: 0.7
+    rationale: "mascaramento de dados sensíveis em logs (ENC-005)"
+  - aco: ACO-IVF-007
+    ctrl: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    type: related
+    confidence: 0.7
+    rationale: "CO de coerência do slice ASC-07"
+  - aco: ACO-IVF-008
+    ctrl: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    type: exact
+    confidence: 0.95
+    rationale: "output encoding context-aware na renderização (VAL-008)"
+  - aco: ACO-ITS-001
+    ctrl: CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82
+    type: exact
+    confidence: 0.95
+    rationale: "autenticação mútua/identidade de máquina em interacções serviço-a-serviço (INT-002 → C1; C1 cobre principals não-humanos)"
+  - aco: ACO-ITS-001
+    ctrl: CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411
+    type: related
+    confidence: 0.7
+    rationale: "mTLS como meio de transporte"
+  - aco: ACO-ITS-002
+    ctrl: CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411
+    type: exact
+    confidence: 0.95
+    rationale: "transporte seguro e exclusão de protocolos inseguros (INT-003/004)"
+  - aco: ACO-ITS-003
+    ctrl: CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411
+    type: partial
+    confidence: 0.85
+    rationale: "integridade de mensagens (INT-005/011)"
+  - aco: ACO-ITS-003
+    ctrl: CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460
+    type: partial
+    confidence: 0.85
+    rationale: "validação de pares autorizados origem/destino (INT-006) — o CO junta os dois"
+  - aco: ACO-ITS-004
+    ctrl: CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b
+    type: exact
+    confidence: 0.95
+    rationale: "exposição mediada por fronteira e controlo de caminhos de integração"
+  - aco: ACO-ITS-005
+    ctrl: CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628
+    type: partial
+    confidence: 0.85
+    rationale: "garantias contratuais de segurança em integrações (INT-008 curada → FORN)"
+  - aco: ACO-ITS-005
+    ctrl: CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b
+    type: partial
+    confidence: 0.85
+    rationale: "revisão técnica de fronteiras/integrações (par curado de INT-008)"
+  - aco: ACO-ITS-006
+    ctrl: CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70
+    type: exact
+    confidence: 0.95
+    rationale: "auditabilidade de chamadas externas (API-007/INT-007 → MON)"
+  - aco: ACO-ITS-007
+    ctrl: CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b
+    type: related
+    confidence: 0.7
+    rationale: "CO de coerência do slice ASC-08"
+  - aco: ACO-ITS-007
+    ctrl: CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411
+    type: related
+    confidence: 0.7
+    rationale: "idem"
+  - aco: ACO-RPR-001
+    ctrl: CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0
+    type: exact
+    confidence: 0.95
+    rationale: "autorização explícita e responsabilizável de release irreversível"
+  - aco: ACO-RPR-001
+    ctrl: CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2
+    type: related
+    confidence: 0.7
+    rationale: "não-repúdio de promoções no pipeline"
+  - aco: ACO-RPR-002
+    ctrl: CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0
+    type: exact
+    confidence: 0.95
+    rationale: "promoção apenas de artefactos verificados (deploy só de assinados)"
+  - aco: ACO-RPR-002
+    ctrl: CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2
+    type: related
+    confidence: 0.7
+    rationale: "verificação de assinatura/proveniência a montante"
+  - aco: ACO-RPR-003
+    ctrl: CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0
+    type: exact
+    confidence: 0.95
+    rationale: "gates pré-promoção e validação em staging"
+  - aco: ACO-RPR-004
+    ctrl: CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0
+    type: exact
+    confidence: 0.95
+    rationale: "rastreabilidade end-to-end do deploy (prática movida para DEPL em v2.1)"
+  - aco: ACO-RPR-005
+    ctrl: CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0
+    type: exact
+    confidence: 0.95
+    rationale: "rollback pré-definido, testado e com SLA"
+  - aco: ACO-RPR-006
+    ctrl: CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0
+    type: exact
+    confidence: 0.95
+    rationale: "rollout progressivo e contenção de blast radius (canary/blue-green)"
+  - aco: ACO-RPR-007
+    ctrl: CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0
+    type: related
+    confidence: 0.7
+    rationale: "CO de coerência do slice ASC-09"
+  - aco: ACO-RPR-008
+    ctrl: CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905
+    type: partial
+    confidence: 0.85
+    rationale: "baselines endurecidas como código/policy"
+  - aco: ACO-RPR-008
+    ctrl: CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d
+    type: related
+    confidence: 0.7
+    rationale: "golden base images como baseline endurecida de imagens"
+  - aco: ACO-RPR-009
+    ctrl: CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905
+    type: partial
+    confidence: 0.85
+    rationale: "integridade de configuração security-relevant e controlo de overrides (policy-as-code, hash de plan/manifests)"
+  - aco: ACO-RPR-009
+    ctrl: CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0
+    type: related
+    confidence: 0.7
+    rationale: "protecção na preparação do deploy"
+  - aco: ACO-RPR-010
+    ctrl: CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905
+    type: partial
+    confidence: 0.85
+    rationale: "revisão periódica de baseline/módulos e visibilidade de desvios"
+  - aco: ACO-RPR-010
+    ctrl: CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628
+    type: related
+    confidence: 0.7
+    rationale: "excepções aprovadas com TTL (processo formal de excepções)"
+  - aco: ACO-SLG-001
+    ctrl: CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70
+    type: exact
+    confidence: 0.95
+    rationale: "catálogo de eventos críticos efectivamente emitidos"
+  - aco: ACO-SLG-002
+    ctrl: CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70
+    type: exact
+    confidence: 0.95
+    rationale: "logs estruturados machine-readable com campos consistentes"
+  - aco: ACO-SLG-003
+    ctrl: CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70
+    type: exact
+    confidence: 0.95
+    rationale: "integridade e disciplina de acesso aos logs"
+  - aco: ACO-SLG-004
+    ctrl: CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70
+    type: exact
+    confidence: 0.95
+    rationale: "retenção e ciclo de vida de registos de auditoria"
+  - aco: ACO-SLG-005
+    ctrl: CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70
+    type: exact
+    confidence: 0.95
+    rationale: "ingestão centralizada com accountability de fontes"
+  - aco: ACO-SLG-006
+    ctrl: CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70
+    type: exact
+    confidence: 0.95
+    rationale: "saúde do pipeline de logging e visibilidade de falha silenciosa"
+  - aco: ACO-SLG-007
+    ctrl: CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70
+    type: related
+    confidence: 0.7
+    rationale: "CO de coerência do slice ASC-10"
+  unaligned:
+    aco: []  # 75/75 têm alinhamento; os 9 rollups *-007 são related-only por desenho (coverage_rule)
+    aco_related_only:
+    - {ids: [ACO-IAT-007, ACO-ATB-007, ACO-TSV-007, ACO-TMR-007, ACO-SPC-007, ACO-IVF-007, ACO-ITS-007, ACO-RPR-007, ACO-SLG-007], reason: "CO de coerência de slice — agregam CO específicos já alinhados; cobertura chega pelos constituintes"}
+    ctrl:
+    - {id: CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf, reason: "AppSec Core V1 não modela capacitação/formação — domínio organizacional fora do âmbito do Core"}
+    - {id: CTRL-governance-governacao-organizacional-ownership-e-conformidade-761d416ead, reason: "o Core V1 exclui governação organizacional/maturidade por desenho (module_split: só semântica AppSec reutilizável)"}
+    - {id: CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a, reason: "sem slice de ambiente/tooling de desenvolvimento no Core V1; candidato a ACR-watch se surgir pressão multi-fonte"}
+    acm:
+    - {ids_count: 58, reason: "a superfície V1 servida não materializa a aresta ACM→CO (supports/implements vazio nos components-drafts); deferido até F-W1 (materializar mecanismo→objectivo no V1) e então derivar como as ACP"}

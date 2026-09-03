@@ -21,6 +21,8 @@ export const PROJECT_NAME = "sbd-toe-mcp";
 export const REQUIRED_PUBLISH_FILES = [
   "data/publish/ontology/appsec-core-ontology.yaml",
   "data/publish/ontology/sbdtoe-ontology.yaml",
+  "data/publish/semantic/ctrl_acore_alignment.jsonl",
+  "data/publish/semantic/requirement_source_coverage.jsonl",
   "data/publish/indexes/publication_manifest.json",
   "data/publish/indexes/bundle_catalog.jsonl",
   "data/publish/indexes/mcp_chunks.jsonl",

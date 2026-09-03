@@ -1,7 +1,7 @@
 {
   "artifact_type": "v1_runtime_surface_manifest",
   "build": {
-    "generated_at": "2026-09-02T10:45:42.426697+00:00",
+    "generated_at": "2026-09-03T17:05:41.982190+00:00",
     "generator": "sbdtoe_indexing.workflows.build_v1_runtime_surface"
   },
   "drift_note": "Counts sourced from slice contracts (authoritative actual). Declared sum from consolidated index. Drift concentrated in working_contract slices (notably ASC-09 RPR); upstream V1 enumeration incomplete in some slices. Flagged for Archon visibility via Step 8 delivery handover.",
@@ -41,7 +41,7 @@
     },
     "manual_rastreabilidade": {
       "path": "v1/manual_rastreabilidade.jsonl",
-      "sha256": "8a411632c5302b5da83eb9f97a7b0c9de0709639141c1ffb87c08390338a0ff8"
+      "sha256": "501a35ac288a86c91134b9b4ddc13db9e442c3231366a0af08d657a503e33ff5"
     },
     "manual_threat_mitigation": {
       "path": "v1/manual_threat_mitigation.jsonl",
@@ -128,7 +128,7 @@
   "ontology_anchor": {
     "consolidated_meta_version": "1.0",
     "expected_commit_sha": "84fe8bf6f5de1443d778f9b2f0555b722540bbff",
-    "mirror_recorded_commit_sha": "84fe8bf6f5de1443d778f9b2f0555b722540bbff",
+    "mirror_recorded_commit_sha": null,
     "repo": "https://github.com/SbD-ToE/sbd-toe-ontology.git",
     "tag": "ontology-v1.1-fair-baseline"
   },
@@ -139,6 +139,22 @@
     "total": 529
   },
   "slice_count": 10,
+  "substrate_landing_detruncation": {
+    "absent_declared": [
+      "ACM-IVF-005",
+      "ACO-IVF-008",
+      "ACO-RPR-003",
+      "ACP-IVF-007",
+      "ACP-SCBI-004"
+    ],
+    "authored_hidden_sources": 1413,
+    "authored_visible_sources": 762,
+    "landings": 202,
+    "resolved": 197,
+    "resolved_refs": 15313,
+    "resolved_source_pairs": 1837,
+    "substrate_pin": "ExternalSourcesInventory@substrate-v7-iter-3-ai-ml-incorporated"
+  },
   "warnings": [
     "ASC-01 mechanisms: declared=6 actual=5 (slice contract status=working_contract)",
     "ASC-09 practices: declared=9 actual=6 (slice contract status=working_contract)",

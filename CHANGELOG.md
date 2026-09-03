@@ -3,11 +3,53 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-31
 purpose: documentation
-reasoning: v0.20.0-beta.14 (beta line, npm `beta`) — absorbs stable 0.17.0 (evaluator round 2): never-silent filter-key validation on resolve_entities (unknown_filter_fields + valid_fields derived from the records themselves) and the requirement→proof chain (verification_matrix requirement_ids[] + unknown_requirement_ids declared; select next → prove). Beta-only surfaces audited: none accept field-filter objects — the principle closes line-wide. Bundle pin unchanged (release KG v1.10.0). Golden 10/10, gate E PASS, 24/24 tools, budgets untouched.
+reasoning: v0.20.0-beta.15 (beta line, npm `beta`) — absorbs stable 0.18.0 (walkthrough station 3): re-pin dev-build kg-v1-manual-v1.8.0-aligned-2026-09-03 (contract v1.17 §1.24, stamp dev:e5c3581b46aa), new tool trace_sbd_toe_requirement_sources (direct vs compensated, 19 no-source declared), the 2 semantic surfaces as NAMED packaging exceptions (npm pack --dry-run verified before push). Projection opportunity for the semantic layers DECLARED, not implemented. Golden 10/10, gate E PASS, 25/25 tools, budgets inside gates.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.15 — 2026-09-03
+
+Absorbs the stable **0.18.0** (squash `b1dbc7e6` = tag v0.18.0 = npm `latest`, verified;
+walkthrough station 3, lead cycle 03-09).
+
+### Absorption map (→ this line)
+
+1. **Re-pin** `source: dev-build` **`kg-v1-manual-v1.8.0-aligned-2026-09-03`** (KG master
+   `c30c6c2`), snapshot sha256
+   `e5c3581b46aac57c90f56a1eac33bce6346ac15838b9809d4d96062eb5d19734` digest-verified
+   (`sync-bundle` idempotent); contract **v1.17 §1.24**; stamp **`dev:e5c3581b46aa`**;
+   pin identical to master.
+2. **Packaging**: `bundle-files.json` + this line's `package.json` `files[]` gain the 2
+   served semantic surfaces (`requirement_source_coverage.jsonl`,
+   `ctrl_acore_alignment.jsonl`) as **NAMED exceptions** in the banned-paths guard
+   (`ALLOWED_DESPITE_PREFIX`; the `semantic/*` wildcard stays banned). The beta
+   `package.json` conflict resolution added the two `files[]` entries by hand;
+   **`npm pack --dry-run` verified BEFORE the push** (lesson of #71): exactly the 2
+   semantic files in the tarball.
+3. **New tool `trace_sbd_toe_requirement_sources`** — rows VERBATIM from the published
+   surface; direct anchors with provenance vs compensated chains («cobertura, NÃO
+   autoria» in the provenance note); 19 no-source requirements + unknown ids DECLARED;
+   `include_chains=false` diet; paginated (G1). Live on this line (one call, ≈1,536 tk):
+   **FIL-002 → 3 direct anchors (+1 chain); DEP-001 → 0 direct, 1 compensated chain;
+   FAKE-123 declared in `unknown_requirement_ids`; meta 273 / 254 compensated /
+   17 direct / 19 without any source**. Teaching route absorbed (TC-F-28 PASS).
+4. **Beta-only surfaces — opportunity DECLARED, not implemented:** the two new semantic
+   layers are row-oriented link surfaces (requirement→source anchor;
+   control→AppSec-Core alignment) that the RDF projection could expose as new SPARQL
+   lenses (e.g. `source_coverage`, `acore_alignment`). Out of this wave's scope by
+   dispatch rule — candidate for its own wave; the current lenses and their five v1
+   sources are untouched (Axis G 3/3 re-verified).
+
+### Verification (records `docs/acceptance-runs/2026-09-03-v0180-*-v0.20.0-beta.15-*`)
+
+`eval:acceptance`: **135 scenarios, 112 executed — 96 PASS · 16 PART · 0 FAIL · 23 SKIP;
+gate E PASS (16/1/0)**; TC-F-28 PASS on this line; Axis G 3/3; **25/25 tools** (the new
+tool counts and is exercised); golden cases **10/10**. Suite **729/729** · `npm run
+check` ✅. Budgets inside the unchanged gates: f1 18,769 / 6,133 / 5,486 / 3,691; f2
+25,189 / **9,125**/9,200 / **8,398**/8,450 / **4,835**/4,840 (ids 104/152; snapshots
+diff = the dev stamp, from the cherry-pick).
 
 ## 0.20.0-beta.14 — 2026-09-02
 
