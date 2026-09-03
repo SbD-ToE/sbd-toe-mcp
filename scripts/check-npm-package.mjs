@@ -65,7 +65,7 @@ const REQUIRED_PATHS = [
 // allowed despite the blanket data/entities/ ban on raw entity dumps.
 const ALLOWED_DESPITE_PREFIX = [
   "data/entities/proportionality.json",
-  "data/entities/sdlc_integration.json"
+  "data/entities/sdlc_integration.json",
   // 0.18.0 (estação 3): semantic/* continua banido por defeito (superfícies internas
   // do KG). Estas DUAS são servidas verbatim pela tool trace_sbd_toe_requirement_sources
   // (contrato v1.17 §1.24) e constam de bundle-files.json + package.json files —
