@@ -62,9 +62,12 @@ TODO — confirm with programme lead.
 - v0.12.0 → `b475900e87a3035d36a16201dd80d5e5b36c396d` (2026-08-31; formal lote — KG
   v1.9.0 pinned, sha256 `11153c85…`, contract v1.15; npm `@shiftleftpt/sbd-toe-mcp@0.12.0`
   = published, gitHead same commit; GitHub Release `v0.12.0`)
-- v0.17.0 *(ronda 2 do avaliador — never-silent no resolve (valid_fields derivados) +
-  requirement_ids[] na verification_matrix (requisito→prova); bundle pin unchanged KG
-  v1.10.0; annotated tag on the squash after merge; npm `latest`)*
+- v0.18.0 *(estação 3 do walkthrough — trace_sbd_toe_requirement_sources sobre o pin
+  dev-build kg-2026-09-03 (sha `e5c3581b…`, contrato v1.17 §1.24); annotated tag on
+  the squash after merge; npm `latest`)*
+- v0.17.0 → `61183f06454b07f4c40a12bb2df426d68e3d3be3` (2026-09-02; ronda 2 — never-silent
+  no resolve + requisito→prova; npm `@shiftleftpt/sbd-toe-mcp@0.17.0` = published,
+  gitHead same commit; GitHub Release `v0.17.0`)
 - v0.16.1 → `04430cbd28e8a8ca046f1e05c4fc9eb460cd868a` (2026-09-02; lote formal — pin
   release KG v1.10.0; npm `@shiftleftpt/sbd-toe-mcp@0.16.1` = published, gitHead same
   commit; GitHub Release `v0.16.1`)
@@ -164,3 +167,4 @@ prohibits tag deletion without explicit authorisation):
 | 2026-09-02 | v0.15.1 tag commit recorded (`a3536fde`, squash of #67); npm latest + Release confirmed. v0.16.0 registered — re-pin dev-build 2026-09-02 (`c832fd97…`, v1.16, digest-verified) with the data-debt joins exposed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-02 | v0.16.0 tag commit recorded (`3e32af19`, squash of #68); npm latest + Release confirmed (boleia declarada). v0.16.1 registered — lote formal: re-pin release KG v1.10.0 (`d8df472b…`, digest-verified, byte-igual ao dev-build). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-02 | v0.16.1 tag commit recorded (`04430cbd`, squash of #69); npm latest + Release confirmed (boleia declarada). v0.17.0 registered — never-silent no resolve + requisito→prova na matriz. Pins unchanged (KG v1.10.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-03 | v0.17.0 tag commit recorded (`61183f06`, squash of #70); npm latest + Release confirmed (boleia declarada). v0.18.0 registered — estação 3: pin dev-build kg-2026-09-03 (`e5c3581b…`, v1.17, digest-verified) + trace de fontes (directas vs compensadas). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |

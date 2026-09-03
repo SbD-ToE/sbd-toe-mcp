@@ -55,6 +55,8 @@ const REQUIRED_PATHS = [
   "data/publish/overlay/framework_overlay_index.json",
   "data/publish/ontology/appsec-core-ontology.yaml",
   "data/publish/ontology/sbdtoe-ontology.yaml",
+  "data/publish/semantic/ctrl_acore_alignment.jsonl",
+  "data/publish/semantic/requirement_source_coverage.jsonl",
   "prompts/sbd-toe-chat-system.md",
   "prompts/sbd-toe-grounded-codegen.md"
 ];
