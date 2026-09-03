@@ -42,3 +42,7 @@
 ## Update — estação 3 / 0.18.0 (2026-09-03)
 - [x] Pin kg-2026-09-03 (v1.17) + trace_sbd_toe_requirement_sources (directas vs compensadas; 19 declarados); TC-F-28; eval 0 FAIL; ouro 10/10
 - [ ] PR → merge → tag v0.18.0 → npm latest
+
+## Update — lote formal 0.18.1 (2026-09-03)
+- [x] Re-pin release v1.11.0 (sha ✓, byte-igual); stamp v1.11.0; TC-F-28 re-corrido PASS; eval 0 FAIL; ouro 10/10
+- [ ] PR → merge → tag v0.18.1 → npm latest

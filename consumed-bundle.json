@@ -5,13 +5,14 @@
   "consumer_contract_version": "v1.17",
   "substrate_version": "manual-v1.8.0+sbdtoe-ontology-v2.4",
   "kg_bundle": {
-    "release_tag": "kg-v1-manual-v1.8.0-aligned-2026-09-03",
-    "release_sha256": "e5c3581b46aac57c90f56a1eac33bce6346ac15838b9809d4d96062eb5d19734",
-    "source": "dev-build",
+    "release_tag": "v1.11.0",
+    "release_sha256": "b7444094f3b4e60e26fd0fd586793445e2b734c6376fb2b327fbd888828d03df",
+    "source": "release",
+    "release_ref": "SbD-ToE/sbd-toe-knowledge-graph@v1.11.0",
     "surface_built_at": "2026-09-03T17:05:41.982190+00:00",
-    "tag_scheme": "cycle-aligned",
+    "tag_scheme": "semver",
     "synced_at": "2026-09-03",
-    "artefact": "sbd-toe-knowledge-graph-bundle-kg-v1-manual-v1.8.0-aligned-2026-09-03-snapshot.zip"
+    "artefact": "sbd-toe-knowledge-graph-bundle-v1.11.0.zip"
   },
   "inputs": {
     "manual": {
