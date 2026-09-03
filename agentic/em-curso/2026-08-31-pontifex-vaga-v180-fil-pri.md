@@ -38,3 +38,7 @@
 ## Update — ciclo 0.17.0 (2026-09-02)
 - [x] Ronda 2: resolve never-silent (valid_fields derivados; caso do lead) + matrix requirement_ids + next select→matrix; eval 131 cenários 0 FAIL; ouro 10/10
 - [ ] PR → merge → tag v0.17.0 → npm latest; achado 1 (classificação) aguarda ratificação de desenho
+
+## Update — estação 3 / 0.18.0 (2026-09-03)
+- [x] Pin kg-2026-09-03 (v1.17) + trace_sbd_toe_requirement_sources (directas vs compensadas; 19 declarados); TC-F-28; eval 0 FAIL; ouro 10/10
+- [ ] PR → merge → tag v0.18.0 → npm latest

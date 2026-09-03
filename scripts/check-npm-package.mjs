@@ -55,6 +55,8 @@ const REQUIRED_PATHS = [
   "data/publish/overlay/framework_overlay_index.json",
   "data/publish/ontology/appsec-core-ontology.yaml",
   "data/publish/ontology/sbdtoe-ontology.yaml",
+  "data/publish/semantic/ctrl_acore_alignment.jsonl",
+  "data/publish/semantic/requirement_source_coverage.jsonl",
   "prompts/sbd-toe-chat-system.md",
   "prompts/sbd-toe-grounded-codegen.md"
 ];
@@ -63,7 +65,13 @@ const REQUIRED_PATHS = [
 // allowed despite the blanket data/entities/ ban on raw entity dumps.
 const ALLOWED_DESPITE_PREFIX = [
   "data/entities/proportionality.json",
-  "data/entities/sdlc_integration.json"
+  "data/entities/sdlc_integration.json",
+  // 0.18.0 (estação 3): semantic/* continua banido por defeito (superfícies internas
+  // do KG). Estas DUAS são servidas verbatim pela tool trace_sbd_toe_requirement_sources
+  // (contrato v1.17 §1.24) e constam de bundle-files.json + package.json files —
+  // excepções NOMEADAS; nunca relaxar o wildcard.
+  "data/publish/semantic/requirement_source_coverage.jsonl",
+  "data/publish/semantic/ctrl_acore_alignment.jsonl",
 ];
 
 const BANNED_PREFIXES = [

@@ -537,6 +537,23 @@ export const scenarios = [
       if (![...rowIds].every((id) => ids.includes(id))) return fail(`rows fora dos ids pedidos: ${[...rowIds].slice(0,4)}`);
       if (!md.unknown_requirement_ids?.includes("REQ-XXX-999")) return fail("id sem prova não declarado em unknown_requirement_ids");
       return ok(`select→matrix: ${rowIds.size} requisitos com prova de ${ids.length} pedidos; REQ-XXX-999 declarado sem EvidencePattern; next fecha a cadeia`); } },
+  { id: "TC-F-28", axis: "F", title: "0.18.0 (estação 3): rastreabilidade requisito→fonte — DEP-001 e FIL-002 numa chamada", tool: "trace_sbd_toe_requirement_sources",
+    run: async (c) => {
+      const r = await c.tool("trace_sbd_toe_requirement_sources", { requirement_ids: ["DEP-001", "FIL-002", "REQ-XXX-999"] }); if (!r.ok) return fail(r.error);
+      const d = r.data; const by = new Map(d.requirements.map((x) => [x.requirement_id, x]));
+      const fil = by.get("FIL-002"); const dep = by.get("DEP-001");
+      if (!fil || !dep) return fail("DEP-001/FIL-002 ausentes");
+      const filDirect = (fil.direct?.source_anchors ?? []).length;
+      if (filDirect < 1 || fil.coverage_status !== "direct") return fail(`FIL-002 sem fontes directas (${filDirect})`);
+      if (dep.coverage_status !== "coverage_compensated") return fail(`DEP-001 status=${dep.coverage_status} (esperado coverage_compensated — a distinção nunca se esbate)`);
+      const hop = dep.compensated?.chains?.[0]?.alignments?.[0];
+      if (!hop?.alignment_type || typeof hop?.confidence !== "number") return fail("salto sem tipo/confiança");
+      if (!d.unknown_requirement_ids?.includes("REQ-XXX-999")) return fail("id desconhecido não declarado");
+      if (!/não autoria|NÃO autoria/i.test(d.provenance?.note ?? "")) return fail("nota epistémica «cobertura, não autoria» ausente");
+      if (typeof d.meta?.counts?.without_any_source_declared !== "number") return fail("os 19 sem-fonte não declarados no meta");
+      const diet = await c.tool("trace_sbd_toe_requirement_sources", { requirement_ids: ["DEP-001"], include_chains: false });
+      if (diet.data.requirements[0]?.compensated?.chains) return fail("include_chains=false não dietou");
+      return ok(`FIL-002 direct ×${filDirect} + DEP-001 compensado (1º salto ${hop.alignment_type}@${hop.confidence}); fake declarado; meta ${d.meta.counts.with_direct_anchors}/${d.meta.counts.with_compensated_coverage}/${d.meta.counts.without_any_source_declared}; dieta ✓`); } },
 
   // ───────────────────────── Axis H — selection vs golden oracle (measurement, NOT gate) ─────────────────────────
   // Oracle: golden-selection-cases.md v1 (programme lead's, read-only). One scenario per
