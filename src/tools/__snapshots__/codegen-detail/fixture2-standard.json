@@ -983,9 +983,9 @@
     "active_conditions": [
       "risk_level:L2"
     ],
-    "note": "Slots por índice via read_sbd_toe_resource(uri, slot=\"<n>\") — lista numerada no recurso; active_conditions filtram as aplicáveis; byte-identical ao detail=full.active_conditions) and security_rationale_template (task = input_echo.task trimmed) — byte-identical to the detail=full inline content — plus the detail_encoding legend for this payload."
+    "note": "Slots por índice: read_sbd_toe_resource(uri, slot=\"<n>\"); active_conditions filtram.active_conditions) and security_rationale_template (task = input_echo.task trimmed) — byte-identical to the detail=full inline content — plus the detail_encoding legend for this payload."
   },
-  "repeat_call_hint": "Identical input returns this exact payload (deterministic) — reuse the context already received instead of re-calling; deepen via detail:'minimal' or a targeted consult_security_requirements.",
+  "repeat_call_hint": "Identical input returns this exact payload (deterministic) — reuse the context already received; deepen via detail:'minimal' or a targeted consult_security_requirements.",
   "provenance": {
     "kg": "v1.11.0",
     "runtime_v0": "data/publish/runtime/*.json + data/publish/ontology/*",
@@ -994,13 +994,13 @@
   },
   "next": [
     {
-      "intent": "cita o citation_map no rationale (controls: record_type=\"control\")",
+      "intent": "cita o citation_map",
       "tool": "resolve_entities",
-      "with": "record_type=\"requirement\", filters={\"requirement_id\": {\"in\": [\"ACC-001\", \"ACC-002\"]}}",
+      "with": "record_type=\"requirement\", filters={\"requirement_id\":{\"in\":[\"ACC-001\"]}}",
       "kind": "structural"
     },
     {
-      "intent": "check the threats relevant to this work",
+      "intent": "threats for this task",
       "tool": "get_threat_landscape",
       "with": "risk_level + concerns",
       "kind": "semantic"

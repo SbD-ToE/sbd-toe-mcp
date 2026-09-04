@@ -4113,13 +4113,13 @@
   },
   "next": [
     {
-      "intent": "cita o citation_map no rationale (controls: record_type=\"control\")",
+      "intent": "cita o citation_map",
       "tool": "resolve_entities",
-      "with": "record_type=\"requirement\", filters={\"requirement_id\": {\"in\": [\"ACC-001\", \"ACC-002\"]}}",
+      "with": "record_type=\"requirement\", filters={\"requirement_id\":{\"in\":[\"ACC-001\"]}}",
       "kind": "structural"
     },
     {
-      "intent": "check the threats relevant to this work",
+      "intent": "threats for this task",
       "tool": "get_threat_landscape",
       "with": "risk_level + concerns",
       "kind": "semantic"

@@ -120,16 +120,16 @@ export function reviewScopeAffordances(riskLevel: string): Affordance[] {
 export function prepareCodegenAffordances(status: string, citedRequirementIds: readonly string[] = []): Affordance[] {
   // 0.19.3 («next executável verbatim»): morre o «the cited ids» — a sugestão leva a
   // forma REAL do resolve (record_type + filtro certo), com ids copiáveis do payload.
-  const cited = citedRequirementIds.slice(0, 2).map((id) => `"${id}"`).join(", ") || '"<ids do citation_map>"';
+  const cited = citedRequirementIds.slice(0, 1).map((id) => `"${id}"`).join(", ") || '"<ids do citation_map>"';
   const byStatus: Affordance =
     status === "needs_decomposition"
       ? { intent: "split into 2-4 subtasks and call again per subtask", tool: "prepare_sbd_toe_codegen_context", with: "one subtask scope", kind: "structural" }
       : status === "ready_for_codegen"
-        ? { intent: "cita o citation_map no rationale (controls: record_type=\"control\")", tool: "resolve_entities", with: `record_type="requirement", filters={"requirement_id": {"in": [${cited}]}}`, kind: "structural" }
+        ? { intent: "cita o citation_map", tool: "resolve_entities", with: `record_type="requirement", filters={"requirement_id":{"in":[${cited}]}}`, kind: "structural" }
         : { intent: "narrow the scope or consult requirements to unblock", tool: "consult_security_requirements", with: "risk_level + <=5 concerns (recomendado <=3)", kind: "structural" };
   return boundAffordances([
     byStatus,
-    { intent: "check the threats relevant to this work", tool: "get_threat_landscape", with: "risk_level + concerns", kind: "semantic" }
+    { intent: "threats for this task", tool: "get_threat_landscape", with: "risk_level + concerns", kind: "semantic" }
   ]);
 }
 

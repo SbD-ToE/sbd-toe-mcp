@@ -813,9 +813,7 @@ const PROVENANCE_LEGEND_ULTRATHIN: ProvenanceLegend = {
  * to the classic payload, EPIC invariant 1).
  */
 export const REPEAT_CALL_HINT =
-  "Identical input returns this exact payload (deterministic) — reuse the " +
-  "context already received instead of re-calling; deepen via " +
-  "detail:'minimal' or a targeted consult_security_requirements.";
+  "Identical input returns this exact payload (deterministic) — reuse the context already received; deepen via detail:'minimal' or a targeted consult_security_requirements.";
 
 /**
  * v2 token diet, s3 — reference that replaces the inline
@@ -3312,7 +3310,7 @@ function applyStructuralDiet(
       citationMapEmpty: Object.keys(result.citation_map).length === 0
     }),
     note:
-      "Slots por índice via read_sbd_toe_resource(uri, slot=\"<n>\") — lista numerada no recurso; active_conditions filtram as aplicáveis; byte-identical ao detail=full." +
+      "Slots por índice: read_sbd_toe_resource(uri, slot=\"<n>\"); active_conditions filtram." +
       "active_conditions) and security_rationale_template (task = " +
       "input_echo.task trimmed) — byte-identical to the detail=full inline " +
       "content — plus the detail_encoding legend for this payload."

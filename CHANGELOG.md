@@ -58,11 +58,11 @@ KG v1.11.0).
 
 ### Medição — adenda ronda 6, item 7 (diagnóstico; remédio é decisão à parte)
 
-- prepare detail=minimal vs escala da selecção (estável, medido):
-  - task só (replay): selecção=16 | prepare minimal total≈4286 tk (activated_scope≈2040 tk) | status=ready_for_codegen
-  - task+activadores (avaliador b19): selecção=88 | prepare minimal total≈9181 tk (activated_scope≈6915 tk) | status=ready_for_codegen
-  - 3 concerns L3 (TC-F-32): selecção=53 | prepare minimal total≈6286 tk (activated_scope≈3238 tk) | status=ready_for_codegen
-  - fixture baseline1-like: selecção=41 | prepare minimal total≈5524 tk (activated_scope≈2856 tk) | status=ready_for_codegen
+- prepare detail=minimal vs escala da selecção (estável, medido, pós-dieta):
+  - task só (replay): selecção=16 | prepare minimal total≈4241 tk (activated_scope≈2040 tk) | status=ready_for_codegen
+  - task+activadores (avaliador b19): selecção=88 | prepare minimal total≈9136 tk (activated_scope≈6915 tk) | status=ready_for_codegen
+  - 3 concerns L3 (TC-F-32): selecção=53 | prepare minimal total≈6241 tk (activated_scope≈3238 tk) | status=ready_for_codegen
+  - fixture baseline1-like: selecção=41 | prepare minimal total≈5479 tk (activated_scope≈2856 tk) | status=ready_for_codegen
 - Conclusão na secção do relatório do ciclo; nenhum remédio implementado neste ciclo.
 
 ### Verificação
