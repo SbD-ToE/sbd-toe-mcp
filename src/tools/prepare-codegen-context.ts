@@ -813,9 +813,7 @@ const PROVENANCE_LEGEND_ULTRATHIN: ProvenanceLegend = {
  * to the classic payload, EPIC invariant 1).
  */
 export const REPEAT_CALL_HINT =
-  "Identical input returns this exact payload (deterministic) — reuse the " +
-  "context already received instead of re-calling; deepen via " +
-  "detail:'minimal' or a targeted consult_security_requirements.";
+  "Identical input returns this exact payload (deterministic) — reuse the context already received; deepen via detail:'minimal' or a targeted consult_security_requirements.";
 
 /**
  * v2 token diet, s3 — reference that replaces the inline
@@ -3312,10 +3310,7 @@ function applyStructuralDiet(
       citationMapEmpty: Object.keys(result.citation_map).length === 0
     }),
     note:
-      "Read this MCP resource for llm_codegen_instructions (slots filtered by " +
-      "active_conditions) and security_rationale_template (task = " +
-      "input_echo.task trimmed) — byte-identical to the detail=full inline " +
-      "content — plus the detail_encoding legend for this payload."
+      "Slots por índice: read_sbd_toe_resource(uri, slot=\"<n>\"); active_conditions filtram; byte-identical ao detail=full."
   };
 
   const dieted: PrepareCodegenContextResultReadyDieted = {
@@ -3416,7 +3411,7 @@ export function handlePrepareCodegenContext(
       ? applyStructuralDiet(result, detail, includeRelations)
       : result;
   // RF-H: append the advisory band (status-aware, pure) around the deterministic result.
-  return { ...shaped, next: prepareCodegenAffordances(result.status) };
+  return { ...shaped, next: prepareCodegenAffordances(result.status, "citation_map" in result ? Object.keys(result.citation_map).filter((id) => /^[A-Z]{3}-\d{3}$/.test(id)) : []) };
 }
 
 function prepareCodegenContextCore(

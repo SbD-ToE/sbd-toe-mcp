@@ -58,4 +58,9 @@
 
 ## Update — ciclo 0.19.2 (2026-09-04, micro)
 - [x] next calibrado com limites do destino (top-3 por peso + resto informativo; tecto ≤50 no hint da matrix; TC-F-32 round-trip) + START HERE nas descrições (select/setup); TC-F-31 ajustado; eval 0 FAIL; ouro 10/10
-- [ ] PR → merge → tag v0.19.2 → npm latest
+- [x] #75 merged → tag v0.19.2 (`99ad5a91`) → release.yml success → npm latest 0.19.2 (gitHead confirmado)
+
+
+## Update — ciclo 0.19.3 (2026-09-04, ronda 5 + adenda r6)
+- [x] Invariante «next executável verbatim» (5 achados além do mínimo); forma real prepare→resolve; slots por índice (dieta rest, tectos inalterados); verdade matrix (50 imposto, ~190 tk/id); verdade setup-é-prompt; activadores primeiro; record_type declarado (item 6); medição item 7 reportada; TC-F-33; eval 0 FAIL; ouro 10/10
+- [ ] PR → merge → tag v0.19.3 → npm latest

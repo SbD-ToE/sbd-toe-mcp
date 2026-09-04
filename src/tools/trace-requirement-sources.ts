@@ -127,7 +127,7 @@ export function handleTraceRequirementSources(args: Record<string, unknown>): Tr
     next: boundAffordances([
       { intent: "resolver um CTRL/ACO da cadeia em detalhe", tool: "resolve_entities", with: 'record_type="control" | "control_objective", filters', kind: "structural" },
       { intent: "provar estes requisitos (lado EXPECTED)", tool: "get_sbd_toe_verification_matrix", with: "risk_level + requirement_ids", kind: "structural" },
-      { intent: "ver o alinhamento CTRL↔ACore completo", tool: "resolve_entities", with: 'record_type="ctrl_acore_alignment"? — superfície publicada em data/publish/semantic/ctrl_acore_alignment.jsonl', kind: "semantic" }
+      { intent: "ver as cadeias de alinhamento CTRL↔ACore completas destes requisitos", tool: "trace_sbd_toe_requirement_sources", with: "requirement_ids + include_chains=true", kind: "semantic" }
     ])
   };
 }

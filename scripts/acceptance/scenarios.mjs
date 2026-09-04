@@ -633,6 +633,58 @@ export const scenarios = [
       const pageLen = big.data.selection.selected.length;
       if (pageLen > 50 && prove && !/≤50|<=50/.test(prove.with)) return fail(`página ${pageLen}>50 sem tecto declarado no hint da matrix`);
       return ok(`sugestão [${suggested.join(",")}] aceite: select re-run ${rerun.data.selection.selected.length} selected, prepare ${prep.data.status}; página ${pageLen}${pageLen > 50 ? " c/ tecto ≤50 declarado" : ""}`); } },
+  { id: "TC-F-33", axis: "F", title: "0.19.3: seguir 3 next à letra → 3 funcionam; matrix impõe o tecto real", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      // (1) prepare ready → next resolve_entities com a forma REAL, parseado e executado
+      const p = await c.tool("prepare_sbd_toe_codegen_context", { task: "Implementar login com sessões de utilizador", risk_level: "L2" }); if (!p.ok) return fail(p.error);
+      const pd = p.data.data ?? p.data;
+      const resolveRow = (pd.next ?? []).find((n) => n.tool === "resolve_entities");
+      if (!resolveRow) return fail("prepare sem next resolve_entities");
+      const rt = resolveRow.with.match(/record_type="([^"]+)"/)?.[1];
+      const ids = [...resolveRow.with.matchAll(/"([A-Z]{3}-\d{3})"/g)].map((m) => m[1]);
+      if (!rt || ids.length === 0) return fail(`next do prepare não é copiável: ${resolveRow.with}`);
+      const res = await c.tool("resolve_entities", { record_type: rt, filters: { requirement_id: { in: ids } } });
+      if (!res.ok) return fail(`resolve rejeitou a sugestão do prepare: ${res.error}`);
+      const rd0 = res.data.data ?? res.data;
+      const nRecs = (rd0.records ?? rd0.entities ?? []).length ?? 0;
+      if (!(nRecs > 0 || (rd0.total ?? 0) > 0)) return fail("resolve devolveu 0 para os ids citados");
+      // (2) select → proveRow → matrix aceita os ids copiáveis do próprio hint
+      const s = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Implementar login com sessões de utilizador" }); if (!s.ok) return fail(s.error);
+      let prove = (s.data.next ?? []).find((n) => n.tool === "get_sbd_toe_verification_matrix");
+      let stabilized = false;
+      if (!prove) {
+        // contrato 0.19.0: com aviso, next[0] é estabilizar (sem matrix) — SEGUE a própria sugestão
+        const sug = (s.data.next?.[0]?.with.match(/concerns=\[([^\]]*)\]/)?.[1] ?? "").split(",").map((x) => x.trim()).filter(Boolean);
+        if (sug.length === 0) return fail("sem proveRow e sem sugestão de estabilização parseável");
+        const s2 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Implementar login com sessões de utilizador", concerns: sug });
+        if (!s2.ok) return fail(`re-corrida sugerida falhou: ${s2.error}`);
+        prove = (s2.data.next ?? []).find((n) => n.tool === "get_sbd_toe_verification_matrix");
+        stabilized = true;
+      }
+      if (!prove) return fail("sem proveRow mesmo após seguir a estabilização sugerida");
+      const pids = [...prove.with.matchAll(/([A-Z]{3}-\d{3})/g)].map((m) => m[1]).slice(0, 3);
+      if (pids.length === 0) return fail("proveRow sem ids copiáveis");
+      const m1 = await c.tool("get_sbd_toe_verification_matrix", { risk_level: "L2", requirement_ids: pids });
+      if (!m1.ok) return fail(`matrix rejeitou os ids do próprio next: ${m1.error}`);
+      // (3) row com URI nomeia read_sbd_toe_resource — e o URI sugerido lê-se
+      const r = await c.tool("resolve_entities", { record_type: "role", limit: 1 }); if (!r.ok) return fail(r.error);
+      const uriRow = ((r.data.data ?? r.data).next ?? []).find((n) => n.tool === "read_sbd_toe_resource");
+      if (!uriRow) return fail("resolve_entities sem row read_sbd_toe_resource (URI órfão?)");
+      const uri = uriRow.with.match(/uri="([^"]+)"/)?.[1];
+      const rd = await c.tool("read_sbd_toe_resource", { uri });
+      if (!rd.ok) return fail(`read rejeitou o URI sugerido: ${rd.error}`);
+      // (4) verdade da matrix: 63 ids (o caso do avaliador) agora REJEITADOS com tecto declarado
+      const big = [...Array(63)].map((_, i) => `VAL-${String(i + 1).padStart(3, "0")}`);
+      const m2 = await c.tool("get_sbd_toe_verification_matrix", { risk_level: "L3", requirement_ids: big });
+      if (m2.ok) return fail("matrix aceitou 63 ids (tecto anunciado sem verdade — regressão)");
+      if (!/50/.test(m2.error)) return fail(`rejeição sem o tecto real: ${m2.error}`);
+      // (5) adenda ronda 6 item 6: record_type fora do enum ⇒ resposta DECLARADA (morre o total:0 silencioso)
+      const bad = await c.tool("resolve_entities", { record_type: "ctrl_acore_alignment" });
+      if (!bad.ok) return fail(`record_type desconhecido devia ser resposta declarada, não erro: ${bad.error}`);
+      const bd = bad.data.data ?? bad.data;
+      const bmeta = bd.meta ?? bd;
+      if (bmeta.unknown_record_type !== "ctrl_acore_alignment" || !(bmeta.valid_record_types?.length > 10)) return fail("total:0 silencioso ainda vivo (sem unknown_record_type/valid_record_types)");
+      return ok(`3 next à letra: resolve ${rt}+[${ids.join(",")}] → ${nRecs} recs; matrix [${pids.join(",")}] ok (${stabilized ? "via estabilização" : "directo"}); uri ${uri} lido; 63 ids rejeitados c/ tecto 50; record_type desconhecido DECLARADO c/ ${bmeta.valid_record_types.length} válidos`); } },
 
   // ───────────────────────── Axis H — selection vs golden oracle (measurement, NOT gate) ─────────────────────────
   // Oracle: golden-selection-cases.md v1 (programme lead's, read-only). One scenario per
