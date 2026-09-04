@@ -3,11 +3,49 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-30
 purpose: documentation
-reasoning: v0.19.0 — ronda 3: basis declared/lexical (razão «sensível à redacção»), aviso de dominância top-level no select (prepare só lexical_share — dieta), next preserva prepare+consult, slots por índice, entry point; v0.18.1 — lote formal: re-pin release KG v1.11.0 (sha b7444094…, byte-igual; stamp v1.11.0; tectos intactos; TC-F-28 re-corrido); v0.18.0 — estação 3 do walkthrough: trace_sbd_toe_requirement_sources (directas vs compensadas, «cobertura não autoria», 19 sem-fonte declarados; verbatim da superfície pré-composta; pin dev-build 2026-09-03/v1.17); v0.17.0 — ronda 2: resolve valida chaves de filtro (valid_fields derivados; caso ACC-001/ACC-003), matrix requirement_ids[] com unknown declarado, next do select fecha requisito→prova; v0.16.1 — lote formal: re-pin release KG v1.10.0 (sha d8df472b…, byte-igual ao dev-build; stamp volta à tag v1.10.0, tectos intactos); v0.16.0 — re-pin dev-build 2026-09-02 (v1.16): artifacts 25/25 no guide (requisito→prova), control_names 95/95 no threat, artefact_totals 45/469 com semântica; stamp dev:<sha12> (comprimento estável, tectos intactos); v0.15.1 — fecho da reverificação Desktop: tool_prefix placeholder visível (decisão c), next sem id inválido, mode do consult verdadeiro, orgScope→erro com lista derivada, assess completo (rejeição {}, gaps_coverage, posture not_assessed), maxItems 5 por medição; v0.15.0 — auditoria Desktop: paginação universal (threat 25/233+size_estimate; plan default 5; slot/char no read_resource), banda excluded_by_level declarada (select+prepare; ultrathin dieta), index-compact derivado (estático morto), tool_prefix, fases canon-first+phase_warning, erros harmonizados com listas de válidos, consult projecção declarada+maxItems, aliases risk_level↔riskLevel; v0.14.0 — aplicabilidade GRADUADA (decisão do Author: capítulo nunca se exclui; exigência deriva dos assignments autorados + matriz cap. 01; listas binárias/minLevel mortos; module applicability.ts); v0.13.0 — serving batch: read_sbd_toe_resource (espelho de resources/read, catálogo derivado), stamp provenance.kg por resposta (tectos intactos), inspect com Pin servido (causa do n/d confirmada e corrigida), varrimento de contagens em prosa, release_ref normalizado, ensino Step 0 identidade; v0.12.0 — formal lote: KG v1.9.0 pinned (FIL/PRI/INT-009..012 served, contract v1.15), selection v1.8.0-aware, ceilings ratified+harmonized (9.200/8.450), npm latest; v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; named rules R1 principal-não-humano + R2 narrowing SES; D1 gate um-sinal-uma-superfície; D3 activators; D4; consult mode index; v2 token diet ported with stable-measured ceilings; R3 teaching layer: guide/skills/affordances ensinam select + duas bandas); Axis H 1/3/6 → 10/10; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
+reasoning: v0.19.1 — ronda 4: empty_selection_warning (zero=alarme), precedência explicit_concern>narrowing lexical no R2 (exposure/data_sensitivity continuam a alimentar o R2 — replay-guard re-validada), ênfase concerns-primeiro, entrada ⛳; v0.19.0 — ronda 3: basis declared/lexical (razão «sensível à redacção»), aviso de dominância top-level no select (prepare só lexical_share — dieta), next preserva prepare+consult, slots por índice, entry point; v0.18.1 — lote formal: re-pin release KG v1.11.0 (sha b7444094…, byte-igual; stamp v1.11.0; tectos intactos; TC-F-28 re-corrido); v0.18.0 — estação 3 do walkthrough: trace_sbd_toe_requirement_sources (directas vs compensadas, «cobertura não autoria», 19 sem-fonte declarados; verbatim da superfície pré-composta; pin dev-build 2026-09-03/v1.17); v0.17.0 — ronda 2: resolve valida chaves de filtro (valid_fields derivados; caso ACC-001/ACC-003), matrix requirement_ids[] com unknown declarado, next do select fecha requisito→prova; v0.16.1 — lote formal: re-pin release KG v1.10.0 (sha d8df472b…, byte-igual ao dev-build; stamp volta à tag v1.10.0, tectos intactos); v0.16.0 — re-pin dev-build 2026-09-02 (v1.16): artifacts 25/25 no guide (requisito→prova), control_names 95/95 no threat, artefact_totals 45/469 com semântica; stamp dev:<sha12> (comprimento estável, tectos intactos); v0.15.1 — fecho da reverificação Desktop: tool_prefix placeholder visível (decisão c), next sem id inválido, mode do consult verdadeiro, orgScope→erro com lista derivada, assess completo (rejeição {}, gaps_coverage, posture not_assessed), maxItems 5 por medição; v0.15.0 — auditoria Desktop: paginação universal (threat 25/233+size_estimate; plan default 5; slot/char no read_resource), banda excluded_by_level declarada (select+prepare; ultrathin dieta), index-compact derivado (estático morto), tool_prefix, fases canon-first+phase_warning, erros harmonizados com listas de válidos, consult projecção declarada+maxItems, aliases risk_level↔riskLevel; v0.14.0 — aplicabilidade GRADUADA (decisão do Author: capítulo nunca se exclui; exigência deriva dos assignments autorados + matriz cap. 01; listas binárias/minLevel mortos; module applicability.ts); v0.13.0 — serving batch: read_sbd_toe_resource (espelho de resources/read, catálogo derivado), stamp provenance.kg por resposta (tectos intactos), inspect com Pin servido (causa do n/d confirmada e corrigida), varrimento de contagens em prosa, release_ref normalizado, ensino Step 0 identidade; v0.12.0 — formal lote: KG v1.9.0 pinned (FIL/PRI/INT-009..012 served, contract v1.15), selection v1.8.0-aware, ceilings ratified+harmonized (9.200/8.450), npm latest; v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; named rules R1 principal-não-humano + R2 narrowing SES; D1 gate um-sinal-uma-superfície; D3 activators; D4; consult mode index; v2 token diet ported with stable-measured ceilings; R3 teaching layer: guide/skills/affordances ensinam select + duas bandas); Axis H 1/3/6 → 10/10; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.19.1 — 2026-09-04
+
+**Patch** — ronda 4 do avaliador (medição B: 5 redacções, 0→43): o zero vira alarme;
+declarado vence lexical. Bundle UNCHANGED (pin release KG v1.11.0).
+
+### Fixed — `empty_selection_warning` (V2: o único caso sem aviso)
+
+- Selecção VAZIA com candidatos elegíveis é ALARME, não resultado: aviso dedicado com
+  `narrowed_categories` + `candidate_concerns` DERIVADOS (reverse do concernsMap sobre
+  as categorias arrumadas); o share-warning cede ao alarme; `next[0]` = «re-corre com
+  concerns explícitos» e o next NUNCA manda a lista vazia à verification_matrix.
+  Antes→depois: 0 selected/114 narrowed sem aviso → alarme com candidatos.
+
+### Fixed — precedência: EXPLÍCITO vence narrowing lexical (V4)
+
+- R2 (narrowing SES) cede APENAS ao concern `auth` explícito do utilizador
+  (`explicit_concern`) — nunca a activadores derivados (exposure/data_sensitivity),
+  que continuam a alimentar o R2. V4 antes→depois: «Alterar o email da conta» com
+  concerns=[auth] tinha SES em activated E narrowed×8 na MESMA resposta → agora SES
+  ×8 seleccionado, contradição morta (invariante unit-testado). GUARDA re-validada
+  — e a sentinela de gate apanhou ao vivo uma 1ª versão que tratava exposure como
+  explícito (o replay-SES revivia): o SES espúrio do replay DualGauge (exposure=public,
+  base lexical) CONTINUA a cair — ×8 narrowed, 0 seleccionados.
+
+### Changed — ênfase concerns-primeiro + entrada inequívoca
+
+- next/guide/descrição do select: «a task DESCOBRE; concerns declarados ESTABILIZAM».
+  Instructions abrem com «⛳ START HERE — FIRST CALL, ALWAYS» (agent-guide → setup):
+  um agente virgem não precisa de sorte.
+
+### Verificação
+
+- 694/694 (3 unit novos); eval `2026-09-04-v0191`: **135 cenários, 96 PASS ·
+  16 PART · 0 FAIL · 23 SKIP — gate E PASS**; ouro **10/10** (expectativas
+  INTACTAS; GC-02 re-verificado após falso-PART de um artefacto de eval estagnado);
+  TC-F-31 novo (V2/V4/replay/V1-V3; wordings = equivalentes construídos, DECLARADO);
+  catálogo partilhado (commit lá é lane do Orchestrator). Orçamentos intactos.
 
 ## 0.19.0 — 2026-09-04
 

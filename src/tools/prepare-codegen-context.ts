@@ -979,7 +979,7 @@ export type PrepareCodegenContextResult =
 // Activation lexicon (small, auditable; WP6 layers semantic scoring on top)
 // ---------------------------------------------------------------------------
 
-const VALID_CONCERNS = [
+export const VALID_CONCERNS = [
   "auth",
   "logging",
   "validation",

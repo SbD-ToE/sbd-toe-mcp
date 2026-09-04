@@ -21,6 +21,7 @@
  */
 import { getOntologyData, type Requirement } from "../tools/ontology-loader.js";
 import {
+  VALID_CONCERNS,
   activate,
   categoriesForConcerns,
   normalizeInput,
@@ -152,6 +153,8 @@ export interface SelectionResult {
   /** 0.19.0: quantos selected têm ≥1 base declarada vs só-lexical; share e aviso. */
   basis_summary: { declared: number; lexical_only: number; lexical_share: number };
   lexical_dominance_warning: { lexical_share: number; threshold: number; note: string; candidate_concerns: string[] } | null;
+  /** 0.19.1 (ronda 4, V2): selecção VAZIA com candidatos é ALARME, não resultado. */
+  empty_selection_warning: { note: string; narrowed_categories: string[]; candidate_concerns: string[] } | null;
   activated_chapters: ActivatedChapter[];
   activated_categories: string[];
   activation: ActivationResult;
@@ -275,8 +278,15 @@ export function runSelectionWithActivation(
   let r2Applied = false;
   for (const r of baselineEligible) {
     const signal = concernByCategory.get(r.category);
-    if (r.category === "SES" && !sessionSignals && (signal || activatedCategories.has(r.category))) {
-      // R2: SES elegível com sinal de categoria (via auth) mas SEM sinal de sessão na tarefa.
+    // 0.19.1 (ronda 4, V4): DECLARADO VENCE LEXICAL — mas «declarado» aqui é o pedido
+    // EXPLÍCITO do utilizador (source explicit_concern), não activadores derivados
+    // (exposure/data_sensitivity): o replay DualGauge usa exposure=public e o seu SES
+    // espúrio TEM de continuar a cair. concerns=["auth"] do utilizador preserva SES.
+    const sesDeclaredBase = activation.trace.some(
+      (t) => t.produced === "auth" && t.source === "explicit_concern"
+    );
+    if (r.category === "SES" && !sessionSignals && !sesDeclaredBase && (signal || activatedCategories.has(r.category))) {
+      // R2: SES elegível com sinal de categoria (via auth LEXICAL) e SEM sinal de sessão.
       r2Applied = true;
       const list = narrowedByCategory.get(r.category) ?? [];
       list.push(r.requirement_id);
@@ -412,6 +422,25 @@ export function runSelectionWithActivation(
         }
       : null;
 
+  // 0.19.1 (V2): 0 selected com narrowed/excluídos ≠ 0 — o share=0 escondia o pior caso.
+  const narrowedTotalCount = [...narrowedByCategory.values()].reduce((n, l) => n + l.length, 0);
+  const narrowedCats = [...narrowedByCategory.keys()].sort();
+  const emptyCandidates = selected.length === 0 && narrowedCats.length > 0
+    ? VALID_CONCERNS.filter((c) => {
+        const cats = categoriesForConcerns([c as Concern]);
+        return narrowedCats.some((cat) => cats.has(cat));
+      })
+    : [];
+  const empty_selection_warning =
+    selected.length === 0 && narrowedTotalCount > 0
+      ? {
+          note:
+            "SELECÇÃO VAZIA com candidatos elegíveis — isto é um ALARME, não um resultado: a redacção da tarefa não casou nenhum sinal. Re-corre com concerns EXPLÍCITOS (candidatos derivados das categorias arrumadas).",
+          narrowed_categories: narrowedCats,
+          candidate_concerns: emptyCandidates,
+        }
+      : null;
+
   selected.sort((a, b) => a.requirement_id.localeCompare(b.requirement_id));
 
   // 0.15.0 (P0-3): banda excluded_by_level — o filtro de nível deixa de ser silencioso.
@@ -469,7 +498,8 @@ export function runSelectionWithActivation(
     narrowed_out,
     excluded_by_level,
     basis_summary: { declared: declaredCount, lexical_only: lexicalOnlyCount, lexical_share: Math.round(lexicalShare * 100) / 100 },
-    lexical_dominance_warning,
+    lexical_dominance_warning: empty_selection_warning ? null : lexical_dominance_warning,
+    empty_selection_warning,
     activated_chapters: activatedChapters,
     activated_categories: [...new Set([...activatedCategories, ...selected.map((s) => s.category)])].sort(),
     activation,
