@@ -3,11 +3,75 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-30
 purpose: documentation
-reasoning: v0.19.2 — micro: next calibrado com limites do destino (top-3 por peso + resto informativo; tecto ≤50 no hint da matrix; TC-F-32 round-trip) + START HERE nas descrições (select/setup); v0.19.1 — ronda 4: empty_selection_warning (zero=alarme), precedência explicit_concern>narrowing lexical no R2 (exposure/data_sensitivity continuam a alimentar o R2 — replay-guard re-validada), ênfase concerns-primeiro, entrada ⛳; v0.19.0 — ronda 3: basis declared/lexical (razão «sensível à redacção»), aviso de dominância top-level no select (prepare só lexical_share — dieta), next preserva prepare+consult, slots por índice, entry point; v0.18.1 — lote formal: re-pin release KG v1.11.0 (sha b7444094…, byte-igual; stamp v1.11.0; tectos intactos; TC-F-28 re-corrido); v0.18.0 — estação 3 do walkthrough: trace_sbd_toe_requirement_sources (directas vs compensadas, «cobertura não autoria», 19 sem-fonte declarados; verbatim da superfície pré-composta; pin dev-build 2026-09-03/v1.17); v0.17.0 — ronda 2: resolve valida chaves de filtro (valid_fields derivados; caso ACC-001/ACC-003), matrix requirement_ids[] com unknown declarado, next do select fecha requisito→prova; v0.16.1 — lote formal: re-pin release KG v1.10.0 (sha d8df472b…, byte-igual ao dev-build; stamp volta à tag v1.10.0, tectos intactos); v0.16.0 — re-pin dev-build 2026-09-02 (v1.16): artifacts 25/25 no guide (requisito→prova), control_names 95/95 no threat, artefact_totals 45/469 com semântica; stamp dev:<sha12> (comprimento estável, tectos intactos); v0.15.1 — fecho da reverificação Desktop: tool_prefix placeholder visível (decisão c), next sem id inválido, mode do consult verdadeiro, orgScope→erro com lista derivada, assess completo (rejeição {}, gaps_coverage, posture not_assessed), maxItems 5 por medição; v0.15.0 — auditoria Desktop: paginação universal (threat 25/233+size_estimate; plan default 5; slot/char no read_resource), banda excluded_by_level declarada (select+prepare; ultrathin dieta), index-compact derivado (estático morto), tool_prefix, fases canon-first+phase_warning, erros harmonizados com listas de válidos, consult projecção declarada+maxItems, aliases risk_level↔riskLevel; v0.14.0 — aplicabilidade GRADUADA (decisão do Author: capítulo nunca se exclui; exigência deriva dos assignments autorados + matriz cap. 01; listas binárias/minLevel mortos; module applicability.ts); v0.13.0 — serving batch: read_sbd_toe_resource (espelho de resources/read, catálogo derivado), stamp provenance.kg por resposta (tectos intactos), inspect com Pin servido (causa do n/d confirmada e corrigida), varrimento de contagens em prosa, release_ref normalizado, ensino Step 0 identidade; v0.12.0 — formal lote: KG v1.9.0 pinned (FIL/PRI/INT-009..012 served, contract v1.15), selection v1.8.0-aware, ceilings ratified+harmonized (9.200/8.450), npm latest; v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; named rules R1 principal-não-humano + R2 narrowing SES; D1 gate um-sinal-uma-superfície; D3 activators; D4; consult mode index; v2 token diet ported with stable-measured ceilings; R3 teaching layer: guide/skills/affordances ensinam select + duas bandas); Axis H 1/3/6 → 10/10; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
+reasoning: v0.19.3 — ronda 5 + adenda r6: invariante «next executável verbatim» (5 achados além do mínimo), forma real prepare→resolve, slots por índice, verdade da matrix (50 imposto + ~190 tk/id no hint), verdade do setup-é-prompt, activadores primeiro, record_type validado declarado, medição minimal-vs-escala reportada; v0.19.2 — micro: next calibrado com limites do destino (top-3 por peso + resto informativo; tecto ≤50 no hint da matrix; TC-F-32 round-trip) + START HERE nas descrições (select/setup); v0.19.1 — ronda 4: empty_selection_warning (zero=alarme), precedência explicit_concern>narrowing lexical no R2 (exposure/data_sensitivity continuam a alimentar o R2 — replay-guard re-validada), ênfase concerns-primeiro, entrada ⛳; v0.19.0 — ronda 3: basis declared/lexical (razão «sensível à redacção»), aviso de dominância top-level no select (prepare só lexical_share — dieta), next preserva prepare+consult, slots por índice, entry point; v0.18.1 — lote formal: re-pin release KG v1.11.0 (sha b7444094…, byte-igual; stamp v1.11.0; tectos intactos; TC-F-28 re-corrido); v0.18.0 — estação 3 do walkthrough: trace_sbd_toe_requirement_sources (directas vs compensadas, «cobertura não autoria», 19 sem-fonte declarados; verbatim da superfície pré-composta; pin dev-build 2026-09-03/v1.17); v0.17.0 — ronda 2: resolve valida chaves de filtro (valid_fields derivados; caso ACC-001/ACC-003), matrix requirement_ids[] com unknown declarado, next do select fecha requisito→prova; v0.16.1 — lote formal: re-pin release KG v1.10.0 (sha d8df472b…, byte-igual ao dev-build; stamp volta à tag v1.10.0, tectos intactos); v0.16.0 — re-pin dev-build 2026-09-02 (v1.16): artifacts 25/25 no guide (requisito→prova), control_names 95/95 no threat, artefact_totals 45/469 com semântica; stamp dev:<sha12> (comprimento estável, tectos intactos); v0.15.1 — fecho da reverificação Desktop: tool_prefix placeholder visível (decisão c), next sem id inválido, mode do consult verdadeiro, orgScope→erro com lista derivada, assess completo (rejeição {}, gaps_coverage, posture not_assessed), maxItems 5 por medição; v0.15.0 — auditoria Desktop: paginação universal (threat 25/233+size_estimate; plan default 5; slot/char no read_resource), banda excluded_by_level declarada (select+prepare; ultrathin dieta), index-compact derivado (estático morto), tool_prefix, fases canon-first+phase_warning, erros harmonizados com listas de válidos, consult projecção declarada+maxItems, aliases risk_level↔riskLevel; v0.14.0 — aplicabilidade GRADUADA (decisão do Author: capítulo nunca se exclui; exigência deriva dos assignments autorados + matriz cap. 01; listas binárias/minLevel mortos; module applicability.ts); v0.13.0 — serving batch: read_sbd_toe_resource (espelho de resources/read, catálogo derivado), stamp provenance.kg por resposta (tectos intactos), inspect com Pin servido (causa do n/d confirmada e corrigida), varrimento de contagens em prosa, release_ref normalizado, ensino Step 0 identidade; v0.12.0 — formal lote: KG v1.9.0 pinned (FIL/PRI/INT-009..012 served, contract v1.15), selection v1.8.0-aware, ceilings ratified+harmonized (9.200/8.450), npm latest; v0.11.0 — MP1 selection operation (select_sbd_toe_requirements + engine; named rules R1 principal-não-humano + R2 narrowing SES; D1 gate um-sinal-uma-superfície; D3 activators; D4; consult mode index; v2 token diet ported with stable-measured ceilings; R3 teaching layer: guide/skills/affordances ensinam select + duas bandas); Axis H 1/3/6 → 10/10; v0.10.4 — formal KG release v1.7.0 pinned (D2 close: 282 curated links, threats with associated_control_ids §1.21, contract v1.14) + G-b defining-chapters threat-routing fix (auth 77→95); v0.10.3 — formal KG release v1.6.1 pinned (curated requirement→control layer v2, Manual v1.7.1, contract v1.12) + #49 (acceptance regression runner with revised Axis-E criterion, query_entities filter fix, Algolia-era cache paths removed); v0.10.2 — formal KG release v1.6.0 pinned (source: release, sha256-verified; Manual v1.7.0; contract v1.11) after two same-day dev-build pins (v1.6.7 REQ-AGN, v1.7.0); requirement-id grammar v1.10 §1.18; declared gaps vs informative citations; toolchain hygiene (vitest 4). v0.10.1 and earlier entries below (v0.10.1 entry authored with Claude Opus 4.8).
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.19.3 — 2026-09-04
+
+**Patch** — ronda 5 do avaliador («next executável verbatim») + adenda ronda 6 (itens
+6–7). O avaliador seguiu 3 next à letra e só 1 funcionou. Bundle UNCHANGED (pin release
+KG v1.11.0).
+
+### Added — INVARIANTE DE SUITE: todo o next é executável verbatim
+
+- `next-invariant.test.ts`: percorre os next de TODOS os builders e payloads/fixtures
+  e valida cada sugestão contra o schema REAL do destino (tools/list do próprio
+  servidor): tool existe, parâmetros existem, enums válidos, tectos anunciados têm
+  verdade, URIs só via read_sbd_toe_resource. Next inválido PARTE a suite.
+  **Apanhou além do mínimo conhecido**: `chapter=` onde o schema é `chapterId`
+  (query_entities); `risk_level` onde é `riskLevel` (applicability, via regulatory);
+  tecto «≤3» anunciado sobre schema sem máximo (concernsHint/regulatory);
+  `record_type="ctrl_acore_alignment"` fora do enum real do resolve (row do trace →
+  re-apontada ao próprio trace c/ include_chains=true); token `phase` num destino
+  sem ele (rollout→checklist).
+
+### Fixed — os 3 next do avaliador (mínimo conhecido)
+
+- prepare→resolve com a forma REAL e ids copiáveis do citation_map
+  (record_type="requirement", filters {requirement_id: {in: […]}}) — morre o «the
+  cited ids»; codegen_instructions_ref.note ensina slots POR ÍNDICE (ficara para trás
+  em 0.19.2) em forma compacta (dieta da secção rest, tocada pelos ids na row: nota
+  encurtada + intent curto — tectos INALTERADOS); rows com URI nomeiam
+  read_sbd_toe_resource.
+
+### Fixed — verdade do limite da matrix
+
+- O «≤50» de 0.19.2 citava o maxItems do TRACE — a matrix não tinha tecto (63 ids
+  passavam). Agora: maxItems 50 no schema + IMPOSTO no handler (erro declarado) e o
+  custo avisado ANTES de se pagar no hint do select (medição: ~190 tk/id; 50 ≈ 9,5k tk).
+
+### Added — adenda ronda 6, item 6: record_type validado (declarado)
+
+- resolve_entities valida record_type contra o enum (tratamento 0.17.0 dos filtros):
+  desconhecido ⇒ resposta declarada com unknown_record_type + valid_record_types —
+  morre o total:0 silencioso (caso: ctrl_acore_alignment).
+
+### Changed — verdade do setup + activadores primeiro
+
+- setup_sbd_toe_agent é um PROMPT MCP (4ª mordida do canal): guide/descrições dizem-no
+  e dão a alternativa (agent-guide via read_sbd_toe_resource + activadores directos no
+  select). Ensino: ACTIVADORES ESTRUTURADOS são a via primária (medição: 63 vs 7 da
+  task sozinha); concerns REFORÇAM. Promover setup a tool: candidato futuro (lead).
+
+### Medição — adenda ronda 6, item 7 (diagnóstico; remédio é decisão à parte)
+
+- prepare detail=minimal vs escala da selecção (estável, medido):
+  - task só (replay): selecção=16 | prepare minimal total≈4286 tk (activated_scope≈2040 tk) | status=ready_for_codegen
+  - task+activadores (avaliador b19): selecção=88 | prepare minimal total≈9181 tk (activated_scope≈6915 tk) | status=ready_for_codegen
+  - 3 concerns L3 (TC-F-32): selecção=53 | prepare minimal total≈6286 tk (activated_scope≈3238 tk) | status=ready_for_codegen
+  - fixture baseline1-like: selecção=41 | prepare minimal total≈5524 tk (activated_scope≈2856 tk) | status=ready_for_codegen
+- Conclusão na secção do relatório do ciclo; nenhum remédio implementado neste ciclo.
+
+### Verificação
+
+- Suite verde (invariante incluída; snapshots refrescados para a nova verdade);
+  eval `2026-09-04-v0193`: **137 cenários, 98 PASS · 16 PART · 0 FAIL ·
+  23 SKIP — gate E PASS** (sentinela + package_version); ouro **10/10**; TC-F-33
+  (3 next à letra → funcionam; 63 ids rejeitados; record_type declarado); catálogo
+  partilhado actualizado (commit lá é lane do Orchestrator).
 
 ## 0.19.2 — 2026-09-04
 

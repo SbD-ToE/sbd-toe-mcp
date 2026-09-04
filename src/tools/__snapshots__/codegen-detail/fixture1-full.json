@@ -3000,9 +3000,9 @@
   },
   "next": [
     {
-      "intent": "cite the citation_map and fill the rationale as you implement",
+      "intent": "cita o citation_map no rationale (controls: record_type=\"control\")",
       "tool": "resolve_entities",
-      "with": "the cited ids",
+      "with": "record_type=\"requirement\", filters={\"requirement_id\": {\"in\": [\"ACC-001\", \"ACC-002\"]}}",
       "kind": "structural"
     },
     {

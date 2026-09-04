@@ -118,7 +118,7 @@ export function handlePlanRollout(args: Record<string, unknown>): ProtocolEnvelo
       {
         intent: "get the implementation checklist for a phase's chapter",
         tool: "get_sbd_toe_chapter_implementation_checklist",
-        with: "chapter (from a phase above)",
+        with: "chapter (o capítulo da fase acima)",
         kind: "structural"
       },
       {

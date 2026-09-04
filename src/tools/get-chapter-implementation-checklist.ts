@@ -126,7 +126,7 @@ export function handleGetChapterImplementationChecklist(
       {
         intent: "get the security requirements behind these implementation steps",
         tool: "consult_security_requirements",
-        with: "risk_level + concerns from this chapter",
+        with: "risk_level + concerns (os do capítulo acima)",
         kind: "semantic"
       }
     ])

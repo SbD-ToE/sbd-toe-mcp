@@ -74,6 +74,9 @@ export interface McpProvenance {
 export interface ResolveEntitiesResult {
   /** 0.17.0 (never-silent): chaves de filtro que NÃO existem no esquema do record_type. */
   unknown_filter_fields?: string[];
+  /** 0.19.3 (ronda 6, item 6): record_type fora do enum — declarado, nunca total:0 silencioso. */
+  unknown_record_type?: string;
+  valid_record_types?: string[];
   /** Campos válidos DERIVADOS dos próprios registos (união de chaves; dot-notation = 1º segmento). */
   valid_fields?: string[];
   provenance: McpProvenance;
@@ -462,6 +465,27 @@ function resolveEntitiesCore(
         "Regulatory overlay records. Filters support dot-notation, {gte,lte}, {in:[...]} and array membership. Provenance: data/publish/overlay/*."
     });
     return { provenance: OVERLAY_PROVENANCE_PUBLISHED, ...result };
+  }
+
+
+  // 0.19.3 (ronda 6, item 6): record_type VALIDADO contra o enum — valor desconhecido
+  // devolve resposta DECLARADA com a lista dos válidos (mesmo tratamento dos filtros,
+  // 0.17.0). Morre o total:0 silencioso; caso de teste: "ctrl_acore_alignment".
+  const RUNTIME_V0_SET = new Set<string>(["requirement", "control", "practice", "assignment", "user_story", "role", "phase", "artifact", "threat", "evidence_pattern", "signal", "antipattern", "requirement_control_link", "signal_evidence_link", "antipattern_requirement_link", "antipattern_threat_link"]);
+  if (!RUNTIME_V0_SET.has(recordType)) {
+    const valid = [...RUNTIME_V0_SET, ...RUNTIME_V1_RECORD_TYPES, ...OVERLAY_RECORD_TYPES].sort();
+    return {
+      provenance: RUNTIME_V0_PROVENANCE,
+      record_type: recordType,
+      entities: [],
+      total: 0,
+      meta: {
+        filtersApplied: {},
+        unknown_record_type: recordType,
+        valid_record_types: valid,
+        note: `record_type desconhecido: "${recordType}". Válidos: ${valid.join(", ")}.`
+      }
+    } as unknown as ResolveEntitiesResult;
   }
 
   const result = _resolveEntities(args, loadRuntimeV0Items());

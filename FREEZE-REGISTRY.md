@@ -62,8 +62,12 @@ TODO — confirm with programme lead.
 - v0.12.0 → `b475900e87a3035d36a16201dd80d5e5b36c396d` (2026-08-31; formal lote — KG
   v1.9.0 pinned, sha256 `11153c85…`, contract v1.15; npm `@shiftleftpt/sbd-toe-mcp@0.12.0`
   = published, gitHead same commit; GitHub Release `v0.12.0`)
-- v0.19.2 *(micro — next calibrado com limites do destino + START HERE nas descrições;
-  bundle pin unchanged KG v1.11.0; annotated tag on the squash after merge; npm `latest`)*
+- v0.19.3 *(ronda 5 + adenda r6 — invariante «next executável verbatim»; verdade da
+  matrix (tecto 50 imposto) e do setup-é-prompt; record_type declarado; bundle pin
+  unchanged KG v1.11.0; annotated tag on the squash after merge; npm `latest`)*
+- v0.19.2 → `99ad5a91a27c68c2d29ffc61d928fd0464a6f393` (2026-09-04; micro — next
+  calibrado + START HERE nas descrições; npm `@shiftleftpt/sbd-toe-mcp@0.19.2` =
+  published, gitHead same commit; GitHub Release `v0.19.2`)
 - v0.19.1 → `a80741d298ad62c6463b3c0883265c36a475e4ff` (2026-09-04; ronda 4 — zero=alarme
   + explicit>lexical; npm `@shiftleftpt/sbd-toe-mcp@0.19.1` = published, gitHead same
   commit; GitHub Release `v0.19.1`)
@@ -183,3 +187,4 @@ prohibits tag deletion without explicit authorisation):
 | 2026-09-04 | v0.18.1 tag commit recorded (`dc5500af`, squash of #72); npm latest + Release confirmed (boleia declarada). v0.19.0 registered — ronda 3 (basis+aviso; near-touch resolvido por dieta; 2º incidente de gate travado em draft → sentinela adoptada). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-04 | v0.19.0 tag commit recorded (`ab4340d8`, squash of #73); npm latest + Release confirmed (boleia declarada). v0.19.1 registered — ronda 4 (zero=alarme; explicit>lexical; a sentinela de gate travou uma 1ª versão errada da precedência antes de docs/PR — mecanismo validado). Pins unchanged (KG v1.11.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-04 | v0.19.1 tag commit recorded (`a80741d2`, squash of #74); npm latest + Release confirmed. v0.19.2 registered — micro (next calibrado com limites do destino; START HERE nas descrições). Pins unchanged (KG v1.11.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-04 | v0.19.2 tag commit recorded (`99ad5a91`, squash of #75); npm latest + Release confirmed. v0.19.3 registered — ronda 5 + adenda r6 (invariante next-verbatim; verdades matrix/setup; record_type declarado; medição item 7 reportada). Pins unchanged (KG v1.11.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |

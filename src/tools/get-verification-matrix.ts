@@ -146,6 +146,17 @@ export function handleGetVerificationMatrix(
   const reqIdsArg = Array.isArray(args["requirement_ids"])
     ? (args["requirement_ids"] as unknown[]).filter((x): x is string => typeof x === "string" && x.length > 0)
     : [];
+  // 0.19.3: tecto REAL imposto (o schema anunciava-o sem verdade — 63 ids passavam;
+  // medição: ~190 tk/id ⇒ respostas >50 custam >9,5k tk sem aviso prévio).
+  if (reqIdsArg.length > 50) {
+    throw Object.assign(
+      new Error(
+        `requirement_ids: máximo 50 por chamada (recebidos ${reqIdsArg.length}). Custo medido ~190 tk/id. ` +
+          "Divide em lotes (p.ex. as páginas do select via offset/limit) e chama uma vez por lote."
+      ),
+      { rpcError: { code: -32602, message: "requirement_ids over limit (max 50)" } }
+    );
+  }
   const reqIdSet = new Set(reqIdsArg);
   const scopedByReq = reqIdsArg.length > 0
     ? scoped.filter(({ ep }) => ep.maps_to_requirement_id !== undefined && reqIdSet.has(ep.maps_to_requirement_id))

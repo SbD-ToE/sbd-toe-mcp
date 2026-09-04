@@ -3312,7 +3312,7 @@ function applyStructuralDiet(
       citationMapEmpty: Object.keys(result.citation_map).length === 0
     }),
     note:
-      "Read this MCP resource for llm_codegen_instructions (slots filtered by " +
+      "Slots por índice via read_sbd_toe_resource(uri, slot=\"<n>\") — lista numerada no recurso; active_conditions filtram as aplicáveis; byte-identical ao detail=full." +
       "active_conditions) and security_rationale_template (task = " +
       "input_echo.task trimmed) — byte-identical to the detail=full inline " +
       "content — plus the detail_encoding legend for this payload."
@@ -3416,7 +3416,7 @@ export function handlePrepareCodegenContext(
       ? applyStructuralDiet(result, detail, includeRelations)
       : result;
   // RF-H: append the advisory band (status-aware, pure) around the deterministic result.
-  return { ...shaped, next: prepareCodegenAffordances(result.status) };
+  return { ...shaped, next: prepareCodegenAffordances(result.status, "citation_map" in result ? Object.keys(result.citation_map).filter((id) => /^[A-Z]{3}-\d{3}$/.test(id)) : []) };
 }
 
 function prepareCodegenContextCore(

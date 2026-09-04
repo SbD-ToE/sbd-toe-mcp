@@ -46,6 +46,12 @@ setup_sbd_toe_agent(riskLevel="<L1|L2|L3>", projectRole="<role>")
 
 This returns the list of active chapters and risk-level specific rules for the project.
 
+> **Verdade do canal:** `setup_sbd_toe_agent` é um **prompt MCP**, não uma tool — clientes
+> sem suporte de prompts (p.ex. Claude Desktop) não o expõem. Alternativa equivalente: já
+> leste este guia (via `read_sbd_toe_resource`); passa `risk_level` e os **activadores
+> estruturados** (`exposure`, `data_sensitivity`, `stack`, `changed_files`) directamente
+> ao `select_sbd_toe_requirements`.
+
 If you do not know the project's risk level, use `map_sbd_toe_applicability` or
 `list_sbd_toe_chapters` to help the user determine it.
 
@@ -92,7 +98,7 @@ resolve_entities                 ← low-level ontology filter engine
                                     listing requirements by category, exploring the ontology
 ```
 
-**Choosing between the three requirement surfaces:** *(a task DESCOBRE; concerns declarados ESTABILIZAM — os concerns são a interface primária de estabilidade; a task refina)*
+**Choosing between the three requirement surfaces:** *(ACTIVADORES ESTRUTURADOS primeiro — `task` + `exposure` + `data_sensitivity` + `stack` (+ `changed_files`): qualquer agente os preenche a partir do enunciado, sem léxico — medição da ronda 5: 63 requisitos vs 7 da task sozinha; concerns declarados REFORÇAM e estabilizam vocabulário; a task refina)*
 - `select_sbd_toe_requirements` — *"which requirements apply to THIS task / this change?"*
   Task-scoped recommendation with declared narrowing (two bands, above). Start here for
   any concrete piece of work.
@@ -317,7 +323,7 @@ Always distinguish between:
 
 | Prompt | When to use |
 |---|---|
-| `setup_sbd_toe_agent(riskLevel, projectRole)` | Session setup — active chapters + risk-specific rules |
+| `setup_sbd_toe_agent(riskLevel, projectRole)` | Session setup — active chapters + risk-specific rules. **Prompt MCP** (clientes sem prompts: activadores directos no select) |
 | `ask_sbd_toe_manual(question)` | Direct grounded Q&A |
 
 ---

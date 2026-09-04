@@ -62,19 +62,19 @@ function buildAffordances(frameworkShort: string): Affordance[] {
     {
       intent: "scope the activated areas to a risk level + see active chapters/controls",
       tool: "map_sbd_toe_applicability",
-      with: "risk_level (L1/L2/L3); cross-reference the chapters above",
+      with: 'riskLevel="<L1|L2|L3>"; cruza com os capítulos acima',
       kind: "semantic"
     },
     {
       intent: "turn an activated chapter into the per-role work to do",
       tool: "get_guide_by_role",
-      with: "risk_level + role (and optionally a chapter's role)",
+      with: "risk_level + role (opcional: phase)",
       kind: "semantic"
     },
     {
       intent: "get the security requirements for an activated area",
       tool: "consult_security_requirements",
-      with: `risk_level + <=3 concerns from the activated chapters (${frameworkShort})`,
+      with: `risk_level + concerns (recomendado <=3) das áreas activadas (${frameworkShort})`,
       kind: "structural"
     }
   ]);

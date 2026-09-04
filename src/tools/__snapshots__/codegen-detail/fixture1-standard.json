@@ -729,7 +729,7 @@
     "active_conditions": [
       "risk_level:L2"
     ],
-    "note": "Read this MCP resource for llm_codegen_instructions (slots filtered by active_conditions) and security_rationale_template (task = input_echo.task trimmed) — byte-identical to the detail=full inline content — plus the detail_encoding legend for this payload."
+    "note": "Slots por índice via read_sbd_toe_resource(uri, slot=\"<n>\") — lista numerada no recurso; active_conditions filtram as aplicáveis; byte-identical ao detail=full.active_conditions) and security_rationale_template (task = input_echo.task trimmed) — byte-identical to the detail=full inline content — plus the detail_encoding legend for this payload."
   },
   "repeat_call_hint": "Identical input returns this exact payload (deterministic) — reuse the context already received instead of re-calling; deepen via detail:'minimal' or a targeted consult_security_requirements.",
   "provenance": {
@@ -740,9 +740,9 @@
   },
   "next": [
     {
-      "intent": "cite the citation_map and fill the rationale as you implement",
+      "intent": "cita o citation_map no rationale (controls: record_type=\"control\")",
       "tool": "resolve_entities",
-      "with": "the cited ids",
+      "with": "record_type=\"requirement\", filters={\"requirement_id\": {\"in\": [\"ACC-001\", \"ACC-002\"]}}",
       "kind": "structural"
     },
     {
