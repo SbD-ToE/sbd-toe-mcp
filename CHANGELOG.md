@@ -3,11 +3,55 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-31
 purpose: documentation
-reasoning: v0.20.0-beta.16 (beta line, npm `beta`) — formal batch v1.11.0 closed on both lines: absorbs stable 0.18.1, re-pins source: release KG v1.11.0 (byte-identical to the pinned dev-build; contract v1.17), stamp transition dev:e5c3581b46aa → "v1.11.0" verified live; TC-F-28 re-run on the formal pin; ceilings intact; golden 10/10, gate E PASS, 25/25 tools.
+reasoning: v0.20.0-beta.17 (beta line, npm `beta`) — absorbs stable 0.19.0 (evaluator round 3: selection stability to wording — basis declared|lexical on every entry/exclusion, lexical_dominance_warning with declared threshold, form-diet in prepare, read_resource slots by index with derived catalogue). Two-wordings case reproduced live on this line; beta agents heuristics carry the same basis pattern via the shared engine. Bundle pin unchanged (release KG v1.11.0). Golden 10/10, gate E PASS, 25/25 tools, budgets inside gates; sentinel hard-gate adopted.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.17 — 2026-09-04
+
+Absorbs the stable **0.19.0** (squash `ab4340d8` = tag v0.19.0 = npm `latest`;
+**precondition initially FAILED and was completed**: the v0.19.0 publish run was
+in-flight — watched run 33862286138 to success and re-verified `latest = 0.19.0`,
+gitHead `ab4340d8`, before absorbing; the half-applied pick was reset in between).
+Bundle pin UNCHANGED (release KG `v1.11.0`, sha `b7444094…03df`).
+
+### Absorption map (→ this line)
+
+1. **`basis: declared | lexical`** on every entry/exclusion of select+prepare
+   (task_term/alias/compound/intent = lexical; explicit concern/named rule/context
+   signal/data = declared); lexical narrowed_out reasons say «SENSÍVEL À REDACÇÃO (não
+   é regra de domínio)»; `excluded_by_level` = declared.
+2. **`lexical_dominance_warning`** {share, declared threshold 0.5, candidate_concerns}
+   + `next` leading with «re-run with explicit concerns»; a stabilised run silences it.
+3. **Form-diet in prepare** (only `selection.lexical_share` at dieted levels) — this
+   line's ceilings verified: ultrathin f2 stays **4,833**/4,840 (no stop).
+4. **`read_sbd_toe_resource` slots by INDEX** with the real derived catalogue
+   (the «Slots válidos: .» death) + signposted entry point (TC-F-30 PASS).
+5. **Beta-only surfaces**: the task_term matching lives in the shared engine — the beta
+   `agents` heuristics (`ai agent`/`kill-switch`/…) flow through it and carry the same
+   basis pattern; observed live: AGN entries and the R1 named rule classify as
+   `declared` (engine classification, identical to the stable); no beta-only matcher
+   exists outside the engine — nothing extra to change.
+
+### Two-wordings case reproduced live on this line
+
+Lean «Upload de ficheiros» → 23 selected, `lexical_share: 1.0`, **warning** with
+`candidate_concerns [files, validation, ACO-IVF]`, `next[0]` = re-run select; rich
+wording → 50 selected (share 0.78); **stabilised** (explicit `concerns
+[files,auth,logging]`) → 51 selected, share **0.29**, **warning silenced**. Narrowed
+reason carries «exclusão SENSÍVEL À REDACÇÃO da tarefa (não é regra de domínio)…»
+verbatim. TC-F-29 (full paraphrase case, rica 57 vs magra 8) PASS on this line.
+
+### Verification (records `docs/acceptance-runs/2026-09-04-v0190-*-v0.20.0-beta.17-*`; sentinel hard-gate adopted — asserts with explicit exits before any docs/tag)
+
+`eval:acceptance`: **137 scenarios, 114 executed — 98 PASS · 16 PART · 0 FAIL · 23 SKIP;
+gate E PASS (16/1/0)**; TC-F-29/30 PASS; Axis G 3/3; **25/25 tools**; golden cases
+**10/10** (oracle intact — basis is additive). Suite **729/729** · `npm run check` ✅.
+Budgets inside the unchanged gates: f1 18,771 / 6,135 / 5,488 / 3,688; f2 25,192 /
+**9,128**/9,200 / **8,401**/8,450 / **4,833**/4,840 (ids 104/152; snapshots diff =
+the basis/lexical_share additions, from the cherry-pick).
 
 ## 0.20.0-beta.16 — 2026-09-03
 

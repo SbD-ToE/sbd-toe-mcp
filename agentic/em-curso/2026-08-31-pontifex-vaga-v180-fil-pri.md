@@ -46,3 +46,7 @@
 ## Update — lote formal 0.18.1 (2026-09-03)
 - [x] Re-pin release v1.11.0 (sha ✓, byte-igual); stamp v1.11.0; TC-F-28 re-corrido PASS; eval 0 FAIL; ouro 10/10
 - [ ] PR → merge → tag v0.18.1 → npm latest
+
+## Update — ciclo 0.19.0 (2026-09-04)
+- [x] Ronda 3: basis declared/lexical + aviso dominância + slots por índice + entry point; TC-F-29/30; eval 0 FAIL; ouro 10/10
+- [ ] PR → merge → tag v0.19.0 → npm latest; candidato a ciclo: eixo de paráfrase no oráculo

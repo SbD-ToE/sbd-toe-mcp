@@ -167,7 +167,7 @@ const RESOURCE_CATALOG = [
           uri: "sbd://toe/agent-guide",
           name: "SbD-ToE Agent Guide",
           description:
-            "READ THIS FIRST. Operational guide for AI agents: SbD-ToE identity (Security by Design — Theory of Everything), CONSULT/GUIDE modes, routing by SDLC phase and domain, tool selection, epistemic standards, chapter map, risk levels, identifier conventions.",
+            "ENTRY POINT — READ THIS FIRST. Operational guide for AI agents: SbD-ToE identity (Security by Design — Theory of Everything), CONSULT/GUIDE modes, routing by SDLC phase and domain, tool selection, epistemic standards, chapter map, risk levels, identifier conventions.",
           mimeType: "text/markdown"
         },
         {
@@ -618,6 +618,8 @@ class McpRuntime {
         "You are connected to the SbD-ToE MCP server (Security by Design — Theory of Everything).\n" +
         "Chapters 00–14. Security guidance only — does not override project rules or development standards.\n" +
         "Always respond in the user's language regardless of the manual content language.\n" +
+        "\n" +
+        "ENTRY POINT: read resource sbd://toe/agent-guide, then call setup_sbd_toe_agent(riskLevel, projectRole).\n" +
         "\n" +
         "At session start, identify the server: read resource sbd://toe/version — or call the\n" +
         "read_sbd_toe_resource tool with that URI on clients without resource support — to learn\n" +
@@ -1603,7 +1605,7 @@ class McpRuntime {
           name: "setup_sbd_toe_agent",
           title: "Setup SbD-ToE Agent",
           description:
-            "MCP prompt to configure an agent with SbD-ToE manual context and rules for a given risk level.",
+            "ENTRY POINT (2ª chamada, após o agent-guide) — MCP prompt to configure an agent with SbD-ToE manual context and rules for a given risk level.",
           arguments: [
             {
               name: "riskLevel",
@@ -2252,9 +2254,13 @@ class McpRuntime {
                 this.sendError(request.id, -32602, `O recurso ${uriArg} não tem slots pedíveis (slot aplica-se a sbd://toe/codegen-instructions/{mode}).`);
                 return;
               }
-              const hit = slots.find((x) => x?.id === slotArg);
+              // 0.19.0 (ronda 3c): slots são {when,text} SEM id — endereçam-se por ÍNDICE;
+              // a lista de válidos é REAL e derivada (never-silent aplicado a casa).
+              const idx = /^\d+$/.test(slotArg) ? Number(slotArg) : -1;
+              const hit = idx >= 0 && idx < slots.length ? slots[idx] : undefined;
               if (!hit) {
-                this.sendError(request.id, -32602, `Slot desconhecido: "${slotArg}". Slots válidos: ${slots.map((x) => x?.id).filter(Boolean).join(", ")}.`);
+                const catalog = slots.map((x, i) => `${i} (when=${(x as { when?: string })?.when ?? "?"})`).join(", ");
+                this.sendError(request.id, -32602, `Slot desconhecido: "${slotArg}". Os slots endereçam-se por índice. Slots válidos: ${catalog}.`);
                 return;
               }
               text = JSON.stringify(hit, null, 2);

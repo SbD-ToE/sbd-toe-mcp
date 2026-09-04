@@ -31,6 +31,8 @@ export interface SelectRequirementsOutput {
     narrowed_out: SelectionResult["narrowed_out"];
     excluded_by_level: SelectionResult["excluded_by_level"];
   };
+  basis_summary: SelectionResult["basis_summary"];
+  lexical_dominance_warning?: SelectionResult["lexical_dominance_warning"];
   context: {
     activated_chapters: SelectionResult["activated_chapters"];
     activated_categories: string[];
@@ -129,6 +131,8 @@ export function handleSelectRequirements(args: Record<string, unknown>): SelectR
     context: { activated_chapters: result.activated_chapters, activated_categories: result.activated_categories },
     activation_trace: result.activation.trace,
     overlay,
+    basis_summary: result.basis_summary,
+    ...(result.lexical_dominance_warning ? { lexical_dominance_warning: result.lexical_dominance_warning } : {}),
     coverage: {
       total: result.selected.length,
       returned: page.length,
@@ -144,6 +148,6 @@ export function handleSelectRequirements(args: Record<string, unknown>): SelectR
         "coverage pagina `selected`; `narrowed_out` vem completo (agrupado por categoria). O veredicto de nível usa o catálogo publicado.",
       notes: result.notes
     },
-    next: selectRequirementsAffordances(risk, page.map((x) => x.requirement_id))
+    next: selectRequirementsAffordances(risk, page.map((x) => x.requirement_id), result.lexical_dominance_warning?.candidate_concerns)
   };
 }
