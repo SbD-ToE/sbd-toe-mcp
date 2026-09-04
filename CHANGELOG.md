@@ -3,11 +3,78 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-31
 purpose: documentation
-reasoning: v0.20.0-beta.19 (beta line, npm `beta`) — absorbs stable 0.19.2 (micro: next calibrated with the destination's limits — top-3 by weight on the empty-selection warning, matrix hint declares the ≤50 cap; START HERE moves into the select/setup descriptions). Beta-only next sweep clean (trace has no next[] and nothing quantified). Bundle pin unchanged (release KG v1.11.0). Golden 10/10, gate E PASS, 25/25 tools; sentinel + package_version gate.
+reasoning: v0.20.0-beta.20 (beta line, npm `beta`) — COMBINED wave: absorbs stable 0.19.3 (next-verbatim suite invariant + verdades: matrix cap imposed, record_type enum-validated, URIs naming read_sbd_toe_resource, slots by index) and 0.19.4 (per-detail requirement ceilings 78/81/86 with requirement_ceiling{} and taught batches; projected cost in select's next). The invariant was EXTENDED to this line's executable references (diet refs + SPARQL tool) and caught 2 beta-only legend texts serving a URI without naming its tool — fixed in this wave. Bundle pin unchanged (release KG v1.11.0). Golden 10/10, gate E PASS, 25/25 tools; sentinel + package_version gate.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.20 — 2026-09-04
+
+**Vaga COMBINADA** (decisão do lead, 04-09): absorbs stable **0.19.3** (`12c5188c`) and
+**0.19.4** (`19709b82`) in that order — the two picks were applied sequentially and squashed
+into this single release commit. Precondition verified before any pick (`latest = 0.19.4`,
+gitHead `19709b82`; publish run 33905492613 ✅). Bundle pin UNCHANGED (release KG `v1.11.0`,
+sha `b7444094…03df`).
+
+### Absorbed from 0.19.3 — «next executável verbatim»
+
+Suite invariant (`next-invariant.test.ts`, verbatim from stable) validating every `next`
+against the server's REAL `tools/list` schemas; plus the truths: `prepare→resolve` in its
+real form, slots by index (note intact on this line), URI-next naming
+`read_sbd_toe_resource`, `chapter`/`chapterId` and `risk_level`/`riskLevel` fixed, false
+`≤3` ceiling removed, `phase` token, matrix `maxItems` **50 imposed** with the ~190 tk/id
+cost warned, `record_type` validated against the enum (the `ctrl_acore_alignment` that came
+from a next OF THIS LINE now answers declared, with `valid_record_types` — confirmed dead),
+`setup` taught as a PROMPT with the declared alternative, structured activators as the
+primary path, CodeQL patterns corrected.
+
+### The invariant run over THIS LINE's own surfaces (dispatch item 1) — and what it caught
+
+`src/serving/next-invariant.beta.test.ts` (new, beta-only) extends the principle to the
+executable references the diet emits and the SPARQL tool: it harvests every reference from
+`prepare` (4 detail levels + `include_relations` + `debug`), `trace_sbd_toe_graph` (3 lenses
++ empty anchor), `select` and `trace_sbd_toe_requirement_sources`, and validates tool
+existence, object-form `with` keys/enums, structured call lists (`relations_ref.lenses[]`
+against the trace schema), and the URI rule. **32 references harvested live; 2 real defects
+caught, both beta-only text, both fixed in this wave:**
+
+- `provenance_legend.note` (standard/minimal) — served
+  `sbd://toe/codegen-instructions/{mode}` **without naming the tool that executes it**; now
+  `read_sbd_toe_resource(sbd://…)`.
+- `provenance_legend.note` (ultrathin) — same defect in the ultrathin legend; same fix.
+- Not a defect (declared): `codegen_instructions_ref.resource` carries the bare URI, but its
+  sibling `note` names `read_sbd_toe_resource` — the normative rule is object-level and it
+  passes. No `tool` field anywhere carried «…», «?» or a URI (the round-6 class is dead on
+  this line); `relations_ref.lenses[]` validate against the real `trace_sbd_toe_graph` enum.
+
+The URI rule is now guarded permanently (second `it()` in the beta invariant): every object
+serving a `sbd://` URI must name `read_sbd_toe_resource` in the same object.
+
+### Absorbed from 0.19.4 — «a promessa do minimal»
+
+Per-detail requirement ceilings (minimal **78**, standard **81**, ultrathin **86**; `full`
+without ceiling = the oracle's level, Axis H protected by construction), structured
+`requirement_ceiling{}` with taught batches («repete SÓ com task + risk_level + concerns do
+lote — activadores largos FORA; concerns SOMAM activação, não restringem»), projected cost
+in select's `next`, shared `payload-ceilings.ts` + coherence test. Ceiling sentence added to
+this line's `detail` description (the beta's fuller text kept, the 0.19.4 truth merged in).
+
+**The 88-req case live on this line:** `minimal` with 88 selected > 78 → `needs_decomposition`
+declared, `requirement_ceiling {selected 88, limit 78, projected 9,098 tk > promise 8,450 tk,
+3 batches}` in an **886-token** response (instead of ~9.1k); **round-trip of the taught
+recipe: 3/3 batches ready within the ceiling** ([auth] 44 reqs, [secrets] 16, [validation]
+31); `full` unchanged at 88 reqs, no ceiling.
+
+### Verification (records `docs/acceptance-runs/2026-09-04-v0194-*-v0.20.0-beta.20-*`; sentinel + explicit exits + package_version asserted)
+
+`eval:acceptance`: **141 scenarios, 118 executed — 102 PASS · 16 PART · 0 FAIL · 23 SKIP;
+gate E PASS (16/1/0)**; TC-F-33/34 PASS; Axis G 3/3; **25/25 tools**; golden cases **10/10**
+(oracle runs at `full`, ceiling-free by construction). Suite **739/739** (46 stable files +
+the beta invariant) · `npm run check` ✅. Budgets (fixtures unchanged, 41/69 reqs ≤ 78):
+f1 18,773 / **6,099** / **5,452** / **3,651**; f2 25,193 / **9,092**/9,200 / **8,365**/8,450 /
+**4,796**/4,840 — all inside the gates, with headroom recovered from the 0.19.3 compact
+slots note. Golden snapshots regenerated: 6 lines, all `note` (the two legend texts).
 
 ## 0.20.0-beta.19 — 2026-09-04
 

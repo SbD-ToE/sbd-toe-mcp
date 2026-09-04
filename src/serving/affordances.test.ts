@@ -14,6 +14,8 @@ import { handleMapSbdToeReviewScope } from "../tools/map-review-scope.js";
 // Stage 3 RF-H: the advisory `next` band is retrofitted onto every legacy tool.
 // All registered tool names the affordances may reference (real tools / resources only).
 const REAL_TOOLS = new Set([
+  "read_sbd_toe_resource",
+  "trace_sbd_toe_requirement_sources",
   "search_sbd_toe_manual", "answer_sbd_toe_manual", "list_sbd_toe_chapters",
   "query_sbd_toe_entities", "get_sbd_toe_chapter_brief", "map_sbd_toe_applicability",
   "consult_security_requirements", "select_sbd_toe_requirements", "get_threat_landscape", "get_guide_by_role",

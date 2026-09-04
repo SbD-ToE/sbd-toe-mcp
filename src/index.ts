@@ -1013,7 +1013,7 @@ class McpRuntime {
             type: "object",
             properties: {
               risk_level: { type: "string", enum: ["L1", "L2", "L3"], description: "Risk level (filters via the pattern's risk_level_hint; unhinted patterns apply broadly)." },
-              requirement_ids: { type: "array", items: { type: "string" }, description: "0.17.0: «como provo ESTES?» — filtra a matriz pelos requisitos concretos (ex.: os selected do select_sbd_toe_requirements); ids sem EvidencePattern vêm DECLARADOS em unknown_requirement_ids." },
+              requirement_ids: { type: "array", items: { type: "string" }, minItems: 1, maxItems: 50, description: "Máx. 50 por chamada (tecto imposto 0.19.3; ~190 tk/id por medição — pagina por lotes). 0.17.0: «como provo ESTES?» — filtra a matriz pelos requisitos concretos (ex.: os selected do select_sbd_toe_requirements); ids sem EvidencePattern vêm DECLARADOS em unknown_requirement_ids." },
               offset: { type: "number" },
               limit: { type: "number" }
             },
@@ -1184,7 +1184,7 @@ class McpRuntime {
           name: "select_sbd_toe_requirements",
           title: "Select SbD-ToE Requirements (MP1)",
           description:
-            "START HERE — para qualquer tarefa concreta esta é a 1ª tool (arranque de sessão: lê sbd://toe/agent-guide via read_sbd_toe_resource e chama setup_sbd_toe_agent). CONCERNS DECLARADOS são a interface primária de estabilidade (a task descobre; concerns estabilizam — ver basis/lexical_dominance_warning). The MP1 selection operation (Classificar → Seleccionar): which requirements apply to THIS task in THIS " +
+            "START HERE — para qualquer tarefa concreta esta é a 1ª tool. Arranque: lê sbd://toe/agent-guide (read_sbd_toe_resource); setup_sbd_toe_agent é um PROMPT MCP — clientes sem prompts (p.ex. Desktop) não o expõem: segue directo por aqui. ACTIVADORES ESTRUTURADOS são a via primária de estabilidade — preenche task + exposure + data_sensitivity + stack (+ changed_files) a partir do enunciado, sem léxico; concerns declarados REFORÇAM (a task descobre; ver basis/lexical_dominance_warning). The MP1 selection operation (Classificar → Seleccionar): which requirements apply to THIS task in THIS " +
             "context. Composes the reference semantics the published ontology declares — baseline (cap. 02 base " +
             "catalogue, by risk level) ∪ domain chapters activated by the context (changed_files, technologies, stack, " +
             "task) ⊕ regulatory overlay (extend) — then narrows deterministically by the task's declared signals. " +
@@ -1540,6 +1540,10 @@ class McpRuntime {
                 enum: ["ultrathin", "minimal", "standard", "full"],
                 description:
                   "Response encoding level (v2 token diet). 'full' (default) returns the classic payload, " +
+                  "Níveis dieted têm TECTO de requisitos por chamada — minimal 78, standard 81, " +
+                  "ultrathin 86 (derivados da medição ~68/~68/~29 tk/req vs promessas " +
+                  "8450/9200/4840 tk); acima ⇒ needs_decomposition c/ requirement_ceiling e divisão " +
+                  "ensinada; 'full' sem tecto (promessa = completude). " +
                   "byte-identical to previous releases. 'standard'/'minimal' return the SAME citable ID set " +
                   "with a deduplicated encoding: inverted `citations` (run-length source_data + ids_from " +
                   "payload paths) replaces `citation_map`, `manual_grounding` is grouped, per-item `source` " +
@@ -1610,7 +1614,7 @@ class McpRuntime {
           name: "setup_sbd_toe_agent",
           title: "Setup SbD-ToE Agent",
           description:
-            "START HERE — entry point (2ª chamada, após leres sbd://toe/agent-guide): MCP prompt to configure an agent with SbD-ToE manual context and rules for a given risk level.",
+            "START HERE — entry point (2ª chamada, após leres sbd://toe/agent-guide): MCP PROMPT (clientes sem suporte de prompts não o expõem — alternativa: activadores estruturados directos no select) to configure an agent with SbD-ToE manual context and rules for a given risk level.",
           arguments: [
             {
               name: "riskLevel",

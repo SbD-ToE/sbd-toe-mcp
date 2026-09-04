@@ -13,9 +13,10 @@
  */
 
 import { boundAffordances, type Affordance } from "./protocol-envelope.js";
+import { REQUIREMENT_CEILING_BY_DETAIL, projectedCostTk } from "./payload-ceilings.js";
 
 const concernsHint = (concerns: string[] | undefined): string =>
-  concerns && concerns.length > 0 ? `concerns=[${concerns.slice(0, 5).join(", ")}]` : "<=3 concerns";
+  concerns && concerns.length > 0 ? `concerns=[${concerns.slice(0, 5).join(", ")}]` : "concerns (recomendado <=3)";
 
 export function listChaptersAffordances(): Affordance[] {
   return boundAffordances([
@@ -34,7 +35,7 @@ export function mapApplicabilityAffordances(riskLevel: string | undefined): Affo
   ]);
 }
 
-export function selectRequirementsAffordances(riskLevel: string, selectedIds: readonly string[] = [], lexicalConcerns?: readonly string[]): Affordance[] {
+export function selectRequirementsAffordances(riskLevel: string, selectedIds: readonly string[] = [], lexicalConcerns?: readonly string[], totalSelected?: number): Affordance[] {
   // 0.19.0: dominância lexical ⇒ a 1ª sugestão é ESTABILIZAR a selecção.
   // 0.19.2 (princípio novo): o next é CALIBRADO com os limites do destino — nenhuma
   // sugestão pode ser rejeitada pela tool que sugere. Aqui: top-3 concerns por peso
@@ -46,11 +47,22 @@ export function selectRequirementsAffordances(riskLevel: string, selectedIds: re
     : [];
   // 0.19.2 (calibração): a matrix aceita ≤50 ids por chamada — o hint declara o tecto
   // do destino quando a página o excede, para a sugestão nunca ser rejeitada.
-  const capNote = selectedIds.length > 50 ? " (≤50 ids por chamada — pagina)" : "";
-  const idsHint = selectedIds.length > 0 ? `requirement_ids=[${selectedIds.slice(0, 3).join(", ")}${selectedIds.length > 3 ? ", …" : ""}]${capNote}` : "requirement_ids=[…os selected…] (≤50 ids por chamada)";
+  // 0.19.3: o tecto ≤50 é agora IMPOSTO pela matrix (era anúncio sem verdade) e o
+  // custo é avisado ANTES de se pagar (padrão 0.15.0): ~190 tk/id por medição.
+  const capNote = selectedIds.length > 50 ? " (≤50 ids por chamada — tecto imposto; ~190 tk/id medidos, 50 ≈ 9,5k tk — pagina)" : "";
+  const idsHint = selectedIds.length > 0 ? `requirement_ids=[${selectedIds.slice(0, 3).join(", ")}${selectedIds.length > 3 ? ", …" : ""}]${capNote}` : "requirement_ids=[…os selected…] (≤50 ids por chamada; ~190 tk/id medidos)";
   const proveRow: Affordance = { intent: "provar os requisitos seleccionados (requisito → prova)", tool: "get_sbd_toe_verification_matrix", with: `risk_level="${riskLevel}", ${idsHint}`, kind: "structural" };
   const consultRow: Affordance = { intent: "get the controls/artifacts behind the selected requirements", tool: "consult_security_requirements", with: `risk_level="${riskLevel}", <=5 concerns (recomendado <=3)`, kind: "structural" };
-  const prepareRow: Affordance = { intent: "prepare grounded codegen context for one concrete task", tool: "prepare_sbd_toe_codegen_context", with: "task + risk_level (+ changed_files)", kind: "semantic" };
+  // 0.19.4: custo anunciado ANTES de pagar (padrão da matrix/0.19.3) — projecção
+  // da contagem seleccionada × custo/req por detail, com o tecto novo declarado.
+  const t = totalSelected ?? 0;
+  const ceilMin = REQUIREMENT_CEILING_BY_DETAIL["minimal"] ?? 0;
+  const ceilStd = REQUIREMENT_CEILING_BY_DETAIL["standard"] ?? 0;
+  const ceilUltra = REQUIREMENT_CEILING_BY_DETAIL["ultrathin"] ?? 0;
+  const costNote = t > 0
+    ? ` (${t} seleccionados: minimal ≈${projectedCostTk("minimal", t) ?? "?"} tk${t > ceilMin ? ` — ACIMA do tecto ${ceilMin}: divide por área` : ""}; tectos min/std/ultra ${ceilMin}/${ceilStd}/${ceilUltra}; full sem tecto)`
+    : "";
+  const prepareRow: Affordance = { intent: `prepare grounded codegen context for one concrete task${costNote}`, tool: "prepare_sbd_toe_codegen_context", with: "task + risk_level (+ changed_files)", kind: "semantic" };
   // 0.19.0: com dominância lexical, a 1ª sugestão é ESTABILIZAR — sai a matrix,
   // NUNCA o par prepare+consult (contrato ensinado no R3/TC-F-13).
   return boundAffordances(stability.length > 0 ? [...stability, consultRow, prepareRow] : [proveRow, consultRow, prepareRow]);
@@ -66,7 +78,7 @@ export function consultAffordances(riskLevel: string, concerns: string[] | undef
 
 export function chapterBriefAffordances(chapterId: string | undefined): Affordance[] {
   return boundAffordances([
-    { intent: "list this chapter's entities (controls/threats/artefacts)", tool: "query_sbd_toe_entities", with: chapterId ? `chapter="${chapterId}"` : "chapter", kind: "structural" },
+    { intent: "list this chapter's entities (controls/threats/artefacts)", tool: "query_sbd_toe_entities", with: chapterId ? `chapterId="${chapterId}"` : "chapterId", kind: "structural" },
     { intent: "get the per-role work for this chapter", tool: "get_guide_by_role", with: "risk_level + role (+ phase)", kind: "semantic" },
     { intent: "get the implementation checklist for this chapter", tool: "get_sbd_toe_chapter_implementation_checklist", with: chapterId ? `chapter="${chapterId}"` : "chapter", kind: "semantic" }
   ]);
@@ -81,7 +93,7 @@ export function queryEntitiesAffordances(): Affordance[] {
 
 export function resolveEntitiesAffordances(): Affordance[] {
   return boundAffordances([
-    { intent: "read the entity schemas", tool: "sbd://toe/ontology", kind: "structural" },
+    { intent: "read the entity schemas (ontology resource)", tool: "read_sbd_toe_resource", with: 'uri="sbd://toe/ontology"', kind: "structural" },
     { intent: "see how these entities map to role work", tool: "get_guide_by_role", with: "risk_level + role, include_detail=true", kind: "semantic" }
   ]);
 }
@@ -115,22 +127,25 @@ export function reviewScopeAffordances(riskLevel: string): Affordance[] {
   ]);
 }
 
-export function prepareCodegenAffordances(status: string): Affordance[] {
+export function prepareCodegenAffordances(status: string, citedRequirementIds: readonly string[] = []): Affordance[] {
+  // 0.19.3 («next executável verbatim»): morre o «the cited ids» — a sugestão leva a
+  // forma REAL do resolve (record_type + filtro certo), com ids copiáveis do payload.
+  const cited = citedRequirementIds.slice(0, 1).map((id) => `"${id}"`).join(", ") || '"<ids do citation_map>"';
   const byStatus: Affordance =
     status === "needs_decomposition"
       ? { intent: "split into 2-4 subtasks and call again per subtask", tool: "prepare_sbd_toe_codegen_context", with: "one subtask scope", kind: "structural" }
       : status === "ready_for_codegen"
-        ? { intent: "cite the citation_map and fill the rationale as you implement", tool: "resolve_entities", with: "the cited ids", kind: "structural" }
+        ? { intent: "cita o citation_map", tool: "resolve_entities", with: `record_type="requirement", filters={"requirement_id":{"in":[${cited}]}}`, kind: "structural" }
         : { intent: "narrow the scope or consult requirements to unblock", tool: "consult_security_requirements", with: "risk_level + <=5 concerns (recomendado <=3)", kind: "structural" };
   return boundAffordances([
     byStatus,
-    { intent: "check the threats relevant to this work", tool: "get_threat_landscape", with: "risk_level + concerns", kind: "semantic" }
+    { intent: "threats for this task", tool: "get_threat_landscape", with: "risk_level + concerns", kind: "semantic" }
   ]);
 }
 
 export function generateSkillAffordances(): Affordance[] {
   return boundAffordances([
     { intent: "get a role-specialised skill or installable sub-agent", tool: "generate_sbd_toe_skill", with: "role, format=skill|subagent, flavour=harnessed|skilled", kind: "semantic" },
-    { intent: "read the canonical operating guide", tool: "sbd://toe/agent-guide", kind: "structural" }
+    { intent: "read the canonical operating guide", tool: "read_sbd_toe_resource", with: 'uri="sbd://toe/agent-guide"', kind: "structural" }
   ]);
 }

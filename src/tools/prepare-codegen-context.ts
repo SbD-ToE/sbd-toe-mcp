@@ -60,6 +60,7 @@ import type { Affordance } from "../serving/protocol-envelope.js";
 import { requirementCategoryOf } from "../serving/requirement-id.js";
 import { prepareCodegenAffordances } from "../serving/affordances.js";
 import { runSelectionWithActivation, type SelectionResult } from "../serving/selection.js";
+import { REQUIREMENT_CEILING_BY_DETAIL, COST_PER_REQ_TK, BASE_TK, PAYLOAD_PROMISE_TK, projectedCostTk } from "../serving/payload-ceilings.js";
 
 // ---------------------------------------------------------------------------
 // Public types
@@ -417,6 +418,18 @@ export interface PrepareCodegenContextResultReady {
 
 export interface PrepareCodegenContextResultBlocked {
   status: "needs_clarification" | "needs_decomposition" | "unsupported_scope";
+  /** 0.19.4: presente quando o bloqueio é o TECTO DE REQUISITOS por detail (a
+   * promessa de tokens do nível dieted): limite derivado da medição, projecção
+   * de custo, e lotes de divisão ensinados (concerns por área, estimados). */
+  requirement_ceiling?: {
+    detail: string;
+    limit: number;
+    selected: number;
+    cost_per_req_tk: number;
+    projected_tk: number;
+    promise_tk: number;
+    batches: Array<{ concerns: string[]; estimated_requirements: number }>;
+  };
   /** RF-H advisory band — adjacent tools the caller likely needs next. */
   next?: Affordance[];
   mode: CodegenMode;
@@ -774,8 +787,8 @@ const PROVENANCE_LEGEND = {
     "requirement_id category segment (the one before the number: AUT-003→AUT, " +
     "REQ-AGN-001→AGN), g2_context entity lists are grouped as " +
     "{slice_id: {entity_id: name|null}}, and citations ids are referenced via " +
-    "ids_from payload paths. Full legend: MCP resource " +
-    "sbd://toe/codegen-instructions/{mode}, section detail_encoding."
+    "ids_from payload paths. Full legend: read_sbd_toe_resource(" +
+    "sbd://toe/codegen-instructions/{mode}), section detail_encoding."
 } as const;
 
 export type ProvenanceLegend = typeof PROVENANCE_LEGEND;
@@ -798,7 +811,7 @@ const PROVENANCE_LEGEND_ULTRATHIN: ProvenanceLegend = {
     "inline (counts + rest-ref in completeness_report), manual_grounding " +
     "aggregate-only (total + sha + groups_ref) and completeness diagnostics " +
     "as exact counts (+ ref). Nothing silently dropped. Full legend: MCP " +
-    "resource sbd://toe/codegen-instructions/{mode}, section detail_encoding."
+    "read_sbd_toe_resource(sbd://toe/codegen-instructions/{mode}), detail_encoding."
 } as const;
 
 /**
@@ -813,9 +826,7 @@ const PROVENANCE_LEGEND_ULTRATHIN: ProvenanceLegend = {
  * to the classic payload, EPIC invariant 1).
  */
 export const REPEAT_CALL_HINT =
-  "Identical input returns this exact payload (deterministic) — reuse the " +
-  "context already received instead of re-calling; deepen via " +
-  "detail:'minimal' or a targeted consult_security_requirements.";
+  "Identical input returns this exact payload (deterministic) — reuse the context already received; deepen via detail:'minimal' or a targeted consult_security_requirements.";
 
 /**
  * v2 token diet, s3 — reference that replaces the inline
@@ -3314,10 +3325,7 @@ function applyStructuralDiet(
       citationMapEmpty: Object.keys(result.citation_map).length === 0
     }),
     note:
-      "Read this MCP resource for llm_codegen_instructions (slots filtered by " +
-      "active_conditions) and security_rationale_template (task = " +
-      "input_echo.task trimmed) — byte-identical to the detail=full inline " +
-      "content — plus the detail_encoding legend for this payload."
+      "Slots por índice: read_sbd_toe_resource(uri, slot=\"<n>\"); active_conditions filtram; byte-identical ao detail=full."
   };
 
   const dieted: PrepareCodegenContextResultReadyDieted = {
@@ -3418,7 +3426,7 @@ export function handlePrepareCodegenContext(
       ? applyStructuralDiet(result, detail, includeRelations)
       : result;
   // RF-H: append the advisory band (status-aware, pure) around the deterministic result.
-  return { ...shaped, next: prepareCodegenAffordances(result.status) };
+  return { ...shaped, next: prepareCodegenAffordances(result.status, "citation_map" in result ? Object.keys(result.citation_map).filter((id) => /^[A-Z]{3}-\d{3}$/.test(id)) : []) };
 }
 
 function prepareCodegenContextCore(
@@ -3466,6 +3474,62 @@ function prepareCodegenContextCore(
   // by the task's declared signals — this is the requirement set served.
   const selection: SelectionResult = runSelectionWithActivation(input, activation);
   const estimatedRequirements = selection.selected.length;
+
+  // 0.19.4 («a promessa do minimal», lead opção 2): tecto de requisitos por-id
+  // por nível de detail, derivado da medição (~68 tk/req min/std, ~29 ultrathin)
+  // para que tecto×custo caiba na promessa de cada nível. `full` fica SEM tecto
+  // (promessa = completude; nível do oráculo). Mesma filosofia do
+  // needs_decomposition: nunca erro seco, nunca degradação silenciosa.
+  const ceilingDetail = parseDetail(raw);
+  const requirementCeiling = REQUIREMENT_CEILING_BY_DETAIL[ceilingDetail];
+  if (requirementCeiling !== undefined && selection.selected.length > requirementCeiling) {
+    const byCategory = new Map<string, number>();
+    for (const r of selection.selected) byCategory.set(r.category, (byCategory.get(r.category) ?? 0) + 1);
+    const remaining = new Set(byCategory.keys());
+    const batches: Array<{ concerns: string[]; estimated_requirements: number }> = [];
+    while (remaining.size > 0 && batches.length < 3) {
+      let best: Concern | null = null;
+      let bestCats: string[] = [];
+      let bestWeight = 0;
+      for (const concern of VALID_CONCERNS) {
+        const cats = [...categoriesForConcerns([concern as Concern])].filter((c) => remaining.has(c));
+        const weight = cats.reduce((n, c) => n + (byCategory.get(c) ?? 0), 0);
+        if (weight > bestWeight) { best = concern as Concern; bestCats = cats; bestWeight = weight; }
+      }
+      if (!best) break;
+      batches.push({ concerns: [best], estimated_requirements: bestWeight });
+      for (const c of bestCats) remaining.delete(c);
+    }
+    const projected = projectedCostTk(ceilingDetail, selection.selected.length) ?? 0;
+    const b = blocked(
+      input,
+      raw,
+      "needs_decomposition",
+      [
+        `Selecção de ${selection.selected.length} requisitos excede o tecto de ${requirementCeiling} para detail="${ceilingDetail}" ` +
+          `(medição: ~${COST_PER_REQ_TK[ceilingDetail] ?? 0} tk/req sobre base ~${BASE_TK[ceilingDetail] ?? 0} tk ⇒ ~${projected} tk, ` +
+          `acima da promessa de ${PAYLOAD_PROMISE_TK[ceilingDetail] ?? 0} tk deste nível).`
+      ],
+      [
+        "Divide por área — repete SÓ com task + risk_level + concerns do lote; os activadores largos (exposure/data_sensitivity/stack) ficam FORA da chamada do lote, porque concerns SOMAM activação, não restringem. Lotes (estimativas por área do pedido original): " +
+          batches.map((bt, i) => `${i + 1}) concerns=[${bt.concerns.map((c) => `"${c}"`).join(", ")}] (~${bt.estimated_requirements} reqs)`).join("; ") +
+          ". Categorias sem lote entram na chamada mais próxima.",
+        `Em alternativa usa detail="full" (sem tecto — payload completo, custo alto) ou reduz o âmbito da task.`
+      ],
+      activation.trace,
+      input.debug ? { rejected: activation.rejected, notes: activation.notes } : undefined
+    );
+    b.requirement_ceiling = {
+      detail: ceilingDetail,
+      limit: requirementCeiling,
+      selected: selection.selected.length,
+      cost_per_req_tk: COST_PER_REQ_TK[ceilingDetail] ?? 0,
+      projected_tk: projected,
+      promise_tk: PAYLOAD_PROMISE_TK[ceilingDetail] ?? 0,
+      batches
+    };
+    return b;
+  }
 
   const postGate = gateAfterActivation({
     input,
