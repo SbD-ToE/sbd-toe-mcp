@@ -53,4 +53,9 @@
 
 ## Update — ciclo 0.19.1 (2026-09-04)
 - [x] Ronda 4: empty warning (V2), explicit>lexical (V4; replay-guard ✓ — sentinela travou 1ª versão exposure≠explicit; falso-PART GC-02 = eval estagnado, re-corrido 10/10), ênfase concerns-primeiro, entrada ⛳; TC-F-31; eval 0 FAIL; ouro 10/10
-- [ ] PR → merge → tag v0.19.1 → npm latest
+- [x] #74 merged → tag v0.19.1 (`a80741d2`) → npm latest ✓ (registada no fecho 0.19.1)
+
+
+## Update — ciclo 0.19.2 (2026-09-04, micro)
+- [x] next calibrado com limites do destino (top-3 por peso + resto informativo; tecto ≤50 no hint da matrix; TC-F-32 round-trip) + START HERE nas descrições (select/setup); TC-F-31 ajustado; eval 0 FAIL; ouro 10/10
+- [ ] PR → merge → tag v0.19.2 → npm latest

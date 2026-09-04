@@ -1183,7 +1183,7 @@ class McpRuntime {
           name: "select_sbd_toe_requirements",
           title: "Select SbD-ToE Requirements (MP1)",
           description:
-            "CONCERNS DECLARADOS são a interface primária de estabilidade (a task descobre; concerns estabilizam — ver basis/lexical_dominance_warning). The MP1 selection operation (Classificar → Seleccionar): which requirements apply to THIS task in THIS " +
+            "START HERE — para qualquer tarefa concreta esta é a 1ª tool (arranque de sessão: lê sbd://toe/agent-guide via read_sbd_toe_resource e chama setup_sbd_toe_agent). CONCERNS DECLARADOS são a interface primária de estabilidade (a task descobre; concerns estabilizam — ver basis/lexical_dominance_warning). The MP1 selection operation (Classificar → Seleccionar): which requirements apply to THIS task in THIS " +
             "context. Composes the reference semantics the published ontology declares — baseline (cap. 02 base " +
             "catalogue, by risk level) ∪ domain chapters activated by the context (changed_files, technologies, stack, " +
             "task) ⊕ regulatory overlay (extend) — then narrows deterministically by the task's declared signals. " +
@@ -1558,7 +1558,7 @@ class McpRuntime {
           name: "setup_sbd_toe_agent",
           title: "Setup SbD-ToE Agent",
           description:
-            "ENTRY POINT (2ª chamada, após o agent-guide) — MCP prompt to configure an agent with SbD-ToE manual context and rules for a given risk level.",
+            "START HERE — entry point (2ª chamada, após leres sbd://toe/agent-guide): MCP prompt to configure an agent with SbD-ToE manual context and rules for a given risk level.",
           arguments: [
             {
               name: "riskLevel",

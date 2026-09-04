@@ -62,9 +62,11 @@ TODO — confirm with programme lead.
 - v0.12.0 → `b475900e87a3035d36a16201dd80d5e5b36c396d` (2026-08-31; formal lote — KG
   v1.9.0 pinned, sha256 `11153c85…`, contract v1.15; npm `@shiftleftpt/sbd-toe-mcp@0.12.0`
   = published, gitHead same commit; GitHub Release `v0.12.0`)
-- v0.19.1 *(ronda 4 — empty_selection_warning + precedência explicit>lexical no R2
-  (replay-guard re-validada); bundle pin unchanged KG v1.11.0; annotated tag on the
-  squash after merge; npm `latest`)*
+- v0.19.2 *(micro — next calibrado com limites do destino + START HERE nas descrições;
+  bundle pin unchanged KG v1.11.0; annotated tag on the squash after merge; npm `latest`)*
+- v0.19.1 → `a80741d298ad62c6463b3c0883265c36a475e4ff` (2026-09-04; ronda 4 — zero=alarme
+  + explicit>lexical; npm `@shiftleftpt/sbd-toe-mcp@0.19.1` = published, gitHead same
+  commit; GitHub Release `v0.19.1`)
 - v0.19.0 → `ab4340d80367d9c8c61a04af52a6bd397b87e6c1` (2026-09-04; ronda 3 — basis +
   aviso de dominância; npm `@shiftleftpt/sbd-toe-mcp@0.19.0` = published, gitHead same
   commit; GitHub Release `v0.19.0`)
@@ -180,3 +182,4 @@ prohibits tag deletion without explicit authorisation):
 | 2026-09-03 | v0.18.0 tag commit recorded (`b1dbc7e6`, squash of #71); npm latest + Release confirmed (boleia declarada). v0.18.1 registered — lote formal: re-pin release KG v1.11.0 (`b7444094…`, digest-verified, byte-igual). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-04 | v0.18.1 tag commit recorded (`dc5500af`, squash of #72); npm latest + Release confirmed (boleia declarada). v0.19.0 registered — ronda 3 (basis+aviso; near-touch resolvido por dieta; 2º incidente de gate travado em draft → sentinela adoptada). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-04 | v0.19.0 tag commit recorded (`ab4340d8`, squash of #73); npm latest + Release confirmed (boleia declarada). v0.19.1 registered — ronda 4 (zero=alarme; explicit>lexical; a sentinela de gate travou uma 1ª versão errada da precedência antes de docs/PR — mecanismo validado). Pins unchanged (KG v1.11.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-04 | v0.19.1 tag commit recorded (`a80741d2`, squash of #74); npm latest + Release confirmed. v0.19.2 registered — micro (next calibrado com limites do destino; START HERE nas descrições). Pins unchanged (KG v1.11.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
