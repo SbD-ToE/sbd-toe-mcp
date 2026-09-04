@@ -685,6 +685,35 @@ export const scenarios = [
       const bmeta = bd.meta ?? bd;
       if (bmeta.unknown_record_type !== "ctrl_acore_alignment" || !(bmeta.valid_record_types?.length > 10)) return fail("total:0 silencioso ainda vivo (sem unknown_record_type/valid_record_types)");
       return ok(`3 next à letra: resolve ${rt}+[${ids.join(",")}] → ${nRecs} recs; matrix [${pids.join(",")}] ok (${stabilized ? "via estabilização" : "directo"}); uri ${uri} lido; 63 ids rejeitados c/ tecto 50; record_type desconhecido DECLARADO c/ ${bmeta.valid_record_types.length} válidos`); } },
+  { id: "TC-F-34", axis: "F", title: "0.19.4: tecto por-id no prepare (caso 88-reqs @ minimal) + round-trip da divisão ensinada", tool: "prepare_sbd_toe_codegen_context",
+    run: async (c) => {
+      const args = { task: "Expor API pública de consulta com chaves de cliente e rate limiting", risk_level: "L3", exposure: "public", data_sensitivity: "personal", stack: "Python/FastAPI", detail: "minimal" };
+      const p = await c.tool("prepare_sbd_toe_codegen_context", args); if (!p.ok) return fail(p.error);
+      const pd = p.data.data ?? p.data;
+      if (pd.status !== "needs_decomposition") return fail(`88 reqs @ minimal devia bloquear declarado; status=${pd.status}`);
+      const rc = pd.requirement_ceiling;
+      if (!rc || rc.limit === undefined || rc.selected <= rc.limit) return fail("sem requirement_ceiling estruturado");
+      if (!(rc.projected_tk > rc.promise_tk)) return fail("projecção não justifica o bloqueio");
+      if (!rc.batches?.length) return fail("sem lotes de divisão ensinados");
+      if (!(pd.suggestions ?? []).some((x) => /Divide por área/.test(x))) return fail("suggestions não ensinam a divisão");
+      // round-trip: seguir a divisão sugerida → chamadas DENTRO do tecto, prontas
+      const results = [];
+      for (const batch of rc.batches.slice(0, 2)) {
+        // a receita ensinada: SÓ task + risk_level + detail + concerns do lote (activadores largos fora)
+        const r = await c.tool("prepare_sbd_toe_codegen_context", { task: args.task, risk_level: args.risk_level, detail: args.detail, concerns: batch.concerns });
+        if (!r.ok) return fail(`lote [${batch.concerns}] rejeitado: ${r.error}`);
+        const rdd = r.data.data ?? r.data;
+        if (rdd.status !== "ready_for_codegen") return fail(`lote [${batch.concerns}] não ficou pronto: ${rdd.status}`);
+        const n = (rdd.activated_scope?.requirements ?? []).length || (rdd.activated_scope?.requirements_total ?? 0);
+        if (n > rc.limit) return fail(`lote [${batch.concerns}] excede o tecto: ${n} > ${rc.limit}`);
+        results.push(`[${batch.concerns}]→${n} reqs`);
+      }
+      // full continua SEM tecto (promessa = completude; nível do oráculo)
+      const pf = await c.tool("prepare_sbd_toe_codegen_context", { ...args, detail: "full" });
+      if (!pf.ok) return fail(pf.error);
+      const pfd = pf.data.data ?? pf.data;
+      if (pfd.status !== "ready_for_codegen") return fail(`full ganhou tecto indevido: ${pfd.status}`);
+      return ok(`88@minimal → needs_decomposition declarado (tecto ${rc.limit}, ~${rc.cost_per_req_tk} tk/req, proj ${rc.projected_tk}>${rc.promise_tk}); divisão seguida: ${results.join(", ")}; full sem tecto ✓`); } },
 
   // ───────────────────────── Axis H — selection vs golden oracle (measurement, NOT gate) ─────────────────────────
   // Oracle: golden-selection-cases.md v1 (programme lead's, read-only). One scenario per

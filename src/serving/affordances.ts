@@ -13,6 +13,7 @@
  */
 
 import { boundAffordances, type Affordance } from "./protocol-envelope.js";
+import { REQUIREMENT_CEILING_BY_DETAIL, projectedCostTk } from "./payload-ceilings.js";
 
 const concernsHint = (concerns: string[] | undefined): string =>
   concerns && concerns.length > 0 ? `concerns=[${concerns.slice(0, 5).join(", ")}]` : "concerns (recomendado <=3)";
@@ -34,7 +35,7 @@ export function mapApplicabilityAffordances(riskLevel: string | undefined): Affo
   ]);
 }
 
-export function selectRequirementsAffordances(riskLevel: string, selectedIds: readonly string[] = [], lexicalConcerns?: readonly string[]): Affordance[] {
+export function selectRequirementsAffordances(riskLevel: string, selectedIds: readonly string[] = [], lexicalConcerns?: readonly string[], totalSelected?: number): Affordance[] {
   // 0.19.0: dominância lexical ⇒ a 1ª sugestão é ESTABILIZAR a selecção.
   // 0.19.2 (princípio novo): o next é CALIBRADO com os limites do destino — nenhuma
   // sugestão pode ser rejeitada pela tool que sugere. Aqui: top-3 concerns por peso
@@ -52,7 +53,16 @@ export function selectRequirementsAffordances(riskLevel: string, selectedIds: re
   const idsHint = selectedIds.length > 0 ? `requirement_ids=[${selectedIds.slice(0, 3).join(", ")}${selectedIds.length > 3 ? ", …" : ""}]${capNote}` : "requirement_ids=[…os selected…] (≤50 ids por chamada; ~190 tk/id medidos)";
   const proveRow: Affordance = { intent: "provar os requisitos seleccionados (requisito → prova)", tool: "get_sbd_toe_verification_matrix", with: `risk_level="${riskLevel}", ${idsHint}`, kind: "structural" };
   const consultRow: Affordance = { intent: "get the controls/artifacts behind the selected requirements", tool: "consult_security_requirements", with: `risk_level="${riskLevel}", <=5 concerns (recomendado <=3)`, kind: "structural" };
-  const prepareRow: Affordance = { intent: "prepare grounded codegen context for one concrete task", tool: "prepare_sbd_toe_codegen_context", with: "task + risk_level (+ changed_files)", kind: "semantic" };
+  // 0.19.4: custo anunciado ANTES de pagar (padrão da matrix/0.19.3) — projecção
+  // da contagem seleccionada × custo/req por detail, com o tecto novo declarado.
+  const t = totalSelected ?? 0;
+  const ceilMin = REQUIREMENT_CEILING_BY_DETAIL["minimal"] ?? 0;
+  const ceilStd = REQUIREMENT_CEILING_BY_DETAIL["standard"] ?? 0;
+  const ceilUltra = REQUIREMENT_CEILING_BY_DETAIL["ultrathin"] ?? 0;
+  const costNote = t > 0
+    ? ` (${t} seleccionados: minimal ≈${projectedCostTk("minimal", t) ?? "?"} tk${t > ceilMin ? ` — ACIMA do tecto ${ceilMin}: divide por área` : ""}; tectos min/std/ultra ${ceilMin}/${ceilStd}/${ceilUltra}; full sem tecto)`
+    : "";
+  const prepareRow: Affordance = { intent: `prepare grounded codegen context for one concrete task${costNote}`, tool: "prepare_sbd_toe_codegen_context", with: "task + risk_level (+ changed_files)", kind: "semantic" };
   // 0.19.0: com dominância lexical, a 1ª sugestão é ESTABILIZAR — sai a matrix,
   // NUNCA o par prepare+consult (contrato ensinado no R3/TC-F-13).
   return boundAffordances(stability.length > 0 ? [...stability, consultRow, prepareRow] : [proveRow, consultRow, prepareRow]);

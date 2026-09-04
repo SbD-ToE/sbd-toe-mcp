@@ -1497,7 +1497,7 @@ class McpRuntime {
                 type: "string",
                 enum: ["ultrathin", "minimal", "standard", "full"],
                 description:
-                  "Response encoding level (v2 token diet, ported from the 0.20 beta line). 'full' (default) returns " +
+                  "Response encoding level (v2 token diet, ported from the 0.20 beta line). 0.19.4: níveis dieted têm TECTO de requisitos por chamada — minimal 78, standard 81, ultrathin 86 (derivados da medição ~68/~68/~29 tk/req vs promessas 8450/9200/4840 tk); acima ⇒ needs_decomposition c/ requirement_ceiling e divisão ensinada; 'full' sem tecto (promessa = completude). 'full' (default) returns " +
                   "the classic payload, byte-identical to previous releases. 'standard'/'minimal' return the SAME " +
                   "citable ID set with a deduplicated encoding: inverted `citations` replaces `citation_map`, " +
                   "`manual_grounding` is grouped, derivable fields are elided per the `provenance_legend`/resource " +
