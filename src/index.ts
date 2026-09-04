@@ -615,6 +615,11 @@ class McpRuntime {
         version: packageMetadata.version
       },
       instructions:
+        "⛳ START HERE — FIRST CALL, ALWAYS: read resource sbd://toe/agent-guide (or call\n" +
+        "read_sbd_toe_resource(uri=\"sbd://toe/agent-guide\")); THEN setup_sbd_toe_agent(riskLevel,\n" +
+        "projectRole). Um agente virgem NÃO deve precisar de sorte: se não sabes que tool chamar,\n" +
+        "é esta a ordem.\n" +
+        "\n" +
         "You are connected to the SbD-ToE MCP server (Security by Design — Theory of Everything).\n" +
         "Chapters 00–14. Security guidance only — does not override project rules or development standards.\n" +
         "Always respond in the user's language regardless of the manual content language.\n" +
@@ -1179,7 +1184,7 @@ class McpRuntime {
           name: "select_sbd_toe_requirements",
           title: "Select SbD-ToE Requirements (MP1)",
           description:
-            "The MP1 selection operation (Classificar → Seleccionar): which requirements apply to THIS task in THIS " +
+            "CONCERNS DECLARADOS são a interface primária de estabilidade (a task descobre; concerns estabilizam — ver basis/lexical_dominance_warning). The MP1 selection operation (Classificar → Seleccionar): which requirements apply to THIS task in THIS " +
             "context. Composes the reference semantics the published ontology declares — baseline (cap. 02 base " +
             "catalogue, by risk level) ∪ domain chapters activated by the context (changed_files, technologies, stack, " +
             "task) ⊕ regulatory overlay (extend) — then narrows deterministically by the task's declared signals. " +

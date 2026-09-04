@@ -92,7 +92,7 @@ resolve_entities                 ← low-level ontology filter engine
                                     listing requirements by category, exploring the ontology
 ```
 
-**Choosing between the three requirement surfaces:**
+**Choosing between the three requirement surfaces:** *(a task DESCOBRE; concerns declarados ESTABILIZAM — os concerns são a interface primária de estabilidade; a task refina)*
 - `select_sbd_toe_requirements` — *"which requirements apply to THIS task / this change?"*
   Task-scoped recommendation with declared narrowing (two bands, above). Start here for
   any concrete piece of work.

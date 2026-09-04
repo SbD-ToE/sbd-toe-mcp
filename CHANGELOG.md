@@ -3,11 +3,57 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-31
 purpose: documentation
-reasoning: v0.20.0-beta.17 (beta line, npm `beta`) — absorbs stable 0.19.0 (evaluator round 3: selection stability to wording — basis declared|lexical on every entry/exclusion, lexical_dominance_warning with declared threshold, form-diet in prepare, read_resource slots by index with derived catalogue). Two-wordings case reproduced live on this line; beta agents heuristics carry the same basis pattern via the shared engine. Bundle pin unchanged (release KG v1.11.0). Golden 10/10, gate E PASS, 25/25 tools, budgets inside gates; sentinel hard-gate adopted.
+reasoning: v0.20.0-beta.18 (beta line, npm `beta`) — absorbs stable 0.19.1 (evaluator round 4: the zero becomes an alarm — empty_selection_warning with derived candidates; precedence — R2 yields ONLY to explicit_concern while exposure/data_sensitivity keep feeding R2; selected∧narrowed invariant; concerns-first teaching; START-HERE entry). V2/V4/replay-guard reproduced live; agentic heuristics coherent under the new precedence (no divergence). Bundle pin unchanged (release KG v1.11.0). Golden 10/10, gate E PASS, 25/25 tools; sentinel + package_version gate.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.18 — 2026-09-04
+
+Absorbs the stable **0.19.1** (squash `a80741d2` = tag v0.19.1 = npm `latest`;
+precondition initially pending — the publish run 33890216694 was watched to success and
+npm re-verified after propagation, per the beta.17 pattern, before any pick). Bundle pin
+UNCHANGED (release KG `v1.11.0`, sha `b7444094…03df`).
+
+### Absorption map (→ this line)
+
+1. **`empty_selection_warning` (V2)** — 0 selected with narrowed ≠ 0 is an ALARM:
+   candidates DERIVED via the reverse `concernsMap` from the narrowed set; the
+   share-warning yields to it; `next[0]` = «re-run with concerns» and **never sends an
+   empty list to the matrix**.
+2. **Precedence (V4)** — R2 yields **ONLY to the user's `explicit_concern`**;
+   `exposure`/`data_sensitivity` keep feeding R2 (the stable's first version treated
+   exposure as explicit and the replay-SES revived — their gate sentinel caught it).
+   Invariant `selected ∧ narrowed = ∅`; replay-SES guard re-run on this line.
+3. **Teaching** — «task descobre; concerns estabilizam» in guide/next; ⛳ START HERE in
+   the instructions entry point.
+4. **Gate** — the eval artefact's `package_version` is now asserted (lesson GC-02: a
+   stale eval must fail loudly), together with the sentinel hard-gate.
+
+### V2 / V4 / replay-guard reproduced live on this line
+
+- **V4** (`task «Mudança de email do utilizador»` + `concerns: ["auth"]`): **SES ×8 in
+  selected, 0 in narrowed — no activated∧narrowed contradiction** (declared beats
+  lexical narrowing).
+- **Replay-guard** (lexical auth wording, no explicit concerns): **SES ×8 narrowed,
+  0 selected** — the DualGauge replay case stays dead.
+- **V2** (wording selecting 0): `empty_selection_warning` with derived
+  `candidate_concerns [auth, logging, validation, api, …]`, share-warning silenced in its
+  favour, `next[0]` = re-run select, **no matrix in `next`**. TC-F-31 PASS (V2 alarm
+  with 17 candidates; V4 SES ×8; replay dead; V1/V3 both warned).
+- **Beta-only surfaces / agentic heuristics** (dispatch check): the `agents` task-term
+  heuristics remain non-`explicit_concern` — on an agentic task AGN ×4 select, SES ×8
+  narrows (no session signal), no contradiction, no empty alarm: **coherent with the new
+  precedence; no divergence, no finding.**
+
+### Verification (records `docs/acceptance-runs/2026-09-04-v0191-*-v0.20.0-beta.18-*`; sentinel + package_version gate)
+
+`eval:acceptance`: **138 scenarios, 115 executed — 99 PASS · 16 PART · 0 FAIL · 23 SKIP;
+gate E PASS (16/1/0)**; TC-F-29/30/31 PASS; Axis G 3/3; **25/25 tools**; golden cases
+**10/10** (oracle expectations intact). Suite **732/732** (+3 unit from the stable) ·
+`npm run check` ✅. Budgets untouched inside the gates: f1 18,771 / 6,135 / 5,488 /
+3,688; f2 25,192 / **9,128**/9,200 / **8,401**/8,450 / **4,833**/4,840 (ids 104/152).
 
 ## 0.20.0-beta.17 — 2026-09-04
 

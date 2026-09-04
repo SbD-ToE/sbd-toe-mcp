@@ -117,3 +117,24 @@ describe("P3 rules (decisões pós-P2, 2026-08-31)", () => {
     expect(ids).toContain("LOG-001");
   });
 });
+
+
+describe("0.19.1 — precedência e invariantes (ronda 4)", () => {
+  it("V4: auth DECLARADO preserva SES; nunca activated∧narrowed na mesma resposta", () => {
+    const r = runSelection({ risk_level: "L2", task: "Alterar o email da conta do utilizador", concerns: ["auth"] });
+    expect(r.selected.some((s) => s.category === "SES")).toBe(true);
+    const selCats = new Set(r.selected.map((s) => s.category));
+    for (const g of r.narrowed_out) expect(selCats.has(g.category), g.category).toBe(false);
+  });
+  it("replay-guard: auth LEXICAL continua a arrumar SES (R2 vivo)", () => {
+    const r = runSelection({ risk_level: "L3", task: "Expor API pública de consulta com chaves de cliente e rate limiting", exposure: "public" });
+    expect(r.selected.some((s) => s.category === "SES")).toBe(false);
+    expect(r.narrowed_out.some((g) => g.category === "SES")).toBe(true);
+  });
+  it("V2: selecção vazia dispara empty_selection_warning com candidatos; share-warning cede", () => {
+    const r = runSelection({ risk_level: "L2", task: "Cumprir as políticas internas de segurança da informação no módulo de clientes" });
+    expect(r.selected.length).toBe(0);
+    expect(r.empty_selection_warning?.candidate_concerns.length).toBeGreaterThan(0);
+    expect(r.lexical_dominance_warning).toBeNull();
+  });
+});
