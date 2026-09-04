@@ -84,10 +84,13 @@ function violations(a: Affordance, from: string): string[] {
   if (raw.includes("sbd://") && a.tool !== "read_sbd_toe_resource")
     out.push(`${from} → ${a.tool}: URI no with sem nomear read_sbd_toe_resource`);
   // instrucionais fora: "(recomendado …)", placeholders <…>, elipses
-  const stripped = raw
-    .replace(/"<[^>]*>"/g, "")
-    .replace(/<[^>]*>/g, "")
-    .replace(/\(recomendado[^)]*\)/g, "");
+  let stripped = raw.replace(/\(recomendado[^)]*\)/g, "");
+  // sanitização multi-carácter por ponto-fixo (CodeQL js/incomplete-multi-character-sanitization)
+  let prev: string;
+  do {
+    prev = stripped;
+    stripped = stripped.replace(/"<[^>]*>"/g, "").replace(/<[^>]*>/g, "");
+  } while (stripped !== prev);
   for (const m of stripped.matchAll(/(?:≤|<=)\s*(\d+)/g)) {
     const n = Number(m[1]);
     const truth = Object.entries(dest.props).some(([k, v]) => v.maxItems === n && stripped.includes(k));

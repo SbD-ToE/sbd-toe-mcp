@@ -508,7 +508,7 @@
     "active_conditions": [
       "risk_level:L2"
     ],
-    "note": "Slots por índice: read_sbd_toe_resource(uri, slot=\"<n>\"); active_conditions filtram.active_conditions) and security_rationale_template (task = input_echo.task trimmed) — byte-identical to the detail=full inline content — plus the detail_encoding legend for this payload."
+    "note": "Slots por índice: read_sbd_toe_resource(uri, slot=\"<n>\"); active_conditions filtram; byte-identical ao detail=full."
   },
   "repeat_call_hint": "Identical input returns this exact payload (deterministic) — reuse the context already received; deepen via detail:'minimal' or a targeted consult_security_requirements.",
   "provenance": {

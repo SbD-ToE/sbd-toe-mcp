@@ -3310,10 +3310,7 @@ function applyStructuralDiet(
       citationMapEmpty: Object.keys(result.citation_map).length === 0
     }),
     note:
-      "Slots por índice: read_sbd_toe_resource(uri, slot=\"<n>\"); active_conditions filtram." +
-      "active_conditions) and security_rationale_template (task = " +
-      "input_echo.task trimmed) — byte-identical to the detail=full inline " +
-      "content — plus the detail_encoding legend for this payload."
+      "Slots por índice: read_sbd_toe_resource(uri, slot=\"<n>\"); active_conditions filtram; byte-identical ao detail=full."
   };
 
   const dieted: PrepareCodegenContextResultReadyDieted = {

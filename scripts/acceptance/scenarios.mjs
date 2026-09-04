@@ -651,6 +651,7 @@ export const scenarios = [
       // (2) select → proveRow → matrix aceita os ids copiáveis do próprio hint
       const s = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Implementar login com sessões de utilizador" }); if (!s.ok) return fail(s.error);
       let prove = (s.data.next ?? []).find((n) => n.tool === "get_sbd_toe_verification_matrix");
+      let stabilized = false;
       if (!prove) {
         // contrato 0.19.0: com aviso, next[0] é estabilizar (sem matrix) — SEGUE a própria sugestão
         const sug = (s.data.next?.[0]?.with.match(/concerns=\[([^\]]*)\]/)?.[1] ?? "").split(",").map((x) => x.trim()).filter(Boolean);
@@ -658,6 +659,7 @@ export const scenarios = [
         const s2 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Implementar login com sessões de utilizador", concerns: sug });
         if (!s2.ok) return fail(`re-corrida sugerida falhou: ${s2.error}`);
         prove = (s2.data.next ?? []).find((n) => n.tool === "get_sbd_toe_verification_matrix");
+        stabilized = true;
       }
       if (!prove) return fail("sem proveRow mesmo após seguir a estabilização sugerida");
       const pids = [...prove.with.matchAll(/([A-Z]{3}-\d{3})/g)].map((m) => m[1]).slice(0, 3);
@@ -682,7 +684,7 @@ export const scenarios = [
       const bd = bad.data.data ?? bad.data;
       const bmeta = bd.meta ?? bd;
       if (bmeta.unknown_record_type !== "ctrl_acore_alignment" || !(bmeta.valid_record_types?.length > 10)) return fail("total:0 silencioso ainda vivo (sem unknown_record_type/valid_record_types)");
-      return ok(`3 next à letra: resolve ${rt}+[${ids.join(",")}] → ${nRecs} recs; matrix [${pids.join(",")}] ok (${prove ? "com estabilização se preciso" : ""}); uri ${uri} lido; 63 ids rejeitados c/ tecto 50; record_type desconhecido DECLARADO c/ ${bmeta.valid_record_types.length} válidos`); } },
+      return ok(`3 next à letra: resolve ${rt}+[${ids.join(",")}] → ${nRecs} recs; matrix [${pids.join(",")}] ok (${stabilized ? "via estabilização" : "directo"}); uri ${uri} lido; 63 ids rejeitados c/ tecto 50; record_type desconhecido DECLARADO c/ ${bmeta.valid_record_types.length} válidos`); } },
 
   // ───────────────────────── Axis H — selection vs golden oracle (measurement, NOT gate) ─────────────────────────
   // Oracle: golden-selection-cases.md v1 (programme lead's, read-only). One scenario per
