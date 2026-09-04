@@ -554,6 +554,36 @@ export const scenarios = [
       const diet = await c.tool("trace_sbd_toe_requirement_sources", { requirement_ids: ["DEP-001"], include_chains: false });
       if (diet.data.requirements[0]?.compensated?.chains) return fail("include_chains=false não dietou");
       return ok(`FIL-002 direct ×${filDirect} + DEP-001 compensado (1º salto ${hop.alignment_type}@${hop.confidence}); fake declarado; meta ${d.meta.counts.with_direct_anchors}/${d.meta.counts.with_compensated_coverage}/${d.meta.counts.without_any_source_declared}; dieta ✓`); } },
+  { id: "TC-F-29", axis: "F", title: "0.19.0 (ronda 3): paráfrase — basis declared/lexical + aviso de dominância + razão sensível-à-redacção", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      const rica = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Endpoint de upload com sessão de utilizador e token de acesso" }); if (!rica.ok) return fail(rica.error);
+      const magra = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Receber ficheiros dos utilizadores autenticados" }); if (!magra.ok) return fail(magra.error);
+      const idsR = new Set(rica.data.selection.selected.map((x) => x.requirement_id));
+      const idsM = new Set(magra.data.selection.selected.map((x) => x.requirement_id));
+      if (idsR.size === idsM.size) return fail("paráfrase não reproduziu a divergência (fixture morta)");
+      const tr = rica.data.selection.selected[0]?.selection_trace ?? [];
+      if (!tr.every((t) => t.basis === "declared" || t.basis === "lexical")) return fail("trace sem basis");
+      const ses = magra.data.selection.narrowed_out.find((g) => g.category === "SES");
+      if (ses && !/SENSÍVEL À REDACÇÃO|sensível à redacção|redacção/i.test(ses.reason)) return fail("razão do narrowed lexical não diz que é sensível à redacção");
+      if (ses && ses.basis !== "lexical") return fail("narrowed lexical sem basis");
+      const w = magra.data.lexical_dominance_warning;
+      if (!w || w.lexical_share <= w.threshold) return fail("aviso de dominância não disparou na variante magra");
+      if (!Array.isArray(w.candidate_concerns) || w.candidate_concerns.length === 0) return fail("aviso sem candidate_concerns");
+      if (!(magra.data.next ?? []).some((n) => /concerns EXPLÍCITOS|explícitos/i.test(n.intent ?? ""))) return fail("next não sugere estabilizar com concerns");
+      const decl = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Receber ficheiros dos utilizadores autenticados", concerns: w.candidate_concerns.slice(0, 3) }); if (!decl.ok) return fail(decl.error);
+      if (decl.data.lexical_dominance_warning) return fail("com concerns explícitos o aviso devia calar-se");
+      const ex = magra.data.selection.excluded_by_level?.[0];
+      if (ex && ex.basis !== "declared") return fail("excluded_by_level devia ser basis declared (regra de dados)");
+      return ok(`rica ${idsR.size} vs magra ${idsM.size}; basis nos traces; narrowed diz 'sensível à redacção'; aviso share=${w.lexical_share} c/ ${w.candidate_concerns.length} concerns candidatos; declarado → sem aviso`); } },
+  { id: "TC-F-30", axis: "F", title: "0.19.0: slot por índice com lista REAL derivada (o «Slots válidos: .» morreu)", tool: "read_sbd_toe_resource",
+    run: async (c) => {
+      const bad = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/codegen-instructions/codegen", slot: "banana" });
+      if (bad.ok) return fail("slot inválido aceite");
+      if (!/Slots válidos: 0 \(when=/.test(String(bad.error))) return fail(`lista de slots não derivada: ${String(bad.error).slice(0,120)}`);
+      const ok0 = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/codegen-instructions/codegen", slot: "0" }); if (!ok0.ok) return fail(ok0.error);
+      const slot = JSON.parse(ok0.data.content);
+      if (!slot.when || !slot.text) return fail("slot 0 não devolvido");
+      return ok(`slot inválido → catálogo real por índice+when; slot '0' (when=${slot.when}) devolvido`); } },
 
   // ───────────────────────── Axis H — selection vs golden oracle (measurement, NOT gate) ─────────────────────────
   // Oracle: golden-selection-cases.md v1 (programme lead's, read-only). One scenario per

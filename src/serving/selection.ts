@@ -97,12 +97,23 @@ const SES008_TECH_PATTERN = /\bjwt\b|token de utilizador|user token|bearer token
 
 const AGENTIC_WAVE_PATTERN = /\bagente|\bagent\b|agêntic|agentic|autonom|kill.?switch|mandate|tool.?call/i;
 
+/** 0.19.0 (ronda 3): estabilidade da origem — lexical = casamento de termos da
+ * redacção (revogável por reescrever a frase); declared = concern explícito, regra
+ * nomeada, sinal de contexto declarado ou dado do bundle. */
+export type SelectionBasis = "declared" | "lexical";
+const LEXICAL_SOURCES = new Set(["task_term", "alias_expansion", "compound_term", "intent_keyword"]);
+export function basisOfSource(source: string): SelectionBasis {
+  return LEXICAL_SOURCES.has(source) ? "lexical" : "declared";
+}
+
 export interface SelectionTraceEntry {
   layer: "baseline" | "domain_specific" | "agents_wave" | "named_rule";
   source: ActivationTraceEntry["source"] | "context_chapter" | "agents_wave" | "named_rule";
   trigger: string;
   score: number;
   reason: string;
+  /** 0.19.0: declared|lexical — ver basisOfSource. */
+  basis?: SelectionBasis;
 }
 
 export interface SelectedRequirement {
@@ -115,6 +126,8 @@ export interface SelectedRequirement {
 }
 
 export interface NarrowedOutGroup {
+  /** 0.19.0: lexical = revogável por reescrever a tarefa; declared = regra/dados. */
+  basis?: SelectionBasis;
   category: string;
   count: number;
   requirement_ids: string[];
@@ -136,6 +149,9 @@ export interface SelectionResult {
    * aplicáveis a este nível (applicable_levels) — declarados com a mesma dignidade
    * do narrowed_out; nunca invisíveis. */
   excluded_by_level: NarrowedOutGroup[];
+  /** 0.19.0: quantos selected têm ≥1 base declarada vs só-lexical; share e aviso. */
+  basis_summary: { declared: number; lexical_only: number; lexical_share: number };
+  lexical_dominance_warning: { lexical_share: number; threshold: number; note: string; candidate_concerns: string[] } | null;
   activated_chapters: ActivatedChapter[];
   activated_categories: string[];
   activation: ActivationResult;
@@ -374,6 +390,28 @@ export function runSelectionWithActivation(
     }
   }
 
+  // 0.19.0: basis por entrada (ponto único) + sumário + aviso de dominância lexical.
+  for (const sreq of selected) {
+    for (const t of sreq.selection_trace) t.basis = basisOfSource(t.source);
+  }
+  const declaredCount = selected.filter((sreq) => sreq.selection_trace.some((t) => t.basis === "declared")).length;
+  const lexicalOnlyCount = selected.length - declaredCount;
+  const lexicalShare = selected.length > 0 ? lexicalOnlyCount / selected.length : 0;
+  const LEXICAL_DOMINANCE_THRESHOLD = 0.5; // declarado: metade da selecção só-lexical dispara o aviso
+  const lexicalConcerns = [...new Set(
+    activation.trace.filter((t) => LEXICAL_SOURCES.has(t.source)).map((t) => t.produced)
+  )];
+  const lexical_dominance_warning =
+    lexicalShare > LEXICAL_DOMINANCE_THRESHOLD
+      ? {
+          lexical_share: Math.round(lexicalShare * 100) / 100,
+          threshold: LEXICAL_DOMINANCE_THRESHOLD,
+          note:
+            "A REDACÇÃO da tarefa decide a maior parte desta selecção (casamento lexical de termos) — reformular a frase pode mudar o conjunto. Para estabilidade, declara concerns explícitos.",
+          candidate_concerns: lexicalConcerns,
+        }
+      : null;
+
   selected.sort((a, b) => a.requirement_id.localeCompare(b.requirement_id));
 
   // 0.15.0 (P0-3): banda excluded_by_level — o filtro de nível deixa de ser silencioso.
@@ -393,7 +431,8 @@ export function runSelectionWithActivation(
       category,
       count: ids.length,
       requirement_ids: ids.sort(),
-      reason: `no âmbito (base/capítulo activado) mas não aplicável a ${level} por applicable_levels — excluído pelo nível, DECLARADO (nunca em silêncio)`,
+      basis: "declared" as SelectionBasis,
+      reason: `no âmbito (base/capítulo activado) mas não aplicável a ${level} por applicable_levels (regra de DADOS, estável à redacção) — declarado, nunca em silêncio`,
     }));
 
   const narrowed_out: NarrowedOutGroup[] = [...narrowedByCategory.entries()]
@@ -402,10 +441,11 @@ export function runSelectionWithActivation(
       category,
       count: ids.length,
       requirement_ids: ids.sort(),
+      basis: "lexical" as SelectionBasis,
       reason:
         category === "SES" && r2Applied
           ? `${R2_RULE_ID} (decisão pós-P2 2026-08-31): sem sinais de sessão/login/token de utilizador na tarefa, SES-* sai por narrowing declarado (o concernsMap do loader mantém auth → [AUT, ACC, SES]); com esses sinais na tarefa, fica`
-          : `elegível na baseline ${level} (cap. 02) sem sinal na tarefa/contexto — excluído pelo narrowing, nunca em silêncio`,
+          : `elegível na baseline ${level} (cap. 02) sem sinal na tarefa/contexto — exclusão SENSÍVEL À REDACÇÃO da tarefa (não é regra de domínio): reescrever a frase ou declarar concerns explícitos pode trazê-la de volta; nunca em silêncio`,
     }));
 
   const notes: string[] = [];
@@ -428,6 +468,8 @@ export function runSelectionWithActivation(
     selected,
     narrowed_out,
     excluded_by_level,
+    basis_summary: { declared: declaredCount, lexical_only: lexicalOnlyCount, lexical_share: Math.round(lexicalShare * 100) / 100 },
+    lexical_dominance_warning,
     activated_chapters: activatedChapters,
     activated_categories: [...new Set([...activatedCategories, ...selected.map((s) => s.category)])].sort(),
     activation,

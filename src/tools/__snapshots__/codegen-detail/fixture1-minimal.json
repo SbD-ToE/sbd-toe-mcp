@@ -595,6 +595,7 @@
       "narrowed_out_requirements": 73,
       "excluded_by_level_categories": 5,
       "excluded_by_level_requirements": 7,
+      "lexical_share": 1,
       "narrowed_out_ref": {
         "tool": "select_sbd_toe_requirements",
         "note": "Categorias elegíveis sem sinal na tarefa foram excluídas pelo narrowing MP1 — a lista completa (por categoria, com razão) vem de select_sbd_toe_requirements com o mesmo contexto."
