@@ -3,11 +3,46 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-31
 purpose: documentation
-reasoning: v0.20.0-beta.18 (beta line, npm `beta`) — absorbs stable 0.19.1 (evaluator round 4: the zero becomes an alarm — empty_selection_warning with derived candidates; precedence — R2 yields ONLY to explicit_concern while exposure/data_sensitivity keep feeding R2; selected∧narrowed invariant; concerns-first teaching; START-HERE entry). V2/V4/replay-guard reproduced live; agentic heuristics coherent under the new precedence (no divergence). Bundle pin unchanged (release KG v1.11.0). Golden 10/10, gate E PASS, 25/25 tools; sentinel + package_version gate.
+reasoning: v0.20.0-beta.19 (beta line, npm `beta`) — absorbs stable 0.19.2 (micro: next calibrated with the destination's limits — top-3 by weight on the empty-selection warning, matrix hint declares the ≤50 cap; START HERE moves into the select/setup descriptions). Beta-only next sweep clean (trace has no next[] and nothing quantified). Bundle pin unchanged (release KG v1.11.0). Golden 10/10, gate E PASS, 25/25 tools; sentinel + package_version gate.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.19 — 2026-09-04
+
+Absorbs the stable **0.19.2** (squash `99ad5a91` = tag v0.19.2 = npm `latest`;
+precondition completed per the beta.17/18 pattern — publish run 33896531612 watched to
+success and npm re-verified before any pick). Bundle pin UNCHANGED (release KG
+`v1.11.0`, sha `b7444094…03df`).
+
+### Absorption map (→ this line)
+
+1. **«O next nunca sugere o que o destino rejeita»** — the empty-selection `next[0]`
+   suggests the **top-3 concerns BY WEIGHT** (prepare rejects >3 families) while the
+   warning keeps the full ordered candidate list; the matrix hint declares the **≤50
+   cap** when the page exceeds it; remaining sweep conforms (consult ≤5/maxItems,
+   teaching ≤3). Live on this line (V2 case): `next[0]` = re-run select with
+   `concerns=[auth, integration, validation]`; warning list stays complete (17,
+   ordered). TC-F-32 round-trip PASS (suggestion accepted → select re-run 58 selected →
+   prepare `ready_for_codegen`; page of 53 with the declared ≤50 cap).
+2. **START HERE changes channel** — the select tool description and the setup prompt
+   description now OPEN with the start signal (visible in Desktop-like clients);
+   instructions keep the ⛳.
+3. **Beta-only next sweep (dispatch item 1) — clean:** `trace_sbd_toe_graph` returns
+   **no `next[]`** and no quantified-parameter suggestions (envelope: lens/anchor/rows/
+   total/page/pageSize/cursor/provenance); `prepare`'s `relations_ref` references
+   `{lens, anchor}` without quantifying anything the destination rejects; no beta-only
+   affordance needed calibration — declared, nothing changed.
+4. TC-F-31 adjusted (≤3 in next) re-run PASS on this line.
+
+### Verification (records `docs/acceptance-runs/2026-09-04-v0192-*-v0.20.0-beta.19-*`; sentinel + package_version gate)
+
+`eval:acceptance`: **139 scenarios, 116 executed — 100 PASS · 16 PART · 0 FAIL · 23
+SKIP; gate E PASS (16/1/0)**; TC-F-31/32 PASS; Axis G 3/3; **25/25 tools**; golden cases
+**10/10**. Suite **732/732** · `npm run check` ✅. Budgets untouched inside the gates:
+f1 18,771 / 6,135 / 5,488 / 3,688; f2 25,192 / **9,128**/9,200 / **8,401**/8,450 /
+**4,833**/4,840 (ids 104/152).
 
 ## 0.20.0-beta.18 — 2026-09-04
 

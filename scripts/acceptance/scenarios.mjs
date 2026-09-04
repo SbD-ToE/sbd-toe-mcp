@@ -594,6 +594,10 @@ export const scenarios = [
       if (v2.data.lexical_dominance_warning) return fail("share-warning a disparar sobre vazio (devia ceder ao alarme)");
       if ((v2.data.next ?? []).some((n) => n.tool === "get_sbd_toe_verification_matrix")) return fail("next manda lista VAZIA à matrix");
       if (!/concerns/i.test(v2.data.next?.[0]?.intent ?? "")) return fail("next[0] não é estabilizar com concerns");
+      // 0.19.2: next calibrado — a sugestão leva ≤3 concerns (limite do prepare); o aviso mantém a lista completa
+      const suggested = (v2.data.next[0].with.match(/concerns=\[([^\]]*)\]/)?.[1] ?? "").split(",").map((x) => x.trim()).filter(Boolean);
+      if (suggested.length === 0 || suggested.length > 3) return fail(`next sugere ${suggested.length} concerns (destino aceita ≤3 famílias)`);
+      if (ew.candidate_concerns.length <= 3 && ew.candidate_concerns.length !== suggested.length) return fail("aviso perdeu a lista completa");
       // V4: auth DECLARADO → SES fica; sem contradição activated∧narrowed
       const v4 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Alterar o email da conta do utilizador", concerns: ["auth"] }); if (!v4.ok) return fail(v4.error);
       const sesSel = v4.data.selection.selected.filter((x) => x.category === "SES").length;
@@ -609,6 +613,26 @@ export const scenarios = [
       if (v1.data.selection.selected.length === v3.data.selection.selected.length) return fail("V1/V3 fixture morta");
       if (!v1.data.lexical_dominance_warning || !v3.data.lexical_dominance_warning) return fail("divergência lexical sem aviso em ambas");
       return ok(`V2: alarme c/ ${ew.candidate_concerns.length} candidatos, sem matrix no next; V4: SES ×${sesSel} preservado sem contradição; replay-SES morto (×${rpNar.count} narrowed); V1/V3 ${v1.data.selection.selected.length}≠${v3.data.selection.selected.length} ambas avisadas`); } },
+  { id: "TC-F-32", axis: "F", title: "0.19.2: next calibrado com os limites do destino (round-trip executável)", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      // V2 vazio → a sugestão do next TEM de ser aceite pelo destino (select re-run) e a jusante (prepare ≤3 famílias)
+      const task = "Cumprir as políticas internas de segurança da informação no módulo de clientes";
+      const v2 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task }); if (!v2.ok) return fail(v2.error);
+      const suggested = (v2.data.next?.[0]?.with.match(/concerns=\[([^\]]*)\]/)?.[1] ?? "").split(",").map((x) => x.trim()).filter(Boolean);
+      if (suggested.length === 0 || suggested.length > 3) return fail(`sugestão fora do tecto: ${suggested.length}`);
+      const rerun = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task, concerns: suggested });
+      if (!rerun.ok) return fail(`o próprio select rejeitou a sugestão: ${rerun.error}`);
+      if (rerun.data.selection.selected.length === 0) return fail("re-corrida sugerida continua vazia");
+      const prep = await c.tool("prepare_sbd_toe_codegen_context", { task, risk_level: "L2", concerns: suggested });
+      if (!prep.ok) return fail(`prepare rejeitou a sugestão: ${prep.error}`);
+      if (prep.data.status === "needs_decomposition") return fail("prepare pediu decomposição à sugestão calibrada (≤3)");
+      // matrix: com página >50, o hint declara o tecto do destino (≤50)
+      const big = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", task: "Rever a segurança da plataforma", concerns: ["auth", "validation", "logging"], limit: 200 });
+      if (!big.ok) return fail(big.error);
+      const prove = (big.data.next ?? []).find((n) => n.tool === "get_sbd_toe_verification_matrix");
+      const pageLen = big.data.selection.selected.length;
+      if (pageLen > 50 && prove && !/≤50|<=50/.test(prove.with)) return fail(`página ${pageLen}>50 sem tecto declarado no hint da matrix`);
+      return ok(`sugestão [${suggested.join(",")}] aceite: select re-run ${rerun.data.selection.selected.length} selected, prepare ${prep.data.status}; página ${pageLen}${pageLen > 50 ? " c/ tecto ≤50 declarado" : ""}`); } },
 
   // ───────────────────────── Axis G — beta-line tools (added 2026-09-01; closes the 24/23 gap) ─────────────────────────
   // trace_sbd_toe_graph exists only on the 0.20-beta line (SPARQL/Oxigraph over the RDF
