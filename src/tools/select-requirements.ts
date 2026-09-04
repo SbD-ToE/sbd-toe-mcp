@@ -30,9 +30,9 @@ export interface SelectRequirementsOutput {
     selected: SelectionResult["selected"];
     narrowed_out: SelectionResult["narrowed_out"];
     excluded_by_level: SelectionResult["excluded_by_level"];
-    basis_summary: SelectionResult["basis_summary"];
-    lexical_dominance_warning?: SelectionResult["lexical_dominance_warning"];
   };
+  basis_summary: SelectionResult["basis_summary"];
+  lexical_dominance_warning?: SelectionResult["lexical_dominance_warning"];
   context: {
     activated_chapters: SelectionResult["activated_chapters"];
     activated_categories: string[];
@@ -127,10 +127,12 @@ export function handleSelectRequirements(args: Record<string, unknown>): SelectR
         "narrowed_out com razão — nunca em silêncio. Nada é inventado."
     },
     risk_level: risk,
-    selection: { selected: page, narrowed_out: result.narrowed_out, excluded_by_level: result.excluded_by_level, basis_summary: result.basis_summary },
+    selection: { selected: page, narrowed_out: result.narrowed_out, excluded_by_level: result.excluded_by_level },
     context: { activated_chapters: result.activated_chapters, activated_categories: result.activated_categories },
     activation_trace: result.activation.trace,
     overlay,
+    basis_summary: result.basis_summary,
+    ...(result.lexical_dominance_warning ? { lexical_dominance_warning: result.lexical_dominance_warning } : {}),
     coverage: {
       total: result.selected.length,
       returned: page.length,

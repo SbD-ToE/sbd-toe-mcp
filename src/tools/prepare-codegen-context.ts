@@ -359,9 +359,9 @@ export interface CompletenessReport {
      * select e nos perfis standard/minimal/full; recuperação via narrowed_out_ref. */
     excluded_by_level_categories?: number;
     excluded_by_level_requirements?: number;
-    /** 0.19.0 (ultrathin dieta-os): estabilidade da selecção à redacção. */
-    basis_summary?: { declared: number; lexical_only: number; lexical_share: number };
-    lexical_dominance_warning?: { lexical_share: number; threshold: number; note: string; candidate_concerns: string[] };
+    /** 0.19.0 (dieta por forma — tectos vigiam): fracção só-lexical da selecção; o
+     * sumário completo + aviso + candidatos vivem no select_sbd_toe_requirements. */
+    lexical_share?: number;
     narrowed_out_ref: { tool: "select_sbd_toe_requirements"; note: string };
   };
 }
@@ -3131,7 +3131,7 @@ function trimCompletenessForUltrathin(
   // 0.15.0: ultrathin OMITE os counts excluded_by_level (dieta; tecto 4.840 vigia) —
   // a banda fica declarada no select e nos perfis standard/minimal/full.
   if (kept.selection) {
-    const { excluded_by_level_categories: _c, excluded_by_level_requirements: _r, basis_summary: _b, lexical_dominance_warning: _w, ...selRest } = kept.selection;
+    const { excluded_by_level_categories: _c, excluded_by_level_requirements: _r, lexical_share: _lx, ...selRest } = kept.selection;
     kept.selection = selRest as typeof kept.selection;
   }
   return {
@@ -3773,8 +3773,7 @@ function prepareCodegenContextCore(
       narrowed_out_requirements: selection.narrowed_out.reduce((n, g) => n + g.count, 0),
       excluded_by_level_categories: selection.excluded_by_level.length,
       excluded_by_level_requirements: selection.excluded_by_level.reduce((n, g) => n + g.count, 0),
-      basis_summary: selection.basis_summary,
-      ...(selection.lexical_dominance_warning ? { lexical_dominance_warning: selection.lexical_dominance_warning } : {}),
+      lexical_share: selection.basis_summary.lexical_share,
       narrowed_out_ref: {
         tool: "select_sbd_toe_requirements",
         note:
