@@ -425,11 +425,19 @@ export function runSelectionWithActivation(
   // 0.19.1 (V2): 0 selected com narrowed/excluídos ≠ 0 — o share=0 escondia o pior caso.
   const narrowedTotalCount = [...narrowedByCategory.values()].reduce((n, l) => n + l.length, 0);
   const narrowedCats = [...narrowedByCategory.keys()].sort();
+  // 0.19.2: candidatos ORDENADOS POR PESO (nº de requisitos arrumados nas categorias
+  // que o concern cobre) — o next mostra top-3 (limite do destino: prepare rejeita
+  // >3 famílias) e o resto fica informativo; o aviso mantém a lista completa.
   const emptyCandidates = selected.length === 0 && narrowedCats.length > 0
-    ? VALID_CONCERNS.filter((c) => {
+    ? VALID_CONCERNS.map((c) => {
         const cats = categoriesForConcerns([c as Concern]);
-        return narrowedCats.some((cat) => cats.has(cat));
+        let w = 0;
+        for (const [cat, list] of narrowedByCategory) if (cats.has(cat)) w += list.length;
+        return [c, w] as const;
       })
+        .filter(([, w]) => w > 0)
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+        .map(([c]) => c)
     : [];
   const empty_selection_warning =
     selected.length === 0 && narrowedTotalCount > 0
