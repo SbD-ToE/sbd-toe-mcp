@@ -584,6 +584,31 @@ export const scenarios = [
       const slot = JSON.parse(ok0.data.content);
       if (!slot.when || !slot.text) return fail("slot 0 não devolvido");
       return ok(`slot inválido → catálogo real por índice+when; slot '0' (when=${slot.when}) devolvido`); } },
+  { id: "TC-F-31", axis: "F", title: "0.19.1 (ronda 4): V2 vazio=ALARME; V4 declarado vence lexical; replay-SES continua morto", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      // V2 (equivalente construído — wording original não registado; declarado): 0 selected → alarme
+      const v2 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Cumprir as políticas internas de segurança da informação no módulo de clientes" }); if (!v2.ok) return fail(v2.error);
+      if (v2.data.selection.selected.length !== 0) return fail("fixture V2 deixou de dar 0 (re-baseline)");
+      const ew = v2.data.empty_selection_warning;
+      if (!ew || !ew.candidate_concerns?.length) return fail("selecção vazia SEM alarme/candidatos (ponto cego vivo)");
+      if (v2.data.lexical_dominance_warning) return fail("share-warning a disparar sobre vazio (devia ceder ao alarme)");
+      if ((v2.data.next ?? []).some((n) => n.tool === "get_sbd_toe_verification_matrix")) return fail("next manda lista VAZIA à matrix");
+      if (!/concerns/i.test(v2.data.next?.[0]?.intent ?? "")) return fail("next[0] não é estabilizar com concerns");
+      // V4: auth DECLARADO → SES fica; sem contradição activated∧narrowed
+      const v4 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Alterar o email da conta do utilizador", concerns: ["auth"] }); if (!v4.ok) return fail(v4.error);
+      const sesSel = v4.data.selection.selected.filter((x) => x.category === "SES").length;
+      if (sesSel === 0) return fail("V4: SES revogado apesar de auth DECLARADO");
+      if (v4.data.selection.narrowed_out.some((g) => g.category === "SES")) return fail("V4: contradição — SES em selected E narrowed");
+      // replay-guard: base lexical → R2 continua a matar o SES espúrio
+      const rp = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", task: "Expor API pública de consulta com chaves de cliente e rate limiting", exposure: "public" }); if (!rp.ok) return fail(rp.error);
+      const rpNar = rp.data.selection.narrowed_out.find((g) => g.category === "SES");
+      if (!rpNar || rp.data.selection.selected.some((x) => x.category === "SES")) return fail("replay-SES REVIVEU (guarda falhou)");
+      // V1/V3: divergência lexical conhecida-E-avisada (2 redacções, counts≠, ambas com aviso)
+      const v1 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Endpoint de upload com sessão de utilizador e token de acesso" });
+      const v3 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Receber ficheiros dos utilizadores autenticados" });
+      if (v1.data.selection.selected.length === v3.data.selection.selected.length) return fail("V1/V3 fixture morta");
+      if (!v1.data.lexical_dominance_warning || !v3.data.lexical_dominance_warning) return fail("divergência lexical sem aviso em ambas");
+      return ok(`V2: alarme c/ ${ew.candidate_concerns.length} candidatos, sem matrix no next; V4: SES ×${sesSel} preservado sem contradição; replay-SES morto (×${rpNar.count} narrowed); V1/V3 ${v1.data.selection.selected.length}≠${v3.data.selection.selected.length} ambas avisadas`); } },
 
   // ───────────────────────── Axis H — selection vs golden oracle (measurement, NOT gate) ─────────────────────────
   // Oracle: golden-selection-cases.md v1 (programme lead's, read-only). One scenario per
