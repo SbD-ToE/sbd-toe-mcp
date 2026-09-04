@@ -79,7 +79,7 @@ Prerelease tags issued on `0.20-beta` (annotated; immutable like every pushed ta
 | v0.20.0-beta.5 | 62a1eda (`62a1eda3982147e44369c8a9271ca3697af2680f`; annotated tag object `5165a04a`) | 2026-08-31 | formal KG `v1.7.0` (`29156b86…`, contract v1.14, ontology v2.2, Manual v1.7.1) — same pin and content as stable v0.10.4 | `beta` (superseded) |
 | v0.20.0-beta.6 | 322c38f (`322c38f4dc440aad40bf110b8e20d3d40f623318`; annotated tag object `71098136`) | 2026-08-31 | formal KG `v1.7.0` + MP1 selection operation (= stable 0.11.0 → `102b8166`) | `beta` (superseded) |
 | v0.20.0-beta.7 | 4256ee0 (`4256ee0f09386a45e69012ec565375965f49b0de`; annotated tag object `6e75ef23`) | 2026-08-31 | formal KG `v1.9.0` (`11153c85…`, contract v1.15, 273/29 FIL/PRI — zero-delta over the verified v1.8.0 dev-build) | `beta` (formal batch, «3 sims») |
-| v0.20.0-beta.20 | *(annotated tag on the commit that introduces this row; recorded in the close commit)* | 2026-09-04 | COMBINED: absorbs stable 0.19.3 + 0.19.4 (next-verbatim invariant extended to beta refs — 2 legend URIs fixed; per-detail requirement ceilings); bundle pin unchanged (KG `v1.11.0`) | `beta` (pending) |
+| v0.20.0-beta.20 | bc10179 (`bc101795a0959dcece37e4d277c2e061a4a77b22`; annotated tag object `31d41684`) | 2026-09-04 | COMBINED: absorbs stable 0.19.3 + 0.19.4 (next-verbatim invariant extended to beta refs — 2 legend URIs fixed; per-detail requirement ceilings); bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.4 untouched) |
 | v0.20.0-beta.19 | 084cb3f (`084cb3f801484550926b8565c53156124d277e0b`; annotated tag object `5c510d30`) | 2026-09-04 | absorbs stable 0.19.2 — next calibrated with destination limits + START HERE in descriptions; bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.2 untouched) |
 | v0.20.0-beta.18 | 6289bb8 (`6289bb8b11478656438bfd612d59bff9f26d0f34`; annotated tag object `8fdb4b7a`) | 2026-09-04 | absorbs stable 0.19.1 — empty-selection alarm + declared-beats-lexical precedence; bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.1 untouched) |
 | v0.20.0-beta.17 | 18cc23f (`18cc23fd7c872b5b1074f7ff303eb66cda67560c`; annotated tag object `440f602c`) | 2026-09-04 | absorbs stable 0.19.0 — selection stability to wording (basis declared/lexical, dominance warning, slots by index); bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.0 untouched) |
@@ -97,8 +97,9 @@ Prerelease tags issued on `0.20-beta` (annotated; immutable like every pushed ta
 
 **Current branch:** `0.20-beta` — this copy of the registry lives on the beta branch; the
 stable-line rows mirror master (`102b816`, 0.11.0 prepared) and are maintained there.
-**Beta line:** v0.20.0-beta.20 (2026-09-04; tag on the commit introducing this row, recorded in the
-close commit) is a COMBINED wave absorbing stable 0.19.3 + 0.19.4: the next-verbatim invariant was
+**Beta line:** v0.20.0-beta.20 → `bc101795a0959dcece37e4d277c2e061a4a77b22` (2026-09-04;
+`release.yml` run 33907019917 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.20` = `beta`,
+gitHead same commit; GitHub pre-release; `latest` = 0.19.4) is a COMBINED wave absorbing stable 0.19.3 + 0.19.4: the next-verbatim invariant was
 extended to this line's executable references (2 beta-only legend URIs fixed) and the per-detail
 requirement ceilings landed (88-req case + taught-batch round-trip verified). Prior: v0.20.0-beta.19 → `084cb3f801484550926b8565c53156124d277e0b` (2026-09-04;
 `release.yml` run 33896956237 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.19` = `beta`,
@@ -256,3 +257,4 @@ prohibits tag deletion without explicit authorisation):
 | 2026-09-04 | v0.20.0-beta.19 registered (absorbs stable 0.19.2; beta-only next sweep declared clean; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-04 | v0.20.0-beta.19 tag commit recorded (`084cb3f8`); npm `beta` publish + GitHub pre-release confirmed (run 33896956237). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-04 | v0.20.0-beta.20 registered (COMBINED absorption of stable 0.19.3 + 0.19.4; beta invariant extension caught and fixed 2 legend URIs served without naming read_sbd_toe_resource; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-04 | v0.20.0-beta.20 tag commit recorded (`bc101795`); npm `beta` publish + GitHub pre-release confirmed (run 33907019917). | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
