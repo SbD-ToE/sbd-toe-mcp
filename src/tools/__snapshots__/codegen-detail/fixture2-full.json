@@ -4051,6 +4051,27 @@
       "narrowed_out_requirements": 56,
       "excluded_by_level_categories": 6,
       "excluded_by_level_requirements": 11,
+      "basis_summary": {
+        "declared": 11,
+        "lexical_only": 58,
+        "lexical_share": 0.84
+      },
+      "lexical_dominance_warning": {
+        "lexical_share": 0.84,
+        "threshold": 0.5,
+        "note": "A REDACÇÃO da tarefa decide a maior parte desta selecção (casamento lexical de termos) — reformular a frase pode mudar o conjunto. Para estabilidade, declara concerns explícitos.",
+        "candidate_concerns": [
+          "api",
+          "auth",
+          "validation",
+          "logging",
+          "monitoring",
+          "files",
+          "ACO-IVF",
+          "ACO-IAT",
+          "ACO-SLG"
+        ]
+      },
       "narrowed_out_ref": {
         "tool": "select_sbd_toe_requirements",
         "note": "Categorias elegíveis sem sinal na tarefa foram excluídas pelo narrowing MP1 — a lista completa (por categoria, com razão) vem de select_sbd_toe_requirements com o mesmo contexto."

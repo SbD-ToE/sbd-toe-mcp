@@ -34,9 +34,14 @@ export function mapApplicabilityAffordances(riskLevel: string | undefined): Affo
   ]);
 }
 
-export function selectRequirementsAffordances(riskLevel: string, selectedIds: readonly string[] = []): Affordance[] {
+export function selectRequirementsAffordances(riskLevel: string, selectedIds: readonly string[] = [], lexicalConcerns?: readonly string[]): Affordance[] {
+  // 0.19.0: dominância lexical ⇒ a 1ª sugestão é ESTABILIZAR a selecção.
+  const stability: Affordance[] = lexicalConcerns && lexicalConcerns.length > 0
+    ? [{ intent: "a redacção decide parte desta selecção — re-corre com concerns EXPLÍCITOS para estabilidade", tool: "select_sbd_toe_requirements", with: `risk_level="${riskLevel}", concerns=[${lexicalConcerns.slice(0, 5).join(", ")}]`, kind: "structural" }]
+    : [];
   const idsHint = selectedIds.length > 0 ? `requirement_ids=[${selectedIds.slice(0, 3).join(", ")}${selectedIds.length > 3 ? ", …" : ""}]` : "requirement_ids=[…os selected…]";
   return boundAffordances([
+    ...stability,
     // 0.17.0 (achado 3): o fecho requisito → PROVA deixa de depender de inferência.
     { intent: "provar os requisitos seleccionados (requisito → prova)", tool: "get_sbd_toe_verification_matrix", with: `risk_level="${riskLevel}", ${idsHint}`, kind: "structural" },
     { intent: "get the controls/artifacts behind the selected requirements", tool: "consult_security_requirements", with: `risk_level="${riskLevel}", <=5 concerns (recomendado <=3)`, kind: "structural" },
