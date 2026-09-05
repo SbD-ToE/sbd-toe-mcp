@@ -100,7 +100,7 @@ Prerelease tags issued on `0.20-beta` (annotated; immutable like every pushed ta
 
 **Current branch:** `0.20-beta` — this copy of the registry lives on the beta branch; the
 stable-line rows mirror master (`102b816`, 0.11.0 prepared) and are maintained there.
-**Beta line:** v0.20.0-beta.23 → `e99a2cb2e09e33b25c8d3a42e959b3513f5f08f8` (2026-09-05; tag anotada nesta commit; npm registado ao fechar;
+**Beta line:** v0.20.0-beta.23 → `e99a2cb2e09e33b25c8d3a42e959b3513f5f08f8` (2026-09-05; `release.yml` run 33990234962 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.23` = `beta`, gitHead igual; GitHub pre-release;
 `latest` = 0.19.4 intocado) fecha a classe CONSERVAÇÃO: a invariante nova varre o vocabulário
 todo (24 concerns × 3 níveis + exposure + data_sensitivity + technologies + paths) e exige que
 tudo o que é PROMETIDO apareça nalguma banda — apanhou 12 violações em 4 famílias (`build`,
@@ -284,6 +284,7 @@ prohibits tag deletion without explicit authorisation):
 | 2026-09-04 | v0.20.0-beta.20 tag commit recorded (`bc101795`); npm `beta` publish + GitHub pre-release confirmed (run 33907019917). | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-05 | v0.20.0-beta.21 registered (experiência «declarativo primeiro»: contrato de serviço v1.18-beta, vocabulário de activação publicado, needs_input, modos baseline/discover; oráculo histórico 10/10 em discover + conjunto declarativo novo 6/4/0; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-05 | v0.20.0-beta.21 tag commit recorded (`41553419`); npm `beta` publish + GitHub pre-release confirmed (run 33963546721). | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-05 | v0.20.0-beta.23 tag commit recorded (`e99a2cb2`); npm `beta` publish + GitHub pre-release confirmed (run 33990234962); gitHead = tag commit. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-05 | v0.20.0-beta.23 registered (CONSERVAÇÃO: invariante de conservação sobre o vocabulário completo — 12 violações apanhadas em 4 famílias; motor cede à promessa por categoria com traço `declared_category`; `unsupported_concerns` no threat landscape + agent-guide corrigido; guarda anti-zero cobre `technologies`; `provenance.server` em 20 sítios; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-05 | v0.20.0-beta.22 registered («caminho para 9»: P1-A..E + P2-A; invariante anti-zero com 192 combinações; enum gerado do vocabulário nas 3 tools; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-05 | v0.20.0-beta.22 tag commit recorded (`6a695af9`); npm `beta` publish + GitHub pre-release confirmed (run 33980538378). | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |

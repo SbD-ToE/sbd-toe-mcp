@@ -52,3 +52,10 @@ Verificado contra o build de `6a695af`: não é regressão desta vaga. Corrigido
 
 - `docs/acceptance-runs/2026-09-05-conservacao-v0.20.0-beta.23-acceptance.{md,json}`
 - `docs/acceptance-runs/2026-09-05-conservacao-axis-h-selection-v0.20.0-beta.23.{md,json}`
+
+## Fecho
+
+- Commit da vaga: `e99a2cb2e09e33b25c8d3a42e959b3513f5f08f8` · tag anotada `v0.20.0-beta.23`
+- Registo em FREEZE-REGISTRY: `dc3c14d`
+- `release.yml` run **33990234962** (success) → npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.23` = dist-tag `beta`
+- `gitHead` publicado = commit da tag ✓ · `latest` = 0.19.4 **intocado**
