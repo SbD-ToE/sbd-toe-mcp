@@ -1,4 +1,11 @@
 /**
+ * 0.20.0-beta.21 («declarativo primeiro»): ESTE ficheiro mede CODIFICAÇÃO (dieta v2),
+ * não selecção. Para a série de medições continuar comparável byte a byte, as fixtures
+ * correm no caminho inferencial histórico — `selection_mode: "discover"` — injectado
+ * em `handlePrepareCodegenContext` pelo wrapper abaixo. A selecção declarativa tem os
+ * seus próprios testes (selection.declarative.test.ts + next-invariant.beta).
+ */
+/**
  * s2 — Relations on-demand (epic v2-token-diet): `relations_ref` no lugar do
  * array inline `g2_context.relations` em `detail: "standard" | "minimal"`.
  *
@@ -35,6 +42,12 @@ import { handleTraceGraph, type GraphLens } from "./trace-graph.js";
 import { BASE, REL } from "../serving/rdf/projection.js";
 import { clearG2RuntimeCacheForTests } from "./g2-runtime-loader.js";
 import { clearRegulatoryOverlayCacheForTests } from "./regulatory-overlay-loader.js";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const __prepareRaw = handlePrepareCodegenContext;
+const handlePrepareCodegenContextDiscover = (input: Parameters<typeof __prepareRaw>[0]) =>
+  __prepareRaw({ selection_mode: "discover", ...input });
+
 
 // ---------------------------------------------------------------------------
 // Fixtures — byte-identical to EPIC.md §Fixtures baseline (como budget/detail).
@@ -224,7 +237,7 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
     for (const bad of ["yes", 1, 0, null, {}, []] as const) {
       let thrown: unknown;
       try {
-        handlePrepareCodegenContext({
+        handlePrepareCodegenContextDiscover({
           ...FIXTURES[0]!.input,
           include_relations: bad
         } as unknown as PrepareCodegenContextInput);
@@ -244,9 +257,9 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
     it.each([...DIET_LEVELS])(
       "%s: relations_ref substitui o array inline, com formato executável e auditoria exata",
       (detail) => {
-        const full = handlePrepareCodegenContext(fixture.input);
+        const full = handlePrepareCodegenContextDiscover(fixture.input);
         expectReadyFull(full);
-        const dieted = handlePrepareCodegenContext({ ...fixture.input, detail });
+        const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail });
         expectReadyDieted(dieted);
 
         // O array inline saiu…
@@ -307,7 +320,7 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
     );
 
     it("anchors do relations_ref são ids ATIVADOS neste payload (executáveis)", () => {
-      const dieted = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
+      const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
       expectReadyDieted(dieted);
       const ref = relationsRefOf(dieted);
       const activatedSliceIds = new Set(
@@ -330,9 +343,9 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
     });
 
     it("SUPERSET por execução real: união das lenses ∪ slice_id das entidades ⊇ relations inline de full", () => {
-      const full = handlePrepareCodegenContext(fixture.input);
+      const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
-      const dieted = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
+      const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
       expectReadyDieted(dieted);
       const ref = relationsRefOf(dieted);
       const { typeById, sliceById } = entityIndex(dieted.g2_context);
@@ -407,7 +420,7 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
     });
 
     it("NO-LEAK: nenhum valor em relations_ref contém IRIs internos (esquema real do grafo)", () => {
-      const dieted = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
+      const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
       expectReadyDieted(dieted);
       const ref = relationsRefOf(dieted);
       const serialized = JSON.stringify(ref);
@@ -424,10 +437,10 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
     });
 
     it("`include_relations: true` devolve as relations inline dieted (sem `source`), sem relations_ref", () => {
-      const full = handlePrepareCodegenContext(fixture.input);
+      const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
       for (const detail of DIET_LEVELS) {
-        const dieted = handlePrepareCodegenContext({
+        const dieted = handlePrepareCodegenContextDiscover({
           ...fixture.input,
           detail,
           include_relations: true
@@ -447,8 +460,8 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
     });
 
     it("`include_relations` omisso/false não altera nada além do echo", () => {
-      const byDefault = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
-      const explicitFalse = handlePrepareCodegenContext({
+      const byDefault = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
+      const explicitFalse = handlePrepareCodegenContextDiscover({
         ...fixture.input,
         detail: "standard",
         include_relations: false
@@ -457,13 +470,13 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
     });
 
     it("`full` continua byte-idêntico, com ou sem include_relations (nada muda em full)", () => {
-      const byDefault = handlePrepareCodegenContext(fixture.input);
+      const byDefault = handlePrepareCodegenContextDiscover(fixture.input);
       for (const extra of [
         { detail: "full" as const, include_relations: true },
         { include_relations: true },
         { include_relations: false }
       ]) {
-        const result = handlePrepareCodegenContext({ ...fixture.input, ...extra });
+        const result = handlePrepareCodegenContextDiscover({ ...fixture.input, ...extra });
         expect(JSON.stringify(result)).toBe(JSON.stringify(byDefault));
       }
     });
@@ -471,8 +484,8 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
     it("determinismo: relations_ref byte-igual em 2 chamadas idênticas", () => {
       clearG2RuntimeCacheForTests();
       clearRegulatoryOverlayCacheForTests();
-      const first = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
-      const second = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
+      const first = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
+      const second = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
       expect(JSON.stringify(second)).toBe(JSON.stringify(first));
     });
   });
@@ -482,8 +495,8 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
       task: "make the whole application secure please",
       risk_level: "L2"
     };
-    const byDefault = handlePrepareCodegenContext(input);
-    const withFlag = handlePrepareCodegenContext({
+    const byDefault = handlePrepareCodegenContextDiscover(input);
+    const withFlag = handlePrepareCodegenContextDiscover({
       ...input,
       detail: "standard",
       include_relations: true

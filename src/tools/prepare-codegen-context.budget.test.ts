@@ -1,4 +1,11 @@
 /**
+ * 0.20.0-beta.21 («declarativo primeiro»): ESTE ficheiro mede CODIFICAÇÃO (dieta v2),
+ * não selecção. Para a série de medições continuar comparável byte a byte, as fixtures
+ * correm no caminho inferencial histórico — `selection_mode: "discover"` — injectado
+ * em `handlePrepareCodegenContext` pelo wrapper abaixo. A selecção declarativa tem os
+ * seus próprios testes (selection.declarative.test.ts + next-invariant.beta).
+ */
+/**
  * s0 — Gates de medição (epic v2-token-diet).
  *
  * Orçamento de payload POR SECÇÃO para `prepare_sbd_toe_codegen_context`,
@@ -48,6 +55,12 @@ import {
 import { estimateSize } from "../serving/response-shaping.js";
 import { clearG2RuntimeCacheForTests } from "./g2-runtime-loader.js";
 import { clearRegulatoryOverlayCacheForTests } from "./regulatory-overlay-loader.js";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const __prepareRaw = handlePrepareCodegenContext;
+const handlePrepareCodegenContextDiscover = (input: Parameters<typeof __prepareRaw>[0]) =>
+  __prepareRaw({ selection_mode: "discover", ...input });
+
 
 // ---------------------------------------------------------------------------
 // Fixtures — byte-identical to EPIC.md §Fixtures baseline. NÃO alterar sem
@@ -339,7 +352,7 @@ function expectReady(
 }
 
 function runFixture(fixture: BaselineFixture): PrepareCodegenContextResultReady {
-  const result = handlePrepareCodegenContext(fixture.input);
+  const result = handlePrepareCodegenContextDiscover(fixture.input);
   expectReady(result);
   return result;
 }
@@ -358,8 +371,8 @@ function withDetail(
 }
 
 function detailParamSupported(fixture: BaselineFixture): boolean {
-  const withoutDetail = handlePrepareCodegenContext(fixture.input);
-  const probe = handlePrepareCodegenContext(withDetail(fixture.input, "minimal"));
+  const withoutDetail = handlePrepareCodegenContextDiscover(fixture.input);
+  const probe = handlePrepareCodegenContextDiscover(withDetail(fixture.input, "minimal"));
   return JSON.stringify(probe) !== JSON.stringify(withoutDetail);
 }
 
@@ -426,7 +439,7 @@ function s3cUltrathinLanded(result: PrepareCodegenContextResultReady): boolean {
 function ultrathinParamSupported(fixture: BaselineFixture): boolean {
   try {
     return (
-      handlePrepareCodegenContext(withDetail(fixture.input, "ultrathin")).status ===
+      handlePrepareCodegenContextDiscover(withDetail(fixture.input, "ultrathin")).status ===
       "ready_for_codegen"
     );
   } catch {
@@ -528,8 +541,8 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
     it("é determinístico: 2 chamadas idênticas ⇒ payload byte-igual", () => {
       clearG2RuntimeCacheForTests();
       clearRegulatoryOverlayCacheForTests();
-      const first = handlePrepareCodegenContext(fixture.input);
-      const second = handlePrepareCodegenContext(fixture.input);
+      const first = handlePrepareCodegenContextDiscover(fixture.input);
+      const second = handlePrepareCodegenContextDiscover(fixture.input);
       expect(JSON.stringify(second)).toBe(JSON.stringify(first));
       // E byte-igual à execução do beforeAll (independente do estado de cache).
       expect(JSON.stringify(first)).toBe(JSON.stringify(results.get(fixture.name)!));
@@ -545,7 +558,7 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
         ctx.skip(); // parâmetro `detail` ainda não existe (pré-s1)
         return;
       }
-      const result = handlePrepareCodegenContext(withDetail(fixture.input, "standard"));
+      const result = handlePrepareCodegenContextDiscover(withDetail(fixture.input, "standard"));
       expectReady(result);
       if (!s2RelationsRefLanded(result) || !s3CapsLanded(result)) {
         // s1 (dedup estrutural) aterrou, mas o total ≤6.5K/8.5K só é
@@ -565,7 +578,7 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
         ctx.skip(); // parâmetro `detail` ainda não existe (pré-s1)
         return;
       }
-      const result = handlePrepareCodegenContext(withDetail(fixture.input, "minimal"));
+      const result = handlePrepareCodegenContextDiscover(withDetail(fixture.input, "minimal"));
       expectReady(result);
       if (!s3bMinimalLanded(result)) {
         // Pré-s3b `minimal` partilhava a codificação de `standard`; os budgets
@@ -585,7 +598,7 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
         ctx.skip(); // parâmetro `detail`/nível `ultrathin` ainda não existe (pré-s1/pré-s3c)
         return;
       }
-      const result = handlePrepareCodegenContext(withDetail(fixture.input, "ultrathin"));
+      const result = handlePrepareCodegenContextDiscover(withDetail(fixture.input, "ultrathin"));
       expectReady(result);
       if (!s3cUltrathinLanded(result)) {
         // Sentinela s3c (requirements sem `description` + evidence 0 inline);
@@ -614,7 +627,7 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
           ? ["standard", "minimal", "ultrathin"]
           : ["standard", "minimal"];
       for (const detail of levels) {
-        const result = handlePrepareCodegenContext(withDetail(fixture.input, detail));
+        const result = handlePrepareCodegenContextDiscover(withDetail(fixture.input, detail));
         expectReady(result);
         const shaped = result as unknown as {
           citation_map?: Record<string, unknown>;

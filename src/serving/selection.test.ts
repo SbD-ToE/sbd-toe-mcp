@@ -1,9 +1,18 @@
+/**
+ * 0.20.0-beta.21 («declarativo primeiro»): estes casos medem o MOTOR INFERENCIAL
+ * (termos da tarefa, aliases, R2, avisos de dominância/vazio). Esse motor deixou de
+ * ser o default e passou a ter nome — `mode: "discover"` —, mantido nesta linha como
+ * instrumento de investigação (oráculo histórico + estudo de paráfrase). Os testes
+ * declaram-no explicitamente: continuam a guardar o instrumento, já não fixam a
+ * semântica por omissão. O contrato declarativo tem a sua própria suite
+ * (selection.declarative.test.ts).
+ */
 import { describe, it, expect } from "vitest";
 import { runSelection } from "./selection.js";
 
 describe("MP1 selection engine (runSelection) — reference semantics over the pinned bundle", () => {
   it("composes baseline ∪ context chapters and narrows by task signals — GC-03 shape (docker/k8s)", () => {
-    const r = runSelection({
+    const r = runSelection({ mode: "discover",
       risk_level: "L2",
       task: "Empacotar o serviço em Docker e preparar deploy em K8s com admission control",
       changed_files: ["Dockerfile", "deploy/k8s/service.yaml"]
@@ -25,7 +34,7 @@ describe("MP1 selection engine (runSelection) — reference semantics over the p
   });
 
   it("D3: data_sensitivity personal activates encryption/validation/logging by declared rule", () => {
-    const r = runSelection({ risk_level: "L3", task: "Formulário de registo com dados pessoais", data_sensitivity: "personal" });
+    const r = runSelection({ mode: "discover", risk_level: "L3", task: "Formulário de registo com dados pessoais", data_sensitivity: "personal" });
     const ids = r.selected.map((s) => s.requirement_id);
     expect(ids).toContain("ENC-001");
     expect(ids).toContain("VAL-001");
@@ -34,7 +43,7 @@ describe("MP1 selection engine (runSelection) — reference semantics over the p
   });
 
   it("D3: exposure public activates auth/logging/api/validation/architecture (ARC via its domain chapter)", () => {
-    const r = runSelection({ risk_level: "L3", task: "Expor API pública de consulta com chaves de cliente e rate limiting", exposure: "public" });
+    const r = runSelection({ mode: "discover", risk_level: "L3", task: "Expor API pública de consulta com chaves de cliente e rate limiting", exposure: "public" });
     const ids = r.selected.map((s) => s.requirement_id);
     expect(ids).toContain("ARC-002");
     expect(ids).toContain("LOG-001");
@@ -43,7 +52,7 @@ describe("MP1 selection engine (runSelection) — reference semantics over the p
   });
 
   it("agents: the agentic wave is selected by the published vocabulary (REQ-AGN ×4 + wave items), declared", () => {
-    const r = runSelection({ risk_level: "L3", task: "Worker agêntico com mandate, kill-switch e audit por tool-call" });
+    const r = runSelection({ mode: "discover", risk_level: "L3", task: "Worker agêntico com mandate, kill-switch e audit por tool-call" });
     const ids = r.selected.map((s) => s.requirement_id);
     for (const id of ["REQ-AGN-001", "REQ-AGN-002", "REQ-AGN-003", "REQ-AGN-004"]) expect(ids).toContain(id);
     const wave = r.selected.filter((s) => s.selection_trace.some((t) => t.layer === "agents_wave"));
@@ -56,7 +65,7 @@ describe("MP1 selection engine (runSelection) — reference semantics over the p
   });
 
   it("never-silent: selected + narrowed_out cover the eligible baseline exactly", () => {
-    const r = runSelection({ risk_level: "L2", task: "Adicionar validação de payload ao endpoint PATCH" });
+    const r = runSelection({ mode: "discover", risk_level: "L2", task: "Adicionar validação de payload ao endpoint PATCH" });
     const baselineSelected = r.selected.filter((s) => s.type === "base").length;
     const narrowed = r.narrowed_out.reduce((n, g) => n + g.count, 0);
     // eligible = baseline (no context chapters in this task) — the two bands partition it.
@@ -67,7 +76,7 @@ describe("MP1 selection engine (runSelection) — reference semantics over the p
 
 describe("P3 rules (decisões pós-P2, 2026-08-31)", () => {
   it("R1: agents activa o conjunto principal não-humano como regra nomeada no trace", () => {
-    const r = runSelection({
+    const r = runSelection({ mode: "discover",
       risk_level: "L3",
       task: "Worker agêntico que abre PRs e faz deploys, com mandate, kill-switch e audit por tool-call",
     });
@@ -81,7 +90,7 @@ describe("P3 rules (decisões pós-P2, 2026-08-31)", () => {
   });
 
   it("R2: sem sinais de sessão na tarefa, SES sai para narrowed_out com razão declarada", () => {
-    const r = runSelection({
+    const r = runSelection({ mode: "discover",
       risk_level: "L3",
       task: "Expor API pública de consulta com chaves de cliente e rate limiting",
       exposure: "public",
@@ -93,13 +102,13 @@ describe("P3 rules (decisões pós-P2, 2026-08-31)", () => {
   });
 
   it("R2: com sinais de sessão (login/JWT), SES fica seleccionado", () => {
-    const r = runSelection({ risk_level: "L1", task: "SPA com login e sessão JWT; app interna de baixo risco", exposure: "internal" });
+    const r = runSelection({ mode: "discover", risk_level: "L1", task: "SPA com login e sessão JWT; app interna de baixo risco", exposure: "internal" });
     expect(r.selected.some((s) => s.requirement_id === "SES-001")).toBe(true);
     expect(r.narrowed_out.some((g) => g.category === "SES")).toBe(false);
   });
 
   it("sinal em falta GC-03: deploy containerizado activa a categoria DST (DST-006)", () => {
-    const r = runSelection({
+    const r = runSelection({ mode: "discover",
       risk_level: "L2",
       task: "Empacotar o serviço em Docker e preparar deploy em K8s com admission control",
       changed_files: ["Dockerfile", "deploy/k8s/service.yaml"],
@@ -108,7 +117,7 @@ describe("P3 rules (decisões pós-P2, 2026-08-31)", () => {
   });
 
   it("sinais em falta GC-10: mTLS → secrets (CFG-006) e mensageria → logging (LOG-001)", () => {
-    const r = runSelection({
+    const r = runSelection({ mode: "discover",
       risk_level: "L2",
       task: "Ligar o serviço A ao B por fila de mensagens com mTLS e assinatura de mensagens",
     });
@@ -121,18 +130,18 @@ describe("P3 rules (decisões pós-P2, 2026-08-31)", () => {
 
 describe("0.19.1 — precedência e invariantes (ronda 4)", () => {
   it("V4: auth DECLARADO preserva SES; nunca activated∧narrowed na mesma resposta", () => {
-    const r = runSelection({ risk_level: "L2", task: "Alterar o email da conta do utilizador", concerns: ["auth"] });
+    const r = runSelection({ mode: "discover", risk_level: "L2", task: "Alterar o email da conta do utilizador", concerns: ["auth"] });
     expect(r.selected.some((s) => s.category === "SES")).toBe(true);
     const selCats = new Set(r.selected.map((s) => s.category));
     for (const g of r.narrowed_out) expect(selCats.has(g.category), g.category).toBe(false);
   });
   it("replay-guard: auth LEXICAL continua a arrumar SES (R2 vivo)", () => {
-    const r = runSelection({ risk_level: "L3", task: "Expor API pública de consulta com chaves de cliente e rate limiting", exposure: "public" });
+    const r = runSelection({ mode: "discover", risk_level: "L3", task: "Expor API pública de consulta com chaves de cliente e rate limiting", exposure: "public" });
     expect(r.selected.some((s) => s.category === "SES")).toBe(false);
     expect(r.narrowed_out.some((g) => g.category === "SES")).toBe(true);
   });
   it("V2: selecção vazia dispara empty_selection_warning com candidatos; share-warning cede", () => {
-    const r = runSelection({ risk_level: "L2", task: "Cumprir as políticas internas de segurança da informação no módulo de clientes" });
+    const r = runSelection({ mode: "discover", risk_level: "L2", task: "Cumprir as políticas internas de segurança da informação no módulo de clientes" });
     expect(r.selected.length).toBe(0);
     expect(r.empty_selection_warning?.candidate_concerns.length).toBeGreaterThan(0);
     expect(r.lexical_dominance_warning).toBeNull();

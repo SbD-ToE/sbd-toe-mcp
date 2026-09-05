@@ -156,7 +156,7 @@ export function bundlesForChangedFiles(files: readonly string[]): Map<string, st
   return out;
 }
 
-const PATTERN_RULES: PatternRule[] = [
+export const PATTERN_RULES: PatternRule[] = [
   {
     pattern: "src/config.ts",
     bundles: ["02-requisitos-seguranca", "06-desenvolvimento-seguro", "08-iac-infraestrutura", "10-testes-seguranca"],

@@ -8,6 +8,38 @@ You are an engineering agent operating in a repository governed by the
 
 ---
 
+## ⛳ START HERE — declarative first (linha 0.20-beta, contrato v1.18-beta)
+
+**Tu tens o contexto. Eu tenho o conhecimento. A fronteira é essa.**
+
+Lê o pedido, o código e a conversa — e **DECLARA** o que interpretaste:
+`risk_level`, `concerns`, `exposure`, `data_sensitivity`, `technologies`, `changed_files`.
+**Eu não interpreto prosa**: respondo com o que o KG sabe sobre o que declaraste, mais as
+adjacências do grafo, de forma reproduzível e auditável.
+
+1. **Lê o vocabulário** — `read_sbd_toe_resource(uri="sbd://toe/activation-vocabulary")`.
+   É a lista **fechada** de valores que aceito e, para cada valor, **o que ele activa**
+   (categorias, capítulos, contagens por nível). É ele que substitui a adivinhação de palavras.
+2. **Mapeia e declara** — `select_sbd_toe_requirements(risk_level, concerns=[…], …)`.
+   O `task` podes enviá-lo à mesma: fica **registado para auditoria** (`role:
+   "recorded_context"`, `affects_selection: false`) e **não influencia o resultado**.
+3. **Sem declarações** recebes `needs_input`: o vocabulário aplicável, **candidatos A
+   CONFIRMAR** derivados do texto (sugestão, nunca selecção) e um exemplo copiável.
+   Nunca devolvo zero em silêncio e nunca invento o teu âmbito.
+4. **Baseline do nível?** Pede-a explicitamente: `mode="baseline"` (nunca aparece como fallback).
+5. **Investigação/paráfrase?** `mode="discover"` corre o motor inferencial antigo, marcado
+   exploratório na resposta — é instrumento de estudo, não o contrato.
+
+**Porquê:** a mesma feature escrita de cinco maneiras dava cinco conjuntos diferentes
+(0 a 58 requisitos) quando a prosa decidia; com a declaração, dá **um conjunto, sempre o
+mesmo**. Auditabilidade real: «porque foi o ENC seleccionado?» → «porque declaraste
+`data_sensitivity=personal`», não «porque a palavra *email* apareceu».
+
+*(Experiência da linha beta autorizada pelo programme lead em 2026-09-05; a linha estável
+mantém a semântica anterior.)*
+
+---
+
 ## Scope — what SbD-ToE is and is not
 
 SbD-ToE is a **security guidance framework only**. It guides *what security practices should
@@ -286,7 +318,7 @@ Always distinguish between:
 | "List all chapters" | `list_sbd_toe_chapters` |
 | "Find control / artefact / practice" | `query_sbd_toe_entities` |
 | "What requirements apply at L1/L2/L3?" | `consult_security_requirements(risk_level)` |
-| "Which requirements apply to THIS task / this change?" | `select_sbd_toe_requirements(risk_level, task, changed_files?)` — `selected[]` is the recommendation; `narrowed_out[]` explains what left and why (re-call with the missing signal to recover it) |
+| "Which requirements apply to THIS task / this change?" | `select_sbd_toe_requirements(risk_level, concerns=[…], exposure?, data_sensitivity?, technologies?, changed_files?)` — **declara** o que a tua leitura justifica (vocabulário: `sbd://toe/activation-vocabulary`); `selected[]` é a resposta ao declarado, `narrowed_out[]` diz o que ficou de fora e porquê. Sem declarações → `needs_input` (com candidatos a confirmar). O `task` é contexto registado, não motor. |
 | "How do I PROVE these requirements?" | `get_sbd_toe_verification_matrix(risk_level, requirement_ids=[…os selected…])` — o fecho requisito → prova; ids sem EvidencePattern vêm declarados |
 | "Where is the SOURCE of this requirement?" | `trace_sbd_toe_requirement_sources(requirement_ids)` — directas (autoria) vs cadeia compensada (cobertura, NÃO autoria; rótulo coverage_compensated); sem-fonte declarados |
 | "Give me a compact id map of the catalogue by category" | `consult_security_requirements(risk_level, mode="index")` |

@@ -36,7 +36,7 @@ export type SelectionRiskLevel = "L1" | "L2" | "L3";
 
 /** Concern → the domain chapter(s) whose catalogue it activates (aligned with the
  * ontology's `activation_examples` and the applicability model; audited table). */
-const CONCERN_TO_DOMAIN_CHAPTERS: Readonly<Partial<Record<Concern, readonly string[]>>> = {
+export const CONCERN_TO_DOMAIN_CHAPTERS: Readonly<Partial<Record<Concern, readonly string[]>>> = {
   deployment: ["09-containers-imagens", "11-deploy-seguro"],
   iac: ["08-iac-infraestrutura"],
   build: ["07-cicd-seguro"],
@@ -94,6 +94,13 @@ const SESSION_SIGNAL_PATTERN =
  * o filtro de nível continua a mandar em tudo o resto.
  */
 const SES008_RULE_ID = "SES-008-por-tecnologia";
+/**
+ * 0.20.0-beta.21: a regra do Author sobrevive à mudança de fronteira — passa a ser
+ * accionada pela TECNOLOGIA DECLARADA (`technologies: ["jwt"]`, valor publicado no
+ * vocabulário) em vez de por regex sobre a prosa da tarefa. Em `discover` o gatilho
+ * lexical histórico continua a valer.
+ */
+export const SES008_TECHNOLOGY = "jwt";
 const SES008_TECH_PATTERN = /\bjwt\b|token de utilizador|user token|bearer token|refresh token/i;
 
 const AGENTIC_WAVE_PATTERN = /\bagente|\bagent\b|agêntic|agentic|autonom|kill.?switch|mandate|tool.?call/i;
@@ -101,6 +108,20 @@ const AGENTIC_WAVE_PATTERN = /\bagente|\bagent\b|agêntic|agentic|autonom|kill.?
 /** 0.19.0 (ronda 3): estabilidade da origem — lexical = casamento de termos da
  * redacção (revogável por reescrever a frase); declared = concern explícito, regra
  * nomeada, sinal de contexto declarado ou dado do bundle. */
+/**
+ * 0.20.0-beta.21 — modos de selecção («declarativo primeiro», experiência da linha beta
+ * autorizada pelo lead 2026-09-05).
+ *
+ * - `declarative` (DEFAULT): a selecção é função APENAS do que o chamador declarou —
+ *   risk_level, concerns, exposure, data_sensitivity, changed_files, technologies. O
+ *   `task` fica registado para auditoria e não influencia o resultado. Sem nenhuma
+ *   declaração ⇒ `needs_input` (nunca zero, nunca adivinhar).
+ * - `baseline`: devolve a baseline do nível por PEDIDO EXPLÍCITO (nunca como fallback).
+ * - `discover`: comportamento inferencial histórico, COM os avisos todos, marcado
+ *   exploratório — instrumento do oráculo histórico e do estudo de paráfrase.
+ */
+export type SelectionMode = "declarative" | "baseline" | "discover";
+
 export type SelectionBasis = "declared" | "lexical";
 const LEXICAL_SOURCES = new Set(["task_term", "alias_expansion", "compound_term", "intent_keyword"]);
 export function basisOfSource(source: string): SelectionBasis {
@@ -141,6 +162,28 @@ export interface ActivatedChapter {
   trigger: string;
 }
 
+/** Declarações que a selecção aceita — o vocabulário está em sbd://toe/activation-vocabulary. */
+export interface DeclaredActivators {
+  concerns: string[];
+  exposure?: string;
+  data_sensitivity?: string;
+  technologies: string[];
+  changed_files: string[];
+}
+
+/** Resposta a uma chamada sem declarações: pedido de declaração, não resultado. */
+export interface NeedsInput {
+  reason: string;
+  declared: DeclaredActivators;
+  vocabulary_resource: string;
+  candidates_to_confirm: {
+    note: string;
+    from_task_text: string[];
+  };
+  example: { tool: string; with: string; note: string };
+  baseline_escape_hatch: { tool: string; with: string; note: string };
+}
+
 export interface SelectionResult {
   risk_level: SelectionRiskLevel;
   eligible_count: number;
@@ -160,6 +203,12 @@ export interface SelectionResult {
   activation: ActivationResult;
   input: NormalizedInput;
   notes: string[];
+  /** Modo efectivo desta selecção (0.20.0-beta.21). */
+  mode: SelectionMode;
+  /** Presente quando nada foi declarado no modo declarativo: pedido de declaração + aula. */
+  needs_input?: NeedsInput;
+  /** O `task` é contexto registado, não motor (excepto em discover). */
+  task_record: { text: string; role: "recorded_context"; affects_selection: boolean };
 }
 
 export interface SelectionContextInput {
@@ -170,6 +219,8 @@ export interface SelectionContextInput {
   data_sensitivity?: string;
   concerns?: string[];
   changed_files?: string[];
+  /** 0.20.0-beta.21 — default `declarative`. */
+  mode?: SelectionMode;
   technologies?: string[];
 }
 
@@ -209,6 +260,7 @@ function activateChapters(
  * eligible exclusion is listed with a reason.
  */
 export function runSelection(context: SelectionContextInput): SelectionResult {
+  const mode: SelectionMode = context.mode ?? "declarative";
   const input = normalizeInput({
     task: context.task ?? "",
     risk_level: context.risk_level,
@@ -218,17 +270,139 @@ export function runSelection(context: SelectionContextInput): SelectionResult {
     ...(context.concerns ? { concerns: context.concerns } : {}),
     ...(context.changed_files ? { changed_files: context.changed_files } : {}),
   });
-  const activation = activate(input);
-  return runSelectionWithActivation(input, activation, context.technologies ?? []);
+  // No caminho declarativo o motor lexical não corre: nem termos da tarefa, nem
+  // aliases sobre a prosa, nem heurísticas de NOME de ficheiro (a tabela de PATHS
+  // continua, que essa é dado publicado, não interpretação).
+  const activation = activate(input, { declaredOnly: mode !== "discover" });
+  return runSelectionWithActivation(input, activation, context.technologies ?? [], mode);
+}
+
+/** Tecnologias declaradas normalizadas: valor do vocabulário fechado, ou token exacto dentro do `stack`. */
+export function normalizeDeclaredTechnologies(
+  technologies: readonly string[],
+  stack: string | undefined
+): string[] {
+  const out = new Set<string>();
+  for (const t of technologies) {
+    const key = t.trim().toLowerCase();
+    if (key in TECHNOLOGY_TO_CHAPTERS || key === SES008_TECHNOLOGY) out.add(key);
+  }
+  // `stack` é texto livre: só conta quando traz um valor do vocabulário como TOKEN
+  // exacto — normalizar o declarado é legítimo, adivinhar prosa não.
+  const stackTokens = (stack ?? "").toLowerCase().split(/[^a-z0-9-]+/).filter(Boolean);
+  for (const token of stackTokens) {
+    if (token in TECHNOLOGY_TO_CHAPTERS || token === SES008_TECHNOLOGY) out.add(token);
+  }
+  return [...out].sort();
+}
+
+function declaredActivatorsOf(
+  input: NormalizedInput,
+  technologies: readonly string[]
+): DeclaredActivators {
+  return {
+    concerns: [...input.concerns],
+    ...(input.exposure ? { exposure: input.exposure } : {}),
+    ...(input.data_sensitivity ? { data_sensitivity: input.data_sensitivity } : {}),
+    technologies: [...technologies],
+    changed_files: [...input.changed_files],
+  };
+}
+
+function hasAnyDeclaration(d: DeclaredActivators): boolean {
+  return (
+    d.concerns.length > 0 ||
+    d.exposure !== undefined ||
+    d.data_sensitivity !== undefined ||
+    d.technologies.length > 0 ||
+    d.changed_files.length > 0
+  );
+}
+
+/**
+ * A aula do `needs_input`: vocabulário aplicável + candidatos DERIVADOS do texto da
+ * tarefa marcados como SUGESTÃO A CONFIRMAR (nunca selecção) + um exemplo copiável.
+ * Os candidatos saem do mesmo motor lexical do `discover` — mas aqui não seleccionam
+ * nada: são uma proposta ao LLM, que é quem tem o contexto para confirmar.
+ */
+function buildNeedsInput(input: NormalizedInput, declared: DeclaredActivators): NeedsInput {
+  const exploratory = activate({ ...input, concerns: [] }, { declaredOnly: false });
+  const suggested = [...new Set(exploratory.concerns.map(String))].sort();
+  const exampleConcerns = suggested.slice(0, 3);
+  const level = input.risk_level ?? "L2";
+  return {
+    reason:
+      "Nenhum activador DECLARADO nesta chamada. O servidor não interpreta prosa: não adivinha o âmbito a partir do `task`, e não devolve zero em silêncio. Declara o que a tua leitura do pedido justifica — tu tens o contexto (código, ticket, conversa) que o servidor nunca terá.",
+    declared,
+    vocabulary_resource: "sbd://toe/activation-vocabulary",
+    candidates_to_confirm: {
+      note:
+        "SUGESTÃO A CONFIRMAR, não selecção: derivada do texto do `task` pelo motor exploratório. Confirma (ou corrige) e declara em `concerns` — a decisão é tua.",
+      from_task_text: suggested,
+    },
+    example: {
+      tool: "select_sbd_toe_requirements",
+      with:
+        exampleConcerns.length > 0
+          ? `risk_level="${level}", concerns=[${exampleConcerns.join(", ")}]`
+          : `risk_level="${level}", concerns=[auth, logging]`,
+      note:
+        "Exemplo copiável: lê sbd://toe/activation-vocabulary (via read_sbd_toe_resource), escolhe os valores que a tua leitura justifica e re-chama com eles.",
+    },
+    baseline_escape_hatch: {
+      tool: "select_sbd_toe_requirements",
+      with: `risk_level="${level}", mode="baseline"`,
+      note:
+        "Queres a baseline completa do nível, sem contexto? Pede-a EXPLICITAMENTE — nunca aparece como fallback.",
+    },
+  };
 }
 
 /** Variant for callers that already ran the activation engine (prepare). */
 export function runSelectionWithActivation(
   input: NormalizedInput,
   activation: ActivationResult,
-  technologies: readonly string[] = []
+  technologiesRaw: readonly string[] = [],
+  mode: SelectionMode = "declarative"
 ): SelectionResult {
   const level = (input.risk_level ?? "L2") as SelectionRiskLevel;
+  const declarative = mode !== "discover";
+  const technologies = declarative ? normalizeDeclaredTechnologies(technologiesRaw, input.stack) : technologiesRaw;
+  const declared = declaredActivatorsOf(input, technologies);
+  const taskRecord = {
+    text: input.taskTrimmed,
+    role: "recorded_context" as const,
+    affects_selection: mode === "discover",
+  };
+
+  // Sem NADA declarado no caminho declarativo: pedido de declaração, não resultado.
+  // (Em `baseline` o chamador pediu explicitamente a baseline do nível — segue.)
+  if (mode === "declarative" && !hasAnyDeclaration(declared)) {
+    const ontologyForEmpty = getOntologyData();
+    const eligible = ontologyForEmpty.requirements.filter(
+      (r) => r.type === "base" && r.applicable_levels?.[level] === true
+    ).length;
+    return {
+      risk_level: level,
+      eligible_count: eligible,
+      selected: [],
+      narrowed_out: [],
+      excluded_by_level: [],
+      basis_summary: { declared: 0, lexical_only: 0, lexical_share: 0 },
+      lexical_dominance_warning: null,
+      empty_selection_warning: null,
+      activated_chapters: [],
+      activated_categories: [],
+      activation,
+      input,
+      notes: [
+        "needs_input: nenhuma declaração recebida — o servidor responde ao declarado e não interpreta o `task` (modo declarativo, contrato v1.18-beta).",
+      ],
+      mode,
+      needs_input: buildNeedsInput(input, declared),
+      task_record: taskRecord,
+    };
+  }
   const ontology = getOntologyData();
   const atLevel = (r: Requirement) => r.applicable_levels?.[level] === true;
 
@@ -260,6 +434,9 @@ export function runSelectionWithActivation(
       )
     : [];
 
+  // `mode: "baseline"` — pedido EXPLÍCITO da baseline do nível (nunca fallback).
+  const baselineMode = mode === "baseline";
+
   // Layer 2 — narrowing into the two declared bands.
   const selected: SelectedRequirement[] = [];
   const narrowedByCategory = new Map<string, string[]>();
@@ -274,7 +451,9 @@ export function runSelectionWithActivation(
     });
   };
 
-  const sessionSignals = SESSION_SIGNAL_PATTERN.test(input.task ?? "");
+  // R2 existia para remendar o casamento de palavras (SES espúrio do replay DualGauge).
+  // Sem motor lexical não há nada a remendar: só corre em `discover`.
+  const sessionSignals = mode === "discover" && SESSION_SIGNAL_PATTERN.test(input.task ?? "");
   let r2Applied = false;
   for (const r of baselineEligible) {
     const signal = concernByCategory.get(r.category);
@@ -285,7 +464,19 @@ export function runSelectionWithActivation(
     const sesDeclaredBase = activation.trace.some(
       (t) => t.produced === "auth" && t.source === "explicit_concern"
     );
-    if (r.category === "SES" && !sessionSignals && !sesDeclaredBase && (signal || activatedCategories.has(r.category))) {
+    if (baselineMode) {
+      pushSelected(r, [
+        {
+          layer: "baseline",
+          source: "risk_level",
+          trigger: level,
+          score: 1,
+          reason: `baseline cap. 02 (${level}) devolvida por PEDIDO EXPLÍCITO (mode="baseline") — sem contexto, sem narrowing`,
+        },
+      ]);
+      continue;
+    }
+    if (mode === "discover" && r.category === "SES" && !sessionSignals && !sesDeclaredBase && (signal || activatedCategories.has(r.category))) {
       // R2: SES elegível com sinal de categoria (via auth LEXICAL) e SEM sinal de sessão.
       r2Applied = true;
       const list = narrowedByCategory.get(r.category) ?? [];
@@ -376,7 +567,9 @@ export function runSelectionWithActivation(
 
   // SES-008-por-tecnologia (Author): JWT/user-token signal selects SES-008 at any level.
   let ses008Applied = false;
-  if (SES008_TECH_PATTERN.test(input.task ?? "") && !selected.some((s) => s.requirement_id === "SES-008")) {
+  const ses008Declared = technologies.includes(SES008_TECHNOLOGY);
+  const ses008Triggered = declarative ? ses008Declared : SES008_TECH_PATTERN.test(input.task ?? "");
+  if (ses008Triggered && !selected.some((s) => s.requirement_id === "SES-008")) {
     const r = ontology.requirements.find((x) => x.requirement_id === "SES-008");
     if (r) {
       pushSelected(r, [
@@ -385,8 +578,9 @@ export function runSelectionWithActivation(
           source: "named_rule",
           trigger: SES008_RULE_ID,
           score: 0.95,
-          reason:
-            "regra nomeada SES-008-por-tecnologia (decisão do Author, 2026-08-31): o sinal JWT/token de utilizador activa SES-008 independentemente do nível — a tecnologia impõe a guidance de scope/TTL/revogação",
+          reason: declarative
+            ? "regra nomeada SES-008-por-tecnologia (decisão do Author, 2026-08-31): a tecnologia DECLARADA `jwt` activa SES-008 independentemente do nível — a tecnologia impõe a guidance de scope/TTL/revogação"
+            : "regra nomeada SES-008-por-tecnologia (decisão do Author, 2026-08-31): o sinal JWT/token de utilizador activa SES-008 independentemente do nível — a tecnologia impõe a guidance de scope/TTL/revogação",
         },
       ]);
       ses008Applied = true;
@@ -402,7 +596,9 @@ export function runSelectionWithActivation(
 
   // 0.19.0: basis por entrada (ponto único) + sumário + aviso de dominância lexical.
   for (const sreq of selected) {
-    for (const t of sreq.selection_trace) t.basis = basisOfSource(t.source);
+    // No caminho declarativo o campo mantém-se por estabilidade de contrato, com
+    // valor único `declared`: por construção nenhuma fonte lexical corre.
+    for (const t of sreq.selection_trace) t.basis = declarative ? "declared" : basisOfSource(t.source);
   }
   const declaredCount = selected.filter((sreq) => sreq.selection_trace.some((t) => t.basis === "declared")).length;
   const lexicalOnlyCount = selected.length - declaredCount;
@@ -411,8 +607,11 @@ export function runSelectionWithActivation(
   const lexicalConcerns = [...new Set(
     activation.trace.filter((t) => LEXICAL_SOURCES.has(t.source)).map((t) => t.produced)
   )];
+  // 0.20.0-beta.21: os avisos de dominância/vazio existiam para gerir um default
+  // inferencial. No caminho declarativo esse default deixou de existir (a ausência
+  // de sinal é `needs_input`), logo os avisos perdem OBJECTO — só em `discover`.
   const lexical_dominance_warning =
-    lexicalShare > LEXICAL_DOMINANCE_THRESHOLD
+    mode === "discover" && lexicalShare > LEXICAL_DOMINANCE_THRESHOLD
       ? {
           lexical_share: Math.round(lexicalShare * 100) / 100,
           threshold: LEXICAL_DOMINANCE_THRESHOLD,
@@ -440,7 +639,7 @@ export function runSelectionWithActivation(
         .map(([c]) => c)
     : [];
   const empty_selection_warning =
-    selected.length === 0 && narrowedTotalCount > 0
+    mode === "discover" && selected.length === 0 && narrowedTotalCount > 0
       ? {
           note:
             "SELECÇÃO VAZIA com candidatos elegíveis — isto é um ALARME, não um resultado: a redacção da tarefa não casou nenhum sinal. Re-corre com concerns EXPLÍCITOS (candidatos derivados das categorias arrumadas).",
@@ -478,9 +677,10 @@ export function runSelectionWithActivation(
       category,
       count: ids.length,
       requirement_ids: ids.sort(),
-      basis: "lexical" as SelectionBasis,
-      reason:
-        category === "SES" && r2Applied
+      basis: (declarative ? "declared" : "lexical") as SelectionBasis,
+      reason: declarative
+        ? `elegível na baseline ${level} (cap. 02) e não coberta por nenhuma declaração desta chamada (concerns/exposure/data_sensitivity/technologies/changed_files) — exclusão DETERMINÍSTICA e estável à redacção: declara o concern da categoria para a trazer`
+        : category === "SES" && r2Applied
           ? `${R2_RULE_ID} (decisão pós-P2 2026-08-31): sem sinais de sessão/login/token de utilizador na tarefa, SES-* sai por narrowing declarado (o concernsMap do loader mantém auth → [AUT, ACC, SES]); com esses sinais na tarefa, fica`
           : `elegível na baseline ${level} (cap. 02) sem sinal na tarefa/contexto — exclusão SENSÍVEL À REDACÇÃO da tarefa (não é regra de domínio): reescrever a frase ou declarar concerns explícitos pode trazê-la de volta; nunca em silêncio`,
     }));
@@ -513,5 +713,7 @@ export function runSelectionWithActivation(
     activation,
     input,
     notes,
+    mode,
+    task_record: taskRecord,
   };
 }

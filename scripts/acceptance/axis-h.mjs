@@ -189,7 +189,7 @@ function causesFor(missing, level, catalogue, gapNote) {
 }
 
 /** Run one golden case against both tools. Returns metrics + verdict + causes. */
-export async function runGoldenCase(client, gc, catalogue) {
+export async function runGoldenCase(client, gc, catalogue, arm = "discover") {
   const mustHave = expandSet(gc.mustHave, gc.level, catalogue);
   const debatable = expandSet(gc.debatable, gc.level, catalogue);
   let mustNot = expandSet(gc.mustNot, gc.level, catalogue);
@@ -201,7 +201,40 @@ export async function runGoldenCase(client, gc, catalogue) {
   for (const id of mustHave) mustNot.delete(id);
 
   // ── prepare ──
-  const p = await client.tool("prepare_sbd_toe_codegen_context", gc.prepare);
+  // 0.20.0-beta.21 («declarativo primeiro»): o oráculo histórico é redigido em `task`,
+  // logo corre no braço `discover` — continuidade da série, por decisão do lead (c).
+  // O braço `declarative` exprime A MESMA situação por declarações: os concerns
+  // anotados no próprio caso + os activadores já declarados no seu `prepare`
+  // (risk_level/exposure/data_sensitivity). Nada é inventado: sai tudo do oráculo.
+  // A expressão DECLARATIVA de cada caso: o que um LLM competente declararia depois de
+  // ler o enunciado do próprio oráculo. Sai tudo do caso (concerns anotados, activadores
+  // do `prepare`, e as tecnologias que o enunciado nomeia mapeadas para o vocabulário
+  // FECHADO publicado em sbd://toe/activation-vocabulary). As EXPECTATIVAS do oráculo
+  // não são tocadas — muda a forma de PEDIR, não o que se espera.
+  const DECLARED_TECHNOLOGIES = {
+    "GC-03": ["containers", "kubernetes"],   // "Empacotar em Docker e deploy em K8s"
+    "GC-04": ["iac"],                        // "Módulo Terraform de rede + segredos"
+    "GC-05": ["ci-cd", "sca-sbom"],          // "Pipeline GitHub Actions: build, SBOM, push da imagem"
+    "GC-08": ["jwt"]                         // "SPA com login e sessão JWT"
+  };
+  const DECLARED_FRAMEWORKS = { "GC-06": ["EXT-AI-ACT"] }; // "contexto AI Act aplicável"
+  const declarativeArgs = () => {
+    const { task, risk_level, exposure, data_sensitivity } = gc.prepare;
+    const technologies = DECLARED_TECHNOLOGIES[gc.id];
+    const frameworks = DECLARED_FRAMEWORKS[gc.id];
+    return {
+      ...(task !== undefined ? { task } : {}),
+      ...(risk_level !== undefined ? { risk_level } : {}),
+      ...(exposure !== undefined ? { exposure } : {}),
+      ...(data_sensitivity !== undefined ? { data_sensitivity } : {}),
+      ...(gc.concerns?.length ? { concerns: gc.concerns } : {}),
+      ...(technologies ? { technologies } : {}),
+      ...(frameworks ? { regulatory_frameworks: frameworks, include_regulatory_overlay: true } : {})
+    };
+  };
+  const prepareArgs =
+    arm === "declarative" ? declarativeArgs() : { ...gc.prepare, selection_mode: "discover" };
+  const p = await client.tool("prepare_sbd_toe_codegen_context", prepareArgs);
   const pd = p.ok ? p.data : undefined;
   const pSelected = pd?.status === "ready_for_codegen" ? (pd.activated_scope?.requirements ?? []).map((r) => r.requirement_id) : [];
   const pM = metrics(pSelected, mustHave, mustNot, debatable);

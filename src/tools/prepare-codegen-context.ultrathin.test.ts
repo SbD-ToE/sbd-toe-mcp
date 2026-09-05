@@ -1,4 +1,11 @@
 /**
+ * 0.20.0-beta.21 («declarativo primeiro»): ESTE ficheiro mede CODIFICAÇÃO (dieta v2),
+ * não selecção. Para a série de medições continuar comparável byte a byte, as fixtures
+ * correm no caminho inferencial histórico — `selection_mode: "discover"` — injectado
+ * em `handlePrepareCodegenContext` pelo wrapper abaixo. A selecção declarativa tem os
+ * seus próprios testes (selection.declarative.test.ts + next-invariant.beta).
+ */
+/**
  * s3c — Perfil `ultrathin` (epic v2-token-diet; ADENDA 2026-07-05 do operador,
  * EPIC §s3c — especificado, adiado e REATIVADO no mesmo dia).
  *
@@ -52,6 +59,12 @@ import {
 import { resolveAppPath } from "../config.js";
 import { clearG2RuntimeCacheForTests } from "./g2-runtime-loader.js";
 import { clearRegulatoryOverlayCacheForTests } from "./regulatory-overlay-loader.js";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const __prepareRaw = handlePrepareCodegenContext;
+const handlePrepareCodegenContextDiscover = (input: Parameters<typeof __prepareRaw>[0]) =>
+  __prepareRaw({ selection_mode: "discover", ...input });
+
 
 // ---------------------------------------------------------------------------
 // Fixtures — byte-identical to EPIC.md §Fixtures baseline (como budget/detail).
@@ -144,25 +157,25 @@ function expectUltrathinReport(
 }
 
 function runUltrathin(fixture: BaselineFixture): PrepareCodegenContextResultReadyDieted {
-  const result = handlePrepareCodegenContext({ ...fixture.input, detail: "ultrathin" });
+  const result = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "ultrathin" });
   expectReadyDieted(result);
   return result;
 }
 
 function runMinimal(fixture: BaselineFixture): PrepareCodegenContextResultReadyDieted {
-  const result = handlePrepareCodegenContext({ ...fixture.input, detail: "minimal" });
+  const result = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "minimal" });
   expectReadyDieted(result);
   return result;
 }
 
 function runStandard(fixture: BaselineFixture): PrepareCodegenContextResultReadyDieted {
-  const result = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
+  const result = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
   expectReadyDieted(result);
   return result;
 }
 
 function runFull(fixture: BaselineFixture): PrepareCodegenContextResultReady {
-  const result = handlePrepareCodegenContext(fixture.input);
+  const result = handlePrepareCodegenContextDiscover(fixture.input);
   expectReadyFull(result);
   return result;
 }
@@ -337,7 +350,7 @@ describe("prepare_sbd_toe_codegen_context — perfil ultrathin (v2-token-diet s3
       expect(ref!.with).toEqual({ detail: "minimal" });
 
       // EXECUTA a referência de verdade: mesmo input, detail="minimal".
-      const followUp = handlePrepareCodegenContext({
+      const followUp = handlePrepareCodegenContextDiscover({
         ...fixture.input,
         detail: ref!.with.detail
       });
@@ -413,7 +426,7 @@ describe("prepare_sbd_toe_codegen_context — perfil ultrathin (v2-token-diet s3
 
       // EXECUTA a referência de verdade: minimal devolve os 5 (prefixo
       // determinístico do top-25 clássico do full).
-      const followUp = handlePrepareCodegenContext({
+      const followUp = handlePrepareCodegenContextDiscover({
         ...fixture.input,
         detail: rest!.with.detail
       });
@@ -465,7 +478,7 @@ describe("prepare_sbd_toe_codegen_context — perfil ultrathin (v2-token-diet s3
       expect(grounding.groups_ref.with).toEqual({ detail: "standard" });
 
       // EXECUTA a referência de verdade: standard devolve o grouping completo.
-      const followUp = handlePrepareCodegenContext({
+      const followUp = handlePrepareCodegenContextDiscover({
         ...fixture.input,
         detail: grounding.groups_ref.with.detail
       });
@@ -553,7 +566,7 @@ describe("prepare_sbd_toe_codegen_context — perfil ultrathin (v2-token-diet s3
         expect(ref).toBeDefined();
         expect(ref!.tool).toBe("prepare_sbd_toe_codegen_context");
         expect(ref!.with).toEqual({ detail: "minimal" });
-        const followUp = handlePrepareCodegenContext({
+        const followUp = handlePrepareCodegenContextDiscover({
           ...fixture.input,
           detail: ref!.with.detail
         });
@@ -613,13 +626,13 @@ describe("prepare_sbd_toe_codegen_context — perfil ultrathin (v2-token-diet s3
     });
 
     it("include_relations=true mantém o escape hatch no ultrathin (relations inline dieted, byte-igual a standard)", () => {
-      const ultrathinInline = handlePrepareCodegenContext({
+      const ultrathinInline = handlePrepareCodegenContextDiscover({
         ...fixture.input,
         detail: "ultrathin",
         include_relations: true
       });
       expectReadyDieted(ultrathinInline);
-      const standardInline = handlePrepareCodegenContext({
+      const standardInline = handlePrepareCodegenContextDiscover({
         ...fixture.input,
         detail: "standard",
         include_relations: true
@@ -651,8 +664,8 @@ describe("prepare_sbd_toe_codegen_context — perfil ultrathin (v2-token-diet s3
     it("determinismo: 2 chamadas ultrathin idênticas ⇒ payload byte-igual", () => {
       clearG2RuntimeCacheForTests();
       clearRegulatoryOverlayCacheForTests();
-      const first = handlePrepareCodegenContext({ ...fixture.input, detail: "ultrathin" });
-      const second = handlePrepareCodegenContext({
+      const first = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "ultrathin" });
+      const second = handlePrepareCodegenContextDiscover({
         ...fixture.input,
         detail: "ultrathin"
       });
@@ -660,13 +673,13 @@ describe("prepare_sbd_toe_codegen_context — perfil ultrathin (v2-token-diet s3
     });
 
     it("`detail: \"full\"` explícito continua byte-idêntico ao default (invariante 1 intocada pelo s3c)", () => {
-      const byDefault = handlePrepareCodegenContext(fixture.input);
-      const explicit = handlePrepareCodegenContext({ ...fixture.input, detail: "full" });
+      const byDefault = handlePrepareCodegenContextDiscover(fixture.input);
+      const explicit = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "full" });
       expect(JSON.stringify(explicit)).toBe(JSON.stringify(byDefault));
     });
 
     it("golden snapshot — ultrathin", async () => {
-      const result = handlePrepareCodegenContext({
+      const result = handlePrepareCodegenContextDiscover({
         ...fixture.input,
         detail: "ultrathin"
       });
@@ -704,8 +717,8 @@ describe("prepare_sbd_toe_codegen_context — perfil ultrathin (v2-token-diet s3
       task: "make the whole application secure please",
       risk_level: "L2"
     };
-    const byDefault = handlePrepareCodegenContext(input);
-    const dieted = handlePrepareCodegenContext({ ...input, detail: "ultrathin" });
+    const byDefault = handlePrepareCodegenContextDiscover(input);
+    const dieted = handlePrepareCodegenContextDiscover({ ...input, detail: "ultrathin" });
     expect(byDefault.status).not.toBe("ready_for_codegen");
     expect(JSON.stringify(dieted)).toBe(JSON.stringify(byDefault));
   });
@@ -713,7 +726,7 @@ describe("prepare_sbd_toe_codegen_context — perfil ultrathin (v2-token-diet s3
   it("valida o input: 'ultrathin' aceite; valores inválidos continuam a falhar com -32602 listando os 4 níveis", () => {
     let thrown: unknown;
     try {
-      handlePrepareCodegenContext({
+      handlePrepareCodegenContextDiscover({
         ...FIXTURES[0]!.input,
         detail: "nano"
       } as unknown as PrepareCodegenContextInput);

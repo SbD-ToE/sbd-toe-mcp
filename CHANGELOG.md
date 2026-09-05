@@ -3,11 +3,125 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-31
 purpose: documentation
-reasoning: v0.20.0-beta.20 (beta line, npm `beta`) — COMBINED wave: absorbs stable 0.19.3 (next-verbatim suite invariant + verdades: matrix cap imposed, record_type enum-validated, URIs naming read_sbd_toe_resource, slots by index) and 0.19.4 (per-detail requirement ceilings 78/81/86 with requirement_ceiling{} and taught batches; projected cost in select's next). The invariant was EXTENDED to this line's executable references (diet refs + SPARQL tool) and caught 2 beta-only legend texts serving a URI without naming its tool — fixed in this wave. Bundle pin unchanged (release KG v1.11.0). Golden 10/10, gate E PASS, 25/25 tools; sentinel + package_version gate.
+reasoning: v0.20.0-beta.21 (beta line, npm `beta`) — EXPERIÊNCIA «declarativo primeiro» autorizada pelo programme lead (2026-09-05): a selecção passa a ser função apenas do que o chamador DECLARA; novo recurso sbd://toe/activation-vocabulary (derivado); needs_input em vez de zero/adivinhação; mode baseline/discover; artefactos que perderam objecto (basis lexical, dominance/empty warnings, R2) ficam só em discover; contrato de serviço v1.18-beta anunciado em sbd://toe/version. Medição: 5 redacções → 5 conjuntos (discover) vs 1 conjunto (declarativo); oráculo histórico 10/10 em discover + conjunto declarativo novo 6 PASS/4 PART/0 FAIL. Linha estável inalterada.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.21 — 2026-09-05
+
+**EXPERIÊNCIA da linha beta — «declarativo primeiro».** Autorizada pelo programme lead
+(2026-09-05, «fazemos isso no beta!»); desenho vinculativo em
+`DevelopmentGovernance/docs/mcp-declarative-first-design-note.md` §§3/7/8/9. **A linha
+estável NÃO muda**; nada aqui se propaga sem números e decisão explícita do lead.
+Bundle pin INALTERADO (release KG `v1.11.0`, sha `b7444094…03df`).
+
+> Princípio operacional aplicado a cada decisão: **«o MCP pode NORMALIZAR o que lhe
+> disseram; não pode DECIDIR o que quiseram dizer»**.
+
+### Novo — `sbd://toe/activation-vocabulary` (a peça que substitui o motor lexical)
+
+Recurso **derivado** (nunca escrito à mão) das mesmas tabelas e dados que o motor usa:
+**24 concerns** (com categorias/capítulos que activam e contagem de requisitos por nível),
+**3 exposure**, **3 data_sensitivity**, **9 technologies** (incl. `jwt`, que aciona a regra
+nomeada SES-008), **13 padrões de path** de `changed_files`, **13 papéis**, **8 fases**,
+baseline por nível, e `not_activators` (`task`, `stack`) declarados como tal. ≈2,9k tokens.
+Publicado no catálogo e legível por `read_sbd_toe_resource`. Se o motor mudar, o vocabulário
+muda com ele — ou o teste parte (`selection.declarative.test.ts` verifica que a promessa
+`auth@L2` bate certo com a selecção real).
+
+### Mudou — `select` e `prepare` respondem ao DECLARADO
+
+- **Selecção = f(risk_level, concerns, exposure, data_sensitivity, changed_files,
+  technologies).** O `task` passa a `{text, role: "recorded_context",
+  affects_selection: false}` — auditoria, não motor. O `activation_trace` perde
+  `task_term`/`alias_expansion`/`compound_term`/`intent_keyword` no caminho declarativo.
+- **Sem sinal declarado ⇒ `needs_input`, nunca zero e nunca adivinhado** — e o needs_input
+  é uma AULA: vocabulário aplicável, **candidatos derivados do `task` marcados como
+  SUGESTÃO A CONFIRMAR** (nunca selecção), exemplo copiável (validado por teste: seguido à
+  letra, produz selecção) e a saída explícita `mode="baseline"`. Custo: **894 tokens**.
+- **`mode: "baseline"`** devolve a baseline do nível **por pedido explícito** — nunca como
+  fallback. **`mode: "discover"`** preserva o motor inferencial completo, marcado
+  `exploratory` na resposta (instrumento do oráculo histórico e do estudo de paráfrase).
+- **`prepare`**: `selection_mode` (declarativo por defeito) + `technologies` declaradas
+  (antes eram ignoradas!); sem declarações devolve `needs_input` com a receita. O gateway
+  semântico e o classificador de intenção vivem no bloco lexical — no caminho declarativo
+  **não correm**.
+- **Gate de decomposição** deixa de disparar sobre famílias DECLARADAS (bloquear quem foi
+  preciso contradiz o contrato); continua inteiro em `discover`. O guarda do tamanho é o
+  tecto de requisitos por `detail` (0.19.4).
+- **`search_sbd_toe_manual`** marcado **NÃO-NORMATIVO** no schema: leitura e orientação,
+  nunca caminho para um conjunto de requisitos.
+- **`sbd://toe/version`** ganha `serving_contract` (v1.18-beta, `declarative-first`, o que
+  mudou, o vocabulário, o modo discover e a nota de migração) — a semântica não muda em
+  silêncio.
+
+### Removido do caminho declarativo (perderam OBJECTO; vivos em `discover`)
+
+`basis` fica com valor único **`declared`** (campo mantido por estabilidade de contrato),
+`lexical_dominance_warning`, `empty_selection_warning` (a ausência de sinal passou a
+`needs_input` — erro de input, não resultado) e a **regra R2** (existia para remendar o
+casamento de palavras; sem ele não há precedência a resolver). A regra nomeada **SES-008**
+sobrevive com o gatilho do lado certo da fronteira: **tecnologia DECLARADA `jwt`** em vez de
+regex sobre a prosa.
+
+### Resposta ao ponto 8 do despacho (verificar ANTES de mexer) — dois achados
+
+1. `changed_files` → **tabela publicada de padrões de path** (`src/**`,
+   `.github/workflows/**`, …): legítimo, mantido. `technologies` → **lookup exacto** em
+   tabela: legítimo, mantido.
+2. **ACHADO (a):** o campo livre `stack` fazia `stackLower.includes(token)` — «texto contém
+   X → activa Y» sobre prosa. No declarativo passa a contar **só por token exacto** do
+   vocabulário (normalizar o declarado é legítimo); o resto é contexto registado.
+3. **ACHADO (b):** o `activate()` do prepare fazia **regex sobre NOMES de ficheiro**
+   (`route|controller|handler|endpoint → api`, `auth|session|jwt|login → auth`) — isso é
+   inferência, não tabela. Fica em `discover`; no declarativo os `changed_files` activam só
+   pela tabela de paths.
+
+### Medição (o produto desta vaga)
+
+**Estabilidade à redacção** — mesma feature, 5 redacções (equivalentes construídos: o
+conjunto original da ronda 4 não ficou registado):
+
+| modo | conjuntos distintos | N seleccionados | tokens |
+|---|---|---|---|
+| `discover` | **5 em 5** | 0 – 58 | 2 502 – 7 114 |
+| declarativo (mesma declaração) | **1 em 5** | 44 (constante) | 5 921 – 5 926 |
+
+**Caso do agente** (3 redacções): `discover` **3 conjuntos** (0–47) vs declarativo **1
+conjunto** (29). `needs_input`: 894 tk, 4–5 candidatos a confirmar, exemplo executável.
+
+**Oráculo, dois braços lado a lado** (registo
+`docs/acceptance-runs/2026-09-05-declarativo-axis-h-selection-v0.20.0-beta.21.{md,json}`):
+
+- **`discover` (10 casos históricos, continuidade da série): 10 PASS / 0 / 0** — sem
+  divergência, sem paragem.
+- **declarativo (as mesmas 10 situações expressas por declarações): 6 PASS / 4 PART /
+  0 FAIL** — as declarações saem do próprio oráculo (concerns anotados + activadores do
+  caso + tecnologias que o enunciado nomeia, mapeadas para o vocabulário fechado);
+  **expectativas do oráculo INTOCADAS**. Os 4 PART (GC-01 90 %, GC-02 95 %, GC-03 55 %,
+  GC-05 79 % de cobertura) são o resultado honesto: as expectativas históricas foram
+  construídas contra o motor inferencial, e exprimir a mesma situação por declarações
+  exige declarar mais do que o caso anotou — **não foi feito nenhum ajuste ao oráculo**.
+
+**Orçamentos** (fixtures da dieta; a série continua medida em `discover`, byte-idêntica à
+beta.20): f1 18 773 / **6 099** / **5 452** / **3 651**; f2 25 193 / **9 092**/9 200 /
+**8 365**/8 450 / **4 796**/4 840 — todos dentro dos tectos, sem alteração. O mesmo par de
+fixtures no caminho declarativo (declarações equivalentes): f1 19 138/6 495/5 848/3 838
+(49 req.), f2 24 764/8 077/7 351/4 657 (66 req.).
+
+### Verificação
+
+Suite **750/750** (48 ficheiros; +`selection.declarative.test.ts` com 11 casos que guardam
+o contrato). `npm run check` ✅. `eval:acceptance` (registo
+`2026-09-05-declarativo-v0.20.0-beta.21-acceptance.{md,json}`): **143 cenários, 120
+executados — 103 PASS · 17 PART · 0 FAIL · 23 SKIP; gate E PASS (16/1/0)**; **25/25 tools**;
+Eixo G 3/3. Cenários que perderam objecto tratados com honestidade: **12 marcados
+DISCOVER-ONLY** (TC-A-01/02, TC-F-11..15, TC-F-19, TC-F-29, TC-F-31, TC-F-32, TC-F-33 —
+continuam a guardar o motor inferencial) e **2 novos** para o contrato declarativo
+(**TC-F-35** needs_input→declaração→estabilidade→baseline; **TC-F-36** vocabulário fechado,
+derivado e executável).
 
 ## 0.20.0-beta.20 — 2026-09-04
 

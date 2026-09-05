@@ -1,4 +1,11 @@
 /**
+ * 0.20.0-beta.21 («declarativo primeiro»): ESTE ficheiro mede CODIFICAÇÃO (dieta v2),
+ * não selecção. Para a série de medições continuar comparável byte a byte, as fixtures
+ * correm no caminho inferencial histórico — `selection_mode: "discover"` — injectado
+ * em `handlePrepareCodegenContext` pelo wrapper abaixo. A selecção declarativa tem os
+ * seus próprios testes (selection.declarative.test.ts + next-invariant.beta).
+ */
+/**
  * s1 — Dieta estrutural (epic v2-token-diet): golden snapshots por `detail`
  * e invariantes da codificação deduplicada. ATUALIZADO pelo s3 (caps,
  * boilerplate→resource, descriptions) e pelo s3b REVISTO (ADENDA 2026-07-05
@@ -41,6 +48,12 @@ import {
 import { clearG2RuntimeCacheForTests } from "./g2-runtime-loader.js";
 import { requirementCategoryOf } from "../serving/requirement-id.js";
 import { clearRegulatoryOverlayCacheForTests } from "./regulatory-overlay-loader.js";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const __prepareRaw = handlePrepareCodegenContext;
+const handlePrepareCodegenContextDiscover = (input: Parameters<typeof __prepareRaw>[0]) =>
+  __prepareRaw({ selection_mode: "discover", ...input });
+
 
 // ---------------------------------------------------------------------------
 // Fixtures — byte-identical to EPIC.md §Fixtures baseline (as no budget.test).
@@ -241,7 +254,7 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
     for (const bad of ["compact", "", 42, null, {}] as const) {
       let thrown: unknown;
       try {
-        handlePrepareCodegenContext({
+        handlePrepareCodegenContextDiscover({
           ...FIXTURES[0]!.input,
           detail: bad
         } as unknown as PrepareCodegenContextInput);
@@ -258,13 +271,13 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
 
   describe.each(FIXTURES)("$label", (fixture) => {
     it("`detail: \"full\"` explícito é byte-idêntico ao default (invariante 1)", () => {
-      const byDefault = handlePrepareCodegenContext(fixture.input);
-      const explicit = handlePrepareCodegenContext({ ...fixture.input, detail: "full" });
+      const byDefault = handlePrepareCodegenContextDiscover(fixture.input);
+      const explicit = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "full" });
       expect(JSON.stringify(explicit)).toBe(JSON.stringify(byDefault));
     });
 
     it("golden snapshot — full (default)", async () => {
-      const result = handlePrepareCodegenContext(fixture.input);
+      const result = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(result);
       await expect(JSON.stringify(result, null, 2)).toMatchFileSnapshot(
         `__snapshots__/codegen-detail/${fixture.name}-full.json`
@@ -272,7 +285,7 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
     });
 
     it.each([...DIET_LEVELS])("golden snapshot — %s", async (detail) => {
-      const result = handlePrepareCodegenContext({ ...fixture.input, detail });
+      const result = handlePrepareCodegenContextDiscover({ ...fixture.input, detail });
       expectReadyDieted(result);
       await expect(JSON.stringify(result, null, 2)).toMatchFileSnapshot(
         `__snapshots__/codegen-detail/${fixture.name}-${detail}.json`
@@ -280,11 +293,11 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
     });
 
     it("conjunto de IDs citáveis idêntico em todos os níveis (invariante 3)", () => {
-      const full = handlePrepareCodegenContext(fixture.input);
+      const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
       const fullIds = Object.keys(full.citation_map).sort();
       for (const detail of DIET_LEVELS) {
-        const dieted = handlePrepareCodegenContext({ ...fixture.input, detail });
+        const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail });
         expectReadyDieted(dieted);
         const ids = citationIds(dieted);
         expect(ids.length).toBe(fullIds.length); // sem duplicados nem cortes
@@ -293,9 +306,9 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
     });
 
     it("`citations` invertido (ids_from) reconstrói o citation_map clássico byte-igual (dedup sem perda)", () => {
-      const full = handlePrepareCodegenContext(fixture.input);
+      const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
-      const dieted = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
+      const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
       expectReadyDieted(dieted);
       const rebuilt = rebuildCitationMap(dieted);
       // byte-igual: mesmos ids, mesma ordem de inserção, mesmo {source, source_data}
@@ -303,9 +316,9 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
     });
 
     it("`manual_grounding` agrupado preserva a informação total (multiset das entradas planas)", () => {
-      const full = handlePrepareCodegenContext(fixture.input);
+      const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
-      const dieted = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
+      const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
       expectReadyDieted(dieted);
       const grouped = dieted.manual_grounding;
       expectGroupedGrounding(grouped);
@@ -321,13 +334,13 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
     });
 
     it("reconstrução sem perda: listas dieted + regras do detail_encoding ⇒ full-menos-source byte-igual", () => {
-      const full = handlePrepareCodegenContext(fixture.input);
+      const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
-      const dieted = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
+      const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
       expectReadyDieted(dieted);
       // s2: por omissão as relations vêm como relations_ref; o caminho inline
       // (include_relations: true) continua a validar-se item a item.
-      const dietedWithRelations = handlePrepareCodegenContext({
+      const dietedWithRelations = handlePrepareCodegenContextDiscover({
         ...fixture.input,
         detail: "standard",
         include_relations: true
@@ -430,8 +443,8 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
     });
 
     it("s3b (ADENDA 2026-07-05): `minimal` diverge de `standard` SÓ em serialização de traceability (evidence cap 5, grounding mínimo, echo)", () => {
-      const standard = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
-      const minimal = handlePrepareCodegenContext({ ...fixture.input, detail: "minimal" });
+      const standard = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
+      const minimal = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "minimal" });
       expectReadyDieted(standard);
       expectReadyDieted(minimal);
       expect(standard.input_echo.detail).toBe("standard");
@@ -484,8 +497,8 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
       task: "make the whole application secure please",
       risk_level: "L2"
     };
-    const byDefault = handlePrepareCodegenContext(input);
-    const dieted = handlePrepareCodegenContext({ ...input, detail: "minimal" });
+    const byDefault = handlePrepareCodegenContextDiscover(input);
+    const dieted = handlePrepareCodegenContextDiscover({ ...input, detail: "minimal" });
     expect(byDefault.status).not.toBe("ready_for_codegen");
     expect(JSON.stringify(dieted)).toBe(JSON.stringify(byDefault));
   });

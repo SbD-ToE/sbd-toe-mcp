@@ -59,7 +59,12 @@ import { expandQueryWithAliases } from "../backend/semantic-index-gateway.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { requirementCategoryOf } from "../serving/requirement-id.js";
 import { prepareCodegenAffordances } from "../serving/affordances.js";
-import { runSelectionWithActivation, type SelectionResult } from "../serving/selection.js";
+import {
+  runSelection,
+  runSelectionWithActivation,
+  normalizeDeclaredTechnologies,
+  type SelectionResult
+} from "../serving/selection.js";
 import { REQUIREMENT_CEILING_BY_DETAIL, COST_PER_REQ_TK, BASE_TK, PAYLOAD_PROMISE_TK, projectedCostTk } from "../serving/payload-ceilings.js";
 
 // ---------------------------------------------------------------------------
@@ -105,6 +110,19 @@ export interface PrepareCodegenContextInput {
   data_sensitivity?: "low" | "personal" | "regulated" | "secrets";
   concerns?: string[];
   changed_files?: string[];
+  /**
+   * 0.20.0-beta.21 — semântica da SELECÇÃO (não confundir com `mode`, que é
+   * codegen/review/test-plan): `declarative` (default) responde ao declarado e não
+   * interpreta o `task`; `discover` corre o motor inferencial histórico, marcado
+   * exploratório. Vocabulário: sbd://toe/activation-vocabulary.
+   */
+  selection_mode?: "declarative" | "discover";
+  /**
+   * 0.20.0-beta.21 — tecnologias DECLARADAS do vocabulário fechado
+   * (sbd://toe/activation-vocabulary): activam capítulos por tabela publicada.
+   * Substituem o casamento de substring sobre o texto livre de `stack`.
+   */
+  technologies?: string[];
   regulatory_frameworks?: string[];
   include_regulatory_overlay?: boolean;
   detail?: CodegenDetailLevel;
@@ -122,6 +140,7 @@ export interface PrepareCodegenContextInput {
 export type PrepareCodegenStatus =
   | "ready_for_codegen"
   | "needs_clarification"
+  | "needs_input"
   | "needs_decomposition"
   | "unsupported_scope";
 
@@ -417,7 +436,7 @@ export interface PrepareCodegenContextResultReady {
 }
 
 export interface PrepareCodegenContextResultBlocked {
-  status: "needs_clarification" | "needs_decomposition" | "unsupported_scope";
+  status: "needs_clarification" | "needs_decomposition" | "unsupported_scope" | "needs_input";
   /** 0.19.4: presente quando o bloqueio é o TECTO DE REQUISITOS por detail (a
    * promessa de tokens do nível dieted): limite derivado da medição, projecção
    * de custo, e lotes de divisão ensinados (concerns por área, estimados). */
@@ -1129,7 +1148,26 @@ const TASK_TERM_TO_CONCERNS: ReadonlyArray<readonly [string, readonly Concern[]]
  * categories. Keys are concerns added by this module. The categories map to
  * existing runtime v0 categories so the v0 requirement filter still works.
  */
-const CONCERN_TO_V0_CATEGORIES_SUPPLEMENT: Readonly<Record<Concern, string[]>> = {
+/**
+ * Declared context activators (G-mp1a/D3). Module scope + exported since
+ * 0.20.0-beta.21 (declarative-first): `sbd://toe/activation-vocabulary` publishes
+ * them — the vocabulary IS the contract, so it is derived from these tables and
+ * never restated by hand.
+ */
+export const EXPOSURE_CONCERNS: Readonly<Record<string, readonly Concern[]>> = {
+  internal: ["auth", "logging"],
+  authenticated: ["auth", "logging"],
+  public: ["auth", "logging", "api", "validation", "architecture"]
+};
+
+export const SENSITIVITY_CONCERNS: Readonly<Record<string, readonly Concern[]>> = {
+  // v1.8.0: personal/regulated data now also activates the PRI catalogue (privacy).
+  personal: ["encryption", "validation", "logging", "privacy"],
+  regulated: ["encryption", "validation", "logging", "privacy"],
+  secrets: ["secrets"]
+};
+
+export const CONCERN_TO_V0_CATEGORIES_SUPPLEMENT: Readonly<Record<Concern, string[]>> = {
   // Existing concerns intentionally left empty — fall back to ontology.concernsMap.
   auth: [],
   logging: [],
@@ -1532,7 +1570,11 @@ function recordActivation(
   }
 }
 
-export function activate(input: NormalizedInput): ActivationResult {
+export function activate(
+  input: NormalizedInput,
+  options: { declaredOnly?: boolean } = {}
+): ActivationResult {
+  const declaredOnly = options.declaredOnly ?? false;
   const trace: ActivationTraceEntry[] = [];
   const rejected: ActivationTraceEntry[] = [];
   const notes: string[] = [];
@@ -1569,152 +1611,161 @@ export function activate(input: NormalizedInput): ActivationResult {
     });
   }
 
-  // 2) Alias expansion + direct task-term matches.
-  const { expanded, appliedAliases } = expandTaskText(input.taskLower);
-  for (const alias of appliedAliases) {
-    notes.push(
-      `alias_expansion: '${alias.pt}' -> [${alias.en.join(", ")}]`
-    );
-  }
+  // 0.20.0-beta.21 — DECLARATIVO PRIMEIRO: tudo o que se segue até ao bloco 4 é
+  // INFERÊNCIA SOBRE PROSA/PATHS (termos da tarefa, aliases, compostos, homónimo
+  // da imagem, intenções, e as heurísticas de NOME de ficheiro). No caminho
+  // declarativo (default nesta linha) NÃO corre: o servidor responde ao que lhe
+  // declararam. Fica disponível em mode="discover" — instrumento de investigação
+  // (oráculo histórico + estudo de paráfrase), marcado exploratório na resposta.
+  if (!declaredOnly) {
+    // 2) Alias expansion + direct task-term matches.
+    const { expanded, appliedAliases } = expandTaskText(input.taskLower);
+    for (const alias of appliedAliases) {
+      notes.push(
+        `alias_expansion: '${alias.pt}' -> [${alias.en.join(", ")}]`
+      );
+    }
 
-  // 2a) Compound phrases (run first — they encode canonical multi-domain asks).
-  // Whole-word match prevents accidental hits inside larger tokens.
-  for (const [phrase, mapped] of COMPOUND_TERM_TO_CONCERNS) {
-    if (!taskMatchesKeyword(expanded, phrase)) continue;
-    for (const concern of mapped) {
-      recordActivation(
-        trace,
-        concerns,
-        concernScores,
-        rejected,
-        {
-          source: "compound_term",
-          produced: concern,
-          trigger: phrase,
-          score: 0.7,
-          confidence: "semantic",
-          reason: `Compound phrase '${phrase}' activates ${concern}.`
-        },
-        concern,
-        { capDuplicates: true }
-      );
+    // 2a) Compound phrases (run first — they encode canonical multi-domain asks).
+    // Whole-word match prevents accidental hits inside larger tokens.
+    for (const [phrase, mapped] of COMPOUND_TERM_TO_CONCERNS) {
+      if (!taskMatchesKeyword(expanded, phrase)) continue;
+      for (const concern of mapped) {
+        recordActivation(
+          trace,
+          concerns,
+          concernScores,
+          rejected,
+          {
+            source: "compound_term",
+            produced: concern,
+            trigger: phrase,
+            score: 0.7,
+            confidence: "semantic",
+            reason: `Compound phrase '${phrase}' activates ${concern}.`
+          },
+          concern,
+          { capDuplicates: true }
+        );
+      }
     }
-  }
 
-  // 2b) Single-token task terms. Whole-word matching prevents false positives
-  // like `test` inside `latest` or `log` inside `logical`.
-  for (const [term, mapped] of TASK_TERM_TO_CONCERNS) {
-    if (!taskMatchesKeyword(expanded, term)) continue;
-    const viaAlias =
-      !taskMatchesKeyword(input.taskLower, term) &&
-      appliedAliases.some((alias) => alias.en.includes(term));
-    for (const concern of mapped) {
-      recordActivation(
-        trace,
-        concerns,
-        concernScores,
-        rejected,
-        {
-          source: viaAlias ? "alias_expansion" : "task_term",
-          produced: concern,
-          trigger: term,
-          score: viaAlias ? 0.6 : 0.8,
-          confidence: viaAlias ? "semantic" : "deterministic",
-          reason: viaAlias
-            ? `Task text matches '${term}' after PT/EN alias expansion.`
-            : `Task text contains '${term}'.`
-        },
-        concern,
-        { capDuplicates: true }
-      );
+    // 2b) Single-token task terms. Whole-word matching prevents false positives
+    // like `test` inside `latest` or `log` inside `logical`.
+    for (const [term, mapped] of TASK_TERM_TO_CONCERNS) {
+      if (!taskMatchesKeyword(expanded, term)) continue;
+      const viaAlias =
+        !taskMatchesKeyword(input.taskLower, term) &&
+        appliedAliases.some((alias) => alias.en.includes(term));
+      for (const concern of mapped) {
+        recordActivation(
+          trace,
+          concerns,
+          concernScores,
+          rejected,
+          {
+            source: viaAlias ? "alias_expansion" : "task_term",
+            produced: concern,
+            trigger: term,
+            score: viaAlias ? 0.6 : 0.8,
+            confidence: viaAlias ? "semantic" : "deterministic",
+            reason: viaAlias
+              ? `Task text matches '${term}' after PT/EN alias expansion.`
+              : `Task text contains '${term}'.`
+          },
+          concern,
+          { capDuplicates: true }
+        );
+      }
     }
-  }
 
-  // 2b-bis) R-image (vaga v1.8.0, 2026-08-31): "image"/"imagem" é homónimo —
-  // imagem de container vs ficheiro de imagem (finding do replay DualGauge).
-  // Desambiguação DECLARADA por contexto: image+docker/registry/container → sentido
-  // container (deployment/distribution); image+file/upload/photo → FIL (files);
-  // ambos os contextos → ambos; nenhum → sentido histórico (deployment/distribution).
-  if (taskMatchesKeyword(expanded, "image")) {
-    const containerCtx = /docker|registry|container|kubernetes|k8s|\boci\b/.test(expanded);
-    const fileCtx = /upload|file|photo|picture|png|jpe?g|gif|avatar|galeria|gallery|perfil|profile/.test(expanded);
-    const senses: Array<{ concern: Concern; reason: string }> = [];
-    if (fileCtx) {
-      senses.push({ concern: "files", reason: "R-image: 'image' em contexto file/upload/photo → ficheiro de imagem (FIL)" });
+    // 2b-bis) R-image (vaga v1.8.0, 2026-08-31): "image"/"imagem" é homónimo —
+    // imagem de container vs ficheiro de imagem (finding do replay DualGauge).
+    // Desambiguação DECLARADA por contexto: image+docker/registry/container → sentido
+    // container (deployment/distribution); image+file/upload/photo → FIL (files);
+    // ambos os contextos → ambos; nenhum → sentido histórico (deployment/distribution).
+    if (taskMatchesKeyword(expanded, "image")) {
+      const containerCtx = /docker|registry|container|kubernetes|k8s|\boci\b/.test(expanded);
+      const fileCtx = /upload|file|photo|picture|png|jpe?g|gif|avatar|galeria|gallery|perfil|profile/.test(expanded);
+      const senses: Array<{ concern: Concern; reason: string }> = [];
+      if (fileCtx) {
+        senses.push({ concern: "files", reason: "R-image: 'image' em contexto file/upload/photo → ficheiro de imagem (FIL)" });
+      }
+      if (containerCtx || !fileCtx) {
+        senses.push(
+          { concern: "deployment", reason: containerCtx ? "R-image: 'image' em contexto docker/registry/container → imagem de container" : "R-image: 'image' sem contexto discriminante → sentido histórico (deployment)" },
+          { concern: "distribution", reason: containerCtx ? "R-image: 'image' em contexto docker/registry/container → distribuição de imagem" : "R-image: 'image' sem contexto discriminante → sentido histórico (distribution)" }
+        );
+      }
+      for (const { concern, reason } of senses) {
+        recordActivation(
+          trace, concerns, concernScores, rejected,
+          { source: "task_term", produced: concern, trigger: "image", score: 0.8, confidence: "deterministic", reason },
+          concern,
+          { capDuplicates: true }
+        );
+      }
     }
-    if (containerCtx || !fileCtx) {
-      senses.push(
-        { concern: "deployment", reason: containerCtx ? "R-image: 'image' em contexto docker/registry/container → imagem de container" : "R-image: 'image' sem contexto discriminante → sentido histórico (deployment)" },
-        { concern: "distribution", reason: containerCtx ? "R-image: 'image' em contexto docker/registry/container → distribuição de imagem" : "R-image: 'image' sem contexto discriminante → sentido histórico (distribution)" }
-      );
-    }
-    for (const { concern, reason } of senses) {
-      recordActivation(
-        trace, concerns, concernScores, rejected,
-        { source: "task_term", produced: concern, trigger: "image", score: 0.8, confidence: "deterministic", reason },
-        concern,
-        { capDuplicates: true }
-      );
-    }
-  }
 
-  // 2c) Whole-word intent classification (codegen-specific; stricter than the
-  // gateway's substring matcher to avoid PT/EN false positives).
-  for (const intentEntry of CODEGEN_INTENTS) {
-    const matchedKeyword = intentEntry.keywords.find((keyword) =>
-      taskMatchesKeyword(expanded, keyword)
-    );
-    if (!matchedKeyword) continue;
-    for (const concern of intentEntry.concerns) {
-      recordActivation(
-        trace,
-        concerns,
-        concernScores,
-        rejected,
-        {
-          source: "intent_keyword",
-          produced: concern,
-          trigger: intentEntry.intent,
-          score: 0.5,
-          confidence: "semantic",
-          reason: `Intent '${intentEntry.intent}' matched keyword '${matchedKeyword}'.`
-        },
-        concern,
-        { capDuplicates: false }
+    // 2c) Whole-word intent classification (codegen-specific; stricter than the
+    // gateway's substring matcher to avoid PT/EN false positives).
+    for (const intentEntry of CODEGEN_INTENTS) {
+      const matchedKeyword = intentEntry.keywords.find((keyword) =>
+        taskMatchesKeyword(expanded, keyword)
       );
+      if (!matchedKeyword) continue;
+      for (const concern of intentEntry.concerns) {
+        recordActivation(
+          trace,
+          concerns,
+          concernScores,
+          rejected,
+          {
+            source: "intent_keyword",
+            produced: concern,
+            trigger: intentEntry.intent,
+            score: 0.5,
+            confidence: "semantic",
+            reason: `Intent '${intentEntry.intent}' matched keyword '${matchedKeyword}'.`
+          },
+          concern,
+          { capDuplicates: false }
+        );
+      }
     }
-  }
 
-  // 3) Changed-file path heuristics.
-  for (const file of input.changed_files) {
-    const lower = file.toLowerCase();
-    const fileHits: Concern[] = [];
-    if (/route|router|controller|handler|endpoint/.test(lower)) fileHits.push("api");
-    if (/auth|session|jwt|login/.test(lower)) fileHits.push("auth");
-    if (/log|logger/.test(lower)) fileHits.push("logging");
-    if (/config|env|settings/.test(lower)) fileHits.push("config");
-    if (/secret|credential/.test(lower)) fileHits.push("secrets");
-    if (/test|spec/.test(lower)) fileHits.push("testing");
-    if (/dockerfile|docker-compose|k8s|kubernetes|terraform/.test(lower))
-      fileHits.push("deployment");
-    for (const concern of fileHits) {
-      recordActivation(
-        trace,
-        concerns,
-        concernScores,
-        rejected,
-        {
-          source: "changed_file",
-          produced: concern,
-          trigger: file,
-          score: 0.5,
-          confidence: "semantic",
-          reason: `Changed file path matches '${concern}' heuristics.`
-        },
-        concern,
-        { capDuplicates: true }
-      );
+    // 3) Changed-file path heuristics.
+    for (const file of input.changed_files) {
+      const lower = file.toLowerCase();
+      const fileHits: Concern[] = [];
+      if (/route|router|controller|handler|endpoint/.test(lower)) fileHits.push("api");
+      if (/auth|session|jwt|login/.test(lower)) fileHits.push("auth");
+      if (/log|logger/.test(lower)) fileHits.push("logging");
+      if (/config|env|settings/.test(lower)) fileHits.push("config");
+      if (/secret|credential/.test(lower)) fileHits.push("secrets");
+      if (/test|spec/.test(lower)) fileHits.push("testing");
+      if (/dockerfile|docker-compose|k8s|kubernetes|terraform/.test(lower))
+        fileHits.push("deployment");
+      for (const concern of fileHits) {
+        recordActivation(
+          trace,
+          concerns,
+          concernScores,
+          rejected,
+          {
+            source: "changed_file",
+            produced: concern,
+            trigger: file,
+            score: 0.5,
+            confidence: "semantic",
+            reason: `Changed file path matches '${concern}' heuristics.`
+          },
+          concern,
+          { capDuplicates: true }
+        );
+      }
     }
+
   }
 
   // 4) Slice families (ranked by max contributing concern score).
@@ -1742,11 +1793,6 @@ export function activate(input: NormalizedInput): ActivationResult {
   // rule (each with its own trace source), because the reference selection
   // semantics says an authenticated/public surface must be auditable and a
   // personal/regulated data context must carry crypto+masking+validation.
-  const EXPOSURE_CONCERNS: Readonly<Record<string, readonly Concern[]>> = {
-    internal: ["auth", "logging"],
-    authenticated: ["auth", "logging"],
-    public: ["auth", "logging", "api", "validation", "architecture"]
-  };
   if (input.exposure && EXPOSURE_CONCERNS[input.exposure]) {
     for (const concern of EXPOSURE_CONCERNS[input.exposure] ?? []) {
       recordActivation(
@@ -1764,12 +1810,6 @@ export function activate(input: NormalizedInput): ActivationResult {
       );
     }
   }
-  const SENSITIVITY_CONCERNS: Readonly<Record<string, readonly Concern[]>> = {
-    // v1.8.0: personal/regulated data now also activates the PRI catalogue (privacy).
-    personal: ["encryption", "validation", "logging", "privacy"],
-    regulated: ["encryption", "validation", "logging", "privacy"],
-    secrets: ["secrets"]
-  };
   if (input.data_sensitivity && SENSITIVITY_CONCERNS[input.data_sensitivity]) {
     for (const concern of SENSITIVITY_CONCERNS[input.data_sensitivity] ?? []) {
       recordActivation(
@@ -1907,10 +1947,13 @@ interface PostActivationGateInput {
   input: NormalizedInput;
   activation: ActivationResult;
   estimatedRequirements: number;
+  /** 0.20.0-beta.21: as superfícies vieram de DECLARAÇÕES do chamador (não de prosa). */
+  declaredSurfaces?: boolean;
 }
 
 function gateAfterActivation(args: PostActivationGateInput): GateDecision | null {
   const { input, activation, estimatedRequirements } = args;
+  const declaredSurfaces = args.declaredSurfaces === true;
   const reasons: string[] = [];
   const suggestions: string[] = [];
 
@@ -1918,7 +1961,12 @@ function gateAfterActivation(args: PostActivationGateInput): GateDecision | null
   // primários de cada sinal), não o total de famílias activadas — concerns de
   // suporte de um mesmo sinal (mtls→secrets, mensageria→logging) não pedem
   // decomposição. GC-10 é o caso de referência: 1 integração legítima.
-  if (activation.decompositionFamilies.length > 3) {
+  // 0.20.0-beta.21 («declarativo primeiro»): o gate de decomposição nasceu para travar
+  // pedidos VAGOS cuja prosa activava meio catálogo. Quando as famílias vêm de
+  // DECLARAÇÕES explícitas, bloquear contradiz o contrato — o chamador não foi vago,
+  // foi preciso. O guarda do tamanho da resposta passa a ser (e já era) o tecto de
+  // requisitos por detail (0.19.4). Em `discover` a regra mantém-se tal e qual.
+  if (!declaredSurfaces && activation.decompositionFamilies.length > 3) {
     reasons.push(
       `Pedido activa ${activation.decompositionFamilies.length} superfícies (famílias primárias: ${activation.decompositionFamilies.join(
         ", "
@@ -1939,7 +1987,7 @@ function gateAfterActivation(args: PostActivationGateInput): GateDecision | null
   // D1 (G-mp1a): with the requirement-count cap gone, the no-signal guard is the
   // vagueness catch-all. The informational risk_level trace entry must not defeat
   // it — only real signals (concerns) count.
-  if (activation.concerns.length === 0 && input.tokenCount >= 4) {
+  if (!declaredSurfaces && activation.concerns.length === 0 && input.tokenCount >= 4) {
     return {
       status: "needs_clarification",
       reasons: [
@@ -3447,7 +3495,45 @@ function prepareCodegenContextCore(
     );
   }
 
-  const activation = activate(input);
+  // 0.20.0-beta.21 — «declarativo primeiro»: por defeito o prepare responde ao
+  // DECLARADO. Sem nenhuma declaração não adivinha a partir do `task`: devolve
+  // needs_input com o vocabulário e a receita (o gateway semântico e o
+  // classificador de intenção vivem no bloco lexical, que aqui não corre).
+  const selectionMode = raw.selection_mode === "discover" ? "discover" : "declarative";
+  const declaredTechnologies = normalizeDeclaredTechnologies(
+    Array.isArray(raw.technologies) ? raw.technologies.filter((t): t is string => typeof t === "string") : [],
+    input.stack
+  );
+  const declarativeSelection = selectionMode !== "discover";
+  const hasDeclaredActivator =
+    input.concerns.length > 0 ||
+    input.exposure !== undefined ||
+    input.data_sensitivity !== undefined ||
+    input.changed_files.length > 0 ||
+    declaredTechnologies.length > 0;
+  if (declarativeSelection && !hasDeclaredActivator) {
+    const probe = runSelection({ risk_level: input.risk_level ?? "L2", task: input.task });
+    const ni = probe.needs_input;
+    return blocked(
+      input,
+      raw,
+      "needs_input",
+      [
+        "Nenhum activador DECLARADO nesta chamada (concerns/exposure/data_sensitivity/technologies/changed_files).",
+        "Contrato v1.18-beta: o servidor responde ao declarado e NÃO interpreta o `task` — que fica registado para auditoria."
+      ],
+      [
+        `Lê o vocabulário fechado: read_sbd_toe_resource(uri="sbd://toe/activation-vocabulary").`,
+        `Re-chama declarando, por exemplo: ${ni?.example.with ?? 'risk_level="L2", concerns=[auth, logging]'}.`,
+        ...(ni && ni.candidates_to_confirm.from_task_text.length > 0
+          ? [`SUGESTÃO A CONFIRMAR (não é selecção), derivada do texto: [${ni.candidates_to_confirm.from_task_text.join(", ")}] — confirma e declara.`]
+          : []),
+        `Queres o comportamento inferencial antigo? selection_mode="discover" (exploratório).`
+      ],
+      []
+    );
+  }
+  const activation = activate(input, { declaredOnly: declarativeSelection });
 
   // (c) The scope gate measures the request's FOCUS, not its full semantic
   // expansion: explicit concerns when given, else the concerns activated by
@@ -3472,7 +3558,12 @@ function prepareCodegenContextCore(
   void focusConcerns; // kept for the debug notes below; the gate no longer counts requirements
   // MP1 selection (G-mp1a O2): the engine composes baseline ∪ context and narrows
   // by the task's declared signals — this is the requirement set served.
-  const selection: SelectionResult = runSelectionWithActivation(input, activation);
+  const selection: SelectionResult = runSelectionWithActivation(
+    input,
+    activation,
+    selectionMode === "discover" ? (raw.technologies ?? []) : declaredTechnologies,
+    selectionMode
+  );
   const estimatedRequirements = selection.selected.length;
 
   // 0.19.4 («a promessa do minimal», lead opção 2): tecto de requisitos por-id
@@ -3534,7 +3625,11 @@ function prepareCodegenContextCore(
   const postGate = gateAfterActivation({
     input,
     activation,
-    estimatedRequirements
+    estimatedRequirements,
+    // Só é "declarado" quando o chamador declarou mesmo: no caminho declarativo a
+    // ausência de declarações já devolveu needs_input antes de chegar aqui, logo
+    // este ponto implica declaração real. Em discover o gate mantém-se inteiro.
+    declaredSurfaces: declarativeSelection && hasDeclaredActivator
   });
   if (postGate && postGate.status !== "ready_for_codegen") {
     return blocked(

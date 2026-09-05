@@ -37,6 +37,7 @@ import { handleGetThreatLandscape } from "./tools/get-threat-landscape.js";
 import { handleGetGuideByRole } from "./tools/get-guide-by-role.js";
 import { handleResolveEntities } from "./tools/resolve-entities.js";
 import { handleTraceGraph } from "./tools/trace-graph.js";
+import { buildActivationVocabulary } from "./serving/activation-vocabulary.js";
 import {
   buildCodegenInstructionsResourceContent,
   handlePrepareCodegenContext,
@@ -178,6 +179,13 @@ const RESOURCE_CATALOG = [
           mimeType: "application/json"
         },
         {
+          uri: "sbd://toe/activation-vocabulary",
+          name: "SbD-ToE Activation Vocabulary",
+          description:
+            "DECLARATIVE-FIRST (0.20-beta): the CLOSED vocabulary this server accepts and what each value activates — concerns, exposure, data_sensitivity, technologies, changed_files path table, roles, phases, risk levels. Derived from the served bundle and the engine's own tables, never hand-written. Read it, map your reading of the request onto these values, and DECLARE them: the server answers the declared, it does not interpret prose.",
+          mimeType: "application/json"
+        },
+        {
           uri: "sbd://toe/index-compact",
           name: "SbD-ToE Index Compact",
           description:
@@ -282,6 +290,10 @@ async function materializeResource(uri: string): Promise<{ mimeType: string; tex
     }
   }
 
+  if (uri === "sbd://toe/activation-vocabulary") {
+    return { mimeType: "application/json", text: JSON.stringify(buildActivationVocabulary(), null, 2) };
+  }
+
   if (uri === "sbd://toe/index-compact") {
     // 0.15.0 (P0-2): DERIVADO do bundle no arranque — o estático de Março morreu.
     return { mimeType: "application/json", text: JSON.stringify(buildDerivedIndexCompact(TECHNOLOGY_TO_CHAPTERS), null, 2) };
@@ -323,7 +335,22 @@ async function materializeResource(uri: string): Promise<{ mimeType: string; tex
         // Absent if the pin cannot be read; never invented.
         manual: provenance?.manual,
         kg: provenance?.kg,
-        ontology: provenance?.ontology
+        ontology: provenance?.ontology,
+        // 0.20.0-beta.21 — a SEMÂNTICA de serviço mudou nesta linha, não só a versão:
+        // para um produto que vende reprodutibilidade, mudar isto em silêncio seria a
+        // pior violação da própria promessa.
+        serving_contract: {
+          version: "v1.18-beta",
+          semantics: "declarative-first",
+          line: "0.20-beta (experiência autorizada pelo programme lead 2026-09-05)",
+          changed:
+            "A selecção passou a ser função APENAS do que o chamador declara (risk_level, concerns, exposure, data_sensitivity, technologies, changed_files). O `task` é contexto registado para auditoria e não influencia o resultado; sem declarações a resposta é needs_input (nunca zero, nunca adivinhado). A baseline do nível pede-se com mode='baseline'.",
+          vocabulary_resource: "sbd://toe/activation-vocabulary",
+          discover_mode:
+            "O motor inferencial anterior (casamento lexical da prosa) continua disponível em mode='discover' — exploratório, marcado na resposta, para o oráculo histórico e o estudo de paráfrase.",
+          migration:
+            "v1.17 → v1.18-beta: quem enviava só `task` recebe agora needs_input com o vocabulário e candidatos A CONFIRMAR; declarar os activadores (ou pedir mode='discover'/'baseline') restabelece uma resposta com conteúdo. Linha estável inalterada."
+        }
       });
       return { mimeType: "application/json", text: payload };
     } catch {
@@ -680,7 +707,7 @@ class McpRuntime {
           name: "search_sbd_toe_manual",
           title: "Search SbD-ToE Manual",
           description:
-            "Retrieves grounded context from the SbD-ToE manual using the embedded local semantic snapshot.",
+            "NÃO-NORMATIVO — leitura e orientação, NUNCA caminho para um conjunto de requisitos. Pesquisa semântica sobre os chunks publicados do manual: serve para LER e localizar passagens (e para tu, LLM, formares a tua leitura), não para decidir âmbito. O conjunto de requisitos vem de select_sbd_toe_requirements com activadores DECLARADOS (vocabulário em sbd://toe/activation-vocabulary) — o que aqui sai não selecciona nada e não deve ser citado como se fosse selecção.",
           inputSchema: {
             type: "object",
             properties: {
@@ -1184,7 +1211,7 @@ class McpRuntime {
           name: "select_sbd_toe_requirements",
           title: "Select SbD-ToE Requirements (MP1)",
           description:
-            "START HERE — para qualquer tarefa concreta esta é a 1ª tool. Arranque: lê sbd://toe/agent-guide (read_sbd_toe_resource); setup_sbd_toe_agent é um PROMPT MCP — clientes sem prompts (p.ex. Desktop) não o expõem: segue directo por aqui. ACTIVADORES ESTRUTURADOS são a via primária de estabilidade — preenche task + exposure + data_sensitivity + stack (+ changed_files) a partir do enunciado, sem léxico; concerns declarados REFORÇAM (a task descobre; ver basis/lexical_dominance_warning). The MP1 selection operation (Classificar → Seleccionar): which requirements apply to THIS task in THIS " +
+            "START HERE — para qualquer tarefa concreta esta é a 1ª tool. Arranque: lê sbd://toe/agent-guide (read_sbd_toe_resource); setup_sbd_toe_agent é um PROMPT MCP — clientes sem prompts (p.ex. Desktop) não o expõem: segue directo por aqui. DECLARATIVO PRIMEIRO (contrato v1.18-beta, linha 0.20): TU tens o contexto — lê o pedido, o código e a conversa e DECLARA o que interpretaste (risk_level, concerns, exposure, data_sensitivity, technologies, changed_files). EU NÃO INTERPRETO PROSA: respondo com o que o KG sabe sobre o declarado, mais as adjacências do grafo, de forma reproduzível. Vocabulário fechado em sbd://toe/activation-vocabulary. O `task` fica REGISTADO para auditoria e NÃO influencia o resultado; sem nenhuma declaração devolvo needs_input com o vocabulário e candidatos A CONFIRMAR (nunca adivinho, nunca devolvo zero em silêncio); a baseline do nível pede-se explicitamente (mode='baseline'); o motor inferencial antigo fica em mode='discover' (exploratório). The MP1 selection operation (Classificar → Seleccionar): which requirements apply to THIS task in THIS " +
             "context. Composes the reference semantics the published ontology declares — baseline (cap. 02 base " +
             "catalogue, by risk level) ∪ domain chapters activated by the context (changed_files, technologies, stack, " +
             "task) ⊕ regulatory overlay (extend) — then narrows deterministically by the task's declared signals. " +
@@ -1195,13 +1222,14 @@ class McpRuntime {
             type: "object",
             properties: {
               risk_level: { type: "string", enum: ["L1", "L2", "L3"], description: "Application risk level (drives the baseline)." },
-              task: { type: "string", description: "The task being performed — drives the narrowing signals (verbs/objects, PT/EN)." },
-              stack: { type: "string", description: "Tech stack hint (e.g. 'Node.js/Express', 'Terraform')." },
+              task: { type: "string", description: "RECORDED CONTEXT (auditoria): o enunciado da tarefa. NÃO influencia a selecção no modo declarativo — o servidor não interpreta prosa. Só é motor em mode='discover'." },
+              mode: { type: "string", enum: ["declarative", "baseline", "discover"], description: "declarative (default): responde ao DECLARADO; sem declarações devolve needs_input com vocabulário e candidatos a confirmar. baseline: baseline completa do nível, por pedido EXPLÍCITO (nunca fallback). discover: motor inferencial histórico (casamento lexical da prosa), exploratório — investigação e estudo de paráfrase." },
+              stack: { type: "string", description: "Texto livre da stack. No modo declarativo só conta quando traz, como TOKEN EXACTO, um valor de `technologies` (normalizar o declarado é legítimo; adivinhar prosa não). Preferir `technologies`." },
               exposure: { type: "string", enum: ["local", "internal", "authenticated", "public"], description: "Declared activator: authenticated/public activate auth+logging (+api/validation/architecture for public)." },
               data_sensitivity: { type: "string", enum: ["low", "personal", "regulated", "secrets"], description: "Declared activator: personal/regulated activate encryption+validation+logging." },
-              concerns: { type: "array", items: { type: "string" }, description: "Explicit concerns (full WP5 lexicon incl. agents)." },
-              changed_files: { type: "array", items: { type: "string" }, description: "Changed paths — activate domain chapters via the review-scope path map." },
-              technologies: { type: "array", items: { type: "string" }, description: "Technology hints (containers, kubernetes, iac, ci-cd, sca-sbom, sast, dast, monitoring) — activate domain chapters." },
+              concerns: { type: "array", items: { type: "string" }, description: "DECLARADOS por ti a partir da tua leitura do pedido. Conjunto FECHADO publicado em sbd://toe/activation-vocabulary (com o que cada valor activa). Somam activação, não restringem." },
+              changed_files: { type: "array", items: { type: "string" }, description: "Caminhos reais do repositório — activam capítulos pela TABELA de padrões de path publicada (sbd://toe/activation-vocabulary), não por interpretação do nome." },
+              technologies: { type: "array", items: { type: "string" }, description: "Conjunto FECHADO (containers, kubernetes, iac, ci-cd, sca-sbom, sast, dast, monitoring, jwt) — activação por TABELA publicada, não por semelhança de texto; `jwt` aciona a regra nomeada SES-008. Ver sbd://toe/activation-vocabulary." },
               regulatory_frameworks: { type: "array", items: { type: "string" }, description: "Overlay frameworks to EXTEND with (e.g. 'EXT-AI-ACT')." },
               include_regulatory_overlay: { type: "boolean", description: "When true, resolves overlay obligations (operator extend; replace awaits ADR 0014)." },
               offset: { type: "integer", minimum: 0, description: "Pagination offset over selected[]." },
@@ -1534,6 +1562,18 @@ class McpRuntime {
                 type: "boolean",
                 description:
                   "When true (and overlay is published), enriches the response with regulatory_overlay context."
+              },
+              technologies: {
+                type: "array",
+                items: { type: "string" },
+                description:
+                  "Tecnologias DECLARADAS do vocabulário fechado (containers, kubernetes, iac, ci-cd, sca-sbom, sast, dast, monitoring, jwt) — activam capítulos por TABELA publicada em sbd://toe/activation-vocabulary. Preferir a `stack` em texto livre."
+              },
+              selection_mode: {
+                type: "string",
+                enum: ["declarative", "discover"],
+                description:
+                  "Semântica da SELECÇÃO (não confundir com `mode`, que é codegen/review/test-plan). declarative (default, contrato v1.18-beta): o conjunto vem do que DECLARASTE (concerns/exposure/data_sensitivity/technologies/changed_files) — sem declarações devolvo needs_input com o vocabulário; o `task` serve para grounding/citações e auditoria, não para escolher requisitos. discover: motor inferencial histórico (a prosa activa), exploratório."
               },
               detail: {
                 type: "string",

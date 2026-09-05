@@ -1,4 +1,11 @@
 /**
+ * 0.20.0-beta.21 («declarativo primeiro»): ESTE ficheiro mede CODIFICAÇÃO (dieta v2),
+ * não selecção. Para a série de medições continuar comparável byte a byte, as fixtures
+ * correm no caminho inferencial histórico — `selection_mode: "discover"` — injectado
+ * em `handlePrepareCodegenContext` pelo wrapper abaixo. A selecção declarativa tem os
+ * seus próprios testes (selection.declarative.test.ts + next-invariant.beta).
+ */
+/**
  * s4 — Workflow: turnos baratos, não menos turnos (epic v2-token-diet,
  * agentic/planeado/v2-token-diet/EPIC.md §s4, revisto pela ⟳ ADENDA
  * 2026-07-05: em produção o loop write-test-edit é legítimo — corta-se o
@@ -47,6 +54,12 @@ import { estimateSize } from "../serving/response-shaping.js";
 import { resolveAppPath } from "../config.js";
 import { clearG2RuntimeCacheForTests } from "./g2-runtime-loader.js";
 import { clearRegulatoryOverlayCacheForTests } from "./regulatory-overlay-loader.js";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const __prepareRaw = handlePrepareCodegenContext;
+const handlePrepareCodegenContextDiscover = (input: Parameters<typeof __prepareRaw>[0]) =>
+  __prepareRaw({ selection_mode: "discover", ...input });
+
 
 // ---------------------------------------------------------------------------
 // Fixtures — byte-identical to EPIC.md §Fixtures baseline (as no budget.test).
@@ -165,7 +178,7 @@ describe("s4 — repeat_call_hint no servidor (aditivo, standard/minimal)", () =
     it.each([...DIET_LEVELS])(
       "detail=%s inclui repeat_call_hint pequeno a apontar para a reutilização",
       (detail) => {
-        const result = handlePrepareCodegenContext({ ...fixture.input, detail });
+        const result = handlePrepareCodegenContextDiscover({ ...fixture.input, detail });
         expectReadyDieted(result);
         expect(result.repeat_call_hint).toBe(REPEAT_CALL_HINT);
         // Conteúdo: determinismo + reutilização + caminhos de re-consulta.
@@ -182,21 +195,21 @@ describe("s4 — repeat_call_hint no servidor (aditivo, standard/minimal)", () =
     );
 
     it("detail=full NÃO carrega o hint (invariante 1 — byte-idêntico ao clássico)", () => {
-      const result = handlePrepareCodegenContext(fixture.input);
+      const result = handlePrepareCodegenContextDiscover(fixture.input);
       expect(result).not.toHaveProperty("repeat_call_hint");
-      const explicit = handlePrepareCodegenContext({ ...fixture.input, detail: "full" });
+      const explicit = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "full" });
       expect(explicit).not.toHaveProperty("repeat_call_hint");
     });
 
     it("gate revisto: re-chamada idêntica em minimal é determinística (byte-igual) e barata face a full", () => {
-      const first = handlePrepareCodegenContext({ ...fixture.input, detail: "minimal" });
-      const second = handlePrepareCodegenContext({ ...fixture.input, detail: "minimal" });
+      const first = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "minimal" });
+      const second = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "minimal" });
       expect(JSON.stringify(second)).toBe(JSON.stringify(first));
       // O custo real da re-chamada minimal é o payload minimal — muito menor
       // que re-pedir o payload full (o gate ≤2K original assumia o top-N
       // removido pela ADENDA s3b; ver EPIC §s3b/§s4).
       const minimalTokens = estimateSize(first).approx_tokens;
-      const fullTokens = estimateSize(handlePrepareCodegenContext(fixture.input)).approx_tokens;
+      const fullTokens = estimateSize(handlePrepareCodegenContextDiscover(fixture.input)).approx_tokens;
       expect(minimalTokens).toBeLessThan(fullTokens / 2);
     });
   });
@@ -209,7 +222,7 @@ describe("s4 — repeat_call_hint no servidor (aditivo, standard/minimal)", () =
       concerns: ["auth"]
     });
     const targetedTokens = estimateSize(targeted).approx_tokens;
-    const minimal = handlePrepareCodegenContext({
+    const minimal = handlePrepareCodegenContextDiscover({
       ...FIXTURES[0]!.input,
       detail: "minimal"
     });
@@ -218,7 +231,7 @@ describe("s4 — repeat_call_hint no servidor (aditivo, standard/minimal)", () =
     expect(targetedTokens).toBeLessThan(minimalTokens);
     // E ordens de magnitude abaixo do full (18.9K baseline).
     const fullTokens = estimateSize(
-      handlePrepareCodegenContext(FIXTURES[0]!.input)
+      handlePrepareCodegenContextDiscover(FIXTURES[0]!.input)
     ).approx_tokens;
     expect(targetedTokens).toBeLessThan(fullTokens / 3);
   });

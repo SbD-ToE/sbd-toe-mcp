@@ -31,6 +31,14 @@ export interface SelectRequirementsOutput {
     narrowed_out: SelectionResult["narrowed_out"];
     excluded_by_level: SelectionResult["excluded_by_level"];
   };
+  /** 0.20.0-beta.21 — modo efectivo e semântica da resposta. */
+  mode: SelectionResult["mode"];
+  /** `task` é contexto registado (auditoria); só influencia a selecção em mode="discover". */
+  task: SelectionResult["task_record"];
+  /** Presente quando nada foi declarado: pedido de declaração com a aula, não resultado. */
+  needs_input?: SelectionResult["needs_input"];
+  /** Só em mode="discover": a resposta é exploratória e vem marcada como tal. */
+  exploratory?: { mode: "discover"; note: string };
   basis_summary: SelectionResult["basis_summary"];
   lexical_dominance_warning?: SelectionResult["lexical_dominance_warning"];
   empty_selection_warning?: SelectionResult["empty_selection_warning"];
@@ -71,8 +79,16 @@ export function handleSelectRequirements(args: Record<string, unknown>): SelectR
 
   const task = str("task"), stack = str("stack"), exposure = str("exposure"), dataSensitivity = str("data_sensitivity");
   const concerns = arr("concerns"), changedFiles = arr("changed_files"), technologies = arr("technologies");
+  const modeArg = str("mode");
+  if (modeArg !== undefined && !["declarative", "baseline", "discover"].includes(modeArg)) {
+    throw Object.assign(new Error(`Invalid mode: "${modeArg}". Allowed: declarative, baseline, discover.`), {
+      rpcError: { code: -32602, message: `Invalid mode: "${modeArg}". Allowed: declarative, baseline, discover.` }
+    });
+  }
+  const mode = (modeArg ?? "declarative") as NonNullable<SelectionContextInput["mode"]>;
   const context: SelectionContextInput = {
     risk_level: risk,
+    mode,
     ...(task !== undefined ? { task } : {}),
     ...(stack !== undefined ? { stack } : {}),
     ...(exposure !== undefined ? { exposure } : {}),
@@ -121,13 +137,25 @@ export function handleSelectRequirements(args: Record<string, unknown>): SelectR
       content_type: "derived",
       produced_by: "mp1_selection_engine",
       source_data:
-        "runtime/requirements.json + ontology requirement_selection_model (v2.2) + review-scope path map + activation lexicon",
+        "runtime/requirements.json + ontology requirement_selection_model (v2.2) + review-scope path map + activation vocabulary (sbd://toe/activation-vocabulary)",
       note:
-        "Selecção MP1: baseline(cap. 02, nível) ∪ capítulos activados pelo contexto ⊕ overlay(extend), com narrowing " +
-        "determinístico e declarado pela tarefa. Cada inclusão tem selection_trace; cada exclusão elegível está em " +
-        "narrowed_out com razão — nunca em silêncio. Nada é inventado."
+        mode === "discover"
+          ? "MODO EXPLORATÓRIO (discover): activação por casamento de palavras na tarefa, com os avisos de basis/dominância/vazio. Instrumento de investigação — a resposta NÃO é o contrato declarativo desta linha."
+          : "Selecção DECLARATIVA (contrato v1.18-beta): função apenas do que foi declarado — risk_level, concerns, exposure, data_sensitivity, technologies, changed_files. O `task` fica registado para auditoria e não influencia o resultado. Cada inclusão tem selection_trace; cada exclusão elegível está em narrowed_out com razão — nunca em silêncio. Nada é inventado."
     },
     risk_level: risk,
+    mode: result.mode,
+    task: result.task_record,
+    ...(result.needs_input ? { needs_input: result.needs_input } : {}),
+    ...(mode === "discover"
+      ? {
+          exploratory: {
+            mode: "discover" as const,
+            note:
+              "Resposta EXPLORATÓRIA: a selecção foi inferida do texto da tarefa (casamento lexical), não declarada. Serve investigação (oráculo histórico, estudo de paráfrase); para trabalho reproduzível declara os activadores — vocabulário em sbd://toe/activation-vocabulary."
+          }
+        }
+      : {}),
     selection: { selected: page, narrowed_out: result.narrowed_out, excluded_by_level: result.excluded_by_level },
     context: { activated_chapters: result.activated_chapters, activated_categories: result.activated_categories },
     activation_trace: result.activation.trace,
@@ -150,6 +178,27 @@ export function handleSelectRequirements(args: Record<string, unknown>): SelectR
         "coverage pagina `selected`; `narrowed_out` vem completo (agrupado por categoria). O veredicto de nível usa o catálogo publicado.",
       notes: result.notes
     },
-    next: selectRequirementsAffordances(risk, page.map((x) => x.requirement_id), result.empty_selection_warning?.candidate_concerns ?? result.lexical_dominance_warning?.candidate_concerns, result.selected.length)
+    next: result.needs_input
+      ? [
+          {
+            intent: "Ler o vocabulário fechado que substitui a adivinhação de palavras",
+            tool: "read_sbd_toe_resource",
+            with: 'uri="sbd://toe/activation-vocabulary"',
+            kind: "structural" as const
+          },
+          {
+            intent: "Re-chamar DECLARANDO o que a tua leitura do pedido justifica (os candidatos são sugestão a confirmar)",
+            tool: result.needs_input.example.tool,
+            with: result.needs_input.example.with,
+            kind: "structural" as const
+          },
+          {
+            intent: "Ou pedir explicitamente a baseline do nível (nunca aparece como fallback)",
+            tool: result.needs_input.baseline_escape_hatch.tool,
+            with: result.needs_input.baseline_escape_hatch.with,
+            kind: "structural" as const
+          }
+        ]
+      : selectRequirementsAffordances(risk, page.map((x) => x.requirement_id), result.empty_selection_warning?.candidate_concerns ?? result.lexical_dominance_warning?.candidate_concerns, result.selected.length)
   };
 }

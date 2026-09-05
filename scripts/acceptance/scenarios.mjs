@@ -27,8 +27,9 @@ const ctxLinksTargeting = (ctx, controlId) => ctx ? [...ctx.knownIds].filter((ri
 export const scenarios = [
   // ───────────────────────── Axis A — Tool coverage ─────────────────────────
   { id: "TC-A-01", axis: "A", title: "codegen ready_for_codegen with real citation_map", tool: "prepare_sbd_toe_codegen_context",
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c, ctx) => {
-      const r = await c.tool("prepare_sbd_toe_codegen_context", { task: "Validação de payload no PATCH /users/:id/email, Node/Express", risk_level: "L2" });
+      const r = await c.tool("prepare_sbd_toe_codegen_context", { selection_mode: "discover", task: "Validação de payload no PATCH /users/:id/email, Node/Express", risk_level: "L2" });
       if (!r.ok) return fail(r.error);
       const d = r.data; if (d.status !== "ready_for_codegen") return fail(`status=${d.status}`);
       const keys = Object.keys(d.citation_map ?? {}); const unknown = keys.filter((k) => !ctx.knownIds.has(k));
@@ -38,7 +39,8 @@ export const scenarios = [
       return ok(`ready; ${keys.length} citations all resolve; trace ${d.activation_trace.length}; provenance ${d.provenance ? "yes" : "no"}`);
     } },
   { id: "TC-A-02", axis: "A", title: "codegen vague task → clarification/decomposition, no ids", tool: "prepare_sbd_toe_codegen_context",
-    run: async (c) => { const r = await c.tool("prepare_sbd_toe_codegen_context", { task: "Melhora a segurança da aplicação toda", risk_level: "L2" }); if (!r.ok) return fail(r.error);
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
+    run: async (c) => { const r = await c.tool("prepare_sbd_toe_codegen_context", { selection_mode: "discover", task: "Melhora a segurança da aplicação toda", risk_level: "L2" }); if (!r.ok) return fail(r.error);
       const s = r.data.status; if (!["needs_clarification", "needs_decomposition"].includes(s)) return fail(`status=${s}`);
       if (r.data.citation_map) return fail("citation_map present on non-ready status"); return ok(`status=${s}; no citation_map`); } },
   { id: "TC-A-03", axis: "A", title: "codegen with regulatory overlay (EXT-DORA) — honest degradation", tool: "prepare_sbd_toe_codegen_context",
@@ -344,9 +346,10 @@ export const scenarios = [
   { id: "TC-E-17", axis: "E", title: "rich US: US-01 ch.01 foundational bdd + checklist", tool: "resolve_entities",
     run: async (c) => { const r = await c.tool("resolve_entities", { record_type: "user_story", filters: { us_id: "US-01", chapter_id: "01-classificacao-aplicacoes" } }); if (!r.ok) return fail(r.error); const u = r.data.entities?.[0]; return u && (u.bdd?.length ?? 0) >= 3 && (u.checklist_items?.length ?? 0) >= 1 ? ok(`bdd ${u.bdd.length}, checklist ${u.checklist_items.length}`) : fail(`bdd ${u?.bdd?.length}, checklist ${u?.checklist_items?.length}`); } },
   { id: "TC-F-11", axis: "F", title: "select_sbd_toe_requirements (MP1): baseline ∪ contexto, narrowing declarado, G1", tool: "select_sbd_toe_requirements",
-    run: async (c, ctx) => { const r = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Empacotar o serviço em Docker e preparar deploy em K8s", changed_files: ["Dockerfile", "deploy/k8s/service.yaml"], limit: 25 }); if (!r.ok) return fail(r.error); const d = r.data;
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
+    run: async (c, ctx) => { const r = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Empacotar o serviço em Docker e preparar deploy em K8s", changed_files: ["Dockerfile", "deploy/k8s/service.yaml"], limit: 25 }); if (!r.ok) return fail(r.error); const d = r.data;
       if (!d.coverage || d.coverage.total === undefined || d.coverage.hasMore === undefined) return fail("no coverage envelope (G1)");
-      const ids = []; let offset = 0; for (;;) { const p = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Empacotar o serviço em Docker e preparar deploy em K8s", changed_files: ["Dockerfile", "deploy/k8s/service.yaml"], offset, limit: 25 }); ids.push(...p.data.selection.selected.map((x) => x.requirement_id)); if (!p.data.coverage.hasMore) break; offset = p.data.coverage.nextOffset; }
+      const ids = []; let offset = 0; for (;;) { const p = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Empacotar o serviço em Docker e preparar deploy em K8s", changed_files: ["Dockerfile", "deploy/k8s/service.yaml"], offset, limit: 25 }); ids.push(...p.data.selection.selected.map((x) => x.requirement_id)); if (!p.data.coverage.hasMore) break; offset = p.data.coverage.nextOffset; }
       if (new Set(ids).size !== ids.length) return fail("pagination duplicates");
       const bad = ids.filter((id) => !ctx.knownIds.has(id)); if (bad.length) return fail(`ids not in bundle: ${bad.slice(0, 3)}`);
       if (!ids.some((id) => id.startsWith("CNT-")) || !ids.some((id) => id.startsWith("DPL-"))) return fail(`context chapters not selected: ${ids.slice(0, 8)}`);
@@ -355,17 +358,19 @@ export const scenarios = [
       if (!d.selection.selected.every((x) => (x.selection_trace ?? []).length > 0)) return fail("selected item without selection_trace");
       return ok(`walk ${ids.length} selected (CNT/DPL in, AUT narrowed with reason), traces on all, narrowed_out ${d.coverage.narrowed_out_requirements} declared`); } },
   { id: "TC-F-12", axis: "F", title: "select (MP1): activadores declarados (agents, data_sensitivity) + overlay extend", tool: "select_sbd_toe_requirements",
-    run: async (c) => { const a = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", task: "Worker agêntico com mandate, kill-switch e audit por tool-call" }); if (!a.ok) return fail(a.error);
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
+    run: async (c) => { const a = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L3", task: "Worker agêntico com mandate, kill-switch e audit por tool-call" }); if (!a.ok) return fail(a.error);
       const aid = a.data.selection.selected.map((x) => x.requirement_id); for (const id of ["REQ-AGN-001", "REQ-AGN-002", "REQ-AGN-003", "REQ-AGN-004"]) if (!aid.includes(id)) return fail(`${id} not selected for an agentic task`);
       for (const id of ["ACC-002", "AUT-006", "ENC-006", "DEP-011", "DEP-013", "DEP-014"]) if (!aid.includes(id)) return fail(`R1 principal set missing ${id}`);
       const r1 = a.data.selection.selected.find((x) => x.requirement_id === "ACC-002");
       if (!(r1?.selection_trace ?? []).some((t) => String(t.trigger ?? "").startsWith("R1:"))) return fail("R1 not named in selection_trace");
       if (aid.some((id) => id.startsWith("SES-"))) return fail("SES selected for an agentic task (R2)");
-      const b = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", task: "Formulário de registo com dados pessoais", data_sensitivity: "regulated", include_regulatory_overlay: true, regulatory_frameworks: ["EXT-AI-ACT"] }); if (!b.ok) return fail(b.error);
+      const b = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L3", task: "Formulário de registo com dados pessoais", data_sensitivity: "regulated", include_regulatory_overlay: true, regulatory_frameworks: ["EXT-AI-ACT"] }); if (!b.ok) return fail(b.error);
       const bid = b.data.selection.selected.map((x) => x.requirement_id); if (!bid.some((id) => id.startsWith("ENC-"))) return fail("data_sensitivity=regulated did not activate ENC");
       if (b.data.overlay.status !== "resolved" || b.data.overlay.obligations.length === 0) return fail(`overlay extend not resolved: ${b.data.overlay.status}`);
       return ok(`agents → AGN ×4 + wave; regulated → ENC in; overlay extend ${b.data.overlay.obligations.length} AI Act obligations`); } },
   { id: "TC-F-13", axis: "F", title: "camada de ensino (R3): guide → select → aprofundar via narrowed_out/sinal", tool: "select_sbd_toe_requirements",
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c) => {
       const g = await c.resource("sbd://toe/agent-guide");
       const raw = typeof g === "string" ? g : (g?.contents?.[0]?.text ?? g?.text ?? JSON.stringify(g));
@@ -374,32 +379,34 @@ export const scenarios = [
       if (!text.includes("narrowed_out")) return fail("guide does not teach the two bands");
       if (!text.includes('mode=\"index\"') && !text.includes('mode: \"index\"')) return fail("guide does not teach consult mode index");
       if (/m[áa]x(imo)?\s*50|max\s*50|50 activated/i.test(text)) return fail("guide still references the old max-50 scope gate");
-      const a = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Expor API de consulta com chaves de cliente e rate limiting" }); if (!a.ok) return fail(a.error);
+      const a = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Expor API de consulta com chaves de cliente e rate limiting" }); if (!a.ok) return fail(a.error);
       const ses = (a.data.selection.narrowed_out ?? []).find((x) => x.category === "SES");
       if (!ses || !ses.reason) return fail("narrowed_out has no teachable SES group/reason");
       const next = a.data.next ?? []; if (!next.some((n) => n.tool === "prepare_sbd_toe_codegen_context") || !next.some((n) => n.tool === "consult_security_requirements")) return fail("select.next does not suggest prepare+consult");
-      const b = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Expor API de consulta com chaves de cliente, rate limiting e sessões de utilizador autenticado" }); if (!b.ok) return fail(b.error);
+      const b = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Expor API de consulta com chaves de cliente, rate limiting e sessões de utilizador autenticado" }); if (!b.ok) return fail(b.error);
       const bids = b.data.selection.selected.map((x) => x.requirement_id);
       if (!bids.some((id) => id.startsWith("SES-"))) return fail("re-call with the missing session signal did not recover SES");
       return ok(`guide teaches select+bands+index; SES narrowed with reason → recovered by adding the session signal (${bids.filter((i) => i.startsWith("SES-")).length} SES back); next[] → prepare+consult`); } },
   { id: "TC-F-14", axis: "F", title: "R-image (v1.8.0): 'imagem' docker → CNT, 'imagem' ficheiro → FIL (desambiguação declarada)", tool: "select_sbd_toe_requirements",
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c) => {
-      const a = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Publicar a imagem Docker no registry do cluster" }); if (!a.ok) return fail(a.error);
+      const a = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Publicar a imagem Docker no registry do cluster" }); if (!a.ok) return fail(a.error);
       const aid = a.data.selection.selected.map((x) => x.requirement_id);
       if (!aid.some((id) => id.startsWith("CNT-"))) return fail(`docker sense did not reach CNT: ${aid.slice(0, 8)}`);
       if (aid.some((id) => id.startsWith("FIL-"))) return fail("docker sense wrongly selected FIL (homonym misfire)");
-      const b = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Endpoint de upload de imagens de perfil (fotografias) com pré-visualização" }); if (!b.ok) return fail(b.error);
+      const b = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Endpoint de upload de imagens de perfil (fotografias) com pré-visualização" }); if (!b.ok) return fail(b.error);
       const bid = b.data.selection.selected.map((x) => x.requirement_id);
       if (!bid.some((id) => id.startsWith("FIL-"))) return fail(`file sense did not reach FIL: ${bid.slice(0, 8)}`);
       if (bid.some((id) => id.startsWith("CNT-"))) return fail("file sense wrongly selected CNT (homonym misfire)");
       return ok(`docker → CNT ×${aid.filter((i) => i.startsWith("CNT-")).length} sem FIL; ficheiro → FIL ×${bid.filter((i) => i.startsWith("FIL-")).length} sem CNT`); } },
   { id: "TC-F-15", axis: "F", title: "SES-008-por-tecnologia (Author): JWT activa SES-008 a qualquer nível, nomeado no trace", tool: "select_sbd_toe_requirements",
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c) => {
-      const a = await c.tool("select_sbd_toe_requirements", { risk_level: "L1", task: "SPA com login e sessão JWT; app interna de baixo risco" }); if (!a.ok) return fail(a.error);
+      const a = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L1", task: "SPA com login e sessão JWT; app interna de baixo risco" }); if (!a.ok) return fail(a.error);
       const hit = a.data.selection.selected.find((x) => x.requirement_id === "SES-008");
       if (!hit) return fail("SES-008 not selected for a JWT task at L1");
       if (!(hit.selection_trace ?? []).some((t) => String(t.trigger ?? "").startsWith("SES-008-por-tecnologia"))) return fail("SES-008 selected but the named rule is not in the trace");
-      const b = await c.tool("select_sbd_toe_requirements", { risk_level: "L1", task: "SPA com login e sessão de utilizador; app interna de baixo risco" }); if (!b.ok) return fail(b.error);
+      const b = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L1", task: "SPA com login e sessão de utilizador; app interna de baixo risco" }); if (!b.ok) return fail(b.error);
       if (b.data.selection.selected.some((x) => x.requirement_id === "SES-008")) return fail("SES-008 selected without a JWT/user-token signal (level filter must rule)");
       return ok("JWT@L1 → SES-008 com regra nomeada no trace; sem JWT → nível manda (SES-008 fora)"); } },
   { id: "TC-F-16", axis: "F", title: "read_sbd_toe_resource (0.13.0): espelho de resources/read — estático, templado e URI desconhecido declarado", tool: "read_sbd_toe_resource",
@@ -440,12 +447,13 @@ export const scenarios = [
       if (!ag.ok) return fail(`concern agents rejeitado: ${ag.error}`);
       return ok(`default ${d.threats.length}/${d.coverage.total} threats, size≈${d.size_estimate.approx_tokens}tk, página 2 avança, enum agents aceite`); } },
   { id: "TC-F-19", axis: "F", title: "banda excluded_by_level (0.15.0): select declara exclusões de nível; prepare com counts", tool: "select_sbd_toe_requirements",
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c) => {
-      const r = await c.tool("select_sbd_toe_requirements", { risk_level: "L1", task: "SPA com login e sessão de utilizador; app interna" }); if (!r.ok) return fail(r.error);
+      const r = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L1", task: "SPA com login e sessão de utilizador; app interna" }); if (!r.ok) return fail(r.error);
       const ex = r.data.selection.excluded_by_level; if (!Array.isArray(ex) || ex.length === 0) return fail("excluded_by_level vazio em L1 (há requisitos L2+/L3-only)");
       if (!ex.every((g) => g.reason && g.requirement_ids?.length === g.count)) return fail("grupo sem razão/ids coerentes");
       if (typeof r.data.coverage.excluded_by_level_requirements !== "number") return fail("coverage sem o total da banda");
-      const p = await c.tool("prepare_sbd_toe_codegen_context", { task: "Adicionar logging de auditoria ao serviço interno", risk_level: "L1" }); if (!p.ok) return fail(p.error);
+      const p = await c.tool("prepare_sbd_toe_codegen_context", { selection_mode: "discover", task: "Adicionar logging de auditoria ao serviço interno", risk_level: "L1" }); if (!p.ok) return fail(p.error);
       const sel = p.data.completeness_report?.selection;
       if (typeof sel?.excluded_by_level_requirements !== "number") return fail("prepare sem counts da banda");
       return ok(`select L1: ${ex.length} categorias excluídas por nível (${r.data.coverage.excluded_by_level_requirements} reqs) DECLARADAS; prepare counts ✓`); } },
@@ -555,9 +563,10 @@ export const scenarios = [
       if (diet.data.requirements[0]?.compensated?.chains) return fail("include_chains=false não dietou");
       return ok(`FIL-002 direct ×${filDirect} + DEP-001 compensado (1º salto ${hop.alignment_type}@${hop.confidence}); fake declarado; meta ${d.meta.counts.with_direct_anchors}/${d.meta.counts.with_compensated_coverage}/${d.meta.counts.without_any_source_declared}; dieta ✓`); } },
   { id: "TC-F-29", axis: "F", title: "0.19.0 (ronda 3): paráfrase — basis declared/lexical + aviso de dominância + razão sensível-à-redacção", tool: "select_sbd_toe_requirements",
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c) => {
-      const rica = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Endpoint de upload com sessão de utilizador e token de acesso" }); if (!rica.ok) return fail(rica.error);
-      const magra = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Receber ficheiros dos utilizadores autenticados" }); if (!magra.ok) return fail(magra.error);
+      const rica = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Endpoint de upload com sessão de utilizador e token de acesso" }); if (!rica.ok) return fail(rica.error);
+      const magra = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Receber ficheiros dos utilizadores autenticados" }); if (!magra.ok) return fail(magra.error);
       const idsR = new Set(rica.data.selection.selected.map((x) => x.requirement_id));
       const idsM = new Set(magra.data.selection.selected.map((x) => x.requirement_id));
       if (idsR.size === idsM.size) return fail("paráfrase não reproduziu a divergência (fixture morta)");
@@ -570,7 +579,7 @@ export const scenarios = [
       if (!w || w.lexical_share <= w.threshold) return fail("aviso de dominância não disparou na variante magra");
       if (!Array.isArray(w.candidate_concerns) || w.candidate_concerns.length === 0) return fail("aviso sem candidate_concerns");
       if (!(magra.data.next ?? []).some((n) => /concerns EXPLÍCITOS|explícitos/i.test(n.intent ?? ""))) return fail("next não sugere estabilizar com concerns");
-      const decl = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Receber ficheiros dos utilizadores autenticados", concerns: w.candidate_concerns.slice(0, 3) }); if (!decl.ok) return fail(decl.error);
+      const decl = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Receber ficheiros dos utilizadores autenticados", concerns: w.candidate_concerns.slice(0, 3) }); if (!decl.ok) return fail(decl.error);
       if (decl.data.lexical_dominance_warning) return fail("com concerns explícitos o aviso devia calar-se");
       const ex = magra.data.selection.excluded_by_level?.[0];
       if (ex && ex.basis !== "declared") return fail("excluded_by_level devia ser basis declared (regra de dados)");
@@ -585,9 +594,10 @@ export const scenarios = [
       if (!slot.when || !slot.text) return fail("slot 0 não devolvido");
       return ok(`slot inválido → catálogo real por índice+when; slot '0' (when=${slot.when}) devolvido`); } },
   { id: "TC-F-31", axis: "F", title: "0.19.1 (ronda 4): V2 vazio=ALARME; V4 declarado vence lexical; replay-SES continua morto", tool: "select_sbd_toe_requirements",
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c) => {
       // V2 (equivalente construído — wording original não registado; declarado): 0 selected → alarme
-      const v2 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Cumprir as políticas internas de segurança da informação no módulo de clientes" }); if (!v2.ok) return fail(v2.error);
+      const v2 = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Cumprir as políticas internas de segurança da informação no módulo de clientes" }); if (!v2.ok) return fail(v2.error);
       if (v2.data.selection.selected.length !== 0) return fail("fixture V2 deixou de dar 0 (re-baseline)");
       const ew = v2.data.empty_selection_warning;
       if (!ew || !ew.candidate_concerns?.length) return fail("selecção vazia SEM alarme/candidatos (ponto cego vivo)");
@@ -599,44 +609,46 @@ export const scenarios = [
       if (suggested.length === 0 || suggested.length > 3) return fail(`next sugere ${suggested.length} concerns (destino aceita ≤3 famílias)`);
       if (ew.candidate_concerns.length <= 3 && ew.candidate_concerns.length !== suggested.length) return fail("aviso perdeu a lista completa");
       // V4: auth DECLARADO → SES fica; sem contradição activated∧narrowed
-      const v4 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Alterar o email da conta do utilizador", concerns: ["auth"] }); if (!v4.ok) return fail(v4.error);
+      const v4 = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Alterar o email da conta do utilizador", concerns: ["auth"] }); if (!v4.ok) return fail(v4.error);
       const sesSel = v4.data.selection.selected.filter((x) => x.category === "SES").length;
       if (sesSel === 0) return fail("V4: SES revogado apesar de auth DECLARADO");
       if (v4.data.selection.narrowed_out.some((g) => g.category === "SES")) return fail("V4: contradição — SES em selected E narrowed");
       // replay-guard: base lexical → R2 continua a matar o SES espúrio
-      const rp = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", task: "Expor API pública de consulta com chaves de cliente e rate limiting", exposure: "public" }); if (!rp.ok) return fail(rp.error);
+      const rp = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L3", task: "Expor API pública de consulta com chaves de cliente e rate limiting", exposure: "public" }); if (!rp.ok) return fail(rp.error);
       const rpNar = rp.data.selection.narrowed_out.find((g) => g.category === "SES");
       if (!rpNar || rp.data.selection.selected.some((x) => x.category === "SES")) return fail("replay-SES REVIVEU (guarda falhou)");
       // V1/V3: divergência lexical conhecida-E-avisada (2 redacções, counts≠, ambas com aviso)
-      const v1 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Endpoint de upload com sessão de utilizador e token de acesso" });
-      const v3 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Receber ficheiros dos utilizadores autenticados" });
+      const v1 = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Endpoint de upload com sessão de utilizador e token de acesso" });
+      const v3 = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Receber ficheiros dos utilizadores autenticados" });
       if (v1.data.selection.selected.length === v3.data.selection.selected.length) return fail("V1/V3 fixture morta");
       if (!v1.data.lexical_dominance_warning || !v3.data.lexical_dominance_warning) return fail("divergência lexical sem aviso em ambas");
       return ok(`V2: alarme c/ ${ew.candidate_concerns.length} candidatos, sem matrix no next; V4: SES ×${sesSel} preservado sem contradição; replay-SES morto (×${rpNar.count} narrowed); V1/V3 ${v1.data.selection.selected.length}≠${v3.data.selection.selected.length} ambas avisadas`); } },
   { id: "TC-F-32", axis: "F", title: "0.19.2: next calibrado com os limites do destino (round-trip executável)", tool: "select_sbd_toe_requirements",
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c) => {
       // V2 vazio → a sugestão do next TEM de ser aceite pelo destino (select re-run) e a jusante (prepare ≤3 famílias)
       const task = "Cumprir as políticas internas de segurança da informação no módulo de clientes";
-      const v2 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task }); if (!v2.ok) return fail(v2.error);
+      const v2 = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task }); if (!v2.ok) return fail(v2.error);
       const suggested = (v2.data.next?.[0]?.with.match(/concerns=\[([^\]]*)\]/)?.[1] ?? "").split(",").map((x) => x.trim()).filter(Boolean);
       if (suggested.length === 0 || suggested.length > 3) return fail(`sugestão fora do tecto: ${suggested.length}`);
-      const rerun = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task, concerns: suggested });
+      const rerun = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task, concerns: suggested });
       if (!rerun.ok) return fail(`o próprio select rejeitou a sugestão: ${rerun.error}`);
       if (rerun.data.selection.selected.length === 0) return fail("re-corrida sugerida continua vazia");
-      const prep = await c.tool("prepare_sbd_toe_codegen_context", { task, risk_level: "L2", concerns: suggested });
+      const prep = await c.tool("prepare_sbd_toe_codegen_context", { selection_mode: "discover", task, risk_level: "L2", concerns: suggested });
       if (!prep.ok) return fail(`prepare rejeitou a sugestão: ${prep.error}`);
       if (prep.data.status === "needs_decomposition") return fail("prepare pediu decomposição à sugestão calibrada (≤3)");
       // matrix: com página >50, o hint declara o tecto do destino (≤50)
-      const big = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", task: "Rever a segurança da plataforma", concerns: ["auth", "validation", "logging"], limit: 200 });
+      const big = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L3", task: "Rever a segurança da plataforma", concerns: ["auth", "validation", "logging"], limit: 200 });
       if (!big.ok) return fail(big.error);
       const prove = (big.data.next ?? []).find((n) => n.tool === "get_sbd_toe_verification_matrix");
       const pageLen = big.data.selection.selected.length;
       if (pageLen > 50 && prove && !/≤50|<=50/.test(prove.with)) return fail(`página ${pageLen}>50 sem tecto declarado no hint da matrix`);
       return ok(`sugestão [${suggested.join(",")}] aceite: select re-run ${rerun.data.selection.selected.length} selected, prepare ${prep.data.status}; página ${pageLen}${pageLen > 50 ? " c/ tecto ≤50 declarado" : ""}`); } },
   { id: "TC-F-33", axis: "F", title: "0.19.3: seguir 3 next à letra → 3 funcionam; matrix impõe o tecto real", tool: "select_sbd_toe_requirements",
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c) => {
       // (1) prepare ready → next resolve_entities com a forma REAL, parseado e executado
-      const p = await c.tool("prepare_sbd_toe_codegen_context", { task: "Implementar login com sessões de utilizador", risk_level: "L2" }); if (!p.ok) return fail(p.error);
+      const p = await c.tool("prepare_sbd_toe_codegen_context", { selection_mode: "discover", task: "Implementar login com sessões de utilizador", risk_level: "L2" }); if (!p.ok) return fail(p.error);
       const pd = p.data.data ?? p.data;
       const resolveRow = (pd.next ?? []).find((n) => n.tool === "resolve_entities");
       if (!resolveRow) return fail("prepare sem next resolve_entities");
@@ -649,14 +661,14 @@ export const scenarios = [
       const nRecs = (rd0.records ?? rd0.entities ?? []).length ?? 0;
       if (!(nRecs > 0 || (rd0.total ?? 0) > 0)) return fail("resolve devolveu 0 para os ids citados");
       // (2) select → proveRow → matrix aceita os ids copiáveis do próprio hint
-      const s = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Implementar login com sessões de utilizador" }); if (!s.ok) return fail(s.error);
+      const s = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Implementar login com sessões de utilizador" }); if (!s.ok) return fail(s.error);
       let prove = (s.data.next ?? []).find((n) => n.tool === "get_sbd_toe_verification_matrix");
       let stabilized = false;
       if (!prove) {
         // contrato 0.19.0: com aviso, next[0] é estabilizar (sem matrix) — SEGUE a própria sugestão
         const sug = (s.data.next?.[0]?.with.match(/concerns=\[([^\]]*)\]/)?.[1] ?? "").split(",").map((x) => x.trim()).filter(Boolean);
         if (sug.length === 0) return fail("sem proveRow e sem sugestão de estabilização parseável");
-        const s2 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Implementar login com sessões de utilizador", concerns: sug });
+        const s2 = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Implementar login com sessões de utilizador", concerns: sug });
         if (!s2.ok) return fail(`re-corrida sugerida falhou: ${s2.error}`);
         prove = (s2.data.next ?? []).find((n) => n.tool === "get_sbd_toe_verification_matrix");
         stabilized = true;
@@ -714,6 +726,67 @@ export const scenarios = [
       const pfd = pf.data.data ?? pf.data;
       if (pfd.status !== "ready_for_codegen") return fail(`full ganhou tecto indevido: ${pfd.status}`);
       return ok(`88@minimal → needs_decomposition declarado (tecto ${rc.limit}, ~${rc.cost_per_req_tk} tk/req, proj ${rc.projected_tk}>${rc.promise_tk}); divisão seguida: ${results.join(", ")}; full sem tecto ✓`); } },
+
+  // ─────────── beta.21: o contrato DECLARATIVO (o que substitui o default inferencial) ───────────
+  { id: "TC-F-35", axis: "F", title: "0.20.0-beta.21: declarativo primeiro — needs_input ensina, declaração selecciona, redacção não decide", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      // 1) sem declarações: needs_input (nunca zero em silêncio, nunca adivinhado)
+      const ni = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Implementar endpoint de upload de ficheiros com autenticação e auditoria" });
+      if (!ni.ok) return fail(ni.error);
+      const nd = ni.data;
+      if (!nd.needs_input) return fail(`sem declarações devia ser needs_input; veio ${nd.selection?.selected?.length ?? "?"} seleccionados`);
+      if (nd.task?.affects_selection !== false) return fail("task devia estar marcado como contexto registado (affects_selection=false)");
+      if (nd.needs_input.vocabulary_resource !== "sbd://toe/activation-vocabulary") return fail("needs_input não aponta o vocabulário");
+      if (!/SUGESTÃO A CONFIRMAR/i.test(nd.needs_input.candidates_to_confirm?.note ?? "")) return fail("candidatos não estão marcados como sugestão a confirmar");
+      if ((nd.next ?? []).some((n) => n.tool === "get_sbd_toe_verification_matrix")) return fail("next manda lista vazia à matrix");
+      // 2) seguir o exemplo À LETRA tem de produzir selecção
+      const cited = (nd.needs_input.example.with.match(/concerns=\[([^\]]*)\]/)?.[1] ?? "").split(",").map((x) => x.trim()).filter(Boolean);
+      if (cited.length === 0) return fail("exemplo do needs_input sem concerns");
+      const followed = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: cited });
+      if (!followed.ok) return fail(followed.error);
+      if ((followed.data.selection?.selected?.length ?? 0) === 0) return fail("exemplo copiável não produziu selecção");
+      // 3) a REDACÇÃO deixou de decidir: 3 redacções + mesma declaração ⇒ mesmo conjunto
+      const wordings = [
+        "Implementar endpoint de upload de ficheiros com autenticação e registo de auditoria",
+        "Permitir que utilizadores autenticados carreguem documentos, com trilho de auditoria",
+        "Receber ficheiros do utilizador autenticado e auditar a operação"
+      ];
+      const sets = [];
+      for (const task of wordings) {
+        const r = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task, concerns: ["files", "auth", "logging"] });
+        if (!r.ok) return fail(r.error);
+        sets.push((r.data.selection.selected ?? []).map((x) => x.requirement_id).sort().join(","));
+        if ((r.data.basis_summary?.lexical_only ?? -1) !== 0) return fail("basis lexical no caminho declarativo");
+        if (r.data.lexical_dominance_warning || r.data.empty_selection_warning) return fail("avisos lexicais deviam ter perdido objecto");
+      }
+      if (new Set(sets).size !== 1) return fail(`3 redacções deram ${new Set(sets).size} conjuntos com a MESMA declaração`);
+      // 4) baseline só por pedido explícito
+      const base = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", mode: "baseline" });
+      if (!base.ok) return fail(base.error);
+      if ((base.data.selection.selected ?? []).length < 100) return fail("mode=baseline não devolveu a baseline do nível");
+      return ok(`needs_input ensina (candidatos ${nd.needs_input.candidates_to_confirm.from_task_text.length}, exemplo executável → ${followed.data.selection.selected.length} req.); 3 redacções ⇒ 1 conjunto (${sets[0].split(",").length} req.); baseline explícita ${base.data.selection.selected.length}`); } },
+
+  { id: "TC-F-36", axis: "F", title: "0.20.0-beta.21: sbd://toe/activation-vocabulary — vocabulário fechado, derivado e executável", tool: "read_sbd_toe_resource",
+    run: async (c) => {
+      const r = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/activation-vocabulary" });
+      if (!r.ok) return fail(r.error);
+      const text = r.data?.content ?? r.text ?? "";
+      let v; try { v = typeof text === "string" ? JSON.parse(text.slice(text.indexOf("{"))) : text; } catch { return fail("vocabulário não é JSON legível"); }
+      const body = v.content ? JSON.parse(v.content) : v;
+      const vocab = body.concerns ? body : body.data ?? body;
+      if (!vocab.concerns?.values?.length) return fail("vocabulário sem concerns");
+      for (const key of ["exposure", "data_sensitivity", "technologies", "changed_files", "roles", "phases"]) {
+        if (!vocab[key]) return fail(`vocabulário sem ${key}`);
+      }
+      if (vocab.contract?.serving_semantics !== "declarative-first") return fail("vocabulário não declara a semântica");
+      if (!vocab.not_activators?.some((n) => n.field === "task")) return fail("vocabulário não declara `task` como não-activador");
+      // executável: um concern publicado, declarado, selecciona o que o vocabulário promete
+      const sample = vocab.concerns.values.find((c2) => c2.value === "auth");
+      const sel = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"] });
+      if (!sel.ok) return fail(sel.error);
+      const got = (sel.data.selection.selected ?? []).filter((x) => sample.activates_categories.includes(x.category)).length;
+      if (got !== sample.requirements_at.L2) return fail(`vocabulário promete ${sample.requirements_at.L2} em L2 para auth; selecção deu ${got}`);
+      return ok(`${vocab.concerns.values.length} concerns, ${vocab.technologies.values.length} tecnologias, ${vocab.changed_files.patterns.length} padrões de path, ${vocab.roles.values.length} papéis, ${vocab.phases.values.length} fases; promessa auth@L2=${sample.requirements_at.L2} confirmada na selecção`); } },
 
   // ───────────────────────── Axis G — beta-line tools (added 2026-09-01; closes the 24/23 gap) ─────────────────────────
   // trace_sbd_toe_graph exists only on the 0.20-beta line (SPARQL/Oxigraph over the RDF

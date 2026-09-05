@@ -1,4 +1,11 @@
 /**
+ * 0.20.0-beta.21 («declarativo primeiro»): ESTE ficheiro mede CODIFICAÇÃO (dieta v2),
+ * não selecção. Para a série de medições continuar comparável byte a byte, as fixtures
+ * correm no caminho inferencial histórico — `selection_mode: "discover"` — injectado
+ * em `handlePrepareCodegenContext` pelo wrapper abaixo. A selecção declarativa tem os
+ * seus próprios testes (selection.declarative.test.ts + next-invariant.beta).
+ */
+/**
  * s3b REVISTO — Perfil `minimal` (epic v2-token-diet; ⟳ ADENDA 2026-07-05 do
  * operador, EPIC §s3b — SUBSTITUI o desenho top-N original).
  *
@@ -39,6 +46,12 @@ import {
 import { resolveAppPath } from "../config.js";
 import { clearG2RuntimeCacheForTests } from "./g2-runtime-loader.js";
 import { clearRegulatoryOverlayCacheForTests } from "./regulatory-overlay-loader.js";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const __prepareRaw = handlePrepareCodegenContext;
+const handlePrepareCodegenContextDiscover = (input: Parameters<typeof __prepareRaw>[0]) =>
+  __prepareRaw({ selection_mode: "discover", ...input });
+
 
 // ---------------------------------------------------------------------------
 // Fixtures — byte-identical to EPIC.md §Fixtures baseline (como budget/detail).
@@ -116,19 +129,19 @@ function expectGroupedGrounding(
 }
 
 function runMinimal(fixture: BaselineFixture): PrepareCodegenContextResultReadyDieted {
-  const result = handlePrepareCodegenContext({ ...fixture.input, detail: "minimal" });
+  const result = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "minimal" });
   expectReadyDieted(result);
   return result;
 }
 
 function runStandard(fixture: BaselineFixture): PrepareCodegenContextResultReadyDieted {
-  const result = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
+  const result = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
   expectReadyDieted(result);
   return result;
 }
 
 function runFull(fixture: BaselineFixture): PrepareCodegenContextResultReady {
-  const result = handlePrepareCodegenContext(fixture.input);
+  const result = handlePrepareCodegenContextDiscover(fixture.input);
   expectReadyFull(result);
   return result;
 }
@@ -281,7 +294,7 @@ describe("prepare_sbd_toe_codegen_context — perfil minimal (v2-token-diet s3b 
       const rest = report.evidence_patterns_rest;
       expect(rest).toBeDefined();
       expect(rest!.tool).toBe("prepare_sbd_toe_codegen_context");
-      const followUp = handlePrepareCodegenContext({
+      const followUp = handlePrepareCodegenContextDiscover({
         ...fixture.input,
         detail: rest!.with.detail
       });
@@ -337,7 +350,7 @@ describe("prepare_sbd_toe_codegen_context — perfil minimal (v2-token-diet s3b 
       expect(grounding.groups_ref.with).toEqual({ detail: "standard" });
 
       // EXECUTA a referência de verdade: mesmo input, detail="standard".
-      const followUp = handlePrepareCodegenContext({
+      const followUp = handlePrepareCodegenContextDiscover({
         ...fixture.input,
         detail: grounding.groups_ref.with.detail
       });
@@ -388,8 +401,8 @@ describe("prepare_sbd_toe_codegen_context — perfil minimal (v2-token-diet s3b 
     it("determinismo: 2 chamadas minimal idênticas ⇒ payload byte-igual", () => {
       clearG2RuntimeCacheForTests();
       clearRegulatoryOverlayCacheForTests();
-      const first = handlePrepareCodegenContext({ ...fixture.input, detail: "minimal" });
-      const second = handlePrepareCodegenContext({ ...fixture.input, detail: "minimal" });
+      const first = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "minimal" });
+      const second = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "minimal" });
       expect(JSON.stringify(second)).toBe(JSON.stringify(first));
     });
   });

@@ -1,4 +1,11 @@
 /**
+ * 0.20.0-beta.21 («declarativo primeiro»): ESTE ficheiro mede CODIFICAÇÃO (dieta v2),
+ * não selecção. Para a série de medições continuar comparável byte a byte, as fixtures
+ * correm no caminho inferencial histórico — `selection_mode: "discover"` — injectado
+ * em `handlePrepareCodegenContext` pelo wrapper abaixo. A selecção declarativa tem os
+ * seus próprios testes (selection.declarative.test.ts + next-invariant.beta).
+ */
+/**
  * s3 — Caps, boilerplate e o "how" publicado (epic v2-token-diet).
  *
  * Gates do slice (EPIC §s3 + instruções do guardian):
@@ -49,6 +56,12 @@ import { requirementCategoryOf } from "../serving/requirement-id.js";
 import { resolveAppPath } from "../config.js";
 import { clearG2RuntimeCacheForTests } from "./g2-runtime-loader.js";
 import { clearRegulatoryOverlayCacheForTests } from "./regulatory-overlay-loader.js";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const __prepareRaw = handlePrepareCodegenContext;
+const handlePrepareCodegenContextDiscover = (input: Parameters<typeof __prepareRaw>[0]) =>
+  __prepareRaw({ selection_mode: "discover", ...input });
+
 
 // ---------------------------------------------------------------------------
 // Fixtures — byte-identical to EPIC.md §Fixtures baseline (como budget/detail).
@@ -157,9 +170,9 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
     it.each([...DIET_LEVELS])(
       "%s: cap por nível (standard 10 / minimal 5 — s3b revisto), omitted+returned == total, prefixo determinístico do top-25 clássico",
       (detail) => {
-        const full = handlePrepareCodegenContext(fixture.input);
+        const full = handlePrepareCodegenContextDiscover(fixture.input);
         expectReadyFull(full);
-        const dieted = handlePrepareCodegenContext({ ...fixture.input, detail });
+        const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail });
         expectReadyDieted(dieted);
 
         const report = dieted.completeness_report;
@@ -203,13 +216,13 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
     it("ordenação do corte estável: 2 chamadas idênticas ⇒ byte-igual", () => {
       clearG2RuntimeCacheForTests();
       clearRegulatoryOverlayCacheForTests();
-      const first = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
-      const second = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
+      const first = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
+      const second = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
       expect(JSON.stringify(second)).toBe(JSON.stringify(first));
     });
 
     it("a referência para obter o resto é EXECUTÁVEL: detail='full' devolve o top-25 clássico de que o dieted é prefixo", () => {
-      const dieted = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
+      const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
       expectReadyDieted(dieted);
       const rest = dieted.completeness_report.evidence_patterns_rest;
       expect(rest).toBeDefined(); // ambas as fixtures cortam (>10 matched)
@@ -217,7 +230,7 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
       expect(rest!.with).toEqual({ detail: "full" });
 
       // EXECUTA a referência de verdade: mesmo input, detail='full'.
-      const followUp = handlePrepareCodegenContext({
+      const followUp = handlePrepareCodegenContextDiscover({
         ...fixture.input,
         detail: rest!.with.detail
       });
@@ -234,7 +247,7 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
 
       // E os ids para lá do cap clássico são listáveis com debug=true
       // (debug.rejected_candidates), como a nota indica — executado também.
-      const debugFull = handlePrepareCodegenContext({ ...fixture.input, debug: true });
+      const debugFull = handlePrepareCodegenContextDiscover({ ...fixture.input, debug: true });
       expectReadyFull(debugFull);
       const rejectedIds = new Set(
         (debugFull.debug?.rejected_candidates ?? [])
@@ -252,7 +265,7 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
     });
 
     it("invariante 3 × cap: evidence patterns não têm ids no citation_map — o corte não toca no conjunto citável", () => {
-      const full = handlePrepareCodegenContext(fixture.input);
+      const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
       const citable = new Set(Object.keys(full.citation_map));
       for (const pattern of full.g2_context.evidence_patterns) {
@@ -271,7 +284,7 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
     it("payload dieted substitui instructions/template pela referência ao resource", () => {
       for (const fixture of FIXTURES) {
         for (const detail of DIET_LEVELS) {
-          const dieted = handlePrepareCodegenContext({ ...fixture.input, detail });
+          const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail });
           expectReadyDieted(dieted);
           expect(dieted).not.toHaveProperty("llm_codegen_instructions");
           expect(dieted).not.toHaveProperty("security_rationale_template");
@@ -290,9 +303,9 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
       (mode) => {
         for (const fixture of FIXTURES) {
           const input = { ...fixture.input, mode };
-          const full = handlePrepareCodegenContext(input);
+          const full = handlePrepareCodegenContextDiscover(input);
           expectReadyFull(full);
-          const dieted = handlePrepareCodegenContext({ ...input, detail: "standard" });
+          const dieted = handlePrepareCodegenContextDiscover({ ...input, detail: "standard" });
           expectReadyDieted(dieted);
 
           const instructions = assembleInstructions(
@@ -316,9 +329,9 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
         task: "Add input validation to the POST /orders endpoint payload",
         mode: "codegen"
       };
-      const full = handlePrepareCodegenContext(input);
+      const full = handlePrepareCodegenContextDiscover(input);
       expectReadyFull(full);
-      const dieted = handlePrepareCodegenContext({ ...input, detail: "standard" });
+      const dieted = handlePrepareCodegenContextDiscover({ ...input, detail: "standard" });
       expectReadyDieted(dieted);
       expect(dieted.codegen_instructions_ref.active_conditions).toEqual([]);
       const instructions = assembleInstructions(
@@ -336,9 +349,9 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
         risk_level: "L2",
         mode: "codegen"
       };
-      const full = handlePrepareCodegenContext(input);
+      const full = handlePrepareCodegenContextDiscover(input);
       expectReadyFull(full);
-      const dieted = handlePrepareCodegenContext({ ...input, detail: "standard" });
+      const dieted = handlePrepareCodegenContextDiscover({ ...input, detail: "standard" });
       expectReadyDieted(dieted);
       const template = assembleTemplate("codegen", dieted.input_echo.task);
       expect(JSON.stringify(template)).toBe(
@@ -367,9 +380,9 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
 
   describe.each(FIXTURES)("$label — activation_trace", (fixture) => {
     it.each([...DIET_LEVELS])("%s: elidido por omissão, contador exato", (detail) => {
-      const full = handlePrepareCodegenContext(fixture.input);
+      const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
-      const dieted = handlePrepareCodegenContext({ ...fixture.input, detail });
+      const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail });
       expectReadyDieted(dieted);
       expect(dieted.activation_trace).toBeUndefined();
       expect(dieted.activation_trace_ref).toBeDefined();
@@ -377,9 +390,9 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
     });
 
     it("debug=true repõe o trace completo (byte-igual ao de full) e remove o contador", () => {
-      const fullDebug = handlePrepareCodegenContext({ ...fixture.input, debug: true });
+      const fullDebug = handlePrepareCodegenContextDiscover({ ...fixture.input, debug: true });
       expectReadyFull(fullDebug);
-      const dieted = handlePrepareCodegenContext({
+      const dieted = handlePrepareCodegenContextDiscover({
         ...fixture.input,
         detail: "standard",
         debug: true
@@ -393,7 +406,7 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
     });
 
     it("full mantém sempre o trace inline (com e sem debug)", () => {
-      const full = handlePrepareCodegenContext(fixture.input);
+      const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
       expect(Array.isArray(full.activation_trace)).toBe(true);
       expect(full).not.toHaveProperty("activation_trace_ref");
@@ -412,7 +425,7 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
         const descriptionById = new Map(
           bundle.map((item) => [item.requirement_id as string, item.description as string])
         );
-        const dieted = handlePrepareCodegenContext({ ...fixture.input, detail });
+        const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail });
         expectReadyDieted(dieted);
         expect(dieted.activated_scope.requirements.length).toBeGreaterThan(0);
         for (const requirement of dieted.activated_scope.requirements) {
@@ -434,7 +447,7 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
         const descriptionById = new Map(
           bundle.map((item) => [item.control_id as string, item.description as string])
         );
-        const dieted = handlePrepareCodegenContext({ ...fixture.input, detail });
+        const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail });
         expectReadyDieted(dieted);
         const direct = dieted.activated_scope.controls.filter(
           (control) => control.confidence === "direct"
@@ -453,7 +466,7 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
     );
 
     it("full NÃO ganha description (byte-idêntico ao contrato clássico)", () => {
-      const full = handlePrepareCodegenContext(fixture.input);
+      const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
       for (const requirement of full.activated_scope.requirements) {
         expect(requirement).not.toHaveProperty("description");
@@ -483,7 +496,7 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
 
   it("dieted: category elidido (derivável); nenhum requirement o transporta", () => {
     for (const fixture of FIXTURES) {
-      const dieted = handlePrepareCodegenContext({ ...fixture.input, detail: "standard" });
+      const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
       expectReadyDieted(dieted);
       for (const requirement of dieted.activated_scope.requirements) {
         expect(requirement).not.toHaveProperty("category");
@@ -496,14 +509,14 @@ describe("prepare_sbd_toe_codegen_context — caps + resource + description (v2-
   // -------------------------------------------------------------------------
 
   it("sentinelas: s3CapsLanded (standard, cap ≤ 10) e s3bMinimalLanded (minimal, cap ≤ 5) acionam; requirements CONTINUA array completo (ADENDA s3b: sem top-N)", () => {
-    const standard = handlePrepareCodegenContext({
+    const standard = handlePrepareCodegenContextDiscover({
       ...FIXTURES[0]!.input,
       detail: "standard"
     });
     expectReadyDieted(standard);
     expect(standard.completeness_report.evidence_pattern_cap).toBeLessThanOrEqual(10);
 
-    const minimal = handlePrepareCodegenContext({
+    const minimal = handlePrepareCodegenContextDiscover({
       ...FIXTURES[0]!.input,
       detail: "minimal"
     });
