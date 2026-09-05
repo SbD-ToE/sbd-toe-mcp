@@ -93,3 +93,25 @@ export function loadBundleProvenance(): BundleProvenance | undefined {
 export function _resetBundleProvenanceCache(): void {
   cached = undefined;
 }
+
+/**
+ * 0.20.0-beta.23 (P1) — versão do SERVIDOR na estampa de proveniência.
+ *
+ * A validação externa correu a MESMA sonda em duas builds e obteve 33 e 42
+ * requisitos, com `serving_contract` e `kg` idênticos: a resposta não dizia QUE
+ * servidor a produziu, e o resultado ficava inatribuível. `kg` identifica o
+ * conhecimento servido; `server` identifica quem o serviu. São coisas diferentes e
+ * ambas fazem parte da proveniência.
+ */
+let cachedPkgVersion: string | undefined;
+export function servingServerVersion(): string {
+  if (cachedPkgVersion !== undefined) return cachedPkgVersion;
+  try {
+    const raw = readFileSync(resolveAppPath("package.json"), "utf8");
+    const parsed = JSON.parse(raw) as { version?: unknown };
+    cachedPkgVersion = typeof parsed.version === "string" ? parsed.version : "unknown";
+  } catch {
+    cachedPkgVersion = "unknown";
+  }
+  return cachedPkgVersion;
+}

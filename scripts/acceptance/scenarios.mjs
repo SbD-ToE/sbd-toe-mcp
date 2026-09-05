@@ -863,6 +863,114 @@ export const scenarios = [
   // trace_sbd_toe_graph exists only on the 0.20-beta line (SPARQL/Oxigraph over the RDF
   // projection of the published runtime bundle). Scenarios per the governance doc's Axis G
   // (placeholder opened 2026-08-30, filled 2026-09-01 in the same change as this runner).
+  { id: "TC-F-39", axis: "F", title: "0.20.0-beta.23 (P0-1): CONSERVAÇÃO — o motor não deita fora o que o vocabulário PROMETE", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      // A sonda do avaliador: `build`@L3 prometia CIC+DEV (10+9=19) e devolvia 10.
+      const vocabRes = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/activation-vocabulary" });
+      if (!vocabRes.ok) return fail(vocabRes.error);
+      const text = typeof vocabRes.data?.content === "string" ? vocabRes.data.content : JSON.stringify(vocabRes.data);
+      const vocab = JSON.parse(text.slice(text.indexOf("{")));
+      const byValue = new Map((vocab.concerns?.values ?? []).map((x) => [String(x.value), x]));
+      const checked = [];
+      // as 4 famílias que a invariante apanhou (era 1 na sonda externa)
+      for (const [concern, level] of [["build", "L3"], ["supply_chain", "L3"], ["release", "L3"], ["deployment", "L3"], ["build", "L1"]]) {
+        const promised = byValue.get(concern)?.requirements_at?.[level];
+        if (typeof promised !== "number") return fail(`vocabulário sem requirements_at para ${concern}@${level}`);
+        const r = await c.tool("select_sbd_toe_requirements", { risk_level: level, concerns: [concern], limit: 500 });
+        if (!r.ok) return fail(r.error);
+        const sel = r.data.selection?.selected ?? [];
+        const narrowed = (r.data.selection?.narrowed_out ?? []).reduce((n, g) => n + (g.count ?? 0), 0);
+        const banded = new Set([
+          ...sel.map((x) => x.requirement_id),
+          ...(r.data.selection?.narrowed_out ?? []).flatMap((g) => g.requirement_ids ?? []),
+          ...(r.data.selection?.excluded_by_level ?? []).flatMap((g) => g.requirement_ids ?? [])
+        ]);
+        if (sel.length + narrowed !== (r.data.meta?.eligible ?? -1))
+          return fail(`${concern}@${level}: selected+narrowed_out (${sel.length}+${narrowed}) ≠ eligible (${r.data.meta?.eligible})`);
+        if (sel.length < promised)
+          return fail(`${concern}@${level}: o vocabulário promete ${promised} e a selecção traz ${sel.length} — promessa perdida (P0-1)`);
+        checked.push(`${concern}@${level}=${sel.length}/${promised} (bandas ${banded.size})`);
+      }
+      // o caso nominal da sonda: DEV-003 (SAST como gate) tem de estar lá
+      const build = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", concerns: ["build"], limit: 500 });
+      if (!build.ok) return fail(build.error);
+      const sel = build.data.selection.selected;
+      if (!sel.some((x) => x.requirement_id === "DEV-003")) return fail("DEV-003 continua a desaparecer de concerns=['build']@L3 (P0-1 vivo)");
+      const dev = sel.find((x) => x.requirement_id === "DEV-003");
+      if (!(dev.selection_trace ?? []).some((t) => t.layer === "declared_category"))
+        return fail("DEV-003 entrou SEM traço próprio — inclusão anónima é a falha simétrica");
+      return ok(`conservação verificada: ${checked.join("; ")}; DEV-003 presente com traço declared_category`); } },
+
+  { id: "TC-F-40", axis: "F", title: "0.20.0-beta.23 (P0-2): get_threat_landscape declara os concerns que NÃO resolve (zero nunca é mudo)", tool: "get_threat_landscape",
+    run: async (c) => {
+      const un = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["build"] });
+      if (!un.ok) return fail(un.error);
+      if ((un.data.coverage?.total ?? -1) !== 0) return fail("fixture mudou: 'build' já devolve ameaças (re-baseline)");
+      const uc = un.data.unsupported_concerns;
+      if (!uc) return fail("total=0 + activeChapters=[] SEM unsupported_concerns — zero mudo (P0-2 vivo)");
+      if (!uc.values?.includes("build")) return fail("unsupported_concerns não nomeia 'build'");
+      if (!(uc.supported_values?.length > 0)) return fail("unsupported_concerns sem a lista do que É suportado");
+      if (!/N[ÃA]O concluas aus[êe]ncia/i.test(uc.note ?? "")) return fail("a nota não proíbe concluir ausência de ameaças");
+      // o caso PERIGOSO: mistura — vêm ameaças E um concern por resolver
+      const mix = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["build", "auth"] });
+      if (!mix.ok) return fail(mix.error);
+      if ((mix.data.coverage?.total ?? 0) === 0) return fail("fixture mista mudou");
+      if (!mix.data.unsupported_concerns?.values?.includes("build"))
+        return fail("num resultado NÃO-vazio o concern por resolver desapareceu — o caller julga cobertura completa");
+      // controlo: concern suportado não gera a banda
+      const sup = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["auth"] });
+      if (!sup.ok) return fail(sup.error);
+      if (sup.data.unsupported_concerns) return fail("concern suportado marcado como não suportado (falso positivo)");
+      return ok(`'build' declarado não-roteável (${uc.supported_values.length} suportados); misto ['build','auth'] mantém a declaração com ${mix.data.coverage.total} ameaças; 'auth' limpo`); } },
+
+  { id: "TC-F-41", axis: "F", title: "0.20.0-beta.23 (P0-3): guarda anti-zero cobre `technologies` — e a declaração com efeito não é descartada", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      // a sonda do avaliador: technologies:["jwt"] dizia «nenhum activador DECLARADO»
+      const jwt = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", technologies: ["jwt"] });
+      if (!jwt.ok) return fail(jwt.error);
+      if (jwt.data.needs_input && /Nenhum activador DECLARADO/i.test(jwt.data.needs_input.reason ?? ""))
+        return fail("technologies=['jwt'] ainda diz «nenhum activador DECLARADO» com jwt declarado à frente (P0-3 vivo)");
+      if (!jwt.data.selection.selected.some((r) => r.requirement_id === "SES-008"))
+        return fail("a tecnologia declarada não produziu o seu efeito nomeado (SES-008)");
+      // simetria com o mesmo valor por `stack` (era a contradição do payload)
+      const st = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", stack: "jwt" });
+      if (!st.ok) return fail(st.error);
+      if (st.data.selection.selected.length !== jwt.data.selection.selected.length)
+        return fail(`assimetria viva: stack='jwt' dá ${st.data.selection.selected.length} e technologies=['jwt'] dá ${jwt.data.selection.selected.length}`);
+      // varredura: token FORA do vocabulário é NOMEADO, nunca descartado em silêncio
+      const unknown = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", technologies: ["cobol"] });
+      if (!unknown.ok) return fail(unknown.error);
+      if (!unknown.data.needs_input) return fail("tecnologia desconhecida deu selecção sem pedir declaração");
+      const named = (unknown.data.needs_input.inert_declarations ?? []).join(" ");
+      if (!/technologies=\[cobol\]/.test(named)) return fail(`guarda não nomeia a tecnologia inerte: ${named}`);
+      if (!unknown.data.unknown_technologies?.values?.includes("cobol")) return fail("token fora do vocabulário descartado em silêncio");
+      return ok(`jwt declarado → SES-008 (${jwt.data.selection.selected.length} req.), simétrico com stack; 'cobol' nomeado como inerte e em unknown_technologies`); } },
+
+  { id: "TC-F-42", axis: "F", title: "0.20.0-beta.23 (P1): a proveniência diz QUE SERVIDOR respondeu (kg ≠ server)", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      const ver = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/version" });
+      if (!ver.ok) return fail(ver.error);
+      const vtext = typeof ver.data?.content === "string" ? ver.data.content : JSON.stringify(ver.data);
+      const vjson = JSON.parse(vtext.slice(vtext.indexOf("{")));
+      const pkg = vjson.server?.version ?? vjson.version ?? vjson.package?.version;
+      if (typeof pkg !== "string") return fail("recurso de versão sem a versão do pacote");
+      const checked = [];
+      for (const [tool, args] of [
+        ["select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"] }],
+        ["consult_security_requirements", { risk_level: "L2", concerns: ["auth"] }],
+        ["get_threat_landscape", { risk_level: "L2", concerns: ["auth"] }],
+        ["prepare_sbd_toe_codegen_context", { task: "Implementar login com sessões", risk_level: "L2", concerns: ["auth"], exposure: "public" }]
+      ]) {
+        const r = await c.tool(tool, args);
+        if (!r.ok) return fail(r.error);
+        const prov = r.data.provenance;
+        if (!prov) return fail(`${tool}: resposta sem proveniência`);
+        if (prov.server !== pkg) return fail(`${tool}: provenance.server=${prov.server} ≠ versão do pacote ${pkg} (resposta inatribuível — P1)`);
+        if (!prov.kg || prov.kg === prov.server) return fail(`${tool}: kg e server confundidos (conhecimento servido ≠ quem serviu)`);
+        checked.push(tool);
+      }
+      return ok(`provenance.server=${pkg} em ${checked.length} ferramentas, distinto de kg`); } },
+
   { id: "TC-G-01", axis: "G", title: "trace válido: determinismo + paginação G1 (3 lentes, total, cursor, sem IRIs)", tool: "trace_sbd_toe_graph",
     run: async (c) => {
       const shas = [];

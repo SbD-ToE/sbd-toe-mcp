@@ -9,7 +9,7 @@
  * `selected[]` (with per-item selection_trace) and `narrowed_out[]` (grouped by
  * category, with reason) — never silent. Deterministic; paginated (G1).
  */
-import { servedKgReleaseTag } from "../version-info.js";
+import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 import { VALID_CONCERNS } from "./prepare-codegen-context.js";
 import { runSelection, type SelectionContextInput, type SelectionResult } from "../serving/selection.js";
 import { getRegulatoryOverlay, type RegulatoryObligation } from "./regulatory-overlay-loader.js";
@@ -21,6 +21,7 @@ const DEFAULT_LIMIT = 100;
 export interface SelectRequirementsOutput {
   provenance: {
     kg: string;
+    server: string;
     content_type: "derived";
     produced_by: "mp1_selection_engine";
     source_data: string;
@@ -46,6 +47,16 @@ export interface SelectRequirementsOutput {
   unknown_concerns?: {
     values: string[];
     valid_values: string[];
+    vocabulary_resource: string;
+    note: string;
+  };
+  /**
+   * 0.20.0-beta.23 (P0-3, varredura): tokens de `technologies` fora do vocabulário.
+   * Mesma classe do `unknown_concerns` — num contrato declarativo uma gralha custa a
+   * activação inteira, e o descarte em silêncio é a falha.
+   */
+  unknown_technologies?: {
+    values: string[];
     vocabulary_resource: string;
     note: string;
   };
@@ -147,6 +158,7 @@ export function handleSelectRequirements(args: Record<string, unknown>): SelectR
   return {
     provenance: {
       kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
       content_type: "derived",
       produced_by: "mp1_selection_engine",
       source_data:
@@ -167,6 +179,15 @@ export function handleSelectRequirements(args: Record<string, unknown>): SelectR
             valid_values: [...VALID_CONCERNS],
             vocabulary_resource: "sbd://toe/activation-vocabulary",
             note: `Valores fora do conjunto fechado, IGNORADOS nesta selecção: ${unknownConcerns.join(", ")}. Num contrato declarativo o vocabulário é o único canal — uma gralha custa a categoria inteira, por isso é declarada e nunca descartada em silêncio. Corrige e re-chama.`
+          }
+        }
+      : {}),
+    ...(result.unknown_technologies && result.unknown_technologies.length > 0
+      ? {
+          unknown_technologies: {
+            values: [...result.unknown_technologies],
+            vocabulary_resource: "sbd://toe/activation-vocabulary",
+            note: `Tokens de \`technologies\` fora do vocabulário publicado, IGNORADOS nesta selecção: ${result.unknown_technologies.join(", ")}. Os valores conhecidos estão em sbd://toe/activation-vocabulary → technologies. Corrige e re-chama.`
           }
         }
       : {}),

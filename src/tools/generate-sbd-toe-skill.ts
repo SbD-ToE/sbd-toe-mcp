@@ -17,7 +17,7 @@
  * Contract: agentic/em-curso/2026-06-12-pontifex-rfs-stage1-contract.md
  */
 
-import { servedKgReleaseTag } from "../version-info.js";
+import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 import { readFileSync } from "node:fs";
 import { resolveAppPath } from "../config.js";
 import { getOntologyData } from "./ontology-loader.js";
@@ -69,6 +69,7 @@ export interface GenerateSkillOutput {
     coverage: GenerateSkillCoverage;
     provenance: {
       kg: string;
+      server: string;
       content_type: "derived";
       produced_by: string;
       source_data: string;
@@ -374,6 +375,7 @@ export function handleGenerateSbdToeSkill(args: Record<string, unknown> = {}): G
       coverage,
       provenance: {
         kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
         content_type: "derived",
         produced_by: "role_skill_projection",
         source_data:

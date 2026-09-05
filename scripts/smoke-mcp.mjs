@@ -31,11 +31,14 @@ send({ jsonrpc: "2.0", method: "notifications/initialized" });
 send({ jsonrpc: "2.0", id: 2, method: "tools/list", params: {} });
 send({ jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "trace_sbd_toe_graph", arguments: { lens: "slice_implementation", pageSize: 2 } } });
 // v2 token diet s3 — the codegen-instructions resource must be listed, resolve
+// 0.20.0-beta.23: o smoke DECLARA activadores. Desde o default declarativo
+// (beta.21) uma chamada só com `task` responde needs_input — correcto pelo
+// contrato, e este smoke não é do contrato de declaração: é do transporte + dieta.
 // over stdio and be byte-identical to the builder's content; a detail=standard
 // tools/call must reference it.
 send({ jsonrpc: "2.0", id: 4, method: "resources/list", params: {} });
 send({ jsonrpc: "2.0", id: 5, method: "resources/read", params: { uri: "sbd://toe/codegen-instructions/codegen" } });
-send({ jsonrpc: "2.0", id: 6, method: "tools/call", params: { name: "prepare_sbd_toe_codegen_context", arguments: { task: "Adicionar validação de payload e autenticação ao endpoint POST /users/:id/email", risk_level: "L2", mode: "codegen", detail: "standard" } } });
+send({ jsonrpc: "2.0", id: 6, method: "tools/call", params: { name: "prepare_sbd_toe_codegen_context", arguments: { task: "Adicionar validação de payload e autenticação ao endpoint POST /users/:id/email", risk_level: "L2", mode: "codegen", detail: "standard", concerns: ["auth", "validation"], exposure: "public" } } });
 
 setTimeout(async () => {
   child.kill();

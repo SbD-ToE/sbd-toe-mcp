@@ -205,7 +205,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       citation_map: 2900,
       activated_scope: 2300,
       g2_entities: 2200,
-      rest: 1350,
+      rest: 1360, // beta.23 (P1): +6 medidos — `provenance.server` (versão do pacote) entra no payload; medido 1356
       total: 20400
     },
     // Baseline fixture 2: relations 6.238 / grounding 4.913 / evidence 2.846 /

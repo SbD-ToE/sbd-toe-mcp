@@ -15,7 +15,7 @@ import {
   searchManualQuestion
 } from "./orchestrator/ask-manual.js";
 import { loadSystemPromptTemplate } from "./prompt/system-prompt.js";
-import { loadBundleProvenance, servedKgReleaseTag } from "./version-info.js";
+import { loadBundleProvenance, servedKgReleaseTag, servingServerVersion } from "./version-info.js";
 import {
   handleGetSbdToeChapterBrief,
   handleListSbdToeChapters,
@@ -2337,6 +2337,7 @@ class McpRuntime {
               size_estimate: { chars: text.length, approx_tokens: Math.ceil(text.length / 4) },
               provenance: {
                 kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
                 content_type: "canonical" as const,
                 produced_by: "resources_read_mirror",
                 source_data: uriArg,

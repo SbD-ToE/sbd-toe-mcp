@@ -19,6 +19,8 @@
  */
 
 export interface ProtocolProvenance {
+  /** 0.20.0-beta.23: versão do SERVIDOR que produziu esta resposta (≠ `kg`, o conhecimento servido). */
+  server: string;
   /** Compact version stamp: kg release_tag of the served pin (0.13.0). */
   kg: string;
   content_type: "canonical" | "derived" | "inferred";

@@ -23,10 +23,11 @@ import {
   resolveThreatChapterNumber
 } from "./ontology-loader.js";
 import { estimateSize } from "../serving/response-shaping.js";
-import { servedKgReleaseTag } from "../version-info.js";
+import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 import { _resolveConsultResult } from "./consult-security-requirements.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { threatLandscapeAffordances } from "../serving/affordances.js";
+import { buildActivationVocabulary } from "../serving/activation-vocabulary.js";
 
 export interface MitigatingControl {
   control_id: string;
@@ -51,6 +52,8 @@ export interface ThreatWithConfidence extends Threat {
 }
 
 export interface McpProvenance {
+  /** 0.20.0-beta.23: versão do SERVIDOR que produziu esta resposta (≠ `kg`, o conhecimento servido). */
+  server: string;
   /** Compact version stamp: kg release_tag of the served pin (0.13.0). */
   kg: string;
   content_type: "canonical" | "derived" | "inferred";
@@ -68,6 +71,17 @@ export interface GetThreatLandscapeResult {
     activeChapters: string[];
     activeBundles: string[];
     concernsApplied: string[] | null;
+    note: string;
+  };
+  /**
+   * 0.20.0-beta.23 (P0-2): concerns VÁLIDOS do vocabulário que este mapa de ameaças
+   * não resolve. Sem isto, 11 dos 24 concerns devolviam `total: 0` + `activeChapters: []`
+   * indistinguíveis de «não há ameaças» — e o agente afirmava ausência com fundamento
+   * no manual a partir de uma lista vazia. Zero mudo é o que este contrato proíbe.
+   */
+  unsupported_concerns?: {
+    values: string[];
+    supported_values: string[];
     note: string;
   };
   /** RF-H advisory band — adjacent tools the caller likely needs next (advisory; set by the handler). */
@@ -94,6 +108,32 @@ const CONCERN_TO_DOMAIN_CHAPTER: Readonly<Record<string, number>> = {
   architecture: 4,
   requirements: 2
 };
+
+/**
+ * Quais concerns o ROTEAMENTO DE AMEAÇAS resolve. Derivado (não declarado à mão): um
+ * concern é suportado quando, declarado sozinho, activa pelo menos um capítulo de
+ * ameaças. Estável entre níveis (verificado nos três) e calculado uma vez por processo.
+ */
+let SUPPORT_CACHE: { supported: string[]; unsupported: string[] } | null = null;
+let probingSupport = false;
+export function threatConcernSupport(): { supported: string[]; unsupported: string[] } {
+  if (SUPPORT_CACHE) return SUPPORT_CACHE;
+  if (probingSupport) return { supported: [], unsupported: [] };
+  probingSupport = true;
+  const supported: string[] = [];
+  const unsupported: string[] = [];
+  try {
+    for (const entry of buildActivationVocabulary().concerns.values) {
+      const concern = String(entry.value);
+      const probe = handleGetThreatLandscape({ risk_level: "L3", concerns: [concern] });
+      (probe.meta.threatCount > 0 ? supported : unsupported).push(concern);
+    }
+  } finally {
+    probingSupport = false;
+  }
+  SUPPORT_CACHE = { supported: supported.sort(), unsupported: unsupported.sort() };
+  return SUPPORT_CACHE;
+}
 
 function buildAntipatternIndexes(
   antipatterns: AntiPattern[],
@@ -338,11 +378,34 @@ export function handleGetThreatLandscape(
   const pagedThreats = full.threats.slice(offsetArg, offsetArg + limitArg);
   const nextOffset = offsetArg + pagedThreats.length < totalThreats ? offsetArg + pagedThreats.length : null;
   full.threats = pagedThreats;
+  // 0.20.0-beta.23 (P0-2): concerns válidos que este roteamento não resolve são
+  // DECLARADOS. `total: 0` com `activeChapters: []` não distingue «não há ameaças» de
+  // «este concern não se resolve aqui» — e o agent-guide mandava afirmar ausência
+  // fundamentada no manual a partir dessa lista vazia.
+  const declaredConcerns = Array.isArray(args["concerns"])
+    ? (args["concerns"] as unknown[]).filter((c): c is string => typeof c === "string")
+    : [];
+  const support = declaredConcerns.length > 0 ? threatConcernSupport() : { supported: [], unsupported: [] };
+  const unsupportedHere = declaredConcerns.filter((c) => support.unsupported.includes(c));
   const shaped = {
     ...full,
+    ...(unsupportedHere.length > 0
+      ? {
+          unsupported_concerns: {
+            values: [...new Set(unsupportedHere)].sort(),
+            supported_values: support.supported,
+            note:
+              `Concerns VÁLIDOS do vocabulário que o mapa de ameaças não resolve: ${[...new Set(unsupportedHere)].sort().join(", ")}. ` +
+              "Não são zero ameaças — são zero ameaças ROTEÁVEIS por este mapa, que cobre os domínios listados em supported_values. " +
+              "NÃO concluas ausência de ameaças a partir desta resposta, nem a declares fundamentada no manual: para estes concerns usa " +
+              "select_sbd_toe_requirements (os requisitos existem e aplicam-se) e consulta o capítulo de domínio."
+          }
+        }
+      : {}),
     coverage: { total: totalThreats, returned: pagedThreats.length, offset: offsetArg, nextOffset, hasMore: nextOffset !== null },
     provenance: {
       kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
       content_type: "derived",
       produced_by: "threat_resolution_pipeline",
       source_data:

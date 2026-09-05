@@ -21,7 +21,7 @@ import {
 } from "../tools/prepare-codegen-context.js";
 import { CONCERN_TO_DOMAIN_CHAPTERS, TECHNOLOGY_TO_CHAPTERS, SES008_TECHNOLOGY } from "./selection.js";
 import { PATTERN_RULES } from "../tools/map-review-scope.js";
-import { servedKgReleaseTag } from "../version-info.js";
+import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 
 export interface ConcernVocabularyEntry {
   value: Concern;
@@ -41,6 +41,7 @@ export interface ActivatorVocabularyEntry {
 export interface ActivationVocabulary {
   provenance: {
     kg: string;
+    server: string;
     content_type: "derived";
     produced_by: "activation_vocabulary_builder";
     source_data: string;
@@ -116,6 +117,7 @@ export function buildActivationVocabulary(): ActivationVocabulary {
   return {
     provenance: {
       kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
       content_type: "derived",
       produced_by: "activation_vocabulary_builder",
       source_data:

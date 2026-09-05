@@ -207,7 +207,8 @@ Canonical role IDs (pass exact or common alias — resolved automatically):
 | `rule_trace` contains `CONCERNS_FILTER_REQUIREMENTS` | Tell user scope was narrowed to the specified concerns |
 | `mitigation_confidence: "heuristic"` | Flag as inferred linkage — not structural evidence |
 | `mitigation_confidence: "derived"` | Structural chapter-match — reliable |
-| `assignments: []` / `threats: []` | Say "manual-grounded: not applicable in this scope" — do not invent |
+| `threats: []` **with** `unsupported_concerns` | **Do NOT say "not applicable in this scope".** The concern is valid and its requirements exist — this THREAT MAP does not route it. Cite `unsupported_concerns.note`, then call `select_sbd_toe_requirements` for the same concern; assert nothing about absence of threats |
+| `assignments: []` / `threats: []` **with no** `unsupported_concerns` | Empty *within a resolved scope*: say "manual-grounded: no entries at this risk level for this scope" — do not invent, and do not generalise beyond the scope actually resolved (check `meta.activeChapters` is non-empty before claiming coverage) |
 | `active_domains` | List the security domains active at this risk level |
 | `coverage_gaps.requirements_without_control_link` (consult) | Those requirements are active but have **no published control link** — say so (declared gap, routed to Codex); do not invent controls |
 | `match: "declared_gap"` / `meta.declared_gap` (query_sbd_toe_entities, resolve_entities) | Cite `declared_gap.note` verbatim — a legacy / unresolvable citation, not a missing requirement |

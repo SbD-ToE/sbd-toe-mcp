@@ -2994,6 +2994,7 @@
   },
   "provenance": {
     "kg": "v1.11.0",
+    "server": "<pkg>",
     "runtime_v0": "data/publish/runtime/*.json + data/publish/ontology/*",
     "runtime_v1": "data/publish/runtime/v1/*",
     "overlay": "absent"

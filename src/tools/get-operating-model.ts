@@ -9,7 +9,7 @@
  * Contract: agentic/em-curso/2026-06-14-pontifex-implementation-view-tool-contracts-v0.1.md
  */
 
-import { servedKgReleaseTag } from "../version-info.js";
+import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 import { filterChunks, type ManualChunk } from "../serving/chunk-index.js";
 import { paginate, type PageCoverage } from "../serving/response-shaping.js";
 import { boundAffordances, type ProtocolEnvelope } from "../serving/protocol-envelope.js";
@@ -93,6 +93,7 @@ export function handleGetOperatingModel(
     },
     provenance: {
       kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
       content_type: "canonical",
       produced_by: "operating_model_projection",
       source_data: `data/publish/indexes/mcp_chunks.jsonl (bundle=${PLAYBOOK_BUNDLE}, profile=implementation)`,

@@ -131,8 +131,8 @@ export function basisOfSource(source: string): SelectionBasis {
 }
 
 export interface SelectionTraceEntry {
-  layer: "baseline" | "domain_specific" | "agents_wave" | "named_rule";
-  source: ActivationTraceEntry["source"] | "context_chapter" | "agents_wave" | "named_rule";
+  layer: "baseline" | "domain_specific" | "declared_category" | "agents_wave" | "named_rule";
+  source: ActivationTraceEntry["source"] | "context_chapter" | "declared_category" | "agents_wave" | "named_rule";
   trigger: string;
   score: number;
   reason: string;
@@ -211,6 +211,8 @@ export interface SelectionResult {
   mode: SelectionMode;
   /** Presente quando nada foi declarado no modo declarativo: pedido de declaração + aula. */
   needs_input?: NeedsInput;
+  /** 0.20.0-beta.23: tokens de `technologies` fora do vocabulário — nomeados, nunca descartados em silêncio. */
+  unknown_technologies?: string[];
   /** O `task` é contexto registado, não motor (excepto em discover). */
   task_record: { text: string; role: "recorded_context"; affects_selection: boolean };
 }
@@ -287,6 +289,21 @@ export function stackTokensFromVocabulary(stack: string | undefined): string[] {
   const out = new Set<string>();
   for (const token of (stack ?? "").toLowerCase().split(/[^a-z0-9-]+/).filter(Boolean)) {
     if (token in TECHNOLOGY_TO_CHAPTERS || token === SES008_TECHNOLOGY) out.add(token);
+  }
+  return [...out].sort();
+}
+
+/**
+ * 0.20.0-beta.23 (P0-3, varredura) — tokens de `technologies` que o vocabulário NÃO
+ * conhece. Mesma classe do `unknown_concerns` (beta.22): num contrato declarativo o
+ * vocabulário é o único canal, e uma gralha custa a activação inteira. Descartar em
+ * silêncio é a falha; nomear é o contrato.
+ */
+export function unknownDeclaredTechnologies(technologies: readonly string[]): string[] {
+  const out = new Set<string>();
+  for (const t of technologies) {
+    const key = t.trim().toLowerCase();
+    if (key.length > 0 && !(key in TECHNOLOGY_TO_CHAPTERS) && key !== SES008_TECHNOLOGY) out.add(key);
   }
   return [...out].sort();
 }
@@ -382,6 +399,11 @@ export function runSelectionWithActivation(
   const declarative = mode !== "discover";
   const technologies = declarative ? normalizeDeclaredTechnologies(technologiesRaw, input.stack) : technologiesRaw;
   const declared = declaredActivatorsOf(input, technologies);
+  // beta.23 (P0-3): a regra nomeada SES-008 é EFEITO de uma tecnologia declarada.
+  // Tem de ser conhecida ANTES da guarda anti-zero — senão a guarda deita fora uma
+  // declaração que activa mesmo alguma coisa (era o caso de `technologies:["jwt"]`).
+  const ses008Declared = technologies.includes(SES008_TECHNOLOGY);
+  const unknownTechnologies = declarative ? unknownDeclaredTechnologies(technologiesRaw) : [];
   const taskRecord = {
     text: input.taskTrimmed,
     role: "recorded_context" as const,
@@ -408,6 +430,36 @@ export function runSelectionWithActivation(
   const domainEligible = ontology.requirements.filter(
     (r) => r.type !== "base" && atLevel(r) && r.source_bundle !== undefined && chapterSet.has(r.source_bundle)
   );
+  /**
+   * 0.20.0-beta.23 (P0-1) — CONSERVAÇÃO: o MOTOR CEDE ao vocabulário publicado.
+   *
+   * `domainEligible` exige que o CAPÍTULO do requisito esteja activado. Mas o
+   * vocabulário publicado (sbd://toe/activation-vocabulary) promete activar por
+   * CATEGORIA: `concerns:["build"]` anuncia CIC+DEV. Os requisitos DEV vivem num
+   * capítulo que o concern não activa — e desapareciam de TODAS as bandas, nem
+   * seleccionados nem narrowed_out nem excluded_by_level. Silêncio, que é o que
+   * este contrato proíbe.
+   *
+   * Decisão (programme lead, 2026-09-05): a promessa publicada é o contrato; o
+   * motor é que cede. Uma categoria DECLARADA torna elegíveis os seus requisitos
+   * ao nível, com capítulo activado ou sem ele — e com traço próprio
+   * (`declared_category`), para que a inclusão nunca seja anónima.
+   *
+   * Só no caminho declarativo: em `discover` a activação é inferida de texto e a
+   * continuidade histórica do oráculo manda (ver relatório da vaga).
+   */
+  const domainIds = new Set(domainEligible.map((r) => r.requirement_id));
+  const categoryEligible = declarative
+    ? ontology.requirements.filter(
+        (r) =>
+          r.type !== "base" &&
+          atLevel(r) &&
+          !domainIds.has(r.requirement_id) &&
+          activatedCategories.has(r.category)
+      )
+    : [];
+  const categoryEligibleIds = new Set(categoryEligible.map((r) => r.requirement_id));
+
   const agentsActive = activation.concerns.includes("agents" as Concern);
   const agentsWave = agentsActive
     ? ontology.requirements.filter(
@@ -415,6 +467,7 @@ export function runSelectionWithActivation(
           r.type !== "base" &&
           atLevel(r) &&
           !domainEligible.includes(r) &&
+          !categoryEligibleIds.has(r.requirement_id) &&
           AGENTIC_WAVE_PATTERN.test(`${r.name} ${r.description ?? ""}`)
       )
     : [];
@@ -427,13 +480,25 @@ export function runSelectionWithActivation(
   // declarações VÁLIDAS e INERTES: davam selected:[] sem aviso — o mesmo ponto cego
   // do empty_selection_warning noutra roupa. Qualquer caminho que não active nada
   // responde needs_input, e diz QUAIS declarações foram inertes.
-  if (mode === "declarative" && activatedCategories.size === 0 && activatedChapters.length === 0) {
+  if (mode === "declarative" && activatedCategories.size === 0 && activatedChapters.length === 0 && !ses008Declared) {
     const inert: string[] = [];
     if (declared.exposure !== undefined && (EXPOSURE_ACTIVATION[declared.exposure] ?? []).length === 0)
       inert.push(`exposure="${declared.exposure}"`);
     if (declared.data_sensitivity !== undefined && (SENSITIVITY_ACTIVATION[declared.data_sensitivity] ?? []).length === 0)
       inert.push(`data_sensitivity="${declared.data_sensitivity}"`);
     if (declared.technologies.length === 0 && input.stack) inert.push(`stack="${input.stack}" (nenhum token do vocabulário)`);
+    // 4ª instância da mesma classe (P0-3, beta.23): `technologies` era o único
+    // activador que a guarda nunca nomeava — o utilizador via «nenhum activador
+    // DECLARADO» com `declared.technologies` preenchido à frente. Contradição no
+    // próprio payload.
+    if (unknownTechnologies.length > 0)
+      inert.push(
+        `technologies=[${unknownTechnologies.join(", ")}] (fora do vocabulário publicado — valores conhecidos em sbd://toe/activation-vocabulary → technologies)`
+      );
+    if (declared.technologies.length > 0)
+      inert.push(
+        `technologies=[${declared.technologies.join(", ")}] (do vocabulário, mas não activam capítulo nem categoria a este nível)`
+      );
     // 3ª instância da mesma classe (apanhada pelo cenário TC-F-27): caminhos declarados
     // que não casam nenhum padrão da tabela publicada activam zero — dizê-lo é o que
     // separa «não conheço estes caminhos» de «não há nada a aplicar».
@@ -461,7 +526,8 @@ export function runSelectionWithActivation(
       ],
       mode,
       needs_input: buildNeedsInput(input, declared, inert),
-      task_record: taskRecord,
+      ...(unknownTechnologies.length > 0 ? { unknown_technologies: unknownTechnologies } : {}),
+    task_record: taskRecord,
     };
   }
 
@@ -550,6 +616,19 @@ export function runSelectionWithActivation(
     ]);
   }
 
+  for (const r of categoryEligible) {
+    const entry = concernByCategory.get(r.category);
+    pushSelected(r, [
+      {
+        layer: "declared_category",
+        source: "declared_category",
+        trigger: entry?.trigger ?? r.category,
+        score: 0.9,
+        reason: `categoria ${r.category} PROMETIDA pelo vocabulário para o que foi declarado (${entry?.reason ?? "activação declarada"}); capítulo ${r.source_bundle ?? "?"} não activado por contexto, mas a promessa publicada é o contrato`,
+      },
+    ]);
+  }
+
   for (const r of agentsWave) {
     pushSelected(r, [
       {
@@ -589,13 +668,12 @@ export function runSelectionWithActivation(
         if (at >= 0) parked.splice(at, 1);
         if (parked.length === 0) narrowedByCategory.delete(r.category);
       }
-      if (!baselineEligible.includes(r) && !domainEligible.includes(r)) extraEligible += 1;
+      if (!baselineEligible.includes(r) && !domainEligible.includes(r) && !categoryEligibleIds.has(r.requirement_id)) extraEligible += 1;
     }
   }
 
   // SES-008-por-tecnologia (Author): JWT/user-token signal selects SES-008 at any level.
   let ses008Applied = false;
-  const ses008Declared = technologies.includes(SES008_TECHNOLOGY);
   const ses008Triggered = declarative ? ses008Declared : SES008_TECH_PATTERN.test(input.task ?? "");
   // P1-E (0.20.0-beta.22): a regra é PUBLICADA no vocabulário — tem de deixar rasto,
   // senão SES-008 entra e o auditor não distingue a regra da activação por exposure.
@@ -630,7 +708,7 @@ export function runSelectionWithActivation(
         if (at >= 0) parked.splice(at, 1);
         if (parked.length === 0) narrowedByCategory.delete("SES");
       }
-      if (!baselineEligible.includes(r) && !domainEligible.includes(r)) extraEligible += 1;
+      if (!baselineEligible.includes(r) && !domainEligible.includes(r) && !categoryEligibleIds.has(r.requirement_id)) extraEligible += 1;
     }
   }
 
@@ -695,7 +773,11 @@ export function runSelectionWithActivation(
   const selectedIds = new Set(selected.map((s) => s.requirement_id));
   for (const r of ontology.requirements) {
     if (atLevel(r) || selectedIds.has(r.requirement_id)) continue;
-    const inScope = r.type === "base" || (r.source_bundle !== undefined && chapterSet.has(r.source_bundle));
+    const inScope =
+      r.type === "base" ||
+      (r.source_bundle !== undefined && chapterSet.has(r.source_bundle)) ||
+      // beta.23: categoria declarada mas requisito fora do nível — banda, não silêncio.
+      (declarative && activatedCategories.has(r.category));
     if (!inScope) continue;
     const list = excludedByCategory.get(r.category) ?? [];
     list.push(r.requirement_id);
@@ -740,7 +822,7 @@ export function runSelectionWithActivation(
     const ni = buildNeedsInput(input, declared, []);
     return {
       risk_level: level,
-      eligible_count: baselineEligible.length + domainEligible.length,
+      eligible_count: baselineEligible.length + domainEligible.length + categoryEligible.length,
       selected: [],
       narrowed_out: [],
       excluded_by_level,
@@ -771,7 +853,8 @@ export function runSelectionWithActivation(
             }
           : {})
       },
-      task_record: taskRecord,
+      ...(unknownTechnologies.length > 0 ? { unknown_technologies: unknownTechnologies } : {}),
+    task_record: taskRecord,
     };
   }
 
@@ -791,7 +874,7 @@ export function runSelectionWithActivation(
 
   return {
     risk_level: level,
-    eligible_count: baselineEligible.length + domainEligible.length + agentsWave.length + extraEligible,
+    eligible_count: baselineEligible.length + domainEligible.length + categoryEligible.length + agentsWave.length + extraEligible,
     selected,
     narrowed_out,
     excluded_by_level,
@@ -804,6 +887,7 @@ export function runSelectionWithActivation(
     input,
     notes,
     mode,
+    ...(unknownTechnologies.length > 0 ? { unknown_technologies: unknownTechnologies } : {}),
     task_record: taskRecord,
   };
 }

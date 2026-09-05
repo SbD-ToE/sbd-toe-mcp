@@ -60,6 +60,16 @@ import { resolveAppPath } from "../config.js";
 import { clearG2RuntimeCacheForTests } from "./g2-runtime-loader.js";
 import { clearRegulatoryOverlayCacheForTests } from "./regulatory-overlay-loader.js";
 
+/**
+ * 0.20.0-beta.23 (P1): `provenance.server` traz a versão do PACOTE — muda a cada
+ * release por desenho. Fixá-la nos golden bytes faria a suite da dieta partir a cada
+ * bump por uma razão que nada tem que ver com dieta. Normaliza-se aqui (e SÓ aqui):
+ * o gate de orçamento continua a medir o payload REAL, com o campo lá dentro.
+ */
+function snapshotJson(result: unknown): string {
+  return JSON.stringify(result, null, 2).replace(/"server": "[^"]*"/g, '"server": "<pkg>"');
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const __prepareRaw = handlePrepareCodegenContext;
 const handlePrepareCodegenContextDiscover = (input: Parameters<typeof __prepareRaw>[0]) =>
@@ -684,7 +694,7 @@ describe("prepare_sbd_toe_codegen_context — perfil ultrathin (v2-token-diet s3
         detail: "ultrathin"
       });
       expectReadyDieted(result);
-      await expect(JSON.stringify(result, null, 2)).toMatchFileSnapshot(
+      await expect(snapshotJson(result)).toMatchFileSnapshot(
         `__snapshots__/codegen-detail/${fixture.name}-ultrathin.json`
       );
     });

@@ -1,13 +1,138 @@
 ---
 ai_assisted: true
 model: Claude Fable 5
-date: 2026-08-31
+date: 2026-09-05
 purpose: documentation
-reasoning: v0.20.0-beta.22 (beta line, npm `beta`) — «o caminho para 9»: os 7 itens da validação externa da linha declarativa (P1-A guarda anti-zero re-indexada à ACTIVAÇÃO + local/low publicados inertes; P1-B unknown_concerns; P1-C enum GERADO do vocabulário nas 3 tools; P1-D traço do stack_token; P1-E traço da regra nomeada; P2-A fim da etiqueta órfã task_term). A guarda passou a INVARIANTE (192 combinações) e apanhou 2 instâncias que a sonda do avaliador não alcançava (nível esvazia; changed_files sem padrão). Bundle e linha estável inalterados.
+reasoning: v0.20.0-beta.23 (beta line, npm `beta`) — CONSERVAÇÃO: o motor não deita fora o que foi declarado. Invariante de conservação sobre o vocabulário TODO (24 concerns × 3 níveis + exposure + data_sensitivity + technologies + paths); P0-1 (o motor cede à promessa publicada por CATEGORIA — 4 famílias afectadas, não 1); P0-2 (unsupported_concerns declarado em get_threat_landscape + agent-guide deixa de mandar afirmar ausência a partir de lista vazia); P0-3 (guarda anti-zero cobre technologies; declaração com efeito deixa de ser descartada); P1 (provenance.server: a resposta diz que servidor a produziu). Bundle e linha estável inalterados.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.23 — 2026-09-05
+
+**CONSERVAÇÃO** — *o motor não pode deitar fora o que foi declarado.* Autorizado pelo
+lead («avança», 2026-09-05); diagnóstico vinculativo em
+`DevelopmentGovernance/docs/mcp-declarative-first-design-note.md` §14. Bundle pin
+INALTERADO (release KG `v1.11.0`); **linha estável intocada**.
+
+> A regra da beta.22 era *nada acontece sem traço, nada falta sem aviso*. Esta vaga
+> acrescenta a metade que faltava: **nada prometido se perde**.
+
+### A invariante de conservação (o que ela apanhou)
+
+`src/serving/conservation-invariant.test.ts` — 5 propriedades sobre o vocabulário TODO:
+24 concerns × 3 níveis, exposure, data_sensitivity, technologies e a tabela de paths.
+Para cada valor × nível, tudo o que o vocabulário PROMETE activar tem de aparecer nalguma
+banda (`selected` ∪ `narrowed_out` ∪ `excluded_by_level`), a aritmética tem de fechar, e o
+`requirements_at` publicado tem de bater com o catálogo.
+
+**Apanhou 12 violações — 4 famílias, não a única que a sonda externa tocou:**
+
+| concern | categorias prometidas | perdido em L1 / L2 / L3 |
+|---|---|---|
+| `build` | CIC + **DEV** | 4/9 · 8/17 · **9/19** (inclui DEV-003, SAST como gate) |
+| `supply_chain` | … + **CIC** | 5/14 · 9/31 · 10/36 |
+| `release` | … + **OPS** | 2/8 · 11/20 · 15/26 |
+| `deployment` | … + **IAC** | 4/18 · 11/38 · 13/43 |
+
+**E apanhou um erro no enunciado da própria lei.** O despacho pedia
+`selected + narrowed_out + excluded_by_level == eligible`. Essa soma **não pode** fechar:
+`eligible` conta o que se aplica AO NÍVEL e `excluded_by_level` é precisamente o que NÃO
+se aplica — é o livro-razão de fora, não uma parcela de dentro. A lei que fecha, e fecha
+exactamente em todas as 72 combinações, é `selected + narrowed_out == eligible`
+(ex.: `auth`@L1 = 18+43 = 61 = eligible; `excluded_by_level` = 60, à parte). A invariante
+verifica as duas coisas separadamente, e é assim que está escrita.
+
+### P0-1 — o motor cede à promessa publicada
+
+Causa única, confirmada: o vocabulário activa por **CATEGORIA**; `domainEligible` exigia
+o **CAPÍTULO** activado. (Verificado que não há segunda causa: os mapas categoria↔concern
+do vocabulário e do motor coincidem valor a valor.) Requisitos de uma categoria prometida
+cujo capítulo o concern não activa **desapareciam de todas as bandas** — nem seleccionados,
+nem narrowed, nem excluídos. Silêncio, que é o que este contrato proíbe.
+
+Decisão do lead: **a promessa publicada é o contrato; o motor é que cede.** Uma categoria
+declarada torna os seus requisitos elegíveis ao nível, com capítulo activado ou sem ele,
+com traço próprio **`declared_category`** — a inclusão nunca é anónima. Só no caminho
+declarativo (em `discover` manda a continuidade histórica do oráculo).
+
+**Efeito medido nos conjuntos — cirúrgico, não inflacionário:**
+
+- **12 das 72** combinações concern×nível mudam; **60 ficam byte-idênticas**;
+- em todas as 12, `selected` passa a bater **exactamente** com o `requirements_at`
+  publicado: `build`@L3 10→**19** (=10 CIC+9 DEV), `supply_chain`@L3 26→**36**,
+  `release`@L3 11→**26**, `deployment`@L3 30→**43**;
+- **ouro: zero movimento.** O relatório do Axis H desta vaga é byte-idêntico ao da
+  beta.22 nos dois braços (só muda a linha do carimbo) — `discover` **10 PASS / 0 / 0**
+  (obrigatório) e declarativo **6 PASS / 4 PART / 0 FAIL**, caso a caso. Nenhum caso-ouro
+  declara as 4 famílias afectadas de forma a tocar as 12 combinações.
+
+### P0-2 — `unsupported_concerns`: zero deixa de ser mudo
+
+11 dos 24 concerns (`secrets, build, supply_chain, testing, threat_modeling, monitoring,
+release, deployment, integration, files, privacy`) devolviam `total: 0` +
+`activeChapters: []`, indistinguível de «não há ameaças». `get_threat_landscape` passa a
+declarar `unsupported_concerns` com a lista do que **é** suportado e a proibição explícita
+de concluir ausência. A lista de suporte é **derivada** (não escrita à mão): um concern é
+suportado quando, declarado sozinho, activa pelo menos um capítulo de ameaças — estável
+nos três níveis, calculada uma vez por processo.
+
+O caso que mais importa é o **misto**: `["build","auth"]` devolve 95 ameaças **e** mantém
+`build` declarado como não-roteável. Antes, o concern por resolver desaparecia dentro de um
+resultado que parecia completo.
+
+**E o agent-guide deixou de mandar afirmar ausência a partir de lista vazia.** A linha que
+mandava dizer *«manual-grounded: not applicable in this scope»* para `threats: []` foi
+partida em duas: com `unsupported_concerns`, **proibido** afirmar não-aplicabilidade —
+cita-se a nota e vai-se a `select_sbd_toe_requirements`; sem ela, só se pode afirmar vazio
+*dentro do âmbito efectivamente resolvido* (com `meta.activeChapters` não-vazio a prová-lo).
+
+### P0-3 — a guarda anti-zero cobre `technologies` (varridos os cinco activadores)
+
+Duas metades, ambas corrigidas:
+
+1. **a guarda descartava uma declaração com efeito real**: `technologies:["jwt"]` respondia
+   «Nenhum activador DECLARADO» com `declared.technologies:["jwt"]` no mesmo payload —
+   contradição interna — porque a regra nomeada SES-008 só era avaliada *depois* da guarda.
+   Agora o efeito nomeado é conhecido antes: `technologies:["jwt"]` selecciona SES-008,
+   **simétrico com `stack:"jwt"`** (a assimetria era a prova do defeito);
+2. **`technologies` era o único activador que a guarda nunca nomeava**. Passa a ser a 4ª
+   instância nomeada em `inert_declarations`, e tokens fora do vocabulário saem em
+   **`unknown_technologies`** (mesma classe do `unknown_concerns` da beta.22) em vez de
+   serem descartados em silêncio.
+
+Varridos os cinco activadores declaráveis: `concerns` (unknown_concerns, beta.22),
+`exposure`, `data_sensitivity`, `stack`, `changed_files` (beta.22) e agora `technologies` —
+nenhum descarta em silêncio.
+
+### P1 — a proveniência diz QUE SERVIDOR respondeu
+
+A validação externa correu a mesma sonda em duas builds e obteve 33 e 42 requisitos com
+`serving_contract` e `kg` idênticos: a resposta não era atribuível. `kg` identifica o
+**conhecimento servido**; **`provenance.server`** identifica **quem o serviu**. Estampado
+em 20 sítios (todas as ferramentas com proveniência) — e também nos payloads **bloqueados**
+do `prepare`, que antes não traziam proveniência nenhuma: um bloqueio também é uma resposta,
+e também tem de ser atribuível.
+
+### Notas de verificação
+
+- **Suite**: 761/761 (50 ficheiros), com a invariante de conservação nova (5 propriedades).
+- **Aceitação**: 149 cenários — 109 PASS · 17 PART · **0 FAIL**, **gate PASS**. Novos
+  TC-F-39 (conservação/P0-1), TC-F-40 (P0-2, incluindo o caso misto), TC-F-41 (P0-3 com o
+  controlo de simetria e o token desconhecido), TC-F-42 (P1 em 4 ferramentas).
+- **Orçamentos**: os 8 gates hard seguram com o campo novo dentro do payload — fixture1
+  `full` 18.779/20.400, `standard` 6.105/6.500, `minimal` 5.459/5.800, `ultrathin`
+  3.658/3.870; fixture2 25.200/26.700, 9.098/9.200, 8.372/8.450, 4.802/4.840. Um budget de
+  secção foi ajustado **com a medida à frente**: `rest` do `full` 1.350 → 1.360 (medido
+  1.356; +6 tokens = o campo `provenance.server`).
+- **Snapshots do diet**: `provenance.server` é normalizado para `<pkg>` nos golden bytes —
+  fixá-lo faria a suite da dieta partir a cada bump por razão alheia à dieta. O gate de
+  orçamento continua a medir o payload REAL, com o campo lá dentro.
+- **Achado colateral, corrigido**: `npm run smoke:mcp` estava partido **desde a beta.21**
+  (pedia `prepare` só com `task`, que sob o default declarativo responde `needs_input`).
+  Não era regressão desta vaga — verificado contra o build de `6a695af`. O smoke passa a
+  declarar activadores: é um smoke de transporte e dieta, não do contrato de declaração.
 
 ## 0.20.0-beta.22 — 2026-09-05
 

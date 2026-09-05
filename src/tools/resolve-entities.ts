@@ -28,7 +28,7 @@ import {
   type MechanismV1,
   type PracticeV1
 } from "./g2-runtime-loader.js";
-import { servedKgReleaseTag } from "../version-info.js";
+import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 import { getOntologyData } from "./ontology-loader.js";
 import {
   getRegulatoryOverlay,
@@ -63,6 +63,8 @@ function isComparisonOp(v: unknown): v is ComparisonOp {
 }
 
 export interface McpProvenance {
+  /** 0.20.0-beta.23: versão do SERVIDOR que produziu esta resposta (≠ `kg`, o conhecimento servido). */
+  server: string;
   /** Compact version stamp: kg release_tag of the served pin (0.13.0). */
   kg: string;
   content_type: "canonical" | "derived" | "inferred";
@@ -363,6 +365,7 @@ export function _resolveEntities(
 
 const RUNTIME_V0_PROVENANCE: McpProvenance = {
   kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
   content_type: "canonical",
   produced_by: "direct_runtime_lookup",
   source_data: "data/publish/runtime/*.json",
@@ -371,6 +374,7 @@ const RUNTIME_V0_PROVENANCE: McpProvenance = {
 
 const RUNTIME_V1_PROVENANCE: McpProvenance = {
   kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
   content_type: "canonical",
   produced_by: "direct_runtime_v1_lookup",
   source_data: "data/publish/runtime/v1/*",
@@ -381,6 +385,7 @@ const RUNTIME_V1_PROVENANCE: McpProvenance = {
 
 const OVERLAY_PROVENANCE_PUBLISHED: McpProvenance = {
   kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
   content_type: "canonical",
   produced_by: "direct_overlay_lookup",
   source_data: "data/publish/overlay/*",
@@ -390,6 +395,7 @@ const OVERLAY_PROVENANCE_PUBLISHED: McpProvenance = {
 
 const OVERLAY_PROVENANCE_ABSENT: McpProvenance = {
   kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
   content_type: "canonical",
   produced_by: "direct_overlay_lookup",
   source_data: "data/publish/overlay/* (absent)",

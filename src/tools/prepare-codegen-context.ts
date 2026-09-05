@@ -54,7 +54,7 @@ import {
   type RegulatoryPlaybook,
   resolveRegulatoryFramework
 } from "./regulatory-overlay-loader.js";
-import { servedKgReleaseTag } from "../version-info.js";
+import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 import { expandQueryWithAliases } from "../backend/semantic-index-gateway.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { requirementCategoryOf } from "../serving/requirement-id.js";
@@ -432,6 +432,8 @@ export interface PrepareCodegenContextResultReady {
   provenance: {
     /** Compact version stamp: kg release_tag of the served pin (0.13.0). */
     kg: string;
+    /** 0.20.0-beta.23: versão do SERVIDOR que produziu esta resposta (≠ `kg`). */
+    server: string;
     runtime_v0: string;
     runtime_v1: string;
     overlay: string | "absent";
@@ -444,6 +446,13 @@ export interface PrepareCodegenContextResultReady {
 
 export interface PrepareCodegenContextResultBlocked {
   status: "needs_clarification" | "needs_decomposition" | "unsupported_scope" | "needs_input";
+  /**
+   * 0.20.0-beta.23 (P1, mesma classe): um BLOQUEIO também é uma resposta, e também
+   * tem de ser atribuível. Antes desta vaga o payload bloqueado não trazia
+   * proveniência nenhuma — dois servidores diferentes bloqueavam de forma
+   * indistinguível.
+   */
+  provenance: { kg: string; server: string };
   /** 0.19.4: presente quando o bloqueio é o TECTO DE REQUISITOS por detail (a
    * promessa de tokens do nível dieted): limite derivado da medição, projecção
    * de custo, e lotes de divisão ensinados (concerns por área, estimados). */
@@ -2709,6 +2718,7 @@ function blocked(
 ): PrepareCodegenContextResultBlocked {
   const result: PrepareCodegenContextResultBlocked = {
     status,
+    provenance: { kg: servedKgReleaseTag(), server: servingServerVersion() },
     mode: input.mode,
     input_echo: inputEcho(raw),
     reasons,
@@ -4009,6 +4019,7 @@ function prepareCodegenContextCore(
     security_rationale_template,
     provenance: {
       kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
       runtime_v0: PROVENANCE_V0,
       runtime_v1: PROVENANCE_V1,
       overlay:

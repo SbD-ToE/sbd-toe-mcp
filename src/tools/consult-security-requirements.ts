@@ -20,7 +20,7 @@ import type {
   RequirementControlLink
 } from "./ontology-loader.js";
 import { estimateSize } from "../serving/response-shaping.js";
-import { servedKgReleaseTag } from "../version-info.js";
+import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 import { getOntologyData } from "./ontology-loader.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { consultAffordances } from "../serving/affordances.js";
@@ -110,6 +110,8 @@ export interface ConsultSecurityRequirementsResult {
 }
 
 export interface McpProvenance {
+  /** 0.20.0-beta.23: versão do SERVIDOR que produziu esta resposta (≠ `kg`, o conhecimento servido). */
+  server: string;
   /** Compact version stamp: kg release_tag of the served pin (0.13.0). */
   kg: string;
   content_type: "canonical" | "derived" | "inferred";
@@ -459,6 +461,7 @@ export function handleConsultSecurityRequirements(
     return {
       provenance: {
         kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
         content_type: "derived",
         produced_by: "deterministic_runtime_resolution",
         source_data: "runtime/requirements.json (index projection)",
@@ -483,6 +486,7 @@ export function handleConsultSecurityRequirements(
   return {
     provenance: {
       kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
       content_type: "derived",
       produced_by: "deterministic_runtime_resolution",
       source_data:
