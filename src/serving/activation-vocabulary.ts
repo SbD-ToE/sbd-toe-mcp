@@ -33,6 +33,8 @@ export interface ConcernVocabularyEntry {
 export interface ActivatorVocabularyEntry {
   value: string;
   activates_concerns: string[];
+  /** P1-A/item 2: valor válido que NÃO activa nada — publicado como tal, nunca omitido. */
+  inert?: true;
   note: string;
 }
 
@@ -69,6 +71,14 @@ export function categoriesForConcernPublished(concern: Concern): string[] {
   for (const c of CONCERN_TO_V0_CATEGORIES_SUPPLEMENT[concern] ?? []) set.add(c);
   return [...set].sort();
 }
+
+/**
+ * Os enums PUBLICADOS dos activadores — a fonte única do que as tools aceitam
+ * (P1-C: o schema é gerado daqui) e do que o vocabulário publica (P1-A/item 2:
+ * incluindo os valores válidos mas INERTES, que antes eram omitidos).
+ */
+export const EXPOSURE_VALUES = ["local", "internal", "authenticated", "public"] as const;
+export const SENSITIVITY_VALUES = ["low", "personal", "regulated", "secrets"] as const;
 
 export function buildActivationVocabulary(): ActivationVocabulary {
   const ontology = getOntologyData();
@@ -141,20 +151,32 @@ export function buildActivationVocabulary(): ActivationVocabulary {
     exposure: {
       closed_set: true,
       note: "Activador declarado: a superfície exposta impõe concerns por regra publicada.",
-      values: Object.entries(EXPOSURE_CONCERNS).map(([value, list]) => ({
-        value,
-        activates_concerns: [...list],
-        note: `exposure='${value}' activa ${list.join(", ")} por regra declarada.`
-      }))
+      values: EXPOSURE_VALUES.map((value) => {
+        const list = [...(EXPOSURE_CONCERNS[value] ?? [])];
+        return list.length > 0
+          ? { value, activates_concerns: list, note: `exposure='${value}' activa ${list.join(", ")} por regra declarada.` }
+          : {
+              value,
+              activates_concerns: [],
+              inert: true as const,
+              note: `exposure='${value}' é um valor VÁLIDO e INERTE: não activa nada. Declarado sozinho não produz selecção — a resposta será needs_input, nunca zero em silêncio.`
+            };
+      })
     },
     data_sensitivity: {
       closed_set: true,
       note: "Activador declarado: a natureza dos dados impõe concerns por regra publicada.",
-      values: Object.entries(SENSITIVITY_CONCERNS).map(([value, list]) => ({
-        value,
-        activates_concerns: [...list],
-        note: `data_sensitivity='${value}' activa ${list.join(", ")} por regra declarada.`
-      }))
+      values: SENSITIVITY_VALUES.map((value) => {
+        const list = [...(SENSITIVITY_CONCERNS[value] ?? [])];
+        return list.length > 0
+          ? { value, activates_concerns: list, note: `data_sensitivity='${value}' activa ${list.join(", ")} por regra declarada.` }
+          : {
+              value,
+              activates_concerns: [],
+              inert: true as const,
+              note: `data_sensitivity='${value}' é um valor VÁLIDO e INERTE: não activa nada. Declarado sozinho não produz selecção — a resposta será needs_input, nunca zero em silêncio.`
+            };
+      })
     },
     technologies: {
       closed_set: true,

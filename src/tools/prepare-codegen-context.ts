@@ -63,6 +63,7 @@ import {
   runSelection,
   runSelectionWithActivation,
   normalizeDeclaredTechnologies,
+  stackTokensFromVocabulary,
   type SelectionResult
 } from "../serving/selection.js";
 import { REQUIREMENT_CEILING_BY_DETAIL, COST_PER_REQ_TK, BASE_TK, PAYLOAD_PROMISE_TK, projectedCostTk } from "../serving/payload-ceilings.js";
@@ -149,6 +150,12 @@ export interface ActivationTraceEntry {
   source:
     | "explicit_concern"
     | "task_term"
+    /** 0.20.0-beta.22: mapeamento determinístico concern → slice family (era `task_term` órfão). */
+    | "concern_slice_mapping"
+    /** 0.20.0-beta.22: token exacto do vocabulário fechado encontrado no `stack` declarado. */
+    | "stack_token"
+    /** 0.20.0-beta.22: regra NOMEADA accionada por tecnologia declarada (ex.: SES-008-por-tecnologia). */
+    | "named_rule"
     | "compound_term"
     | "alias_expansion"
     | "intent_keyword"
@@ -1779,7 +1786,11 @@ export function activate(
       sliceFamilyScores.set(family, score);
     }
     trace.push({
-      source: "task_term",
+      // 0.20.0-beta.22 (P2-A): isto NUNCA foi um termo da tarefa — é o mapeamento
+      // determinístico concern → slice family. A etiqueta `task_term` era órfã do
+      // motor lexical e aparecia mesmo com `task` vazio. Em `discover` o task_term
+      // legítimo (casamento de palavras) mantém-se; aqui a fonte diz o que é.
+      source: declaredOnly ? "concern_slice_mapping" : "task_term",
       produced: family,
       trigger: concern,
       score,
@@ -1825,6 +1836,23 @@ export function activate(
         concern,
         { capDuplicates: true }
       );
+    }
+  }
+
+  // 5-pre) 0.20.0-beta.22 (P1-D): o `stack` é a ÚNICA leitura de texto que resta no
+  // caminho declarativo (token EXACTO de um conjunto fechado — normalizar o declarado).
+  // Deixava de fora o rasto: os capítulos apareciam sem que o auditor pudesse ver
+  // porquê. Agora cada token reconhecido emite a sua entrada.
+  if (declaredOnly && input.stack) {
+    for (const token of stackTokensFromVocabulary(input.stack)) {
+      trace.push({
+        source: "stack_token",
+        produced: token,
+        trigger: "stack",
+        score: 0.9,
+        confidence: "deterministic",
+        reason: `token exacto de \`technologies\` encontrado em \`stack\`: '${token}' (normalização de valor declarado; o texto livre à volta é ignorado)`
+      });
     }
   }
 
@@ -3511,28 +3539,9 @@ function prepareCodegenContextCore(
     input.data_sensitivity !== undefined ||
     input.changed_files.length > 0 ||
     declaredTechnologies.length > 0;
-  if (declarativeSelection && !hasDeclaredActivator) {
-    const probe = runSelection({ risk_level: input.risk_level ?? "L2", task: input.task });
-    const ni = probe.needs_input;
-    return blocked(
-      input,
-      raw,
-      "needs_input",
-      [
-        "Nenhum activador DECLARADO nesta chamada (concerns/exposure/data_sensitivity/technologies/changed_files).",
-        "Contrato v1.18-beta: o servidor responde ao declarado e NÃO interpreta o `task` — que fica registado para auditoria."
-      ],
-      [
-        `Lê o vocabulário fechado: read_sbd_toe_resource(uri="sbd://toe/activation-vocabulary").`,
-        `Re-chama declarando, por exemplo: ${ni?.example.with ?? 'risk_level="L2", concerns=[auth, logging]'}.`,
-        ...(ni && ni.candidates_to_confirm.from_task_text.length > 0
-          ? [`SUGESTÃO A CONFIRMAR (não é selecção), derivada do texto: [${ni.candidates_to_confirm.from_task_text.join(", ")}] — confirma e declara.`]
-          : []),
-        `Queres o comportamento inferencial antigo? selection_mode="discover" (exploratório).`
-      ],
-      []
-    );
-  }
+  // P1-A (0.20.0-beta.22): a decisão de needs_input é UMA e vive no motor — indexada
+  // à activação produzida, não à presença de campos. O prepare reage ao veredicto
+  // (abaixo, depois de correr a selecção), em vez de ter a sua própria regra.
   const activation = activate(input, { declaredOnly: declarativeSelection });
 
   // (c) The scope gate measures the request's FOCUS, not its full semantic
@@ -3564,6 +3573,28 @@ function prepareCodegenContextCore(
     selectionMode === "discover" ? (raw.technologies ?? []) : declaredTechnologies,
     selectionMode
   );
+  if (selection.needs_input) {
+    const ni = selection.needs_input;
+    return blocked(
+      input,
+      raw,
+      "needs_input",
+      [
+        ni.reason,
+        "Contrato v1.18-beta: o servidor responde ao declarado e NÃO interpreta o `task` — que fica registado para auditoria."
+      ],
+      [
+        `Lê o vocabulário fechado: read_sbd_toe_resource(uri="${ni.vocabulary_resource}").`,
+        `Re-chama declarando, por exemplo: ${ni.example.with}.`,
+        ...(ni.candidates_to_confirm.from_task_text.length > 0
+          ? [`SUGESTÃO A CONFIRMAR (não é selecção), derivada do texto: [${ni.candidates_to_confirm.from_task_text.join(", ")}] — confirma e declara.`]
+          : []),
+        ...(ni.inert_declarations?.length ? [`Declarações inertes nesta chamada: ${ni.inert_declarations.join("; ")}.`] : []),
+        `Queres o comportamento inferencial antigo? selection_mode="discover" (exploratório).`
+      ],
+      activation.trace
+    );
+  }
   const estimatedRequirements = selection.selected.length;
 
   // 0.19.4 («a promessa do minimal», lead opção 2): tecto de requisitos por-id

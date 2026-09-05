@@ -3,11 +3,103 @@ ai_assisted: true
 model: Claude Fable 5
 date: 2026-08-31
 purpose: documentation
-reasoning: v0.20.0-beta.21 (beta line, npm `beta`) — EXPERIÊNCIA «declarativo primeiro» autorizada pelo programme lead (2026-09-05): a selecção passa a ser função apenas do que o chamador DECLARA; novo recurso sbd://toe/activation-vocabulary (derivado); needs_input em vez de zero/adivinhação; mode baseline/discover; artefactos que perderam objecto (basis lexical, dominance/empty warnings, R2) ficam só em discover; contrato de serviço v1.18-beta anunciado em sbd://toe/version. Medição: 5 redacções → 5 conjuntos (discover) vs 1 conjunto (declarativo); oráculo histórico 10/10 em discover + conjunto declarativo novo 6 PASS/4 PART/0 FAIL. Linha estável inalterada.
+reasoning: v0.20.0-beta.22 (beta line, npm `beta`) — «o caminho para 9»: os 7 itens da validação externa da linha declarativa (P1-A guarda anti-zero re-indexada à ACTIVAÇÃO + local/low publicados inertes; P1-B unknown_concerns; P1-C enum GERADO do vocabulário nas 3 tools; P1-D traço do stack_token; P1-E traço da regra nomeada; P2-A fim da etiqueta órfã task_term). A guarda passou a INVARIANTE (192 combinações) e apanhou 2 instâncias que a sonda do avaliador não alcançava (nível esvazia; changed_files sem padrão). Bundle e linha estável inalterados.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.22 — 2026-09-05
+
+**«O caminho para 9»** — os 7 itens da validação externa da linha declarativa (avaliador,
+05-09; veredicto: *«a correcção arquitectural está feita EM COMPORTAMENTO; 9 é alcançável
+sem alteração arquitectural»*). Todos da classe **«declarar o que o motor já sabe»**: zero
+arquitectura nova. Autorizado pelo lead («avança», 2026-09-05); disposição em
+`DevelopmentGovernance/docs/mcp-declarative-first-design-note.md` §12. Bundle pin
+INALTERADO (release KG `v1.11.0`); **linha estável intocada**.
+
+> Regra transversal do ciclo, verificada como propriedade: **nada acontece sem traço,
+> nada falta sem aviso.**
+
+### P1-A — a guarda anti-zero passou a indexar-se à ACTIVAÇÃO (era à presença de campos)
+
+A sonda que a expunha: `exposure="local"` + `data_sensitivity="low"` — declarações
+**válidas e inertes** — devolvia `selected: []` **sem** `needs_input`. Era o ponto cego do
+antigo `empty_selection_warning` noutra roupa. Agora a guarda dispara sobre
+`activated_categories == 0 && activated_chapters == 0`, **em qualquer caminho**, e o
+`needs_input` **nomeia as declarações inertes** (`inert_declarations`). A decisão passou a
+existir num único sítio (o motor): o `prepare` reage ao veredicto em vez de ter regra
+própria.
+
+**Testada como INVARIANTE, não como cenário** (`declarative-invariants.test.ts`, 192
+combinações declaráveis) — e a invariante apanhou **duas instâncias que a sonda não
+alcançava**:
+
+1. **o nível esvazia**: `concerns:["privacy"]` (ou `["threat_modeling"]`) em **L1** activa
+   categorias mas nenhum requisito delas se aplica ao nível → agora `needs_input` que
+   **explica que o problema é o NÍVEL**, diz em que níveis existem, e traz a banda
+   `excluded_by_level` como prova (15 grupos no caso de L1);
+2. **caminhos que não casam a tabela**: `changed_files: ["Dockerfile"]` não casa nenhum
+   padrão publicado → inércia **nomeada** («nenhum caminho casou a tabela de padrões»),
+   que separa «não conheço estes caminhos» de «não há nada a aplicar».
+
+`mode: "baseline"` continua a ser a saída explícita — nunca fallback da invariante.
+
+### Os restantes seis
+
+- **local/low publicados como INERTES** no vocabulário (`activates_concerns: []`,
+  `inert: true`, nota): um conjunto que se declara `closed_set: true` não pode omitir
+  valores válidos. Os enums passam a sair de `EXPOSURE_VALUES`/`SENSITIVITY_VALUES`.
+- **P1-B — `unknown_concerns`**: `concerns:["authz","auth"]` descartava `authz` em
+  silêncio. Agora vem `{values, valid_values (24), vocabulary_resource, note}` — mesmo
+  padrão do `unknown_filter_fields` (0.15.0); sob declarative-first a gralha custa a
+  categoria inteira, logo nunca é silenciosa.
+- **P1-C — um vocabulário, um contrato**: o `enum` dos `concerns` é **gerado pelo mesmo
+  builder** que produz o recurso, nas três tools. Antes: select **sem enum**, consult
+  **13 de 24**, prepare **só na descrição**. Agora **24 nas três** (o
+  `get_threat_landscape` foi harmonizado à boleia). O `maxItems: 5` do consult mantém-se e
+  passa a estar **declarado como o que é** — tecto de PAYLOAD medido, não limite do
+  vocabulário.
+- **P1-D — traço do `stack`**: a única leitura de texto que resta (token exacto do conjunto
+  fechado) não deixava rasto — 33 requisitos invisíveis ao auditor. Agora emite
+  `{source: "stack_token", produced, trigger: "stack", reason: "token exacto de
+  technologies encontrado em stack…"}`.
+- **P1-E — traço das regras nomeadas por tecnologia**: `technologies:["jwt"]` accionava
+  `SES-008-por-tecnologia` sem entrada de traço (SES-008 confundia-se com a via do
+  `exposure`). Agora emite `{source: "named_rule", produced: "SES-008", trigger: "jwt"}`.
+- **P2-A — fim da etiqueta órfã**: `source: "task_term"` era emitido **com `task` vazio**
+  (o `reason` já dizia a verdade: mapeamento concern→slice family). No caminho declarativo
+  passa a `concern_slice_mapping`; em `discover` o `task_term` legítimo mantém-se.
+
+### Verificação
+
+Suite **756/756** (49 ficheiros; +`declarative-invariants.test.ts`). `npm run check` ✅.
+`eval:acceptance` (`docs/acceptance-runs/2026-09-05-caminho-para-9-v0.20.0-beta.22-*`):
+**145 cenários, 122 executados — 105 PASS · 17 PART · 0 FAIL · 23 SKIP; gate E PASS
+(16/1/0)**; **25/25 tools**; Eixo G 3/3. Casos-ouro: **discover 10/10** (continuidade) +
+declarativo **6 PASS / 4 PART / 0 FAIL** (inalterado face à beta.21 — os 7 itens são de
+superfície e silêncios, não de selecção). Cenários novos **TC-F-37** (guarda anti-zero nas
+três instâncias + gralha declarada + baseline explícita) e **TC-F-38** (traços
+stack_token/named_rule/concern_slice_mapping + enum idêntico nas 3 tools); **TC-F-27**
+actualizado (declara a tecnologia: `Dockerfile` não casa a tabela, e a inércia é agora
+declarada).
+
+**Orçamentos.** Série histórica (fixtures em `discover`): **byte-idêntica** à beta.20/21 —
+f1 18 773 / 6 099 / 5 452 / 3 651; f2 25 193 / **9 092**/9 200 / **8 365**/8 450 /
+**4 796**/4 840. Caminho declarativo (fixtures declarativas da beta.21, agora com os traços
+novos): f1 19 147 / 6 495 / 5 848 / 3 838 (49 req.); f2 24 776 / 8 077 / 7 351 / 4 657
+(66 req.) — **+9/+12 tokens** face à beta.21, o custo do rasto que faltava.
+
+### Fora de âmbito (reportado, não corrigido)
+
+**P2-B** `get_threat_landscape` alarga em vez de estreitar (10/15 capítulos, ~8,4k tk, sem
+ordenação por relevância). **P2-C** `changed_files` não prevê quem ainda **não tem código**
+(fase de design) — é **decisão de contrato do lead**, não bug; esta vaga só torna a inércia
+visível. **P2-D** granularidade de capítulo em `technologies` (`containers` traz 22 reqs de
+IaC). **P3** deriva de documentação — em particular a **contradição declarada**: o `prepare`
+dizia «preferir `stack`» enquanto o `select` diz «preferir `technologies`»; corrigi apenas o
+que o P1-C tocou (a descrição dos `concerns`), **a contradição do `stack` fica registada
+para triagem**, com `src/config.ts` como padrão literal na tabela geral e o jargão PT/EN.
 
 ## 0.20.0-beta.21 — 2026-09-05
 

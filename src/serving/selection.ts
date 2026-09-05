@@ -31,8 +31,10 @@ import {
   type NormalizedInput
 } from "../tools/prepare-codegen-context.js";
 import { bundlesForChangedFiles } from "../tools/map-review-scope.js";
+import { EXPOSURE_CONCERNS as EXPOSURE_ACTIVATION, SENSITIVITY_CONCERNS as SENSITIVITY_ACTIVATION } from "../tools/prepare-codegen-context.js";
 
 export type SelectionRiskLevel = "L1" | "L2" | "L3";
+const LEVELS: readonly SelectionRiskLevel[] = ["L1", "L2", "L3"];
 
 /** Concern → the domain chapter(s) whose catalogue it activates (aligned with the
  * ontology's `activation_examples` and the applicability model; audited table). */
@@ -174,6 +176,8 @@ export interface DeclaredActivators {
 /** Resposta a uma chamada sem declarações: pedido de declaração, não resultado. */
 export interface NeedsInput {
   reason: string;
+  /** P1-A: declarações válidas que não activaram nada (ex.: exposure=local, data_sensitivity=low). */
+  inert_declarations?: string[];
   declared: DeclaredActivators;
   vocabulary_resource: string;
   candidates_to_confirm: {
@@ -278,6 +282,15 @@ export function runSelection(context: SelectionContextInput): SelectionResult {
 }
 
 /** Tecnologias declaradas normalizadas: valor do vocabulário fechado, ou token exacto dentro do `stack`. */
+/** Tokens do vocabulário FECHADO presentes no `stack` declarado (P1-D: dão rasto). */
+export function stackTokensFromVocabulary(stack: string | undefined): string[] {
+  const out = new Set<string>();
+  for (const token of (stack ?? "").toLowerCase().split(/[^a-z0-9-]+/).filter(Boolean)) {
+    if (token in TECHNOLOGY_TO_CHAPTERS || token === SES008_TECHNOLOGY) out.add(token);
+  }
+  return [...out].sort();
+}
+
 export function normalizeDeclaredTechnologies(
   technologies: readonly string[],
   stack: string | undefined
@@ -289,10 +302,7 @@ export function normalizeDeclaredTechnologies(
   }
   // `stack` é texto livre: só conta quando traz um valor do vocabulário como TOKEN
   // exacto — normalizar o declarado é legítimo, adivinhar prosa não.
-  const stackTokens = (stack ?? "").toLowerCase().split(/[^a-z0-9-]+/).filter(Boolean);
-  for (const token of stackTokens) {
-    if (token in TECHNOLOGY_TO_CHAPTERS || token === SES008_TECHNOLOGY) out.add(token);
-  }
+  for (const token of stackTokensFromVocabulary(stack)) out.add(token);
   return [...out].sort();
 }
 
@@ -325,14 +335,17 @@ function hasAnyDeclaration(d: DeclaredActivators): boolean {
  * Os candidatos saem do mesmo motor lexical do `discover` — mas aqui não seleccionam
  * nada: são uma proposta ao LLM, que é quem tem o contexto para confirmar.
  */
-function buildNeedsInput(input: NormalizedInput, declared: DeclaredActivators): NeedsInput {
+function buildNeedsInput(input: NormalizedInput, declared: DeclaredActivators, inert: string[] = []): NeedsInput {
   const exploratory = activate({ ...input, concerns: [] }, { declaredOnly: false });
   const suggested = [...new Set(exploratory.concerns.map(String))].sort();
   const exampleConcerns = suggested.slice(0, 3);
   const level = input.risk_level ?? "L2";
   return {
     reason:
-      "Nenhum activador DECLARADO nesta chamada. O servidor não interpreta prosa: não adivinha o âmbito a partir do `task`, e não devolve zero em silêncio. Declara o que a tua leitura do pedido justifica — tu tens o contexto (código, ticket, conversa) que o servidor nunca terá.",
+      inert.length > 0
+        ? `Declarações recebidas mas INERTES: ${inert.join("; ")} — são valores válidos do vocabulário que não activam nada (estão publicados como \`activates: []\`). Zero requisitos não é uma resposta: declara pelo menos um activador com efeito (concerns, exposure authenticated/public, data_sensitivity personal/regulated/secrets, technologies ou changed_files).`
+        : "Nenhum activador DECLARADO nesta chamada. O servidor não interpreta prosa: não adivinha o âmbito a partir do `task`, e não devolve zero em silêncio. Declara o que a tua leitura do pedido justifica — tu tens o contexto (código, ticket, conversa) que o servidor nunca terá.",
+    ...(inert.length > 0 ? { inert_declarations: inert } : {}),
     declared,
     vocabulary_resource: "sbd://toe/activation-vocabulary",
     candidates_to_confirm: {
@@ -375,34 +388,6 @@ export function runSelectionWithActivation(
     affects_selection: mode === "discover",
   };
 
-  // Sem NADA declarado no caminho declarativo: pedido de declaração, não resultado.
-  // (Em `baseline` o chamador pediu explicitamente a baseline do nível — segue.)
-  if (mode === "declarative" && !hasAnyDeclaration(declared)) {
-    const ontologyForEmpty = getOntologyData();
-    const eligible = ontologyForEmpty.requirements.filter(
-      (r) => r.type === "base" && r.applicable_levels?.[level] === true
-    ).length;
-    return {
-      risk_level: level,
-      eligible_count: eligible,
-      selected: [],
-      narrowed_out: [],
-      excluded_by_level: [],
-      basis_summary: { declared: 0, lexical_only: 0, lexical_share: 0 },
-      lexical_dominance_warning: null,
-      empty_selection_warning: null,
-      activated_chapters: [],
-      activated_categories: [],
-      activation,
-      input,
-      notes: [
-        "needs_input: nenhuma declaração recebida — o servidor responde ao declarado e não interpreta o `task` (modo declarativo, contrato v1.18-beta).",
-      ],
-      mode,
-      needs_input: buildNeedsInput(input, declared),
-      task_record: taskRecord,
-    };
-  }
   const ontology = getOntologyData();
   const atLevel = (r: Requirement) => r.applicable_levels?.[level] === true;
 
@@ -436,6 +421,49 @@ export function runSelectionWithActivation(
 
   // `mode: "baseline"` — pedido EXPLÍCITO da baseline do nível (nunca fallback).
   const baselineMode = mode === "baseline";
+
+  // ── P1-A (0.20.0-beta.22): a guarda anti-zero indexa-se à ACTIVAÇÃO PRODUZIDA,
+  // não à presença de campos. `exposure=local` + `data_sensitivity=low` são
+  // declarações VÁLIDAS e INERTES: davam selected:[] sem aviso — o mesmo ponto cego
+  // do empty_selection_warning noutra roupa. Qualquer caminho que não active nada
+  // responde needs_input, e diz QUAIS declarações foram inertes.
+  if (mode === "declarative" && activatedCategories.size === 0 && activatedChapters.length === 0) {
+    const inert: string[] = [];
+    if (declared.exposure !== undefined && (EXPOSURE_ACTIVATION[declared.exposure] ?? []).length === 0)
+      inert.push(`exposure="${declared.exposure}"`);
+    if (declared.data_sensitivity !== undefined && (SENSITIVITY_ACTIVATION[declared.data_sensitivity] ?? []).length === 0)
+      inert.push(`data_sensitivity="${declared.data_sensitivity}"`);
+    if (declared.technologies.length === 0 && input.stack) inert.push(`stack="${input.stack}" (nenhum token do vocabulário)`);
+    // 3ª instância da mesma classe (apanhada pelo cenário TC-F-27): caminhos declarados
+    // que não casam nenhum padrão da tabela publicada activam zero — dizê-lo é o que
+    // separa «não conheço estes caminhos» de «não há nada a aplicar».
+    if (declared.changed_files.length > 0)
+      inert.push(
+        `changed_files=[${declared.changed_files.slice(0, 3).join(", ")}${declared.changed_files.length > 3 ? ", …" : ""}] (nenhum caminho casou a tabela de padrões publicada em sbd://toe/activation-vocabulary)`
+      );
+    return {
+      risk_level: level,
+      eligible_count: baselineEligible.length,
+      selected: [],
+      narrowed_out: [],
+      excluded_by_level: [],
+      basis_summary: { declared: 0, lexical_only: 0, lexical_share: 0 },
+      lexical_dominance_warning: null,
+      empty_selection_warning: null,
+      activated_chapters: [],
+      activated_categories: [],
+      activation,
+      input,
+      notes: [
+        inert.length > 0
+          ? `needs_input: as declarações recebidas são VÁLIDAS mas INERTES (${inert.join("; ")}) — não activam categorias nem capítulos. Zero requisitos não é resposta.`
+          : "needs_input: nenhuma declaração activou categorias ou capítulos — o servidor responde ao declarado e não interpreta o `task`."
+      ],
+      mode,
+      needs_input: buildNeedsInput(input, declared, inert),
+      task_record: taskRecord,
+    };
+  }
 
   // Layer 2 — narrowing into the two declared bands.
   const selected: SelectedRequirement[] = [];
@@ -569,6 +597,18 @@ export function runSelectionWithActivation(
   let ses008Applied = false;
   const ses008Declared = technologies.includes(SES008_TECHNOLOGY);
   const ses008Triggered = declarative ? ses008Declared : SES008_TECH_PATTERN.test(input.task ?? "");
+  // P1-E (0.20.0-beta.22): a regra é PUBLICADA no vocabulário — tem de deixar rasto,
+  // senão SES-008 entra e o auditor não distingue a regra da activação por exposure.
+  if (declarative && ses008Declared) {
+    activation.trace.push({
+      source: "named_rule",
+      produced: "SES-008",
+      trigger: SES008_TECHNOLOGY,
+      score: 0.95,
+      confidence: "deterministic",
+      reason: `regra NOMEADA ${SES008_RULE_ID} accionada por tecnologia declarada '${SES008_TECHNOLOGY}' (publicada em sbd://toe/activation-vocabulary): SES-008 entra a qualquer nível`
+    });
+  }
   if (ses008Triggered && !selected.some((s) => s.requirement_id === "SES-008")) {
     const r = ontology.requirements.find((x) => x.requirement_id === "SES-008");
     if (r) {
@@ -684,6 +724,56 @@ export function runSelectionWithActivation(
           ? `${R2_RULE_ID} (decisão pós-P2 2026-08-31): sem sinais de sessão/login/token de utilizador na tarefa, SES-* sai por narrowing declarado (o concernsMap do loader mantém auth → [AUT, ACC, SES]); com esses sinais na tarefa, fica`
           : `elegível na baseline ${level} (cap. 02) sem sinal na tarefa/contexto — exclusão SENSÍVEL À REDACÇÃO da tarefa (não é regra de domínio): reescrever a frase ou declarar concerns explícitos pode trazê-la de volta; nunca em silêncio`,
     }));
+
+  // ── P1-A (2ª instância, apanhada pela INVARIANTE): as declarações activaram
+  // categorias/capítulos, mas o filtro de NÍVEL esvaziou a selecção (ex.: `privacy`
+  // ou `threat_modeling` em L1). Continua a ser zero — logo continua a ser
+  // needs_input, agora com a explicação certa: o problema é o nível, não a falta de
+  // declaração. A banda excluded_by_level vai junto: é a prova do que existe noutro
+  // nível. Nunca zero em silêncio, qualquer que seja o caminho.
+  if (mode === "declarative" && selected.length === 0) {
+    const otherLevels = LEVELS.filter((other) => other !== level).filter((other) =>
+      ontology.requirements.some(
+        (r) => activatedCategories.has(r.category) && r.applicable_levels?.[other] === true
+      )
+    );
+    const ni = buildNeedsInput(input, declared, []);
+    return {
+      risk_level: level,
+      eligible_count: baselineEligible.length + domainEligible.length,
+      selected: [],
+      narrowed_out: [],
+      excluded_by_level,
+      basis_summary: { declared: 0, lexical_only: 0, lexical_share: 0 },
+      lexical_dominance_warning: null,
+      empty_selection_warning: null,
+      activated_chapters: activatedChapters,
+      activated_categories: [...activatedCategories].sort(),
+      activation,
+      input,
+      notes: [
+        `needs_input: as declarações ACTIVARAM ${activatedCategories.size} categoria(s) e ${activatedChapters.length} capítulo(s), mas nenhum requisito dessas categorias se aplica a ${level} — a banda excluded_by_level mostra o que existe (e onde).`
+      ],
+      mode,
+      needs_input: {
+        ...ni,
+        reason:
+          `As declarações são válidas e activaram categorias, mas o filtro de NÍVEL deixou a selecção vazia em ${level}` +
+          (otherLevels.length > 0
+            ? `: os requisitos dessas categorias existem em ${otherLevels.join("/")}. Declara o nível certo para o contexto, ou declara também outras categorias — a exigência escala com o nível, o capítulo nunca se exclui.`
+            : ". Nenhum requisito publicado dessas categorias está activo em nenhum nível — vê excluded_by_level e o vocabulário.") +
+          " Zero requisitos não é uma resposta.",
+        ...(excluded_by_level.length > 0
+          ? {
+              inert_declarations: [
+                `nível ${level}: ${excluded_by_level.reduce((n, g) => n + g.count, 0)} requisito(s) das categorias declaradas ficam fora por applicable_levels`
+              ]
+            }
+          : {})
+      },
+      task_record: taskRecord,
+    };
+  }
 
   const notes: string[] = [];
   if (r1Added > 0) {

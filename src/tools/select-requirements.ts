@@ -10,6 +10,7 @@
  * category, with reason) — never silent. Deterministic; paginated (G1).
  */
 import { servedKgReleaseTag } from "../version-info.js";
+import { VALID_CONCERNS } from "./prepare-codegen-context.js";
 import { runSelection, type SelectionContextInput, type SelectionResult } from "../serving/selection.js";
 import { getRegulatoryOverlay, type RegulatoryObligation } from "./regulatory-overlay-loader.js";
 import { selectRequirementsAffordances } from "../serving/affordances.js";
@@ -37,6 +38,17 @@ export interface SelectRequirementsOutput {
   task: SelectionResult["task_record"];
   /** Presente quando nada foi declarado: pedido de declaração com a aula, não resultado. */
   needs_input?: SelectionResult["needs_input"];
+  /**
+   * P1-B (0.20.0-beta.22): valores de `concerns` fora do conjunto fechado. Sob
+   * declarative-first o vocabulário é o ÚNICO canal — uma gralha custa a categoria
+   * inteira, logo é DECLARADA (mesmo padrão do unknown_filter_fields de 0.15.0).
+   */
+  unknown_concerns?: {
+    values: string[];
+    valid_values: string[];
+    vocabulary_resource: string;
+    note: string;
+  };
   /** Só em mode="discover": a resposta é exploratória e vem marcada como tal. */
   exploratory?: { mode: "discover"; note: string };
   basis_summary: SelectionResult["basis_summary"];
@@ -98,6 +110,7 @@ export function handleSelectRequirements(args: Record<string, unknown>): SelectR
     ...(technologies !== undefined ? { technologies } : {})
   };
   const result = runSelection(context);
+  const unknownConcerns = result.input.unknownConcerns;
 
   // Overlay — operator `extend` only (the `replace` operator awaits ADR 0014).
   const frameworks = arr("regulatory_frameworks") ?? [];
@@ -147,6 +160,16 @@ export function handleSelectRequirements(args: Record<string, unknown>): SelectR
     mode: result.mode,
     task: result.task_record,
     ...(result.needs_input ? { needs_input: result.needs_input } : {}),
+    ...(unknownConcerns.length > 0
+      ? {
+          unknown_concerns: {
+            values: [...unknownConcerns],
+            valid_values: [...VALID_CONCERNS],
+            vocabulary_resource: "sbd://toe/activation-vocabulary",
+            note: `Valores fora do conjunto fechado, IGNORADOS nesta selecção: ${unknownConcerns.join(", ")}. Num contrato declarativo o vocabulário é o único canal — uma gralha custa a categoria inteira, por isso é declarada e nunca descartada em silêncio. Corrige e re-chama.`
+          }
+        }
+      : {}),
     ...(mode === "discover"
       ? {
           exploratory: {

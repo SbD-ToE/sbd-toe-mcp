@@ -38,6 +38,18 @@ import { handleGetGuideByRole } from "./tools/get-guide-by-role.js";
 import { handleResolveEntities } from "./tools/resolve-entities.js";
 import { handleTraceGraph } from "./tools/trace-graph.js";
 import { buildActivationVocabulary } from "./serving/activation-vocabulary.js";
+
+/**
+ * P1-C (0.20.0-beta.22) — UM vocabulário, UM contrato: o `enum` dos `concerns` nas
+ * três tools é GERADO pelo mesmo builder que produz sbd://toe/activation-vocabulary.
+ * Antes havia três posturas para o mesmo conjunto fechado (select sem enum, consult
+ * com 13 dos 24, prepare só na descrição) — sob declarative-first o vocabulário É a
+ * interface, logo a divergência era um defeito de 1ª ordem. Agora não pode derivar:
+ * se o vocabulário mudar, os schemas mudam com ele.
+ */
+const DECLARED_CONCERNS: string[] = buildActivationVocabulary().concerns.values.map((c) => String(c.value));
+const CONCERNS_VOCABULARY_NOTE =
+  `Conjunto FECHADO de ${DECLARED_CONCERNS.length} valores, gerado do mesmo vocabulário que sbd://toe/activation-vocabulary publica (com o que cada valor activa e quantos requisitos traz por nível). Valores fora do conjunto são DECLARADOS na resposta (unknown_concerns), nunca descartados em silêncio.`;
 import {
   buildCodegenInstructionsResourceContent,
   handlePrepareCodegenContext,
@@ -1227,7 +1239,11 @@ class McpRuntime {
               stack: { type: "string", description: "Texto livre da stack. No modo declarativo só conta quando traz, como TOKEN EXACTO, um valor de `technologies` (normalizar o declarado é legítimo; adivinhar prosa não). Preferir `technologies`." },
               exposure: { type: "string", enum: ["local", "internal", "authenticated", "public"], description: "Declared activator: authenticated/public activate auth+logging (+api/validation/architecture for public)." },
               data_sensitivity: { type: "string", enum: ["low", "personal", "regulated", "secrets"], description: "Declared activator: personal/regulated activate encryption+validation+logging." },
-              concerns: { type: "array", items: { type: "string" }, description: "DECLARADOS por ti a partir da tua leitura do pedido. Conjunto FECHADO publicado em sbd://toe/activation-vocabulary (com o que cada valor activa). Somam activação, não restringem." },
+              concerns: {
+                type: "array",
+                items: { type: "string", enum: DECLARED_CONCERNS },
+                description: `DECLARADOS por ti a partir da tua leitura do pedido. ${CONCERNS_VOCABULARY_NOTE} Somam activação, não restringem.`
+              },
               changed_files: { type: "array", items: { type: "string" }, description: "Caminhos reais do repositório — activam capítulos pela TABELA de padrões de path publicada (sbd://toe/activation-vocabulary), não por interpretação do nome." },
               technologies: { type: "array", items: { type: "string" }, description: "Conjunto FECHADO (containers, kubernetes, iac, ci-cd, sca-sbom, sast, dast, monitoring, jwt) — activação por TABELA publicada, não por semelhança de texto; `jwt` aciona a regra nomeada SES-008. Ver sbd://toe/activation-vocabulary." },
               regulatory_frameworks: { type: "array", items: { type: "string" }, description: "Overlay frameworks to EXTEND with (e.g. 'EXT-AI-ACT')." },
@@ -1262,12 +1278,15 @@ class McpRuntime {
                 type: "array",
                 items: {
                   type: "string",
-                  enum: ["auth", "logging", "validation", "api", "config", "integrity", "distribution", "ide", "requirements", "architecture", "iac", "encryption", "agents"]
+                  enum: DECLARED_CONCERNS
                 },
                 // 0.15.1 (item 7): re-avaliado POR MEDIÇÃO — 5 concerns ≈4,3k tk (payload manda,
                 // não a contagem); recomendação de ensino continua ≤3; sem corte no servidor.
+                // 0.20.0-beta.22 (P1-C): o enum passou a ser GERADO do vocabulário (eram 13 de 24);
+                // o maxItems mantém-se — é um limite de PAYLOAD medido, não do vocabulário — e é
+                // declarado como tal na descrição, para não se confundir com o conjunto fechado.
                 maxItems: 5,
-                description: "Optional concern domains to narrow scope (intersects with risk-level filter, does not replace). 'agents' = AI-agent / automation governance catalogue (REQ-AGN-001…004)."
+                description: `Concern domains DECLARADOS (intersecta com o filtro de nível, não o substitui). ${CONCERNS_VOCABULARY_NOTE} O \`maxItems: 5\` NÃO é um limite do vocabulário: é um tecto de PAYLOAD medido (5 concerns ≈4,3k tk) — o ensino recomenda ≤3.`
               },
               exposure: {
                 type: "string",
@@ -1313,9 +1332,9 @@ class McpRuntime {
                 type: "array",
                 items: {
                   type: "string",
-                  enum: ["auth", "logging", "validation", "api", "config", "integrity", "distribution", "ide", "requirements", "architecture", "iac", "encryption", "agents"]
+                  enum: DECLARED_CONCERNS
                 },
-                description: "Optional concern domains to narrow which chapters are in scope ('agents' = AI-agent governance, harmonizado com consult)."
+                description: "Optional concern domains to narrow which chapters are in scope ('agents' = AI-agent governance, harmonizado com consult; enum gerado do vocabulário)."
               },
               offset: { type: "number", description: "Página de threats (0.15.0): índice inicial; ver coverage.nextOffset." },
               limit: { type: "number", description: "Máx. threats por página (default 25). coverage{total,hasMore} + size_estimate sempre presentes." }
@@ -1538,13 +1557,8 @@ class McpRuntime {
               },
               concerns: {
                 type: "array",
-                items: { type: "string" },
-                description:
-                  "Explicit concerns to activate. Lexicon: auth, logging, validation, api, config, " +
-                  "integrity, distribution, ide, requirements, architecture, iac, encryption, secrets, " +
-                  "build, supply_chain, testing, threat_modeling, monitoring, release, deployment, integration, " +
-                  "agents (AI-agent / automation governance catalogue, REQ-AGN-001…004). " +
-                  "Unknown values are rejected (visible in debug.rejected_candidates)."
+                items: { type: "string", enum: DECLARED_CONCERNS },
+                description: `Concerns DECLARADOS. ${CONCERNS_VOCABULARY_NOTE}`
               },
               changed_files: {
                 type: "array",

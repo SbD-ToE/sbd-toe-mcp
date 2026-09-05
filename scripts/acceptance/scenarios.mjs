@@ -536,7 +536,7 @@ export const scenarios = [
       return ok(`'id' → unknown_filter_fields + ${bad.data.valid_fields.length} valid_fields derivados; dot-notation ✓/✗ declarada; requirement_id → 2 (o 0-silencioso do lead morreu)`); } },
   { id: "TC-F-27", axis: "F", title: "0.17.0: cadeia requisito→prova — select → verification_matrix(requirement_ids)", tool: "get_sbd_toe_verification_matrix",
     run: async (c) => {
-      const s = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Empacotar o serviço em Docker e preparar deploy em K8s", changed_files: ["Dockerfile"] }); if (!s.ok) return fail(s.error);
+      const s = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Empacotar o serviço em Docker e preparar deploy em K8s", changed_files: ["Dockerfile"], technologies: ["containers", "kubernetes"] }); // beta.22: `Dockerfile` não casa a tabela de paths (inércia agora DECLARADA); a tecnologia é o canal com efeito if (!s.ok) return fail(s.error);
       if (!(s.data.next ?? []).some((n) => n.tool === "get_sbd_toe_verification_matrix" && /requirement_ids/.test(n.with ?? ""))) return fail("next do select não aponta à matriz com ids");
       const ids = s.data.selection.selected.slice(0, 4).map((x) => x.requirement_id);
       const m = await c.tool("get_sbd_toe_verification_matrix", { risk_level: "L2", requirement_ids: [...ids, "REQ-XXX-999"], limit: 50 }); if (!m.ok) return fail(m.error);
@@ -787,6 +787,77 @@ export const scenarios = [
       const got = (sel.data.selection.selected ?? []).filter((x) => sample.activates_categories.includes(x.category)).length;
       if (got !== sample.requirements_at.L2) return fail(`vocabulário promete ${sample.requirements_at.L2} em L2 para auth; selecção deu ${got}`);
       return ok(`${vocab.concerns.values.length} concerns, ${vocab.technologies.values.length} tecnologias, ${vocab.changed_files.patterns.length} padrões de path, ${vocab.roles.values.length} papéis, ${vocab.phases.values.length} fases; promessa auth@L2=${sample.requirements_at.L2} confirmada na selecção`); } },
+
+  { id: "TC-F-37", axis: "F", title: "0.20.0-beta.22 (caminho para 9): guarda anti-zero indexada à ACTIVAÇÃO + ausências declaradas", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      // P1-A — a sonda do avaliador: declarações VÁLIDAS mas INERTES
+      const inert = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", exposure: "local", data_sensitivity: "low" });
+      if (!inert.ok) return fail(inert.error);
+      const i = inert.data;
+      if ((i.selection?.selected?.length ?? 0) !== 0) return fail("sonda deixou de dar 0 (re-baseline)");
+      if (!i.needs_input) return fail("declarações inertes deram selecção vazia SEM needs_input (ponto cego P1-A vivo)");
+      const inertNames = (i.needs_input.inert_declarations ?? []).join(" ");
+      if (!/exposure="local"/.test(inertNames) || !/data_sensitivity="low"/.test(inertNames)) return fail(`needs_input não nomeia as declarações inertes: ${inertNames}`);
+      // 2ª instância da mesma família: activou categorias mas o NÍVEL esvazia
+      const lvl = await c.tool("select_sbd_toe_requirements", { risk_level: "L1", concerns: ["privacy"] });
+      if (!lvl.ok) return fail(lvl.error);
+      if ((lvl.data.selection?.selected?.length ?? 0) !== 0) return fail("fixture do nível mudou");
+      if (!lvl.data.needs_input) return fail("nível esvaziou a selecção SEM needs_input");
+      if (!/N[ÍI]VEL/i.test(lvl.data.needs_input.reason)) return fail("needs_input não explica que o problema é o nível");
+      if ((lvl.data.selection.excluded_by_level ?? []).length === 0) return fail("sem excluded_by_level a provar o que existe noutro nível");
+      // P1-B — gralha no conjunto fechado: declarada, nunca silenciosa
+      const typo = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["authz", "auth"] });
+      if (!typo.ok) return fail(typo.error);
+      const uc = typo.data.unknown_concerns;
+      if (!uc || !uc.values?.includes("authz")) return fail("concern inválido descartado em silêncio (P1-B)");
+      if (!uc.valid_values?.length || !uc.vocabulary_resource) return fail("unknown_concerns sem valid_values/vocabulário");
+      if ((typo.data.selection?.selected?.length ?? 0) === 0) return fail("o concern válido devia continuar a seleccionar");
+      // mode=baseline continua a ser a saída EXPLÍCITA (não fallback)
+      const base = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", exposure: "local", mode: "baseline" });
+      if (!base.ok) return fail(base.error);
+      if ((base.data.selection.selected ?? []).length < 100) return fail("mode=baseline deixou de devolver a baseline");
+      return ok(`inertes → needs_input nomeando ${(i.needs_input.inert_declarations ?? []).length}; nível L1 → needs_input c/ ${lvl.data.selection.excluded_by_level.length} grupos excluded_by_level; gralha 'authz' declarada c/ ${uc.valid_values.length} valores válidos; baseline explícita ${base.data.selection.selected.length}`); } },
+
+  { id: "TC-F-38", axis: "F", title: "0.20.0-beta.22: nada acontece sem traço — stack_token, named_rule, concern_slice_mapping e enum gerado", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      // P1-D — o `stack` (única leitura de texto que resta) deixa rasto
+      const st = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], stack: "docker e kubernetes" });
+      if (!st.ok) return fail(st.error);
+      const stackTrace = (st.data.activation_trace ?? []).filter((t) => t.source === "stack_token");
+      if (stackTrace.length === 0) return fail("stack activou capítulos sem deixar traço (P1-D)");
+      if (!stackTrace.every((t) => /token exacto/i.test(t.reason ?? ""))) return fail("traço do stack não explica a regra do token exacto");
+      // P1-E — regra NOMEADA por tecnologia declarada
+      const jwt = await c.tool("select_sbd_toe_requirements", { risk_level: "L1", concerns: ["auth"], technologies: ["jwt"] });
+      if (!jwt.ok) return fail(jwt.error);
+      if (!jwt.data.selection.selected.some((r) => r.requirement_id === "SES-008")) return fail("SES-008 não entrou com jwt declarado");
+      const named = (jwt.data.activation_trace ?? []).filter((t) => t.source === "named_rule" && t.produced === "SES-008");
+      if (named.length === 0) return fail("regra nomeada SES-008 sem entrada de traço (P1-E)");
+      // P2-A — a etiqueta órfã do motor lexical morreu no caminho declarativo
+      const decl = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"] });
+      if (!decl.ok) return fail(decl.error);
+      const orphan = (decl.data.activation_trace ?? []).filter((t) => t.source === "task_term");
+      if (orphan.length > 0) return fail(`task_term emitido com task vazio (${orphan.length}) — etiqueta órfã viva`);
+      const mapping = (decl.data.activation_trace ?? []).filter((t) => t.source === "concern_slice_mapping");
+      if (mapping.length === 0) return fail("mapeamento concern→slice family sem etiqueta própria");
+      // P1-C — um vocabulário, um contrato: o enum servido é o do recurso
+      const vocabRes = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/activation-vocabulary" });
+      if (!vocabRes.ok) return fail(vocabRes.error);
+      const text = typeof vocabRes.data?.content === "string" ? vocabRes.data.content : JSON.stringify(vocabRes.data);
+      const vocab = JSON.parse(text.slice(text.indexOf("{")));
+      const published = (vocab.concerns?.values ?? []).map((x) => x.value);
+      const tools = c.tools ?? [];
+      const enums = {};
+      for (const name of ["select_sbd_toe_requirements", "consult_security_requirements", "prepare_sbd_toe_codegen_context"]) {
+        const t = tools.find((x) => x.name === name);
+        enums[name] = t?.inputSchema?.properties?.concerns?.items?.enum ?? null;
+      }
+      for (const [name, e] of Object.entries(enums)) {
+        if (!e) return fail(`${name} sem enum de concerns (P1-C)`);
+        if (e.length !== published.length) return fail(`${name}: enum ${e.length} ≠ vocabulário ${published.length}`);
+        const missing = published.filter((v) => !e.includes(v));
+        if (missing.length) return fail(`${name}: faltam ${missing.join(", ")}`);
+      }
+      return ok(`stack_token ×${stackTrace.length}, named_rule SES-008 ✓, 0 task_term órfãos (${mapping.length} concern_slice_mapping), enum ${published.length} idêntico nas 3 tools`); } },
 
   // ───────────────────────── Axis G — beta-line tools (added 2026-09-01; closes the 24/23 gap) ─────────────────────────
   // trace_sbd_toe_graph exists only on the 0.20-beta line (SPARQL/Oxigraph over the RDF
