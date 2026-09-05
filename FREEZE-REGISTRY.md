@@ -79,7 +79,7 @@ Prerelease tags issued on `0.20-beta` (annotated; immutable like every pushed ta
 | v0.20.0-beta.5 | 62a1eda (`62a1eda3982147e44369c8a9271ca3697af2680f`; annotated tag object `5165a04a`) | 2026-08-31 | formal KG `v1.7.0` (`29156b86…`, contract v1.14, ontology v2.2, Manual v1.7.1) — same pin and content as stable v0.10.4 | `beta` (superseded) |
 | v0.20.0-beta.6 | 322c38f (`322c38f4dc440aad40bf110b8e20d3d40f623318`; annotated tag object `71098136`) | 2026-08-31 | formal KG `v1.7.0` + MP1 selection operation (= stable 0.11.0 → `102b8166`) | `beta` (superseded) |
 | v0.20.0-beta.7 | 4256ee0 (`4256ee0f09386a45e69012ec565375965f49b0de`; annotated tag object `6e75ef23`) | 2026-08-31 | formal KG `v1.9.0` (`11153c85…`, contract v1.15, 273/29 FIL/PRI — zero-delta over the verified v1.8.0 dev-build) | `beta` (formal batch, «3 sims») |
-| v0.20.0-beta.23 | PENDING (tag commit registado ao fechar) | 2026-09-05 | CONSERVAÇÃO: invariante de conservação sobre o vocabulário todo (apanhou 12 violações em 4 famílias); motor cede à promessa por CATEGORIA (traço `declared_category`); `unsupported_concerns` em get_threat_landscape; guarda anti-zero cobre `technologies`; `provenance.server`; bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.23 | e99a2cb (`e99a2cb2e09e33b25c8d3a42e959b3513f5f08f8`) | 2026-09-05 | CONSERVAÇÃO: invariante de conservação sobre o vocabulário todo (apanhou 12 violações em 4 famílias); motor cede à promessa por CATEGORIA (traço `declared_category`); `unsupported_concerns` em get_threat_landscape; guarda anti-zero cobre `technologies`; `provenance.server`; bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.4, estável inalterada) |
 | v0.20.0-beta.22 | 6a695af (`6a695af9e0002e876ad5eb5163f578ea79073987`) | 2026-09-05 | «caminho para 9»: 7 itens da validação externa (guarda anti-zero como INVARIANTE, vocabulário como fonte única dos enums, traços em falta); bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.4, estável inalterada) |
 | v0.20.0-beta.21 | 4155341 (`415534192f02defcb64f60b878df4252851e6957`) | 2026-09-05 | EXPERIÊNCIA «declarativo primeiro» (contrato de serviço v1.18-beta): selecção = f(declarado), sbd://toe/activation-vocabulary, needs_input, modos baseline/discover; bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.4, estável inalterada) |
 | v0.20.0-beta.20 | bc10179 (`bc101795a0959dcece37e4d277c2e061a4a77b22`; annotated tag object `31d41684`) | 2026-09-04 | COMBINED: absorbs stable 0.19.3 + 0.19.4 (next-verbatim invariant extended to beta refs — 2 legend URIs fixed; per-detail requirement ceilings); bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.4 untouched) |
@@ -100,7 +100,7 @@ Prerelease tags issued on `0.20-beta` (annotated; immutable like every pushed ta
 
 **Current branch:** `0.20-beta` — this copy of the registry lives on the beta branch; the
 stable-line rows mirror master (`102b816`, 0.11.0 prepared) and are maintained there.
-**Beta line:** v0.20.0-beta.23 → PENDING (2026-09-05; tag e npm registados ao fechar a vaga;
+**Beta line:** v0.20.0-beta.23 → `e99a2cb2e09e33b25c8d3a42e959b3513f5f08f8` (2026-09-05; tag anotada nesta commit; npm registado ao fechar;
 `latest` = 0.19.4 intocado) fecha a classe CONSERVAÇÃO: a invariante nova varre o vocabulário
 todo (24 concerns × 3 níveis + exposure + data_sensitivity + technologies + paths) e exige que
 tudo o que é PROMETIDO apareça nalguma banda — apanhou 12 violações em 4 famílias (`build`,
