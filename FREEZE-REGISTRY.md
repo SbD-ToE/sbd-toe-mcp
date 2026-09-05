@@ -79,7 +79,7 @@ Prerelease tags issued on `0.20-beta` (annotated; immutable like every pushed ta
 | v0.20.0-beta.5 | 62a1eda (`62a1eda3982147e44369c8a9271ca3697af2680f`; annotated tag object `5165a04a`) | 2026-08-31 | formal KG `v1.7.0` (`29156b86…`, contract v1.14, ontology v2.2, Manual v1.7.1) — same pin and content as stable v0.10.4 | `beta` (superseded) |
 | v0.20.0-beta.6 | 322c38f (`322c38f4dc440aad40bf110b8e20d3d40f623318`; annotated tag object `71098136`) | 2026-08-31 | formal KG `v1.7.0` + MP1 selection operation (= stable 0.11.0 → `102b8166`) | `beta` (superseded) |
 | v0.20.0-beta.7 | 4256ee0 (`4256ee0f09386a45e69012ec565375965f49b0de`; annotated tag object `6e75ef23`) | 2026-08-31 | formal KG `v1.9.0` (`11153c85…`, contract v1.15, 273/29 FIL/PRI — zero-delta over the verified v1.8.0 dev-build) | `beta` (formal batch, «3 sims») |
-| v0.20.0-beta.21 | *(annotated tag on the commit that introduces this row; recorded in the close commit)* | 2026-09-05 | EXPERIÊNCIA «declarativo primeiro» (contrato de serviço v1.18-beta): selecção = f(declarado), sbd://toe/activation-vocabulary, needs_input, modos baseline/discover; bundle pin unchanged (KG `v1.11.0`) | `beta` (pending) |
+| v0.20.0-beta.21 | 4155341 (`415534192f02defcb64f60b878df4252851e6957`) | 2026-09-05 | EXPERIÊNCIA «declarativo primeiro» (contrato de serviço v1.18-beta): selecção = f(declarado), sbd://toe/activation-vocabulary, needs_input, modos baseline/discover; bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.4, estável inalterada) |
 | v0.20.0-beta.20 | bc10179 (`bc101795a0959dcece37e4d277c2e061a4a77b22`; annotated tag object `31d41684`) | 2026-09-04 | COMBINED: absorbs stable 0.19.3 + 0.19.4 (next-verbatim invariant extended to beta refs — 2 legend URIs fixed; per-detail requirement ceilings); bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.4 untouched) |
 | v0.20.0-beta.19 | 084cb3f (`084cb3f801484550926b8565c53156124d277e0b`; annotated tag object `5c510d30`) | 2026-09-04 | absorbs stable 0.19.2 — next calibrated with destination limits + START HERE in descriptions; bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.2 untouched) |
 | v0.20.0-beta.18 | 6289bb8 (`6289bb8b11478656438bfd612d59bff9f26d0f34`; annotated tag object `8fdb4b7a`) | 2026-09-04 | absorbs stable 0.19.1 — empty-selection alarm + declared-beats-lexical precedence; bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.1 untouched) |
@@ -98,8 +98,9 @@ Prerelease tags issued on `0.20-beta` (annotated; immutable like every pushed ta
 
 **Current branch:** `0.20-beta` — this copy of the registry lives on the beta branch; the
 stable-line rows mirror master (`102b816`, 0.11.0 prepared) and are maintained there.
-**Beta line:** v0.20.0-beta.21 (2026-09-05; tag on the commit introducing this row, recorded in the
-close commit) é a EXPERIÊNCIA «declarativo primeiro» autorizada pelo programme lead: a selecção passa
+**Beta line:** v0.20.0-beta.21 → `415534192f02defcb64f60b878df4252851e6957` (2026-09-05;
+`release.yml` run 33963546721 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.21` = `beta`,
+gitHead igual; GitHub pre-release; `latest` = 0.19.4 intocado) é a EXPERIÊNCIA «declarativo primeiro» autorizada pelo programme lead: a selecção passa
 a responder ao que o chamador DECLARA (vocabulário publicado em `sbd://toe/activation-vocabulary`), a
 ausência de declaração é `needs_input`, e o motor inferencial fica em `mode="discover"`. Contrato de
 SERVIÇO v1.18-beta anunciado em `sbd://toe/version` (o pin do KG não muda). A linha ESTÁVEL mantém a
@@ -265,3 +266,4 @@ prohibits tag deletion without explicit authorisation):
 | 2026-09-04 | v0.20.0-beta.20 registered (COMBINED absorption of stable 0.19.3 + 0.19.4; beta invariant extension caught and fixed 2 legend URIs served without naming read_sbd_toe_resource; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-04 | v0.20.0-beta.20 tag commit recorded (`bc101795`); npm `beta` publish + GitHub pre-release confirmed (run 33907019917). | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-05 | v0.20.0-beta.21 registered (experiência «declarativo primeiro»: contrato de serviço v1.18-beta, vocabulário de activação publicado, needs_input, modos baseline/discover; oráculo histórico 10/10 em discover + conjunto declarativo novo 6/4/0; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-05 | v0.20.0-beta.21 tag commit recorded (`41553419`); npm `beta` publish + GitHub pre-release confirmed (run 33963546721). | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
