@@ -1,15 +1,15 @@
 {
-  "stamp": "2026-09-07-publicado-b37",
-  "version": "0.20.0-beta.37",
+  "stamp": "2026-09-07-artefacto-publicado",
+  "version": "0.20.0-beta.38",
   "measured_against": "artefacto publicado (<consumidor-limpo>/node_modules/@shiftleftpt/sbd-toe-mcp/dist/index.js)",
   "oracle": {
     "path": "DevelopmentGovernance/docs/golden-reading-cases.md",
     "version": "v1 (ratificado 2026-09-06, «adjudico», sem emendas)"
   },
   "counts": {
-    "SERVIDO": 4,
+    "SERVIDO": 5,
     "SERVIDO-MAL": 1,
-    "NÃO SERVIDO": 1
+    "NÃO SERVIDO": 0
   },
   "results": [
     {
@@ -133,67 +133,64 @@
       "reading": "PROGRAMA",
       "title": "implementar SbD de raiz",
       "question": "Organização de ~200 pessoas, sem programa de segurança aplicacional. Por onde começamos e com que sequência?",
-      "verdict": "NÃO SERVIDO",
+      "verdict": "SERVIDO",
       "centralPiece": "macro-processos MP1–MP5 como dados",
       "pieces": [
         {
           "name": "macro-processos MP1–MP5 como dados",
-          "found": false,
-          "evidence": "sem sequência publicada",
+          "found": true,
+          "evidence": "5 macro-processos publicados, ordem em 4 níveis",
           "nonNormative": false,
           "declared": null
         },
         {
           "name": "travessia longitudinal (cap. 14: governo em operação E pôr o programa de pé)",
-          "found": false,
-          "evidence": "0 MP atravessam o cap. 14; 13 requisitos GOV alcançáveis",
+          "found": true,
+          "evidence": "3 MP atravessam o cap. 14; 13 requisitos GOV alcançáveis",
           "nonNormative": false,
           "declared": null
         },
         {
           "name": "ordem/fases do programa",
-          "found": false,
-          "evidence": "ordem publicada em 0 níveis, com a regra declarada",
+          "found": true,
+          "evidence": "ordem publicada em 4 níveis, com a regra declarada",
           "nonNormative": false,
           "declared": null
         },
         {
           "name": "o que é pré-requisito de quê",
-          "found": false,
-          "evidence": "0 pares dependency, com o artefacto consumido; 0 feedback DECLARADAS fora da ordem",
+          "found": true,
+          "evidence": "14 pares dependency, com o artefacto consumido; 9 feedback DECLARADAS fora da ordem",
           "nonNormative": false,
           "declared": null
         },
         {
           "name": "papéis a criar",
-          "found": false,
-          "evidence": "0 papéis nomeados pelos MP (dono + participantes)",
+          "found": true,
+          "evidence": "13 papéis nomeados pelos MP (dono + participantes)",
           "nonNormative": false,
           "declared": null
         },
         {
           "name": "ligação à classificação (cap. 01) como primeiro passo",
-          "found": false,
-          "evidence": "primeiro passo publicado: —; 7 requisitos CLA",
+          "found": true,
+          "evidence": "primeiro passo publicado: MP-01; 7 requisitos CLA",
           "nonNormative": false,
           "declared": null
         }
       ],
-      "missing": [
-        "macro-processos MP1–MP5 como dados — sem sequência publicada",
-        "travessia longitudinal (cap. 14: governo em operação E pôr o programa de pé) — 0 MP atravessam o cap. 14; 13 requisitos GOV alcançáveis",
-        "ordem/fases do programa — ordem publicada em 0 níveis, com a regra declarada",
-        "o que é pré-requisito de quê — 0 pares dependency, com o artefacto consumido; 0 feedback DECLARADAS fora da ordem",
-        "papéis a criar — 0 papéis nomeados pelos MP (dono + participantes)",
-        "ligação à classificação (cap. 01) como primeiro passo — primeiro passo publicado: —; 7 requisitos CLA"
-      ],
+      "missing": [],
       "bands": [],
       "mustNotViolations": [],
       "used": [
         "get_sbd_toe_macro_processes",
         "select_sbd_toe_requirements"
       ],
-      "notes": []
+      "notes": [
+        "limite DECLARADO: não existe entidade «programa» (recusa de curadoria ratificada)",
+        "lacuna DECLARADA: travessia MP↔fase do SDLC é parcial e não publicada",
+        "ordem = só dependency; 9 feedback excluídas por definição"
+      ]
     },
     {
       "case": "GR-04",

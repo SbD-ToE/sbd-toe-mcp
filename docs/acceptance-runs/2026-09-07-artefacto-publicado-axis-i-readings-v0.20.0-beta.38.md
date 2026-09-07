@@ -1,4 +1,4 @@
-# Eixo I — LEITURAS vs oráculo do lead — 2026-09-07-publicado-b37 — @shiftleftpt/sbd-toe-mcp@0.20.0-beta.37
+# Eixo I — LEITURAS vs oráculo do lead — 2026-09-07-artefacto-publicado — @shiftleftpt/sbd-toe-mcp@0.20.0-beta.38
 
 **Medido contra:** artefacto publicado (<consumidor-limpo>/node_modules/@shiftleftpt/sbd-toe-mcp/dist/index.js).
 
@@ -8,13 +8,13 @@ Bundle servido: KG `kg-v1-manual-v1.8.1-aligned-2026-09-06`.
 
 **Medição, não portão** — o Eixo E continua a ser o único gate de promoção. A evolução mede-se por MIGRAÇÃO DE ESTADO, não por percentagem.
 
-Veredictos: **4 SERVIDO · 1 SERVIDO-MAL · 1 NÃO SERVIDO** (de 6).
+Veredictos: **5 SERVIDO · 1 SERVIDO-MAL · 0 NÃO SERVIDO** (de 6).
 
 | Caso | Leitura | Veredicto | Peças servidas | Superfícies usadas |
 |---|---|---|---|---|
 | GR-01 | IMPL | **SERVIDO** | 5/5 | get_sbd_toe_chapter_implementation_checklist, get_sbd_toe_chapter_brief, get_sbd_toe_chapter_capability, get_guide_by_role, select_sbd_toe_requirements |
 | GR-02 | CROSS-CHECK/PLAYBOOK | **SERVIDO** | 5/5 | map_sbd_toe_regulatory_activation, get_sbd_toe_playbook, search_sbd_toe_manual, map_sbd_toe_regulatory_activation(PCI-DSS) |
-| GR-03 | PROGRAMA | **NÃO SERVIDO** | 0/6 | get_sbd_toe_macro_processes, select_sbd_toe_requirements |
+| GR-03 | PROGRAMA | **SERVIDO** | 6/6 | get_sbd_toe_macro_processes, select_sbd_toe_requirements |
 | GR-04 | PAPEL/MOMENTO | **SERVIDO-MAL** | 3/4 | get_guide_by_role |
 | GR-05 | CONSULT | **SERVIDO** | 7/7 | explain_sbd_toe_topic, consult_security_requirements, get_threat_landscape, query_sbd_toe_entities, get_sbd_toe_verification_matrix, get_guide_by_role |
 | GR-06 | SETUP | **SERVIDO** | 4/4 | read_sbd_toe_resource(quick-start, model, agent-guide), generate_sbd_toe_skill |
@@ -59,25 +59,22 @@ Veredictos: **4 SERVIDO · 1 SERVIDO-MAL · 1 NÃO SERVIDO** (de 6).
 
 > Organização de ~200 pessoas, sem programa de segurança aplicacional. Por onde começamos e com que sequência?
 
-**Veredicto: NÃO SERVIDO**
+**Veredicto: SERVIDO**
 
 | Peça do must-have | Servida | Evidência |
 |---|---|---|
-| macro-processos MP1–MP5 como dados | **não** | sem sequência publicada |
-| travessia longitudinal (cap. 14: governo em operação E pôr o programa de pé) | **não** | 0 MP atravessam o cap. 14; 13 requisitos GOV alcançáveis |
-| ordem/fases do programa | **não** | ordem publicada em 0 níveis, com a regra declarada |
-| o que é pré-requisito de quê | **não** | 0 pares dependency, com o artefacto consumido; 0 feedback DECLARADAS fora da ordem |
-| papéis a criar | **não** | 0 papéis nomeados pelos MP (dono + participantes) |
-| ligação à classificação (cap. 01) como primeiro passo | **não** | primeiro passo publicado: —; 7 requisitos CLA |
+| macro-processos MP1–MP5 como dados | sim | 5 macro-processos publicados, ordem em 4 níveis |
+| travessia longitudinal (cap. 14: governo em operação E pôr o programa de pé) | sim | 3 MP atravessam o cap. 14; 13 requisitos GOV alcançáveis |
+| ordem/fases do programa | sim | ordem publicada em 4 níveis, com a regra declarada |
+| o que é pré-requisito de quê | sim | 14 pares dependency, com o artefacto consumido; 9 feedback DECLARADAS fora da ordem |
+| papéis a criar | sim | 13 papéis nomeados pelos MP (dono + participantes) |
+| ligação à classificação (cap. 01) como primeiro passo | sim | primeiro passo publicado: MP-01; 7 requisitos CLA |
 
-**O que falta para subir de estado:**
+> limite DECLARADO: não existe entidade «programa» (recusa de curadoria ratificada)
 
-- macro-processos MP1–MP5 como dados — sem sequência publicada
-- travessia longitudinal (cap. 14: governo em operação E pôr o programa de pé) — 0 MP atravessam o cap. 14; 13 requisitos GOV alcançáveis
-- ordem/fases do programa — ordem publicada em 0 níveis, com a regra declarada
-- o que é pré-requisito de quê — 0 pares dependency, com o artefacto consumido; 0 feedback DECLARADAS fora da ordem
-- papéis a criar — 0 papéis nomeados pelos MP (dono + participantes)
-- ligação à classificação (cap. 01) como primeiro passo — primeiro passo publicado: —; 7 requisitos CLA
+> lacuna DECLARADA: travessia MP↔fase do SDLC é parcial e não publicada
+
+> ordem = só dependency; 9 feedback excluídas por definição
 
 ### GR-04 — PAPEL/MOMENTO: o que faço eu, agora
 
