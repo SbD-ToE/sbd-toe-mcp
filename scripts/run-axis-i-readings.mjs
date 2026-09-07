@@ -24,7 +24,16 @@ const stamp = opt("--stamp") ?? new Date().toISOString().slice(0, 10);
 const pkg = JSON.parse(readFileSync(path.join(repoRoot, "package.json"), "utf8"));
 const pin = JSON.parse(readFileSync(path.join(repoRoot, "consumed-bundle.json"), "utf8"));
 
-const client = await startClient();
+/**
+ * 0.20.0-beta.38 — MEDIR SOBRE O ARTEFACTO, não sobre o repo. A medição #6 foi invalidada
+ * porque correu contra `dist/index.js` do checkout enquanto o TARBALL não levava os dados.
+ * `--server <entry>` aponta o runner a um servidor instalado a partir do pacote publicado;
+ * sem a opção, mede o repo (e o relatório diz qual dos dois mediu).
+ */
+const serverEntry = opt("--server") ?? "dist/index.js";
+const measuredAgainst = serverEntry === "dist/index.js" ? "repo (dist/index.js)" : `artefacto publicado (${serverEntry})`;
+process.stderr.write(`medido contra: ${measuredAgainst}\n`);
+const client = await startClient(serverEntry);
 const results = [];
 for (const rc of readingCases) {
   const r = await runReadingCase(client, rc);
@@ -40,6 +49,7 @@ const counts = Object.fromEntries(
 
 const md = [];
 md.push(`# Eixo I — LEITURAS vs oráculo do lead — ${stamp} — @shiftleftpt/sbd-toe-mcp@${pkg.version}`, "");
+md.push(`**Medido contra:** ${measuredAgainst}.`, "");
 md.push(`Oráculo: \`${ORACLE_PATH}\` — ${ORACLE_VERSION}. **Os casos são do programme lead: transcritos, nunca emendados, e as expectativas NÃO se ajustam ao comportamento observado.**`, "");
 md.push(`Bundle servido: KG \`${pin?.kg_bundle?.release_tag ?? "?"}\`.`, "");
 md.push(`**Medição, não portão** — o Eixo E continua a ser o único gate de promoção. A evolução mede-se por MIGRAÇÃO DE ESTADO, não por percentagem.`, "");
@@ -77,6 +87,6 @@ const base = path.join(outDir, `${stamp}-axis-i-readings-v${pkg.version}`);
 writeFileSync(`${base}.md`, md.join("\n"));
 writeFileSync(
   `${base}.json`,
-  JSON.stringify({ stamp, version: pkg.version, oracle: { path: ORACLE_PATH, version: ORACLE_VERSION }, counts, results }, null, 2)
+  JSON.stringify({ stamp, version: pkg.version, measured_against: measuredAgainst, oracle: { path: ORACLE_PATH, version: ORACLE_VERSION }, counts, results }, null, 2)
 );
 process.stdout.write(JSON.stringify({ counts, report: `${base}.md` }, null, 1) + "\n");

@@ -1,13 +1,89 @@
 ---
 ai_assisted: true
 model: Claude Opus 5
-date: 2026-09-06
+date: 2026-09-07
 purpose: documentation
-reasoning: v0.20.0-beta.37 (beta line, npm `beta`) — a vista PROCESSUAL: os cinco macro-processos MP-01..05 e a ordem de adopção publicada passam a ser servidos como dados (`get_sbd_toe_macro_processes`, leitura PROGRAMA). Ordem derivada EXCLUSIVAMENTE das arestas `dependency`; as `feedback` ficam fora por definição (com elas o grafo cicla — verificado no TC-F-64). Três limites declarados na resposta: não existe entidade «programa», a travessia MP↔fase do SDLC é lacuna publicada, e MP/capítulo/fase são três segmentações sem contenção. Re-pin do beta para o dev-build kg-v1-manual-v1.8.1-aligned-2026-09-06 (contract v1.18): moveu proveniência e ZERO conteúdo — ouro H byte-idêntico nos dois braços. Eixo I: 4·1·1 → **5·1·0**, com o GR-03 a subir de NÃO SERVIDO a SERVIDO (6/6).
+reasoning: v0.20.0-beta.38 (beta line, npm `beta`) — defeito de EMPACOTAMENTO da beta.37 fechado à classe: a tool da vista processual era enviada e os DADOS não, porque o `files` do package.json, o `REQUIRED_PATHS` do check e o `BANNED_PATHS` eram três listas estáticas. O conjunto obrigatório passa a ser DERIVADO (do pin, do que o código carrega e do que o código ENCAMINHA) e o gate do CI assere-o contra o tarball real. Quatro superfícies passam a ser enviadas. GR-03 re-medido SOBRE O ARTEFACTO: publicado beta.37 dava NÃO SERVIDO (0/6) — controlo negativo arquivado; corrigido dá SERVIDO (6/6). Painel 5·1·0; nenhuma outra leitura mexeu.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.38 — 2026-09-07
+
+**O pacote não enviava o que o servidor serve.** Dispatch do Orchestrator (Vaga A), a partir de
+auditoria externa independente ao artefacto publicado. A beta.37 expôs a vista processual e
+**não enviou os dados**: a suite passou 801/801 porque testa o **repo**, e o utilizador recebe
+o **tarball**. A medição #6 do Eixo I foi correctamente invalidada. Linha estável **intocada**.
+
+### 1 — Três listas estáticas, a mesma classe
+
+| lista | o que fazia |
+|---|---|
+| `package.json#files` | lista branca **por ficheiro** em `indexes/`, `semantic/`, `overlay/`, `ontology/` — superfície nova não ia, e nada falhava |
+| `REQUIRED_PATHS` (`check-npm-package`) | outra lista à mão: não conhecia as superfícies novas |
+| `BANNED_PATHS` | proibia `bundle_policy_links.jsonl` — **um ficheiro para o qual o servidor já encaminhava o consumidor** |
+
+É a terceira vez que a classe morde (b.28 superfícies, b.36 next-verbatim, agora empacotamento).
+**A lista corrigida fecha a instância; só a derivação fecha a classe.**
+
+### 2 — A derivação, e o que ela vê
+
+`scripts/derive-published-surfaces.mjs` é **fonte única** para «que superfícies têm de ir no
+pacote», e responde de três lados:
+
+- **materializadas** (53) — as entradas de `bundle-files.json`. O que pinamos, enviamos.
+- **carregadas** (43) — caminhos `data/…` em literais do código de **produção**.
+- **encaminhadas** (50) — nomes citados no código, **comentários incluídos**. Sem esta via o
+  `bundle_policy_links.jsonl` escapa: quem o materializa é o **consumidor**, e o servidor só lhe
+  diz o nome. Uma derivação por `readFileSync` apanha 3 das 4.
+
+União: **54 superfícies obrigatórias**. O gate é o `npm run check:npm-package` — que o CI já
+corre **antes do publish** — e assere contra o **tarball real** (`npm pack`), nunca contra o
+`files` lido à mão. A mesma derivação alimenta `package-surface-invariant.test.ts`.
+
+**Provado por mutação:** removendo `macro_processes.jsonl` do `files`, o gate parte; removendo
+`bundle_policy_links.jsonl` — o caso que só existe por encaminhamento — **também**.
+
+### 3 — O que passou a ser enviado
+
+`semantic/macro_processes.jsonl` · `semantic/mp_edges.jsonl` ·
+`indexes/cross_layer_referrals.jsonl` · `indexes/bundle_policy_links.jsonl`.
+
+A política de `semantic/` **não foi relaxada**: continua banido por omissão, e as duas novas
+entram como **excepções NOMEADAS**, pelo mesmo mecanismo das de 0.18.0 — ganharam-no quando
+ganharam porta. O `bundle_policy_links.jsonl` sai da proibição porque **banir um ficheiro para
+o qual encaminhamos é apontar para o que não enviamos**: era essa a causa do achado «as
+políticas instanciadas não têm caminho em nenhuma leitura». Tarball 5,65 → 5,80 MB.
+
+### 4 — Medir sobre o artefacto, não sobre o repo
+
+`eval:axis-i --server <entry>` mede um servidor instalado a partir do pacote, e o relatório
+declara **contra o quê mediu**. O default continua a ser o repo, agora dito em vez de assumido.
+
+**Controlo negativo (arquivado):** o beta.37 **publicado**, instalado do npm, dá
+**GR-03 NÃO SERVIDO, 0/6** — reproduz exactamente o que a auditoria externa viu. O artefacto
+corrigido dá **6/6**. A via de medição discrimina; não é uma afirmação, é uma prova.
+
+### 5 — Painel dos seis, sobre o artefacto publicado
+
+| Caso | b.37 publicado | b.38 publicado | |
+|---|---|---|---|
+| GR-01 IMPL | SERVIDO 5/5 | SERVIDO 5/5 | — |
+| GR-02 CROSS-CHECK | SERVIDO 5/5 | SERVIDO 5/5 | — |
+| **GR-03 PROGRAMA** | **NÃO SERVIDO 0/6** | **SERVIDO 6/6** | migração |
+| GR-04 PAPEL/MOMENTO | SERVIDO-MAL 3/4 | SERVIDO-MAL 3/4 | achado de CONTEÚDO |
+| GR-05 CONSULT | SERVIDO 7/7 | SERVIDO 7/7 | — |
+| GR-06 SETUP | SERVIDO 4/4 | SERVIDO 4/4 | — |
+
+**A chegada das remissões inter-camada não moveu nenhuma outra leitura** — nem em veredicto nem
+em contagem de peças. É esperado: nenhum caso do oráculo passa hoje por elas.
+
+### Verificação
+
+Suite **806/806** · aceitação **171, 0 FAIL, gate PASS** · **11 invariantes verdes (45
+asserções)** · **ouro do Eixo H byte-idêntico nos dois braços** · orçamentos **14/14** ·
+`check:npm-package` verde com 54 superfícies derivadas · Eixo I **5·1·0 sobre o publicado**.
 
 ## 0.20.0-beta.37 — 2026-09-06
 

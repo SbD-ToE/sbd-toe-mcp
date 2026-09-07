@@ -3,6 +3,7 @@ import { mkdtemp, readFile, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
+import { derivePublishedSurfaces, assertDerivationHealthy } from "./derive-published-surfaces.mjs";
 
 const execFileAsync = promisify(execFile);
 
@@ -72,6 +73,12 @@ const ALLOWED_DESPITE_PREFIX = [
   // excepções NOMEADAS; nunca relaxar o wildcard.
   "data/publish/semantic/requirement_source_coverage.jsonl",
   "data/publish/semantic/ctrl_acore_alignment.jsonl",
+  // 0.20.0-beta.38: a vista processual (leitura PROGRAMA, tool
+  // get_sbd_toe_macro_processes) SERVE estas duas — deixaram de ser superfície interna
+  // do KG no momento em que passaram a ter porta. Mesma regra das de cima: excepção
+  // NOMEADA, wildcard `semantic/` intacto.
+  "data/publish/semantic/macro_processes.jsonl",
+  "data/publish/semantic/mp_edges.jsonl",
 ];
 
 const BANNED_PREFIXES = [
@@ -88,7 +95,11 @@ const BANNED_PATHS = [
   "dist/tools/generate-document.d.ts",
   "dist/tools/generate-document.js.map",
   "data/publish/indexes/bundle_documents.jsonl",
-  "data/publish/indexes/bundle_policy_links.jsonl",
+  // 0.20.0-beta.38 — `bundle_policy_links.jsonl` SAI da proibição. Foi banido enquanto
+  // ninguém o servia; hoje `src/serving/cross-layer-referrals.ts` diz ao consumidor para
+  // materializar por `bundle_policy_links.jsonl#target_document_id`. Banir um ficheiro
+  // para o qual encaminhamos é apontar para o que não enviamos — era essa a causa do
+  // achado «as políticas instanciadas não têm caminho em nenhuma leitura».
   "data/publish/indexes/metric_catalog.jsonl",
   "data/publish/indexes/metric_rollups.jsonl",
   "data/publish/indexes/ontology_discovery_units.jsonl"
@@ -118,10 +129,35 @@ async function main() {
           .filter((entry) => typeof entry === "string")
       : [];
 
+    // Piso: regressões já pagas (a omissão do dist/version-info.js partiu 0.9.0/0.10.0).
     const missing = REQUIRED_PATHS.filter((requiredPath) => !files.includes(requiredPath));
     if (missing.length > 0) {
       throw new Error(`npm package missing required paths: ${missing.join(", ")}`);
     }
+
+    /*
+     * 0.20.0-beta.38 — a CLASSE, não a instância. REQUIRED_PATHS é uma lista estática e
+     * por isso não viu a vista processual da beta.37: a tool foi enviada e os dados não.
+     * A partir daqui o conjunto obrigatório é DERIVADO (do pin, do que o código carrega e
+     * do que o código encaminha), e uma superfície nova entra sozinha. Se a derivação
+     * partir, isto falha ALTO em vez de passar em vazio.
+     */
+    const derived = derivePublishedSurfaces(process.cwd());
+    const health = assertDerivationHealthy(derived);
+    if (health.length > 0) {
+      throw new Error(`derivação de superfícies inutilizável (corrige a sonda, não o pacote): ${health.join("; ")}`);
+    }
+    const missingDerived = derived.required.filter((p) => !files.includes(p));
+    if (missingDerived.length > 0) {
+      throw new Error(
+        `npm package missing SERVED surfaces (derived, not listed by hand): ${missingDerived.join(", ")}\n` +
+          "O servidor serve — ou encaminha o consumidor para — superfícies que o pacote não envia."
+      );
+    }
+    console.log(
+      `[npm package] ${derived.required.length} superfícies derivadas presentes ` +
+        `(${derived.materialized.length} pinadas · ${derived.loaded.length} carregadas · ${derived.referred.length} encaminhadas)`
+    );
 
     const bannedMatches = files.filter(
       (filePath) =>
