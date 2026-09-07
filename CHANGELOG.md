@@ -3,11 +3,90 @@ ai_assisted: true
 model: Claude Opus 5
 date: 2026-09-07
 purpose: documentation
-reasoning: v0.20.0-beta.39 (beta line, npm `beta`) — as superfícies de PROJECÇÃO passam a declarar. B1: a junção capítulo→artefacto deixa de servir uma contagem de RELAÇÃO como total sob «tem de PRODUZIR» carimbado canonical — a fonte proibia-o por escrito; passa a servir duas bases com a base de cada uma e a proibição verbatim (11 artefactos por padrão de evidência CONFIRMADOS, 31 arestas). B2: banda de omissão no rollout (7 capítulos fora, 5 obrigatórios), autoridade HERDADA no operating_model (illustrative_overlay/example_only, deixa de promover exemplo a exigência) e ancoragem da pergunta no search (termos sem âncora no corpus). B3: o `next` passa a ler as bandas da própria resposta, no `sendResponse` — a classe, não a instância. B4: orgProfile com affects_result, sentinela `unassigned` declarada, escassez sem número fixo, rótulo que cita outro nível sinalizado (nem serviço nem conteúdo: proporcionalidade graduada). Selecção intocada; ouro H byte-idêntico.
+reasoning: v0.20.0-beta.40 (beta line, npm `beta`) — re-pin para o dev-build kg-v1-manual-v1.8.1-aligned-2026-09-07 (contrato v1.19 §1.26, ontologia v2.6) e a travessia N:M passa a ser servida. O roteiro deixa de deixar capítulos de fora: consome `bundle_ids` (14 atravessados) e serve o cap. 00 como PISO, não como omissão — 14 + piso = 15, e `chapters_not_in_roadmap` fica a ZERO. `chapter_capability` e `chapter_brief` separam DEFINIDORES de CITADORES: o cap. 01 deixa de reclamar SBOM, imagem de container e SAST como seus. As bandas de ausência passam a dizer DE QUE ESPÉCIE são, com `absence_type` vindo do índice central `declared_absences` e nunca inferido — dívida contra fronteira. `required_for_levels` servido pelo que é (2 de 45 discriminam). Selecção intocada; ouro H byte-idêntico através da mudança de substrato.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.40 — 2026-09-07
+
+**Um aviso bem escrito não é um roteiro que serve.** A beta.39 fez o `rollout` declarar que
+deixava 7 capítulos de fora; continuava a devolver 8 de 15. A v2.6 dá os dados que faltavam, e
+esta vaga torna-os visíveis. Linha estável **intocada** (latest 0.19.4, KG formal v1.11.0
+`688863a`). Nada promovido.
+
+**Pino:** dev-build `kg-v1-manual-v1.8.1-aligned-2026-09-07` (`15d3ddd11b59`, contrato **v1.19
+§1.26**, substrato `manual-v1.8.1+sbdtoe-ontology-v2.6`).
+
+### A — o roteiro passa a cobrir os 15
+
+`manual_chapter` é uma âncora **editorial**: um capítulo por fase, e por isso escolhas falsas —
+o `design` não apanhava a arquitectura segura, o `develop` não apanhava o desenvolvimento
+seguro. A v2.6 publica `bundle_ids`, a travessia N:M derivada de 1 296 assignments autorados, e
+o roteiro passa a consumi-la:
+
+| fase | plan | design | develop | build | test | deploy | operate | govern |
+|---|---|---|---|---|---|---|---|---|
+| capítulos | 8 | **7** | **9** | 6 | 6 | 10 | 12 | 11 |
+
+União: **14**. O 15.º é o cap. 00 e **não é uma omissão** — é `species: piso`, aplica-se a tudo
+independentemente do eixo, e fica fora da derivação **por não ser travessia, não por ausência**.
+`chapters_not_in_roadmap` passa a **zero** — e mantém-se servido, a zero, para que a cobertura
+completa seja verificável em vez de assumida. `manual_chapter` continua em cada fase: **ganhou
+companhia, não saiu.** Novo: `assignments_without_phase` — 219 atribuições em 8 capítulos, à
+vista, nunca absorvidas numa fase real.
+
+### B — definidores ≠ citadores
+
+A b.39 acertou ao chamar-lhe RELAÇÃO em vez de total, mas a relação era uma só. A v2.6 parte a
+aresta em duas, e as duas superfícies passam a servi-las separadas:
+
+| cap. 01 | antes | agora |
+|---|---|---|
+| artefactos | 31 «da capacidade» | **7 que DEFINE** + 24 que apenas cita |
+
+**Fim do achado central do auditor:** o capítulo da classificação deixa de reclamar SBOM,
+imagem de container e relatório de SAST como seus. Cada artefacto traz `own` e as bases de onde
+vem; o `chapter_brief` faz a mesma separação, com os citados em `cited_values`.
+
+### C — as ausências dizem de que espécie são
+
+É o coração da vaga, e é decisão do lead: *«a lacuna é erro ou omissão e tem que ser definido.
+Out-of-scope é decisão.»* As superfícies prometiam nunca-silêncio desde a b.23, mas diziam
+sempre a mesma coisa. Passam a distinguir **dívida** de **fronteira**:
+
+| superfície | vazio | espécie |
+|---|---|---|
+| `get_guide_by_role` (fornecedores-terceiros) | sem atribuições | **`gap`** ABS-003 — dívida, com dono a triar |
+| `get_sbd_toe_playbook` (PCI-DSS) | sem cross-check | **`deferred`** ABS-004 — dívida com **gatilho** declarado |
+| `get_sbd_toe_macro_processes` | travessia MP↔fase | **`out_of_scope`** ABS-001 — **fronteira**, decidida pelo lead, não fecha |
+
+**`absence_type` vem do índice central, nunca da superfície.** A ligação também não é uma tabela
+à mão: procura-se no `statement` do próprio índice o valor que a superfície observou — uma
+ausência nova que nomeie um valor servido é apanhada sem tocar no código; ambiguidade devolve
+`unindexed` em vez de escolher. Uma invariante varre o `src` e **parte se algum ficheiro fora do
+módulo do índice carimbar um `absence_type`** — é o que impede uma lacuna incómoda de virar
+fronteira por conveniência. O vocabulário entrou no guia gerado.
+
+### D — `required_for_levels` servido pelo que é
+
+**43 dos 45** registos são `{L1,L2,L3: true}`. Substituiu um campo degenerado (`mandatory`
+45/45) por outro quase degenerado, e é assim que se declara: **2 de 45 discriminam**. Não vai
+por artefacto, não filtra nada, e a banda diz porquê.
+
+### O que o re-pin moveu
+
+8 snapshots de ouro do codegen: **8 linhas, todas o carimbo `kg`** — nem o `manual_commit_sha`
+mudou (o Manual é o mesmo; moveu-se a ontologia). E o **ouro do Eixo H ficou byte-idêntico nos
+dois braços através da mudança de substrato**.
+
+### Verificação
+
+Suite **814/814** · aceitação **173, 0 FAIL, gate PASS** (TC-F-66 novo; TC-F-65 e a invariante
+da b.39 **actualizados** — assertavam a cobertura parcial que esta vaga fechou) · **13
+invariantes verdes** · **ouro do Eixo H byte-idêntico** · orçamentos **14/14** ·
+`check:npm-package` verde (54 superfícies derivadas).
 
 ## 0.20.0-beta.39 — 2026-09-07
 

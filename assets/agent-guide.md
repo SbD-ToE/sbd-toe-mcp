@@ -288,6 +288,13 @@ generate_sbd_toe_skill(role, format, flavour)  ← per-role configuration (RF-S)
 
 ---
 
+## Quando a resposta traz um vazio: dívida ou fronteira?
+
+<!-- BEGIN GENERATED: absences -->
+<!-- END GENERATED: absences -->
+
+---
+
 ## Que superfície resolve o quê (e como contraprovar)
 
 <!-- BEGIN GENERATED: cross-surface -->

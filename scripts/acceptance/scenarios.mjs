@@ -1848,10 +1848,22 @@ export const scenarios = [
       const roll = await c.tool("plan_sbd_toe_rollout", {});
       if (!roll.ok) return fail(roll.error);
       const rd = roll.data.data ?? roll.data;
+      /*
+       * 0.20.0-beta.40: a b.39 exigia aqui a banda de omissão POVOADA, porque o roteiro cobria
+       * 8 de 15. Com a travessia N:M da v2.6 já não há nada de fora — o critério passa a ser
+       * cobertura COMPLETA com a banda servida a ZERO (verificável, não apagada) e o cap. 00
+       * declarado como PISO, que não é ausência.
+       */
       const omit = rd.chapters_not_in_roadmap;
-      if (!omit) return fail("o roteiro cobre 8 de 15 e não declara os 7 que ficam fora");
-      if (!(omit.mandatory_at_some_level > 0)) return fail("a banda não diz que há omitidos OBRIGATÓRIOS");
-      if (!(omit.chapters ?? []).every((x) => /^get_sbd_toe_/.test(x.reach_with ?? ""))) return fail("omissão sem caminho concreto por capítulo");
+      if (!omit) return fail("a banda de omissão foi apagada — a zero tem de continuar servida");
+      if (omit.count !== 0) return fail(`o roteiro voltou a deixar ${omit.count} capítulos de fora`);
+      if (rd.totals?.chapters_covered_including_floor !== rd.totals?.chapters_in_manual)
+        return fail("travessia + piso não fecha o total de capítulos do Manual");
+      const floor = rd.chapter_coverage?.floor;
+      if (!floor || floor.species !== "piso" || floor.is_absence !== false)
+        return fail("o capítulo de piso não é servido como espécie própria");
+      if (!/^get_sbd_toe_/.test(floor.reach_with ?? "")) return fail("o piso vem sem caminho concreto");
+      if (!(rd.assignments_without_phase?.assignment_count > 0)) return fail("as atribuições sem fase não são declaradas");
       // (B2b) operating_model: a autoridade HERDA-SE da fonte
       const om = await c.tool("get_sbd_toe_operating_model", {});
       if (!om.ok) return fail(om.error);
@@ -1882,7 +1894,64 @@ export const scenarios = [
       const lvl = gm.data.level_named_in_label;
       if (!(lvl?.count > 0)) return fail("rótulo que cita outro nível continua sem sinalização");
       if (!lvl.values.every((v) => v.proportionality_at_served_level)) return fail("sinaliza sem dar a proporcionalidade do nível pedido");
-      return ok(`artefactos com 2 bases (${ep.distinct_artifacts} por EP / ${rel.relation_edges} arestas) e a proibição da fonte verbatim; roteiro declara ${omit.count} capítulos fora (${omit.mandatory_at_some_level} obrigatórios); autoridade herdada ${auth.authority_class.join("/")}; 1 next retirado e declarado; orgProfile affects_result=false; ${bd.phases_unassigned.count} atribuições sem fase declaradas; ${lvl.count} rótulo(s) com nível sinalizado`); } },
+      return ok(`artefactos com 2 bases (${ep.distinct_artifacts} por EP / ${rel.relation_edges} arestas) e a proibição da fonte verbatim; roteiro cobre ${rd.totals.chapters_covered_including_floor}/${rd.totals.chapters_in_manual} (${rd.chapter_coverage.traversed} atravessados + piso), omissão a ${omit.count}; autoridade herdada ${auth.authority_class.join("/")}; 1 next retirado e declarado; orgProfile affects_result=false; ${bd.phases_unassigned.count} atribuições sem fase declaradas; ${lvl.count} rótulo(s) com nível sinalizado`); } },
+
+  { id: "TC-F-66", axis: "F", title: "0.20.0-beta.40: travessia N:M (roteiro cobre os 15), definidores≠citadores e ausências TIPADAS", tool: "plan_sbd_toe_rollout",
+    run: async (c) => {
+      // (A) o roteiro cobre os 15 — 14 atravessados + o cap. 00 como PISO
+      const roll = await c.tool("plan_sbd_toe_rollout", {});
+      if (!roll.ok) return fail(roll.error);
+      const rd = roll.data.data ?? roll.data;
+      const t = rd.totals ?? {};
+      if (t.chapters_covered_including_floor !== t.chapters_in_manual)
+        return fail(`cobertura ${t.chapters_covered_including_floor}/${t.chapters_in_manual} — o roteiro ainda deixa capítulos de fora`);
+      if (rd.chapters_not_in_roadmap?.count !== 0) return fail("a banda de omissão não está a zero");
+      const floor = rd.chapter_coverage?.floor;
+      if (!floor || floor.species !== "piso") return fail("o cap. 00 não é servido como PISO");
+      if (floor.is_absence !== false) return fail("o piso continua a ser tratado como ausência");
+      // a travessia é N:M e desfaz as escolhas falsas do escalar editorial
+      const ph = rd.phases ?? [];
+      const chaptersOf = (id) => (ph.find((p) => p.phase_id === id)?.chapters ?? []);
+      if (!chaptersOf("design").some((x) => x.startsWith("04-"))) return fail("`design` não atravessa a arquitectura segura");
+      if (!chaptersOf("develop").some((x) => x.startsWith("06-"))) return fail("`develop` não atravessa o desenvolvimento seguro");
+      if (!ph.every((p) => p.chapter)) return fail("a âncora editorial `manual_chapter` deixou de vir — devia ganhar companhia, não sair");
+      if (!(rd.assignments_without_phase?.assignment_count > 0)) return fail("as atribuições autoradas sem fase não são declaradas");
+      // (B) definidores ≠ citadores — o cap. 01 deixa de reclamar SBOM/container/SAST
+      const cap = await c.tool("get_sbd_toe_chapter_capability", { chapter: "01-classificacao-aplicacoes" });
+      if (!cap.ok) return fail(cap.error);
+      const art = cap.data.artifacts;
+      if (!(art?.bases?.defining_chapter?.artifacts > 0)) return fail("a base de DEFINIÇÃO não é servida");
+      if (!(art.bases.defining_chapter.artifacts < art.bases.chapter_relation.relation_edges))
+        return fail("definidores e citadores continuam a ser o mesmo conjunto");
+      const own = new Set(art.values.filter((v) => v.own).map((v) => v.name ?? v.artifact_type_id));
+      for (const alheio of ["Sbom", "Container Image", "Sast Report"])
+        if (own.has(alheio)) return fail(`o cap. 01 continua a reclamar \`${alheio}\` como seu`);
+      if (!art.values.some((v) => !v.own)) return fail("nenhum artefacto marcado como apenas citado");
+      const brief = await c.tool("get_sbd_toe_chapter_brief", { chapterId: "01-classificacao-aplicacoes" });
+      const bd = brief.data.data ?? brief.data;
+      if (!(bd.artifacts_basis?.cited_only > 0)) return fail("o brief não separa citados de definidos");
+      if (!(bd.artifacts_basis.cited_values ?? []).length) return fail("a nota do brief aponta para um campo que não vem");
+      // (D) required_for_levels servido pelo que é, sem lhe vestir significado
+      if (!/degenerado/i.test(art.bases?.required_for_levels?.what ?? ""))
+        return fail("`required_for_levels` servido como se discriminasse");
+      // (C) ausências TIPADAS, com o tipo vindo do índice central e espécies distintas
+      const g = await c.tool("get_guide_by_role", { risk_level: "L2", role: "fornecedores-terceiros" });
+      const pb = await c.tool("get_sbd_toe_playbook", { framework: "PCI-DSS" });
+      const mp = await c.tool("get_sbd_toe_macro_processes", {});
+      const bands = [
+        g.data.unsupported_role?.absence,
+        (pb.data.data ?? pb.data).absence,
+        (mp.data.data ?? mp.data).declared_limits?.sdlc_phase_traversal_absence
+      ];
+      if (bands.some((b) => !b)) return fail("há vazios servidos sem dizer de que espécie são");
+      if (!bands.every((b) => b.absence_id && b.what_it_means)) return fail("banda de ausência sem id do índice ou sem consequência");
+      const kinds = new Set(bands.map((b) => b.absence_type));
+      if (kinds.size < 3) return fail(`as três ausências vieram do mesmo tipo (${[...kinds].join(",")}) — a tipagem não discrimina`);
+      const boundary = bands.find((b) => b.is_boundary);
+      if (!boundary || boundary.absence_type !== "out_of_scope") return fail("nenhuma fronteira declarada onde há uma decisão do lead");
+      if (!bands.find((b) => b.absence_type === "gap")?.debt_of) return fail("dívida sem dono declarado");
+      if (!bands.find((b) => b.absence_type === "deferred")?.trigger) return fail("`deferred` sem gatilho — sem gatilho seria gap");
+      return ok(`roteiro cobre ${t.chapters_covered_including_floor}/${t.chapters_in_manual} (${rd.chapter_coverage.traversed} atravessados + piso), omissão a 0, ${rd.assignments_without_phase.assignment_count} atribuições sem fase declaradas; cap.01 define ${art.bases.defining_chapter.artifacts} e cita ${art.bases.chapter_relation.relation_edges}; ausências tipadas ${[...kinds].join("/")} com o tipo vindo do índice`); } },
 
   { id: "TC-G-01", axis: "G", title: "trace válido: determinismo + paginação G1 (3 lentes, total, cursor, sem IRIs)", tool: "trace_sbd_toe_graph",
     run: async (c) => {

@@ -630,7 +630,7 @@
   },
   "repeat_call_hint": "Identical input returns this exact payload (deterministic) — reuse the context already received; deepen via detail:'minimal' or a targeted consult_security_requirements.",
   "provenance": {
-    "kg": "dev:f87d5b46bf10",
+    "kg": "dev:15d3ddd11b59",
     "server": "<pkg>",
     "runtime_v0": "data/publish/runtime/*.json + data/publish/ontology/*",
     "runtime_v1": "data/publish/runtime/v1/*",

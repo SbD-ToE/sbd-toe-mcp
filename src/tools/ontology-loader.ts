@@ -151,6 +151,12 @@ export interface ArtifactRequirement {
   source_practice_ids: string[];
   mandatory: boolean;
   chapter_ids?: string[];
+  /** 0.20.0-beta.40 (v2.6, decisão K) — capítulos que DEFINEM o artefacto (proveniência). */
+  defining_chapter_ids?: string[];
+  /** 0.20.0-beta.40 — capítulos que apenas o CITAM. `chapter_ids` continua intacto. */
+  cited_chapter_ids?: string[];
+  /** 0.20.0-beta.40 — níveis em que é exigido. QUASE degenerado: 43 dos 45 são {L1,L2,L3}. */
+  required_for_levels?: Record<string, boolean>;
   description?: string;
 }
 
@@ -540,6 +546,15 @@ export function getOntologyData(): OntologyData {
       source_practice_ids: arrStr(item, "source_practice_ids"),
       mandatory: item.mandatory === true,
       chapter_ids: arrStr(item, "chapter_ids"),
+      ...(Array.isArray(item["defining_chapter_ids"]) ? { defining_chapter_ids: arrStr(item, "defining_chapter_ids") } : {}),
+      ...(Array.isArray(item["cited_chapter_ids"]) ? { cited_chapter_ids: arrStr(item, "cited_chapter_ids") } : {}),
+      ...(isRecord(item["required_for_levels"])
+        ? {
+            required_for_levels: Object.fromEntries(
+              Object.entries(item["required_for_levels"] as Record<string, unknown>).map(([k, v]) => [k, v === true])
+            )
+          }
+        : {}),
       ...(strOf(item, "description") ? { description: strOf(item, "description") } : {}),
     }))
     .filter((item) => item.artifact_type_id.length > 0 && item.requirement_id.length > 0);

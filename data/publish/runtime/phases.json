@@ -1,13 +1,29 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
+  "bundle_ids_derivation": "bundle_ids = capítulos com >=1 practice_assignment autorado na fase (bundle_operates_in_phase, N:M; segmentation_principle v2.6); manual_chapter fica intocado — ganha companhia",
   "count": 8,
   "entity_type": "SDLCPhase",
+  "floor_bundle": {
+    "bundle_id": "00-fundamentos",
+    "note": "cap. 00 é PISO (segmentation_principle v2.6): aplica-se a tudo, independentemente do eixo — fora da derivação por não ser travessia, não por ausência; sem fase inventada, sem out_of_scope",
+    "species": "piso"
+  },
   "items": [
     {
       "aliases": [
         "planeamento",
         "planning",
         "requirements"
+      ],
+      "bundle_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "06-desenvolvimento-seguro",
+        "10-testes-seguranca",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding"
       ],
       "canonical": true,
       "description": "Requirements gathering, classification, planning",
@@ -23,6 +39,15 @@
         "architecture",
         "design_planning"
       ],
+      "bundle_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "09-containers-imagens",
+        "12-monitorizacao-operacoes"
+      ],
       "canonical": true,
       "description": "Threat modeling, architecture design, security design",
       "label": "Design & Architecture",
@@ -36,6 +61,17 @@
         "dev",
         "development",
         "coding"
+      ],
+      "bundle_ids": [
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding"
       ],
       "canonical": true,
       "description": "Secure coding, dependency management, code review",
@@ -52,6 +88,14 @@
         "cd",
         "pipeline"
       ],
+      "bundle_ids": [
+        "02-requisitos-seguranca",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "09-containers-imagens",
+        "10-testes-seguranca"
+      ],
       "canonical": true,
       "description": "CI/CD pipelines, IaC, containerization",
       "label": "Build & CI/CD",
@@ -66,6 +110,14 @@
         "qa",
         "validation",
         "staging"
+      ],
+      "bundle_ids": [
+        "02-requisitos-seguranca",
+        "05-dependencias-sbom-sca",
+        "07-cicd-seguro",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes"
       ],
       "canonical": true,
       "description": "Security testing, QA, validation, staging",
@@ -82,6 +134,18 @@
         "release",
         "production"
       ],
+      "bundle_ids": [
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro"
+      ],
       "canonical": true,
       "description": "Release management, deployment to production",
       "label": "Deployment & Release",
@@ -96,6 +160,20 @@
         "operations",
         "monitoring",
         "operacoes"
+      ],
+      "bundle_ids": [
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
       ],
       "canonical": true,
       "description": "Operations, monitoring, patching, incident response",
@@ -113,6 +191,19 @@
         "compliance",
         "grc"
       ],
+      "bundle_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "canonical": true,
       "description": "Governance, compliance, audit, training, offboarding",
       "label": "Governance & Audit",
@@ -122,6 +213,21 @@
       "source": "s6-consolidation"
     }
   ],
+  "phases_unassigned": {
+    "assignment_count": 219,
+    "chapter_count": 8,
+    "chapters": [
+      "01-classificacao-aplicacoes",
+      "02-requisitos-seguranca",
+      "03-threat-modeling",
+      "05-dependencias-sbom-sca",
+      "06-desenvolvimento-seguro",
+      "07-cicd-seguro",
+      "08-iac-infraestrutura",
+      "13-formacao-onboarding"
+    ],
+    "note": "fase `unassigned` dos assignments autorados — declarada, nunca absorvida numa fase real nem filtrada em silêncio (paridade com phases_unassigned da beta.39)"
+  },
   "profiles": [
     "guide"
   ],

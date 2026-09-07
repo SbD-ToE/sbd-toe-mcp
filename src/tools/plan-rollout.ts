@@ -23,6 +23,8 @@ interface PhaseRecord {
   label: string;
   order: number;
   manual_chapter?: number | string;
+  /** 0.20.0-beta.40 (contrato v1.19 §1.26) — os capítulos que a fase atravessa, N:M. */
+  bundle_ids?: string[];
 }
 
 export interface RolloutPhase {
@@ -30,13 +32,24 @@ export interface RolloutPhase {
   phase_id: string;
   label: string;
   chapter?: string;
+  /** 0.20.0-beta.40 — todos os capítulos da fase, não o escalar editorial. */
+  chapters?: string[];
 }
 
 export interface RolloutData {
   org_profile?: { value: string; role: string; affects_result: boolean; note: string };
   horizon?: number;
   phases: RolloutPhase[];
-  totals: { phases: number; chapters_covered?: number; chapters_in_manual?: number };
+  totals: {
+    phases: number;
+    chapters_traversed?: number;
+    chapters_in_manual?: number;
+    chapters_covered_including_floor?: number;
+  };
+  /** 0.20.0-beta.40 — a travessia N:M e o capítulo de PISO (que não é ausência). */
+  chapter_coverage?: Record<string, unknown>;
+  /** 0.20.0-beta.40 — atribuições autoradas sem fase; declaradas, nunca absorvidas. */
+  assignments_without_phase?: Record<string, unknown>;
   /** 0.20.0-beta.39 — o que o roteiro NÃO cobre, com a exigência por nível e como lá chegar. */
   chapters_not_in_roadmap?: {
     note: string;
@@ -48,6 +61,16 @@ export interface RolloutData {
   model: "phase-ordered-mvp";
 }
 
+/** Metadados do envelope de `phases.json` que a v2.6 acrescentou. */
+interface PhasesEnvelope {
+  floor_bundle?: { bundle_id?: string; species?: string; note?: string } | undefined;
+  phases_unassigned?:
+    | { assignment_count?: number; chapter_count?: number; chapters?: string[]; note?: string }
+    | undefined;
+  bundle_ids_derivation?: string | undefined;
+}
+let envelopeCache: PhasesEnvelope = {};
+
 function loadPhases(): PhaseRecord[] {
   let raw: string;
   try {
@@ -56,6 +79,14 @@ function loadPhases(): PhaseRecord[] {
     return [];
   }
   const parsed = JSON.parse(raw) as { items?: unknown[] } | unknown[];
+  if (!Array.isArray(parsed)) {
+    const env = parsed as Record<string, unknown>;
+    envelopeCache = {
+      ...(env["floor_bundle"] ? { floor_bundle: env["floor_bundle"] as PhasesEnvelope["floor_bundle"] } : {}),
+      ...(env["phases_unassigned"] ? { phases_unassigned: env["phases_unassigned"] as PhasesEnvelope["phases_unassigned"] } : {}),
+      ...(typeof env["bundle_ids_derivation"] === "string" ? { bundle_ids_derivation: env["bundle_ids_derivation"] } : {})
+    };
+  }
   const items = Array.isArray(parsed) ? parsed : Array.isArray(parsed.items) ? parsed.items : [];
   const phases: PhaseRecord[] = [];
   for (const it of items) {
@@ -67,6 +98,9 @@ function loadPhases(): PhaseRecord[] {
       phase_id,
       label: typeof rec["label"] === "string" ? rec["label"] : phase_id,
       order: typeof rec["order"] === "number" ? rec["order"] : Number.MAX_SAFE_INTEGER,
+      ...(Array.isArray(rec["bundle_ids"])
+        ? { bundle_ids: (rec["bundle_ids"] as unknown[]).filter((x): x is string => typeof x === "string") }
+        : {}),
       ...(rec["manual_chapter"] !== undefined
         ? { manual_chapter: rec["manual_chapter"] as number | string }
         : {})
@@ -88,7 +122,8 @@ export function handlePlanRollout(args: Record<string, unknown>): ProtocolEnvelo
       order: p.order,
       phase_id: p.phase_id,
       label: p.label,
-      ...(chapter ? { chapter } : {})
+      ...(chapter ? { chapter } : {}),
+      ...(p.bundle_ids && p.bundle_ids.length > 0 ? { chapters: [...p.bundle_ids].sort() } : {})
     };
   });
 
@@ -106,34 +141,88 @@ export function handlePlanRollout(args: Record<string, unknown>): ProtocolEnvelo
   const coverage: PageCoverage & { phases: number } = { ...page.coverage, phases: ordered.length };
 
   /**
-   * 0.20.0-beta.39 — BANDA DE OMISSÃO (a classe da b.39: as bandas existiam onde o servidor
-   * CALCULA e faltavam onde PROJECTA).
+   * 0.20.0-beta.40 — O ROTEIRO PASSA A COBRIR OS 15, e a banda muda de natureza.
    *
-   * O roteiro é uma projecção das FASES do ciclo de vida sobre capítulos, e as fases não
-   * cobrem os 15 — cobrem 8. Quem seguisse o roteiro não implementava desenvolvimento
-   * seguro nem IaC, e **nada lho dizia**. Não é um defeito da ordem: é o silêncio sobre o
-   * que ficou fora. Modelo copiado do `out_of_scope_chapters` do `select` — cada capítulo
-   * omitido traz a sua exigência por nível e uma chamada COPIÁVEL para o alcançar.
+   * A b.39 fez o roteiro DECLARAR que deixava 7 capítulos de fora. Era honesto e continuava a
+   * não servir: **um aviso bem escrito não é um roteiro.** A causa era o escalar
+   * `manual_chapter` — uma âncora EDITORIAL que forçava escolhas falsas (o `design` não
+   * apanhava o cap. 04, o `develop` não apanhava o 06). A v2.6 publica `bundle_ids`, a
+   * travessia N:M derivada de 1 296 assignments autorados, e o roteiro passa a consumi-la.
+   *
+   * União das oito fases: 14 capítulos. O 15.º é o cap. 00, e **não é uma omissão**: é PISO
+   * (`species: piso`), aplica-se a tudo independentemente do eixo, e fica fora da derivação
+   * por não ser travessia — não por ausência. 14 + piso = 15. A banda deixa de dizer o que
+   * falta e passa a dizer o que é piso; o `chapters_not_in_roadmap` fica a zero porque já não
+   * há nada de fora, e mantém-se servido para que a passagem a zero seja VISÍVEL em vez de
+   * silenciosa.
    */
-  const covered = new Set(ordered.map((p) => p.chapter).filter((c): c is string => typeof c === "string"));
-  const omitted = chapterSet()
-    .filter((c) => !covered.has(c))
+  const covered = new Set(ordered.flatMap((p) => p.chapters ?? (p.chapter ? [p.chapter] : [])));
+  const floor = envelopeCache.floor_bundle;
+  const floorId = floor?.bundle_id;
+  const allChapters = chapterSet();
+  const omitted = allChapters
+    .filter((c) => !covered.has(c) && c !== floorId)
     .map((chapter) => ({
       chapter,
       title: chapterTitle(chapter),
       demand_by_level: demandByLevel(chapter),
       reach_with: `get_sbd_toe_chapter_implementation_checklist(chapter="${chapter}")`
     }));
-  const mandatoryOmitted = omitted.filter((o) =>
-    Object.values(o.demand_by_level).some((d) => d === "obrigatorio")
-  );
+  const mandatoryOmitted = omitted.filter((o) => Object.values(o.demand_by_level).some((d) => d === "obrigatorio"));
+
+  const chapter_coverage = {
+    note:
+      "O roteiro atravessa os capítulos que cada fase realmente toca (`bundle_ids`, N:M, derivado dos " +
+      "assignments autorados) — não a âncora editorial `manual_chapter`, que forçava um capítulo por fase " +
+      "e deixava 7 de fora. `manual_chapter` continua servido em cada fase, como âncora, não como âmbito.",
+    traversed: covered.size,
+    of_total: allChapters.length,
+    ...(envelopeCache.bundle_ids_derivation !== undefined ? { derivation: envelopeCache.bundle_ids_derivation } : {}),
+    ...(floorId !== undefined && !covered.has(floorId)
+      ? {
+          floor: {
+            chapter: floorId,
+            title: chapterTitle(floorId),
+            species: floor?.species ?? "piso",
+            ...(floor?.note !== undefined ? { source_declares: floor.note } : {}),
+            is_absence: false,
+            note:
+              "**NÃO é uma omissão.** O capítulo de piso aplica-se a TODAS as fases, independentemente do " +
+              "eixo, e por isso não aparece na travessia de nenhuma — fica fora da derivação por não ser " +
+              "travessia, não por ausência. É a terceira espécie de relação entre segmentações (travessia · " +
+              "dependência · piso). Somando-o, o roteiro cobre os " +
+              `${covered.size + 1} de ${allChapters.length}.`,
+            reach_with: `get_sbd_toe_chapter_implementation_checklist(chapter="${floorId}")`
+          }
+        }
+      : {})
+  };
+
+  const unassigned = envelopeCache.phases_unassigned;
+  const assignments_without_phase =
+    unassigned !== undefined && (unassigned.assignment_count ?? 0) > 0
+      ? {
+          assignment_count: unassigned.assignment_count ?? 0,
+          chapter_count: unassigned.chapter_count ?? (unassigned.chapters ?? []).length,
+          chapters: unassigned.chapters ?? [],
+          ...(unassigned.note !== undefined ? { source_declares: unassigned.note } : {}),
+          note:
+            "Atribuições autoradas SEM fase na fonte. Não foram absorvidas numa fase real nem filtradas em " +
+            "silêncio: o roteiro é por fase, e estas não têm uma. Estão nos capítulos acima — que o roteiro " +
+            "cobre — mas não se ancoram a nenhum momento do ciclo."
+        }
+      : undefined;
+
   const chapters_not_in_roadmap = {
     note:
-      "O roteiro projecta as FASES do ciclo de vida sobre capítulos, e as fases NÃO cobrem os 15. " +
-      "Estes ficam fora do roteiro — o que não é o mesmo que ficarem fora do Manual: alguns são " +
-      "`obrigatorio` ao teu nível. Seguir só o roteiro deixa-os por implementar.",
+      omitted.length === 0
+        ? "ZERO capítulos fora do roteiro. A banda mantém-se servida, e a zero, para que a cobertura completa " +
+          "seja verificável em vez de assumida — o cap. 00 está em `chapter_coverage.floor`, como PISO e não " +
+          "como falta."
+        : "Capítulos que nenhuma fase atravessa. Não é o mesmo que ficarem fora do Manual: alguns são " +
+          "`obrigatorio` ao teu nível.",
     count: omitted.length,
-    of_total: chapterSet().length,
+    of_total: allChapters.length,
     mandatory_at_some_level: mandatoryOmitted.length,
     chapters: omitted
   };
@@ -156,8 +245,15 @@ export function handlePlanRollout(args: Record<string, unknown>): ProtocolEnvelo
         : {}),
       ...(horizon ? { horizon } : {}),
       phases: page.items,
-      totals: { phases: ordered.length, chapters_covered: covered.size, chapters_in_manual: chapterSet().length },
-      ...(omitted.length > 0 ? { chapters_not_in_roadmap } : {}),
+      totals: {
+        phases: ordered.length,
+        chapters_traversed: covered.size,
+        chapters_in_manual: allChapters.length,
+        chapters_covered_including_floor: covered.size + (floorId !== undefined && !covered.has(floorId) ? 1 : 0)
+      },
+      chapter_coverage,
+      ...(assignments_without_phase ? { assignments_without_phase } : {}),
+      chapters_not_in_roadmap,
       model: "phase-ordered-mvp"
     },
     provenance: {
@@ -169,8 +265,9 @@ export function handlePlanRollout(args: Record<string, unknown>): ProtocolEnvelo
       note:
         "Phase-ordered rollout MVP: canonical lifecycle phases mapped to manual chapters. " +
         "The dependency DAG is deferred (S-2) — this is a linear order, declared as such; nothing invented. " +
-        "0.20.0-beta.39: a cobertura em capítulos é PARCIAL por construção (as fases não cobrem os 15) e o " +
-        "que fica fora vem declarado em `chapters_not_in_roadmap` — o roteiro nunca é o âmbito do Manual."
+        "0.20.0-beta.40 (contrato v1.19 §1.26): a travessia fase→capítulos é N:M e vem da fonte " +
+        "(`bundle_ids`, derivado dos assignments autorados). A cobertura e o capítulo de PISO estão em " +
+        "`chapter_coverage`; o roteiro continua a não ser o âmbito do Manual, mas já não deixa nada de fora."
     },
     coverage,
     next: boundAffordances([

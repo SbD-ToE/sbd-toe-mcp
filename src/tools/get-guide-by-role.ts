@@ -18,6 +18,7 @@ import { getOntologyData, resolvePhaseId, resolveRoleId } from "./ontology-loade
 import { _resolveConsultResult } from "./consult-security-requirements.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { guideByRoleAffordances } from "../serving/affordances.js";
+import { absenceBand, absenceNaming } from "../serving/declared-absences.js";
 
 const VALID_RISK_LEVELS = ["L1", "L2", "L3"] as const;
 type RiskLevel = (typeof VALID_RISK_LEVELS)[number];
@@ -131,7 +132,7 @@ export interface GetGuideByRoleResult {
   by_role: Record<string, AssignmentWithStory[]>;
   by_phase: Record<string, AssignmentWithStory[]>;
   /** 0.20.0-beta.31: papel canónico sem mapeamento nesta superfície. */
-  unsupported_role?: { value: string; supported_values: string[]; note: string };
+  unsupported_role?: { value: string; supported_values: string[]; note: string; absence?: unknown };
   meta: {
     assignmentCount: number;
     userStoryCount: number;
@@ -167,7 +168,7 @@ export interface GetGuideByRoleOutput {
   /** Aggregated DoD checklist of the role's user stories — present only with include_detail + a role filter. */
   role_checklist?: RoleChecklistEntry[];
   /** 0.20.0-beta.31: papel canónico que esta superfície não mapeia — declarado, nunca vazio mudo. */
-  unsupported_role?: { value: string; supported_values: string[]; note: string };
+  unsupported_role?: { value: string; supported_values: string[]; note: string; absence?: unknown };
   role_summary: Record<string, number>;
   phase_summary: Record<string, number>;
   meta: {
@@ -329,6 +330,17 @@ export function _resolveGuideByRole(
           unsupported_role: {
             value: canonicalRole,
             supported_values: rolesWithAssignments,
+            /**
+             * 0.20.0-beta.40 — DE QUE ESPÉCIE é este vazio. Vem do índice central
+             * `declared_absences` (ontologia v2.6), NUNCA inferido aqui: um consumidor
+             * precisa de saber se está a olhar para uma DÍVIDA que alguém deve, ou para uma
+             * FRONTEIRA que não fecha. São reacções opostas, e a superfície não tem
+             * autoridade para decidir qual é.
+             */
+            absence: absenceBand(
+              absenceNaming(canonicalRole)?.absence_id,
+              `atribuições de prática para o papel \`${canonicalRole}\``
+            ),
             note:
               `O papel \`${canonicalRole}\` é CANÓNICO e publicado (vocabulário e guia), mas esta superfície não ` +
               `tem atribuições de prática para ele: o bundle publica assignments para ${rolesWithAssignments.length} papéis. ` +

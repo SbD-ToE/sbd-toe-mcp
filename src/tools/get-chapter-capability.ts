@@ -164,13 +164,38 @@ export function handleGetChapterCapability(args: Record<string, unknown>): Chapt
     .sort()
     .map(shapeArtifact);
 
-  // Base B — a RELAÇÃO capítulo↔artefacto, servida como relação e nunca como total.
+  /*
+   * 0.20.0-beta.40 (v2.6, decisão K) — DEFINIDORES vs CITADORES.
+   *
+   * A b.39 tinha razão a chamar-lhe RELAÇÃO em vez de total, mas a relação continuava a ser
+   * uma só: o capítulo da classificação «tinha» SBOM, imagem de container, SAST e plano de
+   * Terraform, porque esses registos o CITAM. A v2.6 parte a aresta em duas — `defining`
+   * (proveniência: o capítulo define o artefacto) e `cited` (só o menciona) — e a superfície
+   * passa a servi-las separadas. É o fim do achado central do auditor.
+   */
+  const definingRecords =
+    chapterArg === undefined
+      ? []
+      : (ontology.artifactRequirements ?? []).filter((ar) => (ar.defining_chapter_ids ?? []).includes(chapterArg));
   const relatedRecords =
     chapterArg === undefined
       ? []
       : (ontology.artifactRequirements ?? []).filter((ar) => (ar.chapter_ids ?? []).includes(chapterArg));
-  const relationEdges = relatedRecords.map((ar) => shapeArtifact(ar.artifact_type_id)).sort((a, b) => a.artifact_type_id.localeCompare(b.artifact_type_id));
+  const definingIds = new Set(definingRecords.map((ar) => ar.artifact_type_id));
+  const relationEdges = relatedRecords
+    .map((ar) => shapeArtifact(ar.artifact_type_id))
+    .sort((a, b) => a.artifact_type_id.localeCompare(b.artifact_type_id));
   const countSemantics = runtimeCountSemantics("data/publish/runtime/artifact_requirements.json");
+  const hasDefiningSurface = (ontology.artifactRequirements ?? []).some((ar) => ar.defining_chapter_ids !== undefined);
+  /**
+   * `required_for_levels` — servido, mas SEM lhe vestir significado que não tem: 43 dos 45
+   * registos são `{L1,L2,L3: true}`. Substituiu um campo degenerado (`mandatory` 45/45) por
+   * outro QUASE degenerado, e é assim que se declara.
+   */
+  const levelDiscriminating = (ontology.artifactRequirements ?? []).filter((ar) => {
+    const lv = ar.required_for_levels;
+    return lv !== undefined && Object.values(lv).some((v) => v !== true);
+  }).length;
 
   const epIds = new Set(byEvidence.map((a) => a.artifact_type_id));
   const relIds = new Set(relationEdges.map((a) => a.artifact_type_id));
@@ -184,8 +209,9 @@ export function handleGetChapterCapability(args: Record<string, unknown>): Chapt
       : {
           content_type: "derived",
           note:
-            "DUAS bases distintas, e cada artefacto diz de quais vem. **Nenhuma delas é «os artefactos que " +
-            "este capítulo tem de produzir»** — esse conjunto o Manual não publica, e o servidor não o inventa.",
+            "Bases distintas, e cada artefacto diz de quais vem e se é DESTE capítulo (`own`) ou apenas " +
+            "citado por ele. **Nenhuma delas é «os artefactos que este capítulo tem de produzir»** — esse " +
+            "conjunto o Manual não publica, e o servidor não o inventa.",
           bases: {
             evidence_pattern: {
               what:
@@ -194,12 +220,27 @@ export function handleGetChapterCapability(args: Record<string, unknown>): Chapt
               evidence_patterns: chapterEvidencePatterns.length,
               distinct_artifacts: epIds.size
             },
+            defining_chapter: {
+              what:
+                "capítulos que DEFINEM o artefacto (`defining_chapter_ids`, v2.6 decisão K) — a proveniência. " +
+                "É o conjunto que este capítulo pode chamar SEU.",
+              available: hasDefiningSurface,
+              artifacts: definingIds.size
+            },
             chapter_relation: {
               what:
-                "registos `ArtifactRequirement` que NOMEIAM este capítulo em `chapter_ids`. São ARESTAS da " +
-                "relação capítulo↔artefacto — não um total, e não uma obrigação de produção.",
+                "registos `ArtifactRequirement` que NOMEIAM este capítulo em `chapter_ids` — a citação. São " +
+                "ARESTAS da relação capítulo↔artefacto: não um total, não uma obrigação de produção, e " +
+                "**não posse**. Um capítulo citar um artefacto não o torna dele.",
               ...(countSemantics !== undefined ? { source_declares: countSemantics } : {}),
               relation_edges: relationEdges.length
+            },
+            required_for_levels: {
+              what:
+                "a fonte publica `required_for_levels` por artefacto. **NÃO discrimina quase nada**: " +
+                `${levelDiscriminating} dos ${(ontology.artifactRequirements ?? []).length} registos têm algum ` +
+                "nível a `false`; os restantes são `{L1,L2,L3: true}`. Substituiu o `mandatory` degenerado " +
+                "(45/45) por um campo QUASE degenerado, e serve-se pelo que é — não como se seleccionasse."
             }
           },
           only_in_evidence_pattern: [...epIds].filter((id) => !relIds.has(id)).sort(),
@@ -207,10 +248,20 @@ export function handleGetChapterCapability(args: Record<string, unknown>): Chapt
             ...a,
             bases: [
               ...(epIds.has(a.artifact_type_id) ? ["evidence_pattern"] : []),
+              ...(definingIds.has(a.artifact_type_id) ? ["defining_chapter"] : []),
               ...(relIds.has(a.artifact_type_id) ? ["chapter_relation"] : [])
-            ]
+            ],
+            /** `own` = este capítulo DEFINE-o. Sem `own`, apenas o cita. */
+            own: definingIds.has(a.artifact_type_id)
           })),
           declared_limits: {
+            ...(hasDefiningSurface
+              ? {}
+              : {
+                  no_defining_surface:
+                    "este pino não publica `defining_chapter_ids`: só há a relação de citação, e por isso " +
+                    "nenhum artefacto se declara DESTE capítulo. Não é o mesmo que não haver nenhum."
+                }),
             no_mandatory_count:
               "a fonte traz `mandatory: true` em 45 de 45 registos — o campo não discrimina nada, e por isso " +
               "NÃO se serve aqui uma contagem de obrigatoriedade. Achado de CONTEÚDO, reportado ao programa; " +

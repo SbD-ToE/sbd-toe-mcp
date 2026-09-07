@@ -136,12 +136,15 @@ describe("qualitative eval smoke", () => {
   it("keeps governance and training chapter briefs exposing the expected evidence artifacts", () => {
     const governance = handleGetSbdToeChapterBrief({
       chapterId: "14-governanca-contratacao"
-    }) as { found: boolean; artifacts?: string[] };
+    }) as { found: boolean; artifacts?: string[]; artifacts_basis?: { cited_values?: string[] } };
     const training = handleGetSbdToeChapterBrief({
       chapterId: "13-formacao-onboarding"
-    }) as { found: boolean; artifacts?: string[] };
+    }) as { found: boolean; artifacts?: string[]; artifacts_basis?: { cited_values?: string[] } };
     const governanceArtifacts = governance.artifacts ?? [];
     const trainingArtifacts = training.artifacts ?? [];
+    // 0.20.0-beta.40: `artifacts` passou a ser o que o capítulo DEFINE; o que apenas cita vem
+    // em `cited_values`. O teste passa a exigir a DISTINÇÃO, que é o que a v2.6 veio dar.
+    const governanceCited = governance.artifacts_basis?.cited_values ?? [];
 
     expect(governance.found).toBe(true);
     expect(training.found).toBe(true);
@@ -151,7 +154,9 @@ describe("qualitative eval smoke", () => {
     expect(governanceArtifacts.some((artifact) => artifact.startsWith("ART-access-review-"))).toBe(true);
     expect(governanceArtifacts.some((artifact) => artifact.startsWith("ART-sbom-"))).toBe(true);
     expect(governanceArtifacts.some((artifact) => artifact.startsWith("ART-artifact-provenance-"))).toBe(true);
-    expect(governanceArtifacts.some((artifact) => artifact.startsWith("ART-pipeline-config-"))).toBe(true);
+    // pipeline-config é DEFINIDO pelos capítulos de CI/CD; governação apenas o CITA.
+    expect(governanceArtifacts.some((artifact) => artifact.startsWith("ART-pipeline-config-"))).toBe(false);
+    expect(governanceCited.some((artifact) => artifact.startsWith("ART-pipeline-config-"))).toBe(true);
 
     expect(trainingArtifacts.some((artifact) => artifact.startsWith("ART-onboarding-checklist-"))).toBe(true);
     expect(trainingArtifacts.some((artifact) => artifact.startsWith("ART-quiz-result-"))).toBe(true);

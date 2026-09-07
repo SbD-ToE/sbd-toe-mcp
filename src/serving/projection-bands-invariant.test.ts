@@ -17,6 +17,9 @@ import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { spawn, type ChildProcess } from "node:child_process";
 import { existsSync } from "node:fs";
 import { reconcileNextWithBands } from "./next-band-reconciliation.js";
+import { declaredAbsences, absenceModel } from "./declared-absences.js";
+import { readFileSync, readdirSync } from "node:fs";
+import { join, relative } from "node:path";
 
 type Rpc = { result?: { content?: { type: string; text: string }[]; tools?: { name: string }[] } };
 let server: ChildProcess | null = null;
@@ -123,21 +126,40 @@ describe("invariante beta.39 — autoridade e projecção parcial", () => {
     expect(authority?.tier, "a fonte é ilustrativa e a superfície não o diz").toBe("illustrative");
   }, 20000);
 
-  it("uma projecção PARCIAL declara o que ficou de fora, com como lá chegar", async () => {
+  it("o roteiro cobre os 15 (travessia + piso) e a banda de omissão fica a ZERO, servida", async () => {
+    /*
+     * 0.20.0-beta.40 — o contrato desta invariante MUDOU e é isso que ela passa a guardar.
+     * Na b.39 a cobertura era parcial e o que se exigia era a banda de omissão. Com a
+     * travessia N:M da v2.6 já não há nada de fora: exige-se cobertura COMPLETA (14
+     * atravessados + o capítulo de PISO, que não é ausência) e a banda de omissão a zero
+     * — servida, e não apagada, para que a passagem a zero seja verificável.
+     */
     const roll = (await tool("plan_sbd_toe_rollout", {}))["data"] as Record<string, unknown>;
-    const totals = roll["totals"] as { chapters_covered?: number; chapters_in_manual?: number };
+    const totals = roll["totals"] as {
+      chapters_traversed?: number;
+      chapters_in_manual?: number;
+      chapters_covered_including_floor?: number;
+    };
     expect(totals?.chapters_in_manual, "o roteiro não diz sobre quantos capítulos projecta").toBeGreaterThan(0);
-    if ((totals.chapters_covered ?? 0) < (totals.chapters_in_manual ?? 0)) {
-      const band = roll["chapters_not_in_roadmap"] as
-        | { count?: number; mandatory_at_some_level?: number; chapters?: { reach_with?: string }[] }
-        | undefined;
-      expect(band?.count, "cobertura parcial sem banda de omissão — o silêncio que a vaga veio fechar").toBeGreaterThan(0);
-      expect(
-        band?.chapters?.every((c) => typeof c.reach_with === "string" && c.reach_with.includes("(")),
-        "a banda de omissão não dá caminho CONCRETO por capítulo"
-      ).toBe(true);
-      expect(band?.mandatory_at_some_level, "a banda não diz quantos dos omitidos são obrigatórios").toBeGreaterThan(0);
-    }
+    expect(
+      totals.chapters_covered_including_floor,
+      "o roteiro deixou de cobrir os capítulos todos — travessia + piso tem de dar o total"
+    ).toBe(totals.chapters_in_manual);
+    const omit = roll["chapters_not_in_roadmap"] as { count?: number } | undefined;
+    expect(omit, "a banda de omissão foi APAGADA — a zero tem de continuar servida, para ser verificável").toBeTruthy();
+    expect(omit?.count, "voltou a haver capítulos fora do roteiro").toBe(0);
+    const cov = roll["chapter_coverage"] as
+      | { traversed?: number; floor?: { species?: string; is_absence?: boolean; chapter?: string } }
+      | undefined;
+    expect(cov?.floor?.chapter, "o capítulo de piso não é identificado").toBeTruthy();
+    expect(cov?.floor?.species, "o piso não se declara como espécie própria").toBe("piso");
+    expect(cov?.floor?.is_absence, "o piso está a ser servido como se fosse uma ausência").toBe(false);
+    // as escolhas falsas do escalar editorial têm de estar desfeitas
+    const phases = (roll["phases"] as { phase_id: string; chapters?: string[] }[]) ?? [];
+    const design = phases.find((p) => p.phase_id === "design")?.chapters ?? [];
+    const develop = phases.find((p) => p.phase_id === "develop")?.chapters ?? [];
+    expect(design.some((c) => c.startsWith("04-")), "o `design` voltou a não atravessar a arquitectura segura").toBe(true);
+    expect(develop.some((c) => c.startsWith("06-")), "o `develop` voltou a não atravessar o desenvolvimento seguro").toBe(true);
   }, 20000);
 
   it("uma contagem de RELAÇÃO nunca é servida como total", async () => {
@@ -152,6 +174,65 @@ describe("invariante beta.39 — autoridade e projecção parcial", () => {
       /never for totals/i
     );
   }, 20000);
+
+  it("o tipo da ausência VEM DO ÍNDICE — nenhuma superfície o carimba", () => {
+    /*
+     * 0.20.0-beta.40 — a regra de ouro do modelo de ausências: `out_of_scope` SÓ o programme
+     * lead atribui, e é isso que impede uma lacuna incómoda de virar fronteira por
+     * conveniência. Uma superfície que escrevesse o tipo à mão fazia exactamente o que o
+     * modelo existe para impedir — por isso o literal só pode viver no módulo do índice.
+     */
+    const model = absenceModel();
+    expect(Object.keys(model?.values ?? {}).sort(), "o modelo de ausências desapareceu da fonte").toEqual([
+      "deferred",
+      "elsewhere",
+      "gap",
+      "out_of_scope"
+    ]);
+    expect(declaredAbsences().length, "o índice central veio vazio — a sonda ou a fonte partiram").toBeGreaterThan(5);
+    const root = process.cwd();
+    const walk = (dir: string, out: string[] = []): string[] => {
+      for (const e of readdirSync(join(root, dir), { withFileTypes: true })) {
+        const rel = `${dir}/${e.name}`;
+        if (e.isDirectory()) walk(rel, out);
+        else if (e.name.endsWith(".ts") && !e.name.endsWith(".test.ts")) out.push(rel);
+      }
+      return out;
+    };
+    const offenders: string[] = [];
+    for (const file of walk("src")) {
+      if (file.endsWith("serving/declared-absences.ts")) continue; // é o índice: é lá que os valores vivem
+      const text = readFileSync(join(root, file), "utf-8");
+      // um literal de tipo ATRIBUÍDO (não citado em prosa) fora do módulo do índice
+      for (const m of text.matchAll(/absence_type\s*:\s*["'`](gap|out_of_scope|deferred|elsewhere)["'`]/g))
+        offenders.push(`${relative(root, join(root, file))}: absence_type: "${m[1]}"`);
+    }
+    expect(offenders, `tipo de ausência carimbado pela superfície:\n  ${offenders.join("\n  ")}`).toEqual([]);
+  });
+
+  it("as bandas de ausência servidas trazem a espécie, e cada espécie a sua consequência", async () => {
+    const cases: [string, Record<string, unknown>, (p: Record<string, unknown>) => unknown][] = [
+      ["get_guide_by_role", { risk_level: "L2", role: "fornecedores-terceiros" }, (p) => (p["unsupported_role"] as Record<string, unknown>)?.["absence"]],
+      ["get_sbd_toe_playbook", { framework: "PCI-DSS" }, (p) => p["absence"]],
+      ["get_sbd_toe_macro_processes", {}, (p) => (p["declared_limits"] as Record<string, unknown>)?.["sdlc_phase_traversal_absence"]]
+    ];
+    const seen = new Set<string>();
+    for (const [name, args, pick] of cases) {
+      const band = pick(await tool(name, args)) as
+        | { absence_type?: string; is_debt?: boolean; is_boundary?: boolean; what_it_means?: string; absence_id?: string }
+        | undefined;
+      expect(band, `${name}: serve um vazio sem dizer de que espécie é`).toBeTruthy();
+      expect(band?.absence_type, `${name}: espécie ausente`).toBeTruthy();
+      expect(band?.what_it_means, `${name}: a espécie vem sem consequência para o consumidor`).toBeTruthy();
+      // dívida e fronteira são exclusivas: nunca as duas, nunca nenhuma quando há id
+      if (band?.absence_id !== undefined)
+        expect(band.is_debt !== band.is_boundary || band.absence_type === "elsewhere", `${name}: dívida e fronteira confundidas`).toBe(true);
+      if (band?.absence_type !== undefined) seen.add(band.absence_type);
+    }
+    // controlo positivo: as três superfícies têm de mostrar ESPÉCIES DIFERENTES, senão a
+    // tipagem não está a discriminar nada e o teste passaria em vazio.
+    expect(seen.size, `as três ausências vieram todas do mesmo tipo (${[...seen].join(",")})`).toBeGreaterThanOrEqual(3);
+  }, 30000);
 
   it("a recuperação declara o que da pergunta NÃO tem âncora no corpus", async () => {
     const r = await call("tools/call", {

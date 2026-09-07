@@ -382,13 +382,31 @@ function handleGetSbdToeChapterBriefCore(
         .map((assignment) => assignment.role)
     )
   ).sort();
-  const artifacts = Array.from(
+  /*
+   * 0.20.0-beta.40 (v2.6, decisão K) — DEFINIDORES vs CITADORES, também aqui.
+   *
+   * O brief listava em `artifacts` tudo o que CITA o capítulo, e o consumidor lia posse. O
+   * capítulo da classificação aparecia a reclamar SBOM, imagem de container e relatório de
+   * SAST. Passa a servir os que o capítulo DEFINE, com os citados em banda própria — a mesma
+   * separação da vista de capacidade, para que as duas superfícies digam o mesmo.
+   */
+  const artifactRecords = (ontology.artifactRequirements ?? []).filter((ar) =>
+    (ar.chapter_ids ?? []).includes(chapterId)
+  );
+  const hasDefiningSurface = (ontology.artifactRequirements ?? []).some((ar) => ar.defining_chapter_ids !== undefined);
+  const definingArtifacts = Array.from(
     new Set(
       (ontology.artifactRequirements ?? [])
-        .filter((artifactRequirement) => (artifactRequirement.chapter_ids ?? []).includes(chapterId))
-        .map((artifactRequirement) => artifactRequirement.artifact_type_id)
+        .filter((ar) => (ar.defining_chapter_ids ?? []).includes(chapterId))
+        .map((ar) => ar.artifact_type_id)
     )
   ).sort();
+  const citedOnly = Array.from(
+    new Set(artifactRecords.map((ar) => ar.artifact_type_id).filter((id) => !definingArtifacts.includes(id)))
+  ).sort();
+  const artifacts = hasDefiningSurface
+    ? definingArtifacts
+    : Array.from(new Set(artifactRecords.map((ar) => ar.artifact_type_id))).sort();
   const introChunk = loadMcpChunks().find((item) => {
     const bundleId = getStr(item, "bundle_id");
     const documentRole = getStr(item, "document_role");
@@ -424,7 +442,20 @@ function handleGetSbdToeChapterBriefCore(
           }
         }
       : {}),
-    ...(artifacts.length > 0 ? { artifacts } : {})
+    ...(artifacts.length > 0 ? { artifacts } : {}),
+    ...(hasDefiningSurface
+      ? {
+          artifacts_basis: {
+            defining: artifacts.length,
+            cited_only: citedOnly.length,
+            note:
+              "`artifacts` são os que este capítulo DEFINE (`defining_chapter_ids`, v2.6). Os que apenas o " +
+              "CITAM vêm em `cited_values` — citar não é possuir, e a lista única fazia o capítulo da " +
+              "classificação parecer dono do SBOM e da imagem de container.",
+            ...(citedOnly.length > 0 ? { cited_values: citedOnly } : {})
+          }
+        }
+      : {})
   };
 }
 

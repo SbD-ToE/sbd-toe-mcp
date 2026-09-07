@@ -26,6 +26,7 @@ import { loadChunkIndex, type ManualChunk } from "../serving/chunk-index.js";
 import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 import { paginate } from "../serving/response-shaping.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
+import { absenceBand, absenceNaming } from "../serving/declared-absences.js";
 
 /** Tiers de autoridade: o que NORMALIZA vs o que ILUSTRA. Derivado do `playbook_kind`. */
 const ILLUSTRATIVE_KINDS = new Set(["illustrative_example", "illustrative_index"]);
@@ -181,6 +182,11 @@ export function handleGetPlaybook(args: Record<string, unknown>): PlaybookResult
       status: "no_cross_check",
       requested: frameworkArg,
       covered_frameworks: covered,
+      /** 0.20.0-beta.40 — a espécie do vazio, vinda do índice central (nunca inferida aqui). */
+      absence: absenceBand(
+        absenceNaming("Cross-checks normativos")?.absence_id,
+        `cross-check normativo para \`${frameworkArg}\``
+      ),
       roadmap_declared_by_manual: roadmapFromManual(),
       note:
         `O cross-check para \`${frameworkArg}\` **ainda não existe**: o Manual publica-o como ROADMAP, não como conteúdo. ` +

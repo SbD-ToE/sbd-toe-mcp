@@ -22,6 +22,7 @@ import { readFileSync } from "node:fs";
 import { resolveAppPath } from "../config.js";
 import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
+import { absenceBand, absenceNaming } from "../serving/declared-absences.js";
 
 type Rec = Record<string, unknown>;
 let cache: { header: Rec; items: Rec[]; edgeHeader: Rec; edges: Rec[] } | undefined;
@@ -199,6 +200,10 @@ export function handleGetMacroProcesses(args: Record<string, unknown>): MacroPro
         "NÃO existe entidade «programa» no modelo, e é deliberado (recusa de curadoria, ratificada). O que se " +
         "publica são os cinco macro-processos e a ordem entre eles. Um «programa» é o que a TUA organização " +
         "monta com isto — o servidor não o modela e não o inventa.",
+      sdlc_phase_traversal_absence: absenceBand(
+        absenceNaming("MacroProcess", "SDLCPhase")?.absence_id,
+        "travessia MacroProcess ↔ fase do SDLC"
+      ),
       sdlc_phase_traversal:
         str(edgeHeader, "sdlc_phase_traversal") ??
         (edgeHeader["sdlc_phase_traversal"] as Rec | undefined)?.["reason"] ??

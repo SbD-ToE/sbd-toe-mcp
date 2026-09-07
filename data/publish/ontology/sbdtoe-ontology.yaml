@@ -1,12 +1,15 @@
 meta:
   name: SbD-ToE Manual Ontology
-  version: '2.5'
+  version: '2.6'
   status: current
   scope: Manual ontology
-  tag: sbdtoe-ontology-v2.5
+  tag: sbdtoe-ontology-v2.6
   history:
   - version: '2.0'
     note: V2 backbone + semantic layer (imported baseline from sbd-toe-knowledge-graph)
+  - version: '2.6'
+    date: '2026-09-07'
+    note: "Aditiva sobre 2.5 (dispatch Orchestrator + decisões do programme lead 2026-09-07, registo em agentic/decisions do programa): epistemic_model.absence_model (gap | out_of_scope | deferred | elsewhere, critério em cascata, debt_of, autoridade/prova), índice declared_absences (5 nomeadas tipadas + re-tipagem das ausências v2.2–v2.5 SEM tocar nos blocos originais — o índice prevalece), segmentation_principle nomeado com TRÊS espécies de relação inter-segmentação (travessia, dependência, piso — cap. 00 é piso, não ausência), schema aditivo em SDLCPhase (+bundle_ids derivado de assignments; manual_chapter documentado como âncora editorial) e ArtifactRequirement (+defining/cited_chapter_ids por decisão K, +required_for_levels; mandatory documentado como legacy constante), relação bundle_operates_in_phase. Nada removido nem alterado; bateria de aditividade estrita."
   - version: '2.5'
     date: '2026-09-06'
     note: "Aditiva sobre 2.4 (ciclo macro-processos, gate ratificado pelo programme lead 2026-09-06 + adenda das três segmentações): entidade MacroProcess (MP-01..05) com travessias como dados declarados, 18 pares inter-MP tipados verbatim (9 dependency + 9 feedback; 23 registos de consumo; errata declarada face aos 17 do mapa: +MP2→MP4), DAG de adopção MP1 → {MP2 ∥ MP4} → MP3 → MP5, relações process_view, lacuna declarada da travessia de fases (não derivar). Ids dos 20 controlos, resolution_order, 260 práticas, catalogue_rules e acore_alignment inalterados."
@@ -97,6 +100,18 @@ epistemic_model:
     deterministic: Result is exact given canonical source data
     bounded: Result is deterministic but thresholded and contestable
     probabilistic: Result depends on a probabilistic extraction step; not allowed in runtime
+  absence_model:
+    # v2.6 (decisão do lead 2026-09-07): vocabulário tipado para ausências declaradas. «É bom ser honesto no que
+    # não apresentamos, mas temos que distinguir o que é fora do âmbito do que é uma lacuna. A lacuna é erro ou
+    # omissão e tem que ser definido. Out-of-scope é decisão.»
+    criterion: "cascata — existe decisão registada sobre esta ausência? não → gap; sim e «nunca» → out_of_scope; sim e «depois» com gatilho declarado → deferred; sim e existe noutra superfície resolúvel → elsewhere (pointer que não resolve degrada para gap da superfície apontada)"
+    values:
+      gap: "erro ou omissão — dívida com dono (debt_of) e destino (closes_in); qualquer persona propõe, o dono da camada confirma, o lead arbitra se contestado; prova: fonte esperada identificada + ausência demonstrada"
+      out_of_scope: "fronteira deliberada; não fecha; SÓ O PROGRAMME LEAD atribui — é o que impede que uma lacuna incómoda vire fronteira por conveniência; prova: decisão registada ou declaração de fronteira na fonte + ratificação"
+      deferred: "decisão «depois» COM gatilho de activação declarado (sem gatilho não é deferred, é gap); atribui o dono da camada + autorização do lead; prova: decisão + trigger"
+      elsewhere: "existe noutra superfície; atribui o dono da camada; prova: pointer resolúvel mecanicamente"
+    debt_of: [manual_content, ontology_model, kg_surface, mcp_serving]
+    note: "«não modelado» NÃO é valor próprio — é gap/deferred com debt_of: ontology_model"
 requirement_selection_model:
   # v2.2 (2026-08-30) — semântica declarada pelo programme lead (pré-G-b, ciclo D2). Formulação normativa:
   description: "O catálogo do cap. 02 (requisitos type: base) é a baseline normativa por defeito — catálogo real, seleccionado sempre, salvo overlay; os catálogos dos capítulos 03–14 (type: domain-specific) são requisitos do domínio, activados pelo contexto (Docker → 09, IaC → 08, infra → 08/11, CI → 07…); os overlays operam por categoria com replace ou extend. Selecção = baseline ∪ específicos(contexto) ⊕ overlay."
@@ -397,6 +412,8 @@ entities:
     - phase_id: string
     - label: string
     - aliases: list[string]
+    - manual_chapter: integer  # legado (v2.6): âncora editorial histórica, NÃO é contenção — não usar para cobertura; mantido inalterado (aditividade)
+    - bundle_ids: list[string]  # v2.6, aditivo: travessia N:M fase↔capítulo DERIVADA dos assignments autorados (papel×nível×fase) — regra em segmentation_principle.derivations.phase_bundles
   EvidencePattern:
     layer: core
     description: 'Expected evidence pattern used for deterministic review. Interprets one or more artifacts or signals as verifiable evidence; the artifact itself is not the evidence judgement. Designed as input for deterministic verification models in future ontology versions (V3).
@@ -585,6 +602,11 @@ entities:
     - source_control_ids: list[string]
     - source_practice_ids: list[string]
     - chapter_id: string
+    - chapter_ids: list[string]  # legado: união indiferenciada (semântica histórica; mantido inalterado)
+    - defining_chapter_ids: list[string]  # v2.6, aditivo (decisão K aplicada): capítulos das source_practice_ids — onde o artefacto é PRESCRITO
+    - cited_chapter_ids: list[string]  # v2.6, aditivo: chapter_ids ∖ defining_chapter_ids — proveniência sem prescrição
+    - mandatory: boolean  # legado (v2.6): constante true em 45/45 — sem valor discriminante; mantido inalterado; usar required_for_levels
+    - required_for_levels: object  # v2.6, aditivo: {L1,L2,L3} derivado pela cadeia ratificada de níveis (§1.9 do contrato KG: requisito→controlo→artefacto, applicable_levels autorados)
   ImplementationRule:
     layer: stub
     description: Reserved future layer for code-generation-facing implementation rules
@@ -685,6 +707,16 @@ relations:
       source_mode: heuristic
       authority_class: normative
       confidence_model: bounded
+  segmentation_traversals:
+    # v2.6 — travessias entre segmentações (ver segmentation_principle). Nunca contenção.
+    bundle_operates_in_phase:
+      from: KnowledgeBundle
+      to: SDLCPhase
+      status: stable
+      source_mode: derived
+      authority_class: normative
+      confidence_model: deterministic
+      note: "N:M derivada dos practice_assignments autorados (capítulo tem >=1 assignment na fase); regra declarada em segmentation_principle.derivations.phase_bundles; verificado 2026-09-07: plan 8 · design 7 · develop 9 · build 6 · test 6 · deploy 10 · operate 12 · govern 11. O cap. 00-fundamentos não entra por derivação: é PISO (terceira espécie), não ausência."
   process_view:
     # v2.5 — vista processual (MacroProcess). NOTA: deliberadamente NÃO existe relação MacroProcess↔SDLCPhase
     # (ver macro_processes.sdlc_phase_traversal — lacuna declarada; travessia parcial e não publicada).
@@ -4695,3 +4727,98 @@ macro_processes:
       L1: thresholds de base; T-06 espera nível 1
       L2: thresholds apertam; validação contínua semestral
       L3: trimestral; obrigações cumulativas
+# ---------------------------------------------------------------------------
+# segmentation_principle + declared_absences (v2.6, 2026-09-07 — decisões do programme lead)
+# ---------------------------------------------------------------------------
+segmentation_principle:
+  # v2.6 — nomeado e normativo (generaliza a adenda v2.5; decisões do lead 2026-09-06 e 2026-09-07)
+  statement: "MacroProcess, KnowledgeBundle (capítulo) e SDLCPhase são segmentações PARALELAS do mesmo substrato. Relações entre segmentações nunca se tipam como contenção (campo 1:1, int, «pertence a»). A cardinalidade é propriedade da vista (a vista processual cobre 15 capítulos; a vista de fases tem 8): nenhuma vista substitui ou vence outra."
+  relation_species:
+    travessia: "N:M entre segmentações, PUBLICADA na fonte (ex.: MP → capítulos) ou DERIVADA de dados autorados com regra declarada (ex.: fase ↔ capítulos via assignments). Sem fonte, não há travessia — deriva-se o que é publicado, nunca o que é conveniente."
+    dependencia: "consumo tipado entre instâncias da MESMA segmentação (ex.: arestas inter-MP dependency|feedback, regra do template)"
+    piso: "relação transversal de fundação — aplica-se a tudo, independentemente do eixo da segmentação (ex.: cap. 00-fundamentos: «capítulo de definição para que se entenda o resto do manual; roles e mínimos — transversal a todo o manual»). O piso NÃO é ausência de nenhuma vista, não recebe fase nem se tipa out_of_scope; a v2.5 já o publica (path_edge kind: piso; MP-01/MP-04/MP-05 atravessam-no)."
+  derivations:
+    phase_bundles: "SDLCPhase.bundle_ids = capítulos com >=1 practice_assignment autorado na fase (papel×nível×fase publicados no Manual). Verificado 2026-09-07: plan 8 · design 7 · develop 9 · build 6 · test 6 · deploy 10 · operate 12 · govern 11 — design inclui o cap. 04 e develop o cap. 06 porque os assignments o publicam; 6 dos 7 capítulos ausentes do rollout regressam (o 00 entra como piso). O cap. 00 fica fora desta derivação POR SER PISO, não por ausência."
+    artifact_defining_chapters: "ArtifactRequirement.defining_chapter_ids = capítulos das source_practice_ids (decisão K, precedente ratificado v2.1/contrato §1.20); cited_chapter_ids = chapter_ids ∖ defining (ex. verificado: SBOM 7 definidores vs 15 citados)"
+    artifact_required_levels: "ArtifactRequirement.required_for_levels derivado pela cadeia de níveis ratificada (requisito→controlo→artefacto; applicable_levels autorados)"
+  prohibitions:
+  - "MacroProcess ↔ SDLCPhase: travessia N:M parcial nos dois sentidos e NÃO publicada — out_of_scope (ABS-001); derivação proibida"
+  - "manual_chapter e mandatory não são removidos nem alterados — ganham companhia (bundle_ids; required_for_levels)"
+declared_absences:
+  # v2.6 — índice central das ausências declaradas, tipadas pelo absence_model. Regra de imutabilidade aditiva:
+  # os blocos locais de v2.2–v2.5 (requirement_selection_model.status.*, acore_alignment.unaligned,
+  # macro_processes.sdlc_phase_traversal, catalogue_rules) mantêm o texto original SEM alteração; A TIPAGEM DESTE
+  # ÍNDICE PREVALECE sobre qualquer rótulo local anterior. Decisões: SecurityByDesign-TheoryOfEverything/agentic/decisions/2026-09-07-ausencias-tipadas-travessia-vs-contencao.md
+  items:
+  - absence_id: ABS-001
+    statement: "Travessia MacroProcess ↔ SDLCPhase"
+    absence_type: out_of_scope
+    decided_by: programme-lead
+    decided_on: '2026-09-07'
+    evidence: "«não há esse walkthrough possível. Um MP pode passar várias fases e as fases podem cruzar vários MPs» — relação N:M e parcial nos dois sentidos; o Manual publica percursos ao grão capítulo («fase» ocorre 1× no capítulo, na frase que nega a equivalência)"
+    note: "a derivação a partir de capítulos/assignments continua PROIBIDA (mantém macro_processes.sdlc_phase_traversal, cujo rótulo local unpublished_gap fica superseded por esta tipagem)"
+  - absence_id: ABS-002
+    statement: "Semântica decide-vs-delega por papel (GR-04)"
+    absence_type: gap
+    debt_of: manual_content
+    owner: Author
+    decided_by: "Orchestrator (proposta) + programme-lead (concordou: falha de conteúdo no painel há vários ciclos, confirmada por auditor externo)"
+    decided_on: '2026-09-07'
+    closes_in: "vaga de conteúdo do Manual a agendar"
+    note: "hipótese elsewhere PARCADA para análise posterior (avaliar se há pointer real de operating model e no que resultaria); não usada aqui, não eliminada do vocabulário"
+  - absence_id: ABS-003
+    statement: "Atribuições (practice_assignments) para o papel fornecedores-terceiros"
+    absence_type: gap
+    debt_of: "a triar (manual_content provável vs kg_surface — US omite o papel, ou a extracção perde-o)"
+    owner: "Author + Codex (triagem)"
+    decided_on: '2026-09-07'
+    evidence: "papel canónico existe; deveres em prosa existem (cap. 14, TRN-007, GOV-013, MP4); 0 assignments servidos (GR-04)"
+  - absence_id: ABS-004
+    statement: "Cross-checks normativos ISO/PCI/SOC2/HIPAA/FedRAMP/CSA"
+    absence_type: deferred
+    debt_of: manual_content
+    owner: "Author / lane overlay"
+    trigger: "ciclo do cross-check normativo (roadmap declarado)"
+    decided_on: '2026-09-07'
+  - absence_id: ABS-005
+    statement: "Atribuições para gestao-executiva no cap. 01"
+    absence_type: gap
+    debt_of: "a triar (kg_surface se a US do cap. 01 nomeia o papel e a extracção perde; senão manual_content)"
+    owner: "Author + Codex (triagem)"
+    decided_on: '2026-09-07'
+    evidence: "o catálogo dá-lhe deveres (CLA-002: aprovação L3); US-15@01 existe; atribuição não servida"
+  # --- re-tipagem das ausências declaradas em v2.2–v2.5 (blocos originais intocados; este índice prevalece) ---
+  - absence_id: ABS-006
+    statement: "Operadores de overlay replace|extend (requirement_selection_model.status.overlay_operators)"
+    absence_type: deferred
+    debt_of: ontology_model
+    owner: Archon
+    trigger: "ADR 0014 (overlay corporativo)"
+    decided_on: '2026-08-30'
+  - absence_id: ABS-007
+    statement: "Operação de selecção em runtime (requirement_selection_model.status.runtime_selection)"
+    absence_type: deferred
+    debt_of: mcp_serving
+    owner: Pontifex
+    trigger: "ciclo do Pontifex (pipeline d, MP1 como operação)"
+    decided_on: '2026-08-30'
+  - absence_id: ABS-008
+    statement: "Alinhamento dos 58 ACM (acore_alignment.unaligned.acm)"
+    absence_type: deferred
+    debt_of: ontology_model
+    owner: Archon
+    trigger: "F-W1 — materializar a aresta ACM→CO na superfície V1 e derivar como as ACP"
+    decided_on: '2026-09-03'
+  - absence_id: ABS-009
+    statement: "CTRL sem contraparte AppSec Core (CAP, C4, C3 — acore_alignment.unaligned.ctrl)"
+    absence_type: out_of_scope
+    decided_by: programme-lead
+    decided_on: '2026-09-03'
+    evidence: "âmbito do Core V1 por desenho (gate do walkthrough)"
+  - absence_id: ABS-010
+    statement: "Estrutura de medição F-01..F-04 / T-01..T-06 não modelada"
+    absence_type: deferred
+    debt_of: ontology_model
+    owner: Archon
+    trigger: "ciclo do desenho de assurance"
+    decided_on: '2026-08-30'

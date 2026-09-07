@@ -24,6 +24,7 @@ import { getOntologyData } from "../tools/ontology-loader.js";
 import { handleListSbdToeChapters } from "../tools/structured-tools.js";
 import { handleConsultSecurityRequirements, consultSupportedConcerns } from "../tools/consult-security-requirements.js";
 import { threatConcernSupport, threatDomainConcerns } from "../tools/get-threat-landscape.js";
+import { absenceModel, declaredAbsences } from "./declared-absences.js";
 
 type GuideChapter = {
   id: string;
@@ -343,8 +344,44 @@ export function generateReadingsBlock(): string {
   ].join("\n");
 }
 
+/**
+ * 0.20.0-beta.40 — O VOCABULÁRIO DAS AUSÊNCIAS, gerado do índice central.
+ *
+ * As superfícies prometem nunca-silêncio desde a b.23, mas diziam sempre a mesma coisa —
+ * «não está publicado». A v2.6 tipa as ausências, e o consumidor precisa de saber ler os
+ * quatro valores: **dívida** (fecha, tem dono) contra **fronteira** (não fecha, foi
+ * decidida). Bloco GERADO do índice: uma ausência nova entra sozinha.
+ */
+export function generateAbsencesBlock(): string {
+  const model = absenceModel();
+  const items = declaredAbsences();
+  const lines = [
+    DERIVED_NOTE,
+    "",
+    "Quando uma resposta traz um vazio, ele vem TIPADO na banda `absence` — e o tipo vem do",
+    "índice central, nunca da superfície que o encontrou. **Dívida e fronteira pedem reacções",
+    "opostas:** uma fecha e tem dono; a outra foi decidida e não fecha.",
+    "",
+    "| `absence_type` | o que significa |",
+    "|---|---|"
+  ];
+  const values = model?.values ?? {};
+  for (const [k, v] of Object.entries(values)) lines.push(`| \`${k}\` | ${String(v).replace(/\n/g, " ")} |`);
+  if (model?.criterion) lines.push("", `**Critério (da fonte, verbatim):** ${model.criterion}`);
+  lines.push(
+    "",
+    `**${items.length} ausências tipadas** no índice publicado. Se a banda vier \`unindexed\`, a ausência`,
+    "ainda não tem entrada: o servidor **não adivinha** o tipo — adivinhá-lo deixaria uma lacuna",
+    "incómoda virar fronteira por conveniência.",
+    "",
+    "`is_debt` e `is_boundary` são o atalho: age sobre a primeira, aceita a segunda."
+  );
+  return lines.join("\n");
+}
+
 const GENERATORS: Record<string, () => string> = {
   readings: generateReadingsBlock,
+  absences: generateAbsencesBlock,
   "how-to-ask": generateHowToAskBlock,
   "cross-surface": generateCrossSurfaceBlock,
   "output-sizes": generateOutputSizesBlock,
