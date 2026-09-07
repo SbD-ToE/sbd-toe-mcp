@@ -433,6 +433,43 @@ export function handleGetGuideByRole(
     }
   }
 
+  /**
+   * 0.20.0-beta.39 — O RÓTULO NOMEIA UM NÍVEL DIFERENTE DO QUE PEDISTE.
+   *
+   * A auditoria viu «Revisão formal de arquitetura para L3» servida sob `risk_level="L2"` e
+   * perguntou se era serviço ou conteúdo. **Não é nenhum dos dois.** A mesma prática é
+   * publicada nos três níveis com proporcionalidade GRADUADA — L1 «Não», L2 «Recomendado -
+   * Revisão peer reforçada», L3 «Obrigatório - Processo formal e auditável» — e o nível
+   * filtra correctamente. O que engana é o NOME da prática, que cita L3 e viaja para uma
+   * resposta de L2 sem nada o qualificar.
+   *
+   * São 16 atribuições em 1296. A `proportionality` já vinha servida ao lado; faltava dizer
+   * que o nível no rótulo não é o nível pedido — e é isso, e só isso, que esta banda faz.
+   */
+  const levelNamedInLabel = (() => {
+    const requested = full.risk_level;
+    const values = (hasFilter ? full.assignments : [])
+      .map((a) => {
+        const named = /(?:^|[-_ ])l([123])(?:[-_ ]|$)/i.exec(a.practice_id ?? "");
+        if (named === null || `L${named[1]}` === requested) return undefined;
+        return {
+          practice_id: a.practice_id,
+          level_in_label: `L${named[1]}`,
+          served_at: requested,
+          proportionality_at_served_level: a.proportionality ?? null
+        };
+      })
+      .filter((v): v is NonNullable<typeof v> => v !== undefined);
+    return {
+      count: values.length,
+      note:
+        "O NOME destas práticas cita um nível diferente do que pediste. **Não é erro de nível**: a mesma " +
+        "prática é publicada nos três níveis e o que muda é a `proportionality` — ao teu nível é a que vem " +
+        "em `proportionality_at_served_level`, não a do nome. Lê a proporcionalidade, não o rótulo.",
+      values
+    };
+  })();
+
   return {
     ...(full.phase_warning ? { phase_warning: full.phase_warning } : {}),
     provenance: {
@@ -451,6 +488,7 @@ export function handleGetGuideByRole(
     phaseFilter: full.phaseFilter,
     canonicalPhase: full.canonicalPhase,
     assignments: hasFilter ? full.assignments.map((a) => slimAssignment(a, includeDetail)) : [],
+    ...(levelNamedInLabel.count > 0 ? { level_named_in_label: levelNamedInLabel } : {}),
     ...(role_checklist ? { role_checklist } : {}),
     ...(full.unsupported_role ? { unsupported_role: full.unsupported_role } : {}),
     role_summary,

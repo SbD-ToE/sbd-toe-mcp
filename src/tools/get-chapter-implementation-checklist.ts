@@ -136,7 +136,7 @@ export function handleGetChapterImplementationChecklist(
               note:
                 `MAGRO e declarado: o Manual publica ${chunks.length} bloco(s) de checklist para \`${bundle}\` — ` +
                 "não é um checklist de capacidade organizacional, são as secções de prosa que existem. " +
-                "NÃO concluas que implementar este capítulo tem 2 passos. Para a capacidade e a medida usa " +
+                `NÃO concluas que implementar este capítulo tem ${chunks.length} passo(s). Para a capacidade e a medida usa ` +
                 `\`get_sbd_toe_chapter_capability(chapter="${bundle}")\`; para o que o capítulo cobre, ` +
                 `\`get_sbd_toe_chapter_brief(chapterId="${bundle}")\`.`
             }

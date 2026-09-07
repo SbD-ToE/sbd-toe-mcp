@@ -1636,8 +1636,25 @@ export const scenarios = [
       }
       const comAlvo = measures.filter((m) => m.target_at_level && m.target_at_level.value !== undefined);
       if (comAlvo.length === 0) return fail("risk_level não produziu alvo em nenhum KPI");
-      // artefactos da capacidade
-      if (!((d.artifacts?.total ?? 0) > 0)) return fail("a vista IMPL não traz os artefactos da capacidade");
+      /*
+       * artefactos da capacidade — 0.20.0-beta.39: este cenário assertava `artifacts.total > 0`,
+       * e era esse `total` a AFIRMAÇÃO FALSA (contagem de arestas da relação servida como total,
+       * contra a proibição escrita da própria fonte). O cenário codificava o defeito; passa a
+       * assertar o contrato honesto — e falha se o `total`/`mandatory` voltarem.
+       */
+      const art = d.artifacts;
+      if (!art) return fail("a vista IMPL não traz os artefactos da capacidade");
+      if ("total" in art || "mandatory" in art)
+        return fail("voltou a servir uma contagem de relação como total/obrigatoriedade");
+      if (art.content_type !== "derived") return fail("a banda de artefactos não se declara derivada");
+      if (!(art.bases?.evidence_pattern?.distinct_artifacts > 0)) return fail("sem o conjunto suportado por padrões de evidência");
+      if (!(art.bases?.chapter_relation?.relation_edges > 0)) return fail("sem a relação capítulo↔artefacto");
+      if (!/never for totals/i.test(art.bases?.chapter_relation?.source_declares ?? ""))
+        return fail("a declaração da fonte não é servida VERBATIM");
+      if (!art.declared_limits?.no_mandatory_count || !art.declared_limits?.relation_broader_than_provenance)
+        return fail("os limites recebidos do conteúdo não são declarados");
+      if (!(art.values ?? []).every((v) => Array.isArray(v.bases) && v.bases.length > 0))
+        return fail("há artefactos servidos sem dizer de que base vêm");
       // a leitura vem DECLARADA e distingue-se da GUIDE
       if (d.reading?.id !== "IMPL") return fail("a resposta não declara que leitura é");
       if (!/GUIDE/.test(d.reading?.note ?? "")) return fail("a resposta não distingue IMPL de GUIDE");
@@ -1813,6 +1830,59 @@ export const scenarios = [
       if (one.data.macro_process?.mp_id !== "MP-03") return fail("detalhe não devolve o MP pedido");
       if (!(one.data.prerequisites?.values ?? []).length) return fail("MP-03 sem pré-requisitos — a fixture publica-os");
       return ok(`5 MP como dados; ordem ${levels.map((l) => l.join("∥")).join(" → ")} coerente com ${deps.length} dependency; ${fbs.length} feedback fora da ordem (com elas o grafo cicla ✓); 3 limites declarados; ${ids} ids de requisito; ${tk} tk`); } },
+
+  { id: "TC-F-65", axis: "F", title: "0.20.0-beta.39: as superfícies de PROJECÇÃO declaram — relação≠total, autoridade herdada, omissão e ancoragem", tool: "plan_sbd_toe_rollout",
+    run: async (c) => {
+      // (B1) a junção capítulo→artefacto: duas bases, nenhuma delas «tem de produzir»
+      const cap = await c.tool("get_sbd_toe_chapter_capability", { chapter: "01-classificacao-aplicacoes", risk_level: "L2" });
+      if (!cap.ok) return fail(cap.error);
+      const art = cap.data.artifacts;
+      if (!art) return fail("a vista IMPL deixou de servir artefactos");
+      if ("total" in art || "mandatory" in art) return fail("relação servida como total/obrigatoriedade — a afirmação falsa voltou");
+      if (/PRODUZIR/.test(JSON.stringify(art.note ?? ""))) return fail("continua a derivar obrigação de produção de uma aresta");
+      const ep = art.bases?.evidence_pattern, rel = art.bases?.chapter_relation;
+      if (!(ep?.distinct_artifacts > 0) || !(rel?.relation_edges > 0)) return fail("as duas bases não vêm ambas declaradas");
+      if (!/never for totals/i.test(rel?.source_declares ?? "")) return fail("a proibição da fonte não é servida verbatim");
+      if (!art.declared_limits?.no_mandatory_count) return fail("o `mandatory` 45/45 não é declarado como recebido");
+      // (B2a) rollout: cobertura parcial com banda de omissão e caminho concreto
+      const roll = await c.tool("plan_sbd_toe_rollout", {});
+      if (!roll.ok) return fail(roll.error);
+      const rd = roll.data.data ?? roll.data;
+      const omit = rd.chapters_not_in_roadmap;
+      if (!omit) return fail("o roteiro cobre 8 de 15 e não declara os 7 que ficam fora");
+      if (!(omit.mandatory_at_some_level > 0)) return fail("a banda não diz que há omitidos OBRIGATÓRIOS");
+      if (!(omit.chapters ?? []).every((x) => /^get_sbd_toe_/.test(x.reach_with ?? ""))) return fail("omissão sem caminho concreto por capítulo");
+      // (B2b) operating_model: a autoridade HERDA-SE da fonte
+      const om = await c.tool("get_sbd_toe_operating_model", {});
+      if (!om.ok) return fail(om.error);
+      const auth = (om.data.data ?? om.data).authority;
+      if (!auth) return fail("serve o bundle exemplo-playbook sem declarar autoridade");
+      if (auth.tier !== "illustrative") return fail(`promoveu material ilustrativo: tier=${auth.tier}`);
+      if (!(auth.authority_class ?? []).includes("illustrative_overlay")) return fail("authority_class não herdada da fonte");
+      if (!(auth.adoption_status ?? []).includes("example_only")) return fail("adoption_status não herdado da fonte");
+      if (!/exig/i.test((om.data.data ?? om.data).delimitation ?? "")) return fail("sem a delimitação da superfície de overlay");
+      // (B3) o next não contradiz a banda da própria resposta
+      const g = await c.tool("get_guide_by_role", { risk_level: "L2", role: "fornecedores-terceiros" });
+      if (!g.ok) return fail(g.error);
+      if (!g.data.unsupported_role) return fail("fixture mudou: o papel deixou de ser não-suportado");
+      const offende = (g.data.next ?? []).filter((n) => String(n.with ?? "").includes("fornecedores-terceiros"));
+      if (offende.length > 0) return fail(`o next continua a oferecer ${offende[0].tool} sobre um vazio declarado`);
+      if (!(g.data.next_withheld?.count > 0)) return fail("a retirada não foi declarada");
+      if (!g.data.next_withheld.values.every((v) => v.contradicts_band)) return fail("a retirada não nomeia a banda");
+      // (B4) menores: orgProfile, unassigned, escassez, rótulo com nível
+      const rollProf = await c.tool("plan_sbd_toe_rollout", { orgProfile: "banco regional" });
+      const op = (rollProf.data.data ?? rollProf.data).org_profile;
+      if (op?.affects_result !== false) return fail("orgProfile ecoado sem declarar que não afecta o resultado");
+      const brief = await c.tool("get_sbd_toe_chapter_brief", { chapterId: "02-requisitos-seguranca" });
+      if (!brief.ok) return fail(brief.error);
+      const bd = brief.data.data ?? brief.data;
+      if ((bd.phases ?? []).includes("unassigned")) return fail("a sentinela `unassigned` continua a chegar à superfície");
+      if (!(bd.phases_unassigned?.count > 0)) return fail("a sentinela foi filtrada em SILÊNCIO");
+      const gm = await c.tool("get_guide_by_role", { risk_level: "L2", role: "gestao-executiva" });
+      const lvl = gm.data.level_named_in_label;
+      if (!(lvl?.count > 0)) return fail("rótulo que cita outro nível continua sem sinalização");
+      if (!lvl.values.every((v) => v.proportionality_at_served_level)) return fail("sinaliza sem dar a proporcionalidade do nível pedido");
+      return ok(`artefactos com 2 bases (${ep.distinct_artifacts} por EP / ${rel.relation_edges} arestas) e a proibição da fonte verbatim; roteiro declara ${omit.count} capítulos fora (${omit.mandatory_at_some_level} obrigatórios); autoridade herdada ${auth.authority_class.join("/")}; 1 next retirado e declarado; orgProfile affects_result=false; ${bd.phases_unassigned.count} atribuições sem fase declaradas; ${lvl.count} rótulo(s) com nível sinalizado`); } },
 
   { id: "TC-G-01", axis: "G", title: "trace válido: determinismo + paginação G1 (3 lentes, total, cursor, sem IRIs)", tool: "trace_sbd_toe_graph",
     run: async (c) => {

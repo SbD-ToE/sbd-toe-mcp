@@ -3,11 +3,93 @@ ai_assisted: true
 model: Claude Opus 5
 date: 2026-09-07
 purpose: documentation
-reasoning: v0.20.0-beta.38 (beta line, npm `beta`) — defeito de EMPACOTAMENTO da beta.37 fechado à classe: a tool da vista processual era enviada e os DADOS não, porque o `files` do package.json, o `REQUIRED_PATHS` do check e o `BANNED_PATHS` eram três listas estáticas. O conjunto obrigatório passa a ser DERIVADO (do pin, do que o código carrega e do que o código ENCAMINHA) e o gate do CI assere-o contra o tarball real. Quatro superfícies passam a ser enviadas. GR-03 re-medido SOBRE O ARTEFACTO: publicado beta.37 dava NÃO SERVIDO (0/6) — controlo negativo arquivado; corrigido dá SERVIDO (6/6). Painel 5·1·0; nenhuma outra leitura mexeu.
+reasoning: v0.20.0-beta.39 (beta line, npm `beta`) — as superfícies de PROJECÇÃO passam a declarar. B1: a junção capítulo→artefacto deixa de servir uma contagem de RELAÇÃO como total sob «tem de PRODUZIR» carimbado canonical — a fonte proibia-o por escrito; passa a servir duas bases com a base de cada uma e a proibição verbatim (11 artefactos por padrão de evidência CONFIRMADOS, 31 arestas). B2: banda de omissão no rollout (7 capítulos fora, 5 obrigatórios), autoridade HERDADA no operating_model (illustrative_overlay/example_only, deixa de promover exemplo a exigência) e ancoragem da pergunta no search (termos sem âncora no corpus). B3: o `next` passa a ler as bandas da própria resposta, no `sendResponse` — a classe, não a instância. B4: orgProfile com affects_result, sentinela `unassigned` declarada, escassez sem número fixo, rótulo que cita outro nível sinalizado (nem serviço nem conteúdo: proporcionalidade graduada). Selecção intocada; ouro H byte-idêntico.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.39 — 2026-09-07
+
+**As bandas existiam onde o servidor CALCULA e faltavam onde PROJECTA.** Dispatch do
+Orchestrator (Vaga B), a partir de auditoria externa à beta.37. Bundle pin **inalterado**;
+linha estável **intocada** (latest 0.19.4, KG formal v1.11.0 `688863a`). Nada promovido.
+
+### B1 — a junção capítulo→artefacto: a única afirmação FALSA
+
+`artifact_requirements.json` declara sobre si mesmo: *«`chapter_ids` rows form the
+chapter↔artifact relation (469 rows) — sum them for relation edges, never for totals»*. A
+vista de capacidade servia exactamente a operação proibida: as 31 arestas do cap. 01 como
+`"total": 31, "mandatory": 31`, sob a nota «artefactos que esta capacidade tem de PRODUZIR»
+e carimbadas `canonical`.
+
+Passa a servir **duas bases, cada uma com a sua, e nenhuma delas é «o que o capítulo tem de
+produzir»** — esse conjunto o Manual não publica:
+
+| base | o que é | cap. 01 |
+|---|---|---|
+| `evidence_pattern` | artefactos em `expected_artifact_type_ids` dos EP cujo **requisito pertence ao capítulo** (EP → requisito → capítulo) | 8 EP → **11 artefactos** |
+| `chapter_relation` | registos que **nomeiam** o capítulo em `chapter_ids` — arestas, com a proibição da fonte **verbatim** | 31 arestas |
+
+**Os 11 do auditor: CONFIRMADOS**, por rota independente (pertença do requisito ao capítulo,
+não prefixo do id). Cada artefacto diz de que base(s) vem; a banda declara-se `derived` e o
+`canonical` de topo passa a valer só para as medidas.
+
+**Conteúdo, declarado e não compensado:** `mandatory: true` em **45 de 45** (o campo não
+discrimina — e por isso deixou de haver contagem de obrigatoriedade); e `chapter_ids` mais
+largo que a própria proveniência — o registo do SBOM nomeia **os 15 capítulos** enquanto os
+seus `source_practice_ids` cobrem **7** (mais largo do que a triagem indicava).
+
+### B2 — as bandas estendidas às projecções
+
+| superfície | o que passou a declarar |
+|---|---|
+| `plan_sbd_toe_rollout` | `chapters_not_in_roadmap` — **7 de 15 fora, 5 `obrigatorio`** (02, 04, 06, 08, 09), com `demand_by_level` e chamada copiável por capítulo. Modelo do `out_of_scope_chapters` do `select` |
+| `get_sbd_toe_operating_model` | `authority` **HERDADA** dos 6 playbooks do bundle `exemplo-playbook`: `illustrative_overlay` / `example_only`, tier `illustrative`, mais a `delimitation` partilhada com o `playbook` |
+| `search_sbd_toe_manual` | banda de ancoragem à cabeça: que termos da pergunta **não ocorrem no corpus**. A pergunta sobre segurança física nomeia agora `datacenters, instalações` como sem âncora |
+
+**O que NÃO mudou, e porquê:** o `content_type` do `operating_model` continua `canonical`.
+A superfície de referência (`get_sbd_toe_playbook`) usa o mesmo valor para a mesma fonte —
+o rótulo epistémico é **proveniência** (texto publicado vs derivado), e a força normativa
+vive na banda `authority`. Inventar um quarto valor faria as duas superfícies discordarem
+outra vez: o defeito que a invariante entre superfícies existe para apanhar.
+
+**O que NÃO se inventou:** um piso numérico de relevância no `search`. Um limiar de score
+seria um número escolhido por nós. O que é derivável do corpus é objectivo — que termos não
+ocorrem — e é isso que se serve.
+
+### B3 — o `next` lê as bandas da resposta que o transporta
+
+`get_guide_by_role(role="fornecedores-terceiros")` devolvia `unsupported_role` («não geres um
+subagente com base neste vazio») e, na mesma resposta, um `next` com
+`generate_sbd_toe_skill(format=subagent)`. **Num cliente agêntico é o `next` que é seguido.**
+
+A reconciliação corre no **`sendResponse`** — o único ponto por onde todas as respostas
+passam — e não em cada tool: uma tool nova é coberta sem ninguém se lembrar dela, e as três
+bandas novas da B2 não herdam o defeito. Decide pela FORMA: uma banda negativa nomeia o
+valor que não suporta; um `next` que o mencione contradiz a resposta que o transporta. A
+sugestão sai do `next` e o motivo fica em **`next_withheld`**, com a banda que a bloqueou —
+retirar em silêncio trocaria um defeito por outro. Varridas 19 tools: **zero falsos positivos**.
+
+### B4 — menores
+
+- `orgProfile` do rollout: `role: recorded_context, affects_result: false` — é ecoado e não
+  usado. O `orgScope` do operating_model declara-se `affects_result: true`, porque **filtra**.
+- `"unassigned"` sai de `phases` no brief e passa a `phases_unassigned` **com contagem** — o
+  `explain_topic` já a filtrava, mas em silêncio.
+- `scarcity.note`: o «2 passos» fixo passa a seguir os dados.
+- **Prática L3 sob `risk_level="L2"`: nem serviço nem conteúdo mal nivelado.** A mesma prática
+  é publicada nos três níveis com proporcionalidade graduada — L1 «Não», L2 «Recomendado -
+  Revisão peer reforçada», L3 «Obrigatório - Processo formal e auditável». O nível filtra
+  bem; o que engana é o **rótulo**. São **16 atribuições em 1296**, e a banda
+  `level_named_in_label` di-lo com a proporcionalidade do nível pedido ao lado.
+
+### Verificação
+
+Suite **812/812** · aceitação **172, 0 FAIL, gate PASS** (TC-F-65 novo; TC-F-61 actualizado —
+assertava o `artifacts.total` que **era** a afirmação falsa) · **13 invariantes verdes** ·
+**ouro do Eixo H byte-idêntico nos dois braços** · orçamentos **14/14** · `check:npm-package`
+verde (54 superfícies derivadas).
 
 ## 0.20.0-beta.38 — 2026-09-07
 

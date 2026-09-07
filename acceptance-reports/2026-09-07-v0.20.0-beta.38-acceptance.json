@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-07T07:38:43.453Z",
+  "generated_at": "2026-09-07T08:15:59.614Z",
   "server": {
     "name": "sbd-toe-mcp-poc",
     "version": "0.20.0-beta.38"
@@ -13,13 +13,13 @@
     "manual": "v1.8.1"
   },
   "totals": {
-    "total": 171,
-    "PASS": 131,
+    "total": 172,
+    "PASS": 132,
     "PART": 17,
     "FAIL": 0,
     "SKIP": 23
   },
-  "executed": 148,
+  "executed": 149,
   "rollup": [
     {
       "axis": "A",
@@ -69,8 +69,8 @@
     {
       "axis": "F",
       "name": "0.10.0 tools + G1 (added 2026-08-29)",
-      "total": 64,
-      "PASS": 63,
+      "total": 65,
+      "PASS": 64,
       "PART": 1,
       "FAIL": 0,
       "SKIP": 0
@@ -96,8 +96,8 @@
   ],
   "coverage": {
     "scenarios": {
-      "total": 171,
-      "executed": 148,
+      "total": 172,
+      "executed": 149,
       "skipped": 23,
       "executed_pct": 87
     },
@@ -111,12 +111,12 @@
         "consult_security_requirements": 125,
         "explain_sbd_toe_topic": 5,
         "generate_sbd_toe_skill": 9,
-        "get_guide_by_role": 23,
-        "get_sbd_toe_chapter_brief": 7,
-        "get_sbd_toe_chapter_capability": 3,
+        "get_guide_by_role": 25,
+        "get_sbd_toe_chapter_brief": 8,
+        "get_sbd_toe_chapter_capability": 4,
         "get_sbd_toe_chapter_implementation_checklist": 3,
         "get_sbd_toe_macro_processes": 3,
-        "get_sbd_toe_operating_model": 2,
+        "get_sbd_toe_operating_model": 3,
         "get_sbd_toe_playbook": 4,
         "get_sbd_toe_verification_matrix": 5,
         "get_threat_landscape": 51,
@@ -126,7 +126,7 @@
         "map_sbd_toe_regulatory_activation": 5,
         "map_sbd_toe_review_scope": 8,
         "plan_sbd_toe_repo_governance": 8,
-        "plan_sbd_toe_rollout": 1,
+        "plan_sbd_toe_rollout": 3,
         "prepare_sbd_toe_codegen_context": 27,
         "query_sbd_toe_entities": 5,
         "read_sbd_toe_resource": 25,
@@ -199,7 +199,7 @@
       "tool": "prepare_sbd_toe_codegen_context",
       "status": "PASS",
       "note": "ready; 59 citations all resolve; trace 7; provenance yes",
-      "ms": 55
+      "ms": 53
     },
     {
       "id": "TC-A-02",
@@ -208,7 +208,7 @@
       "tool": "prepare_sbd_toe_codegen_context",
       "status": "PASS",
       "note": "status=needs_clarification; no citation_map",
-      "ms": 14
+      "ms": 9
     },
     {
       "id": "TC-A-03",
@@ -218,7 +218,7 @@
       "status": "PART",
       "note": "status=needs_input",
       "owner": "mcp",
-      "ms": 3
+      "ms": 2
     },
     {
       "id": "TC-A-04",
@@ -246,7 +246,7 @@
       "tool": "map_sbd_toe_applicability",
       "status": "PASS",
       "note": "15 capítulos graduados (âncora matriz cap. 01), conditional 3 (tech-reasoned), 0 excluídos por semântica",
-      "ms": 6
+      "ms": 5
     },
     {
       "id": "TC-A-07",
@@ -255,7 +255,7 @@
       "tool": "map_sbd_toe_applicability",
       "status": "PASS",
       "note": "15 capítulos presentes em L1 (ch06 dominant=obrigatorio, ch13=specific); obrigatórios L1 76 < L2 234 — exigência escala, nada excluído",
-      "ms": 3
+      "ms": 4
     },
     {
       "id": "TC-A-08",
@@ -264,7 +264,7 @@
       "tool": "generate_sbd_toe_skill",
       "status": "PASS",
       "note": "deterministic (42483 chars); guide resource readable",
-      "ms": 178
+      "ms": 151
     },
     {
       "id": "TC-A-09",
@@ -274,7 +274,7 @@
       "status": "PART",
       "note": "gap confirmed: content identical across clientType (no per-client differentiation)",
       "owner": "roadmap",
-      "ms": 28
+      "ms": 21
     },
     {
       "id": "TC-A-10",
@@ -283,7 +283,7 @@
       "tool": "plan_sbd_toe_repo_governance",
       "status": "PASS",
       "note": "15 chapters, 469 artefacts (total 469), sourced note present: true",
-      "ms": 5
+      "ms": 4
     },
     {
       "id": "TC-A-11",
@@ -292,7 +292,7 @@
       "tool": "plan_sbd_toe_repo_governance",
       "status": "PASS",
       "note": "5 pages of ≤3 cover all 15 chapters, no loss/duplication",
-      "ms": 20
+      "ms": 14
     },
     {
       "id": "TC-A-12",
@@ -310,7 +310,7 @@
       "tool": "query_sbd_toe_entities",
       "status": "PASS",
       "note": "Requirement × ch.02 × L2: 48 matched over pool 3799 (risk facet on 316); entities cite chunk+path: true; control_objective is not a chunk mention type (→ resolve_entities): total 0, declared",
-      "ms": 1651
+      "ms": 1560
     },
     {
       "id": "TC-A-14",
@@ -328,7 +328,7 @@
       "tool": "resolve_entities",
       "status": "PASS",
       "note": "6 DORA obligations",
-      "ms": 71
+      "ms": 68
     },
     {
       "id": "TC-A-16",
@@ -336,9 +336,9 @@
       "title": "search(debug) bounded + inspect_retrieval without model; E5 envelope wiring",
       "tool": "search_sbd_toe_manual",
       "status": "PART",
-      "note": "cites; debug bounded (12429 chars); inspect 10623 chars; E5 coverage_map/handles not wired on search",
+      "note": "cites; debug bounded (12616 chars); inspect 10623 chars; E5 coverage_map/handles not wired on search",
       "owner": "roadmap",
-      "ms": 1284
+      "ms": 1505
     },
     {
       "id": "TC-B-01",
@@ -347,7 +347,7 @@
       "tool": "get_guide_by_role",
       "status": "PASS",
       "note": "developer→developer; 8 assignments, 8 US (index, detail on demand)",
-      "ms": 16
+      "ms": 18
     },
     {
       "id": "TC-B-02",
@@ -356,7 +356,7 @@
       "tool": "get_guide_by_role",
       "status": "PASS",
       "note": "appsec-engineer→appsec-engineer; 17 assignments, 17 US (index, detail on demand)",
-      "ms": 11
+      "ms": 14
     },
     {
       "id": "TC-B-03",
@@ -365,7 +365,7 @@
       "tool": "get_guide_by_role",
       "status": "PASS",
       "note": "qa→qa; 5 assignments, 5 US (index, detail on demand)",
-      "ms": 11
+      "ms": 10
     },
     {
       "id": "TC-B-04",
@@ -393,7 +393,7 @@
       "tool": "get_guide_by_role",
       "status": "PASS",
       "note": "security-champion→security-champion; 1 assignments, 1 US (index, detail on demand)",
-      "ms": 9
+      "ms": 10
     },
     {
       "id": "TC-B-07",
@@ -402,7 +402,7 @@
       "tool": "get_guide_by_role",
       "status": "PASS",
       "note": "product-management→product-owner; 5 assignments, 5 US (index, detail on demand)",
-      "ms": 10
+      "ms": 13
     },
     {
       "id": "TC-B-09",
@@ -411,7 +411,7 @@
       "tool": "get_guide_by_role",
       "status": "PASS",
       "note": "grc-compliance→grc-compliance; 20 assignments, 20 US (index, detail on demand); [dados]",
-      "ms": 14
+      "ms": 10
     },
     {
       "id": "TC-B-10",
@@ -430,7 +430,7 @@
       "status": "PART",
       "note": "role \"procurement\" → \"procurement\" not in canonical vocabulary (14 roles) → 0 assignments; [dados] procurement not a canonical role; [comercial] tracking is state",
       "owner": "graph",
-      "ms": 8
+      "ms": 10
     },
     {
       "id": "TC-B-12",
@@ -440,7 +440,7 @@
       "status": "PART",
       "note": "role \"training-manager\" → \"training-manager\" not in canonical vocabulary (14 roles) → 0 assignments; [dados] training-manager not a canonical role; [comercial] completion is state",
       "owner": "graph",
-      "ms": 12
+      "ms": 13
     },
     {
       "id": "TC-B-13",
@@ -449,7 +449,7 @@
       "tool": "get_guide_by_role",
       "status": "PASS",
       "note": "incident-response→operacoes; 8 assignments, 8 US (index, detail on demand); [dados] ir alias; [comercial] live incident is state",
-      "ms": 12
+      "ms": 9
     },
     {
       "id": "TC-B-14",
@@ -458,7 +458,7 @@
       "tool": "get_guide_by_role",
       "status": "PASS",
       "note": "application-manager→product-owner; 3 assignments, 3 US (index, detail on demand); [dados] app-manager alias; [comercial] posture is state",
-      "ms": 11
+      "ms": 9
     },
     {
       "id": "TC-B-15",
@@ -467,7 +467,7 @@
       "tool": "get_guide_by_role",
       "status": "PASS",
       "note": "gestao-executiva→gestao-executiva; 10 assignments, 10 US (index, detail on demand); [dados]; [comercial] KPIs with data are state",
-      "ms": 9
+      "ms": 10
     },
     {
       "id": "TC-B-16",
@@ -476,7 +476,7 @@
       "tool": "get_guide_by_role",
       "status": "PASS",
       "note": "appsec-engineer→appsec-engineer; 32 assignments, 32 US (index, detail on demand); [comercial] CVE backlog/SLA is state",
-      "ms": 10
+      "ms": 11
     },
     {
       "id": "TC-B-08",
@@ -485,7 +485,7 @@
       "tool": "generate_sbd_toe_skill",
       "status": "PASS",
       "note": "coverage chapters 5/15, assignments 8, US 8; 4646 chars (smaller than the generic guide)",
-      "ms": 47
+      "ms": 40
     },
     {
       "id": "TC-C-01",
@@ -495,7 +495,7 @@
       "status": "PART",
       "note": "consult gives 28 req / 4 controls with ids (8205 chars); answer needs client sampling; no inline size bound (RF-F2 [limite])",
       "owner": "roadmap",
-      "ms": 1
+      "ms": 2
     },
     {
       "id": "TC-C-02",
@@ -505,7 +505,7 @@
       "status": "PART",
       "note": "review scope anchors ch.10 + 2 bundles with expectedEvidence; per-phase checklist is prose (answer)",
       "owner": "roadmap",
-      "ms": 2
+      "ms": 1
     },
     {
       "id": "TC-C-03",
@@ -514,7 +514,7 @@
       "tool": "search_sbd_toe_manual",
       "status": "PASS",
       "note": "5 cited chunks with URLs; session/TTL content present",
-      "ms": 581
+      "ms": 675
     },
     {
       "id": "TC-C-04",
@@ -523,7 +523,7 @@
       "tool": "—",
       "status": "SKIP",
       "note": "commercial roadmap (interventive/stateful) — documented, not run",
-      "ms": 0
+      "ms": 1
     },
     {
       "id": "TC-C-05",
@@ -712,7 +712,7 @@
       "tool": "get_threat_landscape",
       "status": "PASS",
       "note": "159 threats over 04-arquitetura-segura,03-threat-modeling,08-iac-infraestrutura,09-containers-imagens,11-deploy-seguro,12-monitorizacao-operacoes,13-formacao-onboarding,14-governanca-contratacao,01-classificacao-aplicacoes,02-requisitos-seguranca",
-      "ms": 8
+      "ms": 13
     },
     {
       "id": "TC-C-15",
@@ -722,7 +722,7 @@
       "status": "PART",
       "note": "gap confirmed: pentester → 0 assignments (not a canonical role); threat_landscape auth gives 25 threats with 1 antipattern-linked",
       "owner": "graph",
-      "ms": 10
+      "ms": 13
     },
     {
       "id": "TC-C-25",
@@ -732,7 +732,7 @@
       "status": "PART",
       "note": "curriculum ≡ role skill-pack (coverage {\"chapters\":12,\"of_total_chapters\":15,\"assignments\":25,\"user_stories\":21,\"checklist_items\":115}); who-has-not-completed is commercial state",
       "owner": "roadmap",
-      "ms": 15
+      "ms": 30
     },
     {
       "id": "TC-C-26",
@@ -751,7 +751,7 @@
       "tool": "prepare_sbd_toe_codegen_context",
       "status": "PASS",
       "note": "status=needs_decomposition, zero ids",
-      "ms": 0
+      "ms": 3
     },
     {
       "id": "TC-D-02",
@@ -760,7 +760,7 @@
       "tool": "prepare_sbd_toe_codegen_context",
       "status": "PASS",
       "note": "needs_decomposition; suggestions 2",
-      "ms": 0
+      "ms": 1
     },
     {
       "id": "TC-D-03",
@@ -769,7 +769,7 @@
       "tool": "prepare_sbd_toe_codegen_context",
       "status": "PASS",
       "note": "unsupported_scope, zero ids",
-      "ms": 1
+      "ms": 0
     },
     {
       "id": "TC-D-04",
@@ -778,7 +778,7 @@
       "tool": "answer_sbd_toe_manual",
       "status": "SKIP",
       "note": "server returns retrieval context only (no sampling in this client): 6 real ids echoed, no generation — refusal is the client model's; verdict needs an LLM client",
-      "ms": 431
+      "ms": 477
     },
     {
       "id": "TC-D-05",
@@ -788,7 +788,7 @@
       "status": "PART",
       "note": "resolve total:0 honest; query_entities falls back to semantic search (3799 chunks) instead of an explicit not_found",
       "owner": "mcp",
-      "ms": 365
+      "ms": 408
     },
     {
       "id": "TC-D-06",
@@ -807,7 +807,7 @@
       "status": "PART",
       "note": "18/18 stories returned with bdd/checklist bodies (fields capped at 8) — no index-only mode; affordances present: true",
       "owner": "mcp",
-      "ms": 6
+      "ms": 2
     },
     {
       "id": "TC-D-08",
@@ -816,7 +816,7 @@
       "tool": "get_sbd_toe_chapter_brief",
       "status": "PASS",
       "note": "3 actionable affordances (query_sbd_toe_entities, get_guide_by_role, get_sbd_toe_chapter_implementation_checklist); artifacts 31",
-      "ms": 93
+      "ms": 100
     },
     {
       "id": "TC-D-09",
@@ -825,7 +825,7 @@
       "tool": "consult_security_requirements",
       "status": "PASS",
       "note": "N=M declared (7 req, 10 controls); gaps declared 0",
-      "ms": 2
+      "ms": 5
     },
     {
       "id": "TC-D-10",
@@ -834,7 +834,7 @@
       "tool": "get_threat_landscape",
       "status": "PASS",
       "note": "paginado: 25/233 + size_estimate (regra G1 fechada)",
-      "ms": 3
+      "ms": 6
     },
     {
       "id": "TC-D-11",
@@ -852,7 +852,7 @@
       "tool": "consult_security_requirements",
       "status": "PASS",
       "note": "same ids, same order",
-      "ms": 2
+      "ms": 4
     },
     {
       "id": "TC-D-13",
@@ -861,7 +861,7 @@
       "tool": "inspect_sbd_toe_retrieval",
       "status": "PASS",
       "note": "only source=mcp hits; no vector recall by default",
-      "ms": 404
+      "ms": 489
     },
     {
       "id": "TC-D-14",
@@ -870,7 +870,7 @@
       "tool": "inspect_sbd_toe_retrieval",
       "status": "PASS",
       "note": "method exposed (index, rank, localScore); deterministic",
-      "ms": 246
+      "ms": 308
     },
     {
       "id": "TC-D-15",
@@ -889,7 +889,7 @@
       "status": "PART",
       "note": "rejects unknown technologies with the allowed vocabulary (no silent fill); ml-ai is the grounded proxy — no not_covered field",
       "owner": "mcp",
-      "ms": 1
+      "ms": 0
     },
     {
       "id": "TC-D-17",
@@ -898,7 +898,7 @@
       "tool": "map_sbd_toe_review_scope",
       "status": "PASS",
       "note": "asks for paths (rpc -32602)",
-      "ms": 0
+      "ms": 1
     },
     {
       "id": "TC-F-01",
@@ -907,7 +907,7 @@
       "tool": "get_sbd_toe_verification_matrix",
       "status": "PASS",
       "note": "rows 5/247, hasMore true, EP-gaps 0, provenance true",
-      "ms": 5
+      "ms": 10
     },
     {
       "id": "TC-F-02",
@@ -916,7 +916,7 @@
       "tool": "get_sbd_toe_operating_model",
       "status": "PASS",
       "note": "sections 2/30, hasMore true, source data/publish/indexes/mcp_chunks.jsonl (b",
-      "ms": 98
+      "ms": 2
     },
     {
       "id": "TC-F-03",
@@ -925,7 +925,7 @@
       "tool": "get_sbd_toe_chapter_implementation_checklist",
       "status": "PASS",
       "note": "2/2 items, cited; hasMore false",
-      "ms": 11
+      "ms": 4
     },
     {
       "id": "TC-F-04",
@@ -934,7 +934,7 @@
       "tool": "plan_sbd_toe_rollout",
       "status": "PASS",
       "note": "8 phases, 8 with a chapter anchor, canonical order true, model phase-ordered-mvp, total 8",
-      "ms": 4
+      "ms": 5
     },
     {
       "id": "TC-F-05",
@@ -943,7 +943,7 @@
       "tool": "assess_sbd_toe_implementation",
       "status": "PASS",
       "note": "not_reported ✓, posture=not_assessed; {} rejeitado; total 92, hasMore true",
-      "ms": 37
+      "ms": 50
     },
     {
       "id": "TC-F-06",
@@ -952,7 +952,7 @@
       "tool": "map_sbd_toe_regulatory_activation",
       "status": "PASS",
       "note": "DORA: 3/15 chapters, mappings 1678, obligations 6; unknown framework → honest empty/error",
-      "ms": 91
+      "ms": 123
     },
     {
       "id": "TC-F-08",
@@ -961,7 +961,7 @@
       "tool": "resolve_entities",
       "status": "PASS",
       "note": "305 links (file+surface), gaps L1/L2/L3 = 0/0/0, curated 12+4 on surface, justifications incl. catalogue_rule/_secondary tolerated; AUT-006/007/008 → identity (C1), AUT-010 → monitoring, INT-007 + LOG → monitoring",
-      "ms": 6
+      "ms": 9
     },
     {
       "id": "TC-F-09",
@@ -970,7 +970,7 @@
       "tool": "resolve_entities",
       "status": "PASS",
       "note": "1 data_protection control(s) (CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411), 21 requirement links, active in consult L3 (1, _confidence direct)",
-      "ms": 4
+      "ms": 7
     },
     {
       "id": "TC-F-10",
@@ -998,7 +998,7 @@
       "tool": "get_threat_landscape",
       "status": "PASS",
       "note": "15/15 threats with mitigated_by AND associated_control_ids, all ids resolve",
-      "ms": 3
+      "ms": 5
     },
     {
       "id": "TC-E-02",
@@ -1007,7 +1007,7 @@
       "tool": "get_threat_landscape",
       "status": "PASS",
       "note": "95 threats (ch.02 in scope via C1's defining chapter) with mitigated_by AND associated_control_ids, all resolve",
-      "ms": 6
+      "ms": 8
     },
     {
       "id": "TC-E-03",
@@ -1016,7 +1016,7 @@
       "tool": "map_sbd_toe_review_scope",
       "status": "PASS",
       "note": "all 4 → 09 with reason",
-      "ms": 1
+      "ms": 2
     },
     {
       "id": "TC-E-04",
@@ -1025,7 +1025,7 @@
       "tool": "map_sbd_toe_review_scope",
       "status": "PASS",
       "note": "both → 08",
-      "ms": 1
+      "ms": 0
     },
     {
       "id": "TC-E-05",
@@ -1079,7 +1079,7 @@
       "tool": "map_sbd_toe_applicability",
       "status": "PASS",
       "note": "conditional vazio sem technologies (sensibilidade vs E-09); 08 presente com demand graduada (obrigatorio) — presença nunca é exclusão (0.14.0)",
-      "ms": 1
+      "ms": 2
     },
     {
       "id": "TC-E-11",
@@ -1088,7 +1088,7 @@
       "tool": "get_sbd_toe_chapter_brief",
       "status": "PASS",
       "note": "role 6, phases 6, artifacts 26",
-      "ms": 2
+      "ms": 1
     },
     {
       "id": "TC-E-12",
@@ -1096,7 +1096,7 @@
       "title": "chapter brief ch.08 role present without over-promise",
       "tool": "get_sbd_toe_chapter_brief",
       "status": "PASS",
-      "note": "role 6, phases 5",
+      "note": "role 6, phases 4",
       "ms": 1
     },
     {
@@ -1105,8 +1105,8 @@
       "title": "search debug bounded to topK (KB not MB)",
       "tool": "search_sbd_toe_manual",
       "status": "PASS",
-      "note": "12965 chars",
-      "ms": 521
+      "note": "13152 chars",
+      "ms": 556
     },
     {
       "id": "TC-E-14",
@@ -1114,8 +1114,8 @@
       "title": "search debug scales with topK, always bounded",
       "tool": "search_sbd_toe_manual",
       "status": "PASS",
-      "note": "7024 < 32900 chars",
-      "ms": 1052
+      "note": "7211 < 33087 chars",
+      "ms": 1089
     },
     {
       "id": "TC-E-15",
@@ -1123,9 +1123,9 @@
       "title": "[limite] E5 envelope (coverage_map handles + size_estimate) on large search",
       "tool": "search_sbd_toe_manual",
       "status": "PART",
-      "note": "no E5 envelope on search (bounded 5921 chars; 8 cited chunks); pagination/size_estimate live on the structured tools instead",
+      "note": "no E5 envelope on search (bounded 6108 chars; 8 cited chunks); pagination/size_estimate live on the structured tools instead",
       "owner": "roadmap",
-      "ms": 296
+      "ms": 255
     },
     {
       "id": "TC-E-16",
@@ -1134,7 +1134,7 @@
       "tool": "resolve_entities",
       "status": "PASS",
       "note": "bdd 3 clauses, checklist 3",
-      "ms": 5
+      "ms": 0
     },
     {
       "id": "TC-E-17",
@@ -1152,7 +1152,7 @@
       "tool": "select_sbd_toe_requirements",
       "status": "PASS",
       "note": "walk 33 selected (CNT/DPL in, AUT narrowed with reason), traces on all, narrowed_out 101 declared",
-      "ms": 14
+      "ms": 12
     },
     {
       "id": "TC-F-12",
@@ -1161,7 +1161,7 @@
       "tool": "select_sbd_toe_requirements",
       "status": "PASS",
       "note": "agents → AGN ×4 + wave; regulated → ENC in; overlay extend 14 AI Act obligations",
-      "ms": 5
+      "ms": 6
     },
     {
       "id": "TC-F-13",
@@ -1170,7 +1170,7 @@
       "tool": "select_sbd_toe_requirements",
       "status": "PASS",
       "note": "guide teaches select+bands+index; SES narrowed with reason → recovered by adding the session signal (8 SES back); next[] → prepare+consult",
-      "ms": 24
+      "ms": 23
     },
     {
       "id": "TC-F-14",
@@ -1179,7 +1179,7 @@
       "tool": "select_sbd_toe_requirements",
       "status": "PASS",
       "note": "docker → CNT ×11 sem FIL; ficheiro → FIL ×8 sem CNT",
-      "ms": 5
+      "ms": 6
     },
     {
       "id": "TC-F-15",
@@ -1188,7 +1188,7 @@
       "tool": "select_sbd_toe_requirements",
       "status": "PASS",
       "note": "JWT@L1 → SES-008 com regra nomeada no trace; sem JWT → nível manda (SES-008 fora)",
-      "ms": 4
+      "ms": 5
     },
     {
       "id": "TC-F-16",
@@ -1206,7 +1206,7 @@
       "tool": "consult_security_requirements + inspect_sbd_toe_retrieval",
       "status": "PASS",
       "note": "provenance.kg=kg-v1-manual-v1.8.1-aligned-2026-09-06 em consult+select; inspect apresenta o Pin servido (fim do n/d não-declarado)",
-      "ms": 449
+      "ms": 432
     },
     {
       "id": "TC-F-18",
@@ -1215,7 +1215,7 @@
       "tool": "get_threat_landscape",
       "status": "PASS",
       "note": "default 25/233 threats, size≈5741tk, página 2 avança, enum agents aceite",
-      "ms": 14
+      "ms": 12
     },
     {
       "id": "TC-F-19",
@@ -1224,7 +1224,7 @@
       "tool": "select_sbd_toe_requirements",
       "status": "PASS",
       "note": "select L1: 15 categorias excluídas por nível (60 reqs) DECLARADAS; prepare counts ✓",
-      "ms": 10
+      "ms": 5
     },
     {
       "id": "TC-F-20",
@@ -1233,7 +1233,7 @@
       "tool": "get_guide_by_role",
       "status": "PASS",
       "note": "implement→develop (8 assignments); banana → warning c/ 8 knownPhases; tool_prefix aplicado",
-      "ms": 45
+      "ms": 47
     },
     {
       "id": "TC-F-21",
@@ -1242,7 +1242,7 @@
       "tool": "get_sbd_toe_chapter_brief",
       "status": "PASS",
       "note": "brief fantasma → lista de 15 ids; '8' resolve; orgScope warning; slot inválido lista slots; char paging 500/42341",
-      "ms": 22
+      "ms": 15
     },
     {
       "id": "TC-F-22",
@@ -1251,7 +1251,7 @@
       "tool": "read_sbd_toe_resource",
       "status": "PASS",
       "note": "index 2.0-derived (15 caps, demand_by_level, 0 minLevel); aliases de nível nos 2 sentidos ✓",
-      "ms": 6
+      "ms": 4
     },
     {
       "id": "TC-F-23",
@@ -1260,7 +1260,7 @@
       "tool": "generate_sbd_toe_skill",
       "status": "PASS",
       "note": "placeholder+instrução sem parâmetro; next do brief inválido usa placeholder genérico",
-      "ms": 22
+      "ms": 25
     },
     {
       "id": "TC-F-24",
@@ -1269,7 +1269,7 @@
       "tool": "assess_sbd_toe_implementation",
       "status": "PASS",
       "note": "{} → erro instrutivo; posture not_assessed sem avaliação; gaps walk 92/92 com coverage própria",
-      "ms": 263
+      "ms": 144
     },
     {
       "id": "TC-F-25",
@@ -1278,7 +1278,7 @@
       "tool": "get_guide_by_role + get_threat_landscape + plan_repo_governance",
       "status": "PASS",
       "note": "artifacts 25/25 no guide; control_names 95/95; totais 45 distinct / 469 relações com semântica declarada",
-      "ms": 25
+      "ms": 20
     },
     {
       "id": "TC-F-26",
@@ -1287,7 +1287,7 @@
       "tool": "resolve_entities",
       "status": "PASS",
       "note": "'id' → unknown_filter_fields + 12 valid_fields derivados; dot-notation ✓/✗ declarada; requirement_id → 2 (o 0-silencioso do lead morreu)",
-      "ms": 8
+      "ms": 3
     },
     {
       "id": "TC-F-27",
@@ -1296,7 +1296,7 @@
       "tool": "get_sbd_toe_verification_matrix",
       "status": "PASS",
       "note": "select→matrix: 4 requisitos com prova de 4 pedidos; REQ-XXX-999 declarado sem EvidencePattern; next fecha a cadeia",
-      "ms": 21
+      "ms": 16
     },
     {
       "id": "TC-F-28",
@@ -1305,7 +1305,7 @@
       "tool": "trace_sbd_toe_requirement_sources",
       "status": "PASS",
       "note": "FIL-002 direct ×3 + DEP-001 compensado (1º salto exact@0.95); fake declarado; meta 17/254/19; dieta ✓",
-      "ms": 12
+      "ms": 16
     },
     {
       "id": "TC-F-29",
@@ -1314,7 +1314,7 @@
       "tool": "select_sbd_toe_requirements",
       "status": "PASS",
       "note": "rica 57 vs magra 8; basis nos traces; narrowed diz 'sensível à redacção'; aviso share=1 c/ 1 concerns candidatos; declarado → sem aviso",
-      "ms": 6
+      "ms": 4
     },
     {
       "id": "TC-F-30",
@@ -1332,7 +1332,7 @@
       "tool": "select_sbd_toe_requirements",
       "status": "PASS",
       "note": "V2: alarme c/ 17 candidatos, sem matrix no next; V4: SES ×8 preservado sem contradição; replay-SES morto (×8 narrowed); V1/V3 57≠8 ambas avisadas",
-      "ms": 12
+      "ms": 8
     },
     {
       "id": "TC-F-32",
@@ -1341,7 +1341,7 @@
       "tool": "select_sbd_toe_requirements",
       "status": "PASS",
       "note": "sugestão [auth,integration,validation] aceite: select re-run 58 selected, prepare ready_for_codegen; página 53 c/ tecto ≤50 declarado",
-      "ms": 14
+      "ms": 16
     },
     {
       "id": "TC-F-33",
@@ -1350,7 +1350,7 @@
       "tool": "select_sbd_toe_requirements",
       "status": "PASS",
       "note": "3 next à letra: resolve requirement+[ACC-001] → 1 recs; matrix [ACC-001,ACC-002,ACC-003] ok (via estabilização); uri sbd://toe/ontology lido; 63 ids rejeitados c/ tecto 50; record_type desconhecido DECLARADO c/ 26 válidos",
-      "ms": 19
+      "ms": 23
     },
     {
       "id": "TC-F-34",
@@ -1359,7 +1359,7 @@
       "tool": "prepare_sbd_toe_codegen_context",
       "status": "PASS",
       "note": "88@minimal → needs_decomposition declarado (tecto 78, ~68 tk/req, proj 9166>8450); divisão seguida: [auth]→28 reqs, [validation]→15 reqs; full sem tecto ✓",
-      "ms": 61
+      "ms": 55
     },
     {
       "id": "TC-F-35",
@@ -1368,7 +1368,7 @@
       "tool": "select_sbd_toe_requirements",
       "status": "PASS",
       "note": "needs_input ensina (candidatos 4, exemplo executável → 42 req.); 3 redacções ⇒ 1 conjunto (44 req.); baseline explícita 100",
-      "ms": 122
+      "ms": 103
     },
     {
       "id": "TC-F-36",
@@ -1377,7 +1377,7 @@
       "tool": "read_sbd_toe_resource",
       "status": "PASS",
       "note": "24 concerns, 9 tecnologias, 13 padrões de path, 13 papéis, 8 fases; promessa auth@L2=27 confirmada na selecção",
-      "ms": 26
+      "ms": 27
     },
     {
       "id": "TC-F-37",
@@ -1386,7 +1386,7 @@
       "tool": "select_sbd_toe_requirements",
       "status": "PASS",
       "note": "inertes → needs_input nomeando 2; nível L1 → needs_input c/ 15 grupos excluded_by_level; gralha 'authz' declarada c/ 24 valores válidos; baseline explícita 100",
-      "ms": 43
+      "ms": 42
     },
     {
       "id": "TC-F-38",
@@ -1395,7 +1395,7 @@
       "tool": "select_sbd_toe_requirements",
       "status": "PASS",
       "note": "stack_token ×1, named_rule SES-008 ✓, 0 task_term órfãos (1 concern_slice_mapping), enum 24 idêntico nas 3 tools",
-      "ms": 73
+      "ms": 64
     },
     {
       "id": "TC-F-39",
@@ -1404,7 +1404,7 @@
       "tool": "select_sbd_toe_requirements",
       "status": "PASS",
       "note": "conservação verificada: build@L3=19/19 (bandas 140); supply_chain@L3=36/36 (bandas 145); release@L3=26/26 (bandas 147); deployment@L3=43/43 (bandas 157); build@L1=9/9 (bandas 140); DEV-003 presente com traço declared_category",
-      "ms": 126
+      "ms": 115
     },
     {
       "id": "TC-F-40",
@@ -1413,7 +1413,7 @@
       "tool": "get_threat_landscape",
       "status": "PASS",
       "note": "valor por resolver declarado (24 suportados); misto mantém a declaração com 95 ameaças; 'auth' limpo",
-      "ms": 18
+      "ms": 10
     },
     {
       "id": "TC-F-41",
@@ -1422,7 +1422,7 @@
       "tool": "select_sbd_toe_requirements",
       "status": "PASS",
       "note": "jwt declarado → SES-008 (1 req.), simétrico com stack; 'cobol' nomeado como inerte e em unknown_technologies",
-      "ms": 30
+      "ms": 26
     },
     {
       "id": "TC-F-42",
@@ -1431,7 +1431,7 @@
       "tool": "select_sbd_toe_requirements",
       "status": "PASS",
       "note": "provenance.server=0.20.0-beta.38 em 4 ferramentas, distinto de kg",
-      "ms": 48
+      "ms": 45
     },
     {
       "id": "TC-F-43",
@@ -1440,7 +1440,7 @@
       "tool": "read_sbd_toe_resource",
       "status": "PASS",
       "note": "guia derivado: 24 concerns publicados (era 13); mecanismo de não-roteáveis vivo (1 para o valor inválido); contagens = vocabulário; recursos e prompts completos",
-      "ms": 14
+      "ms": 13
     },
     {
       "id": "TC-F-44",
@@ -1458,7 +1458,7 @@
       "tool": "select_sbd_toe_requirements",
       "status": "PASS",
       "note": "task_context canónico e registado (affects_selection=false), alias equivalente, discover intacto (35 req.), descrição sem resíduos",
-      "ms": 45
+      "ms": 46
     },
     {
       "id": "TC-F-46",
@@ -1467,7 +1467,7 @@
       "tool": "read_sbd_toe_resource",
       "status": "PASS",
       "note": "minLevel retirada e declarada, 15 capítulos presentes em todos os níveis, 4 bandas nomeadas, tamanho L2 medido (47k), search marcado não-normativo",
-      "ms": 23
+      "ms": 16
     },
     {
       "id": "TC-F-47",
@@ -1476,7 +1476,7 @@
       "tool": "prepare_sbd_toe_codegen_context",
       "status": "PASS",
       "note": "sonda A: 0/5 EPs fora do âmbito (era 5/5); pertença monótona em minimal/standard/full; debug.notes com returned=5 e cap efectivo",
-      "ms": 35
+      "ms": 40
     },
     {
       "id": "TC-F-48",
@@ -1484,8 +1484,8 @@
       "title": "0.20.0-beta.26 (itens 2,3,5,6): threat needs_input, traço multi-activador, denominadores, obligation_ids",
       "tool": "select_sbd_toe_requirements",
       "status": "PASS",
-      "note": "threat needs_input a 732 tk (era ~8,4k); cap. 08 com 2 activadores; 4 denominadores definidos (114/136/247/273); 3 obligation_ids",
-      "ms": 72
+      "note": "threat needs_input a 838 tk (era ~8,4k); cap. 08 com 2 activadores; 4 denominadores definidos (114/136/247/273); 3 obligation_ids",
+      "ms": 87
     },
     {
       "id": "TC-F-49",
@@ -1494,7 +1494,7 @@
       "tool": "select_sbd_toe_requirements",
       "status": "PASS",
       "note": "dieta standard −39%, minimal −47% com o mesmo conjunto e reconstrução verificada; 4 EP sem validation_method declarados; cap. 01 com porta estrutural verdadeira",
-      "ms": 62
+      "ms": 81
     },
     {
       "id": "TC-F-50",
@@ -1503,7 +1503,7 @@
       "tool": "consult_security_requirements",
       "status": "PASS",
       "note": "24 concerns resolvidos e concordantes com o vocabulário; rule_trace verdadeiro; gralha declarada; privacy@L1 com empty_at_level (existem em L2/L3)",
-      "ms": 25
+      "ms": 39
     },
     {
       "id": "TC-F-51",
@@ -1512,7 +1512,7 @@
       "tool": "read_sbd_toe_resource",
       "status": "PASS",
       "note": "guia manda contraprovar e publica a cobertura por superfície; 72 pares concern×nível concordantes entre vocabulário, select e consult",
-      "ms": 1369
+      "ms": 1233
     },
     {
       "id": "TC-F-52",
@@ -1521,7 +1521,7 @@
       "tool": "consult_security_requirements",
       "status": "PASS",
       "note": "consult declara exposure+data_sensitivity com 59 requisitos em causa (= diferença real) e rule_trace próprio; 3 pares superfície×activador varridos, nenhum mudo",
-      "ms": 24
+      "ms": 28
     },
     {
       "id": "TC-F-53",
@@ -1530,7 +1530,7 @@
       "tool": "get_threat_landscape",
       "status": "PASS",
       "note": "sem contradição entre blocos gerados; routing_basis files=activated_controls / iac=domain_chapter; dedup 6850 → 6132 tk (-10%) com full intacto",
-      "ms": 18
+      "ms": 21
     },
     {
       "id": "TC-F-54",
@@ -1539,7 +1539,7 @@
       "tool": "get_threat_landscape",
       "status": "PASS",
       "note": "integration: 25/25 específicas na p.1; iac: 25/25 específicas na p.1; logging: 15/15 específicas na p.1; files: 25/25 específicas na p.1; caps. 01/02 no fim do conjunto completo (218 ameaças)",
-      "ms": 21
+      "ms": 28
     },
     {
       "id": "TC-F-55",
@@ -1548,7 +1548,7 @@
       "tool": "read_sbd_toe_resource",
       "status": "PASS",
       "note": "guia publica 11 com domínio próprio = comportamento real; contador 3/3 = arrays; nota do extend descreve a lista paralela (selecção idêntica, 6 obrigações)",
-      "ms": 119
+      "ms": 130
     },
     {
       "id": "TC-F-56",
@@ -1557,7 +1557,7 @@
       "tool": "select_sbd_toe_requirements",
       "status": "PASS",
       "note": "cap. 14 por estrutura: 14 requisitos GOV (era inalcançável sem inventar changed_files); categories=[GOV] concorda; cap. 01 com 8; valor inválido declarado; forma A intacta (27)",
-      "ms": 50
+      "ms": 60
     },
     {
       "id": "TC-F-57",
@@ -1566,7 +1566,7 @@
       "tool": "read_sbd_toe_resource",
       "status": "PASS",
       "note": "14 capítulos com caminho VERDADEIRO (via estrutural em todos); modelo com 3 formas, 273 requisitos e 5 relações; 5 capítulos só por B; quick-start 585 tk",
-      "ms": 17
+      "ms": 23
     },
     {
       "id": "TC-F-58",
@@ -1575,7 +1575,7 @@
       "tool": "get_guide_by_role",
       "status": "PASS",
       "note": "papel canónico declarado em unsupported_role (13 mapeados) e presente em knownRoles; checklist do cap. 00 e overlay ENISA-CSA também declarados; controlo developer limpo (25 atribuições / 21 histórias)",
-      "ms": 53
+      "ms": 61
     },
     {
       "id": "TC-F-59",
@@ -1584,7 +1584,7 @@
       "tool": "get_threat_landscape",
       "status": "PASS",
       "note": "nota e descrição partilham a frase publicada; página 1 do domínio (cap. 08); routing_basis com 3 concerns e 2 bases; contraprova 27=27 e 2 itens declarados como não comparáveis",
-      "ms": 33
+      "ms": 32
     },
     {
       "id": "TC-F-60",
@@ -1593,7 +1593,7 @@
       "tool": "get_sbd_toe_playbook",
       "status": "PASS",
       "note": "DORA: 3 normativos + 6 ilustrativos em banda separada, com autoridade e delimitação; 29 secções paginadas; PCI-DSS declarado com roadmap de 6; ligação nos dois sentidos",
-      "ms": 53
+      "ms": 60
     },
     {
       "id": "TC-F-61",
@@ -1601,8 +1601,8 @@
       "title": "0.20.0-beta.34: vista IMPL — a MEDIDA de capacidade tem caminho, com thresholds por nível",
       "tool": "get_sbd_toe_chapter_capability",
       "status": "PASS",
-      "note": "cap. 07: 7 KPIs com thresholds L1/L2/L3 e 7 com alvo a L2; 29 artefactos (29 obrigatórios); leitura declarada IMPL; ciclo fechado com o assess; brief com 29 artefactos",
-      "ms": 18
+      "note": "cap. 07: 7 KPIs com thresholds L1/L2/L3 e 7 com alvo a L2; undefined artefactos (undefined obrigatórios); leitura declarada IMPL; ciclo fechado com o assess; brief com 29 artefactos",
+      "ms": 51
     },
     {
       "id": "TC-F-62",
@@ -1611,7 +1611,7 @@
       "tool": "explain_sbd_toe_topic",
       "status": "PASS",
       "note": "CONSULT sem nível: 16 requisitos, 19 práticas, 16 provas, 18 ameaças, 7 fases; antipadrões com banda própria (6 em iac, zero DECLARADO em secrets); nível anota e não filtra; select continua a exigi-lo",
-      "ms": 4
+      "ms": 6
     },
     {
       "id": "TC-F-63",
@@ -1620,7 +1620,7 @@
       "tool": "explain_sbd_toe_topic",
       "status": "PASS",
       "note": "next validados contra 29 schemas vivos; banda vazia com caminho concreto (8 capítulos com rótulos); escassez declarada; assess 95→7 com denominador; cadeia exposure→architecture→cap.04; 2 sinais não modelados declarados",
-      "ms": 56
+      "ms": 73
     },
     {
       "id": "TC-F-64",
@@ -1632,13 +1632,22 @@
       "ms": 11
     },
     {
+      "id": "TC-F-65",
+      "axis": "F",
+      "title": "0.20.0-beta.39: as superfícies de PROJECÇÃO declaram — relação≠total, autoridade herdada, omissão e ancoragem",
+      "tool": "plan_sbd_toe_rollout",
+      "status": "PASS",
+      "note": "artefactos com 2 bases (11 por EP / 31 arestas) e a proibição da fonte verbatim; roteiro declara 7 capítulos fora (5 obrigatórios); autoridade herdada illustrative_overlay; 1 next retirado e declarado; orgProfile affects_result=false; 6 atribuições sem fase declaradas; 1 rótulo(s) com nível sinalizado",
+      "ms": 35
+    },
+    {
       "id": "TC-G-01",
       "axis": "G",
       "title": "trace válido: determinismo + paginação G1 (3 lentes, total, cursor, sem IRIs)",
       "tool": "trace_sbd_toe_graph",
       "status": "PASS",
       "note": "determinístico; walks completos sem fuga de IRI: slice_implementation=270, objective_realization=270, mechanism_provenance=270",
-      "ms": 118
+      "ms": 157
     },
     {
       "id": "TC-G-02",
@@ -1647,7 +1656,7 @@
       "tool": "trace_sbd_toe_graph",
       "status": "PASS",
       "note": "0 rows/total 0 declarados com anchor ecoado + provenance.note (âmbito v1); anchor inexistente idem",
-      "ms": 2
+      "ms": 3
     },
     {
       "id": "TC-G-03",
@@ -1665,7 +1674,7 @@
       "tool": "prepare_sbd_toe_codegen_context + consult_security_requirements",
       "status": "PASS",
       "note": "prepare[ready_for_codegen]: cobertura 100% (29/29), precisão-estrita 100%, excesso 46; consult: cobertura 69%, precisão 100%, excesso 18",
-      "ms": 10
+      "ms": 13
     },
     {
       "id": "TC-H-02",
@@ -1674,7 +1683,7 @@
       "tool": "prepare_sbd_toe_codegen_context + consult_security_requirements",
       "status": "PASS",
       "note": "prepare[ready_for_codegen]: cobertura 100% (22/22), precisão-estrita 100%, excesso 61; consult: cobertura 82%, precisão 84%, excesso 24",
-      "ms": 4
+      "ms": 8
     },
     {
       "id": "TC-H-03",
@@ -1683,7 +1692,7 @@
       "tool": "prepare_sbd_toe_codegen_context + consult_security_requirements",
       "status": "PASS",
       "note": "prepare[ready_for_codegen]: cobertura 100% (20/20), precisão-estrita 100%, excesso 13; consult: cobertura 100%, precisão 68%, excesso 149",
-      "ms": 6
+      "ms": 7
     },
     {
       "id": "TC-H-04",
@@ -1692,7 +1701,7 @@
       "tool": "prepare_sbd_toe_codegen_context + consult_security_requirements",
       "status": "PASS",
       "note": "prepare[ready_for_codegen]: cobertura 100% (14/14), precisão-estrita 100%, excesso 11; consult: cobertura 100%, precisão 100%, excesso 11",
-      "ms": 3
+      "ms": 6
     },
     {
       "id": "TC-H-05",
@@ -1701,7 +1710,7 @@
       "tool": "prepare_sbd_toe_codegen_context + consult_security_requirements",
       "status": "PASS",
       "note": "prepare[ready_for_codegen]: cobertura 100% (19/19), precisão-estrita 100%, excesso 55; consult: cobertura 16%, precisão 100%, excesso 4",
-      "ms": 5
+      "ms": 9
     },
     {
       "id": "TC-H-06",
@@ -1710,7 +1719,7 @@
       "tool": "prepare_sbd_toe_codegen_context + consult_security_requirements",
       "status": "PASS",
       "note": "prepare[ready_for_codegen]: cobertura 100% (16/16), precisão-estrita 100%, excesso 43; consult: cobertura 100%, precisão 100%, excesso 46; overlay obligations 14 ✓",
-      "ms": 12
+      "ms": 19
     },
     {
       "id": "TC-H-07",
@@ -1719,7 +1728,7 @@
       "tool": "prepare_sbd_toe_codegen_context + consult_security_requirements",
       "status": "PASS",
       "note": "prepare[ready_for_codegen]: cobertura 100% (18/18), precisão-estrita 100%, excesso 11; consult: cobertura 22%, precisão 100%, excesso 0",
-      "ms": 3
+      "ms": 4
     },
     {
       "id": "TC-H-08",
@@ -1728,7 +1737,7 @@
       "tool": "prepare_sbd_toe_codegen_context + consult_security_requirements",
       "status": "PASS",
       "note": "prepare[ready_for_codegen]: cobertura 100% (35/35), precisão-estrita 100%, excesso 7; consult: cobertura 100%, precisão 100%, excesso 1",
-      "ms": 5
+      "ms": 6
     },
     {
       "id": "TC-H-09",
@@ -1746,7 +1755,7 @@
       "tool": "prepare_sbd_toe_codegen_context + consult_security_requirements",
       "status": "PASS",
       "note": "prepare[ready_for_codegen]: cobertura 100% (10/10), precisão-estrita 100%, excesso 29; consult: cobertura 100%, precisão 100%, excesso 22",
-      "ms": 4
+      "ms": 10
     }
   ]
 }

@@ -355,10 +355,23 @@ function handleGetSbdToeChapterBriefCore(
   }
 
   const ontology = getOntologyData();
+  /**
+   * 0.20.0-beta.39 — `unassigned` é a SENTINELA do dado para «sem fase atribuída», e chegava
+   * à superfície do utilizador como se fosse uma fase do ciclo de vida. Sai da lista — e é
+   * DECLARADA, com quantas atribuições estão nesse estado: filtrá-la em silêncio trocaria um
+   * defeito por outro. O `explain_sbd_toe_topic` já a filtrava; filtrava-a sem dizer.
+   */
+  const chapterAssignments = ontology.assignments.filter((a) => a.chapter_id === chapterIdEff);
+  const unassignedPhaseCount = chapterAssignments.filter((a) => a.phase === UNASSIGNED_SENTINEL).length;
   const phases = Array.from(
     new Set(
       ontology.assignments
-        .filter((assignment) => assignment.chapter_id === chapterIdEff && assignment.phase.length > 0)
+        .filter(
+          (assignment) =>
+            assignment.chapter_id === chapterIdEff &&
+            assignment.phase.length > 0 &&
+            assignment.phase !== UNASSIGNED_SENTINEL
+        )
         .map((assignment) => assignment.phase)
     )
   ).sort();
@@ -399,9 +412,24 @@ function handleGetSbdToeChapterBriefCore(
     ...(objective !== undefined ? { objective } : {}),
     ...(roles.length > 0 ? { role: roles } : {}),
     ...(phases.length > 0 ? { phases } : {}),
+    ...(unassignedPhaseCount > 0
+      ? {
+          phases_unassigned: {
+            count: unassignedPhaseCount,
+            of_assignments: chapterAssignments.length,
+            note:
+              "`unassigned` é a SENTINELA da fonte para «sem fase atribuída» — não é uma fase do ciclo de " +
+              "vida e por isso não entra em `phases`. Estas atribuições existem e o Manual não lhes atribui " +
+              "fase; o servidor declara-o em vez de as esconder ou de inventar a fase que falta."
+          }
+        }
+      : {}),
     ...(artifacts.length > 0 ? { artifacts } : {})
   };
 }
+
+/** Sentinela da fonte para «sem atribuição» — nunca um valor de domínio na superfície. */
+const UNASSIGNED_SENTINEL = "unassigned";
 
 const VALID_TECHNOLOGIES = [
   "containers", "serverless", "kubernetes", "ci-cd", "iac", "api-gateway",

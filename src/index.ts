@@ -70,6 +70,7 @@ import { handleGetChapterCapability } from "./tools/get-chapter-capability.js";
 import { handleExplainTopic } from "./tools/explain-topic.js";
 import { handleGetMacroProcesses } from "./tools/get-macro-processes.js";
 import { threatConcernSupport, threatDomainConcerns } from "./tools/get-threat-landscape.js";
+import { reconcileNextWithBands } from "./serving/next-band-reconciliation.js";
 
 type JsonRpcId = string | number;
 
@@ -395,11 +396,41 @@ class McpRuntime {
   }
 
   private sendResponse(id: JsonRpcId, result: unknown): void {
+    /*
+     * 0.20.0-beta.39 — a reconciliação do `next` com as bandas da própria resposta corre
+     * AQUI, no único ponto por onde todas as respostas passam: uma tool nova é coberta sem
+     * ninguém se lembrar dela, e as bandas de silêncio novas não herdam o defeito.
+     */
+    McpRuntime.reconcileToolResultPayload(result);
     this.writeMessage({
       jsonrpc: "2.0",
       id,
       result
     });
+  }
+
+  /**
+   * Um resultado de tool viaja como `content[].text` com JSON dentro. Reconcilia-se em
+   * memória e reserializa-se só quando houve retirada — o custo é uma verificação de
+   * substring nas respostas que não têm `next`.
+   */
+  private static reconcileToolResultPayload(result: unknown): void {
+    if (result === null || typeof result !== "object") return;
+    const content = (result as { content?: unknown }).content;
+    if (!Array.isArray(content)) return;
+    for (const part of content) {
+      if (part === null || typeof part !== "object") continue;
+      const entry = part as { type?: unknown; text?: unknown };
+      if (entry.type !== "text" || typeof entry.text !== "string") continue;
+      if (!entry.text.includes('"next"')) continue;
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(entry.text);
+      } catch {
+        continue; // texto que não é JSON (o `search` é prosa) — nada a reconciliar
+      }
+      if (reconcileNextWithBands(parsed)) entry.text = JSON.stringify(parsed);
+    }
   }
 
   private sendError(id: JsonRpcId | null, code: number, message: string, data?: unknown): void {

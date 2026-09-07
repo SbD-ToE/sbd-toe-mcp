@@ -30,7 +30,8 @@ import type { Affordance } from "../serving/protocol-envelope.js";
 /** Tiers de autoridade: o que NORMALIZA vs o que ILUSTRA. Derivado do `playbook_kind`. */
 const ILLUSTRATIVE_KINDS = new Set(["illustrative_example", "illustrative_index"]);
 
-const DELIMITATION =
+/** Fonte ÚNICA da delimitação; partilhada com toda a superfície que sirva material do overlay. */
+export const DELIMITATION =
   "DELIMITAÇÃO (obrigatória em toda a resposta desta superfície): o SbD-ToE **não é uma norma** — foi " +
   "desenhado para dialogar com elas. Implementá-lo cobre grande parte da base AppSec e operacional que " +
   "estes diplomas exigem, mas **a conformidade final depende de formalização regulatória adicional** " +

@@ -17,7 +17,7 @@
  * must-NOT do próprio caso é responder à IMPL com a lista de requisitos técnicos.
  */
 import { loadMetrics, type MetricRecord } from "./assess-implementation.js";
-import { getOntologyData } from "./ontology-loader.js";
+import { getOntologyData, runtimeCountSemantics } from "./ontology-loader.js";
 import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 import { paginate } from "../serving/response-shaping.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
@@ -66,11 +66,16 @@ export function handleGetChapterCapability(args: Record<string, unknown>): Chapt
     kg: servedKgReleaseTag(),
     server: servingServerVersion(),
     content_type: "canonical",
+    content_type_by_band: {
+      measures: "canonical — os KPIs e os thresholds por nível como o bundle os publica",
+      artifacts: "derived — junções sobre a relação e sobre os padrões de evidência; cada base declara-se na banda"
+    },
     produced_by: "chapter_capability_projection",
     source_data: "data/publish/runtime/metrics.json + runtime/artifact_requirements + runtime/artifacts",
     note:
-      "KPIs e artefactos que o MANUAL define para a capacidade do capítulo, com os thresholds por nível " +
-      "como o bundle os publica. Nada é inventado e nada é avaliado aqui — avaliar é o " +
+      "KPIs que o MANUAL define para a capacidade do capítulo, com os thresholds por nível como o bundle " +
+      "os publica. A banda `artifacts` é DERIVADA e declara a base de cada conjunto — o carimbo `canonical` " +
+      "vale para as medidas, não para junções. Nada é inventado e nada é avaliado aqui — avaliar é o " +
       "`assess_sbd_toe_implementation`, com os valores que TU medires."
   };
   const reading = {
@@ -121,24 +126,101 @@ export function handleGetChapterCapability(args: Record<string, unknown>): Chapt
   const limitArg = typeof args["limit"] === "number" ? Math.max(1, Math.floor(args["limit"] as number)) : 25;
   const page = paginate(scoped, { offset: offsetArg, limit: limitArg }, scoped.length || 1);
 
-  // artefactos da capacidade (a outra peça do GR-01), quando o pedido é por capítulo
+  /**
+   * 0.20.0-beta.39 — ARTEFACTOS: DUAS BASES, cada uma declarada, e NENHUMA delas é «o que
+   * este capítulo tem de produzir». Esse conjunto o Manual não publica, e afirmá-lo era a
+   * única falha em que esta superfície AFIRMAVA em vez de omitir.
+   *
+   * O que estava mal: contávamos os registos `ArtifactRequirement` que nomeiam o capítulo
+   * em `chapter_ids` (31, no cap. 01) e serviamo-los como `total` + `mandatory` sob a nota
+   * «tem de PRODUZIR», carimbados `canonical`. A própria fonte proíbe a operação por
+   * escrito — `count_semantics` diz «sum them for relation edges, NEVER FOR TOTALS» — e o
+   * `mandatory` não discriminava nada (45 de 45 são `true`).
+   *
+   * O que passa a fazer: serve as duas leituras possíveis com a BASE de cada uma à vista,
+   * a declaração da fonte VERBATIM, e nenhuma promoção de aresta a obrigação.
+   */
   const artifactsById = new Map((ontology.artifacts ?? []).map((a) => [a.artifact_type_id, a]));
+  const shapeArtifact = (id: string) => {
+    const meta = artifactsById.get(id);
+    return {
+      artifact_type_id: id,
+      name: meta?.name ?? id,
+      ...(meta?.category !== undefined ? { category: meta.category } : {}),
+      lifecycle_phases: meta?.lifecycle_phases ?? []
+    };
+  };
+
+  // Base A — o que os PADRÕES DE EVIDÊNCIA do capítulo esperam. Âmbito por PERTENÇA
+  // (EP → requisito → capítulo do requisito), nunca por prefixo do id.
+  const chapterOfRequirement = new Map((ontology.requirements ?? []).map((r) => [r.requirement_id, r.source_bundle]));
+  const chapterEvidencePatterns =
+    chapterArg === undefined
+      ? []
+      : (ontology.evidencePatterns ?? []).filter((ep) => chapterOfRequirement.get(ep.maps_to_requirement_id) === chapterArg);
+  const byEvidence = [
+    ...new Set(chapterEvidencePatterns.flatMap((ep) => ep.expected_artifact_type_ids ?? []))
+  ]
+    .sort()
+    .map(shapeArtifact);
+
+  // Base B — a RELAÇÃO capítulo↔artefacto, servida como relação e nunca como total.
+  const relatedRecords =
+    chapterArg === undefined
+      ? []
+      : (ontology.artifactRequirements ?? []).filter((ar) => (ar.chapter_ids ?? []).includes(chapterArg));
+  const relationEdges = relatedRecords.map((ar) => shapeArtifact(ar.artifact_type_id)).sort((a, b) => a.artifact_type_id.localeCompare(b.artifact_type_id));
+  const countSemantics = runtimeCountSemantics("data/publish/runtime/artifact_requirements.json");
+
+  const epIds = new Set(byEvidence.map((a) => a.artifact_type_id));
+  const relIds = new Set(relationEdges.map((a) => a.artifact_type_id));
+  const union = [...new Map([...byEvidence, ...relationEdges].map((a) => [a.artifact_type_id, a])).values()].sort((a, b) =>
+    a.artifact_type_id.localeCompare(b.artifact_type_id)
+  );
+
   const artifacts =
     chapterArg === undefined
       ? undefined
-      : (ontology.artifactRequirements ?? [])
-          .filter((ar) => (ar.chapter_ids ?? []).includes(chapterArg))
-          .map((ar) => {
-            const meta = artifactsById.get(ar.artifact_type_id);
-            return {
-              artifact_type_id: ar.artifact_type_id,
-              name: meta?.name ?? ar.artifact_type_id,
-              category: meta?.category,
-              lifecycle_phases: meta?.lifecycle_phases ?? [],
-              mandatory: ar.mandatory === true
-            };
-          })
-          .sort((a, b) => a.artifact_type_id.localeCompare(b.artifact_type_id));
+      : {
+          content_type: "derived",
+          note:
+            "DUAS bases distintas, e cada artefacto diz de quais vem. **Nenhuma delas é «os artefactos que " +
+            "este capítulo tem de produzir»** — esse conjunto o Manual não publica, e o servidor não o inventa.",
+          bases: {
+            evidence_pattern: {
+              what:
+                "artefactos nomeados em `expected_artifact_type_ids` dos padrões de evidência cujo REQUISITO " +
+                "pertence a este capítulo (EP → requisito → capítulo). É o conjunto com suporte em requisitos.",
+              evidence_patterns: chapterEvidencePatterns.length,
+              distinct_artifacts: epIds.size
+            },
+            chapter_relation: {
+              what:
+                "registos `ArtifactRequirement` que NOMEIAM este capítulo em `chapter_ids`. São ARESTAS da " +
+                "relação capítulo↔artefacto — não um total, e não uma obrigação de produção.",
+              ...(countSemantics !== undefined ? { source_declares: countSemantics } : {}),
+              relation_edges: relationEdges.length
+            }
+          },
+          only_in_evidence_pattern: [...epIds].filter((id) => !relIds.has(id)).sort(),
+          values: union.map((a) => ({
+            ...a,
+            bases: [
+              ...(epIds.has(a.artifact_type_id) ? ["evidence_pattern"] : []),
+              ...(relIds.has(a.artifact_type_id) ? ["chapter_relation"] : [])
+            ]
+          })),
+          declared_limits: {
+            no_mandatory_count:
+              "a fonte traz `mandatory: true` em 45 de 45 registos — o campo não discrimina nada, e por isso " +
+              "NÃO se serve aqui uma contagem de obrigatoriedade. Achado de CONTEÚDO, reportado ao programa; " +
+              "o servidor declara o que recebe e não compensa.",
+            relation_broader_than_provenance:
+              "há registos cujo `chapter_ids` é mais largo que a sua própria proveniência — o do SBOM nomeia os " +
+              "15 capítulos enquanto os seus `source_practice_ids` cobrem 7. Por isso a relação vem como " +
+              "relação: lê-la como obrigação herdaria a largura."
+          }
+        };
 
   return {
     provenance,
@@ -147,18 +229,7 @@ export function handleGetChapterCapability(args: Record<string, unknown>): Chapt
     ...(level !== undefined ? { risk_level: level } : {}),
     measures: page.items.map((m) => measureOf(m, level)),
     coverage: { ...page.coverage, total: scoped.length },
-    ...(artifacts !== undefined
-      ? {
-          artifacts: {
-            note:
-              "Artefactos que esta capacidade tem de PRODUZIR (o Manual declara que não fornece templates — " +
-              "define o que tem de existir, não como se escreve).",
-            total: artifacts.length,
-            mandatory: artifacts.filter((a) => a.mandatory).length,
-            values: artifacts
-          }
-        }
-      : {}),
+    ...(artifacts !== undefined ? { artifacts } : {}),
     next: [
       {
         intent: "Avaliar-te contra ESTES KPIs (traz os teus valores medidos)",

@@ -239,6 +239,22 @@ function loadRuntimeItems(relativePath: string): unknown[] {
   return Array.isArray(envelope.items) ? envelope.items : [];
 }
 
+/**
+ * 0.20.0-beta.39 — o que um artefacto do runtime DECLARA SOBRE SI MESMO. Vários envelopes
+ * trazem `count_semantics` a dizer como as suas contagens podem (e não podem) ser lidas; o
+ * `artifact_requirements.json` proíbe por escrito somar as arestas da relação como total.
+ * Servimos essa declaração VERBATIM em vez de a parafrasear — e é ela que impede uma
+ * superfície de projectar uma contagem que a fonte já disse não ser uma.
+ */
+export function runtimeCountSemantics(relativePath: string): string | undefined {
+  const path = resolveAppPath(relativePath);
+  if (!existsSync(path)) return undefined;
+  const envelope = JSON.parse(readFileSync(path, "utf-8")) as { count_semantics?: unknown };
+  return typeof envelope.count_semantics === "string" && envelope.count_semantics.length > 0
+    ? envelope.count_semantics
+    : undefined;
+}
+
 /** Like loadRuntimeItems but returns [] when the file is absent (optional side-files). */
 function loadRuntimeItemsOptional(relativePath: string): unknown[] {
   return existsSync(resolveAppPath(relativePath)) ? loadRuntimeItems(relativePath) : [];
