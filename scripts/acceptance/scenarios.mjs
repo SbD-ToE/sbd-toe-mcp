@@ -1941,7 +1941,7 @@ export const scenarios = [
       const bands = [
         g.data.unsupported_role?.absence,
         (pb.data.data ?? pb.data).absence,
-        (mp.data.data ?? mp.data).declared_limits?.sdlc_phase_traversal_absence
+        (mp.data.data ?? mp.data).declared_limits?.sdlc_phase_traversal /* b.41: banda fundida — uma só declaração */
       ];
       if (bands.some((b) => !b)) return fail("há vazios servidos sem dizer de que espécie são");
       if (!bands.every((b) => b.absence_id && b.what_it_means)) return fail("banda de ausência sem id do índice ou sem consequência");
@@ -1952,6 +1952,53 @@ export const scenarios = [
       if (!bands.find((b) => b.absence_type === "gap")?.debt_of) return fail("dívida sem dono declarado");
       if (!bands.find((b) => b.absence_type === "deferred")?.trigger) return fail("`deferred` sem gatilho — sem gatilho seria gap");
       return ok(`roteiro cobre ${t.chapters_covered_including_floor}/${t.chapters_in_manual} (${rd.chapter_coverage.traversed} atravessados + piso), omissão a 0, ${rd.assignments_without_phase.assignment_count} atribuições sem fase declaradas; cap.01 define ${art.bases.defining_chapter.artifacts} e cita ${art.bases.chapter_relation.relation_edges}; ausências tipadas ${[...kinds].join("/")} com o tipo vindo do índice`); } },
+
+  { id: "TC-F-67", axis: "F", title: "0.20.0-beta.41: vazio por COMBINAÇÃO declarado, vocabulário de papel reconciliado, e uma só espécie por ausência", tool: "get_guide_by_role",
+    run: async (c) => {
+      // (C1a) applicability: papel legado sem alias publicado — vazio DECLARADO, não silencioso
+      const mgr = await c.tool("map_sbd_toe_applicability", { riskLevel: "L2", projectRole: "manager" });
+      if (!mgr.ok) return fail(mgr.error);
+      const md = mgr.data.data ?? mgr.data;
+      if (!md.empty_role_view) return fail("`manager` continua a devolver 15 vistas vazias em silêncio");
+      if (md.empty_role_view.cause !== "unresolved_vocabulary") return fail("a causa do vazio não é a que se observa");
+      if (!(md.role_vocabulary?.canonical_roles ?? []).length) return fail("o vazio não mostra que papéis existem");
+      // (C2) o alias PUBLICADO resolve — e a resolução é declarada
+      const dev = await c.tool("map_sbd_toe_applicability", { riskLevel: "L2", projectRole: "devops" });
+      const dd = dev.data.data ?? dev.data;
+      if (dd.role_vocabulary?.resolution !== "published_alias") return fail("`devops` não é resolvido pelo alias publicado");
+      if (dd.role_vocabulary.resolved_to !== "devops-sre") return fail(`resolveu para ${dd.role_vocabulary.resolved_to}`);
+      const us = (dd.chapters ?? []).reduce((a, x) => a + ((x.role_view?.user_stories ?? []).length), 0);
+      if (us === 0) return fail("resolveu o alias e continua vazio");
+      if (dd.empty_role_view) return fail("declara vazio tendo resultados");
+      // (C1b) guide: combinação legítima sem resultados — banda que isola QUEM esvaziou
+      const g = await c.tool("get_guide_by_role", { risk_level: "L2", role: "gestao-executiva", phase: "plan" });
+      if (!g.ok) return fail(g.error);
+      const e = g.data.empty_result;
+      if (!e) return fail("combinação legítima sem resultados continua a sair sem banda");
+      if (e.emptied_by !== "combination") return fail(`isolou mal a causa: ${e.emptied_by}`);
+      if (!(e.assignments_for_role_alone > 0 && e.assignments_for_phase_alone > 0))
+        return fail("a banda não prova que cada filtro tem resultados por si");
+      if (!(g.data.next ?? []).some((n) => n.tool === "get_guide_by_role" && !/phase=/.test(String(n.with ?? ""))))
+        return fail("o `next` não oferece o caminho de recuperação que a banda nomeia");
+      // e o mesmo corte SEM a fase não pode trazer a banda
+      const g2 = await c.tool("get_guide_by_role", { risk_level: "L2", role: "gestao-executiva" });
+      if (g2.data.empty_result) return fail("declara vazio num corte que tem 14 atribuições");
+      // (C3) uma ausência não é lacuna E fronteira ao mesmo tempo
+      const mp = await c.tool("get_sbd_toe_macro_processes", {});
+      const t = (mp.data.data ?? mp.data).declared_limits?.sdlc_phase_traversal;
+      if (!t) return fail("o limite da travessia desapareceu");
+      if (t.absence_type !== "out_of_scope" || t.is_boundary !== true) return fail("a tipagem do índice deixou de prevalecer");
+      if (t.is_debt === true) return fail("a mesma ausência declarada como dívida E fronteira");
+      if (t.supersedes_local_label?.label !== "unpublished_gap")
+        return fail("o rótulo local não é servido como superseded — ou desapareceu sem se declarar");
+      const blob = JSON.stringify(mp.data);
+      if ((blob.match(/unpublished_gap/g) ?? []).length !== 1)
+        return fail("o rótulo superseded aparece mais do que uma vez — voltou a haver duas declarações");
+      // (C4, classe) o erro entrega o vocabulário AO CLIENTE, não só ao log
+      const bad = await c.tool("get_sbd_toe_chapter_implementation_checklist", { chapter: "zzz-inexistente" });
+      if (bad.ok) return fail("um capítulo inexistente devia ser recusado");
+      if (!/known chapters/i.test(String(bad.error ?? ""))) return fail("recusa sem entregar o vocabulário ao cliente");
+      return ok(`manager declarado (${md.role_vocabulary.canonical_roles.length} canónicos à vista); devops→devops-sre com ${us} user stories; vazio por combinação isolado (papel ${e.assignments_for_role_alone} / fase ${e.assignments_for_phase_alone}) com recuperação no next; ABS-001 só como fronteira, unpublished_gap superseded 1×; erro nomeia os capítulos`); } },
 
   { id: "TC-G-01", axis: "G", title: "trace válido: determinismo + paginação G1 (3 lentes, total, cursor, sem IRIs)", tool: "trace_sbd_toe_graph",
     run: async (c) => {

@@ -63,7 +63,19 @@ export function handleGetChapterImplementationChecklist(
   if (!bundle) {
     throw Object.assign(
       new Error(`Unknown chapter: "${chapterArg}". Known chapters: ${chapterBundleIds().join(", ")}.`),
-      { rpcError: { code: -32602, message: `Unknown chapter: "${chapterArg}"` } }
+      /*
+       * 0.20.0-beta.41 — o vocabulário estava CALCULADO e era deitado fora no `rpcError`,
+       * que é o que chega ao cliente: a mensagem rica ficava no Error local e o consumidor
+       * recebia «Unknown chapter» e mais nada. É a promessa nunca-silêncio no caminho de
+       * ERRO, que a matriz banda × superfície revelou por varredura às superfícies irmãs.
+       */
+      {
+        rpcError: {
+          code: -32602,
+          message: `Unknown chapter: "${chapterArg}". Known chapters: ${chapterBundleIds().join(", ")}.`,
+          data: { invalidValue: chapterArg, known_chapters: chapterBundleIds() }
+        }
+      }
     );
   }
 

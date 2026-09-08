@@ -104,6 +104,14 @@ export interface AbsenceBand {
   decided_on?: string;
   what_it_means: string;
   note: string;
+  /**
+   * 0.20.0-beta.41 — o rótulo LOCAL que esta tipagem substituiu. Vários blocos da fonte
+   * trazem um estado próprio anterior ao índice (`status: "unpublished_gap"`, por exemplo) e
+   * a própria fonte declara-o superseded. Servir os dois fazia a resposta dizer LACUNA e
+   * FRONTEIRA ao mesmo tempo — o único sítio onde uma ausência era as duas coisas. Passa a
+   * haver UMA declaração: o tipo do índice, com o rótulo antigo visível como história.
+   */
+  supersedes_local_label?: { label: string; note: string };
 }
 
 const MEANING: Record<AbsenceType, string> = {
@@ -141,10 +149,27 @@ export function absenceNaming(...terms: string[]): DeclaredAbsence | undefined {
  * Constrói a banda a partir do índice. `absenceId` é o id que a superfície declara conhecer;
  * quando não há id (ou o índice não o tem), a banda é `unindexed` e di-lo.
  */
-export function absenceBand(absenceId: string | undefined, context: string): AbsenceBand {
+export function absenceBand(
+  absenceId: string | undefined,
+  context: string,
+  supersededLocalLabel?: string
+): AbsenceBand {
+  const superseded =
+    supersededLocalLabel !== undefined && supersededLocalLabel.length > 0
+      ? {
+          supersedes_local_label: {
+            label: supersededLocalLabel,
+            note:
+              "rótulo LOCAL do bloco de origem, **superseded** pela tipagem do índice central (a própria " +
+              "fonte o declara). Fica visível como história — a declaração que vale é o `absence_type` acima. " +
+              "Uma ausência não pode ser lacuna e fronteira ao mesmo tempo."
+          }
+        }
+      : {};
   const a = absenceId !== undefined ? absenceById(absenceId) : undefined;
   if (a === undefined)
     return {
+      ...superseded,
       absence_type: "unindexed",
       is_debt: false,
       is_boundary: false,
@@ -155,6 +180,7 @@ export function absenceBand(absenceId: string | undefined, context: string): Abs
       note: context
     };
   return {
+    ...superseded,
     absence_type: a.absence_type,
     is_debt: a.absence_type === "gap" || a.absence_type === "deferred",
     is_boundary: a.absence_type === "out_of_scope",

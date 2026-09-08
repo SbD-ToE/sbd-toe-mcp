@@ -1,13 +1,84 @@
 ---
 ai_assisted: true
 model: Claude Opus 5
-date: 2026-09-07
+date: 2026-09-08
 purpose: documentation
-reasoning: v0.20.0-beta.40 (beta line, npm `beta`) — re-pin para o dev-build kg-v1-manual-v1.8.1-aligned-2026-09-07 (contrato v1.19 §1.26, ontologia v2.6) e a travessia N:M passa a ser servida. O roteiro deixa de deixar capítulos de fora: consome `bundle_ids` (14 atravessados) e serve o cap. 00 como PISO, não como omissão — 14 + piso = 15, e `chapters_not_in_roadmap` fica a ZERO. `chapter_capability` e `chapter_brief` separam DEFINIDORES de CITADORES: o cap. 01 deixa de reclamar SBOM, imagem de container e SAST como seus. As bandas de ausência passam a dizer DE QUE ESPÉCIE são, com `absence_type` vindo do índice central `declared_absences` e nunca inferido — dívida contra fronteira. `required_for_levels` servido pelo que é (2 de 45 discriminam). Selecção intocada; ouro H byte-idêntico através da mudança de substrato.
+reasoning: v0.20.0-beta.41 (beta line, npm `beta`) — a declaração passa a olhar para o RESULTADO, não só para o VALOR. Vazio por COMBINAÇÃO legítima passa a ter banda (`empty_result` no guide, `empty_role_view` na applicability), com a causa isolada por recontagem. Os dois vocabulários de papel reconciliam-se pelos ALIASES PUBLICADOS (`devops` → `devops-sre`); onde não há alias, declara-se em vez de se inventar. ABS-001 deixa de ser lacuna E fronteira ao mesmo tempo: o rótulo local `unpublished_gap` passa a viver DENTRO da banda como superseded. E a matriz BANDA × SUPERFÍCIE (colunas derivadas do tools/list vivo) passa a portão de pré-promoção: 13 células FALTA reportadas como achados, e revelou uma banda nova — o erro tem de entregar o vocabulário AO CLIENTE, que duas superfícies calculavam e deitavam fora. Selecção intocada; ouro H byte-idêntico.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.41 — 2026-09-08
+
+**A maquinaria de declaração estava indexada a VALORES não suportados, não a RESULTADOS
+vazios.** Diagnóstico da 2.ª auditoria externa (8,5/10, «promoveria com dois bloqueios»), e é
+preciso: a classe da b.30 continuava viva, alcançável por combinação. Bundle pin **inalterado**;
+linha estável **intocada**. Nada promovido.
+
+### C1 — o vazio por combinação passa a ter banda
+
+| antes | agora |
+|---|---|
+| `map_sbd_toe_applicability(projectRole="manager")` → 15 vistas vazias, **silêncio** | `empty_role_view` com a causa (`unresolved_vocabulary`) e os canónicos à vista |
+| `get_guide_by_role(role="gestao-executiva", phase="plan")` → `[]`, `{}`, `{}`, **silêncio** | `empty_result` que **isola quem esvaziou** |
+
+A banda do guide não adivinha a causa: **reconta o mesmo corte sem cada filtro**, pelo próprio
+resolvedor. Para o caso do auditor: papel sozinho **14**, fase sozinha **21**, cruzamento **0** —
+`emptied_by: "combination"`. E o `next` passa a **reflectir** a banda, não só a não contradizê-la:
+o caminho de recuperação (o mesmo papel sem a fase) vai à frente.
+
+### C2 — os dois vocabulários, reconciliados pela fonte
+
+O enum de 5 desta tool era disjunto dos 13 canónicos e só o `developer` coincidia: **4 de 5
+devolviam zero em silêncio** — mais do que a auditoria reportou. O bundle **publica aliases**
+(`roles.json`) e o `resolveRoleId` já os lia; a tool é que não os usava.
+
+- `devops` → **`devops-sre`**: 0 → **75** user stories. Resolução **publicada**, não inventada.
+- `ciso`, `management`, `pmo`… passam a resolver para `gestao-executiva`.
+- `architect`, `security`, `manager` **não têm alias publicado** — e o servidor **não inventa a
+  correspondência**: declara que o valor não é do vocabulário e mostra os que são.
+
+`role_vocabulary` sai sempre que se pede um papel, com `resolution: canonical | published_alias
+| unresolved` — «foi resolvido para outro id» é informação tanto como «não existe».
+
+### C3 — uma ausência não é lacuna E fronteira
+
+`macro_processes.jsonl` traz `status: "unpublished_gap"` **e** a tipagem ABS-001
+(`out_of_scope`, fronteira). O servidor servia os dois: o único sítio onde uma ausência era as
+duas coisas — e contra a distinção que o lead ratificou a 07-09. A própria fonte já dizia que o
+rótulo local ficava *superseded*; o serving é que não o honrava.
+
+Agora há **uma** declaração: `supersedes_local_label` vive **dentro** da banda, como história, e
+não ao lado dela como um segundo veredicto. O mecanismo é do `absenceBand`, não deste caso.
+
+### C4 — a matriz banda × superfície (portão de pré-promoção)
+
+`npm run gate:band-matrix`. **Colunas derivadas do `tools/list` real** — 29 superfícies, 8
+bandas, 232 células. Estados: `tem` · `n/a` **com motivo** · **`FALTA`** · `?` (não exercitável,
+que também é achado). Uma tool nova entra sozinha, e entra com as células a `FALTA`.
+
+**63 tem · 32 n/a · 13 FALTA · 119 ?**
+
+A matriz **revelou uma banda que não estávamos a medir**: o contrato nunca-silêncio vale no
+caminho de **erro**. Duas superfícies calculavam o vocabulário e **deitavam-no fora no
+`rpcError`** — a mensagem rica ficava no `Error` local e o consumidor recebia «Unknown chapter»
+e mais nada. Fechado (é a classe da C1 noutro caminho), e a prova de que a via funciona é que a
+própria sonda passou a auto-corrigir-se: as tools não exercitáveis caíram de 4 para 3, porque um
+erro que nomeia o vocabulário permite retentar.
+
+**Disciplina da sonda:** esta matriz acusou **quatro** falsos positivos antes de estabilizar —
+`explain_topic` «sem next» (argumentos derivados incompletos), 10 superfícies por confundir
+`enum` no schema com vocabulário em falta, o `select` por contar uma banda pré-existente como
+rejeição, e o `select`/`capability` por casar redacções em vez de derivar a forma. **Corrigiu-se
+a sonda, nunca o servidor** — e nenhum desses quatro é reportado como achado.
+
+### Verificação
+
+Suite **815/815** · aceitação **174, 0 FAIL, gate PASS** (TC-F-67 novo; TC-F-66 e a invariante
+da b.40 actualizados para a banda fundida da C3) · **14 invariantes verdes** · **ouro do Eixo H
+byte-idêntico nos dois braços** · orçamentos **14/14** · `check:npm-package` verde · matriz
+**13 FALTA**, sem subir.
 
 ## 0.20.0-beta.40 — 2026-09-07
 

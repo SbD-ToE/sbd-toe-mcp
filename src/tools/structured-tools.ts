@@ -9,7 +9,7 @@ import { readFileSync } from "node:fs";
 import { retrievePublishedContext } from "../backend/semantic-index-gateway.js";
 import { resolveAppPath } from "../config.js";
 import type { LooseRecord } from "../types.js";
-import { getOntologyData } from "./ontology-loader.js";
+import { getOntologyData, resolveRoleId } from "./ontology-loader.js";
 import { describeRequirementCitation, describeRequirementGap } from "../serving/requirement-id.js";
 import {
   listChaptersAffordances,
@@ -610,21 +610,68 @@ function handleMapSbdToeApplicabilityCore(
     technologies = (technologiesArg as unknown[]).filter(isValidTechnology);
   }
 
-  // Validate optional projectRole allowlist
+  /*
+   * 0.20.0-beta.41 — DOIS VOCABULÁRIOS DE PAPEL, reconciliados pela fonte publicada.
+   *
+   * Esta tool tinha um enum próprio de 5 valores — developer · architect · security ·
+   * devops · manager — DISJUNTO dos 13 papéis canónicos. Só o `developer` coincidia por
+   * acaso: os outros quatro devolviam `user_stories: []` nos 15 capítulos, em silêncio,
+   * como se o papel não tivesse nada a fazer.
+   *
+   * O bundle PUBLICA aliases (`roles.json`), e o `resolveRoleId` já os lê — esta tool é que
+   * não os usava. Passa a aceitar os canónicos e os aliases publicados, e o legado resolve-se
+   * por eles: `devops` → `devops-sre` é resolução, não invenção. Onde NÃO há alias publicado
+   * (`architect`, `security`, `manager`), o servidor **não inventa a correspondência** —
+   * declara que o valor não é um papel do vocabulário e mostra os que existem.
+   */
   const projectRoleArg = args["projectRole"];
-  if (projectRoleArg !== undefined && !isValidProjectRole(projectRoleArg)) {
+  const ontologyRoles = getOntologyData().roles ?? [];
+  const requestedRole = typeof projectRoleArg === "string" ? projectRoleArg : undefined;
+  const resolvedRole = requestedRole !== undefined ? resolveRoleId(requestedRole, ontologyRoles) : undefined;
+  if (projectRoleArg !== undefined && resolvedRole === undefined && !isValidProjectRole(projectRoleArg)) {
+    const canonical = ontologyRoles.map((r) => r.role_id).sort();
     const err = {
       code: -32602,
-      message: `Valor inválido em "projectRole": "${String(projectRoleArg)}". Valores permitidos: ${VALID_PROJECT_ROLES.join(", ")}.`,
-      data: { invalidValue: projectRoleArg }
+      message: `Valor inválido em "projectRole": "${String(projectRoleArg)}". Papéis canónicos: ${canonical.join(", ")} (aliases publicados também são aceites).`,
+      data: { invalidValue: projectRoleArg, canonical_roles: canonical }
     };
     throw Object.assign(new Error(err.message), { rpcError: err });
   }
 
   // Ciclo 0.14.0 (decisão do Author): aplicabilidade GRADUADA — presença sempre,
   // exigência derivada dos assignments autorados; active/excluded binários morreram.
-  const projectRoleForView = typeof args["projectRole"] === "string" ? (args["projectRole"] as string) : undefined;
+  const projectRoleForView = resolvedRole ?? (typeof projectRoleArg === "string" ? projectRoleArg : undefined);
   const chapters = gradedChapters(riskLevel, projectRoleForView);
+
+  /**
+   * A banda do vocabulário: como o que pediste foi lido. Só sai quando pediste um papel —
+   * e sai SEMPRE que pediste, resolvido ou não, porque «foi resolvido para outro id» é
+   * informação tanto como «não é um papel deste vocabulário».
+   */
+  const role_vocabulary =
+    requestedRole === undefined
+      ? undefined
+      : {
+          requested: requestedRole,
+          resolved_to: resolvedRole ?? null,
+          resolution:
+            resolvedRole === undefined
+              ? "unresolved"
+              : resolvedRole === requestedRole
+                ? "canonical"
+                : "published_alias",
+          canonical_roles: ontologyRoles.map((r) => r.role_id).sort(),
+          note:
+            resolvedRole === undefined
+              ? `\`${requestedRole}\` é um valor LEGADO desta tool e **não é um papel do vocabulário publicado** — ` +
+                "não tem alias em `roles.json`, e o servidor não inventa a correspondência. A vista por papel vem " +
+                "VAZIA por isso, e não porque o papel não tenha responsabilidades. Escolhe um dos canónicos acima " +
+                "(ou um alias publicado) para a obteres."
+              : resolvedRole === requestedRole
+                ? "papel canónico, usado tal como o pediste."
+                : `resolvido pelo ALIAS publicado em \`roles.json\`: \`${requestedRole}\` → \`${resolvedRole}\`. ` +
+                  "A resolução vem da fonte, não de uma tabela desta tool."
+        };
 
   const activatedBundles = buildActivatedBundles(riskLevel, technologies);
 
@@ -650,10 +697,47 @@ function handleMapSbdToeApplicabilityCore(
     }
   }
 
+  /**
+   * 0.20.0-beta.41 — BANDA POR RESULTADO VAZIO (C1).
+   *
+   * A maquinaria de declaração estava indexada a VALORES não suportados, não a RESULTADOS
+   * vazios: um papel que a tool aceita mas para o qual não há uma única user story sai com
+   * 15 vistas vazias e nenhuma palavra. Passa a haver banda — e ela distingue as duas causas,
+   * que pedem reacções diferentes: **vocabulário** (pediste algo que não é um papel) ou
+   * **combinação sem resultados** (o papel existe e este corte não devolve nada).
+   */
+  const roleStories = requestedRole === undefined
+    ? 0
+    : chapters.reduce((acc, c) => acc + ((c.role_view?.user_stories ?? []).length), 0);
+  const empty_role_view =
+    requestedRole !== undefined && roleStories === 0
+      ? {
+          requested_role: requestedRole,
+          ...(resolvedRole !== undefined ? { resolved_to: resolvedRole } : {}),
+          user_stories: 0,
+          chapters_examined: chapters.length,
+          cause: resolvedRole === undefined ? "unresolved_vocabulary" : "no_results_for_combination",
+          note:
+            resolvedRole === undefined
+              ? "VAZIO POR VOCABULÁRIO: o valor pedido não é um papel publicado, e por isso não há vista " +
+                "por papel. Vê `role_vocabulary.canonical_roles`. **Não concluas que o papel não tem " +
+                "responsabilidades** — conclui que não é este o nome dele."
+              : "VAZIO POR COMBINAÇÃO: o papel é canónico e o bundle não publica user stories para ele " +
+                `ao nível \`${riskLevel}\`. **Não é ausência de responsabilidades — é ausência de MAPEAMENTO ` +
+                "nesta superfície.** Para o que o Manual exige nesta área usa `select_sbd_toe_requirements`.",
+          reach_with:
+            resolvedRole === undefined
+              ? `map_sbd_toe_applicability(riskLevel="${riskLevel}", projectRole="developer")`
+              : `get_guide_by_role(risk_level="${riskLevel}", role="${resolvedRole}")`
+        }
+      : undefined;
+
   return {
     riskLevel,
     semantics: GRADUATED_SEMANTICS,
     canonical_anchor: CANONICAL_ANCHOR,
+    ...(role_vocabulary ? { role_vocabulary } : {}),
+    ...(empty_role_view ? { empty_role_view } : {}),
     chapters,
     conditional,
     activatedBundles

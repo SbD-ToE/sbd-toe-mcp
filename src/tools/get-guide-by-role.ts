@@ -408,6 +408,20 @@ export function handleGetGuideByRole(
   args: Record<string, unknown>
 ): GetGuideByRoleOutput {
   const full = _resolveGuideByRole(args, getOntologyData());
+  /**
+   * Reconta o mesmo corte com MENOS filtros, para isolar qual deles esvaziou o resultado.
+   * Reutiliza o próprio resolvedor — não uma segunda implementação da junção, que poderia
+   * divergir e fazer a banda mentir sobre o motivo.
+   */
+  const countAssignments = (q: { riskLevel: string; role?: string; phase?: string }): number =>
+    _resolveGuideByRole(
+      {
+        risk_level: q.riskLevel,
+        ...(q.role !== undefined ? { role: q.role } : {}),
+        ...(q.phase !== undefined ? { phase: q.phase } : {})
+      },
+      getOntologyData()
+    ).assignments.length;
   const hasFilter = full.roleFilter !== null || full.phaseFilter !== null;
   const includeDetail = args["include_detail"] === true;
 
@@ -444,6 +458,64 @@ export function handleGetGuideByRole(
       });
     }
   }
+
+  /**
+   * 0.20.0-beta.41 — BANDA POR RESULTADO VAZIO, não por valor não suportado (C1).
+   *
+   * `role="gestao-executiva", phase="plan"` — papel suportado, fase canónica — devolvia
+   * `assignments: []`, `role_summary: {}`, `phase_summary: {}` e **nem uma palavra**. A
+   * `unsupported_role` só dispara quando o PAPEL não tem nada em lado nenhum; uma combinação
+   * legítima sem resultados caía no vazio silencioso que a b.30 tinha fechado só para valores.
+   *
+   * A banda diz QUAL DOS FILTROS esvaziou o resultado — derivado, não adivinhado: reconta-se
+   * o mesmo corte sem a fase e sem o papel. É a diferença entre «este papel não faz nada» e
+   * «este papel não faz nada NESTA fase», que é a pergunta que o consumidor tem a seguir.
+   */
+  const emptyCombination = (() => {
+    if (!hasFilter || full.assignments.length > 0 || full.unsupported_role !== undefined) return undefined;
+    const filters = [
+      ...(full.canonicalRole !== null && full.canonicalRole !== undefined ? [`role="${String(full.canonicalRole)}"`] : []),
+      ...(full.canonicalPhase !== null && full.canonicalPhase !== undefined ? [`phase="${String(full.canonicalPhase)}"`] : []),
+      `risk_level="${full.risk_level}"`
+    ];
+    const roleOnly =
+      full.canonicalRole !== null && full.canonicalRole !== undefined
+        ? countAssignments({ riskLevel: full.risk_level, role: String(full.canonicalRole) })
+        : undefined;
+    const phaseOnly =
+      full.canonicalPhase !== null && full.canonicalPhase !== undefined
+        ? countAssignments({ riskLevel: full.risk_level, phase: String(full.canonicalPhase) })
+        : undefined;
+    const narrowed =
+      roleOnly !== undefined && phaseOnly !== undefined && roleOnly > 0 && phaseOnly > 0
+        ? "combination"
+        : roleOnly === 0
+          ? "role"
+          : phaseOnly === 0
+            ? "phase"
+            : "unknown";
+    return {
+      filters_applied: filters,
+      assignments: 0,
+      emptied_by: narrowed,
+      ...(roleOnly !== undefined ? { assignments_for_role_alone: roleOnly } : {}),
+      ...(phaseOnly !== undefined ? { assignments_for_phase_alone: phaseOnly } : {}),
+      note:
+        narrowed === "combination"
+          ? "VAZIO POR COMBINAÇÃO: cada filtro tem resultados por si, e o cruzamento não tem nenhum. " +
+            "**Não concluas que o papel não tem nada a fazer** — conclui que o bundle não lhe atribui " +
+            "práticas NESTA fase. Tira a fase para veres o que ele faz."
+          : narrowed === "role"
+            ? "VAZIO PELO PAPEL: este papel não tem atribuições ao nível pedido, com ou sem fase."
+            : narrowed === "phase"
+              ? "VAZIO PELA FASE: esta fase não tem atribuições ao nível pedido, com ou sem papel."
+              : "VAZIO, e o servidor não conseguiu isolar qual dos filtros o esvaziou — declara-se assim.",
+      reach_with:
+        full.canonicalRole !== null && full.canonicalRole !== undefined
+          ? `get_guide_by_role(risk_level="${full.risk_level}", role="${String(full.canonicalRole)}")`
+          : `get_guide_by_role(risk_level="${full.risk_level}")`
+    };
+  })();
 
   /**
    * 0.20.0-beta.39 — O RÓTULO NOMEIA UM NÍVEL DIFERENTE DO QUE PEDISTE.
@@ -500,6 +572,7 @@ export function handleGetGuideByRole(
     phaseFilter: full.phaseFilter,
     canonicalPhase: full.canonicalPhase,
     assignments: hasFilter ? full.assignments.map((a) => slimAssignment(a, includeDetail)) : [],
+    ...(emptyCombination ? { empty_result: emptyCombination } : {}),
     ...(levelNamedInLabel.count > 0 ? { level_named_in_label: levelNamedInLabel } : {}),
     ...(role_checklist ? { role_checklist } : {}),
     ...(full.unsupported_role ? { unsupported_role: full.unsupported_role } : {}),
@@ -511,6 +584,28 @@ export function handleGetGuideByRole(
         ? full.meta.note
         : `${full.meta.note} No role/phase filter — assignments omitted. Specify role= or phase= for details.`,
     },
-    next: guideByRoleAffordances(full.risk_level, full.canonicalRole),
+    /*
+     * 0.20.0-beta.41 — o `next` REFLECTE a banda, não apenas evita contradizê-la (b.39). Um
+     * vazio por combinação tem um caminho de recuperação óbvio — tirar o filtro que o
+     * esvaziou — e é esse que passa à frente.
+     */
+    next:
+      emptyCombination !== undefined
+        ? [
+            {
+              intent:
+                emptyCombination.emptied_by === "combination"
+                  ? "O mesmo papel SEM a fase que esvaziou o resultado"
+                  : "O mesmo corte com menos filtros",
+              tool: "get_guide_by_role",
+              with:
+                full.canonicalRole !== null && full.canonicalRole !== undefined
+                  ? `risk_level="${full.risk_level}", role="${String(full.canonicalRole)}"`
+                  : `risk_level="${full.risk_level}"`,
+              kind: "structural" as const
+            },
+            ...guideByRoleAffordances(full.risk_level, full.canonicalRole)
+          ]
+        : guideByRoleAffordances(full.risk_level, full.canonicalRole),
   };
 }

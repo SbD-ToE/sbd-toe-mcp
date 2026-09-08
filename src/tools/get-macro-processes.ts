@@ -200,14 +200,27 @@ export function handleGetMacroProcesses(args: Record<string, unknown>): MacroPro
         "NÃO existe entidade «programa» no modelo, e é deliberado (recusa de curadoria, ratificada). O que se " +
         "publica são os cinco macro-processos e a ordem entre eles. Um «programa» é o que a TUA organização " +
         "monta com isto — o servidor não o modela e não o inventa.",
-      sdlc_phase_traversal_absence: absenceBand(
-        absenceNaming("MacroProcess", "SDLCPhase")?.absence_id,
-        "travessia MacroProcess ↔ fase do SDLC"
-      ),
-      sdlc_phase_traversal:
-        str(edgeHeader, "sdlc_phase_traversal") ??
-        (edgeHeader["sdlc_phase_traversal"] as Rec | undefined)?.["reason"] ??
-        "A travessia MP ↔ fase do SDLC é PARCIAL e NÃO PUBLICADA — lacuna declarada, nunca derivada.",
+      /*
+       * 0.20.0-beta.41 — UMA declaração, não duas. Este bloco servia `status: "unpublished_gap"`
+       * da fonte no topo E a tipagem ABS-001 (`out_of_scope`, fronteira) aninhada: era o único
+       * sítio do servidor onde uma ausência era LACUNA e FRONTEIRA ao mesmo tempo, e contradizia
+       * a distinção que o lead ratificou a 2026-09-07. A própria fonte já dizia que o rótulo
+       * local ficava superseded pelo índice — o serving é que servia os dois. O `reason` passa a
+       * viver DENTRO da banda, como razão da ausência tipada, e não ao lado dela como um
+       * segundo veredicto.
+       */
+      sdlc_phase_traversal: {
+        ...absenceBand(
+          absenceNaming("MacroProcess", "SDLCPhase")?.absence_id,
+          "travessia MacroProcess ↔ fase do SDLC",
+          str((edgeHeader["sdlc_phase_traversal"] as Rec | undefined) ?? {}, "status")
+        ),
+        source_reason:
+          str(edgeHeader, "sdlc_phase_traversal") ??
+          (edgeHeader["sdlc_phase_traversal"] as Rec | undefined)?.["reason"] ??
+          "A travessia MP ↔ fase do SDLC é PARCIAL e NÃO PUBLICADA — nunca derivada.",
+        derivation_forbidden: true
+      },
       three_segmentations: str(edgeHeader, "model_note") ?? str(header, "model_note")
     },
     next: [

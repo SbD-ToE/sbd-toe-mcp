@@ -122,7 +122,14 @@ export function handleMapRegulatoryActivation(
   if (!framework) {
     throw Object.assign(
       new Error(`Unknown framework: "${frameworkArg}". Known frameworks: ${knownShort.join(", ")}.`),
-      { rpcError: { code: -32602, message: `Unknown framework: "${frameworkArg}"` } }
+      /* 0.20.0-beta.41 — mesma classe: o vocabulário calculado não chegava ao cliente. */
+      {
+        rpcError: {
+          code: -32602,
+          message: `Unknown framework: "${frameworkArg}". Known frameworks: ${knownShort.join(", ")}.`,
+          data: { invalidValue: frameworkArg, known_frameworks: knownShort }
+        }
+      }
     );
   }
 

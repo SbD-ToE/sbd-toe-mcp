@@ -214,7 +214,10 @@ describe("invariante beta.39 — autoridade e projecção parcial", () => {
     const cases: [string, Record<string, unknown>, (p: Record<string, unknown>) => unknown][] = [
       ["get_guide_by_role", { risk_level: "L2", role: "fornecedores-terceiros" }, (p) => (p["unsupported_role"] as Record<string, unknown>)?.["absence"]],
       ["get_sbd_toe_playbook", { framework: "PCI-DSS" }, (p) => p["absence"]],
-      ["get_sbd_toe_macro_processes", {}, (p) => (p["declared_limits"] as Record<string, unknown>)?.["sdlc_phase_traversal_absence"]]
+      // 0.20.0-beta.41: a banda fundiu-se com o limite — era servida ao LADO do rótulo local
+      // `unpublished_gap`, e a resposta dizia lacuna e fronteira ao mesmo tempo. Agora há uma
+      // só declaração, e é aqui que ela vive.
+      ["get_sbd_toe_macro_processes", {}, (p) => (p["declared_limits"] as Record<string, unknown>)?.["sdlc_phase_traversal"]]
     ];
     const seen = new Set<string>();
     for (const [name, args, pick] of cases) {
@@ -232,6 +235,16 @@ describe("invariante beta.39 — autoridade e projecção parcial", () => {
     // controlo positivo: as três superfícies têm de mostrar ESPÉCIES DIFERENTES, senão a
     // tipagem não está a discriminar nada e o teste passaria em vazio.
     expect(seen.size, `as três ausências vieram todas do mesmo tipo (${[...seen].join(",")})`).toBeGreaterThanOrEqual(3);
+    /*
+     * 0.20.0-beta.41 — e NENHUMA pode ser as duas coisas. Era o único sítio do servidor onde
+     * uma ausência era lacuna E fronteira: o rótulo local da fonte servido ao lado da tipagem
+     * do índice. Um rótulo superseded vive DENTRO da banda, como história, nunca ao lado dela
+     * como um segundo veredicto.
+     */
+    for (const [name, args, pick] of cases) {
+      const band = pick(await tool(name, args)) as { is_debt?: boolean; is_boundary?: boolean } | undefined;
+      expect(band?.is_debt === true && band?.is_boundary === true, `${name}: dívida E fronteira ao mesmo tempo`).toBe(false);
+    }
   }, 30000);
 
   it("a recuperação declara o que da pergunta NÃO tem âncora no corpus", async () => {
