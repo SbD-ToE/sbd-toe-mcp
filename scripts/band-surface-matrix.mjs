@@ -86,6 +86,9 @@ function argsFor(tool) {
   for (const name of required) {
     const p = props[name] ?? {};
     if (Array.isArray(p.enum) && p.enum.length > 0) { out[name] = p.enum[0]; continue; }
+    // 0.20.0-beta.42: o schema passa a declarar EXEMPLOS derivados do bundle para os
+    // parâmetros de vocabulário aberto — é deles que a sonda se serve, em vez de desistir.
+    if (Array.isArray(p.examples) && p.examples.length > 0) { out[name] = p.examples[0]; continue; }
     if (name in BY_NAME && BY_NAME[name] !== undefined) { out[name] = BY_NAME[name]; continue; }
     if (p.type === "array") { out[name] = BY_NAME[name] ?? ["VAL-001"]; continue; }
     if (p.type === "number" || p.type === "integer") { out[name] = 1; continue; }
@@ -164,6 +167,38 @@ async function probe(tool, depth = 0) {
   }
 }
 
+/**
+ * 0.20.0-beta.42 — SONDA DE COMBINAÇÃO: chamadas desenhadas para CRIAR a condição.
+ *
+ * A 1.ª matriz fazia uma chamada por superfície e 116 de 232 células ficavam em `?` — a
+ * banda existia ou não, mas não tinha sido exercitada. Um `?` honesto vale mais do que um
+ * `tem` que não foi posto à prova, e por isso a resposta não é relaxar o critério: é
+ * PROVOCAR a condição. Esta sonda cruza dois selectores legítimos do próprio schema, que é
+ * como o vazio por combinação aparece na vida real (foi assim que a b.41 nasceu).
+ *
+ * Se a combinação devolver resultados, a célula fica `?` — não se inventa um vazio.
+ */
+async function probeNarrow(tool) {
+  const props = tool.inputSchema?.properties ?? {};
+  const selectors = Object.entries(props).filter(([n, p]) => !PAGINATION_PARAMS.has(n) && !FREE_TEXT.has(n) && (p.type === "string" || Array.isArray(p.enum)));
+  if (selectors.length < 2) return { ok: false, why: "menos de dois selectores — não há combinação a cruzar" };
+  const { args, unbuildable } = argsFor(tool);
+  if (unbuildable !== null) return { ok: false, why: "não exercitável (ver acima)" };
+  // cruza com o ÚLTIMO valor de cada enum (o menos provável de coincidir com o primeiro)
+  const narrowed = { ...args };
+  for (const [name, p] of selectors)
+    if (Array.isArray(p.enum) && p.enum.length > 1) narrowed[name] = p.enum[p.enum.length - 1];
+  if (JSON.stringify(narrowed) === JSON.stringify(args)) return { ok: false, why: "combinação idêntica à chamada base" };
+  try {
+    const r = await rpc("tools/call", { name: tool.name, arguments: narrowed });
+    const text = r.result?.content?.[0]?.text;
+    if (typeof text !== "string" || !text.trim().startsWith("{")) return { ok: false, why: "sem payload JSON na combinação" };
+    return { ok: true, prose: false, payload: JSON.parse(text), text, args: narrowed };
+  } catch (e) {
+    return { ok: false, why: String(e.message ?? e).slice(0, 60) };
+  }
+}
+
 /* --------------------------------------------------------------- as bandas */
 const CELL = { HAS: "tem", NA: "n/a", MISSING: "FALTA", UNKNOWN: "?" };
 const na = (why) => ({ state: CELL.NA, why });
@@ -199,17 +234,57 @@ const BANDS = [
     title: "Ausência TIPADA pelo índice (`absence_type`)",
     applies: () => true,
     check: (p) => {
+      /*
+       * 0.20.0-beta.42 — a regra desta linha estava LARGA e produziu 3 das 13 células FALTA
+       * da 1.ª corrida sem que houvesse defeito nenhum: apanhava uma lista vazia
+       * (`not_comparable: []`), um limite de SERVIÇO (`no_mandatory_count`, que explica
+       * porque NÃO se serve uma contagem) e uma rejeição de INPUT do chamador
+       * (`unknown_requirement_ids`). Nenhum dos três é uma ausência do Manual, e tipá-los
+       * contra o índice seria pior do que não os tipar.
+       *
+       * Ordem de decisão: 1) há ausência TIPADA ⇒ tem. 2) as bandas negativas são todas
+       * listas vazias, explicações de serviço ou rejeições de input ⇒ n/a com o motivo.
+       * 3) resta uma banda que afirma não-publicação e não traz espécie ⇒ FALTA.
+       */
+      if (JSON.stringify(p.payload).includes("absence_type")) return has("banda de ausência com espécie");
       const negs = collect(p.payload, NEG_KEY);
       if (negs.length === 0) return { state: CELL.UNKNOWN, why: "nenhuma ausência nesta chamada" };
-      const typed = JSON.stringify(p.payload).includes("absence_type");
-      return typed ? has("banda de ausência com espécie") : missing(`${negs.length} banda(s) de ausência sem \`absence_type\``);
+      const callerValues = Object.values(p.args ?? {}).flatMap((v) => (Array.isArray(v) ? v : [v])).filter((v) => typeof v === "string");
+      const classify = ([key, value]) => {
+        if (Array.isArray(value)) {
+          if (value.length === 0) return "lista vazia";
+          // um array que ECOA o que o chamador enviou é rejeição de input, não ausência do Manual
+          if (value.some((x) => typeof x === "string" && callerValues.some((cv) => String(x) === cv))) return "rejeição de input do chamador";
+          return value.every((x) => typeof x === "string") ? "lista de vocabulário" : null;
+        }
+        if (typeof value === "string") return "explicação de serviço (texto), não uma banda";
+        if (typeof value === "number" || typeof value === "boolean") return "contagem/flag, não uma banda";
+        if (value !== null && typeof value === "object") {
+          const blob = JSON.stringify(value);
+          if (callerValues.some((cv) => blob.includes(cv))) return "rejeição de input do chamador";
+        }
+        return null;
+      };
+      const unexplained = negs.filter((n) => classify(n) === null);
+      if (unexplained.length === 0)
+        return na(`bandas negativas presentes, nenhuma é ausência do Manual: ${negs.map((n) => `${n[0]} (${classify(n)})`).join("; ")}`);
+      return missing(`${unexplained.length} banda(s) que afirmam não-publicação sem \`absence_type\`: ${unexplained.map((n) => n[0]).join(", ")}`);
     }
   },
   {
     id: "next",
     title: "`next` executável",
     applies: () => true,
-    check: (p) => (Array.isArray(p.payload.next) && p.payload.next.length > 0 ? has(`${p.payload.next.length} sugestões`) : missing("sem `next`")),
+    check: (p) => {
+      /*
+       * 0.20.0-beta.42 — uma superfície de PASSAGEM serve o recurso VERBATIM; acrescentar-lhe
+       * um `next` nosso alteraria o conteúdo servido. Detecta-se pela forma (envelope de
+       * caracteres), não por uma lista de nomes.
+       */
+      if (hasKeyMatching(p.payload, /^total_chars$/))
+        return na("superfície de PASSAGEM — serve o recurso verbatim; um `next` nosso alteraria o conteúdo");
+      return Array.isArray(p.payload.next) && p.payload.next.length > 0 ? has(`${p.payload.next.length} sugestões`) : missing("sem `next`");
+    },
     naForProse: "superfície de PROSA — não transporta afordâncias estruturadas"
   },
   {
@@ -228,23 +303,34 @@ const BANDS = [
     title: "Paginação/cobertura declarada",
     applies: (tool) => "offset" in (tool.inputSchema?.properties ?? {}) || "limit" in (tool.inputSchema?.properties ?? {}),
     naWhen: (tool) => ("offset" in (tool.inputSchema?.properties ?? {}) || "limit" in (tool.inputSchema?.properties ?? {}) ? null : "não devolve conjunto paginável (sem offset/limit no schema)"),
-    check: (p) => (hasKeyMatching(p.payload, /^(coverage|totals|pagination)$/) ? has("cobertura/totais") : missing("pagina sem declarar cobertura"))
+    check: (p) => {
+      /*
+       * 0.20.0-beta.42 — a linha aplicava-se pelo SCHEMA (tem offset/limit) e não pelo que a
+       * chamada devolveu. Um ramo que não devolve conjunto — o `no_cross_check` do playbook,
+       * por exemplo — não tem o que paginar, e ser acusado de «pagina sem declarar cobertura»
+       * era o instrumento a falar, não a superfície.
+       */
+      /*
+       * Um CONJUNTO paginável é uma lista de REGISTOS. Uma lista de strings é vocabulário —
+       * `covered_frameworks`, `roadmap_declared_by_manual`, `valid_record_types` — e existe
+       * precisamente para o consumidor se orientar quando não há resultados. Contá-la como
+       * conjunto acusava o ramo `no_cross_check` de «paginar sem cobertura» quando ele não
+       * pagina nada. É o mesmo instrumento a falar em vez da superfície.
+       */
+      const sets = [];
+      walk(p.payload, (k, v) => {
+        if (!Array.isArray(v) || v.length === 0 || ["next", "next_withheld"].includes(k)) return;
+        if (v.every((x) => x !== null && typeof x === "object")) sets.push(k);
+      });
+      if (sets.length === 0) return na("esta chamada não devolveu conjunto de registos — não há o que paginar");
+      return hasKeyMatching(p.payload, /^(coverage|totals|pagination)$/) ? has("cobertura/totais") : missing("devolve conjunto e pagina sem declarar cobertura");
+    }
   },
   {
     id: "echo_role",
-    title: "Eco de input com `affects_result`",
+    title: "Eco de input com o seu PAPEL declarado",
     applies: () => true,
-    check: (p) => {
-      const echoed = [];
-      for (const [k, v] of Object.entries(p.args ?? {})) {
-        if (typeof v !== "string") continue;
-        const t = JSON.stringify(p.payload);
-        if (t.includes(`"${v}"`)) echoed.push(k);
-      }
-      if (echoed.length === 0) return { state: CELL.UNKNOWN, why: "nenhum argumento ecoado nesta chamada" };
-      const declared = /affects_(result|selection)|recorded_context|recorded_filter/.test(JSON.stringify(p.payload));
-      return declared ? has("papel do input declarado") : { state: CELL.UNKNOWN, why: `ecoa ${echoed.join(", ")} — papel não declarado (verificar se é filtro real)` };
-    }
+    fromMapLater: "echoRole"
   }
 ];
 
@@ -321,7 +407,59 @@ const probes = new Map();
 const errorVocab = new Map();
 for (const tool of tools) probes.set(tool.name, await probe(tool));
 for (const tool of tools) errorVocab.set(tool.name, await probeErrorVocabulary(tool));
+const narrowProbes = new Map();
+for (const tool of tools) narrowProbes.set(tool.name, await probeNarrow(tool));
+
+/**
+ * 0.20.0-beta.42 — PROVA de que um argumento ecoado afecta (ou não) o resultado.
+ *
+ * A b.39 apanhou o `orgProfile` a ser ecoado sem fazer nada; a b.41 declarou o `orgScope`
+ * como filtro real. A matriz media isto por inspecção do texto — 28 células em `?`. Passa a
+ * MEDIR: chama duas vezes com valores diferentes do mesmo parâmetro e compara o payload sem
+ * os ecos. Igual ⇒ o argumento é INERTE e tem de o declarar; diferente ⇒ é filtro de facto.
+ * Um eco inerte não declarado é a forma mais silenciosa de enganar: o consumidor vê o seu
+ * valor na resposta e conclui que ela foi feita à medida dele.
+ */
+const echoRole = new Map();
+for (const tool of tools) {
+  const p = probes.get(tool.name);
+  const props = tool.inputSchema?.properties ?? {};
+  const echoed = p.ok
+    ? Object.entries(p.args ?? {}).filter(([, v]) => typeof v === "string" && JSON.stringify(p.payload).includes(`"${v}"`))
+    : [];
+  if (!p.ok) { echoRole.set(tool.name, { state: CELL.UNKNOWN, why: "não exercitável (ver acima)" }); continue; }
+  if (echoed.length === 0) { echoRole.set(tool.name, na("nenhum argumento ecoado nesta chamada")); continue; }
+  const declared = /affects_(result|selection)|recorded_context|recorded_filter/.test(JSON.stringify(p.payload));
+  if (declared) { echoRole.set(tool.name, has("papel do input declarado na resposta")); continue; }
+  // prova por variação: outro valor do mesmo parâmetro muda o resultado?
+  const [name] = echoed[0];
+  const schema = props[name] ?? {};
+  const alt = Array.isArray(schema.enum)
+    ? schema.enum.find((v) => v !== p.args[name])
+    : name in BY_NAME && BY_NAME[name] !== p.args[name]
+      ? BY_NAME[name]
+      : `${String(p.args[name])}-variante`;
+  if (alt === undefined) { echoRole.set(tool.name, { state: CELL.UNKNOWN, why: `sem segundo valor para \`${name}\`` }); continue; }
+  try {
+    const r2 = await rpc("tools/call", { name: tool.name, arguments: { ...p.args, [name]: alt } });
+    const t2 = r2.result?.content?.[0]?.text;
+    if (typeof t2 !== "string" || !t2.trim().startsWith("{")) { echoRole.set(tool.name, { state: CELL.UNKNOWN, why: `variação de \`${name}\` recusada — não conclusivo` }); continue; }
+    const strip = (t, v) => t.split(JSON.stringify(String(v))).join('"<eco>"');
+    const a = strip(p.text, p.args[name]);
+    const b = strip(t2, alt);
+    echoRole.set(
+      tool.name,
+      a === b
+        ? missing(`\`${name}\` é ECOADO e INERTE (payload idêntico com \`${alt}\`) e não declara \`affects_result: false\``)
+        : has(`\`${name}\` é filtro de facto — provado por variação (\`${p.args[name]}\` vs \`${alt}\`)`)
+    );
+  } catch (e) {
+    echoRole.set(tool.name, { state: CELL.UNKNOWN, why: String(e.message ?? e).slice(0, 60) });
+  }
+}
 server.kill();
+
+for (const b of BANDS) if (b.fromMapLater === "echoRole") b.fromMap = echoRole;
 
 BANDS.push({
   id: "error_vocabulary",
@@ -341,7 +479,20 @@ for (const band of BANDS) {
     if (naWhy) { cells[tool.name] = na(naWhy); continue; }
     if (band.fromMap !== undefined) { cells[tool.name] = band.fromMap.get(tool.name); continue; }
     if (!band.applies(tool)) { cells[tool.name] = na("regra de aplicabilidade não satisfeita"); continue; }
-    cells[tool.name] = band.check(p);
+    let cell = band.check(p);
+    /*
+     * Se a chamada base não exercitou a banda, tenta a de COMBINAÇÃO antes de desistir. Só
+     * se aceita o resultado da segunda quando ele é conclusivo — nunca para transformar um
+     * `?` em `tem` por conveniência.
+     */
+    if (cell.state === CELL.UNKNOWN) {
+      const n = narrowProbes.get(tool.name);
+      if (n?.ok) {
+        const alt = band.check(n);
+        if (alt.state !== CELL.UNKNOWN) cell = { ...alt, why: `${alt.why} (exercitada por combinação: ${JSON.stringify(n.args)})` };
+      }
+    }
+    cells[tool.name] = cell;
   }
   rows.push({ band, cells });
 }

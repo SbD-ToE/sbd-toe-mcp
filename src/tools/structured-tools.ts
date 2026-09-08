@@ -10,6 +10,7 @@ import { retrievePublishedContext } from "../backend/semantic-index-gateway.js";
 import { resolveAppPath } from "../config.js";
 import type { LooseRecord } from "../types.js";
 import { getOntologyData, resolveRoleId } from "./ontology-loader.js";
+import { structuralProvenance } from "../serving/protocol-envelope.js";
 import { describeRequirementCitation, describeRequirementGap } from "../serving/requirement-id.js";
 import {
   listChaptersAffordances,
@@ -101,7 +102,16 @@ function summarizeChunkText(text: string | undefined): string | undefined {
 }
 
 export function handleListSbdToeChapters(args: Record<string, unknown>): unknown {
-  return { ...(handleListSbdToeChaptersCore(args) as Record<string, unknown>), next: listChaptersAffordances() };
+  return {
+    provenance: structuralProvenance(
+      "chapter_catalogue_projection",
+      "indexes/bundle_catalog.jsonl + runtime/assignments.json",
+      "Catálogo dos capítulos com aplicabilidade graduada e `demand_by_level` derivada dos assignments " +
+        "autorados. Títulos legíveis do catálogo publicado; nada é inventado."
+    ),
+    ...(handleListSbdToeChaptersCore(args) as Record<string, unknown>),
+    next: listChaptersAffordances()
+  };
 }
 
 function handleListSbdToeChaptersCore(
@@ -174,7 +184,16 @@ export async function handleQuerySbdToeEntities(
     const citation = describeRequirementCitation(query, knownRequirementIds);
     if (citation) core["citation_note"] = citation;
   }
-  return { ...core, next: queryEntitiesAffordances() };
+  return {
+    provenance: structuralProvenance(
+      "entity_query_projection",
+      "runtime/* + indexes/* (bundle publicado)",
+      "Resolução semântica de entidades: id exacto quando o `query` é um id publicado, senão pesquisa " +
+        "sobre o bundle. É RECUPERAÇÃO, não decisão de âmbito — o `match` diz por que via foi resolvido."
+    ),
+    ...core,
+    next: queryEntitiesAffordances()
+  };
 }
 
 async function handleQuerySbdToeEntitiesCore(
@@ -329,7 +348,16 @@ export function handleGetSbdToeChapterBrief(args: Record<string, unknown>): unkn
   const chapterId = typeof args["chapterId"] === "string" ? args["chapterId"] : undefined;
   const briefCore = handleGetSbdToeChapterBriefCore(args) as Record<string, unknown>;
   // 0.15.1 (P0-7b): nunca sugerir tools com o id que ESTA resposta acabou de invalidar.
-  return { ...briefCore, next: chapterBriefAffordances(briefCore["found"] === false ? undefined : chapterId) };
+  return {
+    provenance: structuralProvenance(
+      "chapter_brief_projection",
+      "runtime/assignments.json + runtime/artifact_requirements.json + indexes/mcp_chunks.jsonl",
+      "Retrato do capítulo: papéis e fases derivados dos assignments autorados, artefactos separados " +
+        "entre os que o capítulo DEFINE e os que apenas cita, objectivo resumido do chunk de intro."
+    ),
+    ...briefCore,
+    next: chapterBriefAffordances(briefCore["found"] === false ? undefined : chapterId)
+  };
 }
 
 function handleGetSbdToeChapterBriefCore(
@@ -572,7 +600,16 @@ function buildActivatedBundles(
 
 export function handleMapSbdToeApplicability(args: Record<string, unknown>): unknown {
   const riskLevel = typeof args["riskLevel"] === "string" ? args["riskLevel"] : undefined;
-  return { ...(handleMapSbdToeApplicabilityCore(args) as Record<string, unknown>), next: mapApplicabilityAffordances(riskLevel) };
+  return {
+    provenance: structuralProvenance(
+      "graduated_applicability_projection",
+      "runtime/assignments.json (proportionality) + indexes/bundle_catalog.jsonl",
+      "Aplicabilidade GRADUADA: presença em todos os capítulos, exigência derivada da proporcionalidade " +
+        "dos assignments autorados por nível. O campo estático de nível mínimo morreu na 0.14.0."
+    ),
+    ...(handleMapSbdToeApplicabilityCore(args) as Record<string, unknown>),
+    next: mapApplicabilityAffordances(riskLevel)
+  };
 }
 
 function handleMapSbdToeApplicabilityCore(

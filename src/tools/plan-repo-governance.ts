@@ -16,6 +16,7 @@ import { resolveAppPath } from "../config.js";
 import { paginate, type PageCoverage, type SizeEstimate } from "../serving/response-shaping.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { planRepoGovernanceAffordances } from "../serving/affordances.js";
+import { structuralProvenance } from "../serving/protocol-envelope.js";
 
 const VALID_RISK_LEVELS = ["L1", "L2", "L3"] as const;
 type RiskLevel = (typeof VALID_RISK_LEVELS)[number];
@@ -70,6 +71,8 @@ export interface ArtefactsByChapter {
 }
 
 export interface PlanRepoGovernanceResult {
+  /** 0.20.0-beta.42 — proveniência da projecção (célula `provenance` da matriz). */
+  provenance?: Record<string, unknown>;
   riskLevel: string | null;
   totalArtefacts: number;
   /** 0.16.0 (v1.16 §1.23): totais com SEMÂNTICA declarada — distinct vs relações capítulo×artefacto. */
@@ -157,6 +160,12 @@ export function handlePlanRepoGovernance(args: Record<string, unknown>): PlanRep
   );
 
   return {
+    provenance: structuralProvenance(
+      "repo_governance_projection",
+      "runtime/artifact_requirements.json + runtime/assignments.json",
+      "Artefactos de governação do repositório por capítulo, derivados dos ArtifactRequirement " +
+        "publicados. É projecção: a relação capítulo↔artefacto não é posse nem obrigação de produção."
+    ),
     riskLevel,
     totalArtefacts: artefacts.length,
     artefact_totals: loadArtefactTotals(),

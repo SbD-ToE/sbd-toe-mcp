@@ -3,6 +3,7 @@
   "mode": "codegen",
   "input_echo": {
     "task": "Implement a secure endpoint for uploading documents with logging",
+    "task_role": "recorded_context",
     "risk_level": "L2",
     "mode": "codegen",
     "detail": "ultrathin"

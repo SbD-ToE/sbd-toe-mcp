@@ -50,11 +50,24 @@ const COLUMNS: Record<GraphLens, string[]> = {
 /** Columns that are SPARQL literals (kept verbatim); all others are entity IRIs → idFromIri. */
 const LITERAL_COLUMNS = new Set(["kind"]);
 
+/**
+ * 0.20.0-beta.42 — a coluna por onde CADA lente ancora. Sem isto, uma âncora que não é do
+ * tipo da lente (um id de requisito numa lente de slices) devolvia 0 linhas em silêncio.
+ */
+const ANCHOR_COLUMN: Record<GraphLens, string> = {
+  slice_implementation: "slice",
+  objective_realization: "objective",
+  mechanism_provenance: "target",
+};
+
 const MAX_PAGE_SIZE = 200;
 
 export interface TraceGraphResult {
   lens: GraphLens;
   anchor: string | null;
+  /** 0.20.0-beta.42 — porque é que a travessia veio vazia, e que âncoras a lente aceita. */
+  empty_traversal?: Record<string, unknown>;
+  next?: { intent: string; tool: string; with: string; kind: string }[];
   rows: Record<string, string | undefined>[];
   total: number;
   page: number;
@@ -100,10 +113,47 @@ export function handleTraceGraph(args: Record<string, unknown>): TraceGraphResul
     return out;
   });
 
+  /**
+   * 0.20.0-beta.42 — NUNCA-SILÊNCIO nesta superfície também (célula `never_silent` da matriz).
+   *
+   * Era a classe da b.41 numa superfície que ficou de fora — exactamente o padrão que o
+   * auditor nomeou: «a classe é fechada onde o achado foi reportado e não é varrida às
+   * superfícies irmãs». Uma âncora do tipo errado (um id de requisito numa lente de slices)
+   * devolvia `rows: [], total: 0` e mais nada; o cenário TC-G-02 dava-o por declarado porque
+   * a âncora vinha ecoada e havia `provenance.note` — uma fasquia baixa que a matriz subiu.
+   *
+   * As âncoras válidas DERIVAM-SE do grafo: é a coluna de ancoragem da mesma lente sem
+   * filtro. Não há lista à mão, e uma projecção nova traz as suas âncoras sozinha.
+   */
+  const emptyAnchored =
+    anchor !== null && result.total === 0
+      ? (() => {
+          const column = ANCHOR_COLUMN[l];
+          const all: QueryPage = query(LENSES[l](), { page: 0, pageSize: MAX_PAGE_SIZE });
+          const valid = [...new Set(all.rows.map((raw) => idFromIri(String(raw[column] ?? ""))).filter((x) => x.length > 0))].sort();
+          return {
+            requested_anchor: anchor,
+            anchor_column: column,
+            reason: valid.includes(anchor) ? "no_rows_for_anchor" : "anchor_not_in_lens",
+            note: valid.includes(anchor)
+              ? `\`${anchor}\` É uma âncora desta lente e não tem travessia publicada — o vazio é do CONTEÚDO, não do pedido.`
+              : `\`${anchor}\` **não é uma âncora desta lente**: \`${l}\` ancora em \`${column}\`. Não é «não há travessia» — ` +
+                "é «pediste por um eixo que esta lente não usa». As âncoras válidas vêm abaixo, derivadas do próprio grafo.",
+            valid_anchors: {
+              total: valid.length,
+              sample: valid.slice(0, 12),
+              ...(valid.length > 12 ? { note: `amostra de ${valid.length}; corre a lente sem \`anchor\` para as ver todas` } : {})
+            },
+            reach_with: `trace_sbd_toe_graph(lens="${l}"${valid.length > 0 ? `, anchor="${valid[0]}"` : ""})`
+          };
+        })()
+      : undefined;
+
   return {
     lens: l,
     anchor,
     rows,
+    ...(emptyAnchored ? { empty_traversal: emptyAnchored } : {}),
     total: result.total,
     page: result.page,
     pageSize: result.pageSize,
@@ -117,5 +167,19 @@ export function handleTraceGraph(args: Record<string, unknown>): TraceGraphResul
         "Deterministic (ORDER BY) and coverage-preserving (total + cursor). " +
         "IRIs are an internal projection detail; output is entity ids.",
     },
+    /*
+     * 0.20.0-beta.42 — a superfície navegava e não dizia para onde se podia ir a seguir
+     * (célula `next` da matriz). Quando a travessia vem vazia, o passo seguinte é a
+     * recuperação; quando traz linhas, é resolver as entidades que ela nomeia.
+     */
+    next: emptyAnchored
+      ? [
+          { intent: "A mesma lente sem âncora, para ver o que ela cobre", tool: "trace_sbd_toe_graph", with: `lens="${l}"`, kind: "structural" },
+          { intent: "Uma âncora válida desta lente", tool: "trace_sbd_toe_graph", with: String(emptyAnchored.reach_with).replace(/^trace_sbd_toe_graph\(|\)$/g, ""), kind: "structural" }
+        ]
+      : [
+          { intent: "Resolver as entidades que a travessia nomeia", tool: "resolve_entities", with: 'record_type="practice", filters', kind: "structural" },
+          { intent: "Outra lente sobre o mesmo grafo", tool: "trace_sbd_toe_graph", with: `lens="${l === "slice_implementation" ? "mechanism_provenance" : "slice_implementation"}"`, kind: "structural" }
+        ],
   };
 }

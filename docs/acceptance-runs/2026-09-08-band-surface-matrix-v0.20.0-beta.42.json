@@ -1,6 +1,6 @@
 {
   "stamp": "2026-09-08",
-  "version": "0.20.0-beta.41",
+  "version": "0.20.0-beta.42",
   "tools": [
     "answer_sbd_toe_manual",
     "assess_sbd_toe_implementation",
@@ -33,92 +33,13 @@
     "trace_sbd_toe_requirement_sources"
   ],
   "counts": {
-    "tem": 68,
-    "n/a": 32,
-    "FALTA": 13,
-    "?": 119
+    "tem": 108,
+    "n/a": 50,
+    "FALTA": 0,
+    "?": 74
   },
-  "missing": [
-    {
-      "band": "provenance",
-      "tool": "get_sbd_toe_chapter_brief",
-      "why": "resposta sem proveniência"
-    },
-    {
-      "band": "provenance",
-      "tool": "list_sbd_toe_chapters",
-      "why": "resposta sem proveniência"
-    },
-    {
-      "band": "provenance",
-      "tool": "map_sbd_toe_applicability",
-      "why": "resposta sem proveniência"
-    },
-    {
-      "band": "provenance",
-      "tool": "map_sbd_toe_review_scope",
-      "why": "resposta sem proveniência"
-    },
-    {
-      "band": "provenance",
-      "tool": "plan_sbd_toe_repo_governance",
-      "why": "resposta sem proveniência"
-    },
-    {
-      "band": "never_silent",
-      "tool": "trace_sbd_toe_graph",
-      "why": "todos os conjuntos vieram vazios e nada o declara"
-    },
-    {
-      "band": "absence_typed",
-      "tool": "get_sbd_toe_chapter_capability",
-      "why": "1 banda(s) de ausência sem `absence_type`"
-    },
-    {
-      "band": "absence_typed",
-      "tool": "select_sbd_toe_requirements",
-      "why": "1 banda(s) de ausência sem `absence_type`"
-    },
-    {
-      "band": "absence_typed",
-      "tool": "trace_sbd_toe_requirement_sources",
-      "why": "1 banda(s) de ausência sem `absence_type`"
-    },
-    {
-      "band": "next",
-      "tool": "generate_sbd_toe_skill",
-      "why": "sem `next`"
-    },
-    {
-      "band": "next",
-      "tool": "trace_sbd_toe_graph",
-      "why": "sem `next`"
-    },
-    {
-      "band": "pagination",
-      "tool": "get_sbd_toe_playbook",
-      "why": "pagina sem declarar cobertura"
-    },
-    {
-      "band": "pagination",
-      "tool": "resolve_entities",
-      "why": "pagina sem declarar cobertura"
-    }
-  ],
-  "unprobed": [
-    {
-      "tool": "assess_sbd_toe_implementation",
-      "why": "argumento obrigatório sem valor derivável: `kpi_values`"
-    },
-    {
-      "tool": "query_sbd_toe_entities",
-      "why": "argumento obrigatório sem valor derivável: `query`"
-    },
-    {
-      "tool": "read_sbd_toe_resource",
-      "why": "argumento obrigatório sem valor derivável: `uri`"
-    }
-  ],
+  "missing": [],
+  "unprobed": [],
   "rows": [
     {
       "band": "provenance",
@@ -129,8 +50,8 @@
           "why": "superfície de PROSA — a proveniência vive no texto, não num campo"
         },
         "assess_sbd_toe_implementation": {
-          "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `kpi_values`"
+          "state": "tem",
+          "why": "provenance no payload"
         },
         "consult_security_requirements": {
           "state": "tem",
@@ -149,8 +70,8 @@
           "why": "provenance no payload"
         },
         "get_sbd_toe_chapter_brief": {
-          "state": "FALTA",
-          "why": "resposta sem proveniência"
+          "state": "tem",
+          "why": "provenance no payload"
         },
         "get_sbd_toe_chapter_capability": {
           "state": "tem",
@@ -185,24 +106,24 @@
           "why": "superfície de PROSA — a proveniência vive no texto, não num campo"
         },
         "list_sbd_toe_chapters": {
-          "state": "FALTA",
-          "why": "resposta sem proveniência"
+          "state": "tem",
+          "why": "provenance no payload"
         },
         "map_sbd_toe_applicability": {
-          "state": "FALTA",
-          "why": "resposta sem proveniência"
+          "state": "tem",
+          "why": "provenance no payload"
         },
         "map_sbd_toe_regulatory_activation": {
           "state": "tem",
           "why": "provenance no payload"
         },
         "map_sbd_toe_review_scope": {
-          "state": "FALTA",
-          "why": "resposta sem proveniência"
+          "state": "tem",
+          "why": "provenance no payload"
         },
         "plan_sbd_toe_repo_governance": {
-          "state": "FALTA",
-          "why": "resposta sem proveniência"
+          "state": "tem",
+          "why": "provenance no payload"
         },
         "plan_sbd_toe_rollout": {
           "state": "tem",
@@ -213,12 +134,12 @@
           "why": "provenance no payload"
         },
         "query_sbd_toe_entities": {
-          "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `query`"
+          "state": "tem",
+          "why": "provenance no payload"
         },
         "read_sbd_toe_resource": {
-          "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `uri`"
+          "state": "tem",
+          "why": "provenance no payload"
         },
         "resolve_entities": {
           "state": "tem",
@@ -251,8 +172,8 @@
           "why": "esta chamada devolveu resultados — a banda de vazio não foi exercitada"
         },
         "assess_sbd_toe_implementation": {
-          "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `kpi_values`"
+          "state": "tem",
+          "why": "declara ausências/vazios"
         },
         "consult_security_requirements": {
           "state": "?",
@@ -311,8 +232,8 @@
           "why": "esta chamada devolveu resultados — a banda de vazio não foi exercitada"
         },
         "map_sbd_toe_applicability": {
-          "state": "?",
-          "why": "esta chamada devolveu resultados — a banda de vazio não foi exercitada"
+          "state": "tem",
+          "why": "declara ausências/vazios (exercitada por combinação: {\"riskLevel\":\"L3\",\"projectRole\":\"manager\"})"
         },
         "map_sbd_toe_regulatory_activation": {
           "state": "?",
@@ -336,11 +257,11 @@
         },
         "query_sbd_toe_entities": {
           "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `query`"
+          "why": "esta chamada devolveu resultados — a banda de vazio não foi exercitada"
         },
         "read_sbd_toe_resource": {
           "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `uri`"
+          "why": "esta chamada devolveu resultados — a banda de vazio não foi exercitada"
         },
         "resolve_entities": {
           "state": "?",
@@ -355,8 +276,8 @@
           "why": "declara ausências/vazios"
         },
         "trace_sbd_toe_graph": {
-          "state": "FALTA",
-          "why": "todos os conjuntos vieram vazios e nada o declara"
+          "state": "tem",
+          "why": "declara ausências/vazios"
         },
         "trace_sbd_toe_requirement_sources": {
           "state": "tem",
@@ -373,8 +294,8 @@
           "why": "nenhuma ausência nesta chamada"
         },
         "assess_sbd_toe_implementation": {
-          "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `kpi_values`"
+          "state": "n/a",
+          "why": "bandas negativas presentes, nenhuma é ausência do Manual: not_reported (contagem/flag, não uma banda); unknown_metrics (lista de vocabulário)"
         },
         "consult_security_requirements": {
           "state": "?",
@@ -397,8 +318,8 @@
           "why": "nenhuma ausência nesta chamada"
         },
         "get_sbd_toe_chapter_capability": {
-          "state": "FALTA",
-          "why": "1 banda(s) de ausência sem `absence_type`"
+          "state": "n/a",
+          "why": "bandas negativas presentes, nenhuma é ausência do Manual: no_mandatory_count (explicação de serviço (texto), não uma banda)"
         },
         "get_sbd_toe_chapter_implementation_checklist": {
           "state": "?",
@@ -413,8 +334,8 @@
           "why": "nenhuma ausência nesta chamada"
         },
         "get_sbd_toe_playbook": {
-          "state": "?",
-          "why": "nenhuma ausência nesta chamada"
+          "state": "tem",
+          "why": "banda de ausência com espécie"
         },
         "get_sbd_toe_verification_matrix": {
           "state": "?",
@@ -433,8 +354,8 @@
           "why": "nenhuma ausência nesta chamada"
         },
         "map_sbd_toe_applicability": {
-          "state": "?",
-          "why": "nenhuma ausência nesta chamada"
+          "state": "n/a",
+          "why": "bandas negativas presentes, nenhuma é ausência do Manual: empty_role_view (rejeição de input do chamador) (exercitada por combinação: {\"riskLevel\":\"L3\",\"projectRole\":\"manager\"})"
         },
         "map_sbd_toe_regulatory_activation": {
           "state": "?",
@@ -458,11 +379,11 @@
         },
         "query_sbd_toe_entities": {
           "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `query`"
+          "why": "nenhuma ausência nesta chamada"
         },
         "read_sbd_toe_resource": {
-          "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `uri`"
+          "state": "tem",
+          "why": "banda de ausência com espécie"
         },
         "resolve_entities": {
           "state": "?",
@@ -473,16 +394,16 @@
           "why": "nenhuma ausência nesta chamada"
         },
         "select_sbd_toe_requirements": {
-          "state": "FALTA",
-          "why": "1 banda(s) de ausência sem `absence_type`"
+          "state": "n/a",
+          "why": "bandas negativas presentes, nenhuma é ausência do Manual: not_comparable (lista vazia)"
         },
         "trace_sbd_toe_graph": {
-          "state": "?",
-          "why": "nenhuma ausência nesta chamada"
+          "state": "n/a",
+          "why": "bandas negativas presentes, nenhuma é ausência do Manual: empty_traversal (rejeição de input do chamador)"
         },
         "trace_sbd_toe_requirement_sources": {
-          "state": "FALTA",
-          "why": "1 banda(s) de ausência sem `absence_type`"
+          "state": "n/a",
+          "why": "bandas negativas presentes, nenhuma é ausência do Manual: unknown_requirement_ids (lista vazia)"
         }
       }
     },
@@ -495,8 +416,8 @@
           "why": "superfície de PROSA — não transporta afordâncias estruturadas"
         },
         "assess_sbd_toe_implementation": {
-          "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `kpi_values`"
+          "state": "tem",
+          "why": "3 sugestões"
         },
         "consult_security_requirements": {
           "state": "tem",
@@ -507,8 +428,8 @@
           "why": "3 sugestões"
         },
         "generate_sbd_toe_skill": {
-          "state": "FALTA",
-          "why": "sem `next`"
+          "state": "tem",
+          "why": "3 sugestões"
         },
         "get_guide_by_role": {
           "state": "tem",
@@ -579,12 +500,12 @@
           "why": "2 sugestões"
         },
         "query_sbd_toe_entities": {
-          "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `query`"
+          "state": "tem",
+          "why": "2 sugestões"
         },
         "read_sbd_toe_resource": {
-          "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `uri`"
+          "state": "n/a",
+          "why": "superfície de PASSAGEM — serve o recurso verbatim; um `next` nosso alteraria o conteúdo"
         },
         "resolve_entities": {
           "state": "tem",
@@ -599,8 +520,8 @@
           "why": "3 sugestões"
         },
         "trace_sbd_toe_graph": {
-          "state": "FALTA",
-          "why": "sem `next`"
+          "state": "tem",
+          "why": "2 sugestões"
         },
         "trace_sbd_toe_requirement_sources": {
           "state": "tem",
@@ -617,8 +538,8 @@
           "why": "sem `next` nesta chamada"
         },
         "assess_sbd_toe_implementation": {
-          "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `kpi_values`"
+          "state": "tem",
+          "why": "reconciliação central activa (`sendResponse`)"
         },
         "consult_security_requirements": {
           "state": "?",
@@ -630,7 +551,7 @@
         },
         "generate_sbd_toe_skill": {
           "state": "?",
-          "why": "sem `next` nesta chamada"
+          "why": "sem banda negativa nesta chamada"
         },
         "get_guide_by_role": {
           "state": "?",
@@ -677,8 +598,8 @@
           "why": "sem banda negativa nesta chamada"
         },
         "map_sbd_toe_applicability": {
-          "state": "?",
-          "why": "sem banda negativa nesta chamada"
+          "state": "tem",
+          "why": "reconciliação central activa (`sendResponse`) (exercitada por combinação: {\"riskLevel\":\"L3\",\"projectRole\":\"manager\"})"
         },
         "map_sbd_toe_regulatory_activation": {
           "state": "?",
@@ -702,11 +623,11 @@
         },
         "query_sbd_toe_entities": {
           "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `query`"
+          "why": "sem banda negativa nesta chamada"
         },
         "read_sbd_toe_resource": {
           "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `uri`"
+          "why": "sem `next` nesta chamada"
         },
         "resolve_entities": {
           "state": "?",
@@ -721,8 +642,8 @@
           "why": "reconciliação central activa (`sendResponse`)"
         },
         "trace_sbd_toe_graph": {
-          "state": "?",
-          "why": "sem `next` nesta chamada"
+          "state": "tem",
+          "why": "reconciliação central activa (`sendResponse`)"
         },
         "trace_sbd_toe_requirement_sources": {
           "state": "tem",
@@ -739,8 +660,8 @@
           "why": "não devolve conjunto paginável (sem offset/limit no schema)"
         },
         "assess_sbd_toe_implementation": {
-          "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `kpi_values`"
+          "state": "tem",
+          "why": "cobertura/totais"
         },
         "consult_security_requirements": {
           "state": "n/a",
@@ -779,8 +700,8 @@
           "why": "cobertura/totais"
         },
         "get_sbd_toe_playbook": {
-          "state": "FALTA",
-          "why": "pagina sem declarar cobertura"
+          "state": "n/a",
+          "why": "esta chamada não devolveu conjunto de registos — não há o que paginar"
         },
         "get_sbd_toe_verification_matrix": {
           "state": "tem",
@@ -823,16 +744,16 @@
           "why": "não devolve conjunto paginável (sem offset/limit no schema)"
         },
         "query_sbd_toe_entities": {
-          "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `query`"
+          "state": "n/a",
+          "why": "não devolve conjunto paginável (sem offset/limit no schema)"
         },
         "read_sbd_toe_resource": {
-          "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `uri`"
+          "state": "n/a",
+          "why": "não devolve conjunto paginável (sem offset/limit no schema)"
         },
         "resolve_entities": {
-          "state": "FALTA",
-          "why": "pagina sem declarar cobertura"
+          "state": "tem",
+          "why": "cobertura/totais"
         },
         "search_sbd_toe_manual": {
           "state": "n/a",
@@ -854,122 +775,122 @@
     },
     {
       "band": "echo_role",
-      "title": "Eco de input com `affects_result`",
+      "title": "Eco de input com o seu PAPEL declarado",
       "cells": {
         "answer_sbd_toe_manual": {
-          "state": "?",
+          "state": "n/a",
           "why": "nenhum argumento ecoado nesta chamada"
         },
         "assess_sbd_toe_implementation": {
-          "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `kpi_values`"
+          "state": "tem",
+          "why": "`risk_level` é filtro de facto — provado por variação (`L1` vs `L2`)"
         },
         "consult_security_requirements": {
-          "state": "?",
-          "why": "ecoa risk_level — papel não declarado (verificar se é filtro real)"
+          "state": "tem",
+          "why": "`risk_level` é filtro de facto — provado por variação (`L1` vs `L2`)"
         },
         "explain_sbd_toe_topic": {
-          "state": "?",
-          "why": "ecoa concern, chapter, risk_level — papel não declarado (verificar se é filtro real)"
+          "state": "tem",
+          "why": "`concern` é filtro de facto — provado por variação (`auth` vs `logging`)"
         },
         "generate_sbd_toe_skill": {
           "state": "?",
-          "why": "ecoa role, risk_level — papel não declarado (verificar se é filtro real)"
+          "why": "variação de `role` recusada — não conclusivo"
         },
         "get_guide_by_role": {
-          "state": "?",
-          "why": "ecoa risk_level, role — papel não declarado (verificar se é filtro real)"
+          "state": "tem",
+          "why": "`risk_level` é filtro de facto — provado por variação (`L1` vs `L2`)"
         },
         "get_sbd_toe_chapter_brief": {
-          "state": "?",
-          "why": "ecoa chapterId — papel não declarado (verificar se é filtro real)"
+          "state": "tem",
+          "why": "`chapterId` é filtro de facto — provado por variação (`07-cicd-seguro` vs `07-cicd-seguro-variante`)"
         },
         "get_sbd_toe_chapter_capability": {
-          "state": "?",
-          "why": "ecoa chapter, risk_level — papel não declarado (verificar se é filtro real)"
+          "state": "tem",
+          "why": "`chapter` é filtro de facto — provado por variação (`07-cicd-seguro` vs `07-cicd-seguro-variante`)"
         },
         "get_sbd_toe_chapter_implementation_checklist": {
           "state": "?",
-          "why": "ecoa chapter, risk_level — papel não declarado (verificar se é filtro real)"
+          "why": "variação de `chapter` recusada — não conclusivo"
         },
         "get_sbd_toe_macro_processes": {
-          "state": "?",
+          "state": "n/a",
           "why": "nenhum argumento ecoado nesta chamada"
         },
         "get_sbd_toe_operating_model": {
-          "state": "?",
+          "state": "n/a",
           "why": "nenhum argumento ecoado nesta chamada"
         },
         "get_sbd_toe_playbook": {
-          "state": "?",
-          "why": "ecoa framework — papel não declarado (verificar se é filtro real)"
+          "state": "tem",
+          "why": "`framework` é filtro de facto — provado por variação (`GDPR` vs `GDPR-variante`)"
         },
         "get_sbd_toe_verification_matrix": {
-          "state": "?",
-          "why": "ecoa risk_level — papel não declarado (verificar se é filtro real)"
+          "state": "tem",
+          "why": "`risk_level` é filtro de facto — provado por variação (`L1` vs `L2`)"
         },
         "get_threat_landscape": {
-          "state": "?",
-          "why": "ecoa risk_level — papel não declarado (verificar se é filtro real)"
+          "state": "tem",
+          "why": "`risk_level` é filtro de facto — provado por variação (`L1` vs `L2`)"
         },
         "inspect_sbd_toe_retrieval": {
-          "state": "?",
+          "state": "n/a",
           "why": "nenhum argumento ecoado nesta chamada"
         },
         "list_sbd_toe_chapters": {
-          "state": "?",
-          "why": "ecoa riskLevel — papel não declarado (verificar se é filtro real)"
+          "state": "tem",
+          "why": "`riskLevel` é filtro de facto — provado por variação (`L2` vs `L1`)"
         },
         "map_sbd_toe_applicability": {
-          "state": "?",
-          "why": "ecoa riskLevel — papel não declarado (verificar se é filtro real)"
+          "state": "tem",
+          "why": "`riskLevel` é filtro de facto — provado por variação (`L1` vs `L2`)"
         },
         "map_sbd_toe_regulatory_activation": {
           "state": "?",
-          "why": "ecoa framework — papel não declarado (verificar se é filtro real)"
+          "why": "variação de `framework` recusada — não conclusivo"
         },
         "map_sbd_toe_review_scope": {
-          "state": "?",
+          "state": "n/a",
           "why": "nenhum argumento ecoado nesta chamada"
         },
         "plan_sbd_toe_repo_governance": {
-          "state": "?",
-          "why": "ecoa riskLevel — papel não declarado (verificar se é filtro real)"
+          "state": "tem",
+          "why": "`riskLevel` é filtro de facto — provado por variação (`L2` vs `L1`)"
         },
         "plan_sbd_toe_rollout": {
-          "state": "?",
+          "state": "n/a",
           "why": "nenhum argumento ecoado nesta chamada"
         },
         "prepare_sbd_toe_codegen_context": {
-          "state": "?",
-          "why": "ecoa task, risk_level — papel não declarado (verificar se é filtro real)"
+          "state": "tem",
+          "why": "papel do input declarado na resposta"
         },
         "query_sbd_toe_entities": {
-          "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `query`"
+          "state": "tem",
+          "why": "`query` é filtro de facto — provado por variação (`ACC-001` vs `ACC-001-variante`)"
         },
         "read_sbd_toe_resource": {
-          "state": "?",
-          "why": "argumento obrigatório sem valor derivável: `uri`"
+          "state": "tem",
+          "why": "papel do input declarado na resposta"
         },
         "resolve_entities": {
-          "state": "?",
-          "why": "ecoa record_type — papel não declarado (verificar se é filtro real)"
+          "state": "tem",
+          "why": "`record_type` é filtro de facto — provado por variação (`requirement` vs `control`)"
         },
         "search_sbd_toe_manual": {
-          "state": "?",
+          "state": "n/a",
           "why": "nenhum argumento ecoado nesta chamada"
         },
         "select_sbd_toe_requirements": {
           "state": "tem",
-          "why": "papel do input declarado"
+          "why": "papel do input declarado na resposta"
         },
         "trace_sbd_toe_graph": {
-          "state": "?",
-          "why": "ecoa lens, anchor — papel não declarado (verificar se é filtro real)"
+          "state": "tem",
+          "why": "`lens` é filtro de facto — provado por variação (`slice_implementation` vs `objective_realization`)"
         },
         "trace_sbd_toe_requirement_sources": {
-          "state": "?",
+          "state": "n/a",
           "why": "nenhum argumento ecoado nesta chamada"
         }
       }
@@ -983,8 +904,8 @@
           "why": "sem parâmetro de vocabulário aberto (enum no schema já nomeia os válidos)"
         },
         "assess_sbd_toe_implementation": {
-          "state": "?",
-          "why": "não exercitável (ver acima)"
+          "state": "tem",
+          "why": "rejeita `chapter` e nomeia os válidos"
         },
         "consult_security_requirements": {
           "state": "n/a",
@@ -1068,11 +989,11 @@
         },
         "query_sbd_toe_entities": {
           "state": "?",
-          "why": "não exercitável (ver acima)"
+          "why": "aceitou um valor inexistente em `entityType` — não rejeita, e serve o que puder"
         },
         "read_sbd_toe_resource": {
           "state": "?",
-          "why": "não exercitável (ver acima)"
+          "why": "erro não é sobre `slot` — não exercitou a banda"
         },
         "resolve_entities": {
           "state": "n/a",

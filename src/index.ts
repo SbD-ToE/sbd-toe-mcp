@@ -62,6 +62,8 @@ import {
   readGroundedCodegenGuide
 } from "./resources/sbd-toe-resources.js";
 import { RESOURCE_CATALOG, PROMPT_CATALOG } from "./serving/server-surface.js";
+import { loadMetrics } from "./tools/assess-implementation.js";
+import { getOntologyData } from "./tools/ontology-loader.js";
 import { buildAgentGuide } from "./serving/agent-guide.js";
 import { buildModelResource, buildQuickStart } from "./serving/model-resource.js";
 import { THREAT_ORDERING, SELECT_PAGINATION } from "./serving/behaviour-notes.js";
@@ -312,6 +314,33 @@ class ResourceReadError extends Error {
 
 function validResourceUris(): string {
   return RESOURCE_CATALOG.map((r) => r.uri).join(", ");
+}
+
+/**
+ * 0.20.0-beta.42 — EXEMPLOS DERIVADOS para os parâmetros de vocabulário aberto.
+ *
+ * Três superfícies não eram exercitáveis por argumentos derivados do schema — `kpi_values`,
+ * `query` e `uri` — porque o schema descrevia a FORMA e não dava um valor. É a mesma lacuna
+ * do erro que não nomeava o vocabulário: quem consome não tem como saber o que é válido.
+ * Os exemplos derivam do bundle servido e do próprio catálogo de recursos; se a derivação
+ * falhar, o campo simplesmente não sai — nunca se inventa um exemplo.
+ */
+function derivedExamples(): { kpiValues: unknown[]; entityQuery: unknown[]; resourceUri: unknown[] } {
+  const safe = <T>(f: () => T, fallback: T): T => {
+    try {
+      return f();
+    } catch {
+      return fallback;
+    }
+  };
+  const metricId = safe(() => loadMetrics()[0]?.metric_id, undefined);
+  const requirementId = safe(() => getOntologyData().requirements[0]?.requirement_id, undefined);
+  const staticResource = RESOURCE_CATALOG.find((r) => !r.uri.includes("{"))?.uri;
+  return {
+    kpiValues: metricId ? [{ [metricId]: 85 }] : [],
+    entityQuery: requirementId ? [requirementId] : [],
+    resourceUri: staticResource ? [staticResource] : []
+  };
 }
 
 class McpRuntime {
@@ -805,7 +834,7 @@ class McpRuntime {
           inputSchema: {
             type: "object",
             properties: {
-              query: { type: "string", minLength: 1, maxLength: 200, description: "Free text, or an exact entity id (resolved directly: match=exact_id)." },
+              query: { type: "string", minLength: 1, maxLength: 200, description: "Free text, or an exact entity id (resolved directly: match=exact_id).", examples: derivedExamples().entityQuery },
               entityType: { type: "string", description: "Filter chunks by the entity type they mention: Requirement | UserStory | Metric | Threat (aliases accepted, e.g. requirements, us, kpi). Structured records (controls, control objectives, mechanisms, artifacts) are queried with resolve_entities instead." },
               chapterId: { type: "string", description: "Filter by chapter bundle id (e.g. 06-desenvolvimento-seguro) or its numeric prefix." },
               riskLevel: { type: "string", enum: ["L1", "L2", "L3"], description: "Filter by the chunk's published risk facet; chunks without a facet are not returned (declared in the `filters` field of the result)." },
@@ -1041,6 +1070,7 @@ class McpRuntime {
               kpi_values: {
                 type: "object",
                 description: "Map of metric_id → numeric value (e.g. {\"ARC-K01\": 85}). Non-numeric values ignored.",
+                examples: derivedExamples().kpiValues,
                 additionalProperties: { type: "number" }
               },
               risk_level: { type: "string", enum: ["L1", "L2", "L3"], description: "Target/'compliant' band." },
@@ -1234,7 +1264,7 @@ class McpRuntime {
           inputSchema: {
             type: "object",
             properties: {
-              uri: { type: "string", minLength: 1, description: "Resource URI (see the valid list in the tool description; templated URIs take the concrete value in place of {…})." },
+              uri: { type: "string", minLength: 1, description: "Resource URI (see the valid list in the tool description; templated URIs take the concrete value in place of {…}).", examples: derivedExamples().resourceUri },
               slot: { type: "string", description: "0.15.0: para recursos JSON com slots (codegen-instructions): devolve só o slot pedido; slot desconhecido ⇒ erro com a lista de slots." },
               char_offset: { type: "number", description: "0.15.0: paginação por caracteres sobre o texto do recurso (coverage + size_estimate sempre)." },
               char_limit: { type: "number", description: "Máx. caracteres por página (default: texto completo)." }

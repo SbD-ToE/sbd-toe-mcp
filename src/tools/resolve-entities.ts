@@ -431,6 +431,36 @@ function emptyOverlayResult(
   };
 }
 
+/**
+ * 0.20.0-beta.42 — COBERTURA DECLARADA (célula `pagination` da matriz).
+ *
+ * A superfície servia `total: 273` e devolvia 5, e o consumidor não tinha como saber que
+ * estava a olhar para uma fatia — nem como chegar ao resto: **o schema tem `limit` e não tem
+ * `offset`**. O silêncio aqui é o mesmo da b.41, noutra forma: um resultado truncado sem
+ * banda. Declara-se o que se devolveu, quanto existe, que está truncado, e que o caminho
+ * para estreitar é `filters` — porque uma segunda página, esta superfície não a tem.
+ */
+function withCoverage<T extends { entities?: unknown[]; total?: number; limit?: number }>(payload: T): T {
+  const returned = Array.isArray(payload.entities) ? payload.entities.length : 0;
+  const total = typeof payload.total === "number" ? payload.total : returned;
+  const truncated = returned < total;
+  return {
+    ...payload,
+    coverage: {
+      returned,
+      total,
+      truncated,
+      ...(typeof payload.limit === "number" ? { limit: payload.limit } : {}),
+      pagination: "limit_only",
+      note: truncated
+        ? `Estás a ver ${returned} de ${total}. **Esta superfície não tem \`offset\`** — não há segunda ` +
+          "página. Para chegar ao resto, ESTREITA com `filters` (dot-notation, {in:[…]}, {gte,lte}) ou sobe " +
+          "o `limit`. Se leres estes como se fossem todos, lês uma fatia arbitrária."
+        : `${returned} de ${total} — o conjunto veio completo.`
+    }
+  };
+}
+
 export function handleResolveEntities(args: Record<string, unknown>): ResolveEntitiesResult {
   // RF-H: append the advisory band around the deterministic resolution (pure, ≤3).
   return { ...resolveEntitiesCore(args), next: resolveEntitiesAffordances() };
@@ -470,7 +500,7 @@ function resolveEntitiesCore(
       note:
         "Regulatory overlay records. Filters support dot-notation, {gte,lte}, {in:[...]} and array membership. Provenance: data/publish/overlay/*."
     });
-    return { provenance: OVERLAY_PROVENANCE_PUBLISHED, ...result };
+    return withCoverage({ provenance: OVERLAY_PROVENANCE_PUBLISHED, ...result });
   }
 
 
@@ -508,7 +538,7 @@ function resolveEntitiesCore(
       if (citation) result.meta = { ...result.meta, note: `${citation.note} ${result.meta.note}`, citation_note: citation };
     }
   }
-  return { provenance: RUNTIME_V0_PROVENANCE, ...result };
+  return withCoverage({ provenance: RUNTIME_V0_PROVENANCE, ...result });
 }
 
 export { RuntimeV1AssetMissingError };

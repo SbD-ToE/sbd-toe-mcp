@@ -419,7 +419,7 @@ export interface PrepareCodegenContextResultReady {
   next?: Affordance[];
   mode: CodegenMode;
   input_echo: Required<Pick<PrepareCodegenContextInput, "task">> &
-    Omit<PrepareCodegenContextInput, "task">;
+    Omit<PrepareCodegenContextInput, "task"> & { task_role?: string };
   activation_trace: ActivationTraceEntry[];
   activated_scope: ActivatedScope;
   g2_context: G2Context;
@@ -469,7 +469,7 @@ export interface PrepareCodegenContextResultBlocked {
   next?: Affordance[];
   mode: CodegenMode;
   input_echo: Required<Pick<PrepareCodegenContextInput, "task">> &
-    Omit<PrepareCodegenContextInput, "task">;
+    Omit<PrepareCodegenContextInput, "task"> & { task_role?: string };
   reasons: string[];
   suggestions: string[];
   partial_activation_trace: ActivationTraceEntry[];
@@ -1499,9 +1499,23 @@ export function normalizeInput(raw: unknown): NormalizedInput {
 function inputEcho(
   raw: PrepareCodegenContextInput
 ): Required<Pick<PrepareCodegenContextInput, "task">> &
-  Omit<PrepareCodegenContextInput, "task"> {
+  Omit<PrepareCodegenContextInput, "task"> & { task_role: string } {
   return {
     task: raw.task ?? "",
+    /*
+     * 0.20.0-beta.42 — o PAPEL do `task`, declarado. O `select_sbd_toe_requirements` — a
+     * superfície irmã, sobre o mesmo input — declara-o há muito como
+     * `{role: "recorded_context", affects_selection: false}`; aqui ele era ecoado MUDO, e o
+     * consumidor via o seu texto na resposta e concluía que ela tinha sido feita a partir
+     * dele. Provado por variação na matriz banda × superfície: dois `task` completamente
+     * diferentes produzem payloads idênticos. É contexto registado, não motor de selecção.
+     *
+     * Duas chaves e mais nada: os gates de orçamento do EPIC não têm folga, e o vocabulário
+     * (`recorded_context` / `affects_selection`) já é ensinado no guia e no `select`. Dizer
+     * o essencial no mínimo de tokens é a regra desta linha — não se levanta um gate duro
+     * para caber uma explicação que já existe noutro sítio.
+     */
+    task_role: "recorded_context",
     ...(raw.risk_level ? { risk_level: raw.risk_level } : {}),
     ...(raw.mode ? { mode: raw.mode } : {}),
     ...(raw.stack ? { stack: raw.stack } : {}),

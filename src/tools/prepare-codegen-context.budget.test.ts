@@ -205,7 +205,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       citation_map: 2900,
       activated_scope: 2300,
       g2_entities: 2200,
-      rest: 1360, // beta.23 (P1): +6 medidos — `provenance.server` (versão do pacote) entra no payload; medido 1356
+      rest: 1372, // beta.42: +6 medidos — `input_echo.task_role` declara que o `task` é contexto REGISTADO (a superfície irmã `select` já o dizia; provado por variação na matriz banda × superfície). Guarda do `full` = retrato do comportamento actual, não gate do EPIC: os gates duros (standard/minimal/ultrathin) passam sem mexer. Medido 1366
       total: 20400
     },
     // Baseline fixture 2: relations 6.238 / grounding 4.913 / evidence 2.846 /
@@ -217,7 +217,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       citation_map: 3900,
       activated_scope: 3150,
       g2_entities: 3050,
-      rest: 1600, // v1.8.0: FIL na fixture (medido 1.560; = estável)
+      rest: 1612, // beta.42: +6 medidos (`input_echo.task_role`, ver acima); medido 1606. v1.8.0: FIL na fixture
       total: 26700
     }
   },

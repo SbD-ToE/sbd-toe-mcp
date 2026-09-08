@@ -364,9 +364,24 @@ export function handleGenerateSbdToeSkill(args: Record<string, unknown> = {}): G
     coverage
   }, toolPrefix, prefixProvided);
 
+  /*
+   * 0.20.0-beta.42 — o ramo POR PAPEL servia sem `next` (célula da matriz), enquanto o ramo
+   * genérico o tinha: o consumidor recebia um skill instalável e ficava sem saber o que
+   * verificar a seguir. Mesma superfície, dois ramos, contratos diferentes — a forma exacta
+   * de defeito que a matriz existe para expor.
+   */
   return {
     content,
     suggested_path: suggestedPathFor(clientType, format, `sbd-${canonicalRole}`),
+    next: [
+      {
+        intent: "O que este papel faz de facto, para contraprovar o skill gerado",
+        tool: "get_guide_by_role",
+        with: `risk_level="${riskLevel}", role="${canonicalRole}"`,
+        kind: "structural" as const
+      },
+      ...generateSkillAffordances()
+    ],
     meta: {
       role: roleArg,
       canonical_role: canonicalRole,

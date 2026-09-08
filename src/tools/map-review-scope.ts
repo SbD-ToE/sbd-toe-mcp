@@ -1,5 +1,6 @@
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { reviewScopeAffordances } from "../serving/affordances.js";
+import { structuralProvenance } from "../serving/protocol-envelope.js";
 
 const VALID_RISK_LEVELS = ["L1", "L2", "L3"] as const;
 type RiskLevel = (typeof VALID_RISK_LEVELS)[number];
@@ -294,6 +295,8 @@ interface PathMappingEntry {
 }
 
 interface MapReviewScopeResult {
+  /** 0.20.0-beta.42 — proveniência da projecção (célula `provenance` da matriz). */
+  provenance?: Record<string, unknown>;
   bundlesToReview: BundleToReview[];
   pathMapping: PathMappingEntry[];
   nextSteps: string[];
@@ -503,5 +506,16 @@ export function handleMapSbdToeReviewScope(
     `Usar get_sbd_toe_chapter_brief(chapterId) para obter detalhe de cada bundle activado.`
   );
 
-  return { bundlesToReview, pathMapping, nextSteps, next: reviewScopeAffordances(riskLevel) };
+  return {
+    provenance: structuralProvenance(
+      "review_scope_projection",
+      "path→bundle mapping + indexes/bundle_catalog.jsonl",
+      "Âmbito de revisão derivado dos PATHS alterados: o mapeamento path→capítulo é do servidor e está " +
+        "declarado em `pathMapping`, para que se veja porque é que cada capítulo entrou."
+    ),
+    bundlesToReview,
+    pathMapping,
+    nextSteps,
+    next: reviewScopeAffordances(riskLevel)
+  };
 }

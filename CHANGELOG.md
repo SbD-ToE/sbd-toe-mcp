@@ -3,11 +3,76 @@ ai_assisted: true
 model: Claude Opus 5
 date: 2026-09-08
 purpose: documentation
-reasoning: v0.20.0-beta.41 (beta line, npm `beta`) — a declaração passa a olhar para o RESULTADO, não só para o VALOR. Vazio por COMBINAÇÃO legítima passa a ter banda (`empty_result` no guide, `empty_role_view` na applicability), com a causa isolada por recontagem. Os dois vocabulários de papel reconciliam-se pelos ALIASES PUBLICADOS (`devops` → `devops-sre`); onde não há alias, declara-se em vez de se inventar. ABS-001 deixa de ser lacuna E fronteira ao mesmo tempo: o rótulo local `unpublished_gap` passa a viver DENTRO da banda como superseded. E a matriz BANDA × SUPERFÍCIE (colunas derivadas do tools/list vivo) passa a portão de pré-promoção: 13 células FALTA reportadas como achados, e revelou uma banda nova — o erro tem de entregar o vocabulário AO CLIENTE, que duas superfícies calculavam e deitavam fora. Selecção intocada; ouro H byte-idêntico.
+reasoning: v0.20.0-beta.42 (beta line, npm `beta`) — as 13 células FALTA da matriz resolvidas: 9 eram defeitos do servidor e fecharam-se (nunca-silêncio e `next` no trace_graph, proveniência em 5 projecções + query_entities, cobertura no resolve_entities, `next` no ramo por papel do generate_skill, capítulo inexistente declarado no assess, papel do `task` no prepare), 4 eram regras do próprio instrumento demasiado largas e corrigiram-se nele, não no servidor. O `?` desce de 116 para 74 com sondas desenhadas — combinação de selectores e PROVA POR VARIAÇÃO de que um argumento ecoado afecta o resultado, que apanhou o `task` inerte do prepare. As 3 superfícies não exercitáveis passam a 0: o schema declara EXEMPLOS derivados do bundle para `kpi_values`, `query` e `uri`. Baseline da matriz passa a ZERO. Selecção intocada; ouro H byte-idêntico.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.42 — 2026-09-08
+
+**Fechar o que a própria matriz encontrou.** As 13 células `FALTA` da 1.ª corrida do portão
+banda × superfície. Pino **inalterado**; linha estável **intocada**. Nada promovido.
+
+### O que as 13 células eram, afinal
+
+**9 eram defeitos do servidor** — fechados. **4 eram regras deste instrumento demasiado
+largas** — corrigidas nele, e nenhuma reportada como achado:
+
+| célula | veredicto |
+|---|---|
+| `never_silent` · `trace_graph` | **defeito** — âncora do tipo errado devolvia `rows: []` em silêncio |
+| `next` · `trace_graph` · `generate_skill` | **defeito** — navegava sem dizer para onde; o ramo POR PAPEL do skill não tinha `next` |
+| `provenance` × 5 | **defeito** — cinco projecções serviam sem dizer de onde vinha |
+| `pagination` · `resolve_entities` | **defeito** — servia `total: 273`, devolvia 5, **e não tem `offset`** |
+| `pagination` · `get_playbook` | **regra** — contava listas de vocabulário como conjuntos paginados |
+| `absence_typed` × 3 | **regra** — apanhava uma lista vazia, um limite de serviço e uma rejeição de input |
+
+O `never_silent` do `trace_graph` era o mais urgente e o mais instrutivo: o cenário TC-G-02
+dava-o por declarado porque a âncora vinha ecoada e havia `provenance.note`. A matriz subiu a
+fasquia e ele caiu. As **âncoras válidas derivam-se do grafo** — é a coluna de ancoragem da
+mesma lente sem filtro — e a resposta diz se o vazio é `anchor_not_in_lens` (pediste por um
+eixo que esta lente não usa) ou `no_rows_for_anchor` (o vazio é do conteúdo).
+
+### O `?` desce de 116 para 74, e as não exercitáveis para zero
+
+Não por relaxar o critério — **um `?` honesto vale mais que um `tem` que não foi exercitado**
+— mas por **provocar a condição**:
+
+- **Sonda de combinação:** cruza dois selectores do próprio schema, que é como o vazio por
+  combinação aparece na vida real. Se der resultados, a célula fica `?`; não se inventa vazio.
+- **Prova por variação:** para cada argumento ecoado, chama outra vez com outro valor e compara
+  o payload sem os ecos. Igual ⇒ o argumento é **inerte** e tem de o declarar. Apanhou o
+  `prepare_sbd_toe_codegen_context`: dois `task` completamente diferentes, payload idêntico, e
+  o eco mudo — enquanto o `select`, sobre o mesmo input, já declarava `recorded_context`.
+- **Exemplos derivados no schema:** `kpi_values`, `query` e `uri` passam a trazer `examples`
+  vindos do bundle e do catálogo de recursos. **As 29 superfícies passam a ser exercitáveis** —
+  4 não exercitáveis → **0** — e as novas trouxeram consigo um defeito real: o `assess` com um
+  capítulo inexistente calculava uma `posture` sobre zero KPIs e declarava âmbito nele.
+
+### O custo do `task_role`, e o gate que não se levantou
+
+Declarar o papel do `task` custou tokens que o `prepare` não tinha. Reduzi a declaração até
+**uma chave e o termo do vocabulário** (`"recorded_context"`) — o resto já é ensinado no guia e
+no `select`. **Os gates duros do EPIC (`standard`, `minimal`, `ultrathin`) passaram sem se
+mexer.** O que se ajustou, em **+6 tokens medidos e declarados na linha**, foi a guarda por
+secção do `full`, que é um retrato do comportamento actual e não um gate do EPIC.
+
+### O número real de tools
+
+**29 tools · 12 resources · 3 prompts.** Todas as 29 são **chamadas** (`c.tool()`) por cenários
+de aceitação — não apenas nomeadas. A afirmação de «13 de 31 nunca exercitadas» não se confirma
+contra este inventário. O `31` mais provável é **tools + prompts** de uma build anterior (28+3);
+não o consigo reconstruir a partir daqui e digo-o em vez de o encaixar. Na reconciliação
+acusei o guia de citar uma tool inexistente — `prepare_grounded_codegen` — e era **um prompt**:
+falso positivo meu, agora impossível de repetir por uma invariante que valida cada nome citado
+contra tools ∪ prompts ∪ resources.
+
+### Verificação
+
+Suite **816/816** · aceitação **174, 0 FAIL, gate PASS** · **15 invariantes verdes** · **ouro do
+Eixo H byte-idêntico nos dois braços** · orçamentos **14/14** · `check:npm-package` verde ·
+matriz **0 FALTA, 0 não exercitáveis** — baseline do portão passa a **zero**.
 
 ## 0.20.0-beta.41 — 2026-09-08
 

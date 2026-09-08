@@ -140,6 +140,25 @@ export function handleAssessImplementation(args: Record<string, unknown>): Proto
    * `chapter` restringe o universo; sem ele, o global mantém-se como estava.
    */
   const chapterScope = typeof args["chapter"] === "string" ? (args["chapter"] as string) : undefined;
+  /*
+   * 0.20.0-beta.42 — um capítulo que NÃO EXISTE dava `applicable: 0` e uma nota a dizer
+   * «Avaliação RESTRITA ao capítulo `zzz`», como se ele existisse e não tivesse KPIs. O
+   * consumidor recebia uma POSTURA calculada sobre zero e nada lhe dizia que o âmbito era
+   * inválido — é a classe da b.41 (vazio legítimo à vista, silêncio sobre a causa) numa
+   * superfície que a varredura anterior não alcançou.
+   */
+  const chaptersWithMetrics = [...new Set(loadMetrics().map((m) => m.chapter_id).filter((c): c is string => typeof c === "string" && c.length > 0))].sort();
+  const unknownChapter =
+    chapterScope !== undefined && chaptersWithMetrics.length > 0 && !chaptersWithMetrics.includes(chapterScope)
+      ? {
+          requested: chapterScope,
+          chapters_with_metrics: chaptersWithMetrics,
+          note:
+            `\`${chapterScope}\` não é um capítulo com KPIs publicados. **O \`posture\` abaixo foi calculado ` +
+            "sobre ZERO KPIs aplicáveis** e não é um veredicto sobre nada — não o leias como «este capítulo " +
+            "está conforme». Os capítulos que têm KPIs vêm acima."
+        }
+      : undefined;
   const metrics = loadMetrics().filter((m) => chapterScope === undefined || m.chapter_id === chapterScope);
   // 0.15.1 (item 5): auto-relato VAZIO é rejeitado com erro instrutivo — um objecto {}
   // não é uma avaliação; a lista de metric_ids válidos é derivada do catálogo.
@@ -240,6 +259,7 @@ export function handleAssessImplementation(args: Record<string, unknown>): Proto
       per_kpi: page.items,
       gaps: boundedGaps,
       totals: { applicable, meets, gaps: gaps.length, not_reported: notReported },
+      ...(unknownChapter ? { unknown_chapter: unknownChapter } : {}),
       scope: {
         ...(chapterScope !== undefined ? { chapter: chapterScope } : {}),
         published_total: loadMetrics().length,
