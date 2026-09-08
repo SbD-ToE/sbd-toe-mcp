@@ -1,6 +1,6 @@
 # Eixo I — LEITURAS vs oráculo do lead — 2026-09-08-bandas-publicado — @shiftleftpt/sbd-toe-mcp@0.20.0-beta.41
 
-**Medido contra:** artefacto publicado (/private/tmp/claude-501/-Volumes-G-DRIVE-Shared-SecurityByDesign-TheoryOfEverything-sbd-toe-mcp-poc-0-20-0/b3825dd8-f795-4463-87d0-86d6a0934183/scratchpad/published41/node_modules/@shiftleftpt/sbd-toe-mcp/dist/index.js).
+**Medido contra:** artefacto publicado (<consumidor-limpo>/node_modules/@shiftleftpt/sbd-toe-mcp/dist/index.js).
 
 Oráculo: `DevelopmentGovernance/docs/golden-reading-cases.md` — v1 (ratificado 2026-09-06, «adjudico», sem emendas). **Os casos são do programme lead: transcritos, nunca emendados, e as expectativas NÃO se ajustam ao comportamento observado.**
 

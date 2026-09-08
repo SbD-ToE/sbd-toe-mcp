@@ -19,9 +19,24 @@ import { readingCases, runReadingCase, ORACLE_VERSION, ORACLE_PATH, VERDICTS } f
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const argv = process.argv.slice(2);
 const opt = (n) => { const i = argv.indexOf(n); return i >= 0 ? argv[i + 1] : undefined; };
+const serverEntry = opt("--server") ?? "dist/index.js";
 const outDir = path.resolve(repoRoot, opt("--out") ?? "docs/acceptance-runs");
 const stamp = opt("--stamp") ?? new Date().toISOString().slice(0, 10);
-const pkg = JSON.parse(readFileSync(path.join(repoRoot, "package.json"), "utf8"));
+/**
+ * A versão do relatório é a do SERVIDOR QUE FOI MEDIDO, não a do repo. Com `--server` a
+ * apontar para um artefacto instalado, carimbar a versão local produzia um registo que dizia
+ * ter medido uma versão e tinha medido outra — o mesmo erro de categoria que a b.38 veio
+ * fechar («a suite testava o repo, o utilizador recebe o tarball»).
+ */
+const repoPkg = JSON.parse(readFileSync(path.join(repoRoot, "package.json"), "utf8"));
+const measuredPkgPath = path.resolve(path.dirname(path.resolve(serverEntry)), "..", "package.json");
+const pkg = (() => {
+  try {
+    return JSON.parse(readFileSync(measuredPkgPath, "utf8"));
+  } catch {
+    return repoPkg;
+  }
+})();
 const pin = JSON.parse(readFileSync(path.join(repoRoot, "consumed-bundle.json"), "utf8"));
 
 /**
@@ -30,7 +45,7 @@ const pin = JSON.parse(readFileSync(path.join(repoRoot, "consumed-bundle.json"),
  * `--server <entry>` aponta o runner a um servidor instalado a partir do pacote publicado;
  * sem a opção, mede o repo (e o relatório diz qual dos dois mediu).
  */
-const serverEntry = opt("--server") ?? "dist/index.js";
+
 const measuredAgainst = serverEntry === "dist/index.js" ? "repo (dist/index.js)" : `artefacto publicado (${serverEntry})`;
 process.stderr.write(`medido contra: ${measuredAgainst}\n`);
 const client = await startClient(serverEntry);
