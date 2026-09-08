@@ -1,12 +1,15 @@
 meta:
   name: SbD-ToE Manual Ontology
-  version: '2.6'
+  version: '2.7'
   status: current
   scope: Manual ontology
-  tag: sbdtoe-ontology-v2.6
+  tag: sbdtoe-ontology-v2.7
   history:
   - version: '2.0'
     note: V2 backbone + semantic layer (imported baseline from sbd-toe-knowledge-graph)
+  - version: '2.7'
+    date: '2026-09-08'
+    note: "Aditiva sobre 2.6 (gate 2026-09-08, registo em agentic/decisions do programa; inclui absorção da matriz do Pontifex beta.41 e da extracção nunca-silenciosa do Codex): traversal_assertion_rule (verbo · fonte · o-que-NÃO-afirma · cobertura; join sem verbo não se publica) + catálogo de asserções das travessias existentes; «posse» abandonada — ArtifactRequirement ganha evidence_chapter_ids (required_as_evidence_by, 37/45, 8 órfãos declarados) e defining_chapter_ids fica re-documentado pelo verbo produced_or_operated_by (nome mantido); entidade DecisionInvolvement (approves|consulted, entidade paralela, âncora verbatim por registo, sem RACI) + relação authority_view; never_silence_principle (inclui caminhos de erro e conjuntos vazios); absence_model.build_declarations (3 espécies do Codex = gap/kg_surface a nível de registo — sem valor novo); referenced_roles (RH/PeopleOps referenciado-não-canónico) + ABS-011/ABS-012; ABS-005 re-tipado (ontology_model, fecha com a espécie) e ABS-003 com nota de reexame — alterações ao índice ratificadas e declaradas. Invariantes v2.2–v2.6 intocadas."
   - version: '2.6'
     date: '2026-09-07'
     note: "Aditiva sobre 2.5 (dispatch Orchestrator + decisões do programme lead 2026-09-07, registo em agentic/decisions do programa): epistemic_model.absence_model (gap | out_of_scope | deferred | elsewhere, critério em cascata, debt_of, autoridade/prova), índice declared_absences (5 nomeadas tipadas + re-tipagem das ausências v2.2–v2.5 SEM tocar nos blocos originais — o índice prevalece), segmentation_principle nomeado com TRÊS espécies de relação inter-segmentação (travessia, dependência, piso — cap. 00 é piso, não ausência), schema aditivo em SDLCPhase (+bundle_ids derivado de assignments; manual_chapter documentado como âncora editorial) e ArtifactRequirement (+defining/cited_chapter_ids por decisão K, +required_for_levels; mandatory documentado como legacy constante), relação bundle_operates_in_phase. Nada removido nem alterado; bateria de aditividade estrita."
@@ -112,6 +115,12 @@ epistemic_model:
       elsewhere: "existe noutra superfície; atribui o dono da camada; prova: pointer resolúvel mecanicamente"
     debt_of: [manual_content, ontology_model, kg_surface, mcp_serving]
     note: "«não modelado» NÃO é valor próprio — é gap/deferred com debt_of: ontology_model"
+    build_declarations: "v2.7 (extracção nunca-silenciosa do Codex, confirmada sem valor novo): declarações de build — tabela que não conseguiu ler, rótulo que não mapeou, papel que não resolveu — usam este vocabulário AO NÍVEL DO REGISTO: absence_type gap, debt_of kg_surface por defeito, re-triável para manual_content quando o diagnóstico é forma autoral (ex.: coluna SLA em falta no cap. 05; linha-pipe sem cabeçalho no cap. 11); a triagem pode mover debt_of, nunca silenciar o registo."
+  never_silence_principle:
+    # v2.7 — nomeado a partir da banda que a matriz do Pontifex descobriu por medir (caminho de erro sem banda).
+    statement: "Toda a resposta de toda a superfície — INCLUINDO caminhos de erro e conjuntos vazios — declara o que falta e porquê (absence_type quando aplicável). Um conjunto vazio sem declaração e um erro que não nomeia o vocabulário são violações da mesma classe que o silêncio numa superfície de dados."
+    scope: [data_surfaces, error_paths, empty_sets, build_declarations]
+    grounding: "disciplina já praticada secção-a-secção desde v2.2 (nunca silêncio no ponto de uso); v2.7 nomeia-a como princípio para que a classe seja varrida às superfícies irmãs em vez de fechada onde o achado foi reportado (diagnóstico do auditor externo)"
 requirement_selection_model:
   # v2.2 (2026-08-30) — semântica declarada pelo programme lead (pré-G-b, ciclo D2). Formulação normativa:
   description: "O catálogo do cap. 02 (requisitos type: base) é a baseline normativa por defeito — catálogo real, seleccionado sempre, salvo overlay; os catálogos dos capítulos 03–14 (type: domain-specific) são requisitos do domínio, activados pelo contexto (Docker → 09, IaC → 08, infra → 08/11, CI → 07…); os overlays operam por categoria com replace ou extend. Selecção = baseline ∪ específicos(contexto) ⊕ overlay."
@@ -325,6 +334,21 @@ entities:
     - expected_evidence: list[object]
     - indicators: list[string]
     - provenance: object
+  DecisionInvolvement:
+    layer: core
+    description: "v2.7 (Q2) — envolvimento de decisão publicado pelo Manual: papéis como aprovadores ou consultados (DoD, alçadas, aceitação de risco, tabelas de responsáveis). É o lado-grafo do invariante de MP4 («capacidade não implica autoridade»): a espécie protagonista («Como X, quero…») executa; esta decide ou é ouvida. Entidade PARALELA aos practice_assignments — os 1296 registos e as suas contagens ficam intocados. SEM RACI completo (accountable/responsible ficam com ABS-002)."
+    id_field: involvement_id
+    source_file: data/entities/decision_involvements.json  # a materializar pelo Codex
+    authority_class: normative
+    attributes:
+    - involvement_id: string
+    - role_id: string           # dos 13 canónicos (papéis referenciados não-canónicos NÃO entram aqui — ver referenced_roles)
+    - kind: enum[approves, consulted]  # approves = autoridade de gate (a decisão é condição para o resultado valer); consulted = envolvimento publicado sem gate nem execução
+    - bundle_id: string
+    - anchor: string            # âncora verbatim ficheiro:linha — OBRIGATÓRIA por registo
+    - applicable_levels: object # ex.: «Em L3: aprovação adicional» carrega L3
+    - refs: list[string]
+    - source_mode: enum[derived, explicit]  # derived = estrutura publicada (tabelas, checkboxes DoD, colunas); explicit = prosa curada com âncora
   Practice:
     layer: core
     description: Operational practice that implements one or more controls
@@ -607,6 +631,8 @@ entities:
     - cited_chapter_ids: list[string]  # v2.6, aditivo: chapter_ids ∖ defining_chapter_ids — proveniência sem prescrição
     - mandatory: boolean  # legado (v2.6): constante true em 45/45 — sem valor discriminante; mantido inalterado; usar required_for_levels
     - required_for_levels: object  # v2.6, aditivo: {L1,L2,L3} derivado pela cadeia ratificada de níveis (§1.9 do contrato KG: requisito→controlo→artefacto, applicable_levels autorados)
+    - evidence_chapter_ids: list[string]  # v2.7, aditivo (Q1): capítulos cujos requisitos EXIGEM o artefacto como prova (EP→requisito→capítulo); verbo required_as_evidence_by; 37/45, 8 órfãos declarados um a um na materialização
+    assertion_notes: "v2.7 (Q1 — «posse» não existe na fonte e a palavra sai do vocabulário servido): defining_chapter_ids afirma produced_or_operated_by (as práticas autoradas do capítulo produzem/operam o artefacto; 45/45, 35 com >1 — a multiplicidade é facto) e NÃO afirma exclusividade, casa única, nem exigência; evidence_chapter_ids afirma required_as_evidence_by e NÃO afirma produção; nenhuma das duas afirma prioridade entre capítulos nem implicação entre produção e exigência (Jaccard 0,36). O nome defining_chapter_ids mantém-se por aditividade — nos CONTROLOS «defining» é possessivo legítimo (17/20 com um único capítulo definidor no template); nos artefactos era nome herdado, corrigido por documentação, não por rename."
   ImplementationRule:
     layer: stub
     description: Reserved future layer for code-generation-facing implementation rules
@@ -707,6 +733,16 @@ relations:
       source_mode: heuristic
       authority_class: normative
       confidence_model: bounded
+  authority_view:
+    # v2.7 (Q2) — vista de autoridade. Verbo declarado por relação (traversal_assertion_rule).
+    role_holds_decision_involvement:
+      from: Role
+      to: DecisionInvolvement
+      status: stable
+      source_mode: derived
+      authority_class: normative
+      confidence_model: deterministic
+      note: "afirma «o papel aprova (gate) ou é consultado no âmbito publicado»; NÃO afirma execução (essa é a espécie protagonista) nem RACI completo; cada registo com âncora verbatim"
   segmentation_traversals:
     # v2.6 — travessias entre segmentações (ver segmentation_principle). Nunca contenção.
     bundle_operates_in_phase:
@@ -4737,6 +4773,19 @@ segmentation_principle:
     travessia: "N:M entre segmentações, PUBLICADA na fonte (ex.: MP → capítulos) ou DERIVADA de dados autorados com regra declarada (ex.: fase ↔ capítulos via assignments). Sem fonte, não há travessia — deriva-se o que é publicado, nunca o que é conveniente."
     dependencia: "consumo tipado entre instâncias da MESMA segmentação (ex.: arestas inter-MP dependency|feedback, regra do template)"
     piso: "relação transversal de fundação — aplica-se a tudo, independentemente do eixo da segmentação (ex.: cap. 00-fundamentos: «capítulo de definição para que se entenda o resto do manual; roles e mínimos — transversal a todo o manual»). O piso NÃO é ausência de nenhuma vista, não recebe fase nem se tipa out_of_scope; a v2.5 já o publica (path_edge kind: piso; MP-01/MP-04/MP-05 atravessam-no)."
+  traversal_assertion_rule:
+    # v2.7 (ratificada 2026-09-08) — a regra que faltava ao princípio: não só a cardinalidade, o que se AFIRMA.
+    statement: "Toda a travessia derivada declara: (i) o VERBO que afirma; (ii) a fonte autorada de que deriva; (iii) o que NÃO afirma (asserções negativas obrigatórias); (iv) a cobertura, com órfãos declarados um a um. Um join que não consegue nomear o verbo NÃO SE PUBLICA — «join permissivo» é violação nomeada."
+  traversal_assertions:
+    # catálogo das travessias existentes com verbo e asserções negativas (documentação; nada muda de conteúdo)
+    phase_bundles: {verb: opera-na-fase, source: practice_assignments autorados, does_not_assert: "contenção; cobertura do cap. 00 (piso); equivalência fase↔capítulo"}
+    control_defining_chapters: {verb: define, source: "template de controlos (defining_chapters, decisão K)", does_not_assert: "exclusividade de citação", note: "possessivo LEGÍTIMO — 17/20 controlos têm um único capítulo definidor publicado"}
+    artifact_defining_chapters: {verb: produced_or_operated_by, source: source_practice_ids autoradas, does_not_assert: "posse; casa única; exigência probatória"}
+    artifact_evidence_chapters: {verb: required_as_evidence_by, source: "EP→requisito→capítulo", does_not_assert: "produção; cobertura total (8/45 órfãos declarados)"}
+    mp_traverses_bundle: {verb: atravessa, source: "percursos publicados (macro-processos.md)", does_not_assert: "contenção; ordem entre capítulos fora do percurso"}
+    mp_consumes_from: {verb: consome, source: "outputs[].consumed_by verbatim + regra Entradas/Gatilhos", does_not_assert: "ordem linear única; equivalência dependency↔feedback"}
+    acore_alignment: {verb: corresponde-a, source: "curadoria ratificada (102, tipada exact/partial/related)", does_not_assert: "autoria de conteúdo; cobertura por related"}
+    role_holds_decision_involvement: {verb: "aprova | é-consultado", source: "estruturas publicadas (DoD, alçadas, tabelas) + curadoria com âncora", does_not_assert: "execução; RACI completo"}
   derivations:
     phase_bundles: "SDLCPhase.bundle_ids = capítulos com >=1 practice_assignment autorado na fase (papel×nível×fase publicados no Manual). Verificado 2026-09-07: plan 8 · design 7 · develop 9 · build 6 · test 6 · deploy 10 · operate 12 · govern 11 — design inclui o cap. 04 e develop o cap. 06 porque os assignments o publicam; 6 dos 7 capítulos ausentes do rollout regressam (o 00 entra como piso). O cap. 00 fica fora desta derivação POR SER PISO, não por ausência."
     artifact_defining_chapters: "ArtifactRequirement.defining_chapter_ids = capítulos das source_practice_ids (decisão K, precedente ratificado v2.1/contrato §1.20); cited_chapter_ids = chapter_ids ∖ defining (ex. verificado: SBOM 7 definidores vs 15 citados)"
@@ -4773,6 +4822,7 @@ declared_absences:
     owner: "Author + Codex (triagem)"
     decided_on: '2026-09-07'
     evidence: "papel canónico existe; deveres em prosa existem (cap. 14, TRN-007, GOV-013, MP4); 0 assignments servidos (GR-04)"
+    review_note: "v2.7: reexaminar a triagem com a espécie DecisionInvolvement — parte dos deveres publicados pode ser approves/consulted; o que sobrar continua gap"
   - absence_id: ABS-004
     statement: "Cross-checks normativos ISO/PCI/SOC2/HIPAA/FedRAMP/CSA"
     absence_type: deferred
@@ -4783,10 +4833,13 @@ declared_absences:
   - absence_id: ABS-005
     statement: "Atribuições para gestao-executiva no cap. 01"
     absence_type: gap
-    debt_of: "a triar (kg_surface se a US do cap. 01 nomeia o papel e a extracção perde; senão manual_content)"
-    owner: "Author + Codex (triagem)"
+    debt_of: ontology_model
+    owner: Archon
     decided_on: '2026-09-07'
-    evidence: "o catálogo dá-lhe deveres (CLA-002: aprovação L3); US-15@01 existe; atribuição não servida"
+    retyped_on: '2026-09-08'
+    retyped_by: "programme-lead (gate Q2): «foi o absence_model ratificado a 07-09 que apanhou uma dívida atribuída ao lado errado»"
+    evidence: "o cap. 01 PUBLICA o papel 6× como aprovador/consultado (l.42, 225, 273, 292, 432, 447, 452); o conteúdo sempre lá esteve — faltava a espécie DecisionInvolvement ao modelo"
+    closes_in: "materialização de DecisionInvolvement (Codex, pós-v2.7)"
   # --- re-tipagem das ausências declaradas em v2.2–v2.5 (blocos originais intocados; este índice prevalece) ---
   - absence_id: ABS-006
     statement: "Operadores de overlay replace|extend (requirement_selection_model.status.overlay_operators)"
@@ -4822,3 +4875,36 @@ declared_absences:
     owner: Archon
     trigger: "ciclo do desenho de assurance"
     decided_on: '2026-08-30'
+  - absence_id: ABS-011
+    statement: "RH/PeopleOps — papel usado pelo Manual (protagonista de US-01 do cap. 13) fora do vocabulário canónico de 13 papéis"
+    absence_type: gap
+    debt_of: manual_content
+    owner: Author
+    decided_by: "Archon (decisão delegada pelo lead no gate 2026-09-08); registado em referenced_roles para nunca-silêncio"
+    decided_on: '2026-09-08'
+    evidence: "13-formacao-onboarding/aplicacao-lifecycle.md:47; o próprio Manual declara «13 papéis canónicos» em 00-fundamentos — canonizar como 14.º ou mapear é decisão de conteúdo, não da ontologia"
+    closes_in: "vaga de conteúdo do Manual (canonizar ou mapear); entretanto a extracção declara-o referenciado-não-canónico"
+  - absence_id: ABS-012
+    statement: "13 células FALTA da matriz banda×superfície do Pontifex (beta.41: provenance ×5, absence_typed ×3, next ×2, paginação ×2, never_silent ×1) + banda de caminho de erro"
+    absence_type: gap
+    debt_of: mcp_serving
+    owner: Pontifex
+    decided_on: '2026-09-08'
+    evidence: "matriz 29×8 (63 tem · 32 n/a · 13 FALTA · 119 «?»); verificado pelo Archon: são bandas de SERVING — o modelo já fornece o substrato (absence_model, proveniência nos registos, never_silence_principle nomeado nesta versão); as 3 células absence_typed dependem apenas da materialização do vocabulário já emitido"
+    closes_in: "Vaga E do Pontifex (dispatch do Orchestrator 2026-09-08); os 119 «?» são inventário de serving, não ausência de modelo"
+# ---------------------------------------------------------------------------
+# referenced_roles (v2.7, 2026-09-08 — caso RH/PeopleOps; ver ABS-011)
+# ---------------------------------------------------------------------------
+referenced_roles:
+  # v2.7 — papéis que o Manual USA mas que não pertencem ao vocabulário canónico («13 papéis canónicos», declaração
+  # do próprio Manual em 00-fundamentos). A ontologia NÃO canoniza papéis por conta própria (seria contradizer a
+  # fonte); regista-os como referenciados-não-canónicos para que a extracção os declare resolvidos-como-referenciados
+  # em vez de não-resolvidos (nunca-silêncio). Canonizar (14.º) ou mapear é decisão de conteúdo (Author) — ABS-011.
+  items:
+  - referenced_role_id: rh-peopleops
+    label: RH/PeopleOps
+    canonical: false
+    anchors:
+    - "13-formacao-onboarding/aplicacao-lifecycle.md:47 (US-01: «Como RH/PeopleOps, quero garantir formação obrigatória de onboarding em SbD…» — PROTAGONISTA de US autorada)"
+    - "02-requisitos-seguranca/addon/02-lista-requisitos-base.md (mapeamento por domínio: responsável típico do cap. 13 inclui PeopleOps)"
+    absence_ref: ABS-011

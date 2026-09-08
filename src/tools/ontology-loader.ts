@@ -157,6 +157,14 @@ export interface ArtifactRequirement {
   cited_chapter_ids?: string[];
   /** 0.20.0-beta.40 — níveis em que é exigido. QUASE degenerado: 43 dos 45 são {L1,L2,L3}. */
   required_for_levels?: Record<string, boolean>;
+  /** 0.20.0-beta.43 (v2.7) — capítulos que o EXIGEM COMO PROVA (`required_as_evidence_by`). */
+  evidence_chapter_ids?: string[];
+  /**
+   * 0.20.0-beta.43 — a ausência declarada, para os artefactos sem capítulo probatório. É um
+   * OBJECTO com `absence_type` — a fonte já o tipa, e por isso liga-se ao vocabulário de
+   * ausências sem o servidor inferir nada.
+   */
+  evidence_chapters_absence?: Record<string, unknown>;
   description?: string;
 }
 
@@ -548,6 +556,10 @@ export function getOntologyData(): OntologyData {
       chapter_ids: arrStr(item, "chapter_ids"),
       ...(Array.isArray(item["defining_chapter_ids"]) ? { defining_chapter_ids: arrStr(item, "defining_chapter_ids") } : {}),
       ...(Array.isArray(item["cited_chapter_ids"]) ? { cited_chapter_ids: arrStr(item, "cited_chapter_ids") } : {}),
+      ...(Array.isArray(item["evidence_chapter_ids"]) ? { evidence_chapter_ids: arrStr(item, "evidence_chapter_ids") } : {}),
+      ...(isRecord(item["evidence_chapters_absence"])
+        ? { evidence_chapters_absence: item["evidence_chapters_absence"] as Record<string, unknown> }
+        : {}),
       ...(isRecord(item["required_for_levels"])
         ? {
             required_for_levels: Object.fromEntries(

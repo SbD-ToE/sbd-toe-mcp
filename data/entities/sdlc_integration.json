@@ -1,7 +1,184 @@
 {
   "agent": "lifecycle_extractor",
-  "generated_at": "2026-09-07T13:36:41Z",
+  "generated_at": "2026-09-08T11:33:16Z",
   "items": [
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-01"
+      ],
+      "id": "01-classificacao-aplicacoes-us-01-plan-1",
+      "phase": "Início",
+      "phase_normalized": "plan",
+      "practice_id": "01-classificacao-aplicacoes:classificacao-inicial-da-aplicacao",
+      "responsible": "**Developer + Scrum Master / Team Lead + AppSec Engineer**",
+      "responsible_normalized": [
+        "developer",
+        "scrum-master",
+        "appsec-engineer"
+      ],
+      "sla": "Antes da primeira release",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-01-classificacao-inicial-da-aplicacao",
+      "trigger": "Kick-off / Definição de projeto",
+      "user_story_id": "01-classificacao-aplicacoes-us-01",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-01"
+      ],
+      "id": "01-classificacao-aplicacoes-us-01-design-2",
+      "phase": "Arquitetura",
+      "phase_normalized": "design",
+      "practice_id": "01-classificacao-aplicacoes:classificacao-inicial-da-aplicacao",
+      "responsible": "**Developer + Arquitetos de Software + AppSec Engineer**",
+      "responsible_normalized": [
+        "developer",
+        "arquitetos-software",
+        "appsec-engineer"
+      ],
+      "sla": "Antes da aprovação de arquitetura",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-01-classificacao-inicial-da-aplicacao",
+      "trigger": "Revisão de design inicial",
+      "user_story_id": "01-classificacao-aplicacoes-us-01",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-02"
+      ],
+      "id": "01-classificacao-aplicacoes-us-02-plan-1",
+      "phase": "Planeamento",
+      "phase_normalized": "plan",
+      "practice_id": "01-classificacao-aplicacoes:aplicacao-da-matriz-de-controlo",
+      "responsible": "**Developer + Scrum Master / Team Lead + AppSec Engineer**",
+      "responsible_normalized": [
+        "developer",
+        "scrum-master",
+        "appsec-engineer"
+      ],
+      "sla": "Antes de implementação",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-02-aplicacao-da-matriz-de-controlo",
+      "trigger": "Após classificação",
+      "user_story_id": "01-classificacao-aplicacoes-us-02",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-03"
+      ],
+      "id": "01-classificacao-aplicacoes-us-03-operate-1",
+      "phase": "Contínuo",
+      "phase_normalized": "operate",
+      "practice_id": "01-classificacao-aplicacoes:revisao-por-alteracao-relevante-event-based",
+      "responsible": "**AppSec Engineer + Developer + GRC/Compliance + Product Owner**",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "developer",
+        "grc-compliance",
+        "product-owner"
+      ],
+      "sla": "3 dias úteis após trigger",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-03-revisao-por-alteracao-relevante-event-based",
+      "trigger": "Mudança arquitetura, dados ou exposição",
+      "user_story_id": "01-classificacao-aplicacoes-us-03",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-04"
+      ],
+      "id": "01-classificacao-aplicacoes-us-04-test-1",
+      "phase": "Validação",
+      "phase_normalized": "test",
+      "practice_id": "01-classificacao-aplicacoes:analise-de-risco-residual",
+      "responsible": "**GRC/Compliance + AppSec Engineer + Developer**",
+      "responsible_normalized": [
+        "grc-compliance",
+        "appsec-engineer",
+        "developer"
+      ],
+      "sla": "5 dias úteis",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-04-analise-de-risco-residual",
+      "trigger": "Após mapeamento de matrix; pré-release",
+      "user_story_id": "01-classificacao-aplicacoes-us-04",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-05"
+      ],
+      "id": "01-classificacao-aplicacoes-us-05-test-1",
+      "phase": "Pré-Release",
+      "phase_normalized": "test",
+      "practice_id": "01-classificacao-aplicacoes:validacao-antes-do-go-live",
+      "responsible": "**QA + AppSec Engineer + Gestão Executiva (L3)**",
+      "responsible_normalized": [
+        "qa",
+        "appsec-engineer",
+        "gestao-executiva",
+        "l3",
+        "untitled"
+      ],
+      "sla": "2 dias úteis antes de deploy",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-05-validacao-antes-do-go-live",
+      "trigger": "Aplicação pronta para go-live",
+      "user_story_id": "01-classificacao-aplicacoes-us-05",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-06"
+      ],
+      "id": "01-classificacao-aplicacoes-us-06-design-1",
+      "phase": "Design",
+      "phase_normalized": "design",
+      "practice_id": "01-classificacao-aplicacoes:mapeamento-de-ameacas-por-nivel-de-risco",
+      "responsible": "**AppSec Engineer + Arquitetos + Developer**",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "arquitetos",
+        "developer"
+      ],
+      "sla": "Antes de dev começar",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-06-mapeamento-de-ameacas-por-nivel-de-risco",
+      "trigger": "Após arquitetura definida",
+      "user_story_id": "01-classificacao-aplicacoes-us-06",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-06"
+      ],
+      "id": "01-classificacao-aplicacoes-us-06-test-2",
+      "phase": "Validação",
+      "phase_normalized": "test",
+      "practice_id": "01-classificacao-aplicacoes:mapeamento-de-ameacas-por-nivel-de-risco",
+      "responsible": "**AppSec Engineer**",
+      "responsible_normalized": [
+        "appsec-engineer"
+      ],
+      "sla": "1 semana antes de release",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-06-mapeamento-de-ameacas-por-nivel-de-risco",
+      "trigger": "Pré-release (L2/L3)",
+      "user_story_id": "01-classificacao-aplicacoes-us-06",
+      "warnings": []
+    },
     {
       "confidence": 0.91,
       "evidence": [
@@ -1782,9 +1959,9 @@
       "evidence": [
         "sdlc integration extracted for US-16"
       ],
-      "id": "05-dependencias-sbom-sca-us-16-unassigned-1",
+      "id": "05-dependencias-sbom-sca-us-16-plan-1",
       "phase": "Início de projeto",
-      "phase_normalized": "unassigned",
+      "phase_normalized": "plan",
       "practice_id": "05-dependencias-sbom-sca:governacao-documentada-de-politica-de-severidade-registries-e-registo-de-aprovacao",
       "responsible": "AppSec + GRC",
       "responsible_normalized": [
@@ -2773,9 +2950,9 @@
       "evidence": [
         "sdlc integration extracted for US-10"
       ],
-      "id": "09-containers-imagens-us-10-unassigned-4",
+      "id": "09-containers-imagens-us-10-govern-4",
       "phase": "GRC",
-      "phase_normalized": "unassigned",
+      "phase_normalized": "govern",
       "practice_id": "09-containers-imagens:segmentacao-de-rede-e-networkpolicy",
       "responsible": "GRC / Compliance",
       "responsible_normalized": [
@@ -2813,9 +2990,9 @@
       "evidence": [
         "sdlc integration extracted for US-11"
       ],
-      "id": "09-containers-imagens-us-11-unassigned-2",
+      "id": "09-containers-imagens-us-11-operate-2",
       "phase": "Patching",
-      "phase_normalized": "unassigned",
+      "phase_normalized": "operate",
       "practice_id": "09-containers-imagens:golden-base-images-com-patching-automatico",
       "responsible": "DevOps / SRE (automático se via Dependabot)",
       "responsible_normalized": [
@@ -2834,9 +3011,9 @@
       "evidence": [
         "sdlc integration extracted for US-11"
       ],
-      "id": "09-containers-imagens-us-11-unassigned-3",
+      "id": "09-containers-imagens-us-11-test-3",
       "phase": "Validação",
-      "phase_normalized": "unassigned",
+      "phase_normalized": "test",
       "practice_id": "09-containers-imagens:golden-base-images-com-patching-automatico",
       "responsible": "Pipeline CI/CD",
       "responsible_normalized": [
@@ -3264,9 +3441,9 @@
       "evidence": [
         "sdlc integration extracted for US-22"
       ],
-      "id": "09-containers-imagens-us-22-unassigned-2",
+      "id": "09-containers-imagens-us-22-govern-2",
       "phase": "GRC",
-      "phase_normalized": "unassigned",
+      "phase_normalized": "govern",
       "practice_id": "09-containers-imagens:retencao-e-limpeza-de-imagens-com-renovacao-periodica-por-sla",
       "responsible": "GRC / Compliance",
       "responsible_normalized": [
@@ -5217,7 +5394,7 @@
       "warnings": []
     }
   ],
-  "run_id": "20260907T133641Z",
+  "run_id": "20260908T113316Z",
   "source": {
     "branch": "HEAD",
     "commit_sha": "ea6b396b9caa77beddf1096b56250fe073796e8f",
@@ -5232,7 +5409,7 @@
     "warnings": 53
   },
   "summary": {
-    "sdlc_integration_rows": 251
+    "sdlc_integration_rows": 259
   },
   "version": "0.1.0",
   "warnings": [

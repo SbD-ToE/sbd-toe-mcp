@@ -18,6 +18,7 @@
  */
 import { loadMetrics, type MetricRecord } from "./assess-implementation.js";
 import { getOntologyData, runtimeCountSemantics } from "./ontology-loader.js";
+import { assertionFor } from "../serving/traversal-assertions.js";
 import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 import { paginate } from "../serving/response-shaping.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
@@ -182,6 +183,23 @@ export function handleGetChapterCapability(args: Record<string, unknown>): Chapt
       ? []
       : (ontology.artifactRequirements ?? []).filter((ar) => (ar.chapter_ids ?? []).includes(chapterArg));
   const definingIds = new Set(definingRecords.map((ar) => ar.artifact_type_id));
+  /*
+   * 0.20.0-beta.43 (v2.7) — a TERCEIRA base: `evidence_chapter_ids`. É a travessia
+   * `required_as_evidence_by` (EP → requisito → capítulo), publicada agora como dado em vez
+   * de recalculada aqui. Os 8 artefactos sem cobertura vêm DECLARADOS um a um, com a
+   * ausência que a fonte lhes atribui — não se somam ao conjunto nem se calam.
+   */
+  const evidenceRecords =
+    chapterArg === undefined
+      ? []
+      : (ontology.artifactRequirements ?? []).filter((ar) => (ar.evidence_chapter_ids ?? []).includes(chapterArg));
+  const evidenceIds = new Set(evidenceRecords.map((ar) => ar.artifact_type_id));
+  const evidenceOrphans = (ontology.artifactRequirements ?? [])
+    .filter((ar) => (ar.evidence_chapter_ids ?? []).length === 0)
+    .map((ar) => ({
+      artifact_type_id: ar.artifact_type_id,
+      ...(ar.evidence_chapters_absence !== undefined ? { declared_absence: ar.evidence_chapters_absence } : {})
+    }));
   const relationEdges = relatedRecords
     .map((ar) => shapeArtifact(ar.artifact_type_id))
     .sort((a, b) => a.artifact_type_id.localeCompare(b.artifact_type_id));
@@ -209,8 +227,9 @@ export function handleGetChapterCapability(args: Record<string, unknown>): Chapt
       : {
           content_type: "derived",
           note:
-            "Bases distintas, e cada artefacto diz de quais vem e se é DESTE capítulo (`own`) ou apenas " +
-            "citado por ele. **Nenhuma delas é «os artefactos que este capítulo tem de produzir»** — esse " +
+            "Bases distintas, e cada artefacto diz de QUAIS vem. Cada base traz o VERBO que afirma e — " +
+            "obrigatoriamente — **o que NÃO afirma** (`asserts.does_not_assert`, verbatim da ontologia). " +
+            "**Nenhuma delas é «os artefactos que este capítulo tem de produzir»** nem afirma posse: esse " +
             "conjunto o Manual não publica, e o servidor não o inventa.",
           bases: {
             evidence_pattern: {
@@ -220,14 +239,36 @@ export function handleGetChapterCapability(args: Record<string, unknown>): Chapt
               evidence_patterns: chapterEvidencePatterns.length,
               distinct_artifacts: epIds.size
             },
-            defining_chapter: {
+            /*
+             * 0.20.0-beta.43 — o `own` SAIU. O verbo publicado é `produced_or_operated_by`, e a
+             * asserção da própria fonte diz que ele **não afirma posse**. A b.40 chamou-lhe
+             * `own` porque não havia nada que o impedisse; agora a asserção negativa vem na
+             * banda, e a palavra não volta.
+             */
+            produced_or_operated_by: {
               what:
-                "capítulos que DEFINEM o artefacto (`defining_chapter_ids`, v2.6 decisão K) — a proveniência. " +
-                "É o conjunto que este capítulo pode chamar SEU.",
+                "capítulos que PRODUZEM OU OPERAM o artefacto (`defining_chapter_ids`, v2.6 decisão K), " +
+                "derivado das `source_practice_ids` autoradas.",
+              asserts: assertionFor("artifact_defining_chapters"),
               available: hasDefiningSurface,
               artifacts: definingIds.size
             },
+            required_as_evidence_by: {
+              what:
+                "capítulos que EXIGEM o artefacto como prova (`evidence_chapter_ids`, v2.7), derivado de " +
+                "EP → requisito → capítulo e publicado como dado.",
+              asserts: assertionFor("artifact_evidence_chapters"),
+              artifacts: evidenceIds.size,
+              orphans: {
+                count: evidenceOrphans.length,
+                note:
+                  "artefactos SEM capítulo que os exija como prova — declarados um a um, com a ausência " +
+                  "que a fonte lhes atribui. Não entram no conjunto e não desaparecem.",
+                values: evidenceOrphans
+              }
+            },
             chapter_relation: {
+              asserts: assertionFor("artifact_defining_chapters"),
               what:
                 "registos `ArtifactRequirement` que NOMEIAM este capítulo em `chapter_ids` — a citação. São " +
                 "ARESTAS da relação capítulo↔artefacto: não um total, não uma obrigação de produção, e " +
@@ -248,11 +289,10 @@ export function handleGetChapterCapability(args: Record<string, unknown>): Chapt
             ...a,
             bases: [
               ...(epIds.has(a.artifact_type_id) ? ["evidence_pattern"] : []),
-              ...(definingIds.has(a.artifact_type_id) ? ["defining_chapter"] : []),
+              ...(definingIds.has(a.artifact_type_id) ? ["produced_or_operated_by"] : []),
+              ...(evidenceIds.has(a.artifact_type_id) ? ["required_as_evidence_by"] : []),
               ...(relIds.has(a.artifact_type_id) ? ["chapter_relation"] : [])
-            ],
-            /** `own` = este capítulo DEFINE-o. Sem `own`, apenas o cita. */
-            own: definingIds.has(a.artifact_type_id)
+            ]
           })),
           declared_limits: {
             ...(hasDefiningSurface

@@ -1,7 +1,16 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 1296,
+  "count": 1305,
   "entity_type": "PracticeAssignment",
+  "extraction_declarations": {
+    "count": 24,
+    "source_artifact": "data/entities/extraction_declarations.json",
+    "summary": {
+      "role_unresolved": 2,
+      "unmapped_phase_label": 15,
+      "unreadable_sdlc_table": 7
+    }
+  },
   "items": [
     {
       "action": "classificar a aplicação com base nos eixos Exposição, Dados e Impacto (E+D+I)",
@@ -15,7 +24,7 @@
         "practice assignment derived from US-01"
       ],
       "id": "01-classificacao-aplicacoes-developer-l1-us-01",
-      "phase": "unassigned",
+      "phase": "plan",
       "practice_id": "01-classificacao-aplicacoes:classificacao-inicial-da-aplicacao",
       "proportionality": "Obrigatório - Classificação simplificada, apenas eixos principais",
       "risk_level": "L1",
@@ -37,7 +46,7 @@
         "practice assignment derived from US-01"
       ],
       "id": "01-classificacao-aplicacoes-developer-l2-us-01",
-      "phase": "unassigned",
+      "phase": "plan",
       "practice_id": "01-classificacao-aplicacoes:classificacao-inicial-da-aplicacao",
       "proportionality": "Obrigatório - Classificação completa com validação formal por AppSec Engineer",
       "risk_level": "L2",
@@ -59,7 +68,73 @@
         "practice assignment derived from US-01"
       ],
       "id": "01-classificacao-aplicacoes-developer-l3-us-01",
-      "phase": "unassigned",
+      "phase": "plan",
+      "practice_id": "01-classificacao-aplicacoes:classificacao-inicial-da-aplicacao",
+      "proportionality": "Obrigatório - Classificação formal, validada e aprovada por AppSec Engineer + GRC/Compliance",
+      "risk_level": "L3",
+      "role": "developer",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-01-classificacao-inicial-da-aplicacao",
+      "user_story_id": "01-classificacao-aplicacoes-us-01",
+      "warnings": []
+    },
+    {
+      "action": "classificar a aplicação com base nos eixos Exposição, Dados e Impacto (E+D+I)",
+      "artifacts": [
+        "ficheiro_classificacao_aplicacao_yaml_localizacao_repo_security",
+        "ficheiro_matriz_controlos_aplicada_md_evidencia_anexo_ao_pr_ou_wiki"
+      ],
+      "chapter_id": "01-classificacao-aplicacoes",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-01"
+      ],
+      "id": "01-classificacao-aplicacoes-developer-l1-us-01",
+      "phase": "design",
+      "practice_id": "01-classificacao-aplicacoes:classificacao-inicial-da-aplicacao",
+      "proportionality": "Obrigatório - Classificação simplificada, apenas eixos principais",
+      "risk_level": "L1",
+      "role": "developer",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-01-classificacao-inicial-da-aplicacao",
+      "user_story_id": "01-classificacao-aplicacoes-us-01",
+      "warnings": []
+    },
+    {
+      "action": "classificar a aplicação com base nos eixos Exposição, Dados e Impacto (E+D+I)",
+      "artifacts": [
+        "ficheiro_classificacao_aplicacao_yaml_localizacao_repo_security",
+        "ficheiro_matriz_controlos_aplicada_md_evidencia_anexo_ao_pr_ou_wiki"
+      ],
+      "chapter_id": "01-classificacao-aplicacoes",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-01"
+      ],
+      "id": "01-classificacao-aplicacoes-developer-l2-us-01",
+      "phase": "design",
+      "practice_id": "01-classificacao-aplicacoes:classificacao-inicial-da-aplicacao",
+      "proportionality": "Obrigatório - Classificação completa com validação formal por AppSec Engineer",
+      "risk_level": "L2",
+      "role": "developer",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-01-classificacao-inicial-da-aplicacao",
+      "user_story_id": "01-classificacao-aplicacoes-us-01",
+      "warnings": []
+    },
+    {
+      "action": "classificar a aplicação com base nos eixos Exposição, Dados e Impacto (E+D+I)",
+      "artifacts": [
+        "ficheiro_classificacao_aplicacao_yaml_localizacao_repo_security",
+        "ficheiro_matriz_controlos_aplicada_md_evidencia_anexo_ao_pr_ou_wiki"
+      ],
+      "chapter_id": "01-classificacao-aplicacoes",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-01"
+      ],
+      "id": "01-classificacao-aplicacoes-developer-l3-us-01",
+      "phase": "design",
       "practice_id": "01-classificacao-aplicacoes:classificacao-inicial-da-aplicacao",
       "proportionality": "Obrigatório - Classificação formal, validada e aprovada por AppSec Engineer + GRC/Compliance",
       "risk_level": "L3",
@@ -81,7 +156,7 @@
         "practice assignment derived from US-01"
       ],
       "id": "01-classificacao-aplicacoes-scrum-master-l1-us-01",
-      "phase": "unassigned",
+      "phase": "plan",
       "practice_id": "01-classificacao-aplicacoes:classificacao-inicial-da-aplicacao",
       "proportionality": "Obrigatório - Classificação simplificada, apenas eixos principais",
       "risk_level": "L1",
@@ -103,7 +178,7 @@
         "practice assignment derived from US-01"
       ],
       "id": "01-classificacao-aplicacoes-scrum-master-l2-us-01",
-      "phase": "unassigned",
+      "phase": "plan",
       "practice_id": "01-classificacao-aplicacoes:classificacao-inicial-da-aplicacao",
       "proportionality": "Obrigatório - Classificação completa com validação formal por AppSec Engineer",
       "risk_level": "L2",
@@ -125,7 +200,73 @@
         "practice assignment derived from US-01"
       ],
       "id": "01-classificacao-aplicacoes-scrum-master-l3-us-01",
-      "phase": "unassigned",
+      "phase": "plan",
+      "practice_id": "01-classificacao-aplicacoes:classificacao-inicial-da-aplicacao",
+      "proportionality": "Obrigatório - Classificação formal, validada e aprovada por AppSec Engineer + GRC/Compliance",
+      "risk_level": "L3",
+      "role": "scrum-master",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-01-classificacao-inicial-da-aplicacao",
+      "user_story_id": "01-classificacao-aplicacoes-us-01",
+      "warnings": []
+    },
+    {
+      "action": "classificar a aplicação com base nos eixos Exposição, Dados e Impacto (E+D+I)",
+      "artifacts": [
+        "ficheiro_classificacao_aplicacao_yaml_localizacao_repo_security",
+        "ficheiro_matriz_controlos_aplicada_md_evidencia_anexo_ao_pr_ou_wiki"
+      ],
+      "chapter_id": "01-classificacao-aplicacoes",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-01"
+      ],
+      "id": "01-classificacao-aplicacoes-scrum-master-l1-us-01",
+      "phase": "design",
+      "practice_id": "01-classificacao-aplicacoes:classificacao-inicial-da-aplicacao",
+      "proportionality": "Obrigatório - Classificação simplificada, apenas eixos principais",
+      "risk_level": "L1",
+      "role": "scrum-master",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-01-classificacao-inicial-da-aplicacao",
+      "user_story_id": "01-classificacao-aplicacoes-us-01",
+      "warnings": []
+    },
+    {
+      "action": "classificar a aplicação com base nos eixos Exposição, Dados e Impacto (E+D+I)",
+      "artifacts": [
+        "ficheiro_classificacao_aplicacao_yaml_localizacao_repo_security",
+        "ficheiro_matriz_controlos_aplicada_md_evidencia_anexo_ao_pr_ou_wiki"
+      ],
+      "chapter_id": "01-classificacao-aplicacoes",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-01"
+      ],
+      "id": "01-classificacao-aplicacoes-scrum-master-l2-us-01",
+      "phase": "design",
+      "practice_id": "01-classificacao-aplicacoes:classificacao-inicial-da-aplicacao",
+      "proportionality": "Obrigatório - Classificação completa com validação formal por AppSec Engineer",
+      "risk_level": "L2",
+      "role": "scrum-master",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-01-classificacao-inicial-da-aplicacao",
+      "user_story_id": "01-classificacao-aplicacoes-us-01",
+      "warnings": []
+    },
+    {
+      "action": "classificar a aplicação com base nos eixos Exposição, Dados e Impacto (E+D+I)",
+      "artifacts": [
+        "ficheiro_classificacao_aplicacao_yaml_localizacao_repo_security",
+        "ficheiro_matriz_controlos_aplicada_md_evidencia_anexo_ao_pr_ou_wiki"
+      ],
+      "chapter_id": "01-classificacao-aplicacoes",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-01"
+      ],
+      "id": "01-classificacao-aplicacoes-scrum-master-l3-us-01",
+      "phase": "design",
       "practice_id": "01-classificacao-aplicacoes:classificacao-inicial-da-aplicacao",
       "proportionality": "Obrigatório - Classificação formal, validada e aprovada por AppSec Engineer + GRC/Compliance",
       "risk_level": "L3",
@@ -147,7 +288,7 @@
         "practice assignment derived from US-02"
       ],
       "id": "01-classificacao-aplicacoes-developer-l1-us-02",
-      "phase": "unassigned",
+      "phase": "plan",
       "practice_id": "01-classificacao-aplicacoes:aplicacao-da-matriz-de-controlo",
       "proportionality": "Obrigatório - Aplicar controlos mínimos",
       "risk_level": "L1",
@@ -169,7 +310,7 @@
         "practice assignment derived from US-02"
       ],
       "id": "01-classificacao-aplicacoes-developer-l2-us-02",
-      "phase": "unassigned",
+      "phase": "plan",
       "practice_id": "01-classificacao-aplicacoes:aplicacao-da-matriz-de-controlo",
       "proportionality": "Obrigatório - Controlos completos com rastreamento obrigatório",
       "risk_level": "L2",
@@ -191,7 +332,7 @@
         "practice assignment derived from US-02"
       ],
       "id": "01-classificacao-aplicacoes-developer-l3-us-02",
-      "phase": "unassigned",
+      "phase": "plan",
       "practice_id": "01-classificacao-aplicacoes:aplicacao-da-matriz-de-controlo",
       "proportionality": "Obrigatório - Controlos completos + reforçados + validação por AppSec",
       "risk_level": "L3",
@@ -213,7 +354,7 @@
         "practice assignment derived from US-02"
       ],
       "id": "01-classificacao-aplicacoes-scrum-master-l1-us-02",
-      "phase": "unassigned",
+      "phase": "plan",
       "practice_id": "01-classificacao-aplicacoes:aplicacao-da-matriz-de-controlo",
       "proportionality": "Obrigatório - Aplicar controlos mínimos",
       "risk_level": "L1",
@@ -235,7 +376,7 @@
         "practice assignment derived from US-02"
       ],
       "id": "01-classificacao-aplicacoes-scrum-master-l2-us-02",
-      "phase": "unassigned",
+      "phase": "plan",
       "practice_id": "01-classificacao-aplicacoes:aplicacao-da-matriz-de-controlo",
       "proportionality": "Obrigatório - Controlos completos com rastreamento obrigatório",
       "risk_level": "L2",
@@ -257,7 +398,7 @@
         "practice assignment derived from US-02"
       ],
       "id": "01-classificacao-aplicacoes-scrum-master-l3-us-02",
-      "phase": "unassigned",
+      "phase": "plan",
       "practice_id": "01-classificacao-aplicacoes:aplicacao-da-matriz-de-controlo",
       "proportionality": "Obrigatório - Controlos completos + reforçados + validação por AppSec",
       "risk_level": "L3",
@@ -280,7 +421,7 @@
         "practice assignment derived from US-03"
       ],
       "id": "01-classificacao-aplicacoes-appsec-engineer-l1-us-03",
-      "phase": "unassigned",
+      "phase": "operate",
       "practice_id": "01-classificacao-aplicacoes:revisao-por-alteracao-relevante-event-based",
       "proportionality": "Sim (por alteração relevante)",
       "risk_level": "L1",
@@ -303,7 +444,7 @@
         "practice assignment derived from US-03"
       ],
       "id": "01-classificacao-aplicacoes-appsec-engineer-l2-us-03",
-      "phase": "unassigned",
+      "phase": "operate",
       "practice_id": "01-classificacao-aplicacoes:revisao-por-alteracao-relevante-event-based",
       "proportionality": "Obrigatório",
       "risk_level": "L2",
@@ -326,7 +467,7 @@
         "practice assignment derived from US-03"
       ],
       "id": "01-classificacao-aplicacoes-appsec-engineer-l3-us-03",
-      "phase": "unassigned",
+      "phase": "operate",
       "practice_id": "01-classificacao-aplicacoes:revisao-por-alteracao-relevante-event-based",
       "proportionality": "Obrigatório",
       "risk_level": "L3",
@@ -349,7 +490,7 @@
         "practice assignment derived from US-04"
       ],
       "id": "01-classificacao-aplicacoes-grc-compliance-l1-us-04",
-      "phase": "unassigned",
+      "phase": "test",
       "practice_id": "01-classificacao-aplicacoes:analise-de-risco-residual",
       "proportionality": "Opcional (se crítico)",
       "risk_level": "L1",
@@ -372,7 +513,7 @@
         "practice assignment derived from US-04"
       ],
       "id": "01-classificacao-aplicacoes-grc-compliance-l2-us-04",
-      "phase": "unassigned",
+      "phase": "test",
       "practice_id": "01-classificacao-aplicacoes:analise-de-risco-residual",
       "proportionality": "Obrigatório",
       "risk_level": "L2",
@@ -395,7 +536,7 @@
         "practice assignment derived from US-04"
       ],
       "id": "01-classificacao-aplicacoes-grc-compliance-l3-us-04",
-      "phase": "unassigned",
+      "phase": "test",
       "practice_id": "01-classificacao-aplicacoes:analise-de-risco-residual",
       "proportionality": "Obrigatório",
       "risk_level": "L3",
@@ -418,7 +559,7 @@
         "practice assignment derived from US-05"
       ],
       "id": "01-classificacao-aplicacoes-qa-l1-us-05",
-      "phase": "unassigned",
+      "phase": "test",
       "practice_id": "01-classificacao-aplicacoes:validacao-antes-do-go-live",
       "proportionality": "Recomendado",
       "risk_level": "L1",
@@ -441,7 +582,7 @@
         "practice assignment derived from US-05"
       ],
       "id": "01-classificacao-aplicacoes-qa-l2-us-05",
-      "phase": "unassigned",
+      "phase": "test",
       "practice_id": "01-classificacao-aplicacoes:validacao-antes-do-go-live",
       "proportionality": "Recomendado (obrigatório)",
       "risk_level": "L2",
@@ -464,7 +605,7 @@
         "practice assignment derived from US-05"
       ],
       "id": "01-classificacao-aplicacoes-qa-l3-us-05",
-      "phase": "unassigned",
+      "phase": "test",
       "practice_id": "01-classificacao-aplicacoes:validacao-antes-do-go-live",
       "proportionality": "Obrigatório (formal + assinatura)",
       "risk_level": "L3",
@@ -487,7 +628,7 @@
         "practice assignment derived from US-06"
       ],
       "id": "01-classificacao-aplicacoes-appsec-engineer-l1-us-06",
-      "phase": "unassigned",
+      "phase": "design",
       "practice_id": "01-classificacao-aplicacoes:mapeamento-de-ameacas-por-nivel-de-risco",
       "proportionality": "Opcional (STRIDE básico)",
       "risk_level": "L1",
@@ -510,7 +651,7 @@
         "practice assignment derived from US-06"
       ],
       "id": "01-classificacao-aplicacoes-appsec-engineer-l2-us-06",
-      "phase": "unassigned",
+      "phase": "design",
       "practice_id": "01-classificacao-aplicacoes:mapeamento-de-ameacas-por-nivel-de-risco",
       "proportionality": "Recomendado (STRIDE completo)",
       "risk_level": "L2",
@@ -533,7 +674,76 @@
         "practice assignment derived from US-06"
       ],
       "id": "01-classificacao-aplicacoes-appsec-engineer-l3-us-06",
-      "phase": "unassigned",
+      "phase": "design",
+      "practice_id": "01-classificacao-aplicacoes:mapeamento-de-ameacas-por-nivel-de-risco",
+      "proportionality": "Obrigatório (STRIDE + MITRE ATT&CK)",
+      "risk_level": "L3",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-06-mapeamento-de-ameacas-por-nivel-de-risco",
+      "user_story_id": "01-classificacao-aplicacoes-us-06",
+      "warnings": []
+    },
+    {
+      "action": "verificar se as ameaças esperadas para o nível de criticidade estão cobertas por controlos aplicados ou exceções rastreáveis",
+      "artifacts": [
+        "ficheiro_ameacas_mapeamento_md_com_tabela_ameaca_categoria_controlo_aplicado_cobertura_sim_nao_excecao",
+        "localizacao_repo_documentacao_de_seguranca",
+        "rastreamento_em_jira_backlog_validacao_por_appsec_arquitetos"
+      ],
+      "chapter_id": "01-classificacao-aplicacoes",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-06"
+      ],
+      "id": "01-classificacao-aplicacoes-appsec-engineer-l1-us-06",
+      "phase": "test",
+      "practice_id": "01-classificacao-aplicacoes:mapeamento-de-ameacas-por-nivel-de-risco",
+      "proportionality": "Opcional (STRIDE básico)",
+      "risk_level": "L1",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-06-mapeamento-de-ameacas-por-nivel-de-risco",
+      "user_story_id": "01-classificacao-aplicacoes-us-06",
+      "warnings": []
+    },
+    {
+      "action": "verificar se as ameaças esperadas para o nível de criticidade estão cobertas por controlos aplicados ou exceções rastreáveis",
+      "artifacts": [
+        "ficheiro_ameacas_mapeamento_md_com_tabela_ameaca_categoria_controlo_aplicado_cobertura_sim_nao_excecao",
+        "localizacao_repo_documentacao_de_seguranca",
+        "rastreamento_em_jira_backlog_validacao_por_appsec_arquitetos"
+      ],
+      "chapter_id": "01-classificacao-aplicacoes",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-06"
+      ],
+      "id": "01-classificacao-aplicacoes-appsec-engineer-l2-us-06",
+      "phase": "test",
+      "practice_id": "01-classificacao-aplicacoes:mapeamento-de-ameacas-por-nivel-de-risco",
+      "proportionality": "Recomendado (STRIDE completo)",
+      "risk_level": "L2",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-06-mapeamento-de-ameacas-por-nivel-de-risco",
+      "user_story_id": "01-classificacao-aplicacoes-us-06",
+      "warnings": []
+    },
+    {
+      "action": "verificar se as ameaças esperadas para o nível de criticidade estão cobertas por controlos aplicados ou exceções rastreáveis",
+      "artifacts": [
+        "ficheiro_ameacas_mapeamento_md_com_tabela_ameaca_categoria_controlo_aplicado_cobertura_sim_nao_excecao",
+        "localizacao_repo_documentacao_de_seguranca",
+        "rastreamento_em_jira_backlog_validacao_por_appsec_arquitetos"
+      ],
+      "chapter_id": "01-classificacao-aplicacoes",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-06"
+      ],
+      "id": "01-classificacao-aplicacoes-appsec-engineer-l3-us-06",
+      "phase": "test",
       "practice_id": "01-classificacao-aplicacoes:mapeamento-de-ameacas-por-nivel-de-risco",
       "proportionality": "Obrigatório (STRIDE + MITRE ATT&CK)",
       "risk_level": "L3",
@@ -30913,5 +31123,13 @@
   "profiles": [
     "guide"
   ],
+  "roles_unassigned": {
+    "assignment_count": 12,
+    "by_user_story": {
+      "05-dependencias-sbom-sca-us-14": 9,
+      "13-formacao-onboarding-us-01": 3
+    },
+    "note": "papel `unassigned` = fallback do extractor quando a US não resolve papel canónico — declarado à imagem do phases_unassigned; fase `unassigned` é política ratificada e vive no envelope de phases.json"
+  },
   "source_artifact": "data/entities/practice_assignments.json"
 }

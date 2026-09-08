@@ -112,6 +112,7 @@
         "staging"
       ],
       "bundle_ids": [
+        "01-classificacao-aplicacoes",
         "02-requisitos-seguranca",
         "05-dependencias-sbom-sca",
         "07-cicd-seguro",
@@ -162,6 +163,7 @@
         "operacoes"
       ],
       "bundle_ids": [
+        "01-classificacao-aplicacoes",
         "02-requisitos-seguranca",
         "03-threat-modeling",
         "04-arquitetura-segura",
@@ -214,10 +216,9 @@
     }
   ],
   "phases_unassigned": {
-    "assignment_count": 219,
-    "chapter_count": 8,
+    "assignment_count": 195,
+    "chapter_count": 7,
     "chapters": [
-      "01-classificacao-aplicacoes",
       "02-requisitos-seguranca",
       "03-threat-modeling",
       "05-dependencias-sbom-sca",
@@ -231,5 +232,26 @@
   "profiles": [
     "guide"
   ],
-  "source_artifact": "data/entities/sdlc_phases_canonical_s6.json"
+  "source_artifact": "data/entities/sdlc_phases_canonical_s6.json",
+  "traversal_assertion": {
+    "does_not_assert": "contenção; cobertura do cap. 00 (piso); equivalência fase↔capítulo",
+    "source": "practice_assignments autorados",
+    "verb": "opera-na-fase"
+  },
+  "unmapped_phase_labels": {
+    "Alteração": 1,
+    "Build/Promoção": 1,
+    "CI/CD / Pré-release": 1,
+    "CI/CD / Staging": 1,
+    "Catalogação": 1,
+    "Definição": 1,
+    "Design/Refactor": 1,
+    "Dev/CI": 2,
+    "Execução": 1,
+    "Implementação": 1,
+    "Integração": 1,
+    "Início/Revisão": 1,
+    "Staging / Pré-release": 1,
+    "Sunsetting": 1
+  }
 }

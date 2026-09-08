@@ -31,13 +31,14 @@
         "Ferramenta, versão, data documentados",
         "Referência: [addon-11: Validação Assistida por Ferramentas](/sbd-toe/sbd-manual/classificacao-aplicacoes/addon/validacao-assistida-ferramentas)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-01 - Classificação inicial da aplicação",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "classificar a aplicação com base nos eixos Exposição, Dados e Impacto (E+D+I)",
@@ -75,13 +76,14 @@
         "Exceções documentadas, aprovadas por AppSec Engineer com justificação técnica",
         "AppSec Engineer valida mapeamento antes de entrada em backlog"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-02 - Aplicação da matriz de controlo",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "aplicar a matriz de controlos e mapear cada requisito para REQ-XXX do Capítulo 02",
@@ -127,13 +129,14 @@
         "Se nível alterou: trilho de escalação documentado",
         "Referência: [addon-11: Validação Assistida por Ferramentas](/sbd-toe/sbd-manual/classificacao-aplicacoes/addon/validacao-assistida-ferramentas)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-03 - Revisão por alteração relevante (event-based)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "rever a classificação de criticidade sempre que houver alterações relevantes",
@@ -171,13 +174,14 @@
         "Em L3: aprovação adicional por Gestão Executiva/CISO",
         "Entrada em ferramenta GRC com audit trail"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-04 - Análise de risco residual",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "registar o risco residual após aplicar os controlos definidos",
@@ -215,13 +219,14 @@
         "Nenhuma exceção não-aprovada pendente",
         "Rastreamento: cada controlo ↔ evidência documentado"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-05 - Validação antes do go-live",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "validar que os requisitos aplicáveis por nível de risco estão cumpridos antes da entrada em produção",
@@ -267,13 +272,14 @@
         "Validação por Arquitetos + especialistas de domínio concluída",
         "Referência: [addon-11: Validação Assistida por Ferramentas](/sbd-toe/sbd-manual/classificacao-aplicacoes/addon/validacao-assistida-ferramentas)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-06 - Mapeamento de ameaças por nível de risco",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "verificar se as ameaças esperadas para o nível de criticidade estão cobertas por controlos aplicados ou exceções rastreáveis",

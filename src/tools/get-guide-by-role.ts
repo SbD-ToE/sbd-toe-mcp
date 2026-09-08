@@ -19,6 +19,7 @@ import { _resolveConsultResult } from "./consult-security-requirements.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { guideByRoleAffordances } from "../serving/affordances.js";
 import { absenceBand, absenceNaming } from "../serving/declared-absences.js";
+import { referencedRoleFor, manifestGapBand } from "../serving/traversal-assertions.js";
 
 const VALID_RISK_LEVELS = ["L1", "L2", "L3"] as const;
 type RiskLevel = (typeof VALID_RISK_LEVELS)[number];
@@ -471,6 +472,29 @@ export function handleGetGuideByRole(
    * o mesmo corte sem a fase e sem o papel. É a diferença entre «este papel não faz nada» e
    * «este papel não faz nada NESTA fase», que é a pergunta que o consumidor tem a seguir.
    */
+  /*
+   * 0.20.0-beta.43 (v2.7) — um papel REFERENCIADO no Manual mas fora do vocabulário canónico.
+   * Servi-lo como 14.º seria inventar vocabulário; ignorá-lo seria dizer que não existe. Vem
+   * como o que é, com as âncoras que o provam e a contagem canónica intacta.
+   */
+  const referencedRole =
+    typeof full.roleFilter === "string" && full.roleFilter.length > 0 && full.assignments.length === 0
+      ? referencedRoleFor(full.roleFilter)
+      : undefined;
+  /*
+   * A contagem canónica vem do VOCABULÁRIO (`roles.json` = 13), não do `knownRoles` desta
+   * superfície, que inclui a sentinela `unassigned`. Contar a sentinela como papel repetiria
+   * aqui o erro que a b.39 corrigiu nas fases — e faria os 13 parecerem 14 justamente na
+   * banda que existe para dizer que ninguém foi acrescentado ao vocabulário.
+   */
+  const canonicalRoleCount = (getOntologyData().roles ?? []).length;
+  /*
+   * 0.20.0-beta.43 — o manifesto do pino declara `DecisionInvolvement` e o bundle não traz o
+   * ficheiro. É aqui que um consumidor procuraria «quem aprova o quê», e por isso é aqui que
+   * a falta se declara — em vez de o vazio parecer ausência de conteúdo.
+   */
+  const decisionGap = manifestGapBand("decision_involvements");
+
   const emptyCombination = (() => {
     if (!hasFilter || full.assignments.length > 0 || full.unsupported_role !== undefined) return undefined;
     const filters = [
@@ -576,6 +600,37 @@ export function handleGetGuideByRole(
     ...(levelNamedInLabel.count > 0 ? { level_named_in_label: levelNamedInLabel } : {}),
     ...(role_checklist ? { role_checklist } : {}),
     ...(full.unsupported_role ? { unsupported_role: full.unsupported_role } : {}),
+    ...(decisionGap
+      ? {
+          decision_involvement_unavailable: {
+            ...decisionGap,
+            what_it_would_answer:
+              "quem APROVA e quem é CONSULTADO por capítulo — a peça que falta ao «o que eu decido vs. o que " +
+              "delego». Esta superfície serve EXECUÇÃO (atribuições de prática); a decisão é outra espécie e " +
+              "viria dessa entidade."
+          }
+        }
+      : {}),
+    ...(referencedRole
+      ? {
+          referenced_role: {
+            requested: String(full.roleFilter ?? ""),
+            referenced_role_id: referencedRole.referenced_role_id,
+            label: referencedRole.label,
+            canonical: false,
+            anchors: referencedRole.anchors,
+            ...(referencedRole.absence_ref !== undefined
+              ? { absence: absenceBand(referencedRole.absence_ref, `papel referenciado \`${referencedRole.label}\``) }
+              : {}),
+            note:
+              "**REFERENCIADO, NÃO CANÓNICO.** O Manual NOMEIA este papel — as âncoras acima são as " +
+              "passagens autoradas — mas ele não está no vocabulário dos papéis canónicos, e por isso não " +
+              "tem atribuições nesta superfície. **Não é o 14.º papel:** os canónicos continuam a ser " +
+              `${canonicalRoleCount}. Não o adiciones ao vocabulário e não infiras dele responsabilidades ` +
+              "que o Manual não atribui — lê as âncoras, que é o que existe."
+          }
+        }
+      : {}),
     role_summary,
     phase_summary,
     meta: {

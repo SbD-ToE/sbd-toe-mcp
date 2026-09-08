@@ -134,5 +134,19 @@
   "profiles": [
     "guide"
   ],
+  "referenced_roles": {
+    "items": [
+      {
+        "absence_ref": "ABS-011",
+        "anchors": [
+          "13-formacao-onboarding/aplicacao-lifecycle.md:47 (US-01: «Como RH/PeopleOps, quero garantir formação obrigatória de onboarding em SbD…» — PROTAGONISTA de US autorada)",
+          "02-requisitos-seguranca/addon/02-lista-requisitos-base.md (mapeamento por domínio: responsável típico do cap. 13 inclui PeopleOps)"
+        ],
+        "canonical": false,
+        "label": "RH/PeopleOps",
+        "referenced_role_id": "rh-peopleops"
+      }
+    ]
+  },
   "source_artifact": "data/entities/canonical_roles_s5.json"
 }

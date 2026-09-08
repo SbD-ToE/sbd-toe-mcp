@@ -1,7 +1,7 @@
 {
   "artifact_type": "v1_runtime_surface_manifest",
   "build": {
-    "generated_at": "2026-09-07T13:37:20.178067+00:00",
+    "generated_at": "2026-09-08T11:34:32.300946+00:00",
     "generator": "sbdtoe_indexing.workflows.build_v1_runtime_surface"
   },
   "drift_note": "Counts sourced from slice contracts (authoritative actual). Declared sum from consolidated index. Drift concentrated in working_contract slices (notably ASC-09 RPR); upstream V1 enumeration incomplete in some slices. Flagged for Archon visibility via Step 8 delivery handover.",

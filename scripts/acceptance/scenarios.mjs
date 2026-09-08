@@ -1920,16 +1920,27 @@ export const scenarios = [
       const cap = await c.tool("get_sbd_toe_chapter_capability", { chapter: "01-classificacao-aplicacoes" });
       if (!cap.ok) return fail(cap.error);
       const art = cap.data.artifacts;
-      if (!(art?.bases?.defining_chapter?.artifacts > 0)) return fail("a base de DEFINIÇÃO não é servida");
-      if (!(art.bases.defining_chapter.artifacts < art.bases.chapter_relation.relation_edges))
-        return fail("definidores e citadores continuam a ser o mesmo conjunto");
-      const own = new Set(art.values.filter((v) => v.own).map((v) => v.name ?? v.artifact_type_id));
+      /*
+       * 0.20.0-beta.43: a base mudou de nome porque o `own` SAIU — o verbo publicado é
+       * `produced_or_operated_by`, e a asserção da fonte diz que ele NÃO afirma posse. O
+       * cenário passa a assertar o verbo e a asserção negativa, não a palavra que a v2.7
+       * veio proibir.
+       */
+      const pob = art?.bases?.produced_or_operated_by;
+      if (!(pob?.artifacts > 0)) return fail("a base `produced_or_operated_by` não é servida");
+      if ("own" in JSON.parse(JSON.stringify(art.values[0] ?? {}))) return fail("o `own` voltou ao vocabulário servido");
+      if (!/não afirma|does_not/.test(JSON.stringify(pob.asserts ?? {}))) return fail("a base vem sem a asserção da fonte");
+      if (!/posse/.test(String(pob.asserts?.does_not_assert ?? ""))) return fail("a asserção negativa não chega ao consumidor");
+      if (!(pob.artifacts < art.bases.chapter_relation.relation_edges))
+        return fail("produtores e citadores continuam a ser o mesmo conjunto");
+      const produced = new Set(art.values.filter((v) => (v.bases ?? []).includes("produced_or_operated_by")).map((v) => v.name ?? v.artifact_type_id));
       for (const alheio of ["Sbom", "Container Image", "Sast Report"])
-        if (own.has(alheio)) return fail(`o cap. 01 continua a reclamar \`${alheio}\` como seu`);
-      if (!art.values.some((v) => !v.own)) return fail("nenhum artefacto marcado como apenas citado");
+        if (produced.has(alheio)) return fail(`o cap. 01 continua a reclamar \`${alheio}\` como seu`);
+      if (!art.values.some((v) => !(v.bases ?? []).includes("produced_or_operated_by"))) return fail("nenhum artefacto marcado como apenas citado");
       const brief = await c.tool("get_sbd_toe_chapter_brief", { chapterId: "01-classificacao-aplicacoes" });
       const bd = brief.data.data ?? brief.data;
-      if (!(bd.artifacts_basis?.cited_only > 0)) return fail("o brief não separa citados de definidos");
+      if (!(bd.artifacts_basis?.cited_only > 0)) return fail("o brief não separa citados de produzidos");
+      if (!/posse/.test(String(bd.artifacts_basis?.asserts?.does_not_assert ?? ""))) return fail("o brief serve o verbo sem a asserção negativa");
       if (!(bd.artifacts_basis.cited_values ?? []).length) return fail("a nota do brief aponta para um campo que não vem");
       // (D) required_for_levels servido pelo que é, sem lhe vestir significado
       if (!/degenerado/i.test(art.bases?.required_for_levels?.what ?? ""))
@@ -1951,7 +1962,7 @@ export const scenarios = [
       if (!boundary || boundary.absence_type !== "out_of_scope") return fail("nenhuma fronteira declarada onde há uma decisão do lead");
       if (!bands.find((b) => b.absence_type === "gap")?.debt_of) return fail("dívida sem dono declarado");
       if (!bands.find((b) => b.absence_type === "deferred")?.trigger) return fail("`deferred` sem gatilho — sem gatilho seria gap");
-      return ok(`roteiro cobre ${t.chapters_covered_including_floor}/${t.chapters_in_manual} (${rd.chapter_coverage.traversed} atravessados + piso), omissão a 0, ${rd.assignments_without_phase.assignment_count} atribuições sem fase declaradas; cap.01 define ${art.bases.defining_chapter.artifacts} e cita ${art.bases.chapter_relation.relation_edges}; ausências tipadas ${[...kinds].join("/")} com o tipo vindo do índice`); } },
+      return ok(`roteiro cobre ${t.chapters_covered_including_floor}/${t.chapters_in_manual} (${rd.chapter_coverage.traversed} atravessados + piso), omissão a 0, ${rd.assignments_without_phase.assignment_count} atribuições sem fase declaradas; cap.01 produz/opera ${pob.artifacts} e cita ${art.bases.chapter_relation.relation_edges}; ausências tipadas ${[...kinds].join("/")} com o tipo vindo do índice`); } },
 
   { id: "TC-F-67", axis: "F", title: "0.20.0-beta.41: vazio por COMBINAÇÃO declarado, vocabulário de papel reconciliado, e uma só espécie por ausência", tool: "get_guide_by_role",
     run: async (c) => {
@@ -1999,6 +2010,44 @@ export const scenarios = [
       if (bad.ok) return fail("um capítulo inexistente devia ser recusado");
       if (!/known chapters/i.test(String(bad.error ?? ""))) return fail("recusa sem entregar o vocabulário ao cliente");
       return ok(`manager declarado (${md.role_vocabulary.canonical_roles.length} canónicos à vista); devops→devops-sre com ${us} user stories; vazio por combinação isolado (papel ${e.assignments_for_role_alone} / fase ${e.assignments_for_phase_alone}) com recuperação no next; ABS-001 só como fronteira, unpublished_gap superseded 1×; erro nomeia os capítulos`); } },
+
+  { id: "TC-F-68", axis: "F", title: "0.20.0-beta.43 (v2.7): a asserção NEGATIVA chega ao consumidor; papel referenciado ≠ canónico; lacuna do pino declarada", tool: "get_sbd_toe_chapter_capability",
+    run: async (c) => {
+      // (1) cada travessia derivada traz o VERBO e o que NÃO afirma
+      const cap = await c.tool("get_sbd_toe_chapter_capability", { chapter: "01-classificacao-aplicacoes" });
+      if (!cap.ok) return fail(cap.error);
+      const art = cap.data.artifacts;
+      const pob = art?.bases?.produced_or_operated_by, ev = art?.bases?.required_as_evidence_by;
+      if (!pob?.asserts?.published) return fail("a travessia de produção vem sem asserção publicada");
+      if (pob.asserts.verb !== "produced_or_operated_by") return fail(`verbo servido: ${pob.asserts.verb}`);
+      if (!/posse/.test(pob.asserts.does_not_assert)) return fail("«não afirma posse» não chega ao consumidor");
+      if (!ev?.asserts?.published) return fail("a travessia probatória vem sem asserção");
+      if (!/produção/.test(ev.asserts.does_not_assert)) return fail("«não afirma produção» não chega ao consumidor");
+      // a palavra que a v2.7 veio proibir NÃO volta ao vocabulário servido
+      const blob = JSON.stringify(cap.data);
+      if (/"own"\s*:/.test(blob)) return fail("o `own` voltou ao payload");
+      // (2) os órfãos probatórios vêm declarados UM A UM
+      const orf = ev.orphans;
+      if (!(orf?.count > 0)) return fail("os artefactos sem capítulo probatório não são declarados");
+      if (orf.count !== (orf.values ?? []).length) return fail("a contagem de órfãos não bate com a lista");
+      if (!orf.values.every((v) => v.artifact_type_id && v.declared_absence)) return fail("órfão sem a ausência que a fonte lhe atribui");
+      // (3) papel REFERENCIADO não vira canónico
+      const rh = await c.tool("get_guide_by_role", { risk_level: "L2", role: "RH/PeopleOps" });
+      if (!rh.ok) return fail(rh.error);
+      const ref = rh.data.referenced_role;
+      if (!ref) return fail("um papel que o Manual NOMEIA cai no vazio como se não existisse");
+      if (ref.canonical !== false) return fail("o papel referenciado foi promovido a canónico");
+      if (!(ref.anchors ?? []).length) return fail("referenciado sem as âncoras que o provam");
+      if (!/13/.test(ref.note)) return fail("a nota não diz que os canónicos continuam a ser 13");
+      const known = (rh.data.meta?.knownRoles ?? []).filter((r) => r !== "unassigned");
+      if (known.includes(ref.referenced_role_id)) return fail("entrou no vocabulário canónico");
+      // (4) o que o manifesto do pino promete e o pino não traz, declara-se
+      const gap = rh.data.decision_involvement_unavailable;
+      if (gap) {
+        if (gap.shipped !== false || !(gap.declared_in_manifest > 0)) return fail("lacuna do pino mal declarada");
+        if (!/não traz|não foi empacotad/.test(gap.note)) return fail("a lacuna não diz que é de empacotamento");
+      }
+      return ok(`verbos servidos com asserção negativa (produção: «${pob.asserts.does_not_assert}»; prova: «${ev.asserts.does_not_assert}»); ${orf.count} órfãos declarados um a um; RH/PeopleOps referenciado com ${ref.anchors.length} âncoras e fora dos ${known.length} canónicos${gap ? `; lacuna do pino declarada (${gap.declared_in_manifest} ${gap.entity_type})` : ""}`); } },
 
   { id: "TC-G-01", axis: "G", title: "trace válido: determinismo + paginação G1 (3 lentes, total, cursor, sem IRIs)", tool: "trace_sbd_toe_graph",
     run: async (c) => {

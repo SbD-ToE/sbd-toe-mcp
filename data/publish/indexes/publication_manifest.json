@@ -32,7 +32,8 @@
     "overlay/framework_overlay_index.json",
     "bundle_policy_links.jsonl",
     "cross_layer_referrals.jsonl",
-    "runtime/metrics.json"
+    "runtime/metrics.json",
+    "runtime/decision_involvements.json"
   ],
   "builders": [
     "build-ontology-discovery",
@@ -67,9 +68,10 @@
     "runtime_antipatterns": 26,
     "runtime_artifact_requirements": 45,
     "runtime_artifacts": 45,
-    "runtime_assignments": 1296,
-    "runtime_bundle_artifacts": 19,
+    "runtime_assignments": 1305,
+    "runtime_bundle_artifacts": 20,
     "runtime_controls": 20,
+    "runtime_decision_involvements": 163,
     "runtime_evidence_patterns": 273,
     "runtime_metrics": 99,
     "runtime_phases": 8,
@@ -94,5 +96,5 @@
     "local_mirror_role": "build_input_only"
   },
   "primary_artifact": "canonical_chunks.jsonl",
-  "substrate_version": "manual-v1.8.1+sbdtoe-ontology-v2.6"
+  "substrate_version": "manual-v1.8.1+sbdtoe-ontology-v2.7"
 }

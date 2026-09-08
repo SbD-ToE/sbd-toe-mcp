@@ -11,6 +11,7 @@ import { resolveAppPath } from "../config.js";
 import type { LooseRecord } from "../types.js";
 import { getOntologyData, resolveRoleId } from "./ontology-loader.js";
 import { structuralProvenance } from "../serving/protocol-envelope.js";
+import { assertionFor } from "../serving/traversal-assertions.js";
 import { describeRequirementCitation, describeRequirementGap } from "../serving/requirement-id.js";
 import {
   listChaptersAffordances,
@@ -474,12 +475,14 @@ function handleGetSbdToeChapterBriefCore(
     ...(hasDefiningSurface
       ? {
           artifacts_basis: {
-            defining: artifacts.length,
+            asserts: assertionFor("artifact_defining_chapters"),
+            produced_or_operated_by: artifacts.length,
             cited_only: citedOnly.length,
             note:
-              "`artifacts` são os que este capítulo DEFINE (`defining_chapter_ids`, v2.6). Os que apenas o " +
-              "CITAM vêm em `cited_values` — citar não é possuir, e a lista única fazia o capítulo da " +
-              "classificação parecer dono do SBOM e da imagem de container.",
+              "`artifacts` são os que este capítulo PRODUZ OU OPERA (`produced_or_operated_by`, verbo " +
+              "publicado). Os que apenas o CITAM vêm em `cited_values`. **O verbo não afirma posse** — vê " +
+              "`asserts.does_not_assert`: a lista única fazia o capítulo da classificação parecer dono do " +
+              "SBOM e da imagem de container, e é isso que a asserção negativa existe para impedir.",
             ...(citedOnly.length > 0 ? { cited_values: citedOnly } : {})
           }
         }

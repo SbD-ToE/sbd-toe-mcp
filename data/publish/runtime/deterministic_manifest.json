@@ -36,7 +36,7 @@
       "source_artifact": "data/entities/practices.json"
     },
     {
-      "count": 1296,
+      "count": 1305,
       "entity_type": "PracticeAssignment",
       "file": "assignments.json",
       "name": "assignments",
@@ -120,6 +120,17 @@
         "review"
       ],
       "source_artifact": "data/entities/artifact_requirements.json"
+    },
+    {
+      "count": 163,
+      "entity_type": "DecisionInvolvement",
+      "file": "decision_involvements.json",
+      "name": "decision_involvements",
+      "profiles": [
+        "consult",
+        "guide"
+      ],
+      "source_artifact": "data/entities/decision_involvements.json"
     },
     {
       "count": 305,
@@ -255,5 +266,5 @@
       ]
     }
   },
-  "version": "manual-v1.8.1+sbdtoe-ontology-v2.6"
+  "version": "manual-v1.8.1+sbdtoe-ontology-v2.7"
 }

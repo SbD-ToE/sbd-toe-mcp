@@ -1,10 +1,25 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
+  "assertion_notes": "v2.7 (Q1 — «posse» não existe na fonte e a palavra sai do vocabulário servido): defining_chapter_ids afirma produced_or_operated_by (as práticas autoradas do capítulo produzem/operam o artefacto; 45/45, 35 com >1 — a multiplicidade é facto) e NÃO afirma exclusividade, casa única, nem exigência; evidence_chapter_ids afirma required_as_evidence_by e NÃO afirma produção; nenhuma das duas afirma prioridade entre capítulos nem implicação entre produção e exigência (Jaccard 0,36). O nome defining_chapter_ids mantém-se por aditividade — nos CONTROLOS «defining» é possessivo legítimo (17/20 com um único capítulo definidor no template); nos artefactos era nome herdado, corrigido por documentação, não por rename.",
   "chapter_relation_count": 469,
   "count": 45,
   "count_semantics": "`count` = distinct ArtifactRequirement records (45); `chapter_ids` rows form the chapter<->artifact relation (469 rows) — sum them for relation edges, never for totals.",
   "distinct_count": 45,
   "entity_type": "ArtifactRequirement",
+  "evidence_chapter_coverage": {
+    "covered": 37,
+    "orphans_declared_individually": [
+      "ART-architecture-baseline-57234e937b",
+      "ART-architecture-checklist-abc8e3982a",
+      "ART-architecture-decision-record-504be0e5f1",
+      "ART-architecture-review-5bbd6e5876",
+      "ART-guideline-catalog-5e53974142",
+      "ART-integration-review-179347cc14",
+      "ART-supplier-assessment-43fc2de564",
+      "ART-trust-boundary-model-e661186e9f"
+    ],
+    "total": 45
+  },
   "items": [
     {
       "artifact_type_id": "ART-access-review-e0648977e7",
@@ -36,6 +51,9 @@
         "control CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af references access_review",
         "control CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82 references access_review",
         "corpus document 010-sbd-manual/04-arquitetura-segura/canon/25-rastreabilidade.md matched aliases ['access review']"
+      ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca"
       ],
       "mandatory": true,
       "required_for_levels": {
@@ -111,6 +129,13 @@
         "control CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0 references alert_policy",
         "control CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70 references alert_policy",
         "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references alert_policy"
+      ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "08-iac-infraestrutura",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "14-governanca-contratacao"
       ],
       "mandatory": true,
       "required_for_levels": {
@@ -284,6 +309,20 @@
         "practice 01-classificacao-aplicacoes:producao-e-manutencao-do-inventario-central-com-autoridade-de-aprovacao-proporcional matched alias 'aprovacao'",
         "practice 02-requisitos-seguranca:validacao-e-aprovacao-final matched alias 'aprovacao'"
       ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -343,6 +382,12 @@
         "control CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4 references architecture_baseline",
         "corpus document 010-sbd-manual/04-arquitetura-segura/canon/25-rastreabilidade.md matched aliases ['architecture baseline']"
       ],
+      "evidence_chapter_ids": [],
+      "evidence_chapters_absence": {
+        "absence_type": "gap",
+        "note": "nenhum evidence pattern exige este artefacto como prova — required_as_evidence_by não cobre este registo (v2.7 Q1; declarado um a um)",
+        "status": "orphan_no_evidence_pattern"
+      },
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -389,6 +434,12 @@
       "evidence": [
         "control CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4 references architecture_checklist"
       ],
+      "evidence_chapter_ids": [],
+      "evidence_chapters_absence": {
+        "absence_type": "gap",
+        "note": "nenhum evidence pattern exige este artefacto como prova — required_as_evidence_by não cobre este registo (v2.7 Q1; declarado um a um)",
+        "status": "orphan_no_evidence_pattern"
+      },
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -439,6 +490,12 @@
         "corpus document 010-sbd-manual/04-arquitetura-segura/addon/07-termos-e-glossario-arquitetura.md matched aliases ['architecture decision record']",
         "corpus document 010-sbd-manual/04-arquitetura-segura/addon/10-kpis-metricas.md matched aliases ['architecture decision record']"
       ],
+      "evidence_chapter_ids": [],
+      "evidence_chapters_absence": {
+        "absence_type": "gap",
+        "note": "nenhum evidence pattern exige este artefacto como prova — required_as_evidence_by não cobre este registo (v2.7 Q1; declarado um a um)",
+        "status": "orphan_no_evidence_pattern"
+      },
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -485,6 +542,9 @@
       "evidence": [
         "control CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b references architecture_diagram"
       ],
+      "evidence_chapter_ids": [
+        "04-arquitetura-segura"
+      ],
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -518,6 +578,12 @@
         "control CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4 references architecture_review",
         "corpus document 010-sbd-manual/04-arquitetura-segura/canon/25-rastreabilidade.md matched aliases ['architecture review']"
       ],
+      "evidence_chapter_ids": [],
+      "evidence_chapters_absence": {
+        "absence_type": "gap",
+        "note": "nenhum evidence pattern exige este artefacto como prova — required_as_evidence_by não cobre este registo (v2.7 Q1; declarado um a um)",
+        "status": "orphan_no_evidence_pattern"
+      },
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -604,6 +670,21 @@
         "control CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0 references artifact_provenance",
         "control CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905 references artifact_provenance",
         "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references artifact_provenance"
+      ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding"
       ],
       "mandatory": true,
       "required_for_levels": {
@@ -807,6 +888,16 @@
         "control CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905 references artifact_signature",
         "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references artifact_signature"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "07-cicd-seguro",
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -977,6 +1068,14 @@
         "practice 09-containers-imagens:aprovacao-depreciacao-e-revogacao-de-golden-base-images-catalogo-organizacional matched alias 'imagens'",
         "practice 09-containers-imagens:assinatura-e-verificacao-de-proveniencia-de-imagens-com-cosign-e-rekor matched alias 'imagens'"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes"
+      ],
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -1034,6 +1133,10 @@
         "corpus document 010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md matched aliases ['data flow diagrams']",
         "corpus document 010-sbd-manual/03-threat-modeling/addon/13-linddun-privacidade.md matched aliases ['data flow diagram', 'data flow diagrams']"
       ],
+      "evidence_chapter_ids": [
+        "03-threat-modeling",
+        "04-arquitetura-segura"
+      ],
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -1078,6 +1181,12 @@
         "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['inventario de dependencias']",
         "corpus document 010-sbd-manual/04-arquitetura-segura/addon/01-catalogo-requisitos.md matched aliases ['inventario de componentes']",
         "corpus document 010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md matched aliases ['inventario de componentes']"
+      ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "12-monitorizacao-operacoes"
       ],
       "mandatory": true,
       "required_for_levels": {
@@ -1158,6 +1267,11 @@
         "practice 11-deploy-seguro:controlo-de-execucao-com-feature-flags matched alias 'deploy'",
         "practice 11-deploy-seguro:controlo-e-validacao-de-drift-operacional matched alias 'deploy'",
         "practice 11-deploy-seguro:credenciais-de-deploy-isoladas-por-aplicacao-e-efemeras matched alias 'deploy'"
+      ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "08-iac-infraestrutura",
+        "11-deploy-seguro"
       ],
       "mandatory": true,
       "required_for_levels": {
@@ -1241,6 +1355,14 @@
         "practice 08-iac-infraestrutura:segregacao-de-ambientes-tagging-e-permissoes-minimas matched alias 'ambientes'",
         "practice 11-deploy-seguro:controlo-e-validacao-de-drift-operacional matched alias 'ambientes'",
         "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['ambientes']"
+      ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "04-arquitetura-segura",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "10-testes-seguranca",
+        "11-deploy-seguro"
       ],
       "mandatory": true,
       "required_for_levels": {
@@ -1331,6 +1453,9 @@
         "practice 05-dependencias-sbom-sca:excecoes-a-cves-formais-e-temporarias matched alias 'excecoes'",
         "practice 06-desenvolvimento-seguro:gestao-de-excecoes-tecnicas matched alias 'excecoes'"
       ],
+      "evidence_chapter_ids": [
+        "06-desenvolvimento-seguro"
+      ],
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -1408,6 +1533,12 @@
         "practice 10-testes-seguranca:decisao-assistida-para-findings-de-testes-de-seguranca matched alias 'findings'",
         "practice 10-testes-seguranca:feedback-automatico-de-findings-as-equipas matched alias 'findings'",
         "practice 10-testes-seguranca:gestao-centralizada-de-findings-com-triagem-e-sla matched alias 'findings'"
+      ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "08-iac-infraestrutura",
+        "10-testes-seguranca",
+        "14-governanca-contratacao"
       ],
       "mandatory": true,
       "required_for_levels": {
@@ -1501,6 +1632,10 @@
         "practice 03-threat-modeling:validacao-de-arquitetura-com-threat-modeling matched alias 'metricas'",
         "practice 06-desenvolvimento-seguro:guidelines-de-desenvolvimento-seguro matched alias 'metricas'"
       ],
+      "evidence_chapter_ids": [
+        "12-monitorizacao-operacoes",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -1577,6 +1712,12 @@
         "practice 06-desenvolvimento-seguro:guidelines-de-desenvolvimento-seguro matched alias 'guidelines'",
         "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['guidelines']"
       ],
+      "evidence_chapter_ids": [],
+      "evidence_chapters_absence": {
+        "absence_type": "gap",
+        "note": "nenhum evidence pattern exige este artefacto como prova — required_as_evidence_by não cobre este registo (v2.7 Q1; declarado um a um)",
+        "status": "orphan_no_evidence_pattern"
+      },
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -1652,6 +1793,9 @@
         "practice 08-iac-infraestrutura:backend-remoto-locking-e-rastreabilidade matched alias 'iac'",
         "practice 08-iac-infraestrutura:detecao-e-correcao-de-drift matched alias 'iac'",
         "practice 08-iac-infraestrutura:determinismo-e-reprodutibilidade-do-plan matched alias 'iac'"
+      ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca"
       ],
       "mandatory": true,
       "required_for_levels": {
@@ -1736,6 +1880,9 @@
         "practice 09-containers-imagens:rbac-minimo-e-serviceaccounts-dedicadas matched alias 'rbac'",
         "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/devops-sre.md matched aliases ['rbac']"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca"
+      ],
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -1812,6 +1959,12 @@
         "practice 12-monitorizacao-operacoes:exercicios-de-resposta-a-incidentes-end-to-end matched alias 'incidentes'",
         "practice 12-monitorizacao-operacoes:integracao-com-processos-de-resposta-a-incidentes matched alias 'incidentes'"
       ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "12-monitorizacao-operacoes"
+      ],
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -1866,6 +2019,12 @@
         "corpus document 010-sbd-manual/04-arquitetura-segura/aplicacao-lifecycle.md matched aliases ['integration review']",
         "corpus document 010-sbd-manual/04-arquitetura-segura/canon/25-rastreabilidade.md matched aliases ['integration review']"
       ],
+      "evidence_chapter_ids": [],
+      "evidence_chapters_absence": {
+        "absence_type": "gap",
+        "note": "nenhum evidence pattern exige este artefacto como prova — required_as_evidence_by não cobre este registo (v2.7 Q1; declarado um a um)",
+        "status": "orphan_no_evidence_pattern"
+      },
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -1930,6 +2089,21 @@
         "practice 07-cicd-seguro:contencao-de-contexto-e-higiene-de-logs-outputs matched alias 'logs'",
         "practice 12-monitorizacao-operacoes:seguranca-e-integridade-de-logs matched alias 'logs'",
         "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['logs']"
+      ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
       ],
       "mandatory": true,
       "required_for_levels": {
@@ -2016,6 +2190,10 @@
         "practice 10-testes-seguranca:feedback-automatico-de-findings-as-equipas matched alias 'checklist'",
         "practice 10-testes-seguranca:gestao-centralizada-de-findings-com-triagem-e-sla matched alias 'checklist'"
       ],
+      "evidence_chapter_ids": [
+        "06-desenvolvimento-seguro",
+        "13-formacao-onboarding"
+      ],
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -2090,6 +2268,9 @@
         "corpus document 010-sbd-manual/02-requisitos-seguranca/addon/09-governaca-automatismos.md matched aliases ['evidencia operacional']",
         "corpus document 010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md matched aliases ['evidencia operacional']",
         "corpus document 010-sbd-manual/11-deploy-seguro/canon/25-rastreabilidade.md matched aliases ['evidencia operacional']"
+      ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca"
       ],
       "mandatory": true,
       "required_for_levels": {
@@ -2177,6 +2358,17 @@
         "control CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4 references pipeline_config",
         "control CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29 references pipeline_config",
         "control CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0 references pipeline_config"
+      ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "05-dependencias-sbom-sca",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding"
       ],
       "mandatory": true,
       "required_for_levels": {
@@ -2403,6 +2595,19 @@
         "practice 07-cicd-seguro:evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao matched alias 'relatorios'",
         "practice 08-iac-infraestrutura:enforcement-automatico-de-politicas matched alias 'politicas'"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -2472,6 +2677,11 @@
         "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['assessment']",
         "corpus document 010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md matched aliases ['quiz']",
         "corpus document 010-sbd-manual/01-classificacao-aplicacoes/pre-note.md matched aliases ['assessment']"
+      ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
       ],
       "mandatory": true,
       "required_for_levels": {
@@ -2563,6 +2773,21 @@
         "practice 03-threat-modeling:gate-de-controlo-de-consistencia-no-ci-cd matched alias 'gate'",
         "practice 04-arquitetura-segura:gate-arquitetural-antes-do-go-live matched alias 'gate'",
         "practice 05-dependencias-sbom-sca:sca-automatico-com-gates matched alias 'gates'"
+      ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
       ],
       "mandatory": true,
       "required_for_levels": {
@@ -2662,6 +2887,15 @@
         "practice 10-testes-seguranca:avaliacao-critica-de-cobertura-real-e-limitacoes matched alias 'checklist'",
         "practice 10-testes-seguranca:decisao-assistida-para-findings-de-testes-de-seguranca matched alias 'checklist'",
         "practice 10-testes-seguranca:feedback-automatico-de-findings-as-equipas matched alias 'checklist'"
+      ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "14-governanca-contratacao"
       ],
       "mandatory": true,
       "required_for_levels": {
@@ -2769,6 +3003,13 @@
         "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/appsec-engineer.md matched aliases ['risco residual']",
         "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/gestao-executiva.md matched aliases ['risco residual']"
       ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "10-testes-seguranca",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
       "required_for_levels": {
         "L1": false,
@@ -2824,6 +3065,11 @@
         "corpus document 010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md matched aliases ['matriz de risco']",
         "corpus document 010-sbd-manual/10-testes-seguranca/addon/06-cobertura-e-priorizacao.md matched aliases ['matriz de risco']",
         "corpus document 010-sbd-manual/13-formacao-onboarding/aplicacao-lifecycle.md matched aliases ['matriz de riscos']"
+      ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "10-testes-seguranca"
       ],
       "mandatory": true,
       "required_for_levels": {
@@ -2905,6 +3151,9 @@
         "practice 11-deploy-seguro:rollback-rapido-e-testado matched alias 'rollback'",
         "corpus document 010-sbd-manual/00-fundamentos/canon/25-rastreabilidade.md matched aliases ['rollback']"
       ],
+      "evidence_chapter_ids": [
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -2979,6 +3228,12 @@
         "practice 10-testes-seguranca:perfil-de-regras-sast-versionado-com-baseline-de-falsos-positivos matched alias 'sast'",
         "practice 10-testes-seguranca:sast-obrigatorio-em-pull-request matched alias 'sast'",
         "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['sast']"
+      ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "08-iac-infraestrutura",
+        "10-testes-seguranca",
+        "13-formacao-onboarding"
       ],
       "mandatory": true,
       "required_for_levels": {
@@ -3063,6 +3318,12 @@
         "control CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628 references sbom",
         "control CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0 references sbom",
         "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references sbom"
+      ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "05-dependencias-sbom-sca",
+        "09-containers-imagens",
+        "14-governanca-contratacao"
       ],
       "mandatory": true,
       "required_for_levels": {
@@ -3234,6 +3495,15 @@
         "control CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0 references sca_report",
         "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references sca_report"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "05-dependencias-sbom-sca",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "13-formacao-onboarding"
+      ],
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -3404,6 +3674,9 @@
         "practice 07-cicd-seguro:gestao-de-segredos matched alias 'segredos'",
         "practice 08-iac-infraestrutura:gestao-de-segredos-e-identidades-para-iac matched alias 'segredos'"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca"
+      ],
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -3497,6 +3770,12 @@
         "practice 07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20 matched alias 'assinatura'",
         "practice 08-iac-infraestrutura:assinatura-e-proveniencia-de-artefactos-iac matched alias 'assinatura'"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "05-dependencias-sbom-sca",
+        "12-monitorizacao-operacoes",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -3568,6 +3847,12 @@
         "corpus document 010-sbd-manual/09-containers-imagens/addon/12-self-hosted-inference.md matched aliases ['third party']",
         "corpus document 010-sbd-manual/10-testes-seguranca/addon/14-tlpt-readiness.md matched aliases ['third party']"
       ],
+      "evidence_chapter_ids": [],
+      "evidence_chapters_absence": {
+        "absence_type": "gap",
+        "note": "nenhum evidence pattern exige este artefacto como prova — required_as_evidence_by não cobre este registo (v2.7 Q1; declarado um a um)",
+        "status": "orphan_no_evidence_pattern"
+      },
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -3644,6 +3929,16 @@
         "control CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411 references test_report",
         "control CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29 references test_report",
         "control CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82 references test_report"
+      ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro"
       ],
       "mandatory": true,
       "required_for_levels": {
@@ -3798,6 +4093,13 @@
         "practice 03-threat-modeling:aprovacao-formal-do-threat-model-baseline-e-revisoes matched alias 'threat modeling'",
         "practice 03-threat-modeling:atualizacao-do-modelo-apos-alteracao-tecnica matched alias 'threat modeling'"
       ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "13-formacao-onboarding"
+      ],
       "mandatory": true,
       "required_for_levels": {
         "L1": false,
@@ -3874,6 +4176,9 @@
         "practice 13-formacao-onboarding:caminho-de-remediacao-abaixo-do-limiar matched alias 'formacao'",
         "practice 13-formacao-onboarding:code-clinics-estruturadas-e-recorrentes matched alias 'formacao'"
       ],
+      "evidence_chapter_ids": [
+        "13-formacao-onboarding"
+      ],
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -3927,6 +4232,12 @@
         "control CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b references trust_boundary_model",
         "corpus document 010-sbd-manual/04-arquitetura-segura/canon/25-rastreabilidade.md matched aliases ['trust boundary models']"
       ],
+      "evidence_chapter_ids": [],
+      "evidence_chapters_absence": {
+        "absence_type": "gap",
+        "note": "nenhum evidence pattern exige este artefacto como prova — required_as_evidence_by não cobre este registo (v2.7 Q1; declarado um a um)",
+        "status": "orphan_no_evidence_pattern"
+      },
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -3992,6 +4303,16 @@
         "control CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82 references validation_evidence",
         "practice 06-desenvolvimento-seguro:arquivo-central-de-evidencias-de-validacao matched alias 'evidencias'"
       ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
       "required_for_levels": {
         "L1": true,
@@ -4031,5 +4352,17 @@
     "consult",
     "review"
   ],
-  "source_artifact": "data/entities/artifact_requirements.json"
+  "source_artifact": "data/entities/artifact_requirements.json",
+  "traversal_assertions": {
+    "defining_chapter_ids": {
+      "does_not_assert": "posse; casa única; exigência probatória",
+      "source": "source_practice_ids autoradas",
+      "verb": "produced_or_operated_by"
+    },
+    "evidence_chapter_ids": {
+      "does_not_assert": "produção; cobertura total (8/45 órfãos declarados)",
+      "source": "EP→requisito→capítulo",
+      "verb": "required_as_evidence_by"
+    }
+  }
 }

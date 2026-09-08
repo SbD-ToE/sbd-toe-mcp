@@ -3,11 +3,77 @@ ai_assisted: true
 model: Claude Opus 5
 date: 2026-09-08
 purpose: documentation
-reasoning: v0.20.0-beta.42 (beta line, npm `beta`) — as 13 células FALTA da matriz resolvidas: 9 eram defeitos do servidor e fecharam-se (nunca-silêncio e `next` no trace_graph, proveniência em 5 projecções + query_entities, cobertura no resolve_entities, `next` no ramo por papel do generate_skill, capítulo inexistente declarado no assess, papel do `task` no prepare), 4 eram regras do próprio instrumento demasiado largas e corrigiram-se nele, não no servidor. O `?` desce de 116 para 74 com sondas desenhadas — combinação de selectores e PROVA POR VARIAÇÃO de que um argumento ecoado afecta o resultado, que apanhou o `task` inerte do prepare. As 3 superfícies não exercitáveis passam a 0: o schema declara EXEMPLOS derivados do bundle para `kpi_values`, `query` e `uri`. Baseline da matriz passa a ZERO. Selecção intocada; ouro H byte-idêntico.
+reasoning: v0.20.0-beta.43 (beta line, npm `beta`) — re-pin para kg-v1-manual-v1.8.1-aligned-2026-09-08-v2.7 (contrato v1.21 §1.28, ontologia v2.7) e as ASSERÇÕES DE TRAVESSIA passam a chegar ao consumidor: cada travessia derivada traz o VERBO publicado, a fonte autorada e — obrigatoriamente — o que NÃO afirma. O `own` da b.40 SAIU: o verbo é `produced_or_operated_by` e a fonte diz que não afirma posse. Nova base `required_as_evidence_by` (37/45) com os 8 órfãos declarados um a um, cada um com a sua ausência já tipada. RH/PeopleOps servido como REFERENCIADO-NÃO-CANÓNICO com âncoras, e os canónicos continuam 13. BLOQUEIO REPORTADO: o manifesto do pino declara 163 DecisionInvolvement e o bundle NÃO traz o ficheiro — declarado na superfície onde o consumidor o procuraria, e não servido de fora do artefacto pinado. Selecção intocada; ouro H byte-idêntico.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.43 — 2026-09-08
+
+**Cada travessia diz o que NÃO afirma — e diz-o ao consumidor.** Ontologia v2.7. Linha estável
+**intocada**. Nada promovido.
+
+**Pino:** `kg-v1-manual-v1.8.1-aligned-2026-09-08-v2.7` (`97bd7b583594`, contrato **v1.21 §1.28**,
+substrato `manual-v1.8.1+sbdtoe-ontology-v2.7`).
+
+### A condição da vaga: a asserção negativa sai do envelope
+
+A v2.7 publica, por travessia, o verbo · a fonte autorada · **o que não afirma**. A terceira é a
+que interessa: **uma asserção negativa que fica no envelope não protege ninguém**.
+
+**O `own` saiu.** A b.40 separou correctamente produtores de citadores e chamou `own` ao lado
+produtor. O verbo publicado é `produced_or_operated_by`, e a fonte diz que **não afirma posse**.
+A palavra entrou no vocabulário servido por não haver nada que a impedisse; agora há —
+`asserts.does_not_assert`, verbatim da ontologia, em cada base — e não volta.
+
+| base | verbo | não afirma |
+|---|---|---|
+| `produced_or_operated_by` | produz ou opera | **posse; casa única; exigência probatória** |
+| `required_as_evidence_by` | exige como prova | **produção; cobertura total (8/45 órfãos)** |
+
+Se a ontologia deixar de publicar uma travessia que servimos, a banda **di-lo** (`published:
+false`) em vez de a inventar: nunca-silêncio aplicado à própria maquinaria de declaração.
+
+### `evidence_chapter_ids` — 37/45, e os 8 órfãos um a um
+
+Terceira base, publicada como dado em vez de recalculada. Os 8 artefactos sem capítulo que os
+exija como prova vêm **declarados individualmente**, cada um com a ausência que a fonte já lhes
+tipa (`absence_type: gap`) — não se somam ao conjunto e não desaparecem.
+
+### RH/PeopleOps — referenciado, não canónico
+
+O Manual **nomeia** este papel (protagonista de uma US autorada do cap. 13) e ele não está no
+vocabulário. Servi-lo como 14.º seria inventar vocabulário; ignorá-lo seria dizer que não
+existe. Vem como o que é: `canonical: false`, com as **âncoras** que o provam, a sua ausência
+tipada (ABS-011) e a nota de que **os canónicos continuam a ser 13**.
+
+A contagem vem do vocabulário (`roles.json`), não do `knownRoles` desta superfície — que inclui
+a sentinela `unassigned`. Contá-la faria os 13 parecerem 14 exactamente na banda que existe para
+dizer que ninguém foi acrescentado.
+
+### BLOQUEIO — `decision_involvements` não vem no bundle
+
+O `deterministic_manifest.json` deste pino declara **163 registos de `DecisionInvolvement`** no
+ficheiro `decision_involvements.json`. **O arquivo não traz esse ficheiro** — nem em `runtime/`,
+nem em `data/entities/`. Verifiquei os números do dispatch contra a árvore upstream e **conferem
+todos** (163 = 158 `approves` + 5 `consulted`, 12 capítulos, 163/163 com `anchor_text`, todos
+`derived`, 12 involvements de `gestao-executiva` no cap. 01): **o conteúdo está certo, o
+empacotamento é que o deixou de fora.** É a classe da b.38, a montante.
+
+**O servidor não o vai buscar fora do artefacto pinado**, mesmo existindo na árvore de origem: a
+proveniência é verificada por digest, e servir de fora seria servir o que ninguém verificou. Em
+vez disso, a falta é **declarada onde o consumidor a procuraria** — o `get_guide_by_role`, que
+serve execução e não decisão — com o que a entidade responderia se existisse. **ABS-005 não pode
+ser fechado a partir deste artefacto**, e o GR-04 não se moveu.
+
+### Verificação
+
+Suite **816/816** · aceitação **175, 0 FAIL, gate PASS** (TC-F-68 novo; TC-F-66 actualizado — o
+`own` que assertava é a palavra que a v2.7 veio proibir) · **15 invariantes verdes** · **ouro do
+Eixo H byte-idêntico nos dois braços através da mudança de substrato** · orçamentos **14/14** ·
+matriz **0 FALTA, 0 não exercitáveis**. O re-pin moveu 8 linhas de ouro, **todas o carimbo `kg`**
+— as 24 mudanças de fase não moveram um único payload de codegen.
 
 ## 0.20.0-beta.42 — 2026-09-08
 
