@@ -19,7 +19,7 @@ import { _resolveConsultResult } from "./consult-security-requirements.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { guideByRoleAffordances } from "../serving/affordances.js";
 import { absenceBand, absenceNaming } from "../serving/declared-absences.js";
-import { referencedRoleFor, manifestGapBand } from "../serving/traversal-assertions.js";
+import { referencedRoleFor, manifestGapBand, assertionFor } from "../serving/traversal-assertions.js";
 
 const VALID_RISK_LEVELS = ["L1", "L2", "L3"] as const;
 type RiskLevel = (typeof VALID_RISK_LEVELS)[number];
@@ -495,6 +495,56 @@ export function handleGetGuideByRole(
    */
   const decisionGap = manifestGapBand("decision_involvements");
 
+  /**
+   * 0.20.0-beta.44 (v2.7-r2) — QUEM DECIDE, ao lado de quem executa.
+   *
+   * Esta superfície sempre serviu EXECUÇÃO (atribuições de prática). A decisão é espécie
+   * PARALELA e estava invisível: o papel que aprova o programa não aparecia em lado nenhum.
+   * Agora aparece — com a ÂNCORA VERBATIM de onde cada envolvimento foi derivado, que é o
+   * que permite contraprovar em vez de confiar.
+   *
+   * A asserção negativa vem da fonte e é a peça que impede a leitura errada: **não afirma
+   * execução nem RACI completo**. Um papel que aprova não é, por isso, um papel que faz — e
+   * a ausência de um papel aqui não é ausência de responsabilidade, é ausência de estrutura
+   * publicada de onde a derivar.
+   */
+  const decisionBand = (() => {
+    const all = getOntologyData().decisionInvolvements ?? [];
+    if (all.length === 0) return undefined;
+    const role = typeof full.canonicalRole === "string" ? full.canonicalRole : undefined;
+    const scoped = role === undefined ? all : all.filter((d) => d.role_id === role);
+    const byKind = scoped.reduce<Record<string, number>>((acc, d) => ({ ...acc, [d.kind]: (acc[d.kind] ?? 0) + 1 }), {});
+    const chapters = [...new Set(scoped.map((d) => d.bundle_id))].sort();
+    return {
+      asserts: assertionFor("role_holds_decision_involvement"),
+      scope: role ?? "todos os papéis",
+      total: scoped.length,
+      by_kind: byKind,
+      chapters,
+      published_total: all.length,
+      note:
+        scoped.length === 0
+          ? `Nenhum envolvimento de decisão publicado para \`${role ?? "este âmbito"}\`. **Não é ausência de ` +
+            "responsabilidade** — é ausência de estrutura publicada (DoD, alçadas, tabelas) de onde a derivar. " +
+            `O Manual publica ${all.length} envolvimentos ao todo.`
+          : "Quem **aprova** e quem é **consultado**, derivado de estruturas publicadas e com a ÂNCORA " +
+            "verbatim de cada um — contrapõe o texto à leitura em vez de confiares nela. Espécie PARALELA " +
+            "às atribuições de prática: estas dizem quem EXECUTA, esta diz quem DECIDE, e as contagens de " +
+            "execução não mudam.",
+      values: scoped.slice(0, 25).map((d) => ({
+        involvement_id: d.involvement_id,
+        kind: d.kind,
+        chapter: d.bundle_id,
+        applicable_levels: d.applicable_levels,
+        anchor: d.anchor,
+        anchor_text: d.anchor_text
+      })),
+      ...(scoped.length > 25
+        ? { truncated: { returned: 25, total: scoped.length, reach_with: `resolve_entities(record_type="decision_involvement")` } }
+        : {})
+    };
+  })();
+
   const emptyCombination = (() => {
     if (!hasFilter || full.assignments.length > 0 || full.unsupported_role !== undefined) return undefined;
     const filters = [
@@ -600,6 +650,7 @@ export function handleGetGuideByRole(
     ...(levelNamedInLabel.count > 0 ? { level_named_in_label: levelNamedInLabel } : {}),
     ...(role_checklist ? { role_checklist } : {}),
     ...(full.unsupported_role ? { unsupported_role: full.unsupported_role } : {}),
+    ...(decisionBand ? { decision_involvements: decisionBand } : {}),
     ...(decisionGap
       ? {
           decision_involvement_unavailable: {

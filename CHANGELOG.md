@@ -3,11 +3,64 @@ ai_assisted: true
 model: Claude Opus 5
 date: 2026-09-08
 purpose: documentation
-reasoning: v0.20.0-beta.43 (beta line, npm `beta`) — re-pin para kg-v1-manual-v1.8.1-aligned-2026-09-08-v2.7 (contrato v1.21 §1.28, ontologia v2.7) e as ASSERÇÕES DE TRAVESSIA passam a chegar ao consumidor: cada travessia derivada traz o VERBO publicado, a fonte autorada e — obrigatoriamente — o que NÃO afirma. O `own` da b.40 SAIU: o verbo é `produced_or_operated_by` e a fonte diz que não afirma posse. Nova base `required_as_evidence_by` (37/45) com os 8 órfãos declarados um a um, cada um com a sua ausência já tipada. RH/PeopleOps servido como REFERENCIADO-NÃO-CANÓNICO com âncoras, e os canónicos continuam 13. BLOQUEIO REPORTADO: o manifesto do pino declara 163 DecisionInvolvement e o bundle NÃO traz o ficheiro — declarado na superfície onde o consumidor o procuraria, e não servido de fora do artefacto pinado. Selecção intocada; ouro H byte-idêntico.
+reasoning: v0.20.0-beta.44 (beta line, npm `beta`) — re-pin para kg-v1-manual-v1.8.1-aligned-2026-09-08-v2.7-r2 (contrato v1.22 §1.29): vaga de EMPACOTAMENTO pura, dados byte-idênticos ao v2.7, e o `decision_involvements.json` passa a vir dentro. Os 163 envolvimentos são servidos ao lado da execução no `get_guide_by_role` — 158 approves + 5 consulted, 12 capítulos, 163/163 com âncora VERBATIM — com a asserção da fonte a chegar ao consumidor («não afirma execução; RACI completo»). A banda `decision_involvement_unavailable` da b.43 deixa de disparar e sai limpa. MEDIDO: as 7 âncoras ratificadas do ABS-005 estão TODAS servidas (12 envolvimentos no cap. 01), mas o índice não regista a closure — a espécie fecha a CONDIÇÃO, o registo é do Archon. **GR-04 subiu a SERVIDO: o painel do Eixo I fecha em 6·0·0.** Selecção intocada; ouro H byte-idêntico.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.44 — 2026-09-08
+
+**Quem decide, ao lado de quem executa — e o painel fecha.** Re-pin sobre o r2, que resolve o
+bloqueio reportado na b.43. Linha estável **intocada**. Nada promovido.
+
+**Pino:** `kg-v1-manual-v1.8.1-aligned-2026-09-08-v2.7-r2` (`b9bb73fd240e`, contrato **v1.22
+§1.29**). Vaga de empacotamento pura: os dados são **byte-idênticos** ao v2.7 — o re-pin moveu 8
+linhas de ouro, **todas o carimbo `kg`**.
+
+### Os 163 envolvimentos, servidos
+
+`get_guide_by_role` passa a servir a espécie **paralela** à execução: **158 `approves` + 5
+`consulted`**, 12 capítulos, **163/163 com `anchor_text` verbatim**, todos `derived`. Cada
+envolvimento traz a âncora de onde foi derivado — é o que permite **contraprovar** em vez de
+confiar. As atribuições de execução ficam intocadas e as contagens não mudam.
+
+A asserção da fonte chega ao consumidor: **«não afirma execução; RACI completo»**. Um papel que
+aprova não é, por isso, um papel que faz. E um papel **sem** envolvimentos di-lo como o que é —
+*ausência de estrutura publicada de onde derivar*, não ausência de responsabilidade.
+
+**A banda `decision_involvement_unavailable` da b.43 deixou de disparar e saiu limpa** — não
+ficou pendurada. O mecanismo é genérico: varre o manifesto do pino e declara qualquer entidade
+prometida cujo ficheiro não venha; com o ficheiro presente, cala-se.
+
+### ABS-005 — a condição fecha; o registo não é meu
+
+**As 7 âncoras ratificadas estão TODAS servidas** (linhas 42, 225, 273, 292, 432, 447, 452), e
+mais 5 além delas: **12 envolvimentos de `gestao-executiva` no cap. 01**. O `closes_in` da
+ausência — *«materialização de DecisionInvolvement»* — está **satisfeito e verificável**.
+
+**Mas o índice não regista a closure:** ABS-005 continua tipada `gap`, sem `closed_on`. Pela
+regra que a b.40 fixou — *o tipo vem do índice, nunca da superfície* — **não a declaro fechada
+por minha conta**. A condição está cumprida; o registo é do Archon.
+
+*Nota de conteúdo:* a `evidence` da ABS-005 diz «6×» e enumera **sete** linhas.
+
+### GR-04 subiu — o painel fecha em **6 SERVIDO · 0 · 0**
+
+A sonda passou a **olhar** para a espécie nova; a **expectativa não mudou**. O critério manteve-se
+estrito: a peça só conta se a superfície distinguir **os dois lados** para o papel e se **cada um
+vier ancorado**. O product-owner — o papel do caso — é **o único com ambos**: **5 que aprova · 5
+em que é consultado · 10/10 com âncora**.
+
+**A ressalva vai na evidência, não escondida:** a fonte declara que **não afirma RACI completo**;
+«delega» não é publicado como tal. O que se serve é **decide vs. não-decide**, que é o que
+existe. ABS-002 continua a ser conteúdo.
+
+### Verificação
+
+Suite **816/816** · aceitação **176, 0 FAIL, gate PASS** (TC-F-69 novo) · **15 invariantes verdes**
+· **ouro do Eixo H byte-idêntico nos dois braços** · orçamentos **14/14** · matriz **0 FALTA, 0 não
+exercitáveis** · Eixo I **6·0·0**.
 
 ## 0.20.0-beta.43 — 2026-09-08
 

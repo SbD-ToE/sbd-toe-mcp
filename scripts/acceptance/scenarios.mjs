@@ -2049,6 +2049,36 @@ export const scenarios = [
       }
       return ok(`verbos servidos com asserção negativa (produção: «${pob.asserts.does_not_assert}»; prova: «${ev.asserts.does_not_assert}»); ${orf.count} órfãos declarados um a um; RH/PeopleOps referenciado com ${ref.anchors.length} âncoras e fora dos ${known.length} canónicos${gap ? `; lacuna do pino declarada (${gap.declared_in_manifest} ${gap.entity_type})` : ""}`); } },
 
+  { id: "TC-F-69", axis: "F", title: "0.20.0-beta.44 (v2.7-r2): quem DECIDE ao lado de quem executa, com âncora verbatim e o que não afirma", tool: "get_guide_by_role",
+    run: async (c) => {
+      const g = await c.tool("get_guide_by_role", { risk_level: "L2", role: "product-owner", include_detail: true });
+      if (!g.ok) return fail(g.error);
+      const di = g.data.decision_involvements;
+      if (!di) return fail("a espécie de DECISÃO não é servida ao lado da execução");
+      // a banda de indisponível da b.43 tem de SAIR — não fica pendurada quando os dados chegam
+      if (g.data.decision_involvement_unavailable) return fail("a banda de indisponível continua a disparar com o ficheiro presente");
+      // asserção negativa da fonte, servida ao consumidor
+      if (!/execução/.test(String(di.asserts?.does_not_assert ?? ""))) return fail("«não afirma execução» não chega ao consumidor");
+      if (!/RACI/.test(String(di.asserts?.does_not_assert ?? ""))) return fail("«não afirma RACI completo» não chega ao consumidor");
+      if (di.asserts?.published !== true) return fail("a asserção não vem da ontologia");
+      // os dois lados, para o único papel que tem ambos
+      if (!(di.by_kind?.approves > 0)) return fail("sem o lado que o papel APROVA");
+      if (!(di.by_kind?.consulted > 0)) return fail("sem o lado em que o papel é CONSULTADO");
+      // cada envolvimento traz a ÂNCORA VERBATIM — é o que permite contraprovar
+      if (!(di.values ?? []).length) return fail("banda sem envolvimentos");
+      if (!di.values.every((v) => v.anchor && v.anchor_text)) return fail("envolvimento sem âncora verbatim");
+      if (!di.values.every((v) => v.chapter && v.kind)) return fail("envolvimento sem capítulo ou tipo");
+      // a espécie é PARALELA: as contagens de execução não mudam
+      if (!(g.data.meta?.assignmentCount > 0)) return fail("as atribuições de execução desapareceram");
+      // e o âmbito global vem declarado, para o vazio de um papel não parecer o vazio do Manual
+      if (!(di.published_total >= di.total)) return fail("o total publicado não enquadra o âmbito servido");
+      // um papel SEM envolvimentos declara-o, e não como ausência de responsabilidade
+      const sem = await c.tool("get_guide_by_role", { risk_level: "L2", role: "operacoes" });
+      const semDi = sem.data.decision_involvements;
+      if (semDi && semDi.total === 0 && !/ausência de estrutura publicada/.test(semDi.note ?? ""))
+        return fail("um papel sem envolvimentos não distingue «sem responsabilidade» de «sem estrutura de onde derivar»");
+      return ok(`decisão servida ao lado da execução: ${di.by_kind.approves} aprova / ${di.by_kind.consulted} consultado em ${di.chapters.length} capítulos, ${di.values.length}/${di.values.length} com âncora verbatim; asserção «${di.asserts.does_not_assert}»; ${di.published_total} publicados no total; execução intocada (${g.data.meta.assignmentCount} atribuições)`); } },
+
   { id: "TC-G-01", axis: "G", title: "trace válido: determinismo + paginação G1 (3 lentes, total, cursor, sem IRIs)", tool: "trace_sbd_toe_graph",
     run: async (c) => {
       const shas = [];

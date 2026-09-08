@@ -318,14 +318,34 @@ export const readingCases = [
       const pieces = [
         piece("user stories aplicáveis ao papel", checklist.length > 0 || assignments.length > 0, `${checklist.length} histórias / ${assignments.length} atribuições`),
         piece("o momento no ciclo", withPhase > 0, `${withPhase} atribuições com fase`),
-        piece(
-          // O Manual NÃO publica uma taxonomia decide-vs-delega. Publica `proportionality`:
-          // prosa autorada que nomeia quem valida/aprova ao nível. Servi-la é honesto;
-          // contá-la como a peça pedida seria ajustar a medida ao trabalho feito.
-          "o que o PO decide vs o que delega",
-          false,
-          `não publicado como dado — o bundle tem \`proportionality\` (${assignments.filter((a) => a.proportionality).length}/${assignments.length} atribuições, prosa que nomeia quem valida) e NENHUMA taxonomia de decisão. ACHADO DE CONTEÚDO, não de serving.`
-        ),
+        (() => {
+          /*
+           * 0.20.0-beta.44 — a sonda passa a OLHAR para a espécie nova (`decision_involvements`,
+           * v2.7-r2). A EXPECTATIVA não muda: continua a pedir a distinção entre o que o papel
+           * decide e o que não decide. O que muda é onde se procura — como na b.37 com o GR-03.
+           *
+           * Critério: a peça só conta se a superfície distinguir OS DOIS LADOS para ESTE papel,
+           * e se cada lado vier ANCORADO (o consumidor tem de poder contraprovar). Se só houver
+           * um lado, não é uma distinção — é meia.
+           */
+          const di = d.decision_involvements;
+          const kinds = di?.by_kind ?? {};
+          const decide = kinds["approves"] ?? 0;
+          const naoDecide = Object.entries(kinds).filter(([k]) => k !== "approves").reduce((a, [, v]) => a + v, 0);
+          const ancoradas = (di?.values ?? []).filter((v) => typeof v.anchor_text === "string" && v.anchor_text.length > 0).length;
+          const ambosLados = decide > 0 && naoDecide > 0 && ancoradas === (di?.values ?? []).length;
+          return piece(
+            "o que o PO decide vs o que delega",
+            ambosLados,
+            ambosLados
+              ? `${decide} que APROVA vs ${naoDecide} em que é CONSULTADO, ${ancoradas}/${(di?.values ?? []).length} com âncora verbatim. ` +
+                "RESSALVA: a fonte declara que NÃO afirma RACI completo — «delega» não é publicado como tal; " +
+                "o que se serve é decide vs não-decide, que é o que existe."
+              : di === undefined
+                ? "sem espécie de decisão no pino — a superfície serve execução e nada sobre quem decide"
+                : `distinção INCOMPLETA: ${decide} aprova / ${naoDecide} não-decide (${ancoradas} ancoradas) — um só lado não é distinção`
+          );
+        })(),
         piece(
           "a evidência que fica",
           checklist.some((x) => JSON.stringify(x).toLowerCase().includes("dod") || JSON.stringify(x).toLowerCase().includes("evid")),

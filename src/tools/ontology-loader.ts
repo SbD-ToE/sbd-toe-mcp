@@ -168,6 +168,26 @@ export interface ArtifactRequirement {
   description?: string;
 }
 
+/**
+ * 0.20.0-beta.44 (v2.7-r2, contrato v1.22 §1.29) — QUEM APROVA e QUEM É CONSULTADO.
+ *
+ * Espécie PARALELA aos assignments: estes dizem quem EXECUTA, aquela diz quem DECIDE. Os
+ * 1 305 assignments ficam intocados e as contagens não mudam. Cada registo traz a ÂNCORA
+ * verbatim de onde foi derivado — é o que permite ao consumidor verificar em vez de confiar.
+ */
+export interface DecisionInvolvement {
+  involvement_id: string;
+  role_id: string;
+  role_canonical: boolean;
+  bundle_id: string;
+  kind: string;
+  anchor: string;
+  anchor_text: string;
+  applicable_levels: Record<string, boolean>;
+  source_mode: string;
+  refs: string[];
+}
+
 export interface EvidencePattern {
   id: string;
   maps_to_control_id: string;
@@ -228,6 +248,7 @@ export interface OntologyData {
   artifacts?: Artifact[];
   artifactRequirements?: ArtifactRequirement[];
   evidencePatterns?: EvidencePattern[];
+  decisionInvolvements?: DecisionInvolvement[];
   requirementControlLinks?: RequirementControlLink[];
   signals?: Signal[];
   signalEvidenceLinks?: SignalEvidenceLink[];
@@ -650,6 +671,26 @@ export function getOntologyData(): OntologyData {
     }))
     .filter((item) => item.id.length > 0);
 
+  const decisionInvolvements: DecisionInvolvement[] = loadRuntimeItemsOptional(
+    "data/publish/runtime/decision_involvements.json"
+  )
+    .filter(isRecord)
+    .map((item) => ({
+      involvement_id: strOf(item, "involvement_id"),
+      role_id: strOf(item, "role_id"),
+      role_canonical: item["role_canonical"] === true,
+      bundle_id: strOf(item, "bundle_id"),
+      kind: strOf(item, "kind"),
+      anchor: strOf(item, "anchor"),
+      anchor_text: strOf(item, "anchor_text"),
+      applicable_levels: isRecord(item["applicable_levels"])
+        ? Object.fromEntries(Object.entries(item["applicable_levels"] as Record<string, unknown>).map(([k, v]) => [k, v === true]))
+        : {},
+      source_mode: strOf(item, "source_mode"),
+      refs: arrStr(item, "refs")
+    }))
+    .filter((item) => item.involvement_id.length > 0);
+
   const requirementControlLinks: RequirementControlLink[] = loadRuntimeItems("data/publish/runtime/requirement_control_links.json")
     .filter(isRecord)
     .map((item) => ({
@@ -723,6 +764,7 @@ export function getOntologyData(): OntologyData {
     artifacts,
     artifactRequirements,
     evidencePatterns,
+    decisionInvolvements,
     requirementControlLinks,
     signals,
     signalEvidenceLinks,

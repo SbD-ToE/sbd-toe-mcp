@@ -1,0 +1,2216 @@
+{
+  "artifact_type": "deterministic_runtime_snapshot",
+  "count": 163,
+  "entity_type": "DecisionInvolvement",
+  "items": [
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:36",
+      "anchor_text": "| **AppSec Engineer** | Validar modelo aplicado; ajustar nível (especialmente em L2/L3); mapear ameaças; parametrizar cadência; aprovar classificações |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0036-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:38",
+      "anchor_text": "| **Product Owner** | Notificado de alterações de nível (especialmente L1→L3); aprovar impacto de negócio de exceções |",
+      "applicable_levels": {
+        "L1": true,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0038-product-owner",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "product-owner",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:42",
+      "anchor_text": "| **Gestão Executiva / CISO** | Aprovar políticas de classificação e aceitação de risco; supervisionar exceções em L3 |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0042-gestao-executiva",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "gestao-executiva",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:69",
+      "anchor_text": "- [ ] **Em L2/L3: Aprovação formal por AppSec Engineer documentada**",
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0069-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:70",
+      "anchor_text": "- [ ] **Product Owner notificado se classificação for L3**",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0070-product-owner",
+      "kind": "consulted",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "product-owner",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:75",
+      "anchor_text": "- [ ] Aprovação final por AppSec Engineer com registo explícito",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0075-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:89",
+      "anchor_text": "| L2 | Sim | Classificação completa com **validação formal por AppSec Engineer** |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": false
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0089-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:90",
+      "anchor_text": "| L3 | Sim | Classificação formal, **validada e aprovada por AppSec Engineer + GRC/Compliance** |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0090-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:90",
+      "anchor_text": "| L3 | Sim | Classificação formal, **validada e aprovada por AppSec Engineer + GRC/Compliance** |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0090-grc-compliance",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "grc-compliance",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:96",
+      "anchor_text": "| Arquitetura | Revisão de design inicial | **Developer + Arquitetos de Software + AppSec Engineer** | Antes da aprovação de arquitetura |",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0096-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:96",
+      "anchor_text": "| Arquitetura | Revisão de design inicial | **Developer + Arquitetos de Software + AppSec Engineer** | Antes da aprovação de arquitetura |",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0096-arquitetos-software",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "arquitetos-software",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:96",
+      "anchor_text": "| Arquitetura | Revisão de design inicial | **Developer + Arquitetos de Software + AppSec Engineer** | Antes da aprovação de arquitetura |",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0096-developer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "developer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:124",
+      "anchor_text": "- [ ] Exceções documentadas, aprovadas por AppSec Engineer com justificação técnica",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0124-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:138",
+      "anchor_text": "| L3 | Sim | Controlos completos + reforçados + validação por AppSec |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0138-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:171",
+      "anchor_text": "- [ ] **Product Owner notificado se houver impacto de negócio** (especialmente em escalação L1→L3)",
+      "applicable_levels": {
+        "L1": true,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0171-product-owner",
+      "kind": "consulted",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "product-owner",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:224",
+      "anchor_text": "- [ ] **Aprovação formal por AppSec Engineer documentada**",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0224-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:225",
+      "anchor_text": "- [ ] **Em L3: aprovação adicional por Gestão Executiva/CISO**",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0225-gestao-executiva",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "gestao-executiva",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:272",
+      "anchor_text": "- [ ] **Aprovação formal de AppSec Engineer registada**",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0272-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:273",
+      "anchor_text": "- [ ] **Em L3: aprovação adicional por Gestão Executiva ou CISO**",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0273-gestao-executiva",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "gestao-executiva",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:292",
+      "anchor_text": "| Pré-Release | Aplicação pronta para go-live | **QA + AppSec Engineer + Gestão Executiva (L3)** | 2 dias úteis antes de deploy |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0292-gestao-executiva",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "gestao-executiva",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:376",
+      "anchor_text": "- [ ] **Product Owner notificado se houver impacto de negócio** (especialmente L1→L3)",
+      "applicable_levels": {
+        "L1": true,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0376-product-owner",
+      "kind": "consulted",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "product-owner",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:432",
+      "anchor_text": "- [ ] **Em L3: aprovação adicional por Gestão Executiva/CISO antes de renovação**",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0432-gestao-executiva",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "gestao-executiva",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:433",
+      "anchor_text": "- [ ] **Se biz impact relevante: Product Owner notificado e de acordo**",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0433-product-owner",
+      "kind": "consulted",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "product-owner",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:447",
+      "anchor_text": "| L3 | conforme política master (Cap. 14) | Trimestral | **Obrigatório + Gestão Executiva** |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0447-gestao-executiva",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "gestao-executiva",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:452",
+      "anchor_text": "| Governação + Segurança | Decisão de aceitar risco; alerta 15d antes expiração | **GRC/Compliance (cria, registra) + AppSec Engineer (revalida, aprova) + Gestão Executiva/CISO (aprova L3) + Product Owner (notificado se impacto negócio)** |",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0452-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:452",
+      "anchor_text": "| Governação + Segurança | Decisão de aceitar risco; alerta 15d antes expiração | **GRC/Compliance (cria, registra) + AppSec Engineer (revalida, aprova) + Gestão Executiva/CISO (aprova L3) + Product Owner (notificado se impacto negócio)** |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0452-gestao-executiva",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "gestao-executiva",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:452",
+      "anchor_text": "| Governação + Segurança | Decisão de aceitar risco; alerta 15d antes expiração | **GRC/Compliance (cria, registra) + AppSec Engineer (revalida, aprova) + Gestão Executiva/CISO (aprova L3) + Product Owner (notificado se impacto negócio)** |",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0452-product-owner",
+      "kind": "consulted",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "product-owner",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:484",
+      "anchor_text": "- [ ] **AppSec Engineer aprova antes do deploy**",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0484-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:504",
+      "anchor_text": "| Construção + Entrega | Criação/atualização de artefacto | **DevOps/SRE (proprietário, implementa controlos) + Arquitetos (valida alinhamento) + AppSec Engineer (aprova)** | Approval antes de deploy: 2 dias úteis |",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0504-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:561",
+      "anchor_text": "| Governação + Reporting | Fim de período (mensal/trimestral) | **GRC/Compliance (coleta dados, consolida, redige) + AppSec Engineer (valida métricas técnicas) + Gestão Executiva/CISO (aprova distribuição)** | Reporte: 10 dias úteis após fi",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0561-gestao-executiva",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "gestao-executiva",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:615",
+      "anchor_text": "| Governação + Conformidade | Kick-off (criação políticas), anualmente (revisão) | **Gestão Executiva/CISO (assina, aprova) + GRC/Compliance (redige, distribui, treina) + AppSec Engineer (input técnico) + Auditores Internos (valida conformi",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0615-auditores",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "auditores",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:615",
+      "anchor_text": "| Governação + Conformidade | Kick-off (criação políticas), anualmente (revisão) | **Gestão Executiva/CISO (assina, aprova) + GRC/Compliance (redige, distribui, treina) + AppSec Engineer (input técnico) + Auditores Internos (valida conformi",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0615-gestao-executiva",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "gestao-executiva",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:659",
+      "anchor_text": "| Classificação / Design | Após classificação inicial ou quando se introduz automação/assistência com impacto nos atributos | AppSec Engineer + Arquitetos de Software | Antes da aprovação de arquitetura |",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0659-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:659",
+      "anchor_text": "| Classificação / Design | Após classificação inicial ou quando se introduz automação/assistência com impacto nos atributos | AppSec Engineer + Arquitetos de Software | Antes da aprovação de arquitetura |",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0659-arquitetos-software",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "arquitetos-software",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:761",
+      "anchor_text": "- [ ] Aprovação registada pela autoridade proporcional ao nível: L1 Scrum Master / Team Lead, L2 AppSec Engineer, L3 CISO — datada e atribuída ao responsável",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0761-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:761",
+      "anchor_text": "- [ ] Aprovação registada pela autoridade proporcional ao nível: L1 Scrum Master / Team Lead, L2 AppSec Engineer, L3 CISO — datada e atribuída ao responsável",
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0761-gestao-executiva",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "gestao-executiva",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:761",
+      "anchor_text": "- [ ] Aprovação registada pela autoridade proporcional ao nível: L1 Scrum Master / Team Lead, L2 AppSec Engineer, L3 CISO — datada e atribuída ao responsável",
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0761-scrum-master",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "scrum-master",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:772",
+      "anchor_text": "| Entrada no inventário; aprovação por Scrum Master / Team Lead | Inventário com audit trail; aprovação por AppSec Engineer | Inventário com rastreamento granular; aprovação por CISO/equivalente |",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0772-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:772",
+      "anchor_text": "| Entrada no inventário; aprovação por Scrum Master / Team Lead | Inventário com audit trail; aprovação por AppSec Engineer | Inventário com rastreamento granular; aprovação por CISO/equivalente |",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0772-gestao-executiva",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "gestao-executiva",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:772",
+      "anchor_text": "| Entrada no inventário; aprovação por Scrum Master / Team Lead | Inventário com audit trail; aprovação por AppSec Engineer | Inventário com rastreamento granular; aprovação por CISO/equivalente |",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0772-scrum-master",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "scrum-master",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:800",
+      "anchor_text": "| Gate 1 · Requisitos & Risco (Cap 01) | QA + AppSec Engineer | ✓ Classificação de risco atribuída (L1/L2/L3)<br/>✓ Matriz de controlos aplicáveis extraída<br/>✓ Ameaças esperadas mapeadas (STRIDE, MITRE ATT&CK)<br/>✓ Nenhuma exceção de ris",
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0800-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:800",
+      "anchor_text": "| Gate 1 · Requisitos & Risco (Cap 01) | QA + AppSec Engineer | ✓ Classificação de risco atribuída (L1/L2/L3)<br/>✓ Matriz de controlos aplicáveis extraída<br/>✓ Ameaças esperadas mapeadas (STRIDE, MITRE ATT&CK)<br/>✓ Nenhuma exceção de ris",
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0800-qa",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "qa",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:801",
+      "anchor_text": "| Gate 2 · Requisitos de Segurança (Cap 02) | AppSec Engineer | ✓ Requisitos funcionalidade + segurança completos<br/>✓ Gestão de exceções: todas as exceções têm aprovação + SLA<br/>✓ Rastreamento requisito ↔ teste ↔ evidência completo | Re",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0801-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:804",
+      "anchor_text": "| Gate 5 · Infraestrutura & Containers (Cap 08/09) | DevOps + Arquitetos | ✓ IaC versionado, aprovado, testado (Terraform, Helm, CloudFormation)<br/>✓ Imagens container: base segura, SBOM, scanning, assinadas<br/>✓ Policies de runtime (OPA/",
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0804-devops-sre",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "devops-sre",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:805",
+      "anchor_text": "| Gate 6 · Deploy & Monitorização (Cap 11/12) | DevOps + AppSec Engineer + SRE | ✓ Apenas artefactos assinados são promovidos<br/>✓ Ambiente staging validado (testes + aprovações concluídas)<br/>✓ Monitorização + alertas ativados pré-deploy",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0805-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:805",
+      "anchor_text": "| Gate 6 · Deploy & Monitorização (Cap 11/12) | DevOps + AppSec Engineer + SRE | ✓ Apenas artefactos assinados são promovidos<br/>✓ Ambiente staging validado (testes + aprovações concluídas)<br/>✓ Monitorização + alertas ativados pré-deploy",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0805-devops-sre",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "devops-sre",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:821",
+      "anchor_text": "| Planeamento | `matriz-controlos.md` | Developer / Scrum Master / Team Lead | Backlog / wiki | REQ-XXX referenciados (Cap. 02); aprovado AppSec |",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0821-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:821",
+      "anchor_text": "| Planeamento | `matriz-controlos.md` | Developer / Scrum Master / Team Lead | Backlog / wiki | REQ-XXX referenciados (Cap. 02); aprovado AppSec |",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0821-developer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "developer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:821",
+      "anchor_text": "| Planeamento | `matriz-controlos.md` | Developer / Scrum Master / Team Lead | Backlog / wiki | REQ-XXX referenciados (Cap. 02); aprovado AppSec |",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0821-scrum-master",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "scrum-master",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:823",
+      "anchor_text": "| Release | `checklist-go-live.md` | QA | Pipeline CI/CD | Aprovação formal AppSec Engineer + Gestão (L3) |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0823-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:823",
+      "anchor_text": "| Release | `checklist-go-live.md` | QA | Pipeline CI/CD | Aprovação formal AppSec Engineer + Gestão (L3) |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0823-qa",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "qa",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:824",
+      "anchor_text": "| Operação | `risco-residual.md` | GRC/Compliance | Ferramenta GRC / repo | Owner + TTL + critérios encerramento; aprovação |",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0824-grc-compliance",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "grc-compliance",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:827",
+      "anchor_text": "| Artefactos | `artefactos-tecnicos.md` | DevOps/SRE + Arquitetos | Repo `platform/docs` | Classificação por artefacto, rastreamento REQ, aprovação AppSec |",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0827-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:827",
+      "anchor_text": "| Artefactos | `artefactos-tecnicos.md` | DevOps/SRE + Arquitetos | Repo `platform/docs` | Classificação por artefacto, rastreamento REQ, aprovação AppSec |",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0827-devops-sre",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "devops-sre",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:829",
+      "anchor_text": "| Governação | `politicas-organizacionais.md` (4 políticas) | GRC/Compliance + AppSec | Docs / Wiki / Política | Aprovação Gestão Executiva, treinamento + attestation, auditoria |",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0829-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:829",
+      "anchor_text": "| Governação | `politicas-organizacionais.md` (4 políticas) | GRC/Compliance + AppSec | Docs / Wiki / Política | Aprovação Gestão Executiva, treinamento + attestation, auditoria |",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0829-gestao-executiva",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "gestao-executiva",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:829",
+      "anchor_text": "| Governação | `politicas-organizacionais.md` (4 políticas) | GRC/Compliance + AppSec | Docs / Wiki / Política | Aprovação Gestão Executiva, treinamento + attestation, auditoria |",
+      "applicable_levels": null,
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0829-grc-compliance",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "grc-compliance",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "01-classificacao-aplicacoes/aplicacao-lifecycle.md:845",
+      "anchor_text": "| US-05 - Validação go-live | (Rec.) | ✔ | ✔ | Aprovação AppSec + Gestão em L3 |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "01-classificacao-aplicacoes",
+      "involvement_id": "DI-01-0845-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "02-requisitos-seguranca/aplicacao-lifecycle.md:63",
+      "anchor_text": "| AppSec Engineer | Validar aplicação; aprovar exceções; garantir alinhamento e consistência global |",
+      "applicable_levels": null,
+      "bundle_id": "02-requisitos-seguranca",
+      "involvement_id": "DI-02-0063-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "02-requisitos-seguranca/aplicacao-lifecycle.md:171",
+      "anchor_text": "- [ ] Aprovação técnica por AppSec documentada; aprovação executiva quando aplicável em L3",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "02-requisitos-seguranca",
+      "involvement_id": "DI-02-0171-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "02-requisitos-seguranca/aplicacao-lifecycle.md:360",
+      "anchor_text": "| Release | Aprovação final | AppSec Engineer | Antes do go-live |",
+      "applicable_levels": null,
+      "bundle_id": "02-requisitos-seguranca",
+      "involvement_id": "DI-02-0360-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "02-requisitos-seguranca/aplicacao-lifecycle.md:429",
+      "anchor_text": "- [ ] Revisão e aprovação por AppSec quando aplicável",
+      "applicable_levels": null,
+      "bundle_id": "02-requisitos-seguranca",
+      "involvement_id": "DI-02-0429-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "02-requisitos-seguranca/aplicacao-lifecycle.md:636",
+      "anchor_text": "| L3 | Sim | Revisão + SAST/SCA + validações reforçadas e AppSec review |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "02-requisitos-seguranca",
+      "involvement_id": "DI-02-0636-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "02-requisitos-seguranca/aplicacao-lifecycle.md:689",
+      "anchor_text": "| L1 | A1+ | *Mandate* simples; aprovação por Scrum Master / Team Lead; A2+ permitido apenas fora de produção |",
+      "applicable_levels": {
+        "L1": true,
+        "L2": false,
+        "L3": false
+      },
+      "bundle_id": "02-requisitos-seguranca",
+      "involvement_id": "DI-02-0689-scrum-master",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "scrum-master",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "02-requisitos-seguranca/aplicacao-lifecycle.md:691",
+      "anchor_text": "| L3 | A1+ | *Mandate* completo + revisão organizacional trimestral; A4 exige assinatura formal do `CISO` |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "02-requisitos-seguranca",
+      "involvement_id": "DI-02-0691-gestao-executiva",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "gestao-executiva",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "03-threat-modeling/aplicacao-lifecycle.md:26",
+      "anchor_text": "| Release / Go-live | Confirmar ameaças abertas, exceções, risco residual e compensações | QA, AppSec Engineer, Product Owner (impacto), Scrum Master / Team Lead | Decisões (mitigar/aceitar) + evidência de aprovação |",
+      "applicable_levels": null,
+      "bundle_id": "03-threat-modeling",
+      "involvement_id": "DI-03-0026-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "03-threat-modeling/aplicacao-lifecycle.md:26",
+      "anchor_text": "| Release / Go-live | Confirmar ameaças abertas, exceções, risco residual e compensações | QA, AppSec Engineer, Product Owner (impacto), Scrum Master / Team Lead | Decisões (mitigar/aceitar) + evidência de aprovação |",
+      "applicable_levels": null,
+      "bundle_id": "03-threat-modeling",
+      "involvement_id": "DI-03-0026-qa",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "qa",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "03-threat-modeling/aplicacao-lifecycle.md:26",
+      "anchor_text": "| Release / Go-live | Confirmar ameaças abertas, exceções, risco residual e compensações | QA, AppSec Engineer, Product Owner (impacto), Scrum Master / Team Lead | Decisões (mitigar/aceitar) + evidência de aprovação |",
+      "applicable_levels": null,
+      "bundle_id": "03-threat-modeling",
+      "involvement_id": "DI-03-0026-scrum-master",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "scrum-master",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "03-threat-modeling/aplicacao-lifecycle.md:36",
+      "anchor_text": "| Scrum Master / Team Lead | **Responsável pela decisão final do modelo** no contexto da equipa/projeto (aprovação do baseline e revisões) |",
+      "applicable_levels": null,
+      "bundle_id": "03-threat-modeling",
+      "involvement_id": "DI-03-0036-scrum-master",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "scrum-master",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "03-threat-modeling/aplicacao-lifecycle.md:129",
+      "anchor_text": "| Design / Revisão | Revisão da arquitetura | Arquitetos de Software + AppSec Engineer | Antes da aprovação de design |",
+      "applicable_levels": null,
+      "bundle_id": "03-threat-modeling",
+      "involvement_id": "DI-03-0129-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "03-threat-modeling/aplicacao-lifecycle.md:129",
+      "anchor_text": "| Design / Revisão | Revisão da arquitetura | Arquitetos de Software + AppSec Engineer | Antes da aprovação de design |",
+      "applicable_levels": null,
+      "bundle_id": "03-threat-modeling",
+      "involvement_id": "DI-03-0129-arquitetos-software",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "arquitetos-software",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "03-threat-modeling/aplicacao-lifecycle.md:192",
+      "anchor_text": "- [ ] Aprovação formal por AppSec",
+      "applicable_levels": null,
+      "bundle_id": "03-threat-modeling",
+      "involvement_id": "DI-03-0192-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "03-threat-modeling/aplicacao-lifecycle.md:369",
+      "anchor_text": "| Design / Revisão | Presença de dados pessoais | Arquitetos de Software + GRC / Compliance | Antes da aprovação de design |",
+      "applicable_levels": null,
+      "bundle_id": "03-threat-modeling",
+      "involvement_id": "DI-03-0369-arquitetos-software",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "arquitetos-software",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "03-threat-modeling/aplicacao-lifecycle.md:369",
+      "anchor_text": "| Design / Revisão | Presença de dados pessoais | Arquitetos de Software + GRC / Compliance | Antes da aprovação de design |",
+      "applicable_levels": null,
+      "bundle_id": "03-threat-modeling",
+      "involvement_id": "DI-03-0369-grc-compliance",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "grc-compliance",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "03-threat-modeling/aplicacao-lifecycle.md:408",
+      "anchor_text": "| L2 | Sim | Aprovação formal por Scrum Master / Team Lead + AppSec Engineer |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": false
+      },
+      "bundle_id": "03-threat-modeling",
+      "involvement_id": "DI-03-0408-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "03-threat-modeling/aplicacao-lifecycle.md:408",
+      "anchor_text": "| L2 | Sim | Aprovação formal por Scrum Master / Team Lead + AppSec Engineer |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": false
+      },
+      "bundle_id": "03-threat-modeling",
+      "involvement_id": "DI-03-0408-scrum-master",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "scrum-master",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "03-threat-modeling/aplicacao-lifecycle.md:690",
+      "anchor_text": "| Risco aceite | Informal | Documentado | Formal, aprovado por AppSec Engineer e com sunset definido |",
+      "applicable_levels": null,
+      "bundle_id": "03-threat-modeling",
+      "involvement_id": "DI-03-0690-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "04-arquitetura-segura/aplicacao-lifecycle.md:27",
+      "anchor_text": "| Exceção arquitetural | Solicitar/avaliar/aprovar exceção com controlos compensatórios e *sunset* | Product Owner, AppSec Engineer, Arquitetos de Software | `excecao-arquitetura.md` |",
+      "applicable_levels": null,
+      "bundle_id": "04-arquitetura-segura",
+      "involvement_id": "DI-04-0027-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "04-arquitetura-segura/aplicacao-lifecycle.md:27",
+      "anchor_text": "| Exceção arquitetural | Solicitar/avaliar/aprovar exceção com controlos compensatórios e *sunset* | Product Owner, AppSec Engineer, Arquitetos de Software | `excecao-arquitetura.md` |",
+      "applicable_levels": null,
+      "bundle_id": "04-arquitetura-segura",
+      "involvement_id": "DI-04-0027-arquitetos-software",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "arquitetos-software",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "04-arquitetura-segura/aplicacao-lifecycle.md:27",
+      "anchor_text": "| Exceção arquitetural | Solicitar/avaliar/aprovar exceção com controlos compensatórios e *sunset* | Product Owner, AppSec Engineer, Arquitetos de Software | `excecao-arquitetura.md` |",
+      "applicable_levels": null,
+      "bundle_id": "04-arquitetura-segura",
+      "involvement_id": "DI-04-0027-product-owner",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "product-owner",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "04-arquitetura-segura/aplicacao-lifecycle.md:42",
+      "anchor_text": "| Product Owner | Priorizar investimento/mitigação, aprovar trade-offs de negócio e exceções com impacto em scope/prazos |",
+      "applicable_levels": null,
+      "bundle_id": "04-arquitetura-segura",
+      "involvement_id": "DI-04-0042-product-owner",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "product-owner",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "04-arquitetura-segura/aplicacao-lifecycle.md:70",
+      "anchor_text": "- [ ] Aprovação registada (AppSec + Arquitetura)",
+      "applicable_levels": null,
+      "bundle_id": "04-arquitetura-segura",
+      "involvement_id": "DI-04-0070-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "04-arquitetura-segura/aplicacao-lifecycle.md:117",
+      "anchor_text": "- [ ] Aprovação registada (AppSec + Arquitetura)",
+      "applicable_levels": null,
+      "bundle_id": "04-arquitetura-segura",
+      "involvement_id": "DI-04-0117-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "04-arquitetura-segura/aplicacao-lifecycle.md:588",
+      "anchor_text": "- [ ] Aprovação formal (Arquitetura + AppSec)",
+      "applicable_levels": null,
+      "bundle_id": "04-arquitetura-segura",
+      "involvement_id": "DI-04-0588-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "04-arquitetura-segura/aplicacao-lifecycle.md:703",
+      "anchor_text": "| Design / Revisão | Introdução ou alteração de componente não determinístico | Arquitetos de Software + AppSec Engineer | Antes da aprovação do design |",
+      "applicable_levels": null,
+      "bundle_id": "04-arquitetura-segura",
+      "involvement_id": "DI-04-0703-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "04-arquitetura-segura/aplicacao-lifecycle.md:703",
+      "anchor_text": "| Design / Revisão | Introdução ou alteração de componente não determinístico | Arquitetos de Software + AppSec Engineer | Antes da aprovação do design |",
+      "applicable_levels": null,
+      "bundle_id": "04-arquitetura-segura",
+      "involvement_id": "DI-04-0703-arquitetos-software",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "arquitetos-software",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "04-arquitetura-segura/aplicacao-lifecycle.md:754",
+      "anchor_text": "| L3 | Obrigatório para A2+; A3/A4 com revisão `appsec` independente | Checklist [`ARC-015`](/sbd-toe/sbd-manual/arquitetura-segura/addon/catalogo-requisitos-arquitetura#arc-015) completa + revisão independente; A4 com assinatura formal do ",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "04-arquitetura-segura",
+      "involvement_id": "DI-04-0754-gestao-executiva",
+      "kind": "approves",
+      "refs": [
+        "ARC-015"
+      ],
+      "role_canonical": true,
+      "role_id": "gestao-executiva",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "04-arquitetura-segura/aplicacao-lifecycle.md:853",
+      "anchor_text": "| Design / Revisão | Introdução ou alteração de componente AI/ML não-agentic | Arquitetos de Software + AppSec Engineer | Antes da aprovação do design |",
+      "applicable_levels": null,
+      "bundle_id": "04-arquitetura-segura",
+      "involvement_id": "DI-04-0853-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "04-arquitetura-segura/aplicacao-lifecycle.md:853",
+      "anchor_text": "| Design / Revisão | Introdução ou alteração de componente AI/ML não-agentic | Arquitetos de Software + AppSec Engineer | Antes da aprovação do design |",
+      "applicable_levels": null,
+      "bundle_id": "04-arquitetura-segura",
+      "involvement_id": "DI-04-0853-arquitetos-software",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "arquitetos-software",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "05-dependencias-sbom-sca/aplicacao-lifecycle.md:79",
+      "anchor_text": "| L3 | Sim | Revisão AppSec + proveniência",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "05-dependencias-sbom-sca",
+      "involvement_id": "DI-05-0079-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "05-dependencias-sbom-sca/aplicacao-lifecycle.md:84",
+      "anchor_text": "| Design/Dev | Inclusão de dependência | Developer + AppSec | Na aprovação da dependência |",
+      "applicable_levels": null,
+      "bundle_id": "05-dependencias-sbom-sca",
+      "involvement_id": "DI-05-0084-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "05-dependencias-sbom-sca/aplicacao-lifecycle.md:84",
+      "anchor_text": "| Design/Dev | Inclusão de dependência | Developer + AppSec | Na aprovação da dependência |",
+      "applicable_levels": null,
+      "bundle_id": "05-dependencias-sbom-sca",
+      "involvement_id": "DI-05-0084-developer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "developer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "05-dependencias-sbom-sca/aplicacao-lifecycle.md:258",
+      "anchor_text": "| L3 | Sim | Revisão formal + AppSec envolvido",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "05-dependencias-sbom-sca",
+      "involvement_id": "DI-05-0258-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "05-dependencias-sbom-sca/aplicacao-lifecycle.md:342",
+      "anchor_text": "| L2 | Sim | Auditorias periódicas |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": false
+      },
+      "bundle_id": "05-dependencias-sbom-sca",
+      "involvement_id": "DI-05-0342-auditores",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "auditores",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "05-dependencias-sbom-sca/aplicacao-lifecycle.md:348",
+      "anchor_text": "| Dev | Inclusão de nova lib | Developer + AppSec | Na aprovação da dependência |",
+      "applicable_levels": null,
+      "bundle_id": "05-dependencias-sbom-sca",
+      "involvement_id": "DI-05-0348-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "05-dependencias-sbom-sca/aplicacao-lifecycle.md:348",
+      "anchor_text": "| Dev | Inclusão de nova lib | Developer + AppSec | Na aprovação da dependência |",
+      "applicable_levels": null,
+      "bundle_id": "05-dependencias-sbom-sca",
+      "involvement_id": "DI-05-0348-developer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "developer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "05-dependencias-sbom-sca/aplicacao-lifecycle.md:618",
+      "anchor_text": "| Design/Dev | Inclusão de dependência | Developer | Na aprovação da dependência |",
+      "applicable_levels": null,
+      "bundle_id": "05-dependencias-sbom-sca",
+      "involvement_id": "DI-05-0618-developer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "developer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "05-dependencias-sbom-sca/aplicacao-lifecycle.md:725",
+      "anchor_text": "| Aprovação de provider | Adição de novo *provider* AI | AppSec + GRC (+ Legal se necessário) | Antes do uso operacional |",
+      "applicable_levels": null,
+      "bundle_id": "05-dependencias-sbom-sca",
+      "involvement_id": "DI-05-0725-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "05-dependencias-sbom-sca/aplicacao-lifecycle.md:815",
+      "anchor_text": "| Política de severidade mínima documentada; *registries* recomendados; aprovação simples | Política versionada; *allowlist* enforced + *fallback* auditado; registo com campos obrigatórios | Idem + revisão AppSec/GRC do *fallback* e do regi",
+      "applicable_levels": null,
+      "bundle_id": "05-dependencias-sbom-sca",
+      "involvement_id": "DI-05-0815-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "05-dependencias-sbom-sca/aplicacao-lifecycle.md:822",
+      "anchor_text": "| Dev | Aprovação de nova dependência | AppSec + Developer | Na aprovação da dependência |",
+      "applicable_levels": null,
+      "bundle_id": "05-dependencias-sbom-sca",
+      "involvement_id": "DI-05-0822-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "05-dependencias-sbom-sca/aplicacao-lifecycle.md:822",
+      "anchor_text": "| Dev | Aprovação de nova dependência | AppSec + Developer | Na aprovação da dependência |",
+      "applicable_levels": null,
+      "bundle_id": "05-dependencias-sbom-sca",
+      "involvement_id": "DI-05-0822-developer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "developer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "06-desenvolvimento-seguro/aplicacao-lifecycle.md:49",
+      "anchor_text": "| G1 | Proposto | Revisão humana estruturada com checklist | Aprovação registada no PR + checklist | **Scrum Master / Team Lead** (com execução por **Developer** / **Quality Assurance (QA)**) |",
+      "applicable_levels": null,
+      "bundle_id": "06-desenvolvimento-seguro",
+      "involvement_id": "DI-06-0049-developer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "developer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "06-desenvolvimento-seguro/aplicacao-lifecycle.md:49",
+      "anchor_text": "| G1 | Proposto | Revisão humana estruturada com checklist | Aprovação registada no PR + checklist | **Scrum Master / Team Lead** (com execução por **Developer** / **Quality Assurance (QA)**) |",
+      "applicable_levels": null,
+      "bundle_id": "06-desenvolvimento-seguro",
+      "involvement_id": "DI-06-0049-qa",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "qa",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "06-desenvolvimento-seguro/aplicacao-lifecycle.md:49",
+      "anchor_text": "| G1 | Proposto | Revisão humana estruturada com checklist | Aprovação registada no PR + checklist | **Scrum Master / Team Lead** (com execução por **Developer** / **Quality Assurance (QA)**) |",
+      "applicable_levels": null,
+      "bundle_id": "06-desenvolvimento-seguro",
+      "involvement_id": "DI-06-0049-scrum-master",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "scrum-master",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "06-desenvolvimento-seguro/aplicacao-lifecycle.md:51",
+      "anchor_text": "| G3 | Validado | Decisão final de aceitação | Aprovação final + referência a exceções | **Scrum Master / Team Lead** (L1) · **AppSec Engineer** (L2/L3) · **Gestão Executiva** (L3 quando aplicável) |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "bundle_id": "06-desenvolvimento-seguro",
+      "involvement_id": "DI-06-0051-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "06-desenvolvimento-seguro/aplicacao-lifecycle.md:51",
+      "anchor_text": "| G3 | Validado | Decisão final de aceitação | Aprovação final + referência a exceções | **Scrum Master / Team Lead** (L1) · **AppSec Engineer** (L2/L3) · **Gestão Executiva** (L3 quando aplicável) |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "06-desenvolvimento-seguro",
+      "involvement_id": "DI-06-0051-gestao-executiva",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "gestao-executiva",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "06-desenvolvimento-seguro/aplicacao-lifecycle.md:51",
+      "anchor_text": "| G3 | Validado | Decisão final de aceitação | Aprovação final + referência a exceções | **Scrum Master / Team Lead** (L1) · **AppSec Engineer** (L2/L3) · **Gestão Executiva** (L3 quando aplicável) |",
+      "applicable_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
+      "bundle_id": "06-desenvolvimento-seguro",
+      "involvement_id": "DI-06-0051-scrum-master",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "scrum-master",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "06-desenvolvimento-seguro/aplicacao-lifecycle.md:69",
+      "anchor_text": "| **AppSec Engineer** | Definir critérios mínimos; aprovar exceções; validar dependências críticas; mapear requisitos e findings a OWASP/ASVS/CWE; definir perfis L1–L3 |",
+      "applicable_levels": {
+        "L1": true,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "06-desenvolvimento-seguro",
+      "involvement_id": "DI-06-0069-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "06-desenvolvimento-seguro/aplicacao-lifecycle.md:70",
+      "anchor_text": "| **Arquitetos de Software** | Definir padrões por stack, decisões estruturais e guidelines base; aprovar curadoria técnica de guidelines/rulesets; assegurar consistência arquitetural |",
+      "applicable_levels": null,
+      "bundle_id": "06-desenvolvimento-seguro",
+      "involvement_id": "DI-06-0070-arquitetos-software",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "arquitetos-software",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "06-desenvolvimento-seguro/aplicacao-lifecycle.md:98",
+      "anchor_text": "- [ ] *Tailoring* documentado (`rules/README.md`) e aprovado (por **Arquitetos de Software** / **AppSec Engineer** conforme aplicável)",
+      "applicable_levels": null,
+      "bundle_id": "06-desenvolvimento-seguro",
+      "involvement_id": "DI-06-0098-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "06-desenvolvimento-seguro/aplicacao-lifecycle.md:98",
+      "anchor_text": "- [ ] *Tailoring* documentado (`rules/README.md`) e aprovado (por **Arquitetos de Software** / **AppSec Engineer** conforme aplicável)",
+      "applicable_levels": null,
+      "bundle_id": "06-desenvolvimento-seguro",
+      "involvement_id": "DI-06-0098-arquitetos-software",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "arquitetos-software",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "06-desenvolvimento-seguro/aplicacao-lifecycle.md:112",
+      "anchor_text": "| L3 | Sim | Auditoria periódica e *policy-as-code* |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "06-desenvolvimento-seguro",
+      "involvement_id": "DI-06-0112-auditores",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "auditores",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "06-desenvolvimento-seguro/aplicacao-lifecycle.md:156",
+      "anchor_text": "| L3 | Sim | Revisão dedicada com foco em segurança (inclui **AppSec Engineer** quando aplicável) |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "06-desenvolvimento-seguro",
+      "involvement_id": "DI-06-0156-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "06-desenvolvimento-seguro/aplicacao-lifecycle.md:441",
+      "anchor_text": "- [ ] Aprovação final por **AppSec Engineer** (e, em L3 quando aplicável, por **Gestão Executiva**)",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "06-desenvolvimento-seguro",
+      "involvement_id": "DI-06-0441-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "06-desenvolvimento-seguro/aplicacao-lifecycle.md:441",
+      "anchor_text": "- [ ] Aprovação final por **AppSec Engineer** (e, em L3 quando aplicável, por **Gestão Executiva**)",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "06-desenvolvimento-seguro",
+      "involvement_id": "DI-06-0441-gestao-executiva",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "gestao-executiva",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "06-desenvolvimento-seguro/aplicacao-lifecycle.md:730",
+      "anchor_text": "- [ ] *Baseline* de falsos positivos do SAST versionada e aprovada por **AppSec Engineer**",
+      "applicable_levels": null,
+      "bundle_id": "06-desenvolvimento-seguro",
+      "involvement_id": "DI-06-0730-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "06-desenvolvimento-seguro/aplicacao-lifecycle.md:740",
+      "anchor_text": "| Proveniência sinalizada; SAST com baseline básica | Proveniência identificada + revisão humana para origem não interna; baseline aprovada por AppSec + thresholds por perfil | + *policy-as-code* do gate, auditoria periódica da baseline e d",
+      "applicable_levels": null,
+      "bundle_id": "06-desenvolvimento-seguro",
+      "involvement_id": "DI-06-0740-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "07-cicd-seguro/aplicacao-lifecycle.md:36",
+      "anchor_text": "| Registo de exceção (*bypass* de gate) | Aprovação formal, prazos, compensações e reversão automática | GRC / Compliance, Auditores Internos, AppSec Engineers |",
+      "applicable_levels": null,
+      "bundle_id": "07-cicd-seguro",
+      "involvement_id": "DI-07-0036-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "07-cicd-seguro/aplicacao-lifecycle.md:36",
+      "anchor_text": "| Registo de exceção (*bypass* de gate) | Aprovação formal, prazos, compensações e reversão automática | GRC / Compliance, Auditores Internos, AppSec Engineers |",
+      "applicable_levels": null,
+      "bundle_id": "07-cicd-seguro",
+      "involvement_id": "DI-07-0036-auditores",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "auditores",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "07-cicd-seguro/aplicacao-lifecycle.md:36",
+      "anchor_text": "| Registo de exceção (*bypass* de gate) | Aprovação formal, prazos, compensações e reversão automática | GRC / Compliance, Auditores Internos, AppSec Engineers |",
+      "applicable_levels": null,
+      "bundle_id": "07-cicd-seguro",
+      "involvement_id": "DI-07-0036-grc-compliance",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "grc-compliance",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "07-cicd-seguro/aplicacao-lifecycle.md:54",
+      "anchor_text": "| Aprovar promoção/deploy (ações irreversíveis) com owner explícito | DevOps / SRE | AppSec Engineers (L2/L3), GRC (L3) | Registo nominal de aprovação, contexto e evidência associada |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "bundle_id": "07-cicd-seguro",
+      "involvement_id": "DI-07-0054-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "07-cicd-seguro/aplicacao-lifecycle.md:54",
+      "anchor_text": "| Aprovar promoção/deploy (ações irreversíveis) com owner explícito | DevOps / SRE | AppSec Engineers (L2/L3), GRC (L3) | Registo nominal de aprovação, contexto e evidência associada |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "bundle_id": "07-cicd-seguro",
+      "involvement_id": "DI-07-0054-devops-sre",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "devops-sre",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "07-cicd-seguro/aplicacao-lifecycle.md:55",
+      "anchor_text": "| Registar e aprovar exceções (com prazo e compensações) | GRC / Compliance, Auditores Internos | AppSec Engineers | Registo formal de exceções e aprovações, TTL, plano compensatório |",
+      "applicable_levels": null,
+      "bundle_id": "07-cicd-seguro",
+      "involvement_id": "DI-07-0055-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "07-cicd-seguro/aplicacao-lifecycle.md:55",
+      "anchor_text": "| Registar e aprovar exceções (com prazo e compensações) | GRC / Compliance, Auditores Internos | AppSec Engineers | Registo formal de exceções e aprovações, TTL, plano compensatório |",
+      "applicable_levels": null,
+      "bundle_id": "07-cicd-seguro",
+      "involvement_id": "DI-07-0055-auditores",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "auditores",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "07-cicd-seguro/aplicacao-lifecycle.md:55",
+      "anchor_text": "| Registar e aprovar exceções (com prazo e compensações) | GRC / Compliance, Auditores Internos | AppSec Engineers | Registo formal de exceções e aprovações, TTL, plano compensatório |",
+      "applicable_levels": null,
+      "bundle_id": "07-cicd-seguro",
+      "involvement_id": "DI-07-0055-grc-compliance",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "grc-compliance",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "07-cicd-seguro/aplicacao-lifecycle.md:102",
+      "anchor_text": "| L3 | Sim | Revisão dupla (code owner + AppSec) e bloqueio em falhas High |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "07-cicd-seguro",
+      "involvement_id": "DI-07-0102-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "07-cicd-seguro/aplicacao-lifecycle.md:330",
+      "anchor_text": "| L2 | Sim | Bloqueio High/Critical + aprovação AppSec para exceções |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": false
+      },
+      "bundle_id": "07-cicd-seguro",
+      "involvement_id": "DI-07-0330-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "07-cicd-seguro/aplicacao-lifecycle.md:427",
+      "anchor_text": "- [ ] Aprovação dupla (AppSec + GRC) em L2/L3",
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "bundle_id": "07-cicd-seguro",
+      "involvement_id": "DI-07-0427-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "08-iac-infraestrutura/aplicacao-lifecycle.md:38",
+      "anchor_text": "| Execução de `apply` | Executar apenas alterações aprovadas e assinadas | DevOps / SRE, GRC / Compliance |",
+      "applicable_levels": null,
+      "bundle_id": "08-iac-infraestrutura",
+      "involvement_id": "DI-08-0038-devops-sre",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "devops-sre",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "08-iac-infraestrutura/aplicacao-lifecycle.md:38",
+      "anchor_text": "| Execução de `apply` | Executar apenas alterações aprovadas e assinadas | DevOps / SRE, GRC / Compliance |",
+      "applicable_levels": null,
+      "bundle_id": "08-iac-infraestrutura",
+      "involvement_id": "DI-08-0038-grc-compliance",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "grc-compliance",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "08-iac-infraestrutura/aplicacao-lifecycle.md:74",
+      "anchor_text": "| Gerir exceções e revisões | GRC / Compliance | AppSec Engineers | `excecoes-iac.json`, logs de aprovação |",
+      "applicable_levels": null,
+      "bundle_id": "08-iac-infraestrutura",
+      "involvement_id": "DI-08-0074-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "08-iac-infraestrutura/aplicacao-lifecycle.md:74",
+      "anchor_text": "| Gerir exceções e revisões | GRC / Compliance | AppSec Engineers | `excecoes-iac.json`, logs de aprovação |",
+      "applicable_levels": null,
+      "bundle_id": "08-iac-infraestrutura",
+      "involvement_id": "DI-08-0074-grc-compliance",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "grc-compliance",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "08-iac-infraestrutura/aplicacao-lifecycle.md:252",
+      "anchor_text": "| L3 | Sim | Whitelist + validação + SBOM + attestation e revisão AppSec; denylist ativa |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "08-iac-infraestrutura",
+      "involvement_id": "DI-08-0252-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "08-iac-infraestrutura/aplicacao-lifecycle.md:319",
+      "anchor_text": "- [ ] Auditoria de aprovação registada",
+      "applicable_levels": null,
+      "bundle_id": "08-iac-infraestrutura",
+      "involvement_id": "DI-08-0319-auditores",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "auditores",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "08-iac-infraestrutura/aplicacao-lifecycle.md:515",
+      "anchor_text": "| L1 | Sim | Auditoria mensal |",
+      "applicable_levels": {
+        "L1": true,
+        "L2": false,
+        "L3": false
+      },
+      "bundle_id": "08-iac-infraestrutura",
+      "involvement_id": "DI-08-0515-auditores",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "auditores",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "08-iac-infraestrutura/aplicacao-lifecycle.md:583",
+      "anchor_text": "| L2 | Sim | Aprov. PO + AppSec |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": false
+      },
+      "bundle_id": "08-iac-infraestrutura",
+      "involvement_id": "DI-08-0583-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "08-iac-infraestrutura/aplicacao-lifecycle.md:584",
+      "anchor_text": "| L3 | Sim | Aprov. PO + AppSec + GRC |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "08-iac-infraestrutura",
+      "involvement_id": "DI-08-0584-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "08-iac-infraestrutura/aplicacao-lifecycle.md:617",
+      "anchor_text": "| L2 | Sim | Aprovação dupla (AppSec+PO) |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": false
+      },
+      "bundle_id": "08-iac-infraestrutura",
+      "involvement_id": "DI-08-0617-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "08-iac-infraestrutura/aplicacao-lifecycle.md:618",
+      "anchor_text": "| L3 | Sim | Aprovação AppSec+GRC e *review* por sprint |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "08-iac-infraestrutura",
+      "involvement_id": "DI-08-0618-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "08-iac-infraestrutura/aplicacao-lifecycle.md:679",
+      "anchor_text": "| Trilha de aprovações (roles) | US-06 | DevOps + AppSec (mínimo) |",
+      "applicable_levels": null,
+      "bundle_id": "08-iac-infraestrutura",
+      "involvement_id": "DI-08-0679-devops-sre",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "devops-sre",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "10-testes-seguranca/aplicacao-lifecycle.md:40",
+      "anchor_text": "| **Product Owner** | Aprovar risco residual e decidir *go/no-go* |",
+      "applicable_levels": null,
+      "bundle_id": "10-testes-seguranca",
+      "involvement_id": "DI-10-0040-product-owner",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "product-owner",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "10-testes-seguranca/aplicacao-lifecycle.md:168",
+      "anchor_text": "| Staging | Build/Deploy em staging | QA | Antes da aprovação da release |",
+      "applicable_levels": null,
+      "bundle_id": "10-testes-seguranca",
+      "involvement_id": "DI-10-0168-qa",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "qa",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "10-testes-seguranca/aplicacao-lifecycle.md:357",
+      "anchor_text": "| **Aprovação formal risco** | ⏳ Pendente | - | Aguarda AppSec + Produto |",
+      "applicable_levels": null,
+      "bundle_id": "10-testes-seguranca",
+      "involvement_id": "DI-10-0357-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "10-testes-seguranca/aplicacao-lifecycle.md:454",
+      "anchor_text": "| Staging | Deploy de candidato a release | QA + AppSec Engineer | Antes de aprovação formal |",
+      "applicable_levels": null,
+      "bundle_id": "10-testes-seguranca",
+      "involvement_id": "DI-10-0454-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "10-testes-seguranca/aplicacao-lifecycle.md:454",
+      "anchor_text": "| Staging | Deploy de candidato a release | QA + AppSec Engineer | Antes de aprovação formal |",
+      "applicable_levels": null,
+      "bundle_id": "10-testes-seguranca",
+      "involvement_id": "DI-10-0454-qa",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "qa",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "10-testes-seguranca/aplicacao-lifecycle.md:491",
+      "anchor_text": "- [ ] Auditoria de exceções com dupla aprovação para L2/L3",
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "bundle_id": "10-testes-seguranca",
+      "involvement_id": "DI-10-0491-auditores",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "auditores",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "10-testes-seguranca/aplicacao-lifecycle.md:656",
+      "anchor_text": "- [ ] Template S1 de supressão FP com campos obrigatórios (Finding ID, análise técnica, evidência de teste, aprovador AppSec)",
+      "applicable_levels": null,
+      "bundle_id": "10-testes-seguranca",
+      "involvement_id": "DI-10-0656-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "10-testes-seguranca/aplicacao-lifecycle.md:827",
+      "anchor_text": "| L2 | Override exige aprovação AppSec Engineer + expiração |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": false
+      },
+      "bundle_id": "10-testes-seguranca",
+      "involvement_id": "DI-10-0827-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "10-testes-seguranca/aplicacao-lifecycle.md:828",
+      "anchor_text": "| L3 | Override exige dupla aprovação (AppSec Engineer + Product Owner / Scrum Master / Team Lead) + expiração + retest obrigatório |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "10-testes-seguranca",
+      "involvement_id": "DI-10-0828-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "10-testes-seguranca/aplicacao-lifecycle.md:828",
+      "anchor_text": "| L3 | Override exige dupla aprovação (AppSec Engineer + Product Owner / Scrum Master / Team Lead) + expiração + retest obrigatório |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "10-testes-seguranca",
+      "involvement_id": "DI-10-0828-product-owner",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "product-owner",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "10-testes-seguranca/aplicacao-lifecycle.md:828",
+      "anchor_text": "| L3 | Override exige dupla aprovação (AppSec Engineer + Product Owner / Scrum Master / Team Lead) + expiração + retest obrigatório |",
+      "applicable_levels": {
+        "L1": false,
+        "L2": false,
+        "L3": true
+      },
+      "bundle_id": "10-testes-seguranca",
+      "involvement_id": "DI-10-0828-scrum-master",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "scrum-master",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "10-testes-seguranca/aplicacao-lifecycle.md:864",
+      "anchor_text": "- [ ] Revisão e aprovação por role humano (AppSec/QA)",
+      "applicable_levels": null,
+      "bundle_id": "10-testes-seguranca",
+      "involvement_id": "DI-10-0864-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "10-testes-seguranca/aplicacao-lifecycle.md:864",
+      "anchor_text": "- [ ] Revisão e aprovação por role humano (AppSec/QA)",
+      "applicable_levels": null,
+      "bundle_id": "10-testes-seguranca",
+      "involvement_id": "DI-10-0864-qa",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "qa",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "10-testes-seguranca/aplicacao-lifecycle.md:891",
+      "anchor_text": "- [ ] Baseline de FP aprovada por AppSec, com rationale por supressão",
+      "applicable_levels": null,
+      "bundle_id": "10-testes-seguranca",
+      "involvement_id": "DI-10-0891-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "11-deploy-seguro/aplicacao-lifecycle.md:38",
+      "anchor_text": "| **AppSec Engineer** | Aprovar *gates* e gerir exceções |",
+      "applicable_levels": null,
+      "bundle_id": "11-deploy-seguro",
+      "involvement_id": "DI-11-0038-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "11-deploy-seguro/aplicacao-lifecycle.md:122",
+      "anchor_text": "- [ ] Aprovação formal registada (QA + AppSec)",
+      "applicable_levels": null,
+      "bundle_id": "11-deploy-seguro",
+      "involvement_id": "DI-11-0122-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "11-deploy-seguro/aplicacao-lifecycle.md:122",
+      "anchor_text": "- [ ] Aprovação formal registada (QA + AppSec)",
+      "applicable_levels": null,
+      "bundle_id": "11-deploy-seguro",
+      "involvement_id": "DI-11-0122-qa",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "qa",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "13-formacao-onboarding/aplicacao-lifecycle.md:60",
+      "anchor_text": "- [ ] Exceções documentadas com aprovação AppSec/Gestão",
+      "applicable_levels": null,
+      "bundle_id": "13-formacao-onboarding",
+      "involvement_id": "DI-13-0060-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "13-formacao-onboarding/aplicacao-lifecycle.md:308",
+      "anchor_text": "| Planeamento/Design | Aprovação de feature | Security Champion + AppSec Engineer | Antes do sprint de desenvolvimento |",
+      "applicable_levels": null,
+      "bundle_id": "13-formacao-onboarding",
+      "involvement_id": "DI-13-0308-appsec-engineer",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "appsec-engineer",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "13-formacao-onboarding/aplicacao-lifecycle.md:308",
+      "anchor_text": "| Planeamento/Design | Aprovação de feature | Security Champion + AppSec Engineer | Antes do sprint de desenvolvimento |",
+      "applicable_levels": null,
+      "bundle_id": "13-formacao-onboarding",
+      "involvement_id": "DI-13-0308-security-champion",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "security-champion",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "14-governanca-contratacao/aplicacao-lifecycle.md:30",
+      "anchor_text": "| **Gestão Executiva** | Aprovar risco residual |",
+      "applicable_levels": null,
+      "bundle_id": "14-governanca-contratacao",
+      "involvement_id": "DI-14-0030-gestao-executiva",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "gestao-executiva",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "14-governanca-contratacao/aplicacao-lifecycle.md:918",
+      "anchor_text": "| Planeamento | Criação ou revisão de política | GRC / Compliance + CISO + Gestão Executiva (aprovação) | Aprovação antes da entrada em vigor |",
+      "applicable_levels": null,
+      "bundle_id": "14-governanca-contratacao",
+      "involvement_id": "DI-14-0918-gestao-executiva",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "gestao-executiva",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "14-governanca-contratacao/aplicacao-lifecycle.md:918",
+      "anchor_text": "| Planeamento | Criação ou revisão de política | GRC / Compliance + CISO + Gestão Executiva (aprovação) | Aprovação antes da entrada em vigor |",
+      "applicable_levels": null,
+      "bundle_id": "14-governanca-contratacao",
+      "involvement_id": "DI-14-0918-grc-compliance",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "grc-compliance",
+      "source_mode": "derived"
+    }
+  ],
+  "note": "espécie de autoridade PARALELA aos practice_assignments (1.296 intocados); fecha ABS-005 (gestao-executiva no cap. 01) — ver declared_absences v2.7",
+  "profiles": [
+    "consult",
+    "guide"
+  ],
+  "source_artifact": "data/entities/decision_involvements.json",
+  "traversal_assertion": {
+    "does_not_assert": "execução; RACI completo",
+    "source": "estruturas publicadas (DoD, alçadas, tabelas) + curadoria com âncora",
+    "verb": "aprova | é-consultado"
+  }
+}
