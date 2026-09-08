@@ -1,12 +1,15 @@
 meta:
   name: SbD-ToE Manual Ontology
-  version: '2.7'
+  version: '2.8'
   status: current
   scope: Manual ontology
-  tag: sbdtoe-ontology-v2.7
+  tag: sbdtoe-ontology-v2.8
   history:
   - version: '2.0'
     note: V2 backbone + semantic layer (imported baseline from sbd-toe-knowledge-graph)
+  - version: '2.8'
+    date: '2026-09-08'
+    note: "Manutenção do índice de ausências (dispatch do Orchestrator; painel 6·0·0 na beta.44): fecho registado de ABS-005 (163 decision_involvements servidos; gestão executiva 18, 12 no cap. 01 — 7 âncoras ratificadas + 5 encontradas pelas regras) e de ABS-012 (13 células FALTA a zero, estáveis por dois re-pins); correcção factual na evidence de ABS-005 (são 7 linhas, não 6); triagem de ABS-003 resolvida com a espécie nova (0 involvements + 0 assignments → debt_of manual_content, dono Author); absence_model ganha closure_rule (o registo de fecho é do índice, nunca da superfície — regra b.40 generalizada) e a distinção prevenção-vs-declaração na via de build (portão de completude = primeira instância medida do never_silence_principle; espécie que nunca pode instanciar-se não existe). Invariantes v2.2–v2.7 intocadas."
   - version: '2.7'
     date: '2026-09-08'
     note: "Aditiva sobre 2.6 (gate 2026-09-08, registo em agentic/decisions do programa; inclui absorção da matriz do Pontifex beta.41 e da extracção nunca-silenciosa do Codex): traversal_assertion_rule (verbo · fonte · o-que-NÃO-afirma · cobertura; join sem verbo não se publica) + catálogo de asserções das travessias existentes; «posse» abandonada — ArtifactRequirement ganha evidence_chapter_ids (required_as_evidence_by, 37/45, 8 órfãos declarados) e defining_chapter_ids fica re-documentado pelo verbo produced_or_operated_by (nome mantido); entidade DecisionInvolvement (approves|consulted, entidade paralela, âncora verbatim por registo, sem RACI) + relação authority_view; never_silence_principle (inclui caminhos de erro e conjuntos vazios); absence_model.build_declarations (3 espécies do Codex = gap/kg_surface a nível de registo — sem valor novo); referenced_roles (RH/PeopleOps referenciado-não-canónico) + ABS-011/ABS-012; ABS-005 re-tipado (ontology_model, fecha com a espécie) e ABS-003 com nota de reexame — alterações ao índice ratificadas e declaradas. Invariantes v2.2–v2.6 intocadas."
@@ -116,6 +119,8 @@ epistemic_model:
     debt_of: [manual_content, ontology_model, kg_surface, mcp_serving]
     note: "«não modelado» NÃO é valor próprio — é gap/deferred com debt_of: ontology_model"
     build_declarations: "v2.7 (extracção nunca-silenciosa do Codex, confirmada sem valor novo): declarações de build — tabela que não conseguiu ler, rótulo que não mapeou, papel que não resolveu — usam este vocabulário AO NÍVEL DO REGISTO: absence_type gap, debt_of kg_surface por defeito, re-triável para manual_content quando o diagnóstico é forma autoral (ex.: coluna SLA em falta no cap. 05; linha-pipe sem cabeçalho no cap. 11); a triagem pode mover debt_of, nunca silenciar o registo."
+    closure_rule: "v2.8: fechar uma ausência é REGISTO NO ÍNDICE — com evidência verificável, quem verificou e onde — nunca declaração da superfície («o registo é do índice, nunca da superfície», regra da b.40 generalizada para o fecho). Uma superfície pode evidenciar a condição cumprida; só o índice fecha. Itens fechados ficam no índice (append-only) com status: closed."
+    build_prevention_vs_declaration: "v2.8 (pergunta do Pontifex, respondida): a via de build tem DOIS regimes sob o never_silence_principle — PREVENÇÃO, quando um portão de completude converte a ausência silenciosa em falha de build (o artefacto não chega a produzir-se: caso do bundle incompleto — primeira instância medida do princípio na via de build; NÃO ganha espécie de ausência própria, porque uma espécie que nunca pode ser instanciada não deve existir e impedir é melhor que declarar quando impedir é possível) — e DECLARAÇÃO, quando impedir não é possível e o registo declara (as três espécies da extracção: tabela não lida, rótulo não mapeado, papel não resolvido)."
   never_silence_principle:
     # v2.7 — nomeado a partir da banda que a matriz do Pontifex descobriu por medir (caminho de erro sem banda).
     statement: "Toda a resposta de toda a superfície — INCLUINDO caminhos de erro e conjuntos vazios — declara o que falta e porquê (absence_type quando aplicável). Um conjunto vazio sem declaração e um erro que não nomeia o vocabulário são violações da mesma classe que o silêncio numa superfície de dados."
@@ -4818,11 +4823,13 @@ declared_absences:
   - absence_id: ABS-003
     statement: "Atribuições (practice_assignments) para o papel fornecedores-terceiros"
     absence_type: gap
-    debt_of: "a triar (manual_content provável vs kg_surface — US omite o papel, ou a extracção perde-o)"
-    owner: "Author + Codex (triagem)"
+    debt_of: manual_content
+    owner: Author
     decided_on: '2026-09-07'
     evidence: "papel canónico existe; deveres em prosa existem (cap. 14, TRN-007, GOV-013, MP4); 0 assignments servidos (GR-04)"
     review_note: "v2.7: reexaminar a triagem com a espécie DecisionInvolvement — parte dos deveres publicados pode ser approves/consulted; o que sobrar continua gap"
+    review_resolved_on: '2026-09-08'
+    review_resolution: "reexaminado com a espécie nova, nos dados publicados: fornecedores-terceiros tem 0 decision_involvements E 0 assignments — o Manual publica-lhe deveres em prosa e NUNCA em forma estruturada de espécie nenhuma (nem execução, nem decisão). Sem estrutura de onde derivar em qualquer das duas espécies, a dívida é do CONTEÚDO: debt_of resolve para manual_content, dono Author. Contraste que confirma o método: operacoes tem 0 envolvimentos mas 33 assignments — executa e não decide; não é achado."
   - absence_id: ABS-004
     statement: "Cross-checks normativos ISO/PCI/SOC2/HIPAA/FedRAMP/CSA"
     absence_type: deferred
@@ -4838,8 +4845,12 @@ declared_absences:
     decided_on: '2026-09-07'
     retyped_on: '2026-09-08'
     retyped_by: "programme-lead (gate Q2): «foi o absence_model ratificado a 07-09 que apanhou uma dívida atribuída ao lado errado»"
-    evidence: "o cap. 01 PUBLICA o papel 6× como aprovador/consultado (l.42, 225, 273, 292, 432, 447, 452); o conteúdo sempre lá esteve — faltava a espécie DecisionInvolvement ao modelo"
+    evidence: "o cap. 01 PUBLICA o papel 7× como aprovador/consultado (l.42, 225, 273, 292, 432, 447, 452) — contagem corrigida em v2.8 (a evidence anterior dizia 6× e enumerava sete linhas; apanhado pelo Pontifex); o conteúdo sempre lá esteve — faltava a espécie DecisionInvolvement ao modelo"
     closes_in: "materialização de DecisionInvolvement (Codex, pós-v2.7)"
+    status: closed
+    closed_on: '2026-09-08'
+    closed_evidence: "163 decision_involvements materializados e servidos (runtime/decision_involvements.json); gestao-executiva com 18 envolvimentos, 12 no cap. 01 — as 7 âncoras ratificadas + 5 encontradas pelas regras (l.561, 615, 761, 772, 829); verificado pelo Orchestrator no tarball publicado e re-verificado pelo Archon nos dados servidos"
+    closed_registered_by: "Archon (índice), por dispatch do Orchestrator — o Pontifex recusou declarar o fecho da superfície, correctamente (closure_rule)"
   # --- re-tipagem das ausências declaradas em v2.2–v2.5 (blocos originais intocados; este índice prevalece) ---
   - absence_id: ABS-006
     statement: "Operadores de overlay replace|extend (requirement_selection_model.status.overlay_operators)"
@@ -4892,6 +4903,10 @@ declared_absences:
     decided_on: '2026-09-08'
     evidence: "matriz 29×8 (63 tem · 32 n/a · 13 FALTA · 119 «?»); verificado pelo Archon: são bandas de SERVING — o modelo já fornece o substrato (absence_model, proveniência nos registos, never_silence_principle nomeado nesta versão); as 3 células absence_typed dependem apenas da materialização do vocabulário já emitido"
     closes_in: "Vaga E do Pontifex (dispatch do Orchestrator 2026-09-08); os 119 «?» são inventário de serving, não ausência de modelo"
+    status: closed
+    closed_on: '2026-09-08'
+    closed_evidence: "as 13 células FALTA a ZERO, no repo e no publicado, estáveis através de dois re-pins; painel das leituras 6·0·0 (beta.44), verificado pelo Orchestrator no tarball publicado"
+    closed_registered_by: "Archon (índice), por dispatch do Orchestrator"
 # ---------------------------------------------------------------------------
 # referenced_roles (v2.7, 2026-09-08 — caso RH/PeopleOps; ver ABS-011)
 # ---------------------------------------------------------------------------

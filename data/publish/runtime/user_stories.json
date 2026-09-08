@@ -2857,13 +2857,14 @@
         "SBOM versionado e associado à release",
         "Acessível para auditoria"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/05-dependencias-sbom-sca/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-02 - SBOM em cada build",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "gerar SBOM em cada build",
@@ -2941,13 +2942,14 @@
         "Controlo compensatório especificado",
         "Revisão periódica agendada"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/05-dependencias-sbom-sca/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-04 - Exceções a CVEs formais e temporárias",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "formalizar exceções a CVEs",
@@ -9026,12 +9028,13 @@
       "benefit": "assegurar que não existem impactos inesperados antes de considerar a release concluída",
       "chapter_id": "11-deploy-seguro",
       "checklist_items": [],
-      "confidence": 0.75,
+      "confidence": 0.85,
       "context": "Um deploy automático bem-sucedido não é sinónimo de operação segura. Esta US garante que qualquer promoção automática para produção é validada por um responsável humano.",
       "document_path": "010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-13 - Validação humana obrigatória após deploy automatizado",
         ":::userstory block extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "validar explicitamente o estado de segurança após deploy automático",
@@ -9063,12 +9066,13 @@
       "benefit": "garantir que alterações automáticas ou manuais não introduzem desvios inseguros",
       "chapter_id": "11-deploy-seguro",
       "checklist_items": [],
-      "confidence": 0.75,
+      "confidence": 0.85,
       "context": "Automação contínua introduz risco de drift silencioso entre estado desejado e real.",
       "document_path": "010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-14 - Controlo e validação de drift operacional",
         ":::userstory block extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "detetar e validar drift operacional",
@@ -9099,12 +9103,13 @@
       "benefit": "validar causas raiz e eficácia das correções",
       "chapter_id": "11-deploy-seguro",
       "checklist_items": [],
-      "confidence": 0.75,
+      "confidence": 0.85,
       "context": "Sem reprodutibilidade, não existe auditoria nem melhoria.",
       "document_path": "010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-15 - Reprodutibilidade de incidentes em runtime",
         ":::userstory block extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "garantir que incidentes em produção são reprodutíveis",
@@ -9136,12 +9141,13 @@
       "benefit": "garantir controlo e responsabilidade explícita",
       "chapter_id": "11-deploy-seguro",
       "checklist_items": [],
-      "confidence": 0.75,
+      "confidence": 0.85,
       "context": "Ferramentas podem agir, mas não decidir impactos irreversíveis.",
       "document_path": "010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-16 - Separação entre ação automática e autorização irreversível",
         ":::userstory block extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "separar execução automática de ações irreversíveis da autorização humana",
@@ -9172,12 +9178,13 @@
       "benefit": "demonstrar controlo efetivo em operação",
       "chapter_id": "11-deploy-seguro",
       "checklist_items": [],
-      "confidence": 0.75,
+      "confidence": 0.85,
       "context": "Logs e métricas só têm valor quando tratados como evidência.",
       "document_path": "010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-17 - Evidência operacional auditável",
         ":::userstory block extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "tratar evidência operacional como artefacto auditável",
@@ -11110,13 +11117,14 @@
         "Issue de mitigação criada no backlog de segurança para próxima release",
         "Notificação automática enviada a owner se exceção se aproxima de vencer"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Sem exceções formais, práticas são ignoradas sem transparência. Sem alçadas claras por nível de risco, decisões são inconsistentes e responsabilidade dispersa.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-01 - Processo formal de exceções com alçadas por nível de risco",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "submeter exceções de segurança em fluxo formal com roteamento automático por nível de risco (L1→gestor app, L2→AppSec+gestor, L3→CISO+AppSec+direção)",
@@ -11151,13 +11159,14 @@
         "Contratos validados juridicamente",
         "Monitorização de conformidade"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Fornecedores sem cláusulas podem comprometer toda a cadeia.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-02 - Cláusulas contratuais de segurança",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "incluir cláusulas SbD-ToE em contratos",
@@ -11190,13 +11199,14 @@
         "Relatório publicado",
         "Findings registados"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Fornecedores comprometidos propagam risco.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-03 - Validação contínua de fornecedores",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "validar fornecedores de forma contínua",
@@ -11230,13 +11240,14 @@
         "Métricas por capítulo recolhidas",
         "Relatórios entregues à direção"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Sem rastreabilidade, a gestão não tem visibilidade real.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-04 - Rastreabilidade organizacional",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "agregar práticas de segurança por projeto em dashboard organizacional",
@@ -11269,13 +11280,14 @@
         "Métricas recolhidas",
         "Relatório partilhado"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Sem métricas, não há melhoria contínua.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-05 - KPIs de governação",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "definir e monitorizar KPIs de governação",
@@ -11311,13 +11323,14 @@
         "Decisão formalizada (Aprovação / Rejeição / Exceção) registada em GRC",
         "Owner de Fornecedor designado e notificado"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Fornecedores não validados introduzem risco não rastreável na cadeia de suprimentos.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-06 - Execução de fluxo formal de validação de fornecedores",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "executar o fluxo formal de validação de fornecedores (questionário → análise AppSec → aprovação)",
@@ -11353,13 +11366,14 @@
         "Reavaliação documentada (mantém-se, prolonga-se, encerra-se)",
         "Owner de Segurança notificado e decisão aprovada"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Exceções esquecidas tornam-se risco permanente não mitigado.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-07 - Ciclo contínuo de revisão e reavaliação de exceções",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "revisar e reavaliar exceções e compensações de forma periódica",
@@ -11396,13 +11410,14 @@
         "Histórico de alterações mantido e auditável",
         "Atualizado por release relevante ou evento crítico"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Sem repositório centralizado, estado de segurança fica invisível para auditores e gestão.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-08 - Repositório de conformidade por aplicação (controlo sistemático)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "manter um repositório estruturado de conformidade para cada aplicação",
@@ -11440,13 +11455,14 @@
         "Registo centralizado mantido (Git, Confluence, SharePoint)",
         "Notificação formal ao owner anterior (se houver rotação)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Sem owner claro, responsabilidade dispersa resulta em negligência de exceções e validações.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-09 - Designação formal de owners de segurança por aplicação",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "designar formalmente um owner de segurança (Security Champion) por cada aplicação crítica",
@@ -11485,13 +11501,14 @@
         "Findings e desvios registados em sistema de tracking (Jira, etc.)",
         "Plano de ação criado para não-conformidades críticas"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Sem validações recorrentes, desvios não são detetados até auditoria ou incidente.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-10 - Validação periódica de aplicações (ciclo de conformidade)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "executar validações periódicas de conformidade com SbD-ToE em cada aplicação",
@@ -11531,13 +11548,14 @@
         "Tendências identificadas e recomendações incluídas",
         "Histórico mantido para análise evolutiva"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Sem métricas consolidadas, decisão executiva sobre eficácia do SbD-ToE fica sem base empírica.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-11 - Consolidação de KPIs de governação e maturidade",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "consolidar e reportar KPIs de governação (exceções, fornecedores auditados, conformidade por capítulo, maturidade)",
@@ -11578,13 +11596,14 @@
         "Formação executada para todos os approvers (Cap. 13 - Trilho Formação Governação)",
         "Comunicação oficial publicada em canais corporativos"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Sem modelo formal documentado, decisões de segurança ficam dispersas entre AppSec, Gestão e Jurídico. A falta de critérios explícitos para aprovação por nível resulta em inconsistência, risco não rastreável, e desconfiança dos stakeholders.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-12 - Formalização de modelo de governação por nível de risco",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "formalizar e documentar o modelo de governação com níveis de alçada explícitos, papéis e responsabilidades claras",
@@ -11627,13 +11646,14 @@
         "Artefactos de evidência ligados ou referenciados no checklist (links a testes, scans, relatórios, auditorias)",
         "Notificação automática enviada a Scrum Master / Team Lead e AppSec Engineer quando ciclo é acionado"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Sem checklist centralizado de conformidade, o estado de conformidade de uma aplicação com Cap. 2–13 fica invisível. Desvios não são detetados até auditoria ou incidente crítico. Gestão não tem visibilidade do progresso.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-13 - Controlo sistemático e periódico por capítulo SbD-ToE",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "manter um checklist centralizado, versionado e auditável de conformidade com todos os capítulos SbD-ToE (2–13), com verificação periódica por release ou evento crítico",
@@ -11677,13 +11697,14 @@
         "Plano de mitigação criado se gaps identificados (prazo, responsável AppSec, validação esperada)",
         "Registo atualizado no repositório de fornecedores com data, decisor, e histórico"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Fornecedores são validados no onboarding, mas sem revisão periódica, desvios surgem ao longo do tempo (novos CVEs não mitigados, SLA não cumprido, mudanças de propriedade, evolução do risco). Risco residual acumula invisível. Contratos expiram sem renovação de validação.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-14 - Reavaliação contínua e rotação de fornecedores pós-onboarding",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "reavalia e reaprovar fornecedores periodicamente (anual por defaut, semestral para L2, trimestral para L3), com validação técnica atualizada, análise de compliance SLA, e escalonamento para decisão de penalização ou substituição se necessário",
@@ -11728,13 +11749,14 @@
         "Acesso real a sistemas concedido apenas após todos os passos de aprovação",
         "Registo de \"ready for access\" documentado em GRC com data, validador, e referência a todas as validações"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Contractors ganham acesso sem compreender políticas de segurança, ferramentas obrigatórias, ou procedimentos. Risco de erro involuntário (credenciais expostas, acesso a dados não autorizados, práticas inseguras).",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-15 - Preparação Técnica e Validação de Contractors pré-Acesso",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "executar processo estruturado de preparação técnica de contractors (triagem, formação obrigatória, teste de compreensão, ambiente sandbox) antes de ganhem acesso a sistemas",
@@ -11783,13 +11805,14 @@
         "Sign-off de \"formação completa\" fornecido ao AppSec Engineer (libera acesso técnico)",
         "Histórico mantido por 3 anos (DORA, NIS2 requirement)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Contractors iniciados sem completar formação de segurança obrigatória. Falta de integração clara entre Cap. 13 (Formação) e Cap. 14 (Governação): quem aprova, qual o SLA, como é tracked.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-16 - Trilho de Formação Obrigatória pré-Acesso (Contractors)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "definir e executar trilho de formação obrigatória por perfil de contractor, com SLA explícito de conclusão antes de acesso técnico",
@@ -11843,13 +11866,14 @@
         "Reminder legal enviado ao contractor: Confidentiality obligations continuam pós-término (duração, consequências)",
         "Relatório de offboarding arquivado por 7 anos (DORA requirement)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Contractors terminam projeto ou contrato sem processo formal: acesso mantém-se ativo, ativos (código, credenciais, documentos) não são recuperados. Risco de vazamento pós-rescisão, acesso residual, violação de confidencialidade.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-17 - Offboarding Seguro de Contractors e Rescisão de Fornecedores",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "executar processo formal e automático de offboarding seguro quando contractor termina ou fornecedor é rescindido",
@@ -11899,13 +11923,14 @@
         "Registo de alerta, escalonamento, e ação documentado em GRC (audit trail)",
         "Dashboard em tempo real com status de fornecedores críticos e alertas ativas (visível a board)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Fornecedores são avaliados periodicamente (US-14), mas risco entre ciclos não é detetado. CVEs, incidentes críticos, mudanças de SLA, ou breaches não são monitorados em tempo real.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-18 - Monitorização Contínua de Conformidade de Fornecedores (Alertas e Escalação)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "monitorizar continuamente conformidade de fornecedores críticos (incidentes, CVEs, SLA, mudanças organizacionais) e escalar automaticamente se gaps surgem",
@@ -11953,13 +11978,14 @@
         "Registo de mudanças documentado em audit trail (Git logs, IAM change log, etc.)",
         "Relatório consolidado (% de acesso mantido, % removido) entregue ao AppSec Engineer"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Contractors ganham acesso inicial, mas permissões acumulam ao longo do tempo (\"acesso creep\"). Sem revisão periódica, principle of least privilege é violado.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-19 - Revisão Trimestral de Acesso de Contractors (Least Privilege)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "revisar trimestralmente acesso de contractors em ativo, validando que têm apenas acesso necessário ao projeto",
@@ -12006,13 +12032,14 @@
         "Se múltiplos contractors de mesmo fornecedor: insights agregados para revisão de fornecedor (US-14)",
         "Resultados consolidados publicados em relatório trimestral de programa de contractors"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Contractors terminam projeto sem feedback sobre desempenho de segurança. Sem dados de avaliação, impossível tomar decisão informada sobre re-hire ou referência.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-20 - Feedback Pós-Projeto e Rating de Contractors",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "recolher feedback estruturado pós-projeto de contractors sobre compreensão de segurança, incidentes, e recomendações",

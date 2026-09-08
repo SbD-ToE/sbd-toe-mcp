@@ -1,6 +1,6 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 163,
+  "count": 164,
   "entity_type": "DecisionInvolvement",
   "items": [
     {
@@ -2178,11 +2178,11 @@
       "source_mode": "derived"
     },
     {
-      "anchor": "14-governanca-contratacao/aplicacao-lifecycle.md:918",
-      "anchor_text": "| Planeamento | Criação ou revisão de política | GRC / Compliance + CISO + Gestão Executiva (aprovação) | Aprovação antes da entrada em vigor |",
+      "anchor": "14-governanca-contratacao/aplicacao-lifecycle.md:71",
+      "anchor_text": "| Execução | Sempre que há desvio | Developer (submissão) + AppSec Engineer (validação) + Gestão Executiva / CISO (aprovação conforme nível) | Aprovação em 5 dias (L1–L2), 3 dias (L3); Notificação de revalidação 30 dias antes do vencimento ",
       "applicable_levels": null,
       "bundle_id": "14-governanca-contratacao",
-      "involvement_id": "DI-14-0918-gestao-executiva",
+      "involvement_id": "DI-14-0071-gestao-executiva",
       "kind": "approves",
       "refs": [],
       "role_canonical": true,
@@ -2190,11 +2190,23 @@
       "source_mode": "derived"
     },
     {
-      "anchor": "14-governanca-contratacao/aplicacao-lifecycle.md:918",
+      "anchor": "14-governanca-contratacao/aplicacao-lifecycle.md:990",
       "anchor_text": "| Planeamento | Criação ou revisão de política | GRC / Compliance + CISO + Gestão Executiva (aprovação) | Aprovação antes da entrada em vigor |",
       "applicable_levels": null,
       "bundle_id": "14-governanca-contratacao",
-      "involvement_id": "DI-14-0918-grc-compliance",
+      "involvement_id": "DI-14-0990-gestao-executiva",
+      "kind": "approves",
+      "refs": [],
+      "role_canonical": true,
+      "role_id": "gestao-executiva",
+      "source_mode": "derived"
+    },
+    {
+      "anchor": "14-governanca-contratacao/aplicacao-lifecycle.md:990",
+      "anchor_text": "| Planeamento | Criação ou revisão de política | GRC / Compliance + CISO + Gestão Executiva (aprovação) | Aprovação antes da entrada em vigor |",
+      "applicable_levels": null,
+      "bundle_id": "14-governanca-contratacao",
+      "involvement_id": "DI-14-0990-grc-compliance",
       "kind": "approves",
       "refs": [],
       "role_canonical": true,

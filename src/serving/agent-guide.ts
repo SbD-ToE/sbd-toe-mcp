@@ -368,6 +368,19 @@ export function generateAbsencesBlock(): string {
   const values = model?.values ?? {};
   for (const [k, v] of Object.entries(values)) lines.push(`| \`${k}\` | ${String(v).replace(/\n/g, " ")} |`);
   if (model?.criterion) lines.push("", `**Critério (da fonte, verbatim):** ${model.criterion}`);
+  /*
+   * 0.20.0-beta.45 (v2.8) — o ESTADO, ao lado da espécie. Uma ausência fechada continua a
+   * ter espécie e já não é dívida; servi-la como aberta faria o consumidor trabalhar sobre
+   * uma dívida já paga.
+   */
+  const closed = items.filter((a) => a.status === "closed").length;
+  if (model?.closure_rule) lines.push("", `**Fechar (regra da fonte):** ${model.closure_rule}`);
+  lines.push(
+    "",
+    `Cada banda traz \`status\`: \`open\` ou \`closed\`. **${closed} das ${items.length} estão FECHADAS** — mantêm a`,
+    "espécie que tiveram, deixam de ser dívida, e trazem `closed_evidence` e quem registou o fecho.",
+    "Age sobre `is_debt`, não sobre `absence_type` sozinho."
+  );
   lines.push(
     "",
     `**${items.length} ausências tipadas** no índice publicado. Se a banda vier \`unindexed\`, a ausência`,

@@ -1,14 +1,13 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 1305,
+  "count": 1371,
   "entity_type": "PracticeAssignment",
   "extraction_declarations": {
-    "count": 24,
+    "count": 22,
     "source_artifact": "data/entities/extraction_declarations.json",
     "summary": {
       "role_unresolved": 2,
-      "unmapped_phase_label": 15,
-      "unreadable_sdlc_table": 7
+      "unmapped_phase_label": 20
     }
   },
   "items": [
@@ -8282,7 +8281,7 @@
         "practice assignment derived from US-02"
       ],
       "id": "05-dependencias-sbom-sca-devops-sre-l1-us-02",
-      "phase": "unassigned",
+      "phase": "build",
       "practice_id": "05-dependencias-sbom-sca:sbom-em-cada-build",
       "proportionality": "Obrigatório - SBOM básico",
       "risk_level": "L1",
@@ -8303,7 +8302,7 @@
         "practice assignment derived from US-02"
       ],
       "id": "05-dependencias-sbom-sca-devops-sre-l2-us-02",
-      "phase": "unassigned",
+      "phase": "build",
       "practice_id": "05-dependencias-sbom-sca:sbom-em-cada-build",
       "proportionality": "Obrigatório - SBOM completo, incluído na release",
       "risk_level": "L2",
@@ -8324,7 +8323,7 @@
         "practice assignment derived from US-02"
       ],
       "id": "05-dependencias-sbom-sca-devops-sre-l3-us-02",
-      "phase": "unassigned",
+      "phase": "build",
       "practice_id": "05-dependencias-sbom-sca:sbom-em-cada-build",
       "proportionality": "Obrigatório - SBOM assinado + verificação de integridade",
       "risk_level": "L3",
@@ -8346,7 +8345,7 @@
         "practice assignment derived from US-04"
       ],
       "id": "05-dependencias-sbom-sca-appsec-engineer-l1-us-04",
-      "phase": "unassigned",
+      "phase": "deploy",
       "practice_id": "05-dependencias-sbom-sca:excecoes-a-cves-formais-e-temporarias",
       "proportionality": "Opcional - Justificação simples",
       "risk_level": "L1",
@@ -8368,7 +8367,7 @@
         "practice assignment derived from US-04"
       ],
       "id": "05-dependencias-sbom-sca-appsec-engineer-l2-us-04",
-      "phase": "unassigned",
+      "phase": "deploy",
       "practice_id": "05-dependencias-sbom-sca:excecoes-a-cves-formais-e-temporarias",
       "proportionality": "Obrigatório - Revisão periódica (30–90 dias)",
       "risk_level": "L2",
@@ -8390,7 +8389,7 @@
         "practice assignment derived from US-04"
       ],
       "id": "05-dependencias-sbom-sca-appsec-engineer-l3-us-04",
-      "phase": "unassigned",
+      "phase": "deploy",
       "practice_id": "05-dependencias-sbom-sca:excecoes-a-cves-formais-e-temporarias",
       "proportionality": "Obrigatório - Validação executiva + métricas de risco",
       "risk_level": "L3",
@@ -28470,7 +28469,7 @@
         "practice assignment derived from US-01"
       ],
       "id": "14-governanca-contratacao-developer-l1-us-01",
-      "phase": "govern",
+      "phase": "unassigned",
       "practice_id": "14-governanca-contratacao:processo-formal-de-excecoes-com-alcadas-por-nivel-de-risco",
       "proportionality": "Opcional",
       "risk_level": "L1",
@@ -28495,7 +28494,7 @@
         "practice assignment derived from US-01"
       ],
       "id": "14-governanca-contratacao-developer-l2-us-01",
-      "phase": "govern",
+      "phase": "unassigned",
       "practice_id": "14-governanca-contratacao:processo-formal-de-excecoes-com-alcadas-por-nivel-de-risco",
       "proportionality": "Recomendado",
       "risk_level": "L2",
@@ -28520,7 +28519,7 @@
         "practice assignment derived from US-01"
       ],
       "id": "14-governanca-contratacao-developer-l3-us-01",
-      "phase": "govern",
+      "phase": "unassigned",
       "practice_id": "14-governanca-contratacao:processo-formal-de-excecoes-com-alcadas-por-nivel-de-risco",
       "proportionality": "Obrigatório",
       "risk_level": "L3",
@@ -28545,7 +28544,7 @@
         "practice assignment derived from US-01"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l1-us-01",
-      "phase": "govern",
+      "phase": "unassigned",
       "practice_id": "14-governanca-contratacao:processo-formal-de-excecoes-com-alcadas-por-nivel-de-risco",
       "proportionality": "Opcional",
       "risk_level": "L1",
@@ -28570,7 +28569,7 @@
         "practice assignment derived from US-01"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l2-us-01",
-      "phase": "govern",
+      "phase": "unassigned",
       "practice_id": "14-governanca-contratacao:processo-formal-de-excecoes-com-alcadas-por-nivel-de-risco",
       "proportionality": "Recomendado",
       "risk_level": "L2",
@@ -28595,7 +28594,7 @@
         "practice assignment derived from US-01"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l3-us-01",
-      "phase": "govern",
+      "phase": "unassigned",
       "practice_id": "14-governanca-contratacao:processo-formal-de-excecoes-com-alcadas-por-nivel-de-risco",
       "proportionality": "Obrigatório",
       "risk_level": "L3",
@@ -28617,7 +28616,7 @@
         "practice assignment derived from US-02"
       ],
       "id": "14-governanca-contratacao-grc-compliance-l1-us-02",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:clausulas-contratuais-de-seguranca",
       "proportionality": "Recomendado",
       "risk_level": "L1",
@@ -28639,7 +28638,7 @@
         "practice assignment derived from US-02"
       ],
       "id": "14-governanca-contratacao-grc-compliance-l2-us-02",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:clausulas-contratuais-de-seguranca",
       "proportionality": "Obrigatório",
       "risk_level": "L2",
@@ -28661,7 +28660,7 @@
         "practice assignment derived from US-02"
       ],
       "id": "14-governanca-contratacao-grc-compliance-l3-us-02",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:clausulas-contratuais-de-seguranca",
       "proportionality": "Obrigatório + auditorias",
       "risk_level": "L3",
@@ -28682,7 +28681,7 @@
         "practice assignment derived from US-03"
       ],
       "id": "14-governanca-contratacao-grc-compliance-l1-us-03",
-      "phase": "govern",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:validacao-continua-de-fornecedores",
       "proportionality": "Opcional",
       "risk_level": "L1",
@@ -28703,7 +28702,7 @@
         "practice assignment derived from US-03"
       ],
       "id": "14-governanca-contratacao-grc-compliance-l2-us-03",
-      "phase": "govern",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:validacao-continua-de-fornecedores",
       "proportionality": "Recomendado",
       "risk_level": "L2",
@@ -28724,7 +28723,7 @@
         "practice assignment derived from US-03"
       ],
       "id": "14-governanca-contratacao-grc-compliance-l3-us-03",
-      "phase": "govern",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:validacao-continua-de-fornecedores",
       "proportionality": "Obrigatório",
       "risk_level": "L3",
@@ -28746,7 +28745,7 @@
         "practice assignment derived from US-04"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l1-us-04",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:rastreabilidade-organizacional",
       "proportionality": "Básico",
       "risk_level": "L1",
@@ -28768,7 +28767,7 @@
         "practice assignment derived from US-04"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l2-us-04",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:rastreabilidade-organizacional",
       "proportionality": "Recomendado",
       "risk_level": "L2",
@@ -28790,7 +28789,7 @@
         "practice assignment derived from US-04"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l3-us-04",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:rastreabilidade-organizacional",
       "proportionality": "Obrigatório",
       "risk_level": "L3",
@@ -28876,7 +28875,7 @@
         "practice assignment derived from US-06"
       ],
       "id": "14-governanca-contratacao-grc-compliance-l1-us-06",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:execucao-de-fluxo-formal-de-validacao-de-fornecedores",
       "proportionality": "Opcional",
       "risk_level": "L1",
@@ -28899,7 +28898,7 @@
         "practice assignment derived from US-06"
       ],
       "id": "14-governanca-contratacao-grc-compliance-l2-us-06",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:execucao-de-fluxo-formal-de-validacao-de-fornecedores",
       "proportionality": "Recomendado",
       "risk_level": "L2",
@@ -28922,7 +28921,7 @@
         "practice assignment derived from US-06"
       ],
       "id": "14-governanca-contratacao-grc-compliance-l3-us-06",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:execucao-de-fluxo-formal-de-validacao-de-fornecedores",
       "proportionality": "Obrigatório",
       "risk_level": "L3",
@@ -28945,7 +28944,7 @@
         "practice assignment derived from US-07"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l1-us-07",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
       "proportionality": "Básico",
       "risk_level": "L1",
@@ -28968,7 +28967,7 @@
         "practice assignment derived from US-07"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l2-us-07",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
       "proportionality": "Recomendado",
       "risk_level": "L2",
@@ -28991,7 +28990,76 @@
         "practice assignment derived from US-07"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l3-us-07",
-      "phase": "govern",
+      "phase": "operate",
+      "practice_id": "14-governanca-contratacao:ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
+      "proportionality": "Obrigatório",
+      "risk_level": "L3",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-07-ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
+      "user_story_id": "14-governanca-contratacao-us-07",
+      "warnings": []
+    },
+    {
+      "action": "revisar e reavaliar exceções e compensações de forma periódica",
+      "artifacts": [
+        "tabela_de_excecoes_com_prazos",
+        "relatorio_de_reavaliacao",
+        "notificacao_a_owner"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-07"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l1-us-07",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
+      "proportionality": "Básico",
+      "risk_level": "L1",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-07-ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
+      "user_story_id": "14-governanca-contratacao-us-07",
+      "warnings": []
+    },
+    {
+      "action": "revisar e reavaliar exceções e compensações de forma periódica",
+      "artifacts": [
+        "tabela_de_excecoes_com_prazos",
+        "relatorio_de_reavaliacao",
+        "notificacao_a_owner"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-07"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l2-us-07",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
+      "proportionality": "Recomendado",
+      "risk_level": "L2",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-07-ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
+      "user_story_id": "14-governanca-contratacao-us-07",
+      "warnings": []
+    },
+    {
+      "action": "revisar e reavaliar exceções e compensações de forma periódica",
+      "artifacts": [
+        "tabela_de_excecoes_com_prazos",
+        "relatorio_de_reavaliacao",
+        "notificacao_a_owner"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-07"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l3-us-07",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
       "proportionality": "Obrigatório",
       "risk_level": "L3",
@@ -29014,7 +29082,7 @@
         "practice assignment derived from US-08"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l1-us-08",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
       "proportionality": "Básico",
       "risk_level": "L1",
@@ -29037,7 +29105,7 @@
         "practice assignment derived from US-08"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l2-us-08",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
       "proportionality": "Recomendado",
       "risk_level": "L2",
@@ -29060,7 +29128,145 @@
         "practice assignment derived from US-08"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l3-us-08",
-      "phase": "govern",
+      "phase": "plan",
+      "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "proportionality": "Obrigatório",
+      "risk_level": "L3",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-08-repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "user_story_id": "14-governanca-contratacao-us-08",
+      "warnings": []
+    },
+    {
+      "action": "manter um repositório estruturado de conformidade para cada aplicação",
+      "artifacts": [
+        "ficheiro_de_conformidade_yaml_md",
+        "links_a_relatorios_de_validacao",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-08"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l1-us-08",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "proportionality": "Básico",
+      "risk_level": "L1",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-08-repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "user_story_id": "14-governanca-contratacao-us-08",
+      "warnings": []
+    },
+    {
+      "action": "manter um repositório estruturado de conformidade para cada aplicação",
+      "artifacts": [
+        "ficheiro_de_conformidade_yaml_md",
+        "links_a_relatorios_de_validacao",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-08"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l2-us-08",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "proportionality": "Recomendado",
+      "risk_level": "L2",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-08-repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "user_story_id": "14-governanca-contratacao-us-08",
+      "warnings": []
+    },
+    {
+      "action": "manter um repositório estruturado de conformidade para cada aplicação",
+      "artifacts": [
+        "ficheiro_de_conformidade_yaml_md",
+        "links_a_relatorios_de_validacao",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-08"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l3-us-08",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "proportionality": "Obrigatório",
+      "risk_level": "L3",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-08-repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "user_story_id": "14-governanca-contratacao-us-08",
+      "warnings": []
+    },
+    {
+      "action": "manter um repositório estruturado de conformidade para cada aplicação",
+      "artifacts": [
+        "ficheiro_de_conformidade_yaml_md",
+        "links_a_relatorios_de_validacao",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-08"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l1-us-08",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "proportionality": "Básico",
+      "risk_level": "L1",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-08-repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "user_story_id": "14-governanca-contratacao-us-08",
+      "warnings": []
+    },
+    {
+      "action": "manter um repositório estruturado de conformidade para cada aplicação",
+      "artifacts": [
+        "ficheiro_de_conformidade_yaml_md",
+        "links_a_relatorios_de_validacao",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-08"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l2-us-08",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "proportionality": "Recomendado",
+      "risk_level": "L2",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-08-repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "user_story_id": "14-governanca-contratacao-us-08",
+      "warnings": []
+    },
+    {
+      "action": "manter um repositório estruturado de conformidade para cada aplicação",
+      "artifacts": [
+        "ficheiro_de_conformidade_yaml_md",
+        "links_a_relatorios_de_validacao",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-08"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l3-us-08",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
       "proportionality": "Obrigatório",
       "risk_level": "L3",
@@ -29083,7 +29289,7 @@
         "practice assignment derived from US-08"
       ],
       "id": "14-governanca-contratacao-scrum-master-l1-us-08",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
       "proportionality": "Básico",
       "risk_level": "L1",
@@ -29106,7 +29312,7 @@
         "practice assignment derived from US-08"
       ],
       "id": "14-governanca-contratacao-scrum-master-l2-us-08",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
       "proportionality": "Recomendado",
       "risk_level": "L2",
@@ -29129,7 +29335,145 @@
         "practice assignment derived from US-08"
       ],
       "id": "14-governanca-contratacao-scrum-master-l3-us-08",
-      "phase": "govern",
+      "phase": "plan",
+      "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "proportionality": "Obrigatório",
+      "risk_level": "L3",
+      "role": "scrum-master",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-08-repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "user_story_id": "14-governanca-contratacao-us-08",
+      "warnings": []
+    },
+    {
+      "action": "manter um repositório estruturado de conformidade para cada aplicação",
+      "artifacts": [
+        "ficheiro_de_conformidade_yaml_md",
+        "links_a_relatorios_de_validacao",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-08"
+      ],
+      "id": "14-governanca-contratacao-scrum-master-l1-us-08",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "proportionality": "Básico",
+      "risk_level": "L1",
+      "role": "scrum-master",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-08-repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "user_story_id": "14-governanca-contratacao-us-08",
+      "warnings": []
+    },
+    {
+      "action": "manter um repositório estruturado de conformidade para cada aplicação",
+      "artifacts": [
+        "ficheiro_de_conformidade_yaml_md",
+        "links_a_relatorios_de_validacao",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-08"
+      ],
+      "id": "14-governanca-contratacao-scrum-master-l2-us-08",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "proportionality": "Recomendado",
+      "risk_level": "L2",
+      "role": "scrum-master",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-08-repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "user_story_id": "14-governanca-contratacao-us-08",
+      "warnings": []
+    },
+    {
+      "action": "manter um repositório estruturado de conformidade para cada aplicação",
+      "artifacts": [
+        "ficheiro_de_conformidade_yaml_md",
+        "links_a_relatorios_de_validacao",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-08"
+      ],
+      "id": "14-governanca-contratacao-scrum-master-l3-us-08",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "proportionality": "Obrigatório",
+      "risk_level": "L3",
+      "role": "scrum-master",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-08-repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "user_story_id": "14-governanca-contratacao-us-08",
+      "warnings": []
+    },
+    {
+      "action": "manter um repositório estruturado de conformidade para cada aplicação",
+      "artifacts": [
+        "ficheiro_de_conformidade_yaml_md",
+        "links_a_relatorios_de_validacao",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-08"
+      ],
+      "id": "14-governanca-contratacao-scrum-master-l1-us-08",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "proportionality": "Básico",
+      "risk_level": "L1",
+      "role": "scrum-master",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-08-repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "user_story_id": "14-governanca-contratacao-us-08",
+      "warnings": []
+    },
+    {
+      "action": "manter um repositório estruturado de conformidade para cada aplicação",
+      "artifacts": [
+        "ficheiro_de_conformidade_yaml_md",
+        "links_a_relatorios_de_validacao",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-08"
+      ],
+      "id": "14-governanca-contratacao-scrum-master-l2-us-08",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "proportionality": "Recomendado",
+      "risk_level": "L2",
+      "role": "scrum-master",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-08-repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "user_story_id": "14-governanca-contratacao-us-08",
+      "warnings": []
+    },
+    {
+      "action": "manter um repositório estruturado de conformidade para cada aplicação",
+      "artifacts": [
+        "ficheiro_de_conformidade_yaml_md",
+        "links_a_relatorios_de_validacao",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-08"
+      ],
+      "id": "14-governanca-contratacao-scrum-master-l3-us-08",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
       "proportionality": "Obrigatório",
       "risk_level": "L3",
@@ -29152,7 +29496,7 @@
         "practice assignment derived from US-09"
       ],
       "id": "14-governanca-contratacao-gestao-executiva-l1-us-09",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:designacao-formal-de-owners-de-seguranca-por-aplicacao",
       "proportionality": "Recomendado",
       "risk_level": "L1",
@@ -29175,7 +29519,7 @@
         "practice assignment derived from US-09"
       ],
       "id": "14-governanca-contratacao-gestao-executiva-l2-us-09",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:designacao-formal-de-owners-de-seguranca-por-aplicacao",
       "proportionality": "Obrigatório",
       "risk_level": "L2",
@@ -29198,7 +29542,7 @@
         "practice assignment derived from US-09"
       ],
       "id": "14-governanca-contratacao-gestao-executiva-l3-us-09",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:designacao-formal-de-owners-de-seguranca-por-aplicacao",
       "proportionality": "Obrigatório",
       "risk_level": "L3",
@@ -29206,6 +29550,78 @@
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-09-designacao-formal-de-owners-de-seguranca-por-aplicacao",
       "user_story_id": "14-governanca-contratacao-us-09",
+      "warnings": []
+    },
+    {
+      "action": "executar validações periódicas de conformidade com SbD-ToE em cada aplicação",
+      "artifacts": [
+        "relatorio_de_validacao_por_ciclo",
+        "checklist_preenchido",
+        "plano_de_acao_para_findings",
+        "historico_de_ciclos"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-10"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l1-us-10",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "proportionality": "Anual",
+      "risk_level": "L1",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-10-validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "user_story_id": "14-governanca-contratacao-us-10",
+      "warnings": []
+    },
+    {
+      "action": "executar validações periódicas de conformidade com SbD-ToE em cada aplicação",
+      "artifacts": [
+        "relatorio_de_validacao_por_ciclo",
+        "checklist_preenchido",
+        "plano_de_acao_para_findings",
+        "historico_de_ciclos"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-10"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l2-us-10",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "proportionality": "Semestral",
+      "risk_level": "L2",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-10-validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "user_story_id": "14-governanca-contratacao-us-10",
+      "warnings": []
+    },
+    {
+      "action": "executar validações periódicas de conformidade com SbD-ToE em cada aplicação",
+      "artifacts": [
+        "relatorio_de_validacao_por_ciclo",
+        "checklist_preenchido",
+        "plano_de_acao_para_findings",
+        "historico_de_ciclos"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-10"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l3-us-10",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "proportionality": "Trimestral",
+      "risk_level": "L3",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-10-validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "user_story_id": "14-governanca-contratacao-us-10",
       "warnings": []
     },
     {
@@ -29275,6 +29691,78 @@
       "proportionality": "Trimestral",
       "risk_level": "L3",
       "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-10-validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "user_story_id": "14-governanca-contratacao-us-10",
+      "warnings": []
+    },
+    {
+      "action": "executar validações periódicas de conformidade com SbD-ToE em cada aplicação",
+      "artifacts": [
+        "relatorio_de_validacao_por_ciclo",
+        "checklist_preenchido",
+        "plano_de_acao_para_findings",
+        "historico_de_ciclos"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-10"
+      ],
+      "id": "14-governanca-contratacao-grc-compliance-l1-us-10",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "proportionality": "Anual",
+      "risk_level": "L1",
+      "role": "grc-compliance",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-10-validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "user_story_id": "14-governanca-contratacao-us-10",
+      "warnings": []
+    },
+    {
+      "action": "executar validações periódicas de conformidade com SbD-ToE em cada aplicação",
+      "artifacts": [
+        "relatorio_de_validacao_por_ciclo",
+        "checklist_preenchido",
+        "plano_de_acao_para_findings",
+        "historico_de_ciclos"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-10"
+      ],
+      "id": "14-governanca-contratacao-grc-compliance-l2-us-10",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "proportionality": "Semestral",
+      "risk_level": "L2",
+      "role": "grc-compliance",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-10-validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "user_story_id": "14-governanca-contratacao-us-10",
+      "warnings": []
+    },
+    {
+      "action": "executar validações periódicas de conformidade com SbD-ToE em cada aplicação",
+      "artifacts": [
+        "relatorio_de_validacao_por_ciclo",
+        "checklist_preenchido",
+        "plano_de_acao_para_findings",
+        "historico_de_ciclos"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-10"
+      ],
+      "id": "14-governanca-contratacao-grc-compliance-l3-us-10",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "proportionality": "Trimestral",
+      "risk_level": "L3",
+      "role": "grc-compliance",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-10-validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
       "user_story_id": "14-governanca-contratacao-us-10",
@@ -29425,6 +29913,78 @@
       "warnings": []
     },
     {
+      "action": "consolidar e reportar KPIs de governação (exceções, fornecedores auditados, conformidade por capítulo, maturidade)",
+      "artifacts": [
+        "dashboard_de_kpis",
+        "relatorio_consolidado_trimestral_semestral",
+        "historico_de_tendencias",
+        "analise_executiva"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-11"
+      ],
+      "id": "14-governanca-contratacao-gestao-executiva-l1-us-11",
+      "phase": "operate",
+      "practice_id": "14-governanca-contratacao:consolidacao-de-kpis-de-governacao-e-maturidade",
+      "proportionality": "Básico",
+      "risk_level": "L1",
+      "role": "gestao-executiva",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-11-consolidacao-de-kpis-de-governacao-e-maturidade",
+      "user_story_id": "14-governanca-contratacao-us-11",
+      "warnings": []
+    },
+    {
+      "action": "consolidar e reportar KPIs de governação (exceções, fornecedores auditados, conformidade por capítulo, maturidade)",
+      "artifacts": [
+        "dashboard_de_kpis",
+        "relatorio_consolidado_trimestral_semestral",
+        "historico_de_tendencias",
+        "analise_executiva"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-11"
+      ],
+      "id": "14-governanca-contratacao-gestao-executiva-l2-us-11",
+      "phase": "operate",
+      "practice_id": "14-governanca-contratacao:consolidacao-de-kpis-de-governacao-e-maturidade",
+      "proportionality": "Recomendado",
+      "risk_level": "L2",
+      "role": "gestao-executiva",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-11-consolidacao-de-kpis-de-governacao-e-maturidade",
+      "user_story_id": "14-governanca-contratacao-us-11",
+      "warnings": []
+    },
+    {
+      "action": "consolidar e reportar KPIs de governação (exceções, fornecedores auditados, conformidade por capítulo, maturidade)",
+      "artifacts": [
+        "dashboard_de_kpis",
+        "relatorio_consolidado_trimestral_semestral",
+        "historico_de_tendencias",
+        "analise_executiva"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-11"
+      ],
+      "id": "14-governanca-contratacao-gestao-executiva-l3-us-11",
+      "phase": "operate",
+      "practice_id": "14-governanca-contratacao:consolidacao-de-kpis-de-governacao-e-maturidade",
+      "proportionality": "Obrigatório",
+      "risk_level": "L3",
+      "role": "gestao-executiva",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-11-consolidacao-de-kpis-de-governacao-e-maturidade",
+      "user_story_id": "14-governanca-contratacao-us-11",
+      "warnings": []
+    },
+    {
       "action": "formalizar e documentar o modelo de governação com níveis de alçada explícitos, papéis e responsabilidades claras",
       "artifacts": [
         "documento_de_politica",
@@ -29439,7 +29999,7 @@
         "practice assignment derived from US-12"
       ],
       "id": "14-governanca-contratacao-gestao-executiva-l1-us-12",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
       "proportionality": "Básico",
       "risk_level": "L1",
@@ -29464,7 +30024,7 @@
         "practice assignment derived from US-12"
       ],
       "id": "14-governanca-contratacao-gestao-executiva-l2-us-12",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
       "proportionality": "Recomendado",
       "risk_level": "L2",
@@ -29489,7 +30049,82 @@
         "practice assignment derived from US-12"
       ],
       "id": "14-governanca-contratacao-gestao-executiva-l3-us-12",
-      "phase": "govern",
+      "phase": "plan",
+      "practice_id": "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "proportionality": "Obrigatório",
+      "risk_level": "L3",
+      "role": "gestao-executiva",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-12-formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "user_story_id": "14-governanca-contratacao-us-12",
+      "warnings": []
+    },
+    {
+      "action": "formalizar e documentar o modelo de governação com níveis de alçada explícitos, papéis e responsabilidades claras",
+      "artifacts": [
+        "documento_de_politica",
+        "template_de_decisao",
+        "repositorio_de_decisoes_registadas",
+        "comprovativo_de_formacao_dos_approvers",
+        "email_de_comunicacao"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-12"
+      ],
+      "id": "14-governanca-contratacao-gestao-executiva-l1-us-12",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "proportionality": "Básico",
+      "risk_level": "L1",
+      "role": "gestao-executiva",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-12-formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "user_story_id": "14-governanca-contratacao-us-12",
+      "warnings": []
+    },
+    {
+      "action": "formalizar e documentar o modelo de governação com níveis de alçada explícitos, papéis e responsabilidades claras",
+      "artifacts": [
+        "documento_de_politica",
+        "template_de_decisao",
+        "repositorio_de_decisoes_registadas",
+        "comprovativo_de_formacao_dos_approvers",
+        "email_de_comunicacao"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-12"
+      ],
+      "id": "14-governanca-contratacao-gestao-executiva-l2-us-12",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "proportionality": "Recomendado",
+      "risk_level": "L2",
+      "role": "gestao-executiva",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-12-formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "user_story_id": "14-governanca-contratacao-us-12",
+      "warnings": []
+    },
+    {
+      "action": "formalizar e documentar o modelo de governação com níveis de alçada explícitos, papéis e responsabilidades claras",
+      "artifacts": [
+        "documento_de_politica",
+        "template_de_decisao",
+        "repositorio_de_decisoes_registadas",
+        "comprovativo_de_formacao_dos_approvers",
+        "email_de_comunicacao"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-12"
+      ],
+      "id": "14-governanca-contratacao-gestao-executiva-l3-us-12",
+      "phase": "unassigned",
       "practice_id": "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
       "proportionality": "Obrigatório",
       "risk_level": "L3",
@@ -29514,7 +30149,7 @@
         "practice assignment derived from US-12"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l1-us-12",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
       "proportionality": "Básico",
       "risk_level": "L1",
@@ -29539,7 +30174,7 @@
         "practice assignment derived from US-12"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l2-us-12",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
       "proportionality": "Recomendado",
       "risk_level": "L2",
@@ -29564,7 +30199,7 @@
         "practice assignment derived from US-12"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l3-us-12",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
       "proportionality": "Obrigatório",
       "risk_level": "L3",
@@ -29572,6 +30207,315 @@
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-12-formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
       "user_story_id": "14-governanca-contratacao-us-12",
+      "warnings": []
+    },
+    {
+      "action": "formalizar e documentar o modelo de governação com níveis de alçada explícitos, papéis e responsabilidades claras",
+      "artifacts": [
+        "documento_de_politica",
+        "template_de_decisao",
+        "repositorio_de_decisoes_registadas",
+        "comprovativo_de_formacao_dos_approvers",
+        "email_de_comunicacao"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-12"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l1-us-12",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "proportionality": "Básico",
+      "risk_level": "L1",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-12-formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "user_story_id": "14-governanca-contratacao-us-12",
+      "warnings": []
+    },
+    {
+      "action": "formalizar e documentar o modelo de governação com níveis de alçada explícitos, papéis e responsabilidades claras",
+      "artifacts": [
+        "documento_de_politica",
+        "template_de_decisao",
+        "repositorio_de_decisoes_registadas",
+        "comprovativo_de_formacao_dos_approvers",
+        "email_de_comunicacao"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-12"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l2-us-12",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "proportionality": "Recomendado",
+      "risk_level": "L2",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-12-formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "user_story_id": "14-governanca-contratacao-us-12",
+      "warnings": []
+    },
+    {
+      "action": "formalizar e documentar o modelo de governação com níveis de alçada explícitos, papéis e responsabilidades claras",
+      "artifacts": [
+        "documento_de_politica",
+        "template_de_decisao",
+        "repositorio_de_decisoes_registadas",
+        "comprovativo_de_formacao_dos_approvers",
+        "email_de_comunicacao"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-12"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l3-us-12",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "proportionality": "Obrigatório",
+      "risk_level": "L3",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-12-formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "user_story_id": "14-governanca-contratacao-us-12",
+      "warnings": []
+    },
+    {
+      "action": "manter um checklist centralizado, versionado e auditável de conformidade com todos os capítulos SbD-ToE (2–13), com verificação periódica por release ou evento crítico",
+      "artifacts": [
+        "ficheiro_de_checklist_versionado_yaml_md",
+        "git_history_ou_dashboard_grc",
+        "relatorios_por_ciclo",
+        "links_a_artefactos_de_validacao",
+        "plano_de_accao_para_nao_conformidades",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-13"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l1-us-13",
+      "phase": "plan",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "proportionality": "Básico",
+      "risk_level": "L1",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "action": "manter um checklist centralizado, versionado e auditável de conformidade com todos os capítulos SbD-ToE (2–13), com verificação periódica por release ou evento crítico",
+      "artifacts": [
+        "ficheiro_de_checklist_versionado_yaml_md",
+        "git_history_ou_dashboard_grc",
+        "relatorios_por_ciclo",
+        "links_a_artefactos_de_validacao",
+        "plano_de_accao_para_nao_conformidades",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-13"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l2-us-13",
+      "phase": "plan",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "proportionality": "Recomendado",
+      "risk_level": "L2",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "action": "manter um checklist centralizado, versionado e auditável de conformidade com todos os capítulos SbD-ToE (2–13), com verificação periódica por release ou evento crítico",
+      "artifacts": [
+        "ficheiro_de_checklist_versionado_yaml_md",
+        "git_history_ou_dashboard_grc",
+        "relatorios_por_ciclo",
+        "links_a_artefactos_de_validacao",
+        "plano_de_accao_para_nao_conformidades",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-13"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l3-us-13",
+      "phase": "plan",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "proportionality": "Obrigatório",
+      "risk_level": "L3",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "action": "manter um checklist centralizado, versionado e auditável de conformidade com todos os capítulos SbD-ToE (2–13), com verificação periódica por release ou evento crítico",
+      "artifacts": [
+        "ficheiro_de_checklist_versionado_yaml_md",
+        "git_history_ou_dashboard_grc",
+        "relatorios_por_ciclo",
+        "links_a_artefactos_de_validacao",
+        "plano_de_accao_para_nao_conformidades",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-13"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l1-us-13",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "proportionality": "Básico",
+      "risk_level": "L1",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "action": "manter um checklist centralizado, versionado e auditável de conformidade com todos os capítulos SbD-ToE (2–13), com verificação periódica por release ou evento crítico",
+      "artifacts": [
+        "ficheiro_de_checklist_versionado_yaml_md",
+        "git_history_ou_dashboard_grc",
+        "relatorios_por_ciclo",
+        "links_a_artefactos_de_validacao",
+        "plano_de_accao_para_nao_conformidades",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-13"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l2-us-13",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "proportionality": "Recomendado",
+      "risk_level": "L2",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "action": "manter um checklist centralizado, versionado e auditável de conformidade com todos os capítulos SbD-ToE (2–13), com verificação periódica por release ou evento crítico",
+      "artifacts": [
+        "ficheiro_de_checklist_versionado_yaml_md",
+        "git_history_ou_dashboard_grc",
+        "relatorios_por_ciclo",
+        "links_a_artefactos_de_validacao",
+        "plano_de_accao_para_nao_conformidades",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-13"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l3-us-13",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "proportionality": "Obrigatório",
+      "risk_level": "L3",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "action": "manter um checklist centralizado, versionado e auditável de conformidade com todos os capítulos SbD-ToE (2–13), com verificação periódica por release ou evento crítico",
+      "artifacts": [
+        "ficheiro_de_checklist_versionado_yaml_md",
+        "git_history_ou_dashboard_grc",
+        "relatorios_por_ciclo",
+        "links_a_artefactos_de_validacao",
+        "plano_de_accao_para_nao_conformidades",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-13"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l1-us-13",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "proportionality": "Básico",
+      "risk_level": "L1",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "action": "manter um checklist centralizado, versionado e auditável de conformidade com todos os capítulos SbD-ToE (2–13), com verificação periódica por release ou evento crítico",
+      "artifacts": [
+        "ficheiro_de_checklist_versionado_yaml_md",
+        "git_history_ou_dashboard_grc",
+        "relatorios_por_ciclo",
+        "links_a_artefactos_de_validacao",
+        "plano_de_accao_para_nao_conformidades",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-13"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l2-us-13",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "proportionality": "Recomendado",
+      "risk_level": "L2",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "action": "manter um checklist centralizado, versionado e auditável de conformidade com todos os capítulos SbD-ToE (2–13), com verificação periódica por release ou evento crítico",
+      "artifacts": [
+        "ficheiro_de_checklist_versionado_yaml_md",
+        "git_history_ou_dashboard_grc",
+        "relatorios_por_ciclo",
+        "links_a_artefactos_de_validacao",
+        "plano_de_accao_para_nao_conformidades",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-13"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l3-us-13",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "proportionality": "Obrigatório",
+      "risk_level": "L3",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "user_story_id": "14-governanca-contratacao-us-13",
       "warnings": []
     },
     {
@@ -29647,6 +30591,240 @@
       "proportionality": "Obrigatório",
       "risk_level": "L3",
       "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "action": "manter um checklist centralizado, versionado e auditável de conformidade com todos os capítulos SbD-ToE (2–13), com verificação periódica por release ou evento crítico",
+      "artifacts": [
+        "ficheiro_de_checklist_versionado_yaml_md",
+        "git_history_ou_dashboard_grc",
+        "relatorios_por_ciclo",
+        "links_a_artefactos_de_validacao",
+        "plano_de_accao_para_nao_conformidades",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-13"
+      ],
+      "id": "14-governanca-contratacao-scrum-master-l1-us-13",
+      "phase": "plan",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "proportionality": "Básico",
+      "risk_level": "L1",
+      "role": "scrum-master",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "action": "manter um checklist centralizado, versionado e auditável de conformidade com todos os capítulos SbD-ToE (2–13), com verificação periódica por release ou evento crítico",
+      "artifacts": [
+        "ficheiro_de_checklist_versionado_yaml_md",
+        "git_history_ou_dashboard_grc",
+        "relatorios_por_ciclo",
+        "links_a_artefactos_de_validacao",
+        "plano_de_accao_para_nao_conformidades",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-13"
+      ],
+      "id": "14-governanca-contratacao-scrum-master-l2-us-13",
+      "phase": "plan",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "proportionality": "Recomendado",
+      "risk_level": "L2",
+      "role": "scrum-master",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "action": "manter um checklist centralizado, versionado e auditável de conformidade com todos os capítulos SbD-ToE (2–13), com verificação periódica por release ou evento crítico",
+      "artifacts": [
+        "ficheiro_de_checklist_versionado_yaml_md",
+        "git_history_ou_dashboard_grc",
+        "relatorios_por_ciclo",
+        "links_a_artefactos_de_validacao",
+        "plano_de_accao_para_nao_conformidades",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-13"
+      ],
+      "id": "14-governanca-contratacao-scrum-master-l3-us-13",
+      "phase": "plan",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "proportionality": "Obrigatório",
+      "risk_level": "L3",
+      "role": "scrum-master",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "action": "manter um checklist centralizado, versionado e auditável de conformidade com todos os capítulos SbD-ToE (2–13), com verificação periódica por release ou evento crítico",
+      "artifacts": [
+        "ficheiro_de_checklist_versionado_yaml_md",
+        "git_history_ou_dashboard_grc",
+        "relatorios_por_ciclo",
+        "links_a_artefactos_de_validacao",
+        "plano_de_accao_para_nao_conformidades",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-13"
+      ],
+      "id": "14-governanca-contratacao-scrum-master-l1-us-13",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "proportionality": "Básico",
+      "risk_level": "L1",
+      "role": "scrum-master",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "action": "manter um checklist centralizado, versionado e auditável de conformidade com todos os capítulos SbD-ToE (2–13), com verificação periódica por release ou evento crítico",
+      "artifacts": [
+        "ficheiro_de_checklist_versionado_yaml_md",
+        "git_history_ou_dashboard_grc",
+        "relatorios_por_ciclo",
+        "links_a_artefactos_de_validacao",
+        "plano_de_accao_para_nao_conformidades",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-13"
+      ],
+      "id": "14-governanca-contratacao-scrum-master-l2-us-13",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "proportionality": "Recomendado",
+      "risk_level": "L2",
+      "role": "scrum-master",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "action": "manter um checklist centralizado, versionado e auditável de conformidade com todos os capítulos SbD-ToE (2–13), com verificação periódica por release ou evento crítico",
+      "artifacts": [
+        "ficheiro_de_checklist_versionado_yaml_md",
+        "git_history_ou_dashboard_grc",
+        "relatorios_por_ciclo",
+        "links_a_artefactos_de_validacao",
+        "plano_de_accao_para_nao_conformidades",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-13"
+      ],
+      "id": "14-governanca-contratacao-scrum-master-l3-us-13",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "proportionality": "Obrigatório",
+      "risk_level": "L3",
+      "role": "scrum-master",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "action": "manter um checklist centralizado, versionado e auditável de conformidade com todos os capítulos SbD-ToE (2–13), com verificação periódica por release ou evento crítico",
+      "artifacts": [
+        "ficheiro_de_checklist_versionado_yaml_md",
+        "git_history_ou_dashboard_grc",
+        "relatorios_por_ciclo",
+        "links_a_artefactos_de_validacao",
+        "plano_de_accao_para_nao_conformidades",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-13"
+      ],
+      "id": "14-governanca-contratacao-scrum-master-l1-us-13",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "proportionality": "Básico",
+      "risk_level": "L1",
+      "role": "scrum-master",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "action": "manter um checklist centralizado, versionado e auditável de conformidade com todos os capítulos SbD-ToE (2–13), com verificação periódica por release ou evento crítico",
+      "artifacts": [
+        "ficheiro_de_checklist_versionado_yaml_md",
+        "git_history_ou_dashboard_grc",
+        "relatorios_por_ciclo",
+        "links_a_artefactos_de_validacao",
+        "plano_de_accao_para_nao_conformidades",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-13"
+      ],
+      "id": "14-governanca-contratacao-scrum-master-l2-us-13",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "proportionality": "Recomendado",
+      "risk_level": "L2",
+      "role": "scrum-master",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "action": "manter um checklist centralizado, versionado e auditável de conformidade com todos os capítulos SbD-ToE (2–13), com verificação periódica por release ou evento crítico",
+      "artifacts": [
+        "ficheiro_de_checklist_versionado_yaml_md",
+        "git_history_ou_dashboard_grc",
+        "relatorios_por_ciclo",
+        "links_a_artefactos_de_validacao",
+        "plano_de_accao_para_nao_conformidades",
+        "historico_de_versoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-13"
+      ],
+      "id": "14-governanca-contratacao-scrum-master-l3-us-13",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "proportionality": "Obrigatório",
+      "risk_level": "L3",
+      "role": "scrum-master",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
       "user_story_id": "14-governanca-contratacao-us-13",
@@ -29747,7 +30925,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l1-us-14",
-      "phase": "govern",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
       "proportionality": "Anual",
       "risk_level": "L1",
@@ -29774,7 +30952,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l2-us-14",
-      "phase": "govern",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
       "proportionality": "Semestral",
       "risk_level": "L2",
@@ -29801,7 +30979,88 @@
         "practice assignment derived from US-14"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l3-us-14",
-      "phase": "govern",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "proportionality": "Trimestral / evento crítico",
+      "risk_level": "L3",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-14-reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "user_story_id": "14-governanca-contratacao-us-14",
+      "warnings": []
+    },
+    {
+      "action": "reavalia e reaprovar fornecedores periodicamente (anual por defaut, semestral para L2, trimestral para L3), com validação técnica atualizada, análise de compliance SLA, e escalonamento para decisão de penalização ou substituição se necessário",
+      "artifacts": [
+        "calendario_de_revisao",
+        "questionario_atualizado_respostas",
+        "analise_tecnica_documentada",
+        "decisao_registada_em_grc",
+        "comunicacao_formal_ao_fornecedor",
+        "plano_de_mitigacao_se_aplicavel",
+        "historico_de_decisoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-14"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l1-us-14",
+      "phase": "operate",
+      "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "proportionality": "Anual",
+      "risk_level": "L1",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-14-reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "user_story_id": "14-governanca-contratacao-us-14",
+      "warnings": []
+    },
+    {
+      "action": "reavalia e reaprovar fornecedores periodicamente (anual por defaut, semestral para L2, trimestral para L3), com validação técnica atualizada, análise de compliance SLA, e escalonamento para decisão de penalização ou substituição se necessário",
+      "artifacts": [
+        "calendario_de_revisao",
+        "questionario_atualizado_respostas",
+        "analise_tecnica_documentada",
+        "decisao_registada_em_grc",
+        "comunicacao_formal_ao_fornecedor",
+        "plano_de_mitigacao_se_aplicavel",
+        "historico_de_decisoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-14"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l2-us-14",
+      "phase": "operate",
+      "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "proportionality": "Semestral",
+      "risk_level": "L2",
+      "role": "appsec-engineer",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-14-reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "user_story_id": "14-governanca-contratacao-us-14",
+      "warnings": []
+    },
+    {
+      "action": "reavalia e reaprovar fornecedores periodicamente (anual por defaut, semestral para L2, trimestral para L3), com validação técnica atualizada, análise de compliance SLA, e escalonamento para decisão de penalização ou substituição se necessário",
+      "artifacts": [
+        "calendario_de_revisao",
+        "questionario_atualizado_respostas",
+        "analise_tecnica_documentada",
+        "decisao_registada_em_grc",
+        "comunicacao_formal_ao_fornecedor",
+        "plano_de_mitigacao_se_aplicavel",
+        "historico_de_decisoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-14"
+      ],
+      "id": "14-governanca-contratacao-appsec-engineer-l3-us-14",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
       "proportionality": "Trimestral / evento crítico",
       "risk_level": "L3",
@@ -29828,7 +31087,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "14-governanca-contratacao-grc-compliance-l1-us-14",
-      "phase": "govern",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
       "proportionality": "Anual",
       "risk_level": "L1",
@@ -29855,7 +31114,7 @@
         "practice assignment derived from US-14"
       ],
       "id": "14-governanca-contratacao-grc-compliance-l2-us-14",
-      "phase": "govern",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
       "proportionality": "Semestral",
       "risk_level": "L2",
@@ -29882,7 +31141,88 @@
         "practice assignment derived from US-14"
       ],
       "id": "14-governanca-contratacao-grc-compliance-l3-us-14",
-      "phase": "govern",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "proportionality": "Trimestral / evento crítico",
+      "risk_level": "L3",
+      "role": "grc-compliance",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-14-reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "user_story_id": "14-governanca-contratacao-us-14",
+      "warnings": []
+    },
+    {
+      "action": "reavalia e reaprovar fornecedores periodicamente (anual por defaut, semestral para L2, trimestral para L3), com validação técnica atualizada, análise de compliance SLA, e escalonamento para decisão de penalização ou substituição se necessário",
+      "artifacts": [
+        "calendario_de_revisao",
+        "questionario_atualizado_respostas",
+        "analise_tecnica_documentada",
+        "decisao_registada_em_grc",
+        "comunicacao_formal_ao_fornecedor",
+        "plano_de_mitigacao_se_aplicavel",
+        "historico_de_decisoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-14"
+      ],
+      "id": "14-governanca-contratacao-grc-compliance-l1-us-14",
+      "phase": "operate",
+      "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "proportionality": "Anual",
+      "risk_level": "L1",
+      "role": "grc-compliance",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-14-reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "user_story_id": "14-governanca-contratacao-us-14",
+      "warnings": []
+    },
+    {
+      "action": "reavalia e reaprovar fornecedores periodicamente (anual por defaut, semestral para L2, trimestral para L3), com validação técnica atualizada, análise de compliance SLA, e escalonamento para decisão de penalização ou substituição se necessário",
+      "artifacts": [
+        "calendario_de_revisao",
+        "questionario_atualizado_respostas",
+        "analise_tecnica_documentada",
+        "decisao_registada_em_grc",
+        "comunicacao_formal_ao_fornecedor",
+        "plano_de_mitigacao_se_aplicavel",
+        "historico_de_decisoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-14"
+      ],
+      "id": "14-governanca-contratacao-grc-compliance-l2-us-14",
+      "phase": "operate",
+      "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "proportionality": "Semestral",
+      "risk_level": "L2",
+      "role": "grc-compliance",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-14-reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "user_story_id": "14-governanca-contratacao-us-14",
+      "warnings": []
+    },
+    {
+      "action": "reavalia e reaprovar fornecedores periodicamente (anual por defaut, semestral para L2, trimestral para L3), com validação técnica atualizada, análise de compliance SLA, e escalonamento para decisão de penalização ou substituição se necessário",
+      "artifacts": [
+        "calendario_de_revisao",
+        "questionario_atualizado_respostas",
+        "analise_tecnica_documentada",
+        "decisao_registada_em_grc",
+        "comunicacao_formal_ao_fornecedor",
+        "plano_de_mitigacao_se_aplicavel",
+        "historico_de_decisoes"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-14"
+      ],
+      "id": "14-governanca-contratacao-grc-compliance-l3-us-14",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
       "proportionality": "Trimestral / evento crítico",
       "risk_level": "L3",
@@ -29909,7 +31249,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "14-governanca-contratacao-security-champion-l1-us-15",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:preparacao-tecnica-e-validacao-de-contractors-pre-acesso",
       "proportionality": "Básico",
       "risk_level": "L1",
@@ -29936,7 +31276,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "14-governanca-contratacao-security-champion-l2-us-15",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:preparacao-tecnica-e-validacao-de-contractors-pre-acesso",
       "proportionality": "Recomendado",
       "risk_level": "L2",
@@ -29963,7 +31303,7 @@
         "practice assignment derived from US-15"
       ],
       "id": "14-governanca-contratacao-security-champion-l3-us-15",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:preparacao-tecnica-e-validacao-de-contractors-pre-acesso",
       "proportionality": "Obrigatório + quiz validado",
       "risk_level": "L3",
@@ -29989,7 +31329,7 @@
         "practice assignment derived from US-16"
       ],
       "id": "14-governanca-contratacao-gestao-executiva-l1-us-16",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
       "proportionality": "Básico",
       "risk_level": "L1",
@@ -30015,7 +31355,7 @@
         "practice assignment derived from US-16"
       ],
       "id": "14-governanca-contratacao-gestao-executiva-l2-us-16",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
       "proportionality": "Obrigatório",
       "risk_level": "L2",
@@ -30041,7 +31381,85 @@
         "practice assignment derived from US-16"
       ],
       "id": "14-governanca-contratacao-gestao-executiva-l3-us-16",
-      "phase": "govern",
+      "phase": "plan",
+      "practice_id": "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "proportionality": "Obrigatório + 80% score requerido",
+      "risk_level": "L3",
+      "role": "gestao-executiva",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-16-trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "user_story_id": "14-governanca-contratacao-us-16",
+      "warnings": []
+    },
+    {
+      "action": "definir e executar trilho de formação obrigatória por perfil de contractor, com SLA explícito de conclusão antes de acesso técnico",
+      "artifacts": [
+        "trilho_de_formacao_definido_por_perfil",
+        "lms_enrollment",
+        "quiz_completion_records",
+        "sign_off_de_conclusao",
+        "sla_compliance_checklist",
+        "notificacoes_enviadas"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-16"
+      ],
+      "id": "14-governanca-contratacao-gestao-executiva-l1-us-16",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "proportionality": "Básico",
+      "risk_level": "L1",
+      "role": "gestao-executiva",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-16-trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "user_story_id": "14-governanca-contratacao-us-16",
+      "warnings": []
+    },
+    {
+      "action": "definir e executar trilho de formação obrigatória por perfil de contractor, com SLA explícito de conclusão antes de acesso técnico",
+      "artifacts": [
+        "trilho_de_formacao_definido_por_perfil",
+        "lms_enrollment",
+        "quiz_completion_records",
+        "sign_off_de_conclusao",
+        "sla_compliance_checklist",
+        "notificacoes_enviadas"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-16"
+      ],
+      "id": "14-governanca-contratacao-gestao-executiva-l2-us-16",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "proportionality": "Obrigatório",
+      "risk_level": "L2",
+      "role": "gestao-executiva",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-16-trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "user_story_id": "14-governanca-contratacao-us-16",
+      "warnings": []
+    },
+    {
+      "action": "definir e executar trilho de formação obrigatória por perfil de contractor, com SLA explícito de conclusão antes de acesso técnico",
+      "artifacts": [
+        "trilho_de_formacao_definido_por_perfil",
+        "lms_enrollment",
+        "quiz_completion_records",
+        "sign_off_de_conclusao",
+        "sla_compliance_checklist",
+        "notificacoes_enviadas"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-16"
+      ],
+      "id": "14-governanca-contratacao-gestao-executiva-l3-us-16",
+      "phase": "unassigned",
       "practice_id": "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
       "proportionality": "Obrigatório + 80% score requerido",
       "risk_level": "L3",
@@ -30067,7 +31485,7 @@
         "practice assignment derived from US-16"
       ],
       "id": "14-governanca-contratacao-security-champion-l1-us-16",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
       "proportionality": "Básico",
       "risk_level": "L1",
@@ -30093,7 +31511,7 @@
         "practice assignment derived from US-16"
       ],
       "id": "14-governanca-contratacao-security-champion-l2-us-16",
-      "phase": "govern",
+      "phase": "plan",
       "practice_id": "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
       "proportionality": "Obrigatório",
       "risk_level": "L2",
@@ -30119,7 +31537,85 @@
         "practice assignment derived from US-16"
       ],
       "id": "14-governanca-contratacao-security-champion-l3-us-16",
-      "phase": "govern",
+      "phase": "plan",
+      "practice_id": "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "proportionality": "Obrigatório + 80% score requerido",
+      "risk_level": "L3",
+      "role": "security-champion",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-16-trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "user_story_id": "14-governanca-contratacao-us-16",
+      "warnings": []
+    },
+    {
+      "action": "definir e executar trilho de formação obrigatória por perfil de contractor, com SLA explícito de conclusão antes de acesso técnico",
+      "artifacts": [
+        "trilho_de_formacao_definido_por_perfil",
+        "lms_enrollment",
+        "quiz_completion_records",
+        "sign_off_de_conclusao",
+        "sla_compliance_checklist",
+        "notificacoes_enviadas"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-16"
+      ],
+      "id": "14-governanca-contratacao-security-champion-l1-us-16",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "proportionality": "Básico",
+      "risk_level": "L1",
+      "role": "security-champion",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-16-trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "user_story_id": "14-governanca-contratacao-us-16",
+      "warnings": []
+    },
+    {
+      "action": "definir e executar trilho de formação obrigatória por perfil de contractor, com SLA explícito de conclusão antes de acesso técnico",
+      "artifacts": [
+        "trilho_de_formacao_definido_por_perfil",
+        "lms_enrollment",
+        "quiz_completion_records",
+        "sign_off_de_conclusao",
+        "sla_compliance_checklist",
+        "notificacoes_enviadas"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-16"
+      ],
+      "id": "14-governanca-contratacao-security-champion-l2-us-16",
+      "phase": "unassigned",
+      "practice_id": "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "proportionality": "Obrigatório",
+      "risk_level": "L2",
+      "role": "security-champion",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-16-trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "user_story_id": "14-governanca-contratacao-us-16",
+      "warnings": []
+    },
+    {
+      "action": "definir e executar trilho de formação obrigatória por perfil de contractor, com SLA explícito de conclusão antes de acesso técnico",
+      "artifacts": [
+        "trilho_de_formacao_definido_por_perfil",
+        "lms_enrollment",
+        "quiz_completion_records",
+        "sign_off_de_conclusao",
+        "sla_compliance_checklist",
+        "notificacoes_enviadas"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-16"
+      ],
+      "id": "14-governanca-contratacao-security-champion-l3-us-16",
+      "phase": "unassigned",
       "practice_id": "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
       "proportionality": "Obrigatório + 80% score requerido",
       "risk_level": "L3",
@@ -30146,7 +31642,7 @@
         "practice assignment derived from US-17"
       ],
       "id": "14-governanca-contratacao-security-champion-l1-us-17",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
       "proportionality": "Básico",
       "risk_level": "L1",
@@ -30173,7 +31669,7 @@
         "practice assignment derived from US-17"
       ],
       "id": "14-governanca-contratacao-security-champion-l2-us-17",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
       "proportionality": "Obrigatório",
       "risk_level": "L2",
@@ -30200,7 +31696,88 @@
         "practice assignment derived from US-17"
       ],
       "id": "14-governanca-contratacao-security-champion-l3-us-17",
-      "phase": "govern",
+      "phase": "operate",
+      "practice_id": "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "proportionality": "Obrigatório + audit trail",
+      "risk_level": "L3",
+      "role": "security-champion",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-17-offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "user_story_id": "14-governanca-contratacao-us-17",
+      "warnings": []
+    },
+    {
+      "action": "executar processo formal e automático de offboarding seguro quando contractor termina ou fornecedor é rescindido",
+      "artifacts": [
+        "checklist_de_offboarding_preenchido",
+        "confirmacao_de_desativacao_de_acesso",
+        "backup_certificate",
+        "ativos_recuperados_inventory",
+        "sign_off_grc",
+        "legal_notice",
+        "relatorio_arquivado"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-17"
+      ],
+      "id": "14-governanca-contratacao-security-champion-l1-us-17",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "proportionality": "Básico",
+      "risk_level": "L1",
+      "role": "security-champion",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-17-offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "user_story_id": "14-governanca-contratacao-us-17",
+      "warnings": []
+    },
+    {
+      "action": "executar processo formal e automático de offboarding seguro quando contractor termina ou fornecedor é rescindido",
+      "artifacts": [
+        "checklist_de_offboarding_preenchido",
+        "confirmacao_de_desativacao_de_acesso",
+        "backup_certificate",
+        "ativos_recuperados_inventory",
+        "sign_off_grc",
+        "legal_notice",
+        "relatorio_arquivado"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-17"
+      ],
+      "id": "14-governanca-contratacao-security-champion-l2-us-17",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "proportionality": "Obrigatório",
+      "risk_level": "L2",
+      "role": "security-champion",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-17-offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "user_story_id": "14-governanca-contratacao-us-17",
+      "warnings": []
+    },
+    {
+      "action": "executar processo formal e automático de offboarding seguro quando contractor termina ou fornecedor é rescindido",
+      "artifacts": [
+        "checklist_de_offboarding_preenchido",
+        "confirmacao_de_desativacao_de_acesso",
+        "backup_certificate",
+        "ativos_recuperados_inventory",
+        "sign_off_grc",
+        "legal_notice",
+        "relatorio_arquivado"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-17"
+      ],
+      "id": "14-governanca-contratacao-security-champion-l3-us-17",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
       "proportionality": "Obrigatório + audit trail",
       "risk_level": "L3",
@@ -30227,7 +31804,7 @@
         "practice assignment derived from US-17"
       ],
       "id": "14-governanca-contratacao-devops-sre-l1-us-17",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
       "proportionality": "Básico",
       "risk_level": "L1",
@@ -30254,7 +31831,7 @@
         "practice assignment derived from US-17"
       ],
       "id": "14-governanca-contratacao-devops-sre-l2-us-17",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
       "proportionality": "Obrigatório",
       "risk_level": "L2",
@@ -30281,7 +31858,88 @@
         "practice assignment derived from US-17"
       ],
       "id": "14-governanca-contratacao-devops-sre-l3-us-17",
-      "phase": "govern",
+      "phase": "operate",
+      "practice_id": "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "proportionality": "Obrigatório + audit trail",
+      "risk_level": "L3",
+      "role": "devops-sre",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-17-offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "user_story_id": "14-governanca-contratacao-us-17",
+      "warnings": []
+    },
+    {
+      "action": "executar processo formal e automático de offboarding seguro quando contractor termina ou fornecedor é rescindido",
+      "artifacts": [
+        "checklist_de_offboarding_preenchido",
+        "confirmacao_de_desativacao_de_acesso",
+        "backup_certificate",
+        "ativos_recuperados_inventory",
+        "sign_off_grc",
+        "legal_notice",
+        "relatorio_arquivado"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-17"
+      ],
+      "id": "14-governanca-contratacao-devops-sre-l1-us-17",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "proportionality": "Básico",
+      "risk_level": "L1",
+      "role": "devops-sre",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-17-offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "user_story_id": "14-governanca-contratacao-us-17",
+      "warnings": []
+    },
+    {
+      "action": "executar processo formal e automático de offboarding seguro quando contractor termina ou fornecedor é rescindido",
+      "artifacts": [
+        "checklist_de_offboarding_preenchido",
+        "confirmacao_de_desativacao_de_acesso",
+        "backup_certificate",
+        "ativos_recuperados_inventory",
+        "sign_off_grc",
+        "legal_notice",
+        "relatorio_arquivado"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-17"
+      ],
+      "id": "14-governanca-contratacao-devops-sre-l2-us-17",
+      "phase": "test",
+      "practice_id": "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "proportionality": "Obrigatório",
+      "risk_level": "L2",
+      "role": "devops-sre",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-17-offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "user_story_id": "14-governanca-contratacao-us-17",
+      "warnings": []
+    },
+    {
+      "action": "executar processo formal e automático de offboarding seguro quando contractor termina ou fornecedor é rescindido",
+      "artifacts": [
+        "checklist_de_offboarding_preenchido",
+        "confirmacao_de_desativacao_de_acesso",
+        "backup_certificate",
+        "ativos_recuperados_inventory",
+        "sign_off_grc",
+        "legal_notice",
+        "relatorio_arquivado"
+      ],
+      "chapter_id": "14-governanca-contratacao",
+      "confidence": 0.86,
+      "evidence": [
+        "practice assignment derived from US-17"
+      ],
+      "id": "14-governanca-contratacao-devops-sre-l3-us-17",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
       "proportionality": "Obrigatório + audit trail",
       "risk_level": "L3",
@@ -30307,7 +31965,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l1-us-18",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:monitorizacao-continua-de-conformidade-de-fornecedores-alertas-e-escalacao",
       "proportionality": "Não",
       "risk_level": "L1",
@@ -30333,7 +31991,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l2-us-18",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:monitorizacao-continua-de-conformidade-de-fornecedores-alertas-e-escalacao",
       "proportionality": "Recomendado",
       "risk_level": "L2",
@@ -30359,7 +32017,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "14-governanca-contratacao-appsec-engineer-l3-us-18",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:monitorizacao-continua-de-conformidade-de-fornecedores-alertas-e-escalacao",
       "proportionality": "Obrigatório",
       "risk_level": "L3",
@@ -30385,7 +32043,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "14-governanca-contratacao-operacoes-l1-us-18",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:monitorizacao-continua-de-conformidade-de-fornecedores-alertas-e-escalacao",
       "proportionality": "Não",
       "risk_level": "L1",
@@ -30411,7 +32069,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "14-governanca-contratacao-operacoes-l2-us-18",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:monitorizacao-continua-de-conformidade-de-fornecedores-alertas-e-escalacao",
       "proportionality": "Recomendado",
       "risk_level": "L2",
@@ -30437,7 +32095,7 @@
         "practice assignment derived from US-18"
       ],
       "id": "14-governanca-contratacao-operacoes-l3-us-18",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:monitorizacao-continua-de-conformidade-de-fornecedores-alertas-e-escalacao",
       "proportionality": "Obrigatório",
       "risk_level": "L3",
@@ -30463,7 +32121,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "14-governanca-contratacao-security-champion-l1-us-19",
-      "phase": "govern",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:revisao-trimestral-de-acesso-de-contractors-least-privilege",
       "proportionality": "Semestral",
       "risk_level": "L1",
@@ -30489,7 +32147,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "14-governanca-contratacao-security-champion-l2-us-19",
-      "phase": "govern",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:revisao-trimestral-de-acesso-de-contractors-least-privilege",
       "proportionality": "Trimestral",
       "risk_level": "L2",
@@ -30515,7 +32173,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "14-governanca-contratacao-security-champion-l3-us-19",
-      "phase": "govern",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:revisao-trimestral-de-acesso-de-contractors-least-privilege",
       "proportionality": "Trimestral",
       "risk_level": "L3",
@@ -30541,7 +32199,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "14-governanca-contratacao-devops-sre-l1-us-19",
-      "phase": "govern",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:revisao-trimestral-de-acesso-de-contractors-least-privilege",
       "proportionality": "Semestral",
       "risk_level": "L1",
@@ -30567,7 +32225,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "14-governanca-contratacao-devops-sre-l2-us-19",
-      "phase": "govern",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:revisao-trimestral-de-acesso-de-contractors-least-privilege",
       "proportionality": "Trimestral",
       "risk_level": "L2",
@@ -30593,7 +32251,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "14-governanca-contratacao-devops-sre-l3-us-19",
-      "phase": "govern",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:revisao-trimestral-de-acesso-de-contractors-least-privilege",
       "proportionality": "Trimestral",
       "risk_level": "L3",
@@ -30619,7 +32277,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "14-governanca-contratacao-scrum-master-l1-us-19",
-      "phase": "govern",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:revisao-trimestral-de-acesso-de-contractors-least-privilege",
       "proportionality": "Semestral",
       "risk_level": "L1",
@@ -30645,7 +32303,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "14-governanca-contratacao-scrum-master-l2-us-19",
-      "phase": "govern",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:revisao-trimestral-de-acesso-de-contractors-least-privilege",
       "proportionality": "Trimestral",
       "risk_level": "L2",
@@ -30671,7 +32329,7 @@
         "practice assignment derived from US-19"
       ],
       "id": "14-governanca-contratacao-scrum-master-l3-us-19",
-      "phase": "govern",
+      "phase": "test",
       "practice_id": "14-governanca-contratacao:revisao-trimestral-de-acesso-de-contractors-least-privilege",
       "proportionality": "Trimestral",
       "risk_level": "L3",
@@ -30696,7 +32354,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "14-governanca-contratacao-security-champion-l1-us-20",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:feedback-pos-projeto-e-rating-de-contractors",
       "proportionality": "Opcional",
       "risk_level": "L1",
@@ -30721,7 +32379,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "14-governanca-contratacao-security-champion-l2-us-20",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:feedback-pos-projeto-e-rating-de-contractors",
       "proportionality": "Recomendado",
       "risk_level": "L2",
@@ -30746,7 +32404,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "14-governanca-contratacao-security-champion-l3-us-20",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:feedback-pos-projeto-e-rating-de-contractors",
       "proportionality": "Obrigatório",
       "risk_level": "L3",
@@ -30771,7 +32429,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "14-governanca-contratacao-scrum-master-l1-us-20",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:feedback-pos-projeto-e-rating-de-contractors",
       "proportionality": "Opcional",
       "risk_level": "L1",
@@ -30796,7 +32454,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "14-governanca-contratacao-scrum-master-l2-us-20",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:feedback-pos-projeto-e-rating-de-contractors",
       "proportionality": "Recomendado",
       "risk_level": "L2",
@@ -30821,7 +32479,7 @@
         "practice assignment derived from US-20"
       ],
       "id": "14-governanca-contratacao-scrum-master-l3-us-20",
-      "phase": "govern",
+      "phase": "operate",
       "practice_id": "14-governanca-contratacao:feedback-pos-projeto-e-rating-de-contractors",
       "proportionality": "Obrigatório",
       "risk_level": "L3",

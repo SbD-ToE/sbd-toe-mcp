@@ -23,7 +23,8 @@
         "06-desenvolvimento-seguro",
         "10-testes-seguranca",
         "12-monitorizacao-operacoes",
-        "13-formacao-onboarding"
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
       ],
       "canonical": true,
       "description": "Requirements gathering, classification, planning",
@@ -118,7 +119,8 @@
         "07-cicd-seguro",
         "10-testes-seguranca",
         "11-deploy-seguro",
-        "12-monitorizacao-operacoes"
+        "12-monitorizacao-operacoes",
+        "14-governanca-contratacao"
       ],
       "canonical": true,
       "description": "Security testing, QA, validation, staging",
@@ -216,16 +218,16 @@
     }
   ],
   "phases_unassigned": {
-    "assignment_count": 195,
+    "assignment_count": 219,
     "chapter_count": 7,
     "chapters": [
       "02-requisitos-seguranca",
       "03-threat-modeling",
-      "05-dependencias-sbom-sca",
       "06-desenvolvimento-seguro",
       "07-cicd-seguro",
       "08-iac-infraestrutura",
-      "13-formacao-onboarding"
+      "13-formacao-onboarding",
+      "14-governanca-contratacao"
     ],
     "note": "fase `unassigned` dos assignments autorados — declarada, nunca absorvida numa fase real nem filtrada em silêncio (paridade com phases_unassigned da beta.39)"
   },
@@ -247,7 +249,7 @@
     "Definição": 1,
     "Design/Refactor": 1,
     "Dev/CI": 2,
-    "Execução": 1,
+    "Execução": 6,
     "Implementação": 1,
     "Integração": 1,
     "Início/Revisão": 1,

@@ -1,6 +1,6 @@
 {
   "agent": "lifecycle_extractor",
-  "generated_at": "2026-09-08T11:33:16Z",
+  "generated_at": "2026-09-08T17:29:06Z",
   "items": [
     {
       "confidence": 0.91,
@@ -1492,6 +1492,26 @@
     {
       "confidence": 0.91,
       "evidence": [
+        "sdlc integration extracted for US-02"
+      ],
+      "id": "05-dependencias-sbom-sca-us-02-build-1",
+      "phase": "CI",
+      "phase_normalized": "build",
+      "practice_id": "05-dependencias-sbom-sca:sbom-em-cada-build",
+      "responsible": "DevOps",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "Conforme ciclo da US",
+      "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-02-sbom-em-cada-build",
+      "trigger": "Execução de build",
+      "user_story_id": "05-dependencias-sbom-sca-us-02",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
         "sdlc integration extracted for US-03"
       ],
       "id": "05-dependencias-sbom-sca-us-03-build-1",
@@ -1508,6 +1528,27 @@
       "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-03-sca-automatico-com-gates",
       "trigger": "Geração de SBOM",
       "user_story_id": "05-dependencias-sbom-sca-us-03",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-04"
+      ],
+      "id": "05-dependencias-sbom-sca-us-04-deploy-1",
+      "phase": "Release",
+      "phase_normalized": "deploy",
+      "practice_id": "05-dependencias-sbom-sca:excecoes-a-cves-formais-e-temporarias",
+      "responsible": "AppSec + Product Owner",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "product-owner"
+      ],
+      "sla": "Conforme prazo definido na exceção",
+      "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-04-excecoes-a-cves-formais-e-temporarias",
+      "trigger": "Findings pendentes",
+      "user_story_id": "05-dependencias-sbom-sca-us-04",
       "warnings": []
     },
     {
@@ -4347,6 +4388,109 @@
     {
       "confidence": 0.91,
       "evidence": [
+        "sdlc integration extracted for US-13"
+      ],
+      "id": "11-deploy-seguro-us-13-operate-1",
+      "phase": "Produção",
+      "phase_normalized": "operate",
+      "practice_id": "11-deploy-seguro:validacao-humana-obrigatoria-apos-deploy-automatizado",
+      "responsible": "Ops/AppSec",
+      "responsible_normalized": [
+        "operacoes",
+        "appsec-engineer"
+      ],
+      "sla": "`<`24h",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-13-validacao-humana-obrigatoria-apos-deploy-automatizado",
+      "trigger": "Pós-deploy",
+      "user_story_id": "11-deploy-seguro-us-13",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-14"
+      ],
+      "id": "11-deploy-seguro-us-14-operate-1",
+      "phase": "Operação contínua",
+      "phase_normalized": "operate",
+      "practice_id": "11-deploy-seguro:controlo-e-validacao-de-drift-operacional",
+      "responsible": "Ops",
+      "responsible_normalized": [
+        "operacoes"
+      ],
+      "sla": "`<48h`",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-14-controlo-e-validacao-de-drift-operacional",
+      "trigger": "Deteção de drift",
+      "user_story_id": "11-deploy-seguro-us-14",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-15"
+      ],
+      "id": "11-deploy-seguro-us-15-operate-1",
+      "phase": "Produção",
+      "phase_normalized": "operate",
+      "practice_id": "11-deploy-seguro:reprodutibilidade-de-incidentes-em-runtime",
+      "responsible": "Ops/AppSec",
+      "responsible_normalized": [
+        "operacoes",
+        "appsec-engineer"
+      ],
+      "sla": "SLA definido",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-15-reprodutibilidade-de-incidentes-em-runtime",
+      "trigger": "Incidente",
+      "user_story_id": "11-deploy-seguro-us-15",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-16"
+      ],
+      "id": "11-deploy-seguro-us-16-operate-1",
+      "phase": "Produção",
+      "phase_normalized": "operate",
+      "practice_id": "11-deploy-seguro:separacao-entre-acao-automatica-e-autorizacao-irreversivel",
+      "responsible": "Ops",
+      "responsible_normalized": [
+        "operacoes"
+      ],
+      "sla": "Antes da execução",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-16-separacao-entre-acao-automatica-e-autorizacao-irreversivel",
+      "trigger": "Ação crítica",
+      "user_story_id": "11-deploy-seguro-us-16",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-17"
+      ],
+      "id": "11-deploy-seguro-us-17-operate-1",
+      "phase": "Operação contínua",
+      "phase_normalized": "operate",
+      "practice_id": "11-deploy-seguro:evidencia-operacional-auditavel",
+      "responsible": "Ops/GRC",
+      "responsible_normalized": [
+        "operacoes",
+        "grc-compliance"
+      ],
+      "sla": "Imediato",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-17-evidencia-operacional-auditavel",
+      "trigger": "Evento",
+      "user_story_id": "11-deploy-seguro-us-17",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
         "sdlc integration extracted for US-18"
       ],
       "id": "11-deploy-seguro-us-18-deploy-1",
@@ -5271,6 +5415,743 @@
     {
       "confidence": 0.91,
       "evidence": [
+        "sdlc integration extracted for US-01"
+      ],
+      "id": "14-governanca-contratacao-us-01-unassigned-1",
+      "phase": "Execução",
+      "phase_normalized": "unassigned",
+      "practice_id": "14-governanca-contratacao:processo-formal-de-excecoes-com-alcadas-por-nivel-de-risco",
+      "responsible": "Developer (submissão) + AppSec Engineer (validação) + Gestão Executiva / CISO (aprovação conforme nível)",
+      "responsible_normalized": [
+        "developer",
+        "submissao",
+        "appsec-engineer",
+        "validacao",
+        "gestao-executiva",
+        "aprovacao-conforme-nivel"
+      ],
+      "sla": "Aprovação em 5 dias (L1–L2), 3 dias (L3); Notificação de revalidação 30 dias antes do vencimento",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--user-stories-normalizadas--us-01-processo-formal-de-excecoes-com-alcadas-por-nivel-de-risco",
+      "trigger": "Sempre que há desvio",
+      "user_story_id": "14-governanca-contratacao-us-01",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-02"
+      ],
+      "id": "14-governanca-contratacao-us-02-plan-1",
+      "phase": "Planeamento",
+      "phase_normalized": "plan",
+      "practice_id": "14-governanca-contratacao:clausulas-contratuais-de-seguranca",
+      "responsible": "GRC / Compliance (Jurídico + Procurement)",
+      "responsible_normalized": [
+        "grc-compliance"
+      ],
+      "sla": "Conforme ciclo da US",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--user-stories-normalizadas--us-02-clausulas-contratuais-de-seguranca",
+      "trigger": "Contrato novo",
+      "user_story_id": "14-governanca-contratacao-us-02",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-03"
+      ],
+      "id": "14-governanca-contratacao-us-03-test-1",
+      "phase": "Validação",
+      "phase_normalized": "test",
+      "practice_id": "14-governanca-contratacao:validacao-continua-de-fornecedores",
+      "responsible": "GRC / Compliance",
+      "responsible_normalized": [
+        "grc-compliance"
+      ],
+      "sla": "Auditoria anual",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--user-stories-normalizadas--us-03-validacao-continua-de-fornecedores",
+      "trigger": "Auditoria de fornecedor ativo",
+      "user_story_id": "14-governanca-contratacao-us-03",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-04"
+      ],
+      "id": "14-governanca-contratacao-us-04-operate-1",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "14-governanca-contratacao:rastreabilidade-organizacional",
+      "responsible": "AppSec Engineer + GRC / Compliance",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "grc-compliance"
+      ],
+      "sla": "Conforme ciclo da US",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--user-stories-normalizadas--us-04-rastreabilidade-organizacional",
+      "trigger": "Recolha de métricas de projetos ativos",
+      "user_story_id": "14-governanca-contratacao-us-04",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-05"
+      ],
+      "id": "14-governanca-contratacao-us-05-govern-1",
+      "phase": "Auditoria",
+      "phase_normalized": "govern",
+      "practice_id": "14-governanca-contratacao:kpis-de-governacao",
+      "responsible": "Gestão Executiva + GRC / Compliance",
+      "responsible_normalized": [
+        "gestao-executiva",
+        "grc-compliance"
+      ],
+      "sla": "Conforme ciclo da US",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-05-kpis-de-governacao",
+      "trigger": "Ciclo trimestral de medição de KPIs",
+      "user_story_id": "14-governanca-contratacao-us-05",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-06"
+      ],
+      "id": "14-governanca-contratacao-us-06-plan-1",
+      "phase": "Planeamento",
+      "phase_normalized": "plan",
+      "practice_id": "14-governanca-contratacao:execucao-de-fluxo-formal-de-validacao-de-fornecedores",
+      "responsible": "AppSec Engineer + GRC / Compliance (Procurement Officer)",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "grc-compliance"
+      ],
+      "sla": "2 semanas (L2), 1 semana (L3)",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-06-execucao-de-fluxo-formal-de-validacao-de-fornecedores",
+      "trigger": "Novo fornecedor L2/L3; início do fluxo de validação",
+      "user_story_id": "14-governanca-contratacao-us-06",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-07"
+      ],
+      "id": "14-governanca-contratacao-us-07-operate-1",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "14-governanca-contratacao:ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
+      "responsible": "AppSec Engineer + GRC / Compliance",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "grc-compliance"
+      ],
+      "sla": "Reavaliação em 5 dias úteis",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-07-ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
+      "trigger": "Calendário (trimestral/semestral), Incidente crítico, Mudança arquitetura",
+      "user_story_id": "14-governanca-contratacao-us-07",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-07"
+      ],
+      "id": "14-governanca-contratacao-us-07-test-2",
+      "phase": "Validação",
+      "phase_normalized": "test",
+      "practice_id": "14-governanca-contratacao:ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
+      "responsible": "AppSec Engineer + GRC / Compliance",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "grc-compliance"
+      ],
+      "sla": "Reavaliação em 5 dias úteis",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-07-ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
+      "trigger": "Calendário (trimestral/semestral), Incidente crítico, Mudança arquitetura",
+      "user_story_id": "14-governanca-contratacao-us-07",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-08"
+      ],
+      "id": "14-governanca-contratacao-us-08-plan-1",
+      "phase": "Planeamento",
+      "phase_normalized": "plan",
+      "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "responsible": "AppSec Engineer + Scrum Master / Team Lead + GRC / Compliance",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "scrum-master",
+        "grc-compliance"
+      ],
+      "sla": "Atualização por release ou 5 dias após evento crítico",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-08-repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "trigger": "Criação ou atualização do repositório; release relevante ou evento crítico",
+      "user_story_id": "14-governanca-contratacao-us-08",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-08"
+      ],
+      "id": "14-governanca-contratacao-us-08-unassigned-2",
+      "phase": "Execução",
+      "phase_normalized": "unassigned",
+      "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "responsible": "AppSec Engineer + Scrum Master / Team Lead + GRC / Compliance",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "scrum-master",
+        "grc-compliance"
+      ],
+      "sla": "Atualização por release ou 5 dias após evento crítico",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-08-repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "trigger": "Criação ou atualização do repositório; release relevante ou evento crítico",
+      "user_story_id": "14-governanca-contratacao-us-08",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-08"
+      ],
+      "id": "14-governanca-contratacao-us-08-test-3",
+      "phase": "Validação",
+      "phase_normalized": "test",
+      "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "responsible": "AppSec Engineer + Scrum Master / Team Lead + GRC / Compliance",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "scrum-master",
+        "grc-compliance"
+      ],
+      "sla": "Atualização por release ou 5 dias após evento crítico",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-08-repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "trigger": "Criação ou atualização do repositório; release relevante ou evento crítico",
+      "user_story_id": "14-governanca-contratacao-us-08",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-09"
+      ],
+      "id": "14-governanca-contratacao-us-09-plan-1",
+      "phase": "Planeamento",
+      "phase_normalized": "plan",
+      "practice_id": "14-governanca-contratacao:designacao-formal-de-owners-de-seguranca-por-aplicacao",
+      "responsible": "Gestão Executiva + Security Champion + AppSec Engineer",
+      "responsible_normalized": [
+        "gestao-executiva",
+        "security-champion",
+        "appsec-engineer"
+      ],
+      "sla": "Designação no arranque do projeto ou mudança de owner",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-09-designacao-formal-de-owners-de-seguranca-por-aplicacao",
+      "trigger": "Aplicação L2/L3; arranque do projeto ou rotação de owner",
+      "user_story_id": "14-governanca-contratacao-us-09",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-10"
+      ],
+      "id": "14-governanca-contratacao-us-10-test-1",
+      "phase": "Validação",
+      "phase_normalized": "test",
+      "practice_id": "14-governanca-contratacao:validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "responsible": "AppSec Engineer + GRC / Compliance + Scrum Master / Team Lead",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "grc-compliance",
+        "scrum-master"
+      ],
+      "sla": "Ciclo completado em 2 semanas desde trigger",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-10-validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "trigger": "Calendário cíclico, Release relevante, Incidente crítico",
+      "user_story_id": "14-governanca-contratacao-us-10",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-10"
+      ],
+      "id": "14-governanca-contratacao-us-10-govern-2",
+      "phase": "Auditoria",
+      "phase_normalized": "govern",
+      "practice_id": "14-governanca-contratacao:validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "responsible": "AppSec Engineer + GRC / Compliance + Scrum Master / Team Lead",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "grc-compliance",
+        "scrum-master"
+      ],
+      "sla": "Ciclo completado em 2 semanas desde trigger",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-10-validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "trigger": "Calendário cíclico, Release relevante, Incidente crítico",
+      "user_story_id": "14-governanca-contratacao-us-10",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-11"
+      ],
+      "id": "14-governanca-contratacao-us-11-govern-1",
+      "phase": "Auditoria",
+      "phase_normalized": "govern",
+      "practice_id": "14-governanca-contratacao:consolidacao-de-kpis-de-governacao-e-maturidade",
+      "responsible": "GRC / Compliance + AppSec Engineer + CISO",
+      "responsible_normalized": [
+        "grc-compliance",
+        "appsec-engineer",
+        "gestao-executiva"
+      ],
+      "sla": "Relatório publicado 5 dias após fim do período",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-11-consolidacao-de-kpis-de-governacao-e-maturidade",
+      "trigger": "Trimestral (mínimo), Semestral (recomendado)",
+      "user_story_id": "14-governanca-contratacao-us-11",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-11"
+      ],
+      "id": "14-governanca-contratacao-us-11-operate-2",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "14-governanca-contratacao:consolidacao-de-kpis-de-governacao-e-maturidade",
+      "responsible": "GRC / Compliance + AppSec Engineer + CISO",
+      "responsible_normalized": [
+        "grc-compliance",
+        "appsec-engineer",
+        "gestao-executiva"
+      ],
+      "sla": "Relatório publicado 5 dias após fim do período",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-11-consolidacao-de-kpis-de-governacao-e-maturidade",
+      "trigger": "Trimestral (mínimo), Semestral (recomendado)",
+      "user_story_id": "14-governanca-contratacao-us-11",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-12"
+      ],
+      "id": "14-governanca-contratacao-us-12-plan-1",
+      "phase": "Planeamento",
+      "phase_normalized": "plan",
+      "practice_id": "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "responsible": "CISO + AppSec Engineer + GRC / Compliance (Jurídico)",
+      "responsible_normalized": [
+        "gestao-executiva",
+        "appsec-engineer",
+        "grc-compliance"
+      ],
+      "sla": "Publicação em 2 semanas",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-12-formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "trigger": "Arranque SbD-ToE, revisão anual, mudança organizacional",
+      "user_story_id": "14-governanca-contratacao-us-12",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-12"
+      ],
+      "id": "14-governanca-contratacao-us-12-unassigned-2",
+      "phase": "Execução",
+      "phase_normalized": "unassigned",
+      "practice_id": "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "responsible": "CISO + AppSec Engineer + GRC / Compliance (Jurídico)",
+      "responsible_normalized": [
+        "gestao-executiva",
+        "appsec-engineer",
+        "grc-compliance"
+      ],
+      "sla": "Publicação em 2 semanas",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-12-formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "trigger": "Arranque SbD-ToE, revisão anual, mudança organizacional",
+      "user_story_id": "14-governanca-contratacao-us-12",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-13"
+      ],
+      "id": "14-governanca-contratacao-us-13-plan-1",
+      "phase": "Planeamento",
+      "phase_normalized": "plan",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "responsible": "AppSec Engineer (validação) + Scrum Master / Team Lead (preenchimento) + GRC / Compliance (consolidação)",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "validacao",
+        "scrum-master",
+        "preenchimento",
+        "grc-compliance",
+        "consolidacao"
+      ],
+      "sla": "Atualização em 5 dias úteis após trigger",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "trigger": "Release relevante, evento crítico, ciclo programado (trimestral/semestral/anual)",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-13"
+      ],
+      "id": "14-governanca-contratacao-us-13-unassigned-2",
+      "phase": "Execução",
+      "phase_normalized": "unassigned",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "responsible": "AppSec Engineer (validação) + Scrum Master / Team Lead (preenchimento) + GRC / Compliance (consolidação)",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "validacao",
+        "scrum-master",
+        "preenchimento",
+        "grc-compliance",
+        "consolidacao"
+      ],
+      "sla": "Atualização em 5 dias úteis após trigger",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "trigger": "Release relevante, evento crítico, ciclo programado (trimestral/semestral/anual)",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-13"
+      ],
+      "id": "14-governanca-contratacao-us-13-test-3",
+      "phase": "Validação",
+      "phase_normalized": "test",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "responsible": "AppSec Engineer (validação) + Scrum Master / Team Lead (preenchimento) + GRC / Compliance (consolidação)",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "validacao",
+        "scrum-master",
+        "preenchimento",
+        "grc-compliance",
+        "consolidacao"
+      ],
+      "sla": "Atualização em 5 dias úteis após trigger",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "trigger": "Release relevante, evento crítico, ciclo programado (trimestral/semestral/anual)",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-13"
+      ],
+      "id": "14-governanca-contratacao-us-13-govern-4",
+      "phase": "Auditoria",
+      "phase_normalized": "govern",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "responsible": "AppSec Engineer (validação) + Scrum Master / Team Lead (preenchimento) + GRC / Compliance (consolidação)",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "validacao",
+        "scrum-master",
+        "preenchimento",
+        "grc-compliance",
+        "consolidacao"
+      ],
+      "sla": "Atualização em 5 dias úteis após trigger",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "trigger": "Release relevante, evento crítico, ciclo programado (trimestral/semestral/anual)",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-14"
+      ],
+      "id": "14-governanca-contratacao-us-14-test-1",
+      "phase": "Validação",
+      "phase_normalized": "test",
+      "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "responsible": "AppSec Engineer (análise técnica) + GRC / Compliance (Procurement Officer — coordenação; decisão e registo)",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "analise-tecnica",
+        "grc-compliance",
+        "procurement-officer-coordenacao",
+        "decisao",
+        "registo"
+      ],
+      "sla": "Reavaliação completada em 2 semanas desde trigger",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-14-reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "trigger": "Calendário programado (anual/semestral), Incidente crítico, CVE crítico não mitigado, Mudança de contrato/propriedade/SLA",
+      "user_story_id": "14-governanca-contratacao-us-14",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-14"
+      ],
+      "id": "14-governanca-contratacao-us-14-operate-2",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "responsible": "AppSec Engineer (análise técnica) + GRC / Compliance (Procurement Officer — coordenação; decisão e registo)",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "analise-tecnica",
+        "grc-compliance",
+        "procurement-officer-coordenacao",
+        "decisao",
+        "registo"
+      ],
+      "sla": "Reavaliação completada em 2 semanas desde trigger",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-14-reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "trigger": "Calendário programado (anual/semestral), Incidente crítico, CVE crítico não mitigado, Mudança de contrato/propriedade/SLA",
+      "user_story_id": "14-governanca-contratacao-us-14",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-15"
+      ],
+      "id": "14-governanca-contratacao-us-15-plan-1",
+      "phase": "Planeamento",
+      "phase_normalized": "plan",
+      "practice_id": "14-governanca-contratacao:preparacao-tecnica-e-validacao-de-contractors-pre-acesso",
+      "responsible": "Security Champion (coordenação HR) + AppSec Engineer (validação) + Scrum Master / Team Lead (sandbox setup)",
+      "responsible_normalized": [
+        "security-champion",
+        "coordenacao-hr",
+        "appsec-engineer",
+        "validacao",
+        "scrum-master",
+        "sandbox-setup"
+      ],
+      "sla": "Conclusão em 2–3 dias úteis antes de data de início; Notificação: Contractor informado via email sobre trilho",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-15-preparacao-tecnica-e-validacao-de-contractors-pre-acesso",
+      "trigger": "Contrato assinado, data de início do projeto",
+      "user_story_id": "14-governanca-contratacao-us-15",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-16"
+      ],
+      "id": "14-governanca-contratacao-us-16-plan-1",
+      "phase": "Planeamento",
+      "phase_normalized": "plan",
+      "practice_id": "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "responsible": "AppSec Engineer (validação de conclusão) + Security Champion (Training Manager — coordenação trilho; rastreabilidade HR)",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "validacao-de-conclusao",
+        "security-champion",
+        "training-manager-coordenacao-trilho",
+        "rastreabilidade-hr"
+      ],
+      "sla": "Formação completa antes de acesso real; Notificação: Semanais se em risco, daily se `<`3 dias",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-16-trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "trigger": "Contractor aprovado (fim US-06/US-15)",
+      "user_story_id": "14-governanca-contratacao-us-16",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-16"
+      ],
+      "id": "14-governanca-contratacao-us-16-unassigned-2",
+      "phase": "Execução",
+      "phase_normalized": "unassigned",
+      "practice_id": "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "responsible": "AppSec Engineer (validação de conclusão) + Security Champion (Training Manager — coordenação trilho; rastreabilidade HR)",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "validacao-de-conclusao",
+        "security-champion",
+        "training-manager-coordenacao-trilho",
+        "rastreabilidade-hr"
+      ],
+      "sla": "Formação completa antes de acesso real; Notificação: Semanais se em risco, daily se `<`3 dias",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-16-trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "trigger": "Contractor aprovado (fim US-06/US-15)",
+      "user_story_id": "14-governanca-contratacao-us-16",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-17"
+      ],
+      "id": "14-governanca-contratacao-us-17-operate-1",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "responsible": "DevOps / SRE (acesso técnico) + AppSec Engineer (validação) + Security Champion (coordenação timeline HR; checkpoints)",
+      "responsible_normalized": [
+        "devops-sre",
+        "acesso-tecnico",
+        "appsec-engineer",
+        "validacao",
+        "security-champion",
+        "coordenacao-timeline-hr",
+        "checkpoints"
+      ],
+      "sla": "Offboarding completo em **`<`24h** da data de termo; Notificação: HR envia aviso 2 semanas antes",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-17-offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "trigger": "Data de término conhecida (programado), Rescisão imediata (unscheduled)",
+      "user_story_id": "14-governanca-contratacao-us-17",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-17"
+      ],
+      "id": "14-governanca-contratacao-us-17-test-2",
+      "phase": "Validação",
+      "phase_normalized": "test",
+      "practice_id": "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "responsible": "DevOps / SRE (acesso técnico) + AppSec Engineer (validação) + Security Champion (coordenação timeline HR; checkpoints)",
+      "responsible_normalized": [
+        "devops-sre",
+        "acesso-tecnico",
+        "appsec-engineer",
+        "validacao",
+        "security-champion",
+        "coordenacao-timeline-hr",
+        "checkpoints"
+      ],
+      "sla": "Offboarding completo em **`<`24h** da data de termo; Notificação: HR envia aviso 2 semanas antes",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-17-offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "trigger": "Data de término conhecida (programado), Rescisão imediata (unscheduled)",
+      "user_story_id": "14-governanca-contratacao-us-17",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-18"
+      ],
+      "id": "14-governanca-contratacao-us-18-operate-1",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "14-governanca-contratacao:monitorizacao-continua-de-conformidade-de-fornecedores-alertas-e-escalacao",
+      "responsible": "AppSec Engineer (setup inicial) + Operações (Ops) (operação 24x7)",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "setup-inicial",
+        "operacoes",
+        "operacao-24x7"
+      ],
+      "sla": "Alerta em **`<`1h** de deteção, escalonamento em `<`15 min",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-18-monitorizacao-continua-de-conformidade-de-fornecedores-alertas-e-escalacao",
+      "trigger": "Incidente, CVE crítico, SLA breach, mudança contratual",
+      "user_story_id": "14-governanca-contratacao-us-18",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-19"
+      ],
+      "id": "14-governanca-contratacao-us-19-test-1",
+      "phase": "Validação",
+      "phase_normalized": "test",
+      "practice_id": "14-governanca-contratacao:revisao-trimestral-de-acesso-de-contractors-least-privilege",
+      "responsible": "Security Champion (coordenação) + Scrum Master / Team Lead (validação de necessidade) + DevOps / SRE (mudanças técnicas)",
+      "responsible_normalized": [
+        "security-champion",
+        "coordenacao",
+        "scrum-master",
+        "validacao-de-necessidade",
+        "devops-sre",
+        "mudancas-tecnicas"
+      ],
+      "sla": "Revisão iniciada e completada em **1 semana**",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-19-revisao-trimestral-de-acesso-de-contractors-least-privilege",
+      "trigger": "Calendário (trimestral), Mudança de projeto, Incidente",
+      "user_story_id": "14-governanca-contratacao-us-19",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-20"
+      ],
+      "id": "14-governanca-contratacao-us-20-operate-1",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "14-governanca-contratacao:feedback-pos-projeto-e-rating-de-contractors",
+      "responsible": "Security Champion (coordenação) + Scrum Master / Team Lead + AppSec Engineer (preenchimento)",
+      "responsible_normalized": [
+        "security-champion",
+        "coordenacao",
+        "scrum-master",
+        "appsec-engineer",
+        "preenchimento"
+      ],
+      "sla": "Feedback completado em **3 dias úteis** após fim do contrato",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-20-feedback-pos-projeto-e-rating-de-contractors",
+      "trigger": "Offboarding iniciado (US-17)",
+      "user_story_id": "14-governanca-contratacao-us-20",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
         "sdlc integration extracted for US-21"
       ],
       "id": "14-governanca-contratacao-us-21-govern-1",
@@ -5394,10 +6275,10 @@
       "warnings": []
     }
   ],
-  "run_id": "20260908T113316Z",
+  "run_id": "20260908T172906Z",
   "source": {
     "branch": "HEAD",
-    "commit_sha": "ea6b396b9caa77beddf1096b56250fe073796e8f",
+    "commit_sha": "89ac3ba8f03002054033636b9a685729c1e0a590",
     "corpus_root": "manuals_src/docs/sbd-toe",
     "repo_url": "git@github.com:SbD-ToE/sbd-toe-manual.git"
   },
@@ -5409,7 +6290,7 @@
     "warnings": 53
   },
   "summary": {
-    "sdlc_integration_rows": 259
+    "sdlc_integration_rows": 298
   },
   "version": "0.1.0",
   "warnings": [

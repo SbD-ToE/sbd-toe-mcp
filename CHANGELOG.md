@@ -3,11 +3,70 @@ ai_assisted: true
 model: Claude Opus 5
 date: 2026-09-08
 purpose: documentation
-reasoning: v0.20.0-beta.44 (beta line, npm `beta`) — re-pin para kg-v1-manual-v1.8.1-aligned-2026-09-08-v2.7-r2 (contrato v1.22 §1.29): vaga de EMPACOTAMENTO pura, dados byte-idênticos ao v2.7, e o `decision_involvements.json` passa a vir dentro. Os 163 envolvimentos são servidos ao lado da execução no `get_guide_by_role` — 158 approves + 5 consulted, 12 capítulos, 163/163 com âncora VERBATIM — com a asserção da fonte a chegar ao consumidor («não afirma execução; RACI completo»). A banda `decision_involvement_unavailable` da b.43 deixa de disparar e sai limpa. MEDIDO: as 7 âncoras ratificadas do ABS-005 estão TODAS servidas (12 envolvimentos no cap. 01), mas o índice não regista a closure — a espécie fecha a CONDIÇÃO, o registo é do Archon. **GR-04 subiu a SERVIDO: o painel do Eixo I fecha em 6·0·0.** Selecção intocada; ouro H byte-idêntico.
+reasoning: v0.20.0-beta.45 (beta line, npm `beta`) — re-pin para kg-v1-manual-v1.9.0-aligned-2026-09-08-v2.8 (contrato v1.23, Manual v1.9.0, ontologia v2.8): as 20 tabelas do Author entram e o cap. 14 passa de 108 para 174 atribuições, de 102 falsas em govern para 24 verdadeiras, e entra em plan/test/operate. **Uma ausência FECHADA deixa de ser servida como dívida aberta**: a banda passa a ler `status` e não só `absence_type` — ABS-005 e ABS-012 saem `closed`, com evidência e quem registou. O `phases_unassigned` sobe 195 → 219 e serve-se como VISIBILIDADE, com os `unmapped_phase_labels` verbatim (Execução ×6) e a razão de não se forçar fase. Ouro H byte-idêntico nos dois braços apesar de 66 atribuições mudarem de fase por desenho.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.45 — 2026-09-08
+
+**As tabelas do Author entram, e as ausências fechadas deixam de aparecer abertas.** Manual
+**v1.9.0** × ontologia **v2.8**. Linha estável **intocada**. Nada promovido.
+
+**Pino:** `kg-v1-manual-v1.9.0-aligned-2026-09-08-v2.8` (`347f5cfd305e`, contrato **v1.23**).
+
+### Uma ausência FECHADA não é dívida em aberto
+
+O defeito era meu e estava à vista assim que a v2.8 chegou: a banda de ausências lia
+`absence_type` e **ignorava o `status`**. ABS-005 e ABS-012 chegam `closed` e saíam como `gap`
+com `is_debt: true` — um consumidor que agisse sobre isso ia trabalhar sobre uma dívida já paga.
+
+A banda passa a servir `status` (`open`/`closed`), `closed_on`, `closed_evidence` e
+`closed_registered_by`; `is_debt` deixa de ser verdadeiro para uma fechada. A espécie mantém-se
+— **foi** um `gap` — e o guia ensina a agir sobre `is_debt`, não sobre `absence_type` sozinho.
+
+| | espécie | status | dívida |
+|---|---|---|---|
+| ABS-005 · ABS-012 | `gap` | **closed** | não |
+| ABS-002 | `gap` | open | **sim** |
+| ABS-001 | `out_of_scope` | open | não (é fronteira) |
+
+A `closure_rule` da v2.8 vai no guia, verbatim: *«fechar uma ausência é REGISTO NO ÍNDICE (…)
+nunca declaração da superfície»*.
+
+### O cap. 14 deixa de estar todo em `govern`
+
+| cap. 14 | antes | agora |
+|---|---|---|
+| atribuições | 108 | **174** |
+| `govern` | **102** (política de recurso) | **24** |
+| `plan` · `test` · `operate` | 0 · 0 · 6 | **36 · 45 · 39** |
+| sem fase | 0 | **30** |
+
+No roteiro, o capítulo passa de **1 fase para 4** (`plan`, `test`, `operate`, `govern`);
+`bundle_ids` de `plan` 8→9 e `test` 7→8. Cobertura mantém-se **15/15**, omissão **0**.
+
+### `phases_unassigned` 195 → 219: visibilidade, não dívida
+
+O cap. 14 tinha zero sem-fase porque **não tinha tabelas nenhumas** — uma política de recurso
+absorvia o capítulo inteiro. Trocaram-se **102 fases falsas por 144 verdadeiras e 30 honestamente
+sem fase**.
+
+Corrigi a **redacção**, não o número. A banda ganhou `reading`: *«um número ALTO aqui é
+VISIBILIDADE, não dívida (…) um capítulo com zero pode significar que nenhuma linha sua foi
+tabelada e uma política de recurso o absorveu inteiro — a segunda hipótese é pior e não se vê»*.
+E ganhou os **`unmapped_phase_labels` verbatim** (14 rótulos; **`Execução` ×6**) com a razão:
+*«forçá-los a uma fase seria afirmar o que a fonte não diz»*.
+
+### Verificação
+
+Suite **816/816** · aceitação **177, 0 FAIL, gate PASS** (TC-F-70 novo; TC-F-67 **deixou de fixar**
+o par `gestao-executiva × plan`, que a v1.9.0 preencheu — passa a derivar um par ainda vazio) ·
+**15 invariantes verdes** · **ouro do Eixo H byte-idêntico nos dois braços**, apesar de 66
+atribuições mudarem de fase por desenho: zero registos perdidos, zero ids alterados, zero ordem
+mexida · orçamentos **14/14** · matriz **0 FALTA, 0 não exercitáveis**. O re-pin moveu 139 linhas
+de ouro, **todas de proveniência** (`kg` + `manual_commit_sha`, que muda com o Manual).
 
 ## 0.20.0-beta.44 — 2026-09-08
 

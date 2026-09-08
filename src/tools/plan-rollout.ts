@@ -67,6 +67,8 @@ interface PhasesEnvelope {
   phases_unassigned?:
     | { assignment_count?: number; chapter_count?: number; chapters?: string[]; note?: string }
     | undefined;
+  /** 0.20.0-beta.45 (v2.8) — os RÓTULOS autorados que não mapeiam para uma fase. */
+  unmapped_phase_labels?: Record<string, number> | undefined;
   bundle_ids_derivation?: string | undefined;
 }
 let envelopeCache: PhasesEnvelope = {};
@@ -84,7 +86,8 @@ function loadPhases(): PhaseRecord[] {
     envelopeCache = {
       ...(env["floor_bundle"] ? { floor_bundle: env["floor_bundle"] as PhasesEnvelope["floor_bundle"] } : {}),
       ...(env["phases_unassigned"] ? { phases_unassigned: env["phases_unassigned"] as PhasesEnvelope["phases_unassigned"] } : {}),
-      ...(typeof env["bundle_ids_derivation"] === "string" ? { bundle_ids_derivation: env["bundle_ids_derivation"] } : {})
+      ...(typeof env["bundle_ids_derivation"] === "string" ? { bundle_ids_derivation: env["bundle_ids_derivation"] } : {}),
+      ...(env["unmapped_phase_labels"] ? { unmapped_phase_labels: env["unmapped_phase_labels"] as Record<string, number> } : {})
     };
   }
   const items = Array.isArray(parsed) ? parsed : Array.isArray(parsed.items) ? parsed.items : [];
@@ -199,17 +202,48 @@ export function handlePlanRollout(args: Record<string, unknown>): ProtocolEnvelo
   };
 
   const unassigned = envelopeCache.phases_unassigned;
+  /*
+   * 0.20.0-beta.45 (Manual v1.9.0) — SUBIR AQUI É VISIBILIDADE, NÃO DÍVIDA.
+   *
+   * O número passou de 195 para 219 e a leitura fácil — «a dívida subiu» — é a errada. O
+   * cap. 14 tinha ZERO sem fase porque não tinha tabelas nenhumas: uma política de recurso
+   * absorvia o capítulo inteiro em `govern`. Com as linhas autoradas, 102 fases falsas por
+   * política deram lugar a 144 verdadeiras e 30 honestamente sem fase. **O que aumentou foi
+   * o que se vê, não o que falta.**
+   *
+   * E vê-se PORQUÊ: a fonte publica os RÓTULOS que o autor escreveu e que não assentam numa
+   * fase — «Execução», «sempre que há desvio», «release relevante»… Forçá-los a uma fase
+   * seria afirmar o que a fonte não diz. `unassigned` é o valor ratificado para resíduo
+   * transversal genuíno, e o rótulo vem à vista para o consumidor julgar.
+   */
   const assignments_without_phase =
     unassigned !== undefined && (unassigned.assignment_count ?? 0) > 0
       ? {
           assignment_count: unassigned.assignment_count ?? 0,
           chapter_count: unassigned.chapter_count ?? (unassigned.chapters ?? []).length,
           chapters: unassigned.chapters ?? [],
+          ...(envelopeCache.unmapped_phase_labels !== undefined
+            ? {
+                unmapped_phase_labels: {
+                  note:
+                    "Os RÓTULOS que o autor escreveu e que não assentam numa fase do ciclo. Vêm verbatim: " +
+                    "vários misturam momentos («release relevante, evento crítico, ciclo trimestral») e outros " +
+                    "são transversais («sempre que há desvio»). **Forçá-los a uma fase seria afirmar o que a " +
+                    "fonte não diz** — `unassigned` é o valor ratificado para este resíduo.",
+                  values: envelopeCache.unmapped_phase_labels
+                }
+              }
+            : {}),
           ...(unassigned.note !== undefined ? { source_declares: unassigned.note } : {}),
+          reading:
+            "**Um número ALTO aqui é VISIBILIDADE, não dívida.** Estas atribuições existem, estão nos " +
+            "capítulos que o roteiro cobre, e não se ancoram a um momento do ciclo — porque a fonte não lhes " +
+            "atribui um. Um capítulo com zero aqui pode significar que tem todas as fases autoradas, ou que " +
+            "nenhuma linha sua foi tabelada e uma política de recurso o absorveu inteiro. **A segunda hipótese " +
+            "é pior e não se vê.** Não leias a subida deste número como agravamento: lê-a como mais Manual à vista.",
           note:
             "Atribuições autoradas SEM fase na fonte. Não foram absorvidas numa fase real nem filtradas em " +
-            "silêncio: o roteiro é por fase, e estas não têm uma. Estão nos capítulos acima — que o roteiro " +
-            "cobre — mas não se ancoram a nenhum momento do ciclo."
+            "silêncio: o roteiro é por fase, e estas não têm uma."
         }
       : undefined;
 

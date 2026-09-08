@@ -1982,9 +1982,20 @@ export const scenarios = [
       if (us === 0) return fail("resolveu o alias e continua vazio");
       if (dd.empty_role_view) return fail("declara vazio tendo resultados");
       // (C1b) guide: combinação legítima sem resultados — banda que isola QUEM esvaziou
-      const g = await c.tool("get_guide_by_role", { risk_level: "L2", role: "gestao-executiva", phase: "plan" });
-      if (!g.ok) return fail(g.error);
-      const e = g.data.empty_result;
+      /*
+       * 0.20.0-beta.45: o par `gestao-executiva × plan` DEIXOU de estar vazio — o Manual v1.9.0
+       * tabelou o cap. 14 e pôs governação a acontecer ao planear. A fixture melhorou, e por
+       * isso o cenário deixa de a fixar: procura um par LEGÍTIMO ainda vazio (cada lado com
+       * resultados, o cruzamento sem nenhum). Se um dia nenhum existir, diz-se — é resultado,
+       * não falha.
+       */
+      let g = null, e = null;
+      for (const [role, phase] of [["gestao-executiva", "design"], ["gestao-executiva", "test"], ["product-owner", "develop"], ["auditores", "build"]]) {
+        const r = await c.tool("get_guide_by_role", { risk_level: "L2", role, phase });
+        if (!r.ok) return fail(r.error);
+        if ((r.data.assignments ?? []).length === 0) { g = r; e = r.data.empty_result; break; }
+      }
+      if (g === null) return ok("nenhum par papel×fase legítimo está vazio neste pino — a banda não foi exercitada (achado, não falha)");
       if (!e) return fail("combinação legítima sem resultados continua a sair sem banda");
       if (e.emptied_by !== "combination") return fail(`isolou mal a causa: ${e.emptied_by}`);
       if (!(e.assignments_for_role_alone > 0 && e.assignments_for_phase_alone > 0))
@@ -1992,8 +2003,8 @@ export const scenarios = [
       if (!(g.data.next ?? []).some((n) => n.tool === "get_guide_by_role" && !/phase=/.test(String(n.with ?? ""))))
         return fail("o `next` não oferece o caminho de recuperação que a banda nomeia");
       // e o mesmo corte SEM a fase não pode trazer a banda
-      const g2 = await c.tool("get_guide_by_role", { risk_level: "L2", role: "gestao-executiva" });
-      if (g2.data.empty_result) return fail("declara vazio num corte que tem 14 atribuições");
+      const g2 = await c.tool("get_guide_by_role", { risk_level: "L2", role: String(g.data.canonicalRole) });
+      if (g2.data.empty_result) return fail(`declara vazio num corte que tem ${(g2.data.assignments ?? []).length} atribuições`);
       // (C3) uma ausência não é lacuna E fronteira ao mesmo tempo
       const mp = await c.tool("get_sbd_toe_macro_processes", {});
       const t = (mp.data.data ?? mp.data).declared_limits?.sdlc_phase_traversal;
@@ -2078,6 +2089,39 @@ export const scenarios = [
       if (semDi && semDi.total === 0 && !/ausência de estrutura publicada/.test(semDi.note ?? ""))
         return fail("um papel sem envolvimentos não distingue «sem responsabilidade» de «sem estrutura de onde derivar»");
       return ok(`decisão servida ao lado da execução: ${di.by_kind.approves} aprova / ${di.by_kind.consulted} consultado em ${di.chapters.length} capítulos, ${di.values.length}/${di.values.length} com âncora verbatim; asserção «${di.asserts.does_not_assert}»; ${di.published_total} publicados no total; execução intocada (${g.data.meta.assignmentCount} atribuições)`); } },
+
+  { id: "TC-F-70", axis: "F", title: "0.20.0-beta.45 (Manual v1.9.0 × v2.8): ausência FECHADA não sai como dívida; sem-fase é visibilidade e traz o rótulo", tool: "get_guide_by_role",
+    run: async (c) => {
+      // (1) uma ausência FECHADA no índice não pode ser servida como dívida em aberto
+      const mp = await c.tool("get_sbd_toe_macro_processes", {});
+      if (!mp.ok) return fail(mp.error);
+      const fronteira = (mp.data.data ?? mp.data).declared_limits?.sdlc_phase_traversal;
+      if (fronteira?.status !== "open") return fail("ABS-001 devia continuar ABERTA (é fronteira, não fecha)");
+      if (fronteira.is_boundary !== true) return fail("a fronteira deixou de ser fronteira");
+      // a fechada: chega por qualquer superfície que a sirva; usamos a do papel referenciado
+      const rh = await c.tool("get_guide_by_role", { risk_level: "L2", role: "RH/PeopleOps" });
+      const refAbs = rh.data.referenced_role?.absence;
+      if (refAbs && refAbs.status === undefined) return fail("banda de ausência sem `status` — fechada e aberta ficam iguais");
+      // (2) o vazio por combinação continua a distinguir dívida de fecho
+      const g = await c.tool("get_guide_by_role", { risk_level: "L2", role: "gestao-executiva", phase: "design" });
+      if (!g.ok) return fail(g.error);
+      if ((g.data.assignments ?? []).length === 0 && !g.data.empty_result) return fail("vazio por combinação sem banda");
+      // (3) as sem-fase trazem o RÓTULO autorado e leem-se como visibilidade
+      const roll = await c.tool("plan_sbd_toe_rollout", {});
+      if (!roll.ok) return fail(roll.error);
+      const rd = roll.data.data ?? roll.data;
+      const swp = rd.assignments_without_phase;
+      if (!swp) return fail("as atribuições sem fase deixaram de ser declaradas");
+      if (!swp.unmapped_phase_labels?.values) return fail("os rótulos que não mapeiam não são servidos");
+      if (!(swp.unmapped_phase_labels.values["Execução"] > 0)) return fail("o rótulo `Execução` do cap. 14 não é declarado");
+      if (!/VISIBILIDADE|visibilidade/.test(swp.reading ?? "")) return fail("a redacção deixa ler a subida como dívida");
+      if (!/afirmar o que a fonte não diz/.test(swp.unmapped_phase_labels.note ?? "")) return fail("não diz porque não se força uma fase");
+      // (4) o cap. 14 entrou em mais fases — e o roteiro continua a cobrir os 15
+      const fases14 = (rd.phases ?? []).filter((p) => (p.chapters ?? []).some((x) => x.startsWith("14-"))).map((p) => p.phase_id);
+      if (fases14.length < 2) return fail(`o cap. 14 continua concentrado em ${fases14.length} fase(s): ${fases14.join(",")}`);
+      if (rd.totals?.chapters_covered_including_floor !== rd.totals?.chapters_in_manual) return fail("o roteiro deixou de cobrir os 15");
+      if (rd.chapters_not_in_roadmap?.count !== 0) return fail("voltou a haver capítulos fora");
+      return ok(`ABS-001 aberta como fronteira e as fechadas com \`status\`; cap. 14 em ${fases14.length} fases (${fases14.join(", ")}); ${swp.assignment_count} sem fase com ${Object.keys(swp.unmapped_phase_labels.values).length} rótulos declarados (Execução ×${swp.unmapped_phase_labels.values["Execução"]}), lidas como visibilidade; cobertura ${rd.totals.chapters_covered_including_floor}/${rd.totals.chapters_in_manual}`); } },
 
   { id: "TC-G-01", axis: "G", title: "trace válido: determinismo + paginação G1 (3 lentes, total, cursor, sem IRIs)", tool: "trace_sbd_toe_graph",
     run: async (c) => {

@@ -28,6 +28,11 @@ export interface DeclaredAbsence {
   absence_id: string;
   statement: string;
   absence_type: AbsenceType;
+  /** 0.20.0-beta.45 (v2.8) — `closed` quando o índice registou o fecho. */
+  status?: string;
+  closed_on?: string;
+  closed_evidence?: string;
+  closed_registered_by?: string;
   debt_of?: string;
   owner?: string;
   closes_in?: string;
@@ -40,6 +45,7 @@ export interface DeclaredAbsence {
 
 export interface AbsenceModel {
   criterion?: string;
+  closure_rule?: string;
   values?: Record<string, string>;
   debt_of?: string[];
   note?: string;
@@ -92,8 +98,18 @@ export function absenceById(id: string): DeclaredAbsence | undefined {
  */
 export interface AbsenceBand {
   absence_type: AbsenceType | "unindexed";
+  /**
+   * 0.20.0-beta.45 — o ESTADO, ao lado da espécie. Uma ausência FECHADA continua a ter
+   * espécie (foi um `gap`), mas já não é dívida em aberto — e servi-la como se fosse era o
+   * que esta banda fazia até aqui: lia o `absence_type` e ignorava o `status`. Um consumidor
+   * que agisse sobre isso ia trabalhar sobre uma dívida já paga.
+   */
+  status: "open" | "closed";
   is_debt: boolean;
   is_boundary: boolean;
+  closed_on?: string;
+  closed_evidence?: string;
+  closed_registered_by?: string;
   absence_id?: string;
   statement?: string;
   debt_of?: string;
@@ -171,6 +187,7 @@ export function absenceBand(
     return {
       ...superseded,
       absence_type: "unindexed",
+      status: "open",
       is_debt: false,
       is_boundary: false,
       what_it_means:
@@ -179,11 +196,22 @@ export function absenceBand(
         "Não sabes ainda se é dívida ou decisão.",
       note: context
     };
+  /*
+   * FECHADA: a espécie mantém-se (foi um `gap`), mas deixa de ser dívida em aberto. O
+   * `closed_evidence` e o `closed_registered_by` vêm junto porque fechar é REGISTO com prova
+   * verificável e com quem verificou — é a `closure_rule` da v2.8, que generaliza a regra da
+   * b.40 («o registo é do índice, nunca da superfície») ao fecho.
+   */
+  const closed = a.status === "closed";
   return {
     ...superseded,
     absence_type: a.absence_type,
-    is_debt: a.absence_type === "gap" || a.absence_type === "deferred",
+    status: closed ? "closed" : "open",
+    is_debt: !closed && (a.absence_type === "gap" || a.absence_type === "deferred"),
     is_boundary: a.absence_type === "out_of_scope",
+    ...(a.closed_on !== undefined ? { closed_on: a.closed_on } : {}),
+    ...(a.closed_evidence !== undefined ? { closed_evidence: a.closed_evidence } : {}),
+    ...(a.closed_registered_by !== undefined ? { closed_registered_by: a.closed_registered_by } : {}),
     absence_id: a.absence_id,
     statement: a.statement,
     ...(a.debt_of !== undefined ? { debt_of: a.debt_of } : {}),
@@ -192,7 +220,10 @@ export function absenceBand(
     ...(a.trigger !== undefined ? { trigger: a.trigger } : {}),
     ...(a.decided_by !== undefined ? { decided_by: a.decided_by } : {}),
     ...(a.decided_on !== undefined ? { decided_on: a.decided_on } : {}),
-    what_it_means: MEANING[a.absence_type],
+    what_it_means: closed
+      ? `FECHADA em ${a.closed_on ?? "data não registada"} — foi \`${a.absence_type}\` e já não é. ` +
+        "Não ajas sobre ela como dívida em aberto; a evidência do fecho vem em `closed_evidence`."
+      : MEANING[a.absence_type],
     note: context
   };
 }
