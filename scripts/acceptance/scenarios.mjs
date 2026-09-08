@@ -1648,8 +1648,8 @@ export const scenarios = [
         return fail("voltou a servir uma contagem de relação como total/obrigatoriedade");
       if (art.content_type !== "derived") return fail("a banda de artefactos não se declara derivada");
       if (!(art.bases?.evidence_pattern?.distinct_artifacts > 0)) return fail("sem o conjunto suportado por padrões de evidência");
-      if (!(art.bases?.chapter_relation?.relation_edges > 0)) return fail("sem a relação capítulo↔artefacto");
-      if (!/never for totals/i.test(art.bases?.chapter_relation?.source_declares ?? ""))
+      if (!(art.bases?.cited_by?.relation_edges > 0)) return fail("sem a relação capítulo↔artefacto");
+      if (!/never for totals/i.test(art.bases?.cited_by?.source_declares ?? ""))
         return fail("a declaração da fonte não é servida VERBATIM");
       if (!art.declared_limits?.no_mandatory_count || !art.declared_limits?.relation_broader_than_provenance)
         return fail("os limites recebidos do conteúdo não são declarados");
@@ -1840,7 +1840,7 @@ export const scenarios = [
       if (!art) return fail("a vista IMPL deixou de servir artefactos");
       if ("total" in art || "mandatory" in art) return fail("relação servida como total/obrigatoriedade — a afirmação falsa voltou");
       if (/PRODUZIR/.test(JSON.stringify(art.note ?? ""))) return fail("continua a derivar obrigação de produção de uma aresta");
-      const ep = art.bases?.evidence_pattern, rel = art.bases?.chapter_relation;
+      const ep = art.bases?.evidence_pattern, rel = art.bases?.cited_by;
       if (!(ep?.distinct_artifacts > 0) || !(rel?.relation_edges > 0)) return fail("as duas bases não vêm ambas declaradas");
       if (!/never for totals/i.test(rel?.source_declares ?? "")) return fail("a proibição da fonte não é servida verbatim");
       if (!art.declared_limits?.no_mandatory_count) return fail("o `mandatory` 45/45 não é declarado como recebido");
@@ -1931,7 +1931,7 @@ export const scenarios = [
       if ("own" in JSON.parse(JSON.stringify(art.values[0] ?? {}))) return fail("o `own` voltou ao vocabulário servido");
       if (!/não afirma|does_not/.test(JSON.stringify(pob.asserts ?? {}))) return fail("a base vem sem a asserção da fonte");
       if (!/posse/.test(String(pob.asserts?.does_not_assert ?? ""))) return fail("a asserção negativa não chega ao consumidor");
-      if (!(pob.artifacts < art.bases.chapter_relation.relation_edges))
+      if (!(pob.artifacts < art.bases.cited_by.relation_edges))
         return fail("produtores e citadores continuam a ser o mesmo conjunto");
       const produced = new Set(art.values.filter((v) => (v.bases ?? []).includes("produced_or_operated_by")).map((v) => v.name ?? v.artifact_type_id));
       for (const alheio of ["Sbom", "Container Image", "Sast Report"])
@@ -1962,7 +1962,7 @@ export const scenarios = [
       if (!boundary || boundary.absence_type !== "out_of_scope") return fail("nenhuma fronteira declarada onde há uma decisão do lead");
       if (!bands.find((b) => b.absence_type === "gap")?.debt_of) return fail("dívida sem dono declarado");
       if (!bands.find((b) => b.absence_type === "deferred")?.trigger) return fail("`deferred` sem gatilho — sem gatilho seria gap");
-      return ok(`roteiro cobre ${t.chapters_covered_including_floor}/${t.chapters_in_manual} (${rd.chapter_coverage.traversed} atravessados + piso), omissão a 0, ${rd.assignments_without_phase.assignment_count} atribuições sem fase declaradas; cap.01 produz/opera ${pob.artifacts} e cita ${art.bases.chapter_relation.relation_edges}; ausências tipadas ${[...kinds].join("/")} com o tipo vindo do índice`); } },
+      return ok(`roteiro cobre ${t.chapters_covered_including_floor}/${t.chapters_in_manual} (${rd.chapter_coverage.traversed} atravessados + piso), omissão a 0, ${rd.assignments_without_phase.assignment_count} atribuições sem fase declaradas; cap.01 produz/opera ${pob.artifacts} e cita ${art.bases.cited_by.relation_edges}; ausências tipadas ${[...kinds].join("/")} com o tipo vindo do índice`); } },
 
   { id: "TC-F-67", axis: "F", title: "0.20.0-beta.41: vazio por COMBINAÇÃO declarado, vocabulário de papel reconciliado, e uma só espécie por ausência", tool: "get_guide_by_role",
     run: async (c) => {
@@ -2122,6 +2122,60 @@ export const scenarios = [
       if (rd.totals?.chapters_covered_including_floor !== rd.totals?.chapters_in_manual) return fail("o roteiro deixou de cobrir os 15");
       if (rd.chapters_not_in_roadmap?.count !== 0) return fail("voltou a haver capítulos fora");
       return ok(`ABS-001 aberta como fronteira e as fechadas com \`status\`; cap. 14 em ${fases14.length} fases (${fases14.join(", ")}); ${swp.assignment_count} sem fase com ${Object.keys(swp.unmapped_phase_labels.values).length} rótulos declarados (Execução ×${swp.unmapped_phase_labels.values["Execução"]}), lidas como visibilidade; cobertura ${rd.totals.chapters_covered_including_floor}/${rd.totals.chapters_in_manual}`); } },
+
+  { id: "TC-F-71", axis: "F", title: "0.20.0-beta.46 (auditoria 3): verbo não se herda da base vizinha, o nível não filtra e diz-se, e o estatuto é de CONSULTA", tool: "get_sbd_toe_chapter_capability",
+    run: async (c) => {
+      // (G1) cada base traz a SUA asserção; a citação não resolve para «produz ou opera»
+      const cap = await c.tool("get_sbd_toe_chapter_capability", { chapter: "01-classificacao-aplicacoes" });
+      if (!cap.ok) return fail(cap.error);
+      const b = cap.data.artifacts?.bases;
+      if (!b?.cited_by) return fail("a base da citação desapareceu");
+      if (b.cited_by.asserts?.verb === b.produced_or_operated_by?.asserts?.verb)
+        return fail("a citação voltou a publicar o verbo da produção");
+      if (b.cited_by.asserts?.published !== false) return fail("a citação publica asserção que a fonte não tem");
+      const soCitados = (cap.data.artifacts.values ?? []).filter((v) => (v.bases ?? []).length === 1 && v.bases[0] === "cited_by");
+      if (soCitados.length === 0) return fail("nenhum artefacto apenas citado — a fixture mudou");
+      for (const nome of ["Sbom", "Container Image", "Sca Report", "Iac Plan"])
+        if (!soCitados.some((v) => v.name === nome)) return fail(`${nome} devia estar entre os apenas citados`);
+      // (G2) o nível NÃO filtra os envolvimentos — e a resposta di-lo, com os níveis à vista
+      const g = await c.tool("get_guide_by_role", { risk_level: "L2", role: "gestao-executiva" });
+      if (!g.ok) return fail(g.error);
+      const lf = g.data.decision_involvements?.level_filtering;
+      if (!lf) return fail("a banda de decisão não declara o efeito do nível");
+      if (lf.filters_this_band !== false) return fail("declara que filtra — verifica se passou a filtrar");
+      if (!(lf.at_requested_level < g.data.decision_involvements.total))
+        return fail("a fixture mudou: ao nível pedido já não é menos do que o total");
+      if (!(lf.without_levels?.published_total > 0)) return fail("os que não têm níveis não são declarados");
+      if (!/não é «aplica-se a todos»|não é .aplica-se a todos./.test(lf.without_levels.note ?? ""))
+        return fail("ausência de níveis pode ser lida como «aplica-se a todos»");
+      if (!(g.data.decision_involvements.values ?? []).every((v) => v.applicable_levels))
+        return fail("os itens não trazem `applicable_levels` à vista");
+      // (G3) o estatuto pragmático nas primeiras palavras — o servidor SERVE, quem age é quem chama
+      const schemas = new Map((c.tools ?? []).map((t) => [t.name, String(t.description ?? "")]));
+      const esperado = {
+        plan_sbd_toe_rollout: /^CONSULTA/,
+        plan_sbd_toe_repo_governance: /^PROJEC/,
+        prepare_sbd_toe_codegen_context: /NÃO AGE/,
+        generate_sbd_toe_skill: /SEM VALIDAR O TEU AMBIENTE/,
+        assess_sbd_toe_implementation: /a leitura é tua/,
+        answer_sbd_toe_manual: /não responde/
+      };
+      for (const [tool, re] of Object.entries(esperado)) {
+        const d = schemas.get(tool);
+        if (d === undefined) return fail(`${tool} não está no inventário vivo`);
+        if (!re.test(d.split(/\s+/).slice(0, 14).join(" "))) return fail(`${tool}: estatuto pragmático ausente das primeiras palavras`);
+      }
+      // (G4) as três da via lenta
+      const tg = await c.tool("trace_sbd_toe_graph", { lens: "slice_implementation" });
+      if (!tg.data.provenance?.kg || !tg.data.provenance?.server) return fail("trace_graph continua sem substrato identificável");
+      const rg = await c.tool("plan_sbd_toe_repo_governance", { riskLevel: "L2" });
+      if (!/degenerado|Filtra pouco/.test((rg.data.data ?? rg.data).risk_level_effect?.note ?? ""))
+        return fail("o repo_governance continua a vender o riskLevel como filtro forte");
+      const rs = await c.tool("map_sbd_toe_review_scope", { changedFiles: ["src/auth/login.ts"], riskLevel: "L2" });
+      const eb = (rs.data.data ?? rs.data).evidence_basis;
+      if (eb?.cited !== false || eb?.authored_by !== "mcp_serving") return fail("a prosa do servidor não é distinguida de citação");
+      if (!/SOBREPOR|sobrepõe/i.test(eb.path_overlap ?? "")) return fail("a sobreposição de paths não é declarada");
+      return ok(`citação sem verbo herdado (${soCitados.length} apenas citados, incl. SBOM e Container Image); nível declarado como NÃO-filtro (${lf.at_requested_level} de ${g.data.decision_involvements.total} ao nível, ${lf.without_levels.published_total} sem níveis no total); 6 estatutos pragmáticos nas primeiras palavras; trace com kg+server; riskLevel do repo_gov declarado; evidência marcada como redacção do servidor`); } },
 
   { id: "TC-G-01", axis: "G", title: "trace válido: determinismo + paginação G1 (3 lentes, total, cursor, sem IRIs)", tool: "trace_sbd_toe_graph",
     run: async (c) => {

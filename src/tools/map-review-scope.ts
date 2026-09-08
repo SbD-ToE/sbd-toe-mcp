@@ -297,6 +297,8 @@ interface PathMappingEntry {
 interface MapReviewScopeResult {
   /** 0.20.0-beta.42 — proveniência da projecção (célula `provenance` da matriz). */
   provenance?: Record<string, unknown>;
+  /** 0.20.0-beta.46 — a evidência é redacção do servidor, e a sobreposição de paths declara-se. */
+  evidence_basis?: Record<string, unknown>;
   bundlesToReview: BundleToReview[];
   pathMapping: PathMappingEntry[];
   nextSteps: string[];
@@ -514,6 +516,26 @@ export function handleMapSbdToeReviewScope(
         "declarado em `pathMapping`, para que se veja porque é que cada capítulo entrou."
     ),
     bundlesToReview,
+    /*
+     * 0.20.0-beta.46 (G4) — o `expectedEvidence` é PROSA DO SERVIDOR, não citação do Manual.
+     * Servi-la ao lado de conteúdo citável, sem a distinguir, convida a lê-la como se o
+     * Manual a tivesse escrito. E os padrões de path SOBREPÕEM-SE: um ficheiro pode entrar
+     * por mais do que um, com conjuntos diferentes — o `pathMapping` mostra por onde entrou,
+     * e a reconciliação é de quem lê.
+     */
+    evidence_basis: {
+      authored_by: "mcp_serving",
+      cited: false,
+      note:
+        "**`expectedEvidence` é redacção DESTE SERVIDOR**, não texto citável do Manual: é uma pista de " +
+        "revisão por capítulo, não uma exigência publicada. Para o que o Manual EXIGE, usa " +
+        "`select_sbd_toe_requirements` ou `get_sbd_toe_chapter_capability` — e não cites estas linhas " +
+        "como se fossem dele.",
+      path_overlap:
+        "Os padrões de path podem SOBREPOR-SE: o mesmo ficheiro entra por mais do que um e traz conjuntos " +
+        "diferentes. O `pathMapping` diz por que padrão cada capítulo entrou; o servidor não reconcilia " +
+        "nem escolhe entre eles."
+    },
     pathMapping,
     nextSteps,
     next: reviewScopeAffordances(riskLevel)

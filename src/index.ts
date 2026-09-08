@@ -744,7 +744,9 @@ class McpRuntime {
           name: "answer_sbd_toe_manual",
           title: "Answer SbD-ToE Manual",
           description:
-            "Retrieves SbD-ToE manual context and requests the final answer from the client's model via MCP sampling. " +
+            "SERVE CONTEXTO PARA O TEU MODELO RESPONDER — não responde: a resposta é do modelo do cliente, via " +
+            "sampling, e o juízo é de quem pergunta. Recupera contexto do Manual e pede a resposta final ao " +
+            "modelo do cliente via MCP sampling. " +
             "Requires sampling support from the MCP client. " +
             "Without sampling, falls back to formatted retrieval output (same as search_sbd_toe_manual). " +
             "Prefer search_sbd_toe_manual for clients without sampling support.",
@@ -864,7 +866,8 @@ class McpRuntime {
           name: "plan_sbd_toe_repo_governance",
           title: "List SbD-ToE Manual Artefacts",
           description:
-            "Returns the list of artefacts/documents identified in the SbD-ToE manual, " +
+            "PROJECÇÃO DOS ARTEFACTOS PUBLICADOS — não governa o teu repositório: serve o que o Manual identifica, " +
+            "por capítulo, para tu decidires o que instalas. Lista de artefactos/documentos do SbD-ToE, " +
             "grouped by chapter, with risk level applicability. " +
             "Optionally filter by riskLevel (L1/L2/L3). " +
             "All data comes from the manual indices — nothing is invented. " +
@@ -897,6 +900,8 @@ class McpRuntime {
           name: "generate_sbd_toe_skill",
           title: "Generate SbD-ToE Skill Content",
           description:
+            "GERA A PARTIR DO PUBLICADO, SEM VALIDAR O TEU AMBIENTE — não instala, não configura e não verifica " +
+            "nada do teu lado: devolve o texto para TU instalares onde souberes. " +
             "Use this tool when asked to 'create a skill for SbD-ToE', 'set up instructions', " +
             "'configure this client/agent to use SbD-ToE', 'configure yourself for role X', or 'integrate SbD-ToE'. " +
             "Without arguments returns the canonical skill content from sbd://toe/agent-guide. " +
@@ -1055,7 +1060,9 @@ class McpRuntime {
           name: "assess_sbd_toe_implementation",
           title: "Assess SbD-ToE Implementation",
           description:
-            "Progress / 'how implemented am I': compares submitted KPI values against the published per-level " +
+            "SERVE OS LIMIARES PUBLICADOS APLICADOS AOS VALORES QUE DECLARASTE — a leitura é tua: não mede, não " +
+            "verifica os teus valores e não emite juízo de suficiência. Aritmética sobre dado publicado. " +
+            "Progresso auto-declarado: compara os KPI submetidos com os limiares publicados por nível " +
             "thresholds (metrics.json) → posture (below/at/above) + gaps per KPI. Stateless self-report — values " +
             "in, posture out, nothing stored; thresholds never invented; an applicable KPI with no value is " +
             "not_reported (never a pass). Use to answer 'am I compliant at L2 / where are my gaps?'.",
@@ -1088,7 +1095,8 @@ class McpRuntime {
           name: "plan_sbd_toe_rollout",
           title: "Plan SbD-ToE Rollout (MVP)",
           description:
-            "A phased rollout roadmap: the canonical lifecycle phases (phase-order) mapped to manual chapters. " +
+            "CONSULTA À SEQUÊNCIA PUBLICADA — não planeia por ti: serve a ordem das fases que o Manual publica, " +
+            "mapeada aos capítulos que cada uma atravessa. O roteiro é teu; isto é o que existe para o fazeres. " +
             "MVP — phase-ordered, the dependency DAG is deferred (declared, not faked). Grounded in the published " +
             "runtime; nothing invented. Use to answer 'in what order do we roll out SbD?'.",
           inputSchema: {
@@ -1624,7 +1632,8 @@ class McpRuntime {
           name: "prepare_sbd_toe_codegen_context",
           title: "Prepare SbD-ToE Grounded Codegen Context",
           description:
-            "Prepares deterministic, bite-sized grounded context for a downstream LLM to generate, " +
+            "MONTA CONTEXTO, NÃO AGE — não escreve, não altera e não valida o teu código: reúne o contexto " +
+            "determinístico e citável para TU gerares. Contexto grounded, em porções, para um LLM a jusante gerar, " +
             "review or plan tests for code. This tool DOES NOT generate code and DOES NOT edit files. " +
             "It runs a scope gate (rejecting vague or overly broad asks), an auditable semantic " +
             "activation step (explicit concerns, single-token lexicon, compound phrases such as " +

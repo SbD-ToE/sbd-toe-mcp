@@ -5,6 +5,7 @@
 
 import { query, type QueryPage } from "../serving/rdf/graph-store.js";
 import { iri, idFromIri, rel } from "../serving/rdf/projection.js";
+import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 
 export type GraphLens =
   | "slice_implementation"
@@ -74,6 +75,9 @@ export interface TraceGraphResult {
   pageSize: number;
   cursor: number | null;
   provenance: {
+    /** 0.20.0-beta.46 (G4) — era a única superfície sem substrato identificável. */
+    kg?: string;
+    server?: string;
     content_type: "derived";
     produced_by: string;
     source_data: string;
@@ -159,6 +163,10 @@ export function handleTraceGraph(args: Record<string, unknown>): TraceGraphResul
     pageSize: result.pageSize,
     cursor: result.cursor,
     provenance: {
+      /* 0.20.0-beta.46 (G4) — era a ÚNICA superfície sem `kg` nem `server`: um resultado sem
+         substrato identificável não é citável, e a identidade de versão vale para todas. */
+      kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
       content_type: "derived",
       produced_by: "sparql_graph_query",
       source_data: "data/publish/runtime/* (RDF projection)",

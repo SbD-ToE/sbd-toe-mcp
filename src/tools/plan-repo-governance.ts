@@ -17,6 +17,7 @@ import { paginate, type PageCoverage, type SizeEstimate } from "../serving/respo
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { planRepoGovernanceAffordances } from "../serving/affordances.js";
 import { structuralProvenance } from "../serving/protocol-envelope.js";
+import { assertionFor } from "../serving/traversal-assertions.js";
 
 const VALID_RISK_LEVELS = ["L1", "L2", "L3"] as const;
 type RiskLevel = (typeof VALID_RISK_LEVELS)[number];
@@ -73,6 +74,8 @@ export interface ArtefactsByChapter {
 export interface PlanRepoGovernanceResult {
   /** 0.20.0-beta.42 — proveniência da projecção (célula `provenance` da matriz). */
   provenance?: Record<string, unknown>;
+  /** 0.20.0-beta.46 — o que o `riskLevel` faz, e o que não faz. */
+  risk_level_effect?: Record<string, unknown>;
   riskLevel: string | null;
   totalArtefacts: number;
   /** 0.16.0 (v1.16 §1.23): totais com SEMÂNTICA declarada — distinct vs relações capítulo×artefacto. */
@@ -167,6 +170,24 @@ export function handlePlanRepoGovernance(args: Record<string, unknown>): PlanRep
         "publicados. É projecção: a relação capítulo↔artefacto não é posse nem obrigação de produção."
     ),
     riskLevel,
+    /*
+     * 0.20.0-beta.46 (G4) — o que o `riskLevel` FAZ e o que NÃO faz.
+     *
+     * Vendia-se como filtro sobre o `required_for_levels`, que a superfície irmã declara não
+     * discriminar quase nada (2 de 45 registos têm algum nível a `false`). O efeito é real mas
+     * global e pequeno; por capítulo, é quase sempre nulo. Dizê-lo é o mínimo: um consumidor
+     * que veja o argumento aceite conclui que a lista foi recortada para ele.
+     */
+    risk_level_effect: {
+      filters: true,
+      basis: "`required_for_levels` dos ArtifactRequirement publicados",
+      note:
+        "**Filtra pouco, e por desenho.** O campo que o suporta é quase degenerado — 2 de 45 registos " +
+        "declaram algum nível a `false`; os restantes são `{L1,L2,L3: true}`. Por isso a maioria dos " +
+        "capítulos devolve o MESMO conjunto em L1, L2 e L3. Não leias a presença do argumento como " +
+        "garantia de que a lista foi recortada ao teu nível.",
+      asserts: assertionFor("artifact_defining_chapters")
+    },
     totalArtefacts: artefacts.length,
     artefact_totals: loadArtefactTotals(),
     byChapter: page.items,

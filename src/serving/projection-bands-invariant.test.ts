@@ -169,7 +169,9 @@ describe("invariante beta.39 — autoridade e projecção parcial", () => {
     expect(Object.keys(art ?? {}), "voltou a servir `total`/`mandatory` sobre uma relação").not.toContain("total");
     expect(Object.keys(art ?? {})).not.toContain("mandatory");
     expect(art?.["content_type"], "a junção não se declara derivada").toBe("derived");
-    const rel = (art?.["bases"] as Record<string, Record<string, unknown>>)?.["chapter_relation"];
+    // 0.20.0-beta.46: a base da citação passou a chamar-se `cited_by` (G1) — o nome antigo
+    // trazia o verbo da vizinha e saiu com ele.
+    const rel = (art?.["bases"] as Record<string, Record<string, unknown>>)?.["cited_by"];
     expect(String(rel?.["source_declares"] ?? ""), "a proibição da própria fonte não é servida verbatim").toMatch(
       /never for totals/i
     );
@@ -246,6 +248,35 @@ describe("invariante beta.39 — autoridade e projecção parcial", () => {
       expect(band?.is_debt === true && band?.is_boundary === true, `${name}: dívida E fronteira ao mesmo tempo`).toBe(false);
     }
   }, 30000);
+
+  it("cada base traz a SUA asserção — nenhuma partilha a da vizinha", async () => {
+    /*
+     * 0.20.0-beta.46 (G1) — a classe do defeito, não a instância. O `chapter_relation`
+     * publicava a asserção da base vizinha e por isso resolvia `verb: produced_or_operated_by`
+     * para 31 artefactos quando só 7 o produzem. **Um bug num guarda-corpo é pior do que a
+     * ausência de guarda-corpo, porque é lido como garantia.**
+     *
+     * Guarda: duas bases da mesma banda nunca podem trazer o mesmo `verb` publicado. E uma
+     * base sem asserção na fonte tem de o DIZER (`published: false`), nunca herdar uma.
+     */
+    const cap = await tool("get_sbd_toe_chapter_capability", { chapter: "01-classificacao-aplicacoes" });
+    const bases = (cap["artifacts"] as { bases?: Record<string, { asserts?: { verb?: string; published?: boolean } }> } | undefined)?.bases;
+    expect(bases, "a vista de capacidade deixou de servir bases").toBeTruthy();
+    const withAssert = Object.entries(bases ?? {}).filter(([, v]) => v?.asserts !== undefined);
+    expect(withAssert.length, "nenhuma base traz asserção — a sonda ou a superfície partiram").toBeGreaterThan(1);
+    const published = withAssert.filter(([, v]) => v.asserts?.published === true).map(([k, v]) => [k, v.asserts?.verb] as const);
+    const verbs = published.map(([, verb]) => verb);
+    expect(
+      verbs.length,
+      `duas bases publicam o MESMO verbo: ${published.map(([k, v]) => `${k}=${v}`).join(", ")}`
+    ).toBe(new Set(verbs).size);
+    // e a base sem asserção na fonte declara-o em vez de herdar
+    for (const [name, v] of withAssert)
+      if (v.asserts?.published === false)
+        expect(String(v.asserts.verb), `${name}: sem asserção publicada mas com verbo aparente`).not.toMatch(
+          /^(produced_or_operated_by|required_as_evidence_by|define|atravessa|consome)$/
+        );
+  }, 20000);
 
   it("a recuperação declara o que da pergunta NÃO tem âncora no corpus", async () => {
     const r = await call("tools/call", {

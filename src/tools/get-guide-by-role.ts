@@ -515,8 +515,43 @@ export function handleGetGuideByRole(
     const scoped = role === undefined ? all : all.filter((d) => d.role_id === role);
     const byKind = scoped.reduce<Record<string, number>>((acc, d) => ({ ...acc, [d.kind]: (acc[d.kind] ?? 0) + 1 }), {});
     const chapters = [...new Set(scoped.map((d) => d.bundle_id))].sort();
+    /*
+     * 0.20.0-beta.46 (G2) — A BANDA NÃO FILTRA POR NÍVEL, E TEM DE O DIZER.
+     *
+     * `risk_level="L2"` devolvia 19 envolvimentos de gestão executiva — 1 aplicável a L2, 11
+     * declarados só-L3, 7 sem níveis nenhuns. A banda não filtrava e **não dizia que não
+     * filtrava**, e este servidor treina o consumidor a acreditar que, se algo não se aplica,
+     * é dito. **É a banda mais atraente da build — âncoras verbatim a ficheiro e linha — e era
+     * a que mentia por omissão.** O erro é invisível a quem confia.
+     *
+     * O produto é de CONSULTA: a saída não é filtrar em silêncio. A entrada fica completa e
+     * passa a ser LEGÍVEL — diz-se que o nível não filtra, dá-se a contagem por nível, e
+     * declaram-se os que não trazem níveis (104 dos 164 no pino). O juízo é de quem chama.
+     */
+    const lvl = (l: string) => scoped.filter((d) => d.applicable_levels?.[l] === true).length;
+    const semNiveis = scoped.filter((d) => Object.keys(d.applicable_levels ?? {}).length === 0).length;
+    const semNiveisGlobal = all.filter((d) => Object.keys(d.applicable_levels ?? {}).length === 0).length;
     return {
       asserts: assertionFor("role_holds_decision_involvement"),
+      level_filtering: {
+        risk_level_requested: full.risk_level,
+        filters_this_band: false,
+        note:
+          `**O \`risk_level\` NÃO filtra esta banda.** Recebeste os ${scoped.length} envolvimentos ` +
+          "publicados para este âmbito, não os aplicáveis ao teu nível — e isso é deliberado: esta é uma " +
+          "superfície de CONSULTA, e filtrar em silêncio esconderia o que existe. **Lê o " +
+          "`applicable_levels` de cada item antes de agir sobre ele.**",
+        at_requested_level: lvl(full.risk_level),
+        by_level: { L1: lvl("L1"), L2: lvl("L2"), L3: lvl("L3") },
+        without_levels: {
+          count: semNiveis,
+          published_total: semNiveisGlobal,
+          note:
+            `${semNiveis} destes não declaram níveis nenhuns (${semNiveisGlobal} dos ${all.length} publicados). ` +
+            "**Ausência de níveis não é «aplica-se a todos»** — é ausência de declaração na fonte, e não se " +
+            "infere um alcance que o Manual não dá."
+        }
+      },
       scope: role ?? "todos os papéis",
       total: scoped.length,
       by_kind: byKind,

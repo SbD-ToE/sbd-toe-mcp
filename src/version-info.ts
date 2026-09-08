@@ -115,3 +115,15 @@ export function servingServerVersion(): string {
   }
   return cachedPkgVersion;
 }
+
+/**
+ * 0.20.0-beta.46 (G5) — o SUBSTRATO servido, lido do pino e nunca escrito à mão.
+ *
+ * Três rondas de auditoria pediram identidade de versão, e a terceira foi a primeira em que
+ * piorou: uma nota de superfície dizia «ontologia v2.5 × Manual v1.8.1» com o pino em v1.9.0.
+ * O conteúdo não estava desactualizado — o RÓTULO é que mentia, e um consumidor não tem como
+ * o saber sem ir à fonte. Prosa que cita versões passa a derivá-las daqui.
+ */
+export function servedSubstrateVersion(): string {
+  return loadBundleProvenance()?.kg.substrate_version ?? "substrato não declarado no pino";
+}

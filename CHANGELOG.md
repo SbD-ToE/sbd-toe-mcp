@@ -3,11 +3,92 @@ ai_assisted: true
 model: Claude Opus 5
 date: 2026-09-08
 purpose: documentation
-reasoning: v0.20.0-beta.45 (beta line, npm `beta`) — re-pin para kg-v1-manual-v1.9.0-aligned-2026-09-08-v2.8 (contrato v1.23, Manual v1.9.0, ontologia v2.8): as 20 tabelas do Author entram e o cap. 14 passa de 108 para 174 atribuições, de 102 falsas em govern para 24 verdadeiras, e entra em plan/test/operate. **Uma ausência FECHADA deixa de ser servida como dívida aberta**: a banda passa a ler `status` e não só `absence_type` — ABS-005 e ABS-012 saem `closed`, com evidência e quem registou. O `phases_unassigned` sobe 195 → 219 e serve-se como VISIBILIDADE, com os `unmapped_phase_labels` verbatim (Execução ×6) e a razão de não se forçar fase. Ouro H byte-idêntico nos dois braços apesar de 66 atribuições mudarem de fase por desenho.
+reasoning: v0.20.0-beta.46 (beta line, npm `beta`) — os dois bloqueios da 3.ª auditoria (9/10) e o estatuto pragmático. G1: a base da CITAÇÃO publicava a asserção da vizinha e resolvia `produced_or_operated_by` para 31 artefactos quando só 7 o produzem — passa a `cited_by` com `published: false`, porque a ontologia não publica verbo para a citação, e uma invariante impede que duas bases partilhem asserção. G2: a banda de decisão não filtrava por nível e não o dizia — passa a declarar `filters_this_band: false`, a contagem por nível e os 104 de 164 sem níveis. G3: o estatuto pragmático nas primeiras palavras de seis descrições, com o critério do lead — o MCP nunca é o actor, o verbo pertence a quem chama. G4: trace_graph com kg+server, riskLevel do repo_governance declarado como filtro fraco, evidência do review_scope marcada como redacção do servidor. G5: teste de release que compara todas as versões servidas contra sbd://toe/version, e a nota dos macro-processos deixa de fixar versões.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.46 — 2026-09-08
+
+**O guarda-corpo que falhava, a banda que não filtrava, e o estatuto que faltava.** 3.ª auditoria
+externa: **9/10**. Pino **inalterado**; linha estável **intocada**.
+
+### G1 — a citação publicava o verbo da produção
+
+O defeito era meu e **pior do que o `own` que substituiu**: as duas bases passavam o mesmo
+argumento a `assertionFor`, e por isso a base da citação publicava `verb:
+produced_or_operated_by`. No cap. 01, **19 artefactos com base única** — SBOM, Container Image,
+SCA Report, IaC Plan — resolviam para *«produz ou opera»*. **31, não 7, pelo mecanismo construído
+para o impedir.**
+
+A ontologia publica asserção para **produção** e para **prova**, e **nenhuma para a citação**.
+Não inventei uma: a base passa a usar o campo que a fonte nomeia (`cited_chapter_ids`), chama-se
+`cited_by`, e declara pela via normal que **não há asserção publicada** (`published: false`). O
+verbo não se publica porque não existe; a relação continua servida porque existe.
+
+**A classe fica fechada por invariante:** duas bases nunca podem publicar o mesmo verbo, e uma
+base sem asserção na fonte tem de o dizer em vez de herdar.
+
+### G2 — o nível não filtra, e agora diz-se
+
+`risk_level="L2"` devolvia 19 envolvimentos de gestão executiva: **1 aplicável a L2, 11 só-L3, 7
+sem níveis**. Dos 164 publicados, **104 não têm níveis**. A banda não filtrava e **não dizia que
+não filtrava** — e este servidor treina o consumidor a acreditar que, se algo não se aplica, é
+dito.
+
+O produto é de **consulta**: a saída não é filtrar em silêncio. A entrada fica completa e passa a
+ser **legível** — `filters_this_band: false`, a contagem por nível, e os sem-níveis declarados com
+a advertência que faltava: **ausência de níveis não é «aplica-se a todos»**, é ausência de
+declaração na fonte.
+
+### G3 — o estatuto pragmático, com o critério do lead
+
+*«Mesmo que o LLM receba "audita este código contra DORA", é o LLM que faz a auditoria.»* **O MCP
+nunca é o actor. O verbo pertence a quem chama.** Sem renomear nada — o estatuto vai nas primeiras
+palavras, que é onde o encaminhamento acontece:
+
+| tool | primeiras palavras |
+|---|---|
+| `plan_sbd_toe_rollout` | **CONSULTA À SEQUÊNCIA PUBLICADA** — não planeia por ti |
+| `plan_sbd_toe_repo_governance` | **PROJECÇÃO DOS ARTEFACTOS PUBLICADOS** — não governa o teu repositório |
+| `prepare_sbd_toe_codegen_context` | **MONTA CONTEXTO, NÃO AGE** — não escreve, não altera, não valida |
+| `generate_sbd_toe_skill` | **GERA A PARTIR DO PUBLICADO, SEM VALIDAR O TEU AMBIENTE** |
+| `assess_sbd_toe_implementation` | **SERVE OS LIMIARES APLICADOS AOS VALORES QUE DECLARASTE — a leitura é tua** |
+| `answer_sbd_toe_manual` | **SERVE CONTEXTO PARA O TEU MODELO RESPONDER** — não responde |
+
+A do `assess` segue a correcção do lead à formulação do próprio dispatch: comparar é aritmética
+sobre dado publicado; **o juízo «isto é suficiente?» nunca sai do chamador.**
+
+### G4 — a via lenta
+
+- **`trace_sbd_toe_graph`** era a única superfície **sem `kg` nem `server`** — um resultado sem
+  substrato identificável não é citável.
+- **`plan_sbd_toe_repo_governance`** vendia o `riskLevel` como filtro: passa a declarar que
+  **filtra pouco e por desenho** (2 de 45 registos discriminam), com a asserção da travessia.
+- **`map_sbd_toe_review_scope`**: o `expectedEvidence` é **redacção deste servidor**, não citação
+  — passa a dizê-lo (`authored_by: mcp_serving, cited: false`), e a **sobreposição de padrões de
+  path** é declarada em vez de reconciliada em silêncio.
+
+### G5 — identidade de versão, verificada
+
+Um **teste de release** compara todas as versões de Manual servidas — descrições **e** respostas —
+contra `sbd://toe/version`, e falha se divergirem. A nota dos macro-processos dizia *«ontologia
+v2.5 × Manual v1.8.1»* com o pino em v1.9.0: passa a **derivar** o substrato do pino.
+
+**Fica por fechar, a montante:** o pino declara `release_tag …-v2.8` e `substrate_version
+…ontology-v2.7`. É rótulo do bundle, não nosso; reportado.
+
+### Também verificado
+
+`consulted: 0` noutros papéis **é dado, não defeito**: dos 164 envolvimentos, só 5 são
+`consulted` e todos do product-owner.
+
+### Verificação
+
+Suite **819/819** · aceitação **178, 0 FAIL, gate PASS** (TC-F-71 novo) · **17 invariantes verdes**
+· **ouro do Eixo H byte-idêntico nos dois braços** · orçamentos **14/14** · matriz **0 FALTA, 0 não
+exercitáveis**.
 
 ## 0.20.0-beta.45 — 2026-09-08
 

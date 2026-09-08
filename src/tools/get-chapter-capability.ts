@@ -178,10 +178,29 @@ export function handleGetChapterCapability(args: Record<string, unknown>): Chapt
     chapterArg === undefined
       ? []
       : (ontology.artifactRequirements ?? []).filter((ar) => (ar.defining_chapter_ids ?? []).includes(chapterArg));
+  /*
+   * 0.20.0-beta.46 (G1) — a base da CITAÇÃO deixa de usar a asserção da vizinha.
+   *
+   * O defeito era meu e é pior do que o `own` que substituiu: esta base publicava
+   * `assertionFor("artifact_defining_chapters")` — o mesmo argumento da base de produção — e
+   * por isso dizia `verb: produced_or_operated_by` enquanto o seu próprio `what` dizia «não
+   * uma obrigação de produção». No cap. 01 isso punha 31 artefactos a resolver para «produz
+   * ou opera» quando só 7 o fazem: o Container Image, o SBOM, o SCA Report e o IaC Plan
+   * entre eles. **Um bug num guarda-corpo é pior do que a ausência de guarda-corpo, porque é
+   * lido como garantia.**
+   *
+   * A ontologia deste pino publica asserção para PRODUÇÃO e para PROVA, e **nenhuma para a
+   * citação**. Não invento uma: a base passa a usar o campo que a fonte NOMEIA
+   * (`cited_chapter_ids`, v2.6 decisão K) e a declarar, pela via normal do `assertionFor`,
+   * que **não há asserção publicada** para esta travessia — `published: false`. O verbo não
+   * se publica porque não existe; a relação continua servida porque existe.
+   */
   const relatedRecords =
     chapterArg === undefined
       ? []
-      : (ontology.artifactRequirements ?? []).filter((ar) => (ar.chapter_ids ?? []).includes(chapterArg));
+      : (ontology.artifactRequirements ?? []).filter((ar) =>
+          (ar.cited_chapter_ids ?? ar.chapter_ids ?? []).includes(chapterArg)
+        );
   const definingIds = new Set(definingRecords.map((ar) => ar.artifact_type_id));
   /*
    * 0.20.0-beta.43 (v2.7) — a TERCEIRA base: `evidence_chapter_ids`. É a travessia
@@ -267,12 +286,18 @@ export function handleGetChapterCapability(args: Record<string, unknown>): Chapt
                 values: evidenceOrphans
               }
             },
-            chapter_relation: {
-              asserts: assertionFor("artifact_defining_chapters"),
+            cited_by: {
+              /*
+               * `artifact_cited_chapters` NÃO está nas travessias publicadas: o `assertionFor`
+               * devolve `published: false` e di-lo ao consumidor. É deliberado — ver acima.
+               */
+              asserts: assertionFor("artifact_cited_chapters"),
               what:
-                "registos `ArtifactRequirement` que NOMEIAM este capítulo em `chapter_ids` — a citação. São " +
-                "ARESTAS da relação capítulo↔artefacto: não um total, não uma obrigação de produção, e " +
-                "**não posse**. Um capítulo citar um artefacto não o torna dele.",
+                "registos `ArtifactRequirement` que NOMEIAM este capítulo em `cited_chapter_ids` — a " +
+                "CITAÇÃO. São ARESTAS da relação capítulo↔artefacto: não um total, não uma obrigação de " +
+                "produção, e **não posse**. Um capítulo citar um artefacto não o torna dele. " +
+                "**A ontologia deste pino não publica verbo para esta relação** — por isso nenhum é " +
+                "servido, e não se deve resolver um a partir das bases vizinhas.",
               ...(countSemantics !== undefined ? { source_declares: countSemantics } : {}),
               relation_edges: relationEdges.length
             },
@@ -291,7 +316,7 @@ export function handleGetChapterCapability(args: Record<string, unknown>): Chapt
               ...(epIds.has(a.artifact_type_id) ? ["evidence_pattern"] : []),
               ...(definingIds.has(a.artifact_type_id) ? ["produced_or_operated_by"] : []),
               ...(evidenceIds.has(a.artifact_type_id) ? ["required_as_evidence_by"] : []),
-              ...(relIds.has(a.artifact_type_id) ? ["chapter_relation"] : [])
+              ...(relIds.has(a.artifact_type_id) ? ["cited_by"] : [])
             ]
           })),
           declared_limits: {

@@ -23,6 +23,7 @@ import { resolveAppPath } from "../config.js";
 import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { absenceBand, absenceNaming } from "../serving/declared-absences.js";
+import { servedSubstrateVersion } from "../version-info.js";
 
 type Rec = Record<string, unknown>;
 let cache: { header: Rec; items: Rec[]; edgeHeader: Rec; edges: Rec[] } | undefined;
@@ -65,7 +66,7 @@ export function handleGetMacroProcesses(args: Record<string, unknown>): MacroPro
     produced_by: "macro_process_projection",
     source_data: "data/publish/semantic/macro_processes.jsonl + mp_edges.jsonl",
     note:
-      "Macro-processos publicados pelo Manual (ontologia v2.5 × Manual v1.8.1). A ORDEM é a que a fonte " +
+      `Macro-processos publicados pelo Manual (substrato: ${servedSubstrateVersion()}). A ORDEM é a que a fonte ` +
       "publica em `adoption_order_levels` — não é calculada aqui, e não se infere de capítulos nem de fases."
   };
   const reading = {
