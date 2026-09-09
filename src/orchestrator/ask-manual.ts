@@ -198,9 +198,26 @@ export async function prepareManualAnsweringContext(
 function anchoringBanner(question: string): string {
   const a = anchorQuery(question);
   if (a === undefined) return "";
+  /*
+   * 0.20.0-beta.47 (R2) — A BANDA DECLARA O QUE MEDE.
+   *
+   * Ela mede OCORRÊNCIA DE TERMO no corpus, não relevância de tópico — e não o dizia. Uma
+   * pergunta sobre política de teletrabalho recebe conteúdo de governação porque «política»
+   * e «organização» ocorrem em todo o lado; só «teletrabalho» é que não. Dizer «1 de 3 sem
+   * âncora» sem dizer que os outros 2 são genéricos deixa a impressão de que 2/3 da pergunta
+   * está coberta.
+   *
+   * Não há piso numérico aqui — recusei-o antes e continuo a recusá-lo: um limiar de
+   * relevância seria um número nosso. O que se acrescenta é a MEDIDA declarada e os termos
+   * ANCORADOS à vista, para o consumidor ver por que palavras a recuperação entrou.
+   */
   const lines = [
     "⚠️  RECUPERAÇÃO, NÃO ÂMBITO — o que se segue é o que CASOU lexicalmente com a tua pergunta,",
-    "    e não necessariamente a resposta à pergunta que fizeste. Esta superfície é NÃO-NORMATIVA."
+    "    e não necessariamente a resposta à pergunta que fizeste. Esta superfície é NÃO-NORMATIVA.",
+    "",
+    "    O QUE ESTA VERIFICAÇÃO MEDE: se cada termo da tua pergunta OCORRE no corpus publicado.",
+    "    NÃO mede relevância nem cobertura do tópico — um termo genérico («política», «processo»)",
+    "    ancora em quase tudo e não significa que o Manual trate do teu assunto."
   ];
   if (a.nothing_published) lines.push("", `    ${NOTHING_PUBLISHED_NOTE}`);
   else if (a.without_corpus_anchor.length > 0)
@@ -208,7 +225,9 @@ function anchoringBanner(question: string): string {
       "",
       `    SEM ÂNCORA NO MANUAL (${a.without_corpus_anchor.length} de ${a.content_terms} termos da tua pergunta` +
         ` não ocorrem no corpus publicado): ${a.without_corpus_anchor.join(", ")}.`,
-      "    Se o teu assunto está entre eles, o Manual não o publica — e o que recebes é sobre outra coisa."
+      `    ANCORARAM (ocorrem algures, o que NÃO quer dizer que sejam o assunto): ${a.anchored.join(", ")}.`,
+      "    Se o teu assunto está entre os primeiros, o Manual não o publica — e o que recebes casou",
+      "    pelos segundos, que podem ser palavras genéricas."
     );
   return `${lines.join("\n")}\n\n`;
 }

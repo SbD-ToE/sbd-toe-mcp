@@ -1,13 +1,79 @@
 ---
 ai_assisted: true
 model: Claude Opus 5
-date: 2026-09-08
+date: 2026-09-09
 purpose: documentation
-reasoning: v0.20.0-beta.46 (beta line, npm `beta`) — os dois bloqueios da 3.ª auditoria (9/10) e o estatuto pragmático. G1: a base da CITAÇÃO publicava a asserção da vizinha e resolvia `produced_or_operated_by` para 31 artefactos quando só 7 o produzem — passa a `cited_by` com `published: false`, porque a ontologia não publica verbo para a citação, e uma invariante impede que duas bases partilhem asserção. G2: a banda de decisão não filtrava por nível e não o dizia — passa a declarar `filters_this_band: false`, a contagem por nível e os 104 de 164 sem níveis. G3: o estatuto pragmático nas primeiras palavras de seis descrições, com o critério do lead — o MCP nunca é o actor, o verbo pertence a quem chama. G4: trace_graph com kg+server, riskLevel do repo_governance declarado como filtro fraco, evidência do review_scope marcada como redacção do servidor. G5: teste de release que compara todas as versões servidas contra sbd://toe/version, e a nota dos macro-processos deixa de fixar versões.
+reasoning: v0.20.0-beta.47 (beta line, npm `beta`) — resíduos da 3.ª auditoria e o teste que sustenta tudo. R1: o enum de `projectRole` passa a ser o vocabulário publicado (13 canónicos) e a descrição deixa de dizer «Informational only» sobre um argumento que produz vista; o legado continua aceite e declarado. R2: a banda de ancoragem passa a DECLARAR O QUE MEDE (ocorrência de termo, não relevância) e a mostrar os termos que ancoraram. R3: **DETERMINISMO DO SERVING entre processos, testado pela primeira vez e no portão — 29 de 29 superfícies byte-idênticas em dois processos independentes, zero divergências, zero campos voláteis**. R4: bateria de encaminhamento para modelo pequeno, preparada e entregue por correr. Pino inalterado; ouro H byte-idêntico.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.47 — 2026-09-09
+
+**Os resíduos da 3.ª auditoria, e a promessa central verificada pela primeira vez.** Pino
+**inalterado**; linha estável **intocada**.
+
+### R3 — determinismo do serving: **29 de 29, byte-idênticos**
+
+O servidor promete-o na cara das tools; o Codex testa o do **build**; o do **serving** passou
+quatro auditorias por verificar. É a propriedade que sustenta a auditabilidade: um resultado
+citável tem de ser reproduzível por outra pessoa, noutra máquina, noutro dia.
+
+**Desenho:** dois **processos independentes** sobre o mesmo bundle pinado, a mesma chamada em
+cada um, payloads comparados **byte a byte**. Dois processos e não duas chamadas no mesmo —
+repetir dentro do processo mediria a cache, não o serving.
+
+**Resultado: determinístico. 29/29 byte-idênticos · 0 divergências · 0 não comparáveis · e
+nenhum campo volátil sequer presente** — nada precisou de ser neutralizado, porque nenhum
+payload servido carrega timestamp ou id de execução.
+
+**A primeira corrida do runner mentiu, e o guarda nasceu disso:** as três superfícies de
+**recuperação** — as de maior risco — foram chamadas sem `question`, devolveram **36 bytes de
+erro** e contaram como «byte-idênticas». Comparar dois erros não testa determinismo. O runner
+passou a recusar payloads abaixo de 200 bytes como **inconclusivos**, e as quatro superfícies
+entram agora com 3,3K a 15,8K bytes reais. Corre no portão (`npm run gate:determinism`), com
+zero divergências **e zero não comparáveis** — um buraco no teste não é um resultado.
+
+### R1 — o schema contradizia a banda
+
+`projectRole` dizia *«Informational only — does not affect the returned scope»* sobre um
+argumento que **produz a vista `role_view`**, e o enum oferecia cinco valores dos quais quatro
+resolvem para vazio e que a própria resposta chama **legado** desde a b.41.
+
+O enum passa a ser **derivado do vocabulário publicado** (13 canónicos). Os legados continuam
+**aceites** — aditivo, nada parte — mas deixam de ser **oferecidos**, e a resposta continua a
+declará-los. A descrição diz o que o argumento faz e o que não faz.
+
+### R2 — a banda declara o que mede
+
+Ela mede **ocorrência de termo**, não relevância — e não o dizia. «Política de teletrabalho»
+devolve governação porque *política* e *organização* ocorrem em todo o lado. Sem piso numérico
+(recusado antes, e continua): acrescenta-se a **medida declarada** e os termos que **ancoraram**,
+para se ver que a recuperação entrou por palavras genéricas.
+
+```
+O QUE ESTA VERIFICAÇÃO MEDE: se cada termo da tua pergunta OCORRE no corpus publicado.
+NÃO mede relevância nem cobertura do tópico …
+SEM ÂNCORA NO MANUAL (1 de 3): teletrabalho.
+ANCORARAM (ocorrem algures, o que NÃO quer dizer que sejam o assunto): política, organização.
+```
+
+### R4 — bateria para modelo pequeno, entregue por correr
+
+`docs/evaluation/routing-battery-small-model.md`: 10 perguntas em linguagem de negócio, tool
+esperada e aceitáveis, critério (**acerto à primeira**, tentativas falhadas, chegou/desistiu),
+forma de registo. Condição explícita: **sem system prompt e sem ler o `agent-guide` primeiro** —
+mede o que as descrições conseguem sozinhas.
+
+**Não a corri**, e digo porquê: esta sessão é um modelo grande, e corrê-la aqui mediria o leitor
+que as quatro auditorias já mediram. A comparação **grande vs. pequeno** é que é o produto.
+
+### Verificação
+
+Suite **820/820** · aceitação **179, 0 FAIL, gate PASS** (TC-F-72 novo) · **18 invariantes
+verdes** · **ouro do Eixo H byte-idêntico** · orçamentos **14/14** · matriz **0 FALTA** ·
+determinismo **29/29**.
 
 ## 0.20.0-beta.46 — 2026-09-08
 

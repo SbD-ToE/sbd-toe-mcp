@@ -2177,6 +2177,33 @@ export const scenarios = [
       if (!/SOBREPOR|sobrepõe/i.test(eb.path_overlap ?? "")) return fail("a sobreposição de paths não é declarada");
       return ok(`citação sem verbo herdado (${soCitados.length} apenas citados, incl. SBOM e Container Image); nível declarado como NÃO-filtro (${lf.at_requested_level} de ${g.data.decision_involvements.total} ao nível, ${lf.without_levels.published_total} sem níveis no total); 6 estatutos pragmáticos nas primeiras palavras; trace com kg+server; riskLevel do repo_gov declarado; evidência marcada como redacção do servidor`); } },
 
+  { id: "TC-F-72", axis: "F", title: "0.20.0-beta.47: enum de papéis do vocabulário, a banda de âncora declara o que mede, e o serving é determinístico entre processos", tool: "map_sbd_toe_applicability",
+    run: async (c) => {
+      // (R1) o enum oferece o VOCABULÁRIO e a descrição deixa de mentir sobre o efeito
+      const schema = (c.tools ?? []).find((t) => t.name === "map_sbd_toe_applicability")?.inputSchema?.properties?.projectRole;
+      if (!schema) return fail("projectRole desapareceu do schema");
+      if (!(schema.enum ?? []).includes("gestao-executiva")) return fail("o enum continua sem os papéis canónicos");
+      if ((schema.enum ?? []).includes("manager")) return fail("o enum continua a OFERECER valores legados");
+      if (/Informational only/i.test(schema.description ?? "")) return fail("a descrição continua a dizer que não afecta o resultado");
+      if (!/AFECTA/.test(schema.description ?? "")) return fail("a descrição não diz que o papel afecta a resposta");
+      // legado continua ACEITE (aditivo) e declarado
+      const leg = await c.tool("map_sbd_toe_applicability", { riskLevel: "L2", projectRole: "manager" });
+      if (!leg.ok) return fail("um valor legado deixou de ser aceite — isto não era aditivo");
+      if (!(leg.data.data ?? leg.data).empty_role_view) return fail("o legado deixou de ser declarado");
+      // e um canónico do enum novo produz vista
+      const can = await c.tool("map_sbd_toe_applicability", { riskLevel: "L2", projectRole: "gestao-executiva" });
+      const us = ((can.data.data ?? can.data).chapters ?? []).reduce((a, x) => a + ((x.role_view?.user_stories ?? []).length), 0);
+      if (us === 0) return fail("um papel canónico do enum devolve vista vazia");
+      // (R2) a banda de ancoragem declara O QUE MEDE, e mostra o que ancorou
+      const r = await c.tool("search_sbd_toe_manual", { question: "Qual é a política de teletrabalho da organização?", topK: 3 });
+      if (!r.ok) return fail(r.error);
+      const txt = String(r.text ?? r.data?._text ?? "");
+      if (!/O QUE ESTA VERIFICAÇÃO MEDE/.test(txt)) return fail("a banda não declara o que mede");
+      if (!/NÃO mede relevância/.test(txt)) return fail("a banda não diz que não mede relevância");
+      if (!/ANCORARAM/.test(txt)) return fail("a banda não mostra os termos que ancoraram");
+      if (!/teletrabalho/.test(txt)) return fail("o termo sem âncora não é nomeado");
+      return ok("enum com 13 canónicos e legado aceite+declarado; descrição diz que AFECTA; banda de ancoragem declara a medida e mostra os termos ancorados"); } },
+
   { id: "TC-G-01", axis: "G", title: "trace válido: determinismo + paginação G1 (3 lentes, total, cursor, sem IRIs)", tool: "trace_sbd_toe_graph",
     run: async (c) => {
       const shas = [];

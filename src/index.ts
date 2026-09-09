@@ -325,6 +325,21 @@ function validResourceUris(): string {
  * Os exemplos derivam do bundle servido e do próprio catálogo de recursos; se a derivação
  * falhar, o campo simplesmente não sai — nunca se inventa um exemplo.
  */
+/**
+ * 0.20.0-beta.47 — o enum de papéis vem do VOCABULÁRIO, não de uma lista à mão. Se a
+ * derivação falhar, cai nos valores legados: um enum vazio no schema seria pior do que um
+ * enum desactualizado, porque nenhum cliente conseguiria sequer chamar a tool.
+ */
+function canonicalRoleEnum(): string[] {
+  try {
+    const roles = getOntologyData().roles ?? [];
+    const ids = roles.map((r) => r.role_id).filter((x) => typeof x === "string" && x.length > 0).sort();
+    return ids.length > 0 ? ids : ["developer", "architect", "security", "devops", "manager"];
+  } catch {
+    return ["developer", "architect", "security", "devops", "manager"];
+  }
+}
+
 function derivedExamples(): { kpiValues: unknown[]; entityQuery: unknown[]; resourceUri: unknown[] } {
   const safe = <T>(f: () => T, fallback: T): T => {
     try {
@@ -1249,9 +1264,25 @@ class McpRuntime {
               },
               projectRole: {
                 type: "string",
-                enum: ["developer", "architect", "security", "devops", "manager"],
+                /*
+                 * 0.20.0-beta.47 (R1) — o enum passa a ser o VOCABULÁRIO PUBLICADO.
+                 *
+                 * Oferecia cinco valores legados dos quais só o `developer` coincidia com um
+                 * papel canónico; os outros quatro devolviam vista vazia, e desde a b.41 a
+                 * própria resposta os chamava LEGADO. O schema contradizia a banda. Continuam
+                 * ACEITES — aditivo, nada parte — mas deixam de ser oferecidos.
+                 *
+                 * E a descrição dizia «Informational only — does not affect the returned
+                 * scope», o que é FALSO: o papel produz a vista `role_view` por capítulo.
+                 */
+                enum: canonicalRoleEnum(),
                 description:
-                  "User role in the project. Informational only — does not affect the returned scope."
+                  "Papel canónico do vocabulário publicado. **AFECTA a resposta**: produz a vista `role_view` " +
+                  "por capítulo (as user stories atribuídas a este papel) — não altera é a activação de " +
+                  "capítulos/controlos, que deriva do `riskLevel` e das `technologies`. Aliases publicados em " +
+                  "`roles.json` são aceites e a resposta declara a resolução em `role_vocabulary`. Os valores " +
+                  "legados desta tool (`architect`, `security`, `manager`) continuam aceites mas NÃO são papéis " +
+                  "do vocabulário: devolvem vista vazia, declarada."
               }
             },
             required: ["riskLevel"],

@@ -1,5 +1,5 @@
 {
-  "stamp": "2026-09-08",
+  "stamp": "2026-09-09",
   "version": "0.20.0-beta.46",
   "tools": [
     "answer_sbd_toe_manual",
@@ -33,10 +33,10 @@
     "trace_sbd_toe_requirement_sources"
   ],
   "counts": {
-    "tem": 109,
-    "n/a": 49,
+    "tem": 107,
+    "n/a": 48,
     "FALTA": 0,
-    "?": 74
+    "?": 77
   },
   "missing": [],
   "unprobed": [],
@@ -232,8 +232,8 @@
           "why": "esta chamada devolveu resultados — a banda de vazio não foi exercitada"
         },
         "map_sbd_toe_applicability": {
-          "state": "tem",
-          "why": "declara ausências/vazios (exercitada por combinação: {\"riskLevel\":\"L3\",\"projectRole\":\"manager\"})"
+          "state": "?",
+          "why": "esta chamada devolveu resultados — a banda de vazio não foi exercitada"
         },
         "map_sbd_toe_regulatory_activation": {
           "state": "?",
@@ -354,8 +354,8 @@
           "why": "nenhuma ausência nesta chamada"
         },
         "map_sbd_toe_applicability": {
-          "state": "n/a",
-          "why": "bandas negativas presentes, nenhuma é ausência do Manual: empty_role_view (rejeição de input do chamador) (exercitada por combinação: {\"riskLevel\":\"L3\",\"projectRole\":\"manager\"})"
+          "state": "?",
+          "why": "nenhuma ausência nesta chamada"
         },
         "map_sbd_toe_regulatory_activation": {
           "state": "?",
@@ -598,8 +598,8 @@
           "why": "sem banda negativa nesta chamada"
         },
         "map_sbd_toe_applicability": {
-          "state": "tem",
-          "why": "reconciliação central activa (`sendResponse`) (exercitada por combinação: {\"riskLevel\":\"L3\",\"projectRole\":\"manager\"})"
+          "state": "?",
+          "why": "sem banda negativa nesta chamada"
         },
         "map_sbd_toe_regulatory_activation": {
           "state": "?",
