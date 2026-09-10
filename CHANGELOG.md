@@ -3,7 +3,7 @@ ai_assisted: true
 model: Claude Opus 5
 date: 2026-09-10
 purpose: documentation
-reasoning: v0.20.0 (promoção da beta.49, linha estável) — a maturidade do contrato de selecção passa a FACTO DECLARADO (`serving_contract.identity` + `.maturity`, com a maturidade do pacote derivada da versão e nunca escrita à mão) em vez de sufixo numa string; o contrato mantém-se beta deliberadamente, por decisão do lead, e o identificador NÃO se renomeia. Sete declarações servidas que a promoção tornava falsas — cinco a dizer que a linha era beta, uma a dizer que a linha estável era outra — reescritas na forma durável: a prosa nomeia a linha, o campo declarado carrega a maturidade. Zero alteração de comportamento: o oráculo do Eixo H veio byte-idêntico à corrida da beta.49.
+reasoning: v0.20.0 (promoção da beta.49, linha estável) — a maturidade do contrato de selecção passa a FACTO DECLARADO (`serving_contract.identity` + `.maturity`, com a maturidade do pacote derivada da versão e nunca escrita à mão) em vez de sufixo numa string; o contrato mantém-se beta deliberadamente, por decisão do lead, e o identificador NÃO se renomeia. Sete declarações servidas que a promoção tornava falsas — cinco a dizer que a linha era beta, uma a dizer que a linha estável era outra — reescritas na forma durável: a prosa nomeia a linha, o campo declarado carrega a maturidade. Zero alteração de comportamento: o oráculo do Eixo H veio byte-idêntico à corrida da beta.49. E publicar deixa de ser o mesmo acto que apontar: o caminho estável do release.yml passa a publicar em `--tag next` — a capacidade que o caminho de prerelease já tinha, aplicada ao que a não tinha — para que a estável possa ser verificada antes de ser o que toda a gente instala; o `latest` move-o o lead, num acto próprio.
 review_status: pending-human-review
 ---
 
@@ -58,6 +58,19 @@ selecção declarado beta.
 
 Referências históricas da forma «(0.20.0-beta.NN)», que nomeiam a versão onde um comportamento
 entrou, são **afirmações de proveniência** e continuam verdadeiras. **Não foram tocadas.**
+
+### Publicar e apontar passam a ser dois actos
+
+O caminho **estável** do `release.yml` corria `npm publish` **sem `--tag`**, e o npm aplica `latest`
+por omissão: publicar a estável e torná-la aquilo que toda a gente instala eram **o mesmo comando**.
+A consequência é que **não havia como verificar a estável antes de ela já ser o que se instala** — e
+uma release que só se verifica depois de ser o defeito é uma release **verificada nos utilizadores**.
+
+**Não é capacidade nova.** O caminho de prerelease já separava publicar de apontar (`--tag beta`,
+com o `latest` intacto). Isto é a capacidade que já existia, aplicada ao caminho que não a tinha: a
+estável passa a publicar-se em `--tag next`, e o ponteiro move-se num acto próprio, do programme
+lead — `npm dist-tag add @shiftleftpt/sbd-toe-mcp@0.20.0 latest`. Uma linha; o caminho de prerelease
+**não foi tocado**.
 
 ### Verificação
 

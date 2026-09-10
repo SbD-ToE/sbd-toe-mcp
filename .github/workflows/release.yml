@@ -37,7 +37,7 @@ jobs:
           tag="${GITHUB_REF_NAME}"
           if [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "prerelease=false" >> "$GITHUB_OUTPUT"
-            echo "Stable release tag: $tag (npm dist-tag 'latest')"
+            echo "Stable release tag: $tag (npm dist-tag 'next'; 'latest' is moved by the lead, in a separate act)"
           elif [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+-[0-9A-Za-z.-]+$ ]]; then
             echo "prerelease=true" >> "$GITHUB_OUTPUT"
             echo "Prerelease tag: $tag (npm dist-tag 'beta', GitHub pre-release; 'latest' untouched)"
@@ -132,5 +132,12 @@ jobs:
             echo "Publishing prerelease to npm dist-tag 'beta' ('latest' unchanged)"
             npm publish --access public --provenance --tag beta
           else
-            npm publish --access public --provenance
+            # Publicar e APONTAR sao dois actos. Sem --tag o npm aplica 'latest' por
+            # omissao, e a estavel passaria a ser o que toda a gente instala no mesmo
+            # instante em que existe -- so verificavel depois de ja ser o defeito. O
+            # caminho de prerelease ja separava os dois; este passa a separa-los tambem.
+            # O ponteiro move-o o programme lead, num acto proprio:
+            #   npm dist-tag add @shiftleftpt/sbd-toe-mcp@X.Y.Z latest
+            echo "Publishing stable to npm dist-tag 'next' ('latest' unchanged -- the lead moves the pointer)"
+            npm publish --access public --provenance --tag next
           fi
