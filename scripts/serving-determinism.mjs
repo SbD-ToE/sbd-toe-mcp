@@ -73,10 +73,38 @@ async function handshake(s) {
   s.proc.stdin.write(JSON.stringify({ jsonrpc: "2.0", method: "notifications/initialized" }) + "\n");
 }
 
+/**
+ * 0.20.0-beta.49 — voláteis que vivem em PROSA, não em campos JSON.
+ *
+ * O artefacto do `generate_sbd_toe_skill` passou a datar-se a si mesmo (P1), e a hora de
+ * geração é markdown dentro de `content` — a neutralização por campo não lhe chega. É
+ * volátil DECLARADO, com padrão preciso: neutraliza-se a linha «Gerado em: `<ISO>`» e mais
+ * nada. Um padrão largo (qualquer ISO em qualquer sítio) esconderia divergências reais.
+ */
+const DECLARED_VOLATILE_PROSE = [
+  {
+    id: "artifact_generated_at",
+    why: "hora de geração impressa no artefacto instalável (P1: o ficheiro data-se a si mesmo)",
+    pattern: /(\*\*Gerado em:\*\* )\\?`[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:.]+Z\\?`/g,
+    replacement: "$1`<volátil>`"
+  },
+  {
+    id: "artifact_generated_at_json",
+    why: "o mesmo carimbo, escapado dentro do JSON de `content`",
+    pattern: /(Gerado em:\*\* )\\`[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:.]+Z\\`/g,
+    replacement: "$1`<volátil>`"
+  }
+];
+
 /** Neutraliza APENAS os campos declarados voláteis; devolve também quais encontrou. */
 function neutralize(text) {
   const seen = new Set();
   let out = text;
+  for (const v of DECLARED_VOLATILE_PROSE) {
+    if (v.pattern.test(out)) seen.add(v.id);
+    v.pattern.lastIndex = 0;
+    out = out.replace(v.pattern, v.replacement);
+  }
   for (const key of Object.keys(DECLARED_VOLATILE)) {
     const re = new RegExp(`("${key}"\\s*:\\s*)("[^"]*"|[0-9.]+|null)`, "g");
     if (re.test(out)) seen.add(key);
@@ -209,6 +237,7 @@ if (diverge.length > 0) {
 }
 md.push("", "## Campos voláteis declarados", "");
 for (const [k, why] of Object.entries(DECLARED_VOLATILE)) md.push(`- \`${k}\` — ${why}`);
+for (const v of DECLARED_VOLATILE_PROSE) md.push(`- \`${v.id}\` (prosa) — ${v.why}`);
 md.push("", "Um campo que varie e **não** esteja nesta lista conta como DIVERGE: é achado, não ruído.");
 if (skipped.length > 0) {
   md.push("", "## Não comparáveis", "");

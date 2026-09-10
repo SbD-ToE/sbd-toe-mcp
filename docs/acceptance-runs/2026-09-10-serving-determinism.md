@@ -4,7 +4,7 @@ Dois **processos distintos** do servidor, arrancados independentemente sobre o m
 
 A mesma chamada em cada um; payloads comparados **byte a byte**. Repetir no mesmo processo mediria a cache, não o serving.
 
-**29 byte-idênticos · 0 idênticos após neutralizar voláteis · 0 DIVERGEM · 0 não comparáveis**
+**28 byte-idênticos · 1 idênticos após neutralizar voláteis · 0 DIVERGEM · 0 não comparáveis**
 
 | Superfície | Resultado | Bytes | Voláteis presentes |
 |---|---|---|---|
@@ -15,7 +15,7 @@ A mesma chamada em cada um; payloads comparados **byte a byte**. Repetir no mesm
 | `query_sbd_toe_entities` | byte-idêntico | 1192 | — |
 | `get_sbd_toe_chapter_brief` | byte-idêntico | 4580 | — |
 | `plan_sbd_toe_repo_governance` | byte-idêntico | 21672 | — |
-| `generate_sbd_toe_skill` | byte-idêntico | 7553 | — |
+| `generate_sbd_toe_skill` | idêntico após neutralizar voláteis | 9533 | artifact_generated_at, generated_at |
 | `map_sbd_toe_review_scope` | byte-idêntico | 3345 | — |
 | `get_sbd_toe_chapter_implementation_checklist` | byte-idêntico | 3842 | — |
 | `get_sbd_toe_operating_model` | byte-idêntico | 12498 | — |
@@ -45,5 +45,7 @@ A mesma chamada em cada um; payloads comparados **byte a byte**. Repetir no mesm
 - `run_id` — identificador de execução
 - `duration_ms` — medição de tempo
 - `elapsed_ms` — medição de tempo
+- `artifact_generated_at` (prosa) — hora de geração impressa no artefacto instalável (P1: o ficheiro data-se a si mesmo)
+- `artifact_generated_at_json` (prosa) — o mesmo carimbo, escapado dentro do JSON de `content`
 
 Um campo que varie e **não** esteja nesta lista conta como DIVERGE: é achado, não ruído.

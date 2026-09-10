@@ -3,6 +3,7 @@
   "pin_version": 1,
   "pinned_at": "2026-08-31",
   "consumer_contract_version": "v1.25",
+  "_consumer_contract_version_doc": "Contrato a MONTANTE: aquele pelo qual este servidor CONSOME o bundle do Codex. NÃO confundir com `serving_contract.version` (hoje v1.18-beta), servido em `initialize`, que é o contrato a JUSANTE — pelo qual o servidor SERVE selecção a quem o chama. São dois eixos opostos, com donos diferentes, e não se seguem um ao outro; o `alignment_policy` abaixo governa este.",
   "substrate_version": "manual-v1.14.0+sbdtoe-ontology-v2.10",
   "kg_bundle": {
     "release_tag": "v1.12.0",

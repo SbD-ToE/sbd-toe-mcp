@@ -286,6 +286,20 @@ async function materializeResource(uri: string): Promise<{ mimeType: string; tex
         // pior violação da própria promessa.
         serving_contract: {
           version: "v1.18-beta",
+          /*
+           * 0.20.0-beta.49 (P3) — LEGIBILIDADE, não divergência.
+           *
+           * Este número e o `consumer_contract_version` do `consumed-bundle.json` (v1.25) são
+           * DOIS CONTRATOS DIFERENTES, em eixos opostos e com donos diferentes — e a
+           * semelhança dos nomes fez um auditor ler uma divergência onde não há nenhuma.
+           */
+          axis: "downstream — o contrato pelo qual ESTE servidor SERVE selecção a quem o chama",
+          not_to_be_confused_with:
+            "`consumer_contract_version` em `consumed-bundle.json` (hoje v1.25), que é o contrato a MONTANTE: " +
+            "aquele pelo qual este servidor CONSOME o bundle publicado pelo Codex. Os dois números são " +
+            "independentes e **não se seguem um ao outro**: nenhum tem de acompanhar o outro, e o " +
+            "`alignment_policy` do pino governa o de montante. Um número maior de um lado não implica " +
+            "atraso do outro.",
           semantics: "declarative-first",
           line: "0.20-beta (experiência autorizada pelo programme lead 2026-09-05)",
           changed:

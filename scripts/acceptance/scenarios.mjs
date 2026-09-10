@@ -86,8 +86,21 @@ export const scenarios = [
   { id: "TC-A-08", axis: "A", title: "generate_skill deterministic canonical agent-guide", tool: "generate_sbd_toe_skill",
     run: async (c) => { const a = await c.tool("generate_sbd_toe_skill", { clientType: "claude-code" }); const b = await c.tool("generate_sbd_toe_skill", { clientType: "claude-code" }); if (!a.ok) return fail(a.error);
       const g = await c.resource("sbd://toe/agent-guide"); const guideCore = (g.text ?? "").slice(0, 200);
-      if (a.data.content !== b.data.content) return fail("non-deterministic"); if (!(a.data.content ?? "").includes("SbD-ToE")) return fail("content not the guide");
-      return ok(`deterministic (${a.data.content.length} chars); guide resource ${g.text ? "readable" : "absent"}${guideCore ? "" : ""}`); } },
+      /*
+       * 0.20.0-beta.49 (P1): o artefacto passou a DATAR-SE a si mesmo, e a hora de geração é
+       * volátil por desenho — um ficheiro instalado sem data fica sem data para sempre. A
+       * asserção mantém-se tão forte como era para TUDO o resto: neutraliza-se o carimbo
+       * DECLARADO (o mesmo padrão preciso do gate de determinismo) e exige-se igualdade byte
+       * a byte no resto. E exige-se que o carimbo esteja lá.
+       */
+      const stamp = /(\*\*Gerado em:\*\* )`[0-9T:.\-]+Z`/g;
+      const norm = (t) => String(t ?? "").replace(stamp, "$1`<volátil>`");
+      if (!stamp.test(String(a.data.content ?? ""))) return fail("o artefacto não se data a si mesmo");
+      stamp.lastIndex = 0;
+      if (norm(a.data.content) !== norm(b.data.content)) return fail("non-deterministic fora do carimbo declarado");
+      if (!(a.data.content ?? "").includes("SbD-ToE")) return fail("content not the guide");
+      if (!/## Provenance/.test(String(a.data.content ?? ""))) return fail("o artefacto não leva bloco de proveniência");
+      return ok(`determinístico fora do carimbo declarado (${a.data.content.length} chars), com proveniência no artefacto; guide resource ${g.text ? "readable" : "absent"}${guideCore ? "" : ""}`); } },
   { id: "TC-A-09", axis: "A", title: "[limite] generate_skill per clientType differentiation", tool: "generate_sbd_toe_skill",
     run: async (c) => { const a = await c.tool("generate_sbd_toe_skill", { clientType: "github-copilot" }); const b = await c.tool("generate_sbd_toe_skill", { clientType: "claude-code" }); if (!a.ok || !b.ok) return fail(a.error ?? b.error);
       return a.data.content === b.data.content ? part("gap confirmed: content identical across clientType (no per-client differentiation)", "roadmap") : ok("content differs per clientType"); } },
@@ -2209,6 +2222,49 @@ export const scenarios = [
       if (!/ANCORARAM/.test(txt)) return fail("a banda não mostra os termos que ancoraram");
       if (!/teletrabalho/.test(txt)) return fail("o termo sem âncora não é nomeado");
       return ok("enum com 13 canónicos e legado aceite+declarado; descrição diz que AFECTA; banda de ancoragem declara a medida e mostra os termos ancorados"); } },
+
+  { id: "TC-F-73", axis: "F", title: "0.20.0-beta.49: o artefacto instalável DATA-SE a si mesmo e a cobertura NOMEIA os órfãos", tool: "generate_sbd_toe_skill",
+    run: async (c) => {
+      // (P1) lido ISOLADO do servidor, o ficheiro permite nomear Manual/KG/servidor/hora
+      for (const flavour of ["skilled", "harnessed"]) {
+        const r = await c.tool("generate_sbd_toe_skill", { role: "developer", format: "subagent", flavour });
+        if (!r.ok) return fail(r.error);
+        const t = String(r.data.content ?? "");
+        if (!/## Provenance/.test(t)) return fail(`${flavour}: o artefacto instalável não leva proveniência`);
+        for (const [what, re] of [["Manual", /\*\*Manual:\*\*/], ["KG", /\*\*KG \(bundle consumido\)/], ["servidor", /\*\*Servidor que gerou:\*\*/], ["hora", /\*\*Gerado em:\*\*/]])
+          if (!re.test(t)) return fail(`${flavour}: o artefacto não nomeia ${what}`);
+        // nenhuma versão FIXA em código: o que sai tem de bater com o pin servido
+        const ver = await c.resource("sbd://toe/version");
+        const pin = JSON.parse(ver.text ?? "{}");
+        const tag = pin.manual?.tag;
+        if (tag && !t.includes(tag)) return fail(`${flavour}: o artefacto não cita a tag do Manual do pin (${tag})`);
+      }
+      // o ramo SEM role também se data (a assimetria era ao contrário do que interessa)
+      const noRole = await c.tool("generate_sbd_toe_skill", { clientType: "claude-code" });
+      if (!/## Provenance/.test(String(noRole.data.content ?? ""))) return fail("o ramo sem role continua sem proveniência");
+      // (P1, JSON) o meta.provenance data o Manual
+      const one = await c.tool("generate_sbd_toe_skill", { role: "developer", format: "skill" });
+      const mp = one.data.meta?.provenance;
+      if (!mp?.manual) return fail("meta.provenance continua sem datar o Manual");
+      if (mp.manual.tag === undefined || mp.manual.commit === undefined) return fail("meta.provenance.manual incompleto");
+      // (P2) a cobertura NOMEIA os capítulos fora da fatia, nos dois sabores
+      for (const flavour of ["skilled", "harnessed"]) {
+        const r = await c.tool("generate_sbd_toe_skill", { role: "developer", format: "subagent", flavour });
+        const t = String(r.data.content ?? "");
+        const fora = r.data.meta?.coverage?.chapters_outside ?? [];
+        if (fora.length === 0) return fail("fixture mudou: a fatia do developer passou a cobrir tudo");
+        if (!/Chapters outside this slice/.test(t)) return fail(`${flavour}: a cobertura conta e não nomeia`);
+        for (const ch of fora) if (!t.includes(ch)) return fail(`${flavour}: capítulo fora da fatia não nomeado: ${ch}`);
+        // e a prosa não fixa o número
+        const m = t.match(/A count would say (\d+) are missing/);
+        if (m && Number(m[1]) !== fora.length) return fail(`${flavour}: a prosa diz ${m[1]} e são ${fora.length}`);
+      }
+      // (P3) os dois contratos declaram qual é qual
+      const init = await c.resource("sbd://toe/version");
+      if (!init.text) return fail("recurso de versão ilegível");
+      const one2 = await c.tool("generate_sbd_toe_skill", { role: "qa", format: "skill" });
+      const fora2 = one2.data.meta?.coverage?.chapters_outside ?? [];
+      return ok(`artefacto datado nos dois sabores e no ramo sem role; meta.provenance com Manual ${mp.manual.tag}; cobertura nomeia ${fora2.length} capítulos fora da fatia (qa) e ${(one.data.meta?.coverage?.chapters_outside ?? []).length} (developer)`); } },
 
   { id: "TC-G-01", axis: "G", title: "trace válido: determinismo + paginação G1 (3 lentes, total, cursor, sem IRIs)", tool: "trace_sbd_toe_graph",
     run: async (c) => {

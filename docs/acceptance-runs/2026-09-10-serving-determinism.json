@@ -1,8 +1,8 @@
 {
   "stamp": "2026-09-10",
   "counts": {
-    "identical": 29,
-    "after_neutral": 0,
+    "identical": 28,
+    "after_neutral": 1,
     "diverge": 0,
     "skipped": 0
   },
@@ -44,8 +44,17 @@
     },
     {
       "tool": "generate_sbd_toe_skill",
-      "status": "byte-idêntico",
-      "bytes": 7553
+      "status": "idêntico após neutralizar voláteis",
+      "bytes": 9533,
+      "volatile_fields_present": [
+        "artifact_generated_at",
+        "generated_at"
+      ],
+      "divergence": {
+        "offset": 9507,
+        "a": "item exists in the published bundle. Coverage is declared; nothing silently truncated.\"}}}",
+        "b": "item exists in the published bundle. Coverage is declared; nothing silently truncated.\"}}}"
+      }
     },
     {
       "tool": "map_sbd_toe_review_scope",

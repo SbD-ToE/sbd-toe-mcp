@@ -3,11 +3,64 @@ ai_assisted: true
 model: Claude Opus 5
 date: 2026-09-10
 purpose: documentation
-reasoning: v0.20.0-beta.48 (beta line, npm `beta`) — re-pin na primeira release FORMAL desde a v1.11.0: KG v1.12.0 (Manual v1.14.0 × ontologia v2.10, contrato v1.25). **A PRECEDÊNCIA DO LEDGER**: as transições de estado vivem em `declared-absences-ledger.yaml` e prevalecem sobre o índice — ABS-003 sai como `withdrawn` (premissa errada, nada faltava) e ABS-011 como `closed`, e a divergência com o índice vem à vista em vez de achatada. Sem isto reintroduzia-se o defeito da b.45. A banda do `fornecedores-terceiros` deixa de ler como lacuna: `role_scope: inter_instance`, zero é o estado CORRECTO, e a porta é GOV-006/007. Entram as 50 ligações AUTORADAS dos antipadrões, com o descasamento 5/25 declarado e NÃO alinhado, e as 9 ausências autoradas. CIC-011 (273→274). Ouro H: conjuntos seleccionados, causas e veredictos byte-idênticos.
+reasoning: v0.20.0-beta.49 (beta line, npm `beta`) — o artefacto instalável passa a DATAR-SE a si mesmo (P1, bloqueante): bloco de proveniência no ficheiro, nos dois sabores e também no ramo sem role, com Manual/KG/ontologia/substrato/servidor/hora lidos do pin e ausências DECLARADAS; o `meta.provenance` passa a datar o Manual. A cobertura NOMEIA os capítulos fora da fatia nos dois sabores (P2) — uma contagem não é uma declaração. E os dois contratos (serving v1.18-beta a jusante, consumer v1.25 a montante) passam a dizer qual é qual e que não se seguem (P3). Consequência declarada: a hora de geração é volátil por desenho e o gate de determinismo passa a reportar 28 byte-idênticos + 1 idêntico após neutralizar, 0 divergências.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.49 — 2026-09-10
+
+**O artefacto que se instala passa a dizer de onde vem.** Despacho do Orchestrator. Pino
+**inalterado** (KG v1.12.0); linha estável **0.19.4 intocada** — a promoção é decisão do lead.
+
+### P1 (bloqueante) — o artefacto data-se a si mesmo
+
+O ficheiro que sai de `generate_sbd_toe_skill` instala-se em `.claude/agents/` e **passa a viver
+sozinho**. Não dizia de onde vinha: frontmatter só com `name`/`description`/`tools`, corpo sem
+proveniência, e o `meta.provenance` — que **nem sequer datava o Manual** — a viajar na resposta
+JSON, **que o chamador descarta ao escrever o ficheiro**. A assimetria era ao contrário do que
+interessa: o ramo *sem* role emitia um comentário com a fonte; o ramo *com* role, o que se
+instala, não emitia nada.
+
+E o efeito é irreversível: **um artefacto instalado sem data fica sem data para sempre.**
+
+Agora o artefacto leva um bloco `## Provenance` **visível** — nos dois sabores e também no ramo
+sem role — com **Manual** (tag · versão · commit · publicado em), **KG** (release · sha256 ·
+origem), **substrato** e contrato de consumo, **ontologia**, **servidor** e **hora de geração**.
+Tudo lido de `loadBundleProvenance()`; **nada fixo em código**. Um campo que o pin não traga sai
+marcado *«não declarado no pin»* — **não deduzido, não omitido**. Se o pin for ilegível, o bloco
+di-lo e avisa que o ficheiro não é datável. O `meta.provenance` do JSON ganha a mesma correcção.
+
+### P2 — a cobertura nomeia os órfãos
+
+O bloco escrevia «N of the manual's M chapters» debaixo de **«Coverage (declared — nothing
+hidden)»** e nunca nomeava os que ficavam fora — o título a prometer exactamente sobre a coisa
+escondida. **Uma contagem não é uma declaração:** «12 de 15» diz que faltam três e esconde quais.
+
+Passa a **listá-los**, nos dois sabores. Pesa mais no `skilled`, que é o sabor sem ferramentas
+vivas para percorrer o resto — e é o que o braço C do benchmark usa. Verificado com três papéis:
+developer 3, qa 8, auditores 13, com a prosa a acompanhar o número em vez de o fixar.
+
+### P3 — dois contratos, não uma divergência
+
+`serving_contract.version` (v1.18-beta) e `consumer_contract_version` (v1.25) são **eixos
+opostos** — servir a jusante vs. consumir a montante. Cada um passa a declarar, onde é escrito,
+qual dos dois é e que **não se seguem**. Nenhuma versão mudou.
+
+### A consequência que declaro
+
+A hora de geração é **volátil por desenho**. O gate de determinismo (b.47) apanhou-a — como
+devia — e a resposta não foi relaxá-lo: o carimbo entra na lista de **voláteis declarados**, com
+padrão preciso (só a linha «Gerado em»), e o gate passa a reportar **28 byte-idênticos + 1
+idêntico após neutralizar · 0 divergências**. O TC-A-08 aplica a mesma neutralização declarada e
+continua a exigir igualdade byte a byte em tudo o resto.
+
+### Verificação
+
+Suite **820/820** · aceitação **180, 0 FAIL, gate PASS** (TC-F-73 novo) · **18 invariantes** ·
+**ouro do Eixo H byte-idêntico nos dois braços** · matriz **0 FALTA** · determinismo **0
+divergências**.
 
 ## 0.20.0-beta.48 — 2026-09-10
 
