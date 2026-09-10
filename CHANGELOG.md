@@ -72,6 +72,23 @@ estável passa a publicar-se em `--tag next`, e o ponteiro move-se num acto pró
 lead — `npm dist-tag add @shiftleftpt/sbd-toe-mcp@0.20.0 latest`. Uma linha; o caminho de prerelease
 **não foi tocado**.
 
+### Code scanning verde, por mérito
+
+**É a primeira release desta linha a passar a estável, e o registo di-lo:** a `0.20.0` sai com o
+CodeQL **verde**, sem `--admin` e sem excepção de política. Um produto que se vende como
+*security-by-design* não promove a estável com o scanner a vermelho e sem razão escrita.
+
+Os três alertas `js/incomplete-sanitization` em código **servido** (`src/serving/agent-guide.ts`)
+eram o escape de pipes que impede uma descrição de partir uma tabela markdown: escapava `|` e não a
+própria barra invertida. As entradas são constantes do servidor — sem caminho de dados
+não-confiáveis, e o pior desfecho seria uma linha de tabela mal formada — mas **o escape passa a ser
+completo** (`/([\\|])/g → "\\$1"`). Nenhuma entrada actual tem barras invertidas, e isso foi
+**verificado, não assumido**: o recurso `sbd://toe/agent-guide` sai **byte a byte igual** ao de
+antes da correcção, e o oráculo do Eixo H manteve-se byte-idêntico.
+
+Os três restantes vivem em **ficheiros de teste** e ficam **dispensados com razão registada** no
+code scanning — rasto auditável, nunca silêncio.
+
 ### Verificação
 
 Suite 820/820 · aceitação 180 · 0 FAIL · gate PASS · Eixo H byte-idêntico à beta.49 · Eixo I 6

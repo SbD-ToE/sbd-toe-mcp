@@ -158,7 +158,7 @@ export function generateRolesBlock(): string {
 export function generateResourcesBlock(): string {
   const rows = RESOURCE_CATALOG.map((r) => {
     const first = String(r.description).split(/(?<=\.)\s/)[0] ?? String(r.description);
-    return `| \`${r.uri}\` | ${first.replace(/\|/g, "\\|")} |`;
+    return `| \`${r.uri}\` | ${first.replace(/([\\|])/g, "\\$1")} |`;
   });
   return [`${DERIVED_NOTE}`, "", "| Resource URI | When to use |", "|---|---|", ...rows].join("\n");
 }
@@ -168,7 +168,7 @@ export function generatePromptsBlock(): string {
     const args = (p["arguments"] as Array<{ name: string; required?: boolean }> | undefined) ?? [];
     const sig = args.map((a) => (a.required === true ? a.name : `${a.name}?`)).join(", ");
     const first = String(p["description"] ?? "").split(/(?<=\.)\s/)[0] ?? "";
-    return `| \`${String(p["name"])}(${sig})\` | ${first.replace(/\|/g, "\\|")} |`;
+    return `| \`${String(p["name"])}(${sig})\` | ${first.replace(/([\\|])/g, "\\$1")} |`;
   });
   return [`${DERIVED_NOTE}`, "", "| Prompt | When to use |", "|---|---|", ...rows].join("\n");
 }
@@ -284,7 +284,7 @@ export function generateHowToAskBlock(): string {
   const soB = model.chapters.values.filter((c) => !c.reachable_by.includes("A")).map((c) => c.chapter);
   const catSoB = model.categories.values.filter((c) => !c.reachable_by.includes("A")).map((c) => c.category);
   const rows = model.how_to_ask.ways.map(
-    (w) => `| **${w.id} — ${w.name}** | ${w.when.replace(/\|/g, "\\|")} | \`${w.example}\` |`
+    (w) => `| **${w.id} — ${w.name}** | ${w.when.replace(/([\\|])/g, "\\$1")} | \`${w.example}\` |`
   );
   return [
     `${DERIVED_NOTE}`,
