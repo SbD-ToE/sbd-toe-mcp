@@ -21,8 +21,29 @@ import { parse as parseYaml } from "yaml";
 import { resolveAppPath } from "../config.js";
 
 const ONTOLOGY_PATH = "data/publish/ontology/sbdtoe-ontology.yaml";
+const LEDGER_PATH = "data/publish/ontology/declared-absences-ledger.yaml";
 
 export type AbsenceType = "gap" | "out_of_scope" | "deferred" | "elsewhere";
+
+/**
+ * 0.20.0-beta.48 (KG v1.12.0) — os ESTADOS, que vivem no LEDGER e não no índice.
+ *
+ * `withdrawn` NÃO é `closed`: closed é «a condição cumpriu-se»; withdrawn é «a PREMISSA do
+ * registo era errada — nada faltava e nada se corrige». Servi-lo como fechado diria que
+ * houve uma dívida que se pagou, quando nunca houve dívida.
+ */
+export type AbsenceStatus = "open" | "closed" | "withdrawn" | "reopened";
+
+/** Uma transição registada no ledger append-only. */
+export interface LedgerTransition {
+  absence_id: string;
+  transition: AbsenceStatus;
+  date?: string;
+  grounds?: string;
+  evidence?: string;
+  verified_by?: string;
+  registered_by?: string;
+}
 
 export interface DeclaredAbsence {
   absence_id: string;
@@ -46,6 +67,8 @@ export interface DeclaredAbsence {
 export interface AbsenceModel {
   criterion?: string;
   closure_rule?: string;
+  status_ledger?: string;
+  transitions?: Record<string, string>;
   values?: Record<string, string>;
   debt_of?: string[];
   note?: string;
@@ -54,6 +77,9 @@ export interface AbsenceModel {
 interface Cache {
   items: DeclaredAbsence[];
   model: AbsenceModel | undefined;
+  /** Última transição por ausência — o ledger é append-only, a última é a que vale. */
+  ledger: Map<string, LedgerTransition>;
+  ledgerRule: string | undefined;
 }
 let cache: Cache | undefined;
 
@@ -61,11 +87,33 @@ export function _resetDeclaredAbsencesCacheForTests(): void {
   cache = undefined;
 }
 
+/**
+ * 0.20.0-beta.48 — o LEDGER de transições, append-only, e a regra que o torna autoridade.
+ *
+ * O índice e o ledger estão DELIBERADAMENTE em desacordo entre emissões de modelo: o índice
+ * só absorve transições quando corta versão (two-pass), e o ledger regista-as no momento. A
+ * regra ratificada é que **em divergência o ledger prevalece para `status`** — e ignorá-lo
+ * reintroduziria exactamente o defeito da b.45 (servir como dívida em aberto o que já não é),
+ * desta vez pelo mecanismo que existe para evitar churn de versões.
+ */
+function loadLedger(): Map<string, LedgerTransition> {
+  const path = resolveAppPath(LEDGER_PATH);
+  const out = new Map<string, LedgerTransition>();
+  if (!existsSync(path)) return out;
+  const doc = parseYaml(readFileSync(path, "utf-8")) as { transitions?: unknown };
+  if (!Array.isArray(doc.transitions)) return out;
+  for (const raw of doc.transitions as LedgerTransition[]) {
+    if (typeof raw?.absence_id !== "string" || typeof raw?.transition !== "string") continue;
+    out.set(raw.absence_id, raw); // append-only: a última transição de cada id é a que vale
+  }
+  return out;
+}
+
 function load(): Cache {
   if (cache !== undefined) return cache;
   const path = resolveAppPath(ONTOLOGY_PATH);
   if (!existsSync(path)) {
-    cache = { items: [], model: undefined };
+    cache = { items: [], model: undefined, ledger: new Map(), ledgerRule: undefined };
     return cache;
   }
   const doc = parseYaml(readFileSync(path, "utf-8")) as Record<string, unknown>;
@@ -74,7 +122,7 @@ function load(): Cache {
   const items = Array.isArray(raw)
     ? (raw as DeclaredAbsence[]).filter((a) => typeof a?.absence_id === "string" && typeof a?.absence_type === "string")
     : [];
-  cache = { items, model };
+  cache = { items, model, ledger: loadLedger(), ledgerRule: model?.status_ledger };
   return cache;
 }
 
@@ -104,9 +152,17 @@ export interface AbsenceBand {
    * que esta banda fazia até aqui: lia o `absence_type` e ignorava o `status`. Um consumidor
    * que agisse sobre isso ia trabalhar sobre uma dívida já paga.
    */
-  status: "open" | "closed";
+  status: AbsenceStatus;
   is_debt: boolean;
   is_boundary: boolean;
+  /**
+   * 0.20.0-beta.48 — de ONDE veio o estado. O ledger prevalece sobre o índice para `status`;
+   * quando divergem, a banda mostra as duas coisas, porque achatar a divergência esconderia
+   * o mecanismo que a produz (o índice só absorve transições quando corta versão).
+   */
+  status_source?: "ledger" | "index";
+  ledger_transition?: LedgerTransition | undefined;
+  index_disagrees?: { index_status: string; note: string } | undefined;
   closed_on?: string;
   closed_evidence?: string;
   closed_registered_by?: string;
@@ -188,6 +244,7 @@ export function absenceBand(
       ...superseded,
       absence_type: "unindexed",
       status: "open",
+      status_source: "index",
       is_debt: false,
       is_boundary: false,
       what_it_means:
@@ -202,12 +259,34 @@ export function absenceBand(
    * verificável e com quem verificou — é a `closure_rule` da v2.8, que generaliza a regra da
    * b.40 («o registo é do índice, nunca da superfície») ao fecho.
    */
-  const closed = a.status === "closed";
+  /*
+   * PRECEDÊNCIA: o ledger manda no `status`. O índice mantém as tipagens (a espécie) e só
+   * absorve transições quando corta versão — entre emissões, ficam de propósito em desacordo.
+   */
+  const t = load().ledger.get(a.absence_id);
+  const indexStatus = (a.status ?? "open") as AbsenceStatus;
+  const status: AbsenceStatus = t?.transition ?? indexStatus;
+  const closed = status === "closed";
+  const withdrawn = status === "withdrawn";
+  const settled = closed || withdrawn;
   return {
     ...superseded,
     absence_type: a.absence_type,
-    status: closed ? "closed" : "open",
-    is_debt: !closed && (a.absence_type === "gap" || a.absence_type === "deferred"),
+    status,
+    status_source: t !== undefined ? "ledger" : "index",
+    ...(t !== undefined ? { ledger_transition: t } : {}),
+    ...(t !== undefined && t.transition !== indexStatus
+      ? {
+          index_disagrees: {
+            index_status: indexStatus,
+            note:
+              "O índice ainda mostra este estado porque só absorve transições quando corta versão " +
+              "(two-pass); o LEDGER regista-as no momento e **prevalece para `status`**. A divergência " +
+              "vem à vista de propósito — achatá-la esconderia o mecanismo que a produz."
+          }
+        }
+      : {}),
+    is_debt: !settled && (a.absence_type === "gap" || a.absence_type === "deferred"),
     is_boundary: a.absence_type === "out_of_scope",
     ...(a.closed_on !== undefined ? { closed_on: a.closed_on } : {}),
     ...(a.closed_evidence !== undefined ? { closed_evidence: a.closed_evidence } : {}),
@@ -220,10 +299,14 @@ export function absenceBand(
     ...(a.trigger !== undefined ? { trigger: a.trigger } : {}),
     ...(a.decided_by !== undefined ? { decided_by: a.decided_by } : {}),
     ...(a.decided_on !== undefined ? { decided_on: a.decided_on } : {}),
-    what_it_means: closed
-      ? `FECHADA em ${a.closed_on ?? "data não registada"} — foi \`${a.absence_type}\` e já não é. ` +
-        "Não ajas sobre ela como dívida em aberto; a evidência do fecho vem em `closed_evidence`."
-      : MEANING[a.absence_type],
+    what_it_means: withdrawn
+      ? `RETIRADA em ${t?.date ?? "data não registada"} — **a PREMISSA do registo era errada**. ` +
+        "Não é «fechou»: nada faltava e nada se corrige. Não esperes por ela, não a contes como " +
+        "dívida paga, e lê o `grounds` para saber que princípio a dissolveu."
+      : closed
+        ? `FECHADA em ${t?.date ?? a.closed_on ?? "data não registada"} — foi \`${a.absence_type}\` e já ` +
+          "não é. Não ajas sobre ela como dívida em aberto; a evidência do fecho vem com o registo."
+        : MEANING[a.absence_type],
     note: context
   };
 }

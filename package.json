@@ -1,6 +1,6 @@
 {
   "name": "@shiftleftpt/sbd-toe-mcp",
-  "version": "0.20.0-beta.47",
+  "version": "0.20.0-beta.48",
   "license": "Apache-2.0",
   "description": "MCP server for the SbD-ToE (Security by Design — Theory of Everything) security manual — structured tools for Claude, GitHub Copilot and other MCP clients",
   "keywords": [
@@ -62,6 +62,7 @@
     "data/publish/semantic/ctrl_acore_alignment.jsonl",
     "data/publish/semantic/macro_processes.jsonl",
     "data/publish/semantic/mp_edges.jsonl",
+    "data/publish/semantic/antipattern_authored_links.jsonl",
     "data/publish/runtime/",
     "data/publish/overlay/external_frameworks.json",
     "data/publish/overlay/external_obligations.json",
@@ -70,6 +71,7 @@
     "data/publish/overlay/framework_overlay_index.json",
     "data/publish/ontology/appsec-core-ontology.yaml",
     "data/publish/ontology/sbdtoe-ontology.yaml",
+    "data/publish/ontology/declared-absences-ledger.yaml",
     "data/entities/proportionality.json",
     "data/entities/sdlc_integration.json",
     "data/reports/run_manifest.json",

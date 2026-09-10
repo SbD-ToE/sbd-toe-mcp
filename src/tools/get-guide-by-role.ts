@@ -14,7 +14,7 @@
 import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 import { buildActivationVocabulary } from "../serving/activation-vocabulary.js";
 import type { Practice, PracticeAssignment, UserStory } from "./ontology-loader.js";
-import { getOntologyData, resolvePhaseId, resolveRoleId } from "./ontology-loader.js";
+import { roleScopeOf, getOntologyData, resolvePhaseId, resolveRoleId } from "./ontology-loader.js";
 import { _resolveConsultResult } from "./consult-security-requirements.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { guideByRoleAffordances } from "../serving/affordances.js";
@@ -316,6 +316,8 @@ export function _resolveGuideByRole(
     filteredAssignments.map((assignment) => assignment.user_story?.id).filter((x): x is string => typeof x === "string")
   ).size;
 
+  const roleScope = typeof canonicalRole === "string" ? roleScopeOf(canonicalRole, ontologyData.roles ?? []) : undefined;
+
   return {
     risk_level: riskLevel,
     roleFilter: roleArg,
@@ -342,13 +344,33 @@ export function _resolveGuideByRole(
               absenceNaming(canonicalRole)?.absence_id,
               `atribuições de prática para o papel \`${canonicalRole}\``
             ),
+            /*
+             * 0.20.0-beta.48 (v2.10) — ZERO-ESPERADO, não lacuna.
+             *
+             * Esta nota dizia «ausência de MAPEAMENTO nesta superfície», o que se lê como
+             * lacuna que alguém há-de fechar. Para um papel `inter_instance` **é o estado
+             * CORRECTO**: o fornecedor não é um actor dentro da instância — é onde OUTRA
+             * instância começa. Perguntar que práticas executa é perguntar o que a instância
+             * dele executa, e a resposta é «as mesmas, no seu próprio grafo». O que a NOSSA
+             * instância modela é a INTERFACE. Foi por isto que o ABS-003 foi RETIRADO: a
+             * premissa do registo era errada.
+             */
+            ...(roleScope !== undefined ? { role_scope: roleScope } : {}),
             note:
-              `O papel \`${canonicalRole}\` é CANÓNICO e publicado (vocabulário e guia), mas esta superfície não ` +
-              `tem atribuições de prática para ele: o bundle publica assignments para ${rolesWithAssignments.length} papéis. ` +
-              "NÃO é ausência de responsabilidades — é ausência de MAPEAMENTO nesta superfície. Não digas que o papel " +
-              "não tem nada a fazer, nem geres um subagente com base neste vazio: para o que o Manual exige nesta " +
-              "área usa `select_sbd_toe_requirements` (por concern ou por estrutura, ex.: " +
-              '`chapters=["14-governanca-contratacao"]`), e `get_sbd_toe_chapter_brief` para o capítulo.',
+              roleScope === "inter_instance"
+                ? `O papel \`${canonicalRole}\` é CANÓNICO e tem alcance **\`inter_instance\`**: não é um actor ` +
+                  "dentro desta instância — é onde OUTRA começa. **Zero atribuições é o estado CORRECTO e " +
+                  "esperado, não uma lacuna**: perguntar que práticas ele executa é perguntar o que a instância " +
+                  "dele executa, e a resposta é «as mesmas, no seu próprio grafo». O que o Manual modela é a " +
+                  "INTERFACE — cláusulas, validação, evidência entregue, acesso condicionado. Está em " +
+                  "`select_sbd_toe_requirements(risk_level=…, chapters=[\"14-governanca-contratacao\"])`, " +
+                  "com GOV-006 e GOV-007 como porta."
+                : `O papel \`${canonicalRole}\` é CANÓNICO e publicado (vocabulário e guia), mas esta superfície não ` +
+                  `tem atribuições de prática para ele: o bundle publica assignments para ${rolesWithAssignments.length} papéis. ` +
+                  "NÃO é ausência de responsabilidades — é ausência de MAPEAMENTO nesta superfície. Não digas que o papel " +
+                  "não tem nada a fazer, nem geres um subagente com base neste vazio: para o que o Manual exige nesta " +
+                  "área usa `select_sbd_toe_requirements` (por concern ou por estrutura, ex.: " +
+                  '`chapters=["14-governanca-contratacao"]`), e `get_sbd_toe_chapter_brief` para o capítulo.',
           },
         }
       : {}),

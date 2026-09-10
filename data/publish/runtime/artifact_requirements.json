@@ -316,6 +316,7 @@
         "04-arquitetura-segura",
         "05-dependencias-sbom-sca",
         "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
         "08-iac-infraestrutura",
         "09-containers-imagens",
         "11-deploy-seguro",
@@ -3842,10 +3843,10 @@
       "description": "Supplier Assessment must be produced and retained as auditable evidence for practices such as Incorporação de restrições legais, normativas e contratuais, Ciclo contínuo de revisão e reavaliação de exceções, Cláusulas contratuais de segurança.",
       "evidence": [
         "control CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628 references supplier_assessment",
+        "corpus document 010-sbd-manual/00-fundamentos/intro.md matched aliases ['fornecedor']",
         "corpus document 010-sbd-manual/00-fundamentos/macro-processos.md matched aliases ['fornecedor']",
-        "corpus document 010-sbd-manual/05-dependencias-sbom-sca/addon/01-inventario-sbom.md matched aliases ['fornecedor']",
-        "corpus document 010-sbd-manual/09-containers-imagens/addon/12-self-hosted-inference.md matched aliases ['third party']",
-        "corpus document 010-sbd-manual/10-testes-seguranca/addon/14-tlpt-readiness.md matched aliases ['third party']"
+        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/fornecedores-terceiros.md matched aliases ['fornecedor']",
+        "corpus document 010-sbd-manual/05-dependencias-sbom-sca/addon/01-inventario-sbom.md matched aliases ['fornecedor']"
       ],
       "evidence_chapter_ids": [],
       "evidence_chapters_absence": {
@@ -4352,6 +4353,24 @@
     "consult",
     "review"
   ],
+  "required_by_level_profile_absence": {
+    "absence_type": "gap",
+    "debt_of": "ontology_model",
+    "decided_by": "Orchestrator 2026-09-09 (veredicto sobre a paragem do caso-teste)",
+    "reason": "base por-exigência não derivável de arestas autoradas: as expected_artifacts dos EPs nascem de correspondência (aliases/refs de controlos), sem confiança publicada em superfície — e semantic_scored_family declara «pontuado, não autorado, não prescreve»; devolvida ao modelo (Archon)",
+    "status": "not_materialized"
+  },
+  "retired_fields": {
+    "cited_chapter_ids": {
+      "assertion": null,
+      "published": false,
+      "reason": "terceira via (legacy_no_verb_clause v2.9): resto de união legada — critério de pertença não enunciável como verbo fundado; sem asserção, não se serve como afirmação"
+    },
+    "mandatory": {
+      "published": false,
+      "reason": "APOSENTADO (gate 2026-09-09, Q-T1): FABRICADO — hardcoded no construtor (artifact_catalog.py:574), nunca leu a fonte; o Manual não publica obrigatório-vs-recomendado por artefacto (sinal autorado é por nível → required_by_level_profile)"
+    }
+  },
   "source_artifact": "data/entities/artifact_requirements.json",
   "traversal_assertions": {
     "defining_chapter_ids": {

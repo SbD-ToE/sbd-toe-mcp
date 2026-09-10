@@ -1,6 +1,6 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 273,
+  "count": 274,
   "entity_type": "EvidencePattern",
   "items": [
     {
@@ -2568,6 +2568,52 @@
       "source_mode": "explicit",
       "supported_signal_ids": [],
       "verification_logic": "Runners com isolamento forte (containers efémeros, VMs descartáveis); sem acesso ao Docker socket por jobs não privilegiados; sem capacidades de escalonamento de privilégios; logs de tentativas bloqueadas disponíveis.",
+      "verification_when": null
+    },
+    {
+      "authority_class": "normative",
+      "confidence_model": "deterministic",
+      "detectable_in": [
+        "ci_cd",
+        "documentation"
+      ],
+      "evidence_expectation": "Cada promoção entre ambientes é atribuível a uma pessoa identificada: quem a decidiu ou, quando promove automaticamente, quem aprovou os critérios ao abrigo dos quais promove. O registo identifica a pessoa (não apenas papel ou conta de serviço), o critério aplicado e a evidência avaliada. A promoção automática exige critérios determinísticos, versionados e pré-aprovados, e o nível de autonomia declarado quando a promoção for executada por um agente; saída de modelo probabilístico não constitui critério de promoção.",
+      "evidence_type": "workflow",
+      "expected_artifact_type_ids": [
+        "ART-approval-record-6fe32eb803",
+        "ART-environment-inventory-154c4568fd"
+      ],
+      "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-approval-record-6fe32eb803",
+          "confidence": 0.68,
+          "name": "Approval Record",
+          "shared_salient_tokens": [
+            "registo"
+          ]
+        },
+        {
+          "artifact_type_id": "ART-environment-inventory-154c4568fd",
+          "confidence": 0.54,
+          "name": "Environment Inventory",
+          "shared_salient_tokens": [
+            "ambiente"
+          ]
+        }
+      ],
+      "id": "EP-CIC-011",
+      "maps_to_control_id": "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
+      "maps_to_control_name": "Integridade e governação de pipelines",
+      "maps_to_requirement_id": "CIC-011",
+      "requirement_category": "CIC",
+      "requirement_name": "Promoção entre ambientes atribuível a um responsável identificado",
+      "responsible_roles": [],
+      "risk_level_hint": "L2+",
+      "source_bundle": "07-cicd-seguro",
+      "source_document": "010-sbd-manual/07-cicd-seguro/addon/00-catalogo-requisitos.md",
+      "source_mode": "explicit",
+      "supported_signal_ids": [],
+      "verification_logic": "Cada promoção entre ambientes é atribuível a uma pessoa identificada: quem a decidiu ou, quando promove automaticamente, quem aprovou os critérios ao abrigo dos quais promove. O registo identifica a pessoa (não apenas papel ou conta de serviço), o critério aplicado e a evidência avaliada. A promoção automática exige critérios determinísticos, versionados e pré-aprovados, e o nível de autonomia declarado quando a promoção for executada por um agente; saída de modelo probabilístico não constitui critério de promoção.",
       "verification_when": null
     },
     {
@@ -11531,5 +11577,10 @@
   "profiles": [
     "review"
   ],
-  "source_artifact": "data/entities/evidence_patterns.json"
+  "source_artifact": "data/entities/evidence_patterns.json",
+  "traversal_assertion": {
+    "does_not_assert": "que a prova existe na organização; só o que contaria como prova",
+    "source": "EPs determinísticos (critério do catálogo / docs de validação)",
+    "verb": "interpreta-como-prova-de"
+  }
 }

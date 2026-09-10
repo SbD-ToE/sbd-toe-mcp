@@ -252,11 +252,11 @@ export const scenarios = [
       if (!d.coverage) return fail("no coverage envelope (G1)"); const act = d.data?.activated ?? []; if (act.length === 0) return fail("nothing activated"); if (act.length > 3) return fail("page > limit");
       const u = await c.tool("map_sbd_toe_regulatory_activation", { framework: "PCI" }); const honest = !u.ok || (u.data?.data?.activated?.length ?? 0) === 0;
       return ok(`DORA: ${act.length}/${d.coverage.chapters ?? d.coverage.total} chapters, mappings ${d.coverage.mappings}, obligations ${d.coverage.obligations}; unknown framework → ${honest ? "honest empty/error" : "activated?!"}`); } },
-  { id: "TC-F-08", axis: "F", title: "curated requirement→control layer v3 (KG v1.8.0 dev-build): 305 links, 0 unlinked, curated 16, catalogue rules tolerated", tool: "resolve_entities",
+  { id: "TC-F-08", axis: "F", title: "curated requirement→control layer v3 (KG v1.12.0): 306 links (KG v1.12.0: +CIC-011), 0 unlinked, curated 16, catalogue rules tolerated", tool: "resolve_entities",
     run: async (c, ctx) => { const links = await c.tool("resolve_entities", { record_type: "requirement_control_link", limit: 1 }); if (!links.ok) return fail(links.error);
       const gaps = []; for (const L of ["L1", "L2", "L3"]) { const r = await c.tool("consult_security_requirements", { risk_level: L }); gaps.push(r.data?.coverage_gaps?.requirements_without_control_link?.count); }
-      if (links.data.total !== 305) return fail(`links total ${links.data.total} (expected 305 = 141 catalogue-rule + 148 recalculated + 16 curated; v1.8.0 dev-build)`, "graph");
-      if (ctx.links.total !== 305) return fail(`published file carries ${ctx.links.total} links`, "graph");
+      if (links.data.total !== 306) return fail(`links total ${links.data.total} (expected 306 = 141 catalogue-rule + 149 recalculated + 16 curated; KG v1.12.0 (+CIC-011))`, "graph");
+      if (ctx.links.total !== 306) return fail(`published file carries ${ctx.links.total} links`, "graph");
       if (gaps.some((g) => g !== 0)) return fail(`coverage_gaps ${gaps}`);
       const cur = ctx.links.curationByCurator; if ((cur["archon-2026-08-29"] ?? 0) !== 12 || (cur["archon-2026-08-30"] ?? 0) !== 4) return fail(`curated on surface ${JSON.stringify(cur)} (expected 12 + 4, incl. GOV-013 CAP secondary)`, "graph");
       const unknownJust = ctx.links.justifications.filter((j) => !["bundle_grounding", "catalogue_rule", "catalogue_rule_secondary", "chapter_grounding", "curated_semantic_review", "domain_mapping", "lexical_alignment", "requirement_domain_hint", "single_control_bundle", "domain_owner_fallback", "foundational_domain_unique", "preferred_domain_unique", "preferred_domain_strong", "preferred_domain_disambiguated", "baseline_domain_lexical"].includes(j));
@@ -1518,7 +1518,13 @@ export const scenarios = [
       // conclusão para a proibir não é afirmá-la — mesmo tropeço do obituário do minLevel.
       const semProibicao = (d.unsupported_role.note ?? "").replace(/N[ÃA]O digas[\s\S]*?vazio,?/i, " ");
       if (/não tem nada a fazer|sem responsabilidades/i.test(semProibicao)) return fail("a nota conclui ausência de responsabilidades");
-      if (!/N[ÃA]O é aus[êe]ncia de responsabilidades|aus[êe]ncia de MAPEAMENTO/i.test(d.unsupported_role.note ?? ""))
+      /*
+       * 0.20.0-beta.48: para um papel `inter_instance` a nota é MAIS forte do que «ausência de
+       * mapeamento» — diz que zero é o estado CORRECTO e esperado (zero-esperado, v2.10), e a
+       * ausência que a sustentava foi RETIRADA (ABS-003, premissa errada). O cenário aceita as
+       * duas formas: o que continua proibido é concluir ausência de responsabilidades.
+       */
+      if (!/N[ÃA]O é aus[êe]ncia de responsabilidades|aus[êe]ncia de MAPEAMENTO|estado CORRECTO e esperado/i.test(d.unsupported_role.note ?? ""))
         return fail("a nota não distingue ausência de mapeamento de ausência de responsabilidades");
       // o agravante: knownRoles omitia o papel que a própria resposta resolveu
       if (!(d.meta?.knownRoles ?? []).includes("fornecedores-terceiros"))

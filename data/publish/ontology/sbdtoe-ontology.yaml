@@ -1,12 +1,18 @@
 meta:
   name: SbD-ToE Manual Ontology
-  version: '2.8'
+  version: '2.10'
   status: current
   scope: Manual ontology
-  tag: sbdtoe-ontology-v2.8
+  tag: sbdtoe-ontology-v2.10
   history:
   - version: '2.0'
     note: V2 backbone + semantic layer (imported baseline from sbd-toe-knowledge-graph)
+  - version: '2.10'
+    date: '2026-09-09'
+    note: "Pacote ratificado (gate 2026-09-09, registo agentic/decisions/2026-09-09-principio-de-alcance-da-prescricao.md) + resposta à devolução Q-T2: prescription_reach_principle (3 alcances com verbo; fractal, não cascata; tier do meio vazio DE PAPÉIS porque o Manual o exprime como REQUISITOS — «(Jurídico + Procurement)» aparece entre parênteses, nunca canonizado); Role.role_scope (12 intra_instance · 1 inter_instance · tier do meio declarado vazio; expectativas estruturais: intra com 0 atribuições é ACHADO, inter com 0 é ESTADO CORRECTO DECLARADO); absence_model.transitions (open/closed/withdrawn/reopened; re-tipar = índice/corta versão, retirar = ledger/não corta); Q-T2: a premissa da base por-exigência CAIU (a única aresta artefacto↔prova é pontuada — correspondência, «não prescreve»; deriver prescrição dela violaria a asserção publicada; limiar recusado) — required_by_level_profile fica NÃO-MATERIALIZÁVEL no estado actual (ABS-013, gap/ontology_model/Archon), a união mantém-se com asserção sólida (cadeia curada/declarada, sem scoring), e o caminho legítimo é camada curada texto-autorado(addon-07 «Evidência esperada»)→artifact_type — decisão do lead. Zero valores alterados; aditivo."
+  - version: '2.9'
+    date: '2026-09-09'
+    note: "Pacote único ratificado (gate 2026-09-09 + ledger ratificado 2026-09-08): Q-T1 mandatory APOSENTADO (diagnóstico corrigido: FABRICADO, hardcoded artifact_catalog.py:574 — a v2.6 dizia «legacy constante», sub-diagnóstico; serve-se published:false; remoção física = contrato KG); Q-T2 required_by_level_profile como BASE por-exigência (risk_level_hint dos EPs, 273/0 nulls) com required_for_levels documentado como PROJECÇÃO-∃ e o mínimo como segunda projecção; traversal_assertion_rule alargada a campos derivados + TERCEIRA VIA (dado legado sem verbo enunciável → asserção NONE, published:false, VIA EXCLUSIVA DE LEGADO — nenhuma travessia nova nasce nela); catálogo de asserções 8 → 19 entradas (achado principal: requirement_maps_to_control — 305 ligações, a ponte curada requisito→controlo, a maior travessia do produto — servida sem asserção; entra com as 3 vias declaradas) + artifact_cited_chapters registado como assertion:none; LEDGER de ausências estreado (ontology/declared-absences-ledger.yaml, append-only; índice = tipagens, ledger = transições; ledger prevalece para status; sync por emissão). ABS-011 NÃO entra (errata por aterrar — será a primeira transição do ledger). Zero valores alterados: tudo aditivo (comentários + chaves novas)."
   - version: '2.8'
     date: '2026-09-08'
     note: "Manutenção do índice de ausências (dispatch do Orchestrator; painel 6·0·0 na beta.44): fecho registado de ABS-005 (163 decision_involvements servidos; gestão executiva 18, 12 no cap. 01 — 7 âncoras ratificadas + 5 encontradas pelas regras) e de ABS-012 (13 células FALTA a zero, estáveis por dois re-pins); correcção factual na evidence de ABS-005 (são 7 linhas, não 6); triagem de ABS-003 resolvida com a espécie nova (0 involvements + 0 assignments → debt_of manual_content, dono Author); absence_model ganha closure_rule (o registo de fecho é do índice, nunca da superfície — regra b.40 generalizada) e a distinção prevenção-vs-declaração na via de build (portão de completude = primeira instância medida do never_silence_principle; espécie que nunca pode instanciar-se não existe). Invariantes v2.2–v2.7 intocadas."
@@ -120,6 +126,8 @@ epistemic_model:
     note: "«não modelado» NÃO é valor próprio — é gap/deferred com debt_of: ontology_model"
     build_declarations: "v2.7 (extracção nunca-silenciosa do Codex, confirmada sem valor novo): declarações de build — tabela que não conseguiu ler, rótulo que não mapeou, papel que não resolveu — usam este vocabulário AO NÍVEL DO REGISTO: absence_type gap, debt_of kg_surface por defeito, re-triável para manual_content quando o diagnóstico é forma autoral (ex.: coluna SLA em falta no cap. 05; linha-pipe sem cabeçalho no cap. 11); a triagem pode mover debt_of, nunca silenciar o registo."
     closure_rule: "v2.8: fechar uma ausência é REGISTO NO ÍNDICE — com evidência verificável, quem verificou e onde — nunca declaração da superfície («o registo é do índice, nunca da superfície», regra da b.40 generalizada para o fecho). Uma superfície pode evidenciar a condição cumprida; só o índice fecha. Itens fechados ficam no índice (append-only) com status: closed."
+    status_ledger: "v2.9 (ratificado 2026-09-08, estreado nesta emissão): as TRANSIÇÕES DE ESTADO registam-se em ontology/declared-absences-ledger.yaml (append-only) NO MOMENTO, com evidência e verificador, SEM corte de versão; o índice mantém as definições e tipagens (nascer/re-tipar = modelo = corta versão); EM DIVERGÊNCIA, O LEDGER PREVALECE PARA status; cada emissão de modelo absorve o ledger com sync declarado (à imagem do two-pass do registry). O ledger é DO ÍNDICE — a closure_rule mantém-se: a superfície nunca fecha nada."
+    transitions: {open: "estado inicial de qualquer ausência declarada", closed: "condição cumprida, com evidência verificável e verificador (registo do índice/ledger, nunca da superfície)", withdrawn: "a PREMISSA do registo era errada — nada faltava e nada se corrige; o registo mantém-se append-only com o fundamento e o ponteiro para o princípio que o dissolve", reopened: "nova evidência reabre"}  # v2.10 ratificado; re-tipar = índice (modelo, corta versão) · transitar = ledger (não corta)
     build_prevention_vs_declaration: "v2.8 (pergunta do Pontifex, respondida): a via de build tem DOIS regimes sob o never_silence_principle — PREVENÇÃO, quando um portão de completude converte a ausência silenciosa em falha de build (o artefacto não chega a produzir-se: caso do bundle incompleto — primeira instância medida do princípio na via de build; NÃO ganha espécie de ausência própria, porque uma espécie que nunca pode ser instanciada não deve existir e impedir é melhor que declarar quando impedir é possível) — e DECLARAÇÃO, quando impedir não é possível e o registo declara (as três espécies da extracção: tabela não lida, rótulo não mapeado, papel não resolvido)."
   never_silence_principle:
     # v2.7 — nomeado a partir da banda que a matriz do Pontifex descobriu por medir (caminho de erro sem banda).
@@ -432,6 +440,14 @@ entities:
     attributes:
     - role_id: string
     - aliases: list[string]
+    - role_scope: enum[intra_instance, inter_instance]  # v2.10 (Q2 ratificada): valores declarados em role_scope_assignments; o tier intra_org_other_domain fica DELIBERADAMENTE sem papéis canónicos (prescription_reach_principle)
+    role_scope_assignments:
+      intra_instance: [developer, appsec-engineer, qa, devops-sre, arquitetos-software, scrum-master, product-owner, operacoes, grc-compliance, gestao-executiva, security-champion, auditores]
+      inter_instance: [fornecedores-terceiros]
+      note_auditores: "externos ao projecto mas dentro do sistema de asseguramento da instância — intra_instance com nota; se se mostrar de fronteira, é uma linha"
+    structural_expectations_by_scope:
+      intra_instance: "assignments/involvements esperados — 0 atribuições é ACHADO"
+      inter_instance: "ZERO-ESPERADO DECLARADO — 0 assignments e 0 involvements NA NOSSA instância é o estado CORRECTO; o papel é OBJECTO dos deveres do cliente (GOV-006/007, TRN-007, GOV-014); mata a classe de falsos-achados que enganou três leitores (GR-04)"
   SDLCPhase:
     layer: core
     description: Canonical SDLC phase
@@ -634,9 +650,10 @@ entities:
     - chapter_ids: list[string]  # legado: união indiferenciada (semântica histórica; mantido inalterado)
     - defining_chapter_ids: list[string]  # v2.6, aditivo (decisão K aplicada): capítulos das source_practice_ids — onde o artefacto é PRESCRITO
     - cited_chapter_ids: list[string]  # v2.6, aditivo: chapter_ids ∖ defining_chapter_ids — proveniência sem prescrição
-    - mandatory: boolean  # legado (v2.6): constante true em 45/45 — sem valor discriminante; mantido inalterado; usar required_for_levels
-    - required_for_levels: object  # v2.6, aditivo: {L1,L2,L3} derivado pela cadeia ratificada de níveis (§1.9 do contrato KG: requisito→controlo→artefacto, applicable_levels autorados)
+    - mandatory: boolean  # APOSENTADO (v2.9; gate 2026-09-09): FABRICADO — hardcoded no construtor (artifact_catalog.py:574), nunca leu a fonte; o Manual não publica obrigatório-vs-recomendado por artefacto (publica obrigação POR NÍVEL). Correcção do sub-diagnóstico v2.6 («legacy constante»). Serve-se published:false; fica nos dados por compat; remoção física = decisão de contrato KG. Redefinição «∃ nível» desqualificada: re-daria 45/45
+    - required_for_levels: object  # v2.6; v2.9: documentado como PROJECÇÃO-∃ da base required_by_level_profile — verbo «alguma-vez-exigido-no-nível»; NÃO afirma limiar, contagem, nem obrigatório-vs-recomendado; degenera para all-true em 43/45
     - evidence_chapter_ids: list[string]  # v2.7, aditivo (Q1): capítulos cujos requisitos EXIGEM o artefacto como prova (EP→requisito→capítulo); verbo required_as_evidence_by; 37/45, 8 órfãos declarados um a um na materialização
+    - required_by_level_profile: object  # v2.10: NÃO-MATERIALIZÁVEL no estado actual (ABS-013) — a premissa v2.9 caiu: a única aresta artefacto↔prova disponível é PONTUADA (correspondência; semantic_scored_family «não prescreve»), derivar prescrição dela violaria a asserção publicada e um limiar seria número nosso (recusado pelo Orchestrator). A união (required_for_levels) mantém-se com asserção sólida — a cadeia dela (requisito→controlo curado/regra → controlo declara-produzir) é autorada/curada, sem scoring, e foi ela que reproduziu os 2 discriminantes {L2,L3}. Caminho legítimo para o perfil: camada curada texto-autorado→artifact_type a partir da coluna «Evidência esperada» do addon-07 (autorada por requisito; ENC sem plano — F2) — decisão do lead (ABS-013)
     assertion_notes: "v2.7 (Q1 — «posse» não existe na fonte e a palavra sai do vocabulário servido): defining_chapter_ids afirma produced_or_operated_by (as práticas autoradas do capítulo produzem/operam o artefacto; 45/45, 35 com >1 — a multiplicidade é facto) e NÃO afirma exclusividade, casa única, nem exigência; evidence_chapter_ids afirma required_as_evidence_by e NÃO afirma produção; nenhuma das duas afirma prioridade entre capítulos nem implicação entre produção e exigência (Jaccard 0,36). O nome defining_chapter_ids mantém-se por aditividade — nos CONTROLOS «defining» é possessivo legítimo (17/20 com um único capítulo definidor no template); nos artefactos era nome herdado, corrigido por documentação, não por rename."
   ImplementationRule:
     layer: stub
@@ -4771,6 +4788,15 @@ macro_processes:
 # ---------------------------------------------------------------------------
 # segmentation_principle + declared_absences (v2.6, 2026-09-07 — decisões do programme lead)
 # ---------------------------------------------------------------------------
+prescription_reach_principle:
+  # v2.10 (ratificado 2026-09-09) — terceiro princípio nomeado: o que a prescrição ALCANÇA.
+  statement: "O Manual prescreve com três alcances, e cada afirmação sobre um actor carrega o seu: dentro do domínio, PRESCREVE; dentro da organização mas noutro domínio, REQUER-QUE-EXISTA; fora da organização, REQUER-ALINHAMENTO-DEMONSTRÁVEL. O Manual é FRACTAL, não em cascata: o fornecedor não é um actor dentro da instância — é onde OUTRA INSTÂNCIA começa; perguntar que práticas executa é perguntar o que a instância dele executa, e a resposta é «as mesmas, no seu próprio grafo». A nossa instância modela a INTERFACE (cláusulas, validação, evidência entregue, acesso condicionado)."
+  reaches:
+    prescribes: {position: dentro-do-domínio, verb: prescreve, expressed_as: "práticas, US na voz do papel, assignments, decision_involvements", evidence: "260 US · 1296 assignments · 163 involvements"}
+    requires_existence: {position: dentro-da-organização-outro-domínio, verb: requer-que-exista, expressed_as: "REQUISITOS sobre o que precisa de existir — nunca prescrição de como esse domínio trabalha", evidence: "GOV-006 «os contratos INCLUEM cláusulas» (não diz como o jurídico redige); GOV-007 «SÃO VALIDADOS» (não diz como o procurement negoceia); reforço verificado pelo Orchestrator: «Como GRC / Compliance (Jurídico + Procurement)» — jurídico e procurement entre PARÊNTESES, nunca canonizados. O tier do meio está vazio DE PAPÉIS porque o Manual o exprime como REQUISITOS — não se nomeiam actores num domínio que não se governa"}
+    requires_demonstrable_alignment: {position: fora-da-organização, verb: requer-alinhamento-demonstrável, expressed_as: "alinhamento provado, não adopção — «quando perguntamos o que o fornecedor tem que fazer, é o que está no CONTRATO. Se adoptar o mesmo manual, o manual diz-lhe o que fazer» (programme lead)", evidence: "0/260 US na voz do fornecedor; papel sempre objecto («cumprem, entregam, submetem-se»); «devem cumprir os mesmos padrões» = alinhamento"}
+  retroactive_power: "explica decisões tomadas antes de o princípio existir e sem o conhecer: ABS-011 (RH/PeopleOps não canonizado — tier do meio), GOV-006/007 (a fronteira já praticada), e o zero de fornecedores-terceiros lido como dívida (ABS-003 → withdrawn no ledger)"
+  authorial_note_scope: "poucas linhas na página de papéis dos fundamentos, nomeando os três alcances; SEM capítulo (âmbito fixado pelo lead)"
 segmentation_principle:
   # v2.6 — nomeado e normativo (generaliza a adenda v2.5; decisões do lead 2026-09-06 e 2026-09-07)
   statement: "MacroProcess, KnowledgeBundle (capítulo) e SDLCPhase são segmentações PARALELAS do mesmo substrato. Relações entre segmentações nunca se tipam como contenção (campo 1:1, int, «pertence a»). A cardinalidade é propriedade da vista (a vista processual cobre 15 capítulos; a vista de fases tem 8): nenhuma vista substitui ou vence outra."
@@ -4781,6 +4807,8 @@ segmentation_principle:
   traversal_assertion_rule:
     # v2.7 (ratificada 2026-09-08) — a regra que faltava ao princípio: não só a cardinalidade, o que se AFIRMA.
     statement: "Toda a travessia derivada declara: (i) o VERBO que afirma; (ii) a fonte autorada de que deriva; (iii) o que NÃO afirma (asserções negativas obrigatórias); (iv) a cobertura, com órfãos declarados um a um. Um join que não consegue nomear o verbo NÃO SE PUBLICA — «join permissivo» é violação nomeada."
+    applies_to: [travessias, campos_derivados]  # v2.9: alargada a campos derivados (Q-T2) — mesma quadra: verbo · fonte · não-afirma · cobertura
+    legacy_no_verb_clause: "v2.9 (terceira via, ratificada): quando a relação existe como DADO LEGADO e nenhum verbo fundado na fonte é enunciável, a asserção é NONE — não se inventa verbo (violação nomeada); o dado não se apaga por essa razão (remoção é decisão de contrato); as superfícies servem-no NÃO-ASSERIDO (published: false, com razão). VIA EXCLUSIVA DE LEGADO — nenhuma travessia nova pode nascer nela; nascer exige verbo."
   traversal_assertions:
     # catálogo das travessias existentes com verbo e asserções negativas (documentação; nada muda de conteúdo)
     phase_bundles: {verb: opera-na-fase, source: practice_assignments autorados, does_not_assert: "contenção; cobertura do cap. 00 (piso); equivalência fase↔capítulo"}
@@ -4791,6 +4819,19 @@ segmentation_principle:
     mp_consumes_from: {verb: consome, source: "outputs[].consumed_by verbatim + regra Entradas/Gatilhos", does_not_assert: "ordem linear única; equivalência dependency↔feedback"}
     acore_alignment: {verb: corresponde-a, source: "curadoria ratificada (102, tipada exact/partial/related)", does_not_assert: "autoria de conteúdo; cobertura por related"}
     role_holds_decision_involvement: {verb: "aprova | é-consultado", source: "estruturas publicadas (DoD, alçadas, tabelas) + curadoria com âncora", does_not_assert: "execução; RACI completo"}
+    # --- v2.9: catálogo completado (varredura ratificada; achado principal em primeiro) ---
+    requirement_maps_to_control: {verb: mapeia-para-controlo, source: "TRÊS vias declaradas, por precedência: curation (juízo humano ratificado) > catalogue_rules (regra de catálogo, type base) > scoring (grounding + léxico declarado); 305 ligações à data", does_not_assert: "exclusividade (multi-aresta permitida); que a secundária é primária; posse do requisito por um capítulo", note: "a ponte curada requisito→controlo — a maior travessia do produto e a afirmação central do programa; estava servida sem asserção (lacuna máxima do catálogo, fechada aqui)"}
+    normative_explicit_family: {verb: "implementado-por | atribui | ocorre-na-fase | operacionaliza", source: "estruturas autoradas explícitas (practice_assignments dos templates, US, tabelas)", does_not_assert: "autoridade de decisão (essa é role_holds_decision_involvement); completude fora do publicado", covers: [control_implemented_by_practice, practice_has_assignment, assignment_assigns_role, assignment_occurs_in_phase, practice_has_user_story]}
+    control_produces_artifact: {verb: declara-produzir, source: "artifact_types dos templates de controlo", does_not_assert: "produção observada em runtime; exigência probatória"}
+    threat_mitigated_by_control: {verb: "mitigado-por (composto)", source: "cadeia declarada ameaça→requisito→controlo (mitigated_by estrutural + camada requisito→controlo)", does_not_assert: "mitigação directa autorada; suficiência da mitigação"}
+    semantic_scored_family: {verb: "implementa | operacionaliza | viola | expõe | suporta-prova", source: "tier semântico PONTUADO (bounded; extracção assistida, preservada)", does_not_assert: "prescrição; autoria do Manual; nada acima da confiança bounded declarada", covers: [mechanism_control_links, pattern_control_links, pattern_requirement_links, antipattern_requirement_links, antipattern_threat_links, signal_evidence_links]}
+    ep_maps_to: {verb: interpreta-como-prova-de, source: "EPs determinísticos (critério do catálogo / docs de validação)", does_not_assert: "que a prova existe na organização; só o que contaria como prova"}
+    external_overlay_family: {verb: "cobre | aponta-para", source: "overlay externo curado (obligation_maps_to_*, playbook_*)", does_not_assert: "autoria do Manual — correspondência externa, coverage_compensated", covers: [obligation_maps_to_bundle, obligation_maps_to_requirement, obligation_maps_to_control, obligation_maps_to_practice, obligation_expects_evidence, playbook_highlights_bundle, playbook_references_overlay]}
+    navigation_family: {verb: "remete-para | referencia-política", source: "referrals e links de política derivados de estrutura editorial", does_not_assert: "relação normativa; só navegação", covers: [cross_layer_referrals, bundle_policy_links]}
+    chunk_entity_mentions: {verb: menciona, source: "presença literal do id no texto autorado", does_not_assert: "prescrição; relevância — só ocorrência", note: "o único verbo de citação REAL disponível; se um consumidor precisar de citação verdadeira de artefactos, deriva-se DAQUI como travessia nova"}
+    chunk_relation_hints: {verb: sugere, source: "hints estruturados de proximidade editorial", does_not_assert: "NADA além de sugestão — não é asserção; consumo exige revalidação"}
+    artifact_cited_chapters: {assertion: none, reason: "terceira via (legacy_no_verb_clause): resto de união legada (chapter_ids ∖ defining) — o critério de pertença não é enunciável como verbo fundado na fonte; servido published:false (correcção do Pontifex confirmada como estado final); a AUSÊNCIA é a resposta certa", does_not_assert: "tudo"}
+    field_assertions_pointer: {note: "asserções de CAMPOS derivados (applies_to alargado): mandatory (aposentado — sem asserção, fabricado) e required_by_level_profile/projecções — documentadas no schema de ArtifactRequirement"}
   derivations:
     phase_bundles: "SDLCPhase.bundle_ids = capítulos com >=1 practice_assignment autorado na fase (papel×nível×fase publicados no Manual). Verificado 2026-09-07: plan 8 · design 7 · develop 9 · build 6 · test 6 · deploy 10 · operate 12 · govern 11 — design inclui o cap. 04 e develop o cap. 06 porque os assignments o publicam; 6 dos 7 capítulos ausentes do rollout regressam (o 00 entra como piso). O cap. 00 fica fora desta derivação POR SER PISO, não por ausência."
     artifact_defining_chapters: "ArtifactRequirement.defining_chapter_ids = capítulos das source_practice_ids (decisão K, precedente ratificado v2.1/contrato §1.20); cited_chapter_ids = chapter_ids ∖ defining (ex. verificado: SBOM 7 definidores vs 15 citados)"
@@ -4799,6 +4840,7 @@ segmentation_principle:
   - "MacroProcess ↔ SDLCPhase: travessia N:M parcial nos dois sentidos e NÃO publicada — out_of_scope (ABS-001); derivação proibida"
   - "manual_chapter e mandatory não são removidos nem alterados — ganham companhia (bundle_ids; required_for_levels)"
 declared_absences:
+  status_ledger: ontology/declared-absences-ledger.yaml  # v2.9 — transições de estado; prevalece para status; ver absence_model.status_ledger
   # v2.6 — índice central das ausências declaradas, tipadas pelo absence_model. Regra de imutabilidade aditiva:
   # os blocos locais de v2.2–v2.5 (requirement_selection_model.status.*, acore_alignment.unaligned,
   # macro_processes.sdlc_phase_traversal, catalogue_rules) mantêm o texto original SEM alteração; A TIPAGEM DESTE
@@ -4907,6 +4949,15 @@ declared_absences:
     closed_on: '2026-09-08'
     closed_evidence: "as 13 células FALTA a ZERO, no repo e no publicado, estáveis através de dois re-pins; painel das leituras 6·0·0 (beta.44), verificado pelo Orchestrator no tarball publicado"
     closed_registered_by: "Archon (índice), por dispatch do Orchestrator"
+  - absence_id: ABS-013
+    statement: "required_by_level_profile (v2.9) sem base legítima — o perfil por-exigência não é derivável das arestas pontuadas artefacto↔prova"
+    absence_type: gap
+    debt_of: ontology_model
+    owner: Archon
+    decided_on: '2026-09-09'
+    evidence: "caso-teste da própria emissão v2.9 falhou (os 2 discriminantes não reproduziram); evidência das arestas verbatim «REFERENCES/MATCHED ALIAS» (correspondência, não autoria); confidence null nos 45; pontuações ~0.54 internas, não publicadas; evidence_types vazio em 273/273 requisitos; limiar recusado (violaria semantic_scored_family «não prescreve»)"
+    closes_in: "decisão do lead: (a) camada curada texto-autorado(addon-07 «Evidência esperada», por requisito)→artifact_type — extracção kg_surface + mapeamento curado com âncora (mecânica das camadas curadas; ENC sem plano, F2) e o perfil nasce legítimo; ou (b) o perfil declara-se inexistente e o atributo fica documentado como não-materializável"
+    note: "erro de premissa próprio, reconhecido: a v2.9 assumiu que os risk_level_hint chegavam ao artefacto por aresta autorada; chegam por correspondência. A ausência foi declarada à superfície pelo serving com debt_of correcto (ontology_model) — o absence_model a funcionar contra o seu autor"
 # ---------------------------------------------------------------------------
 # referenced_roles (v2.7, 2026-09-08 — caso RH/PeopleOps; ver ABS-011)
 # ---------------------------------------------------------------------------

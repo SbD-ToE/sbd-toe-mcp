@@ -9,6 +9,7 @@
       ],
       "canonical": true,
       "role_id": "developer",
+      "role_scope": "intra_instance",
       "source": "00-fundamentos/roles-responsabilidades"
     },
     {
@@ -19,6 +20,7 @@
       ],
       "canonical": true,
       "role_id": "auditores",
+      "role_scope": "intra_instance",
       "source": "00-fundamentos/roles-responsabilidades"
     },
     {
@@ -28,6 +30,7 @@
       ],
       "canonical": true,
       "role_id": "arquitetos-software",
+      "role_scope": "intra_instance",
       "source": "00-fundamentos/roles-responsabilidades"
     },
     {
@@ -37,6 +40,7 @@
       ],
       "canonical": true,
       "role_id": "appsec-engineer",
+      "role_scope": "intra_instance",
       "source": "00-fundamentos/roles-responsabilidades"
     },
     {
@@ -46,6 +50,7 @@
       ],
       "canonical": true,
       "role_id": "security-champion",
+      "role_scope": "intra_instance",
       "source": "00-fundamentos/roles-responsabilidades"
     },
     {
@@ -56,6 +61,7 @@
       ],
       "canonical": true,
       "role_id": "scrum-master",
+      "role_scope": "intra_instance",
       "source": "00-fundamentos/roles-responsabilidades"
     },
     {
@@ -65,6 +71,7 @@
       ],
       "canonical": true,
       "role_id": "qa",
+      "role_scope": "intra_instance",
       "source": "00-fundamentos/roles-responsabilidades"
     },
     {
@@ -76,6 +83,7 @@
       ],
       "canonical": true,
       "role_id": "product-owner",
+      "role_scope": "intra_instance",
       "source": "00-fundamentos/roles-responsabilidades"
     },
     {
@@ -86,6 +94,7 @@
       ],
       "canonical": true,
       "role_id": "operacoes",
+      "role_scope": "intra_instance",
       "source": "00-fundamentos/roles-responsabilidades"
     },
     {
@@ -96,6 +105,7 @@
       ],
       "canonical": true,
       "role_id": "grc-compliance",
+      "role_scope": "intra_instance",
       "source": "00-fundamentos/roles-responsabilidades"
     },
     {
@@ -108,6 +118,7 @@
       ],
       "canonical": true,
       "role_id": "gestao-executiva",
+      "role_scope": "intra_instance",
       "source": "00-fundamentos/roles-responsabilidades"
     },
     {
@@ -117,6 +128,7 @@
       ],
       "canonical": true,
       "role_id": "fornecedores-terceiros",
+      "role_scope": "inter_instance",
       "source": "00-fundamentos/roles-responsabilidades"
     },
     {
@@ -128,6 +140,7 @@
       ],
       "canonical": true,
       "role_id": "devops-sre",
+      "role_scope": "intra_instance",
       "source": "00-fundamentos/roles-responsabilidades"
     }
   ],
@@ -147,6 +160,33 @@
         "referenced_role_id": "rh-peopleops"
       }
     ]
+  },
+  "role_scope": {
+    "assignments": {
+      "inter_instance": [
+        "fornecedores-terceiros"
+      ],
+      "intra_instance": [
+        "developer",
+        "appsec-engineer",
+        "qa",
+        "devops-sre",
+        "arquitetos-software",
+        "scrum-master",
+        "product-owner",
+        "operacoes",
+        "grc-compliance",
+        "gestao-executiva",
+        "security-champion",
+        "auditores"
+      ],
+      "note_auditores": "externos ao projecto mas dentro do sistema de asseguramento da instância — intra_instance com nota; se se mostrar de fronteira, é uma linha"
+    },
+    "note": "v2.10: inter_instance (fornecedores-terceiros) tem ZERO-ESPERADO DECLARADO — 0 assignments/involvements na nossa instância é o estado correcto (ABS-003 withdrawn no ledger; o índice two-pass ainda a mostra aberta — o ledger prevalece para status)",
+    "structural_expectations_by_scope": {
+      "inter_instance": "ZERO-ESPERADO DECLARADO — 0 assignments e 0 involvements NA NOSSA instância é o estado CORRECTO; o papel é OBJECTO dos deveres do cliente (GOV-006/007, TRN-007, GOV-014); mata a classe de falsos-achados que enganou três leitores (GR-04)",
+      "intra_instance": "assignments/involvements esperados — 0 atribuições é ACHADO"
+    }
   },
   "source_artifact": "data/entities/canonical_roles_s5.json"
 }

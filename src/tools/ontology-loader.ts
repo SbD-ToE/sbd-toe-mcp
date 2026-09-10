@@ -47,6 +47,8 @@ export interface Control {
 }
 
 export interface CanonicalRole {
+  /** 0.20.0-beta.48 — `intra_instance` (12) ou `inter_instance` (1). */
+  role_scope?: string;
   role_id: string;
   aliases: string[];
   canonical: boolean;
@@ -344,6 +346,12 @@ export function chapterNumber(chapterId: string): number {
   return match?.[1] !== undefined ? Number.parseInt(match[1], 10) : NaN;
 }
 
+/** 0.20.0-beta.48 (v2.10) — alcance do papel: dentro da instância, ou onde outra começa. */
+export function roleScopeOf(roleId: string, roles: CanonicalRole[]): string | undefined {
+  const r = roles.find((x) => x.role_id === roleId) as (CanonicalRole & { role_scope?: string }) | undefined;
+  return typeof r?.role_scope === "string" ? r.role_scope : undefined;
+}
+
 export function resolveRoleId(input: string, roles: CanonicalRole[]): string | undefined {
   const normalized = normalizeKey(input);
   return roles.find(
@@ -538,6 +546,8 @@ export function getOntologyData(): OntologyData {
       role_id: strOf(item, "role_id"),
       aliases: arrStr(item, "aliases"),
       canonical: item.canonical !== false,
+      /** 0.20.0-beta.48 (v2.10) — `inter_instance` = onde OUTRA instância começa. */
+      ...(strOf(item, "role_scope") ? { role_scope: strOf(item, "role_scope") } : {}),
       source: strOf(item, "source"),
     }))
     .filter((item) => item.role_id.length > 0);

@@ -24,6 +24,7 @@ import { categoriesForConcerns, VALID_CONCERNS, type Concern } from "./prepare-c
 import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 import { paginate } from "../serving/response-shaping.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
+import { authoredLinksBand } from "../serving/authored-antipattern-links.js";
 
 const LEVELS = ["L1", "L2", "L3"] as const;
 
@@ -159,6 +160,19 @@ export function handleExplainTopic(args: Record<string, unknown>): ExplainTopicR
       })),
       coverage: { ...page.coverage, total: requirements.length }
     },
+    /*
+     * 0.20.0-beta.48 (KG v1.12.0) — A CAMADA AUTORADA, ao lado da pontuada.
+     *
+     * A banda `anti_patterns` dizia — e com razão — que o servidor «não afirma quais são
+     * relevantes para este tópico: não tem ligação publicada que o diga». **Agora tem**: o
+     * Manual v1.14.0 anota 50 ligações (26 viola + 24 materializa), com âncora e zero ids por
+     * resolver. Entra como camada DISTINTA, porque afirma AUTORIA e a outra afirma
+     * correspondência pontuada — e porque 25 dos 30 blocos não casam com as entidades
+     * publicadas, descasamento que se declara e não se alinha.
+     */
+    ...(authoredLinksBand([...chapters]) !== undefined
+      ? { anti_patterns_authored: authoredLinksBand([...chapters]) }
+      : {}),
     anti_patterns: {
       // Zero DECLARADO, nunca mudo: um tópico sem antipadrão publicado não é «não há o que
       // evitar» — é o Manual a publicá-los por capítulo de domínio, e este tópico não estar

@@ -308,7 +308,7 @@
       "applicable_levels_provenance": {
         "min_link_confidence": 0.8,
         "mode": "derived",
-        "n_links": 12,
+        "n_links": 13,
         "source_requirement_ids": [
           "CIC-001",
           "CIC-002",
@@ -319,6 +319,7 @@
           "CIC-008",
           "CIC-009",
           "CIC-010",
+          "CIC-011",
           "DST-002",
           "DST-003",
           "DST-006"

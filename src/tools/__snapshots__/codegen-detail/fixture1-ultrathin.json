@@ -418,7 +418,7 @@
   },
   "manual_grounding": {
     "total_entries": 51,
-    "manual_commit_sha": "89ac3ba8f03002054033636b9a685729c1e0a590",
+    "manual_commit_sha": "0576e914d4c933ddc1af25cb2c5570dd2afcf60f",
     "groups_ref": {
       "tool": "prepare_sbd_toe_codegen_context",
       "with": {
@@ -483,9 +483,9 @@
         "note": "Categorias elegíveis sem sinal na tarefa foram excluídas pelo narrowing MP1 — a lista completa (por categoria, com razão) vem de select_sbd_toe_requirements com o mesmo contexto."
       }
     },
-    "evidence_patterns_total": 170,
+    "evidence_patterns_total": 171,
     "evidence_patterns_returned": 0,
-    "evidence_patterns_capped": 170,
+    "evidence_patterns_capped": 171,
     "evidence_pattern_cap": 0,
     "evidence_patterns_rest": {
       "tool": "prepare_sbd_toe_codegen_context",
@@ -513,7 +513,7 @@
   },
   "repeat_call_hint": "Identical input returns this exact payload (deterministic) — reuse the context already received; deepen via detail:'minimal' or a targeted consult_security_requirements.",
   "provenance": {
-    "kg": "dev:347f5cfd305e",
+    "kg": "v1.12.0",
     "server": "<pkg>",
     "runtime_v0": "data/publish/runtime/*.json + data/publish/ontology/*",
     "runtime_v1": "data/publish/runtime/v1/*",

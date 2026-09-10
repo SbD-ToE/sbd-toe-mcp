@@ -1,13 +1,83 @@
 ---
 ai_assisted: true
 model: Claude Opus 5
-date: 2026-09-09
+date: 2026-09-10
 purpose: documentation
-reasoning: v0.20.0-beta.47 (beta line, npm `beta`) — resíduos da 3.ª auditoria e o teste que sustenta tudo. R1: o enum de `projectRole` passa a ser o vocabulário publicado (13 canónicos) e a descrição deixa de dizer «Informational only» sobre um argumento que produz vista; o legado continua aceite e declarado. R2: a banda de ancoragem passa a DECLARAR O QUE MEDE (ocorrência de termo, não relevância) e a mostrar os termos que ancoraram. R3: **DETERMINISMO DO SERVING entre processos, testado pela primeira vez e no portão — 29 de 29 superfícies byte-idênticas em dois processos independentes, zero divergências, zero campos voláteis**. R4: bateria de encaminhamento para modelo pequeno, preparada e entregue por correr. Pino inalterado; ouro H byte-idêntico.
+reasoning: v0.20.0-beta.48 (beta line, npm `beta`) — re-pin na primeira release FORMAL desde a v1.11.0: KG v1.12.0 (Manual v1.14.0 × ontologia v2.10, contrato v1.25). **A PRECEDÊNCIA DO LEDGER**: as transições de estado vivem em `declared-absences-ledger.yaml` e prevalecem sobre o índice — ABS-003 sai como `withdrawn` (premissa errada, nada faltava) e ABS-011 como `closed`, e a divergência com o índice vem à vista em vez de achatada. Sem isto reintroduzia-se o defeito da b.45. A banda do `fornecedores-terceiros` deixa de ler como lacuna: `role_scope: inter_instance`, zero é o estado CORRECTO, e a porta é GOV-006/007. Entram as 50 ligações AUTORADAS dos antipadrões, com o descasamento 5/25 declarado e NÃO alinhado, e as 9 ausências autoradas. CIC-011 (273→274). Ouro H: conjuntos seleccionados, causas e veredictos byte-idênticos.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0-beta.48 — 2026-09-10
+
+**A primeira release FORMAL do KG desde a v1.11.0, e a precedência do ledger.** Linha estável
+**intocada** — a promoção é acto separado e o gate é do lead.
+
+**Pino:** **KG v1.12.0** (`c21d35cb7fea…`, contrato **v1.25**, substrato `manual-v1.14.0 ×
+sbdtoe-ontology-v2.10`).
+
+### A precedência do ledger — a que me podia morder
+
+O bundle traz **dois** ficheiros de ausências, **deliberadamente em desacordo**: o índice só
+absorve transições quando corta versão (two-pass), o ledger regista-as no momento. A regra
+ratificada é que **em divergência o ledger prevalece para `status`**.
+
+Sem ler o ledger, eu reintroduzia exactamente o defeito que apanhei na b.45 — servir como
+dívida em aberto o que já não é — desta vez pelo mecanismo desenhado para evitar churn.
+
+| | índice | ledger | servido |
+|---|---|---|---|
+| ABS-003 | (sem status) | **withdrawn** | `withdrawn`, `is_debt: false` |
+| ABS-011 | (sem status) | **closed** | `closed`, `is_debt: false` |
+
+**`withdrawn` não é `closed`, e serve-se pelo que é:** *«a PREMISSA do registo era errada —
+nada faltava e nada se corrige»*. Dizer que fechou afirmaria que houve uma dívida que se pagou.
+A banda traz `status_source`, a transição com fundamento e verificador, e **`index_disagrees`**
+quando divergem — achatar a divergência esconderia o mecanismo que a produz.
+
+### O `fornecedores-terceiros` deixa de parecer lacuna
+
+`role_scope: inter_instance` (1 dos 13; os outros 12 são `intra_instance`). A nota dizia
+«ausência de MAPEAMENTO nesta superfície», que se lê como buraco. **Não é:** o fornecedor não é
+um actor dentro da instância — **é onde outra começa**, e zero é o estado correcto e declarado.
+O que o Manual modela é a **interface**, e a porta é `chapters=["14-governanca-contratacao"]`
+com **GOV-006/GOV-007**. Foi por isto que o ABS-003 foi retirado.
+
+### As 50 ligações autoradas — com o descasamento à vista
+
+`antipattern_authored_links.jsonl`: **30 blocos · 26 `viola` + 24 `materializa` = 50 ligações
+autoradas · zero ids por resolver**. Entram na leitura CONSULT como **camada distinta** da
+pontuada, que se mantém: uma afirma **autoria**, a outra correspondência derivada por scoring.
+**Não se somam.**
+
+**5 dos 30 casam com as 26 entidades publicadas; 25 não — e não alinhei nem escondi.** O
+descasamento vem declarado bloco a bloco, com a razão: as 26 actuais nascem de menções
+pontuadas, as 30 anotadas são unidades autorais, e **qual delas É a entidade AntiPattern é
+decisão de modelo**, em triagem no Archon. Servir os 25 como se tivessem entidade seria inventar
+o casamento que a triagem existe para decidir.
+
+**9 blocos declaram ausência AUTORADA** — «sem requisito ligável no catálogo actual». São
+recusas deliberadas de ligar fraco: servem-se como ausência **autorada**, nunca como falha. E
+foi de uma destas declarações de escassez que **nasceu o `CIC-011`** (273 → **274**).
+
+### O ouro do Eixo H, com as duas mudanças declaradas
+
+**Conjuntos seleccionados, causas e veredictos byte-idênticos nos dois braços.** O `CIC-011`
+aparece **apenas** nas listas de `excess`/`must_not` — um requisito novo que existe e
+correctamente **não** é seleccionado. Zero registos perdidos, zero ids alterados, e a única
+mudança de ordem é o id novo a entrar em sequência. 10/10 PASS.
+
+### E o gate de empacotamento apanhou-me
+
+Materializei os dois ficheiros novos e não os pus no `files`: o portão da b.38 falhou a build
+antes de eu publicar. **57 superfícies derivadas presentes**, 242 ficheiros no tarball.
+
+### Verificação
+
+Suite **820/820** · aceitação **179, 0 FAIL, gate PASS** · **18 invariantes verdes** · **ouro do
+Eixo H com selecção byte-idêntica** · orçamentos **14/14** · matriz **0 FALTA, 0 não
+exercitáveis** · **determinismo 29/29**.
 
 ## 0.20.0-beta.47 — 2026-09-09
 

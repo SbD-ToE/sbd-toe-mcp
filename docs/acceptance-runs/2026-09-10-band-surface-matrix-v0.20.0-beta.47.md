@@ -1,4 +1,4 @@
-# Matriz BANDA × SUPERFÍCIE — 2026-09-09 — @shiftleftpt/sbd-toe-mcp@0.20.0-beta.47
+# Matriz BANDA × SUPERFÍCIE — 2026-09-10 — @shiftleftpt/sbd-toe-mcp@0.20.0-beta.47
 
 **Colunas derivadas do `tools/list` REAL** (29 superfícies servidas) — nunca de uma lista à mão.
 

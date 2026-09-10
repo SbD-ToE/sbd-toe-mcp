@@ -230,8 +230,18 @@ describe("invariante beta.39 — autoridade e projecção parcial", () => {
       expect(band?.absence_type, `${name}: espécie ausente`).toBeTruthy();
       expect(band?.what_it_means, `${name}: a espécie vem sem consequência para o consumidor`).toBeTruthy();
       // dívida e fronteira são exclusivas: nunca as duas, nunca nenhuma quando há id
-      if (band?.absence_id !== undefined)
-        expect(band.is_debt !== band.is_boundary || band.absence_type === "elsewhere", `${name}: dívida e fronteira confundidas`).toBe(true);
+      /*
+       * 0.20.0-beta.48 — a exclusividade dívida/fronteira valia enquanto os estados eram
+       * `open`/`closed`. Com `withdrawn` (KG v1.12.0) uma ausência pode ser NENHUM DOS DOIS:
+       * a premissa era errada, não há dívida e não é fronteira. O que continua proibido é ser
+       * as DUAS ao mesmo tempo — isso era o defeito da b.41.
+       */
+      const b2 = band as { is_debt?: boolean; is_boundary?: boolean; status?: string } | undefined;
+      if (b2?.absence_id !== undefined || b2?.status !== undefined)
+        expect(b2?.is_debt === true && b2?.is_boundary === true, `${name}: dívida E fronteira ao mesmo tempo`).toBe(false);
+      // e uma ausência liquidada (fechada ou retirada) nunca é dívida em aberto
+      if (b2?.status === "closed" || b2?.status === "withdrawn")
+        expect(b2?.is_debt, `${name}: ausência ${b2.status} servida como dívida em aberto`).toBe(false);
       if (band?.absence_type !== undefined) seen.add(band.absence_type);
     }
     // controlo positivo: as três superfícies têm de mostrar ESPÉCIES DIFERENTES, senão a

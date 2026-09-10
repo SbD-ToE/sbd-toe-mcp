@@ -514,7 +514,7 @@
   },
   "manual_grounding": {
     "total_entries": 51,
-    "manual_commit_sha": "89ac3ba8f03002054033636b9a685729c1e0a590",
+    "manual_commit_sha": "0576e914d4c933ddc1af25cb2c5570dd2afcf60f",
     "groups": [
       {
         "rastreabilidade_role": "substrate_landing",
@@ -610,9 +610,9 @@
       "ASC-09 artifacts: declared=12 actual=8 (slice contract status=working_contract)",
       "ASC-10 mechanisms: declared=6 actual=4 (slice contract status=working_contract)"
     ],
-    "evidence_patterns_total": 170,
+    "evidence_patterns_total": 171,
     "evidence_patterns_returned": 5,
-    "evidence_patterns_capped": 165,
+    "evidence_patterns_capped": 166,
     "evidence_pattern_cap": 5,
     "evidence_patterns_rest": {
       "tool": "prepare_sbd_toe_codegen_context",
@@ -631,7 +631,7 @@
   },
   "repeat_call_hint": "Identical input returns this exact payload (deterministic) — reuse the context already received; deepen via detail:'minimal' or a targeted consult_security_requirements.",
   "provenance": {
-    "kg": "dev:347f5cfd305e",
+    "kg": "v1.12.0",
     "server": "<pkg>",
     "runtime_v0": "data/publish/runtime/*.json + data/publish/ontology/*",
     "runtime_v1": "data/publish/runtime/v1/*",

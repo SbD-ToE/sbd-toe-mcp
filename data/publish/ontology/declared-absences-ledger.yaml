@@ -1,0 +1,15 @@
+# declared-absences-ledger — transições de estado do índice de ausências (v2.9+)
+# Append-only. Regras: absence_model.status_ledger da ontologia (índice = tipagens; ledger = transições;
+# em divergência o ledger prevalece para status; o ledger é do índice — a superfície nunca fecha nada;
+# cada emissão de modelo absorve o ledger com sync declarado). Cada transição: absence_id, transition,
+# date, evidence (verificável), verified_by, registered_by.
+meta:
+  artifact: declared-absences-ledger
+  created: '2026-09-09'
+  created_in: sbdtoe-ontology-v2.9
+  rules_ref: sbdtoe-ontology.yaml#epistemic_model.absence_model.status_ledger
+  note: "os fechos de ABS-005 e ABS-012 (2026-09-08) antecedem o ledger e vivem directamente no índice (v2.8); a primeira transição esperada aqui é o fecho de ABS-011 quando a errata do Author aterrar"
+transitions:
+- {absence_id: ABS-003, transition: withdrawn, date: '2026-09-09', grounds: "prescription_reach_principle (v2.10): fornecedores-terceiros é inter_instance — 0 assignments e 0 involvements é o ESTADO CORRECTO DECLARADO (zero-esperado); a premissa do registo (que o papel devia ter trabalho estruturado na nossa instância) era errada; nada faltava, nada se corrige", evidence: "0/260 US na voz do fornecedor; papel sempre objecto; GOV-006/007 modelam a interface; Role.role_scope inter_instance (v2.10)", verified_by: "Orchestrator (fonte) + programme lead (gate 2026-09-09) + Archon (dados servidos)", registered_by: "Archon (índice/ledger), por dispatch do Orchestrator"}
+- {absence_id: ABS-011, transition: closed, date: '2026-09-09', grounds: "errata do Author aterrou no Manual v1.10.0: «RH/PeopleOps» com ZERO ocorrências em todo o corpus (verificado por grep no working copy a v1.10.0 ecce39d7); a voz da US-01 do cap. 13 passou ao papel canónico Security Champion (RH), que a tabela do próprio capítulo (l.33) já nomeava — não é 14.º papel", evidence: "grep -rn 'RH/PeopleOps' manuals_src/docs/ → 0; Manual tag v1.10.0", verified_by: "Orchestrator (já aterrou) + Archon (re-verificado no working copy antes de registar, como instruído)", registered_by: "Archon (índice/ledger)"}
+last_absorbed_into_model: {version: '2.9', date: '2026-09-09', through_transition: null}

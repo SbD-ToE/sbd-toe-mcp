@@ -79,6 +79,8 @@ const ALLOWED_DESPITE_PREFIX = [
   // NOMEADA, wildcard `semantic/` intacto.
   "data/publish/semantic/macro_processes.jsonl",
   "data/publish/semantic/mp_edges.jsonl",
+  // KG v1.12.0: 50 ligações AUTORADAS dos antipadrões, servidas na leitura CONSULT.
+  "data/publish/semantic/antipattern_authored_links.jsonl",
 ];
 
 const BANNED_PREFIXES = [
