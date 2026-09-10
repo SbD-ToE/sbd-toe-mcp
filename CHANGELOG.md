@@ -3599,7 +3599,632 @@ record per `PROGRAMME-PRESERVATION-PROTOCOL.md`.
 
 > The IRI scheme is **provisional/local**; canonical IRIs are an upstream (ontology)
 > decision required before any graduation of this line to stable.
-## 0.11.0 — 2026-08-31 (prepared — tag v0.11.0 only after the beta line absorbs, per G-mp1a)
+## 0.19.4 — 2026-09-04
+
+**Patch** — «a promessa do minimal» (remédio da escala; decisão do lead: opção 2 —
+tecto por-id com paginação + aviso prévio de custo; precedente matrix/0.19.3).
+Bundle UNCHANGED (pin release KG v1.11.0).
+
+### Fixed — tecto de requisitos por chamada no prepare, por nível de detail
+
+- O payload dieted escala ~linearmente com a selecção SEM travão (item 7 da adenda:
+  16→4,2k · 88→9,1k tk @ minimal — acima da promessa 8.450, em silêncio). Tectos
+  DERIVADOS da medição, N = floor((promessa − base)/declive):
+  - **minimal 78** = floor((8.450−3.114)/68) · **standard 81** = floor((9.200−3.632)/68)
+    · **ultrathin 86** = floor((4.840−2.304)/29)
+  - **full SEM tecto** — a sua promessa é COMPLETUDE (inline byte-identical), não uma
+    classe de tokens; é o nível do oráculo (Axis H protegido por construção).
+- Acima do tecto: resposta declarada à needs_decomposition — o limite, o porquê
+  (projecção de custo vs promessa) e COMO dividir: lotes de concerns por área com
+  estimativas do próprio pedido, e a receita EXECUTÁVEL «repete SÓ com task +
+  risk_level + concerns do lote» (os activadores largos ficam fora — concerns SOMAM
+  activação, não restringem; verdade descoberta pelo próprio round-trip do gate).
+  Campo estruturado `requirement_ceiling` no contrato do payload + tectos no schema
+  do `detail`. Nunca erro seco, nunca degradação silenciosa.
+
+### Added — aviso prévio de custo no next do select
+
+- A row prepare do select projecta o custo ANTES de pagar (contagem seleccionada ×
+  custo/req por detail, padrão da matrix/0.19.3) e declara os tectos; acima do tecto
+  minimal, a própria row manda dividir por área. Constantes partilhadas
+  (payload-ceilings.ts) — hint e gate não podem divergir, com teste de coerência
+  tecto×custo ≤ promessa.
+
+### Verificação
+
+- Fixtures de orçamento INALTERADAS e dentro dos tectos (41/69 ≤ 78); suite verde
+  (exit verificado) com payload-ceilings.test novo; eval `2026-09-04-v0194`:
+  **138 cenários, 99 PASS · 16 PART · 0 FAIL · 23 SKIP — gate E PASS**
+  (sentinela + package_version); ouro **10/10**; TC-F-34: 88@minimal (9,1k tk
+  silenciosos → bloqueio declarado ~0,8k tk) e a divisão seguida à letra → lotes
+  prontos dentro do tecto (44/16 reqs); full sem tecto; catálogo partilhado
+  actualizado (commit lá é lane do Orchestrator).
+
+## 0.19.3 — 2026-09-04
+
+**Patch** — ronda 5 do avaliador («next executável verbatim») + adenda ronda 6 (itens
+6–7). O avaliador seguiu 3 next à letra e só 1 funcionou. Bundle UNCHANGED (pin release
+KG v1.11.0).
+
+### Added — INVARIANTE DE SUITE: todo o next é executável verbatim
+
+- `next-invariant.test.ts`: percorre os next de TODOS os builders e payloads/fixtures
+  e valida cada sugestão contra o schema REAL do destino (tools/list do próprio
+  servidor): tool existe, parâmetros existem, enums válidos, tectos anunciados têm
+  verdade, URIs só via read_sbd_toe_resource. Next inválido PARTE a suite.
+  **Apanhou além do mínimo conhecido**: `chapter=` onde o schema é `chapterId`
+  (query_entities); `risk_level` onde é `riskLevel` (applicability, via regulatory);
+  tecto «≤3» anunciado sobre schema sem máximo (concernsHint/regulatory);
+  `record_type="ctrl_acore_alignment"` fora do enum real do resolve (row do trace →
+  re-apontada ao próprio trace c/ include_chains=true); token `phase` num destino
+  sem ele (rollout→checklist).
+
+### Fixed — os 3 next do avaliador (mínimo conhecido)
+
+- prepare→resolve com a forma REAL e ids copiáveis do citation_map
+  (record_type="requirement", filters {requirement_id: {in: […]}}) — morre o «the
+  cited ids»; codegen_instructions_ref.note ensina slots POR ÍNDICE (ficara para trás
+  em 0.19.2) em forma compacta (dieta da secção rest, tocada pelos ids na row: nota
+  encurtada + intent curto — tectos INALTERADOS); rows com URI nomeiam
+  read_sbd_toe_resource.
+
+### Fixed — verdade do limite da matrix
+
+- O «≤50» de 0.19.2 citava o maxItems do TRACE — a matrix não tinha tecto (63 ids
+  passavam). Agora: maxItems 50 no schema + IMPOSTO no handler (erro declarado) e o
+  custo avisado ANTES de se pagar no hint do select (medição: ~190 tk/id; 50 ≈ 9,5k tk).
+
+### Added — adenda ronda 6, item 6: record_type validado (declarado)
+
+- resolve_entities valida record_type contra o enum (tratamento 0.17.0 dos filtros):
+  desconhecido ⇒ resposta declarada com unknown_record_type + valid_record_types —
+  morre o total:0 silencioso (caso: ctrl_acore_alignment).
+
+### Changed — verdade do setup + activadores primeiro
+
+- setup_sbd_toe_agent é um PROMPT MCP (4ª mordida do canal): guide/descrições dizem-no
+  e dão a alternativa (agent-guide via read_sbd_toe_resource + activadores directos no
+  select). Ensino: ACTIVADORES ESTRUTURADOS são a via primária (medição: 63 vs 7 da
+  task sozinha); concerns REFORÇAM. Promover setup a tool: candidato futuro (lead).
+
+### Medição — adenda ronda 6, item 7 (diagnóstico; remédio é decisão à parte)
+
+- prepare detail=minimal vs escala da selecção (estável, medido, pós-dieta):
+  - task só (replay): selecção=16 | prepare minimal total≈4202 tk (activated_scope≈2040 tk) | status=ready_for_codegen
+  - task+activadores (avaliador b19): selecção=88 | prepare minimal total≈9097 tk (activated_scope≈6915 tk) | status=ready_for_codegen
+  - 3 concerns L3 (TC-F-32): selecção=53 | prepare minimal total≈6202 tk (activated_scope≈3238 tk) | status=ready_for_codegen
+  - fixture baseline1-like: selecção=41 | prepare minimal total≈5440 tk (activated_scope≈2856 tk) | status=ready_for_codegen
+- Conclusão na secção do relatório do ciclo; nenhum remédio implementado neste ciclo.
+
+### Verificação
+
+- Suite verde (invariante incluída; snapshots refrescados para a nova verdade);
+  eval `2026-09-04-v0193`: **137 cenários, 98 PASS · 16 PART · 0 FAIL ·
+  23 SKIP — gate E PASS** (sentinela + package_version); ouro **10/10**; TC-F-33
+  (3 next à letra → funcionam; 63 ids rejeitados; record_type declarado); catálogo
+  partilhado actualizado (commit lá é lane do Orchestrator).
+
+## 0.19.2 — 2026-09-04
+
+**Micro-patch** — dois residuais da re-verificação do avaliador. Bundle UNCHANGED
+(pin release KG v1.11.0).
+
+### Changed — next CALIBRADO com os limites do destino (princípio novo, todos os next)
+
+- Nenhuma sugestão do `next` pode ser rejeitada pela tool que sugere. Caso concreto:
+  o `empty_selection_warning` sugeria 5 concerns e o prepare rejeita >3 famílias —
+  a sugestão passa a **top-3 por peso** (nº de requisitos arrumados nas categorias
+  cobertas) com «mais candidatos: […]» informativo no intent; o aviso mantém a lista
+  completa ordenada. Varrimento dos restantes next: hint da matrix declara o tecto
+  do destino (≤50 ids) quando a página o excede; consult (≤5/maxItems, ensino ≤3) e
+  restantes hints já conformes. TC-F-32 prova o princípio por round-trip executável
+  (sugestão → select re-run → prepare sem decomposição).
+
+### Changed — START HERE muda de canal (3ª mordida do canal instructions)
+
+- O sinal de arranque vive agora nas DESCRIÇÕES: a tool `select` abre com
+  «START HERE — …» (arranque: agent-guide → setup) e o prompt `setup` idem; as
+  instructions mantêm o ⛳ (clientes que as ignoram deixam de perder o sinal).
+
+### Verificação
+
+- Suite completa verde; eval `2026-09-04-v0192`: **136 cenários, 97 PASS ·
+  16 PART · 0 FAIL · 23 SKIP — gate E PASS** (sentinela + package_version);
+  ouro **10/10**; TC-F-31 ajustado (≤3 no next) + TC-F-32 novo; catálogo partilhado
+  actualizado (commit lá é lane do Orchestrator). Orçamentos intactos.
+
+## 0.19.1 — 2026-09-04
+
+**Patch** — ronda 4 do avaliador (medição B: 5 redacções, 0→43): o zero vira alarme;
+declarado vence lexical. Bundle UNCHANGED (pin release KG v1.11.0).
+
+### Fixed — `empty_selection_warning` (V2: o único caso sem aviso)
+
+- Selecção VAZIA com candidatos elegíveis é ALARME, não resultado: aviso dedicado com
+  `narrowed_categories` + `candidate_concerns` DERIVADOS (reverse do concernsMap sobre
+  as categorias arrumadas); o share-warning cede ao alarme; `next[0]` = «re-corre com
+  concerns explícitos» e o next NUNCA manda a lista vazia à verification_matrix.
+  Antes→depois: 0 selected/114 narrowed sem aviso → alarme com candidatos.
+
+### Fixed — precedência: EXPLÍCITO vence narrowing lexical (V4)
+
+- R2 (narrowing SES) cede APENAS ao concern `auth` explícito do utilizador
+  (`explicit_concern`) — nunca a activadores derivados (exposure/data_sensitivity),
+  que continuam a alimentar o R2. V4 antes→depois: «Alterar o email da conta» com
+  concerns=[auth] tinha SES em activated E narrowed×8 na MESMA resposta → agora SES
+  ×8 seleccionado, contradição morta (invariante unit-testado). GUARDA re-validada
+  — e a sentinela de gate apanhou ao vivo uma 1ª versão que tratava exposure como
+  explícito (o replay-SES revivia): o SES espúrio do replay DualGauge (exposure=public,
+  base lexical) CONTINUA a cair — ×8 narrowed, 0 seleccionados.
+
+### Changed — ênfase concerns-primeiro + entrada inequívoca
+
+- next/guide/descrição do select: «a task DESCOBRE; concerns declarados ESTABILIZAM».
+  Instructions abrem com «⛳ START HERE — FIRST CALL, ALWAYS» (agent-guide → setup):
+  um agente virgem não precisa de sorte.
+
+### Verificação
+
+- 694/694 (3 unit novos); eval `2026-09-04-v0191`: **135 cenários, 96 PASS ·
+  16 PART · 0 FAIL · 23 SKIP — gate E PASS**; ouro **10/10** (expectativas
+  INTACTAS; GC-02 re-verificado após falso-PART de um artefacto de eval estagnado);
+  TC-F-31 novo (V2/V4/replay/V1-V3; wordings = equivalentes construídos, DECLARADO);
+  catálogo partilhado (commit lá é lane do Orchestrator). Orçamentos intactos.
+
+## 0.19.0 — 2026-09-04
+
+**Minor** — ronda 3 do avaliador: estabilidade da selecção à REDACÇÃO. Bundle
+UNCHANGED (pin release KG v1.11.0, sha `b7444094…03df`).
+
+### Added — `basis: declared | lexical` em todas as entradas e exclusões
+
+- Cada entrada do `selection_trace` declara a estabilidade da origem: **declared**
+  (concern explícito, regra nomeada, sinal de contexto, dado do bundle) vs **lexical**
+  (casamento de task_terms — revogável por reescrever a frase). A razão do
+  `narrowed_out` lexical di-lo textualmente: «exclusão SENSÍVEL À REDACÇÃO da tarefa
+  (não é regra de domínio)». `excluded_by_level` = **declared** (regra de DADOS).
+
+### Added — aviso de dominância lexical (limiar declarado: share > 0.5)
+
+- No SELECT (top-level): `basis_summary` + `lexical_dominance_warning` com
+  `candidate_concerns`; com aviso, o `next` sugere 1º re-correr com concerns
+  EXPLÍCITOS — sai a matrix, NUNCA o par prepare+consult ensinado. Caso do avaliador
+  antes→depois: «Endpoint de upload com sessão e token» = 57 selected vs «Receber
+  ficheiros dos utilizadores autenticados» = 8 — a magra avisa (share 1.0, candidatos
+  [files]); com `concerns` declarados → 42 selected, share 0, calado. No PREPARE,
+  dieta por forma: só `selection.lexical_share` (o near-touch 9.232>9.200 do aviso
+  completo foi resolvido por DIETA, nunca por tecto novo).
+
+### Fixed — slots por índice + porta de entrada
+
+- Slots do read_sbd_toe_resource são `{when, text}` sem id — endereço por ÍNDICE com
+  catálogo REAL derivado (o «Slots válidos: .» morreu). ENTRY POINT sinalizado curto
+  (instructions/guide/setup) sem reescrever a língua (política pendente do lead).
+
+### Verificação
+
+- 691/691; eval `2026-09-04-v0190`: **134 cenários, 95 PASS · 16 PART ·
+  0 FAIL · 23 SKIP — gate E PASS**; ouro **10/10** (oráculo INTACTO — basis aditivo);
+  TC-F-29/30 novos, TC-F-13/27 preservados (runner + catálogo partilhado — commit lá
+  é lane do Orchestrator). Orçamentos pós-dieta: std f2 9.128 ≤ 9.200 · min 8.402 ≤
+  8.450 · ultrathin 4.833 ≤ 4.840.
+
+## 0.18.1 — 2026-09-03
+
+**Patch (F2, canalização)** — lote formal: re-pin `source: release` **KG v1.11.0**
+(asset sha256 `b7444094…03df` verificado por digest; `mcp-stable` = `688863a` = tag;
+byte-igual ao dev-build 2026-09-03 já servido — delta = só o carimbo release do
+run_manifest). Contrato v1.17, Manual v1.8.0, ontologia v2.4.
+
+- **Stamp verificado na transição**: `dev:e5c3581b46aa` → **`v1.11.0`** (regra
+  0.16.0). Tectos intactos: std f2 9.123 ≤ 9.200 · min 8.396 ≤ 8.450 · ultrathin
+  4.833 ≤ 4.840; snapshots regenerados (diff = só o stamp).
+- **TC-F-28 re-corrido contra o pin formal**: PASS (FIL-002 direct ×3 + DEP-001
+  compensado; meta 17/254/19).
+- Registry: «v0.18.0 tag recorded (`b1dbc7e6`)» — boleia declarada.
+- Verificação: 691/691; eval `2026-09-03-v0181`: **132 cenários, 93 PASS ·
+  16 PART · 0 FAIL · 23 SKIP — gate E PASS**; ouro **10/10**.
+
+## 0.18.0 — 2026-09-03
+
+**Minor** (tool nova, justificado) — walkthrough estação 3: a rastreabilidade
+requisito→fonte SERVIDA. Pin novo `source: dev-build`
+**kg-v1-manual-v1.8.0-aligned-2026-09-03** (KG master `c30c6c2`; sha256
+`e5c3581b…9734` digest-verified; contrato **v1.17 §1.24** aditivo). Stamp
+`dev:e5c3581b46aa` pela regra 0.16.0.
+
+### Added — `trace_sbd_toe_requirement_sources` (estação 3)
+
+- Por requisito, VERBATIM da superfície publicada
+  (`data/publish/semantic/requirement_source_coverage.jsonl`, pré-composta pelo KG):
+  fontes **DIRECTAS** (`direct.source_anchors` com proveniência file/line/marker
+  «Fontes» — autoria do Manual) e cadeia **COMPENSADA** REQ→CTRL→ACO→fontes
+  (tipo/confiança por salto; landing resolved counts; rótulo `coverage_compensated`).
+  A distinção nunca se esbate — «cobertura, NÃO autoria» (nota epistémica da
+  ontologia v2.4, servida no provenance). `related` não cobre (coverage_rule do
+  bundle no meta). Os **19 sem-fonte-declarada** e ids desconhecidos vêm DECLARADOS.
+  `include_chains=false` = dieta (contagens + ref). Paginada sobre os ids (G1).
+  Exemplo vivo: FIL-002 → `direct` (3 anchors, `UNIT-V5.2.2`…); DEP-001 →
+  `coverage_compensated` (1º salto exact@0.95 via CTRL-supply-chain…); resposta
+  2 ids + fake ≈ **1.5k tokens**.
+- Materialização: `bundle-files.json` ganha as 2 superfícies semantic (optional,
+  since kg-2026-09-03) — `ctrl_acore_alignment.jsonl` (267: meta + 102 base + 164
+  ACP) também segue no tarball; bundles antigos → erro DECLARADO na tool (nunca
+  inventado). Guide: rota «Where is the SOURCE of this requirement?».
+
+### Verificação
+
+- 691/691; eval `2026-09-03-v0180`: **132 cenários, 93 PASS · 16 PART ·
+  0 FAIL · 23 SKIP — gate E PASS**; ouro **10/10**; TC-F-28 novo (DEP-001+FIL-002
+  numa chamada; runner + catálogo partilhado — commit lá é lane do Orchestrator).
+  Tectos do prepare INTACTOS (superfície opt-in; snapshots diff = só o stamp).
+
+## 0.17.0 — 2026-09-02
+
+**Minor** — 2ª ronda do avaliador: never-silent no resolve_entities + cadeia
+requisito→prova na navegação (achados 2 e 3; o achado 1 tem desenho próprio pendente).
+Bundle UNCHANGED (pin release KG v1.10.0, sha `d8df472b…204e`).
+
+### Fixed — resolve_entities valida as chaves de filtro (a ÚLTIMA contradição do never-silent)
+
+- Caso do lead reproduzido antes/depois: `record_type=requirement,
+  filters={"id":{"in":["ACC-001","ACC-003"]}}` — ANTES total:0 silencioso; DEPOIS
+  `unknown_filter_fields:["id"]` + `valid_fields` (12, incl. `requirement_id`)
+  **derivados da união de chaves dos próprios registos** (26 record_types; nada
+  hardcoded). Dot-notation: `applicable_levels.L2` válido (247, sem aviso);
+  `applicable_level.L2` declarado inválido. Aviso no payload (a saída de emergência
+  continua exploratória — nunca erro duro), nota marca que o total não reflecte
+  campos desconhecidos.
+
+### Added — get_sbd_toe_verification_matrix `requirement_ids[]` (requisito → prova)
+
+- «Como provo ESTES?»: filtra a matriz por requisitos concretos, coerente com a
+  paginação; pedidos sem EvidencePattern DECLARADOS em `unknown_requirement_ids`.
+  O `next` do select aponta «provar os requisitos seleccionados» com os ids da
+  selecção — o fecho da cadeia deixa de depender de inferência. Guide com a rota
+  «How do I PROVE these requirements?».
+
+### Verificação
+
+- 691/691; eval `2026-09-02-v0170`: **131 cenários, 92 PASS · 16 PART ·
+  0 FAIL · 23 SKIP — gate E PASS**; ouro **10/10**; TC-F-26/27 novos (runner +
+  catálogo partilhado — commit lá é lane do Orchestrator). Orçamentos intocados.
+
+## 0.16.1 — 2026-09-02
+
+**Patch (F2, canalização)** — lote formal: re-pin `source: release` **KG v1.10.0**
+(asset sha256 `d8df472b…204e` verificado por digest; `mcp-stable` = `a3e4445` = tag;
+conteúdo do grafo BYTE-IGUAL ao dev-build 2026-09-02 já servido — delta = só o carimbo
+release do run_manifest). Contrato v1.16, Manual v1.8.0, ontologia v2.3.
+
+- **Stamp verificado na transição**: com pin release, `provenance.kg` volta a estampar
+  a tag (**`v1.10.0`**) pela regra 0.16.0 (`dev:<sha12>` era só para dev-builds). A tag
+  curta NÃO toca tectos: std f2 9.123 ≤ 9.200 · min 8.396 ≤ 8.450 · ultrathin
+  **4.833 ≤ 4.840**. Snapshots regenerados (diff = só o stamp, 8×1 linha).
+- Registry: linha «v0.16.0 tag recorded (`3e32af19`)» — boleia declarada neste patch.
+- Verificação: 691/691; eval `2026-09-02-v0161`: **129 cenários, 90 PASS ·
+  16 PART · 0 FAIL · 23 SKIP — gate E PASS**; ouro **10/10** (sem divergência).
+
+## 0.16.0 — 2026-09-02
+
+**Minor** — re-pin dev-build «dívida de dados» + exposição dos joins (ciclo Codex
+autorizado pelo lead, verificado pelo Orchestrator).
+
+### Changed — served bundle re-pinned (dev-build 2026-09-02, contract v1.16 §1.23 aditivo)
+
+- Pin `source: dev-build` **kg-v1-manual-v1.8.0-aligned-2026-09-02** (KG master
+  `6f73417`; snapshot sha256 `c832fd97…6a107`, VERIFICADO por digest). Substrato
+  `manual-v1.8.0 + sbdtoe-ontology-v2.3`; 273/29 e 305 arestas inalterados.
+
+### Added — a dívida de dados exposta nos payloads (antes → depois)
+
+- **guide_by_role**: `artifacts` por assignment servidos — o elo requisito→prova que o
+  auditor pediu. Dev L2 detail: **0/25 → 25/25** assignments com artefactos (ex.:
+  `ficheiro_classificacao_aplicacao_yaml…`); payload 14.798 → 15.486 tk (medido,
+  declarado; guide não tem tecto formal). Descrição da tool actualizada.
+- **get_threat_landscape**: `associated_control_names` (233/233 no bundle) expostos —
+  fatia auth95: **0 → 95/95** com nomes; `related_antipatterns` agora com dados (5
+  não-vazios no bundle; 2 na fatia auth). auth95: 22.846 → 27.294 tk (limit 300);
+  página default 25 ≈ 8.2k tk. Descrição alinhada ao grão real: promete ids+derivation
+  **+ names** (a promessa `associated_controls_text` de v1.14 mantém-se — 233/233
+  presentes neste bundle).
+- **plan_repo_governance**: `artefact_totals` com SEMÂNTICA declarada do bundle —
+  `{distinct_count: 45, chapter_relation_count: 469, count_semantics}` (o «469» deixa
+  de circular sem qualificação; nota da tool actualizada; nunca recontado em código).
+
+### Changed — forma do stamp `provenance.kg` (0.16.0)
+
+- Releases estampam a tag (`v1.9.0`); **dev-builds estampam `dev:<sha12>`**
+  (ex. `dev:c832fd978169`) — identidade honesta com comprimento ESTÁVEL: a tag longa
+  de dev-build somava ~7 tk por resposta e tocava dois tectos por 1 token
+  (rest f1 1.351>1.350; ultrathin f2 4.841>4.840). Com a forma curta: 1.345/4.836 —
+  tectos INTACTOS, sem paragem nem tecto novo. Verificável contra `sbd://toe/version`
+  (tag + sha completos).
+
+### Verificação
+
+- 691/691; eval `2026-09-02-v0160`: **129 cenários, 90 PASS · 16 PART · 0 FAIL — gate
+  E PASS**; ouro **10/10**; TC-F-25 novo (25/25 artifacts; 95/95 names; totais 45/469
+  c/ semântica) + TC-F-16/17 ajustados à regra do stamp (runner + doc §4.4). Snapshots
+  regenerados (diff = só o stamp). Orçamentos: std f2 9.125 ≤ 9.200 · min 8.399 ≤
+  8.450 · ultrathin 4.836 ≤ 4.840.
+
+## 0.15.1 — 2026-09-02
+
+**Patch** — fecho da reverificação Desktop (lead: «vale a pena então estas alterações»).
+Bundle UNCHANGED (pin release KG v1.9.0). Nenhuma capacidade nova.
+
+### Item-a-item (1–7, com a decisão tomada)
+
+1. **tool_prefix default → decisão (c), placeholder visível**: sem parâmetro, o
+   frontmatter `tools:` usa `<MCP_TOOL_PREFIX>…` e o corpo abre com a instrução de
+   substituição (⚠ SUBSTITUI …). Justificação: (b) default proxied instalaria
+   SILENCIOSAMENTE com tools erradas fora do Desktop; (a) erro quebraria o fluxo
+   comum; o placeholder torna o esquecimento VISÍVEL — um subagente sem substituição
+   instala-se sem tools de forma óbvia, nunca silenciosa. Com `tool_prefix`, comportamento
+   de 0.15.0.
+2. **next sem id inválido**: o brief com `found:false` deixa de sugerir tools com o id
+   que a própria resposta invalidou (placeholder genérico).
+3. **mode do consult conta a verdade**: o default 'full' devolve PROJECÇÕES
+   (id/name/category/type — ver projection_note; corpos via resolve_entities); 'index'
+   devolve só ids por categoria. As duas descrições dizem o mesmo.
+4. **orgScope desconhecido → ERRO accionável** (-32602) com a amostra de secções
+   válidas DERIVADA dos dados na própria mensagem (+ data.valid_section_titles) —
+   o aviso-com-sucesso-vazio morreu.
+5. **assess completo**: `kpi_values: {}` REJEITADO com erro instrutivo (metric_ids de
+   amostra derivados do catálogo); `gaps_offset`/`gaps_limit` com `gaps_coverage`
+   própria (o destaque 2-de-91 sem caminho morreu — walk 92/92 provado); posture
+   distingue **below** (avaliado, abaixo) de **not_assessed** (nada avaliado; `at`
+   quando o avaliado cumpre com not_reported declarado em totals).
+6. **Descrição do offset do plan** corrigida (default real = 1ª página de 5).
+7. **maxItems dos concerns re-avaliado POR MEDIÇÃO**: 1→2,0k · 3→3,6k · 5→4,3k ·
+   8→6,6k tokens — o payload manda: **sobe para 5** (justificado; ≈metade do prepare
+   std), recomendação de ensino continua ≤3 no next ("compostas → select; exploração
+   ampla → lotes"). O servidor nunca cortou concerns (verificado) — sem corte
+   silencioso em nenhum cenário.
+
+### Notas de contrato (0.15.0 → consumidores; reafirmadas)
+
+- `get_threat_landscape` é PAGINADO POR DEFAULT desde 0.15.0 (25/página;
+  `coverage.hasMore` + `size_estimate` sempre) — quem consumia a lista inteira segue
+  `coverage.nextOffset`.
+- `concerns` do consult: schema declara o limite (agora **maxItems 5**, medido;
+  recomendado ≤3).
+
+### Verificação
+
+- 691/691 testes (6 sondas substituem `{}` nos unitários do assess + 3 novos);
+  eval `2026-09-02-v0151`: **128 cenários, 89 PASS · 16 PART · 0 FAIL ·
+  23 SKIP — gate E PASS**; ouro **10/10**; TC-F-23/24 novos + TC-F-05/TC-F-21
+  re-baselinados (runner + doc de governança, §4.4). Orçamentos intocados (prepare
+  inalterado; snapshots idênticos).
+
+## 0.15.0 — 2026-09-01
+
+**Minor** — Desktop-audit cycle: P0 completo + paginação universal + banda por nível.
+Autorização: programme lead («avança»); triagem calibrada pelo Orchestrator (spot-checks
+confirmados). Bundle UNCHANGED (pin release KG v1.9.0). Tudo determinístico.
+
+### Item-a-item (lane Pontifex 1–10)
+
+1. **index-compact DERIVADO** do bundle no arranque (`buildDerivedIndexCompact`):
+   demand_by_level + technologies (reverso da tabela de serving); o estático de Março
+   com minLevel MORREU (ficheiro + 3 listas de empacotamento) — 5ª instância de
+   conteúdo-em-código fechada. activatedBundles: hack «13 apenas L3» e «Sempre para
+   L2+» já tinham morrido em 0.14.0; plan_repo_governance ch. 13 JÁ era igual em
+   L1/L2 via requirement-ladder (verificado: 32 artefactos em ambos) — reportado.
+2. **Paginação universal**: get_threat_landscape com limit/offset (default 25;
+   coverage + size_estimate SEMPRE — L2 inteiro era ≈59k tokens, página default
+   ≈7,1k); plan_repo_governance default paginado (5 capítulos; antes ≈13,7k);
+   read_sbd_toe_resource ganha `slot` (codegen-instructions) e char_offset/char_limit
+   com coverage; consult devolve size_estimate.
+3. **Banda `excluded_by_level[]`** no select (grupos por categoria com razão + ids) e
+   counts aditivos no completeness do prepare — o filtro de nível (selection.ts:210)
+   deixa de ser silencioso. Exemplo L1: 15 categorias / 60 requisitos declarados.
+   ultrathin DIETA os dois counts (tecto 4.840 vigiado: 4.833 medido — near-miss
+   4.850 evitado por dieta, não por tecto novo). Ouro 10/10 mantido.
+4. **generate_sbd_toe_skill `tool_prefix`** (default `mcp__sbd-toe__`) — o prefixo
+   real depende do deployment do cliente.
+5. **Fases**: alias implement→develop CANON-FIRST (se o vocabulário canónico tiver a
+   fase, o alias não se aplica); fase desconhecida ⇒ `phase_warning` com knownPhases
+   (nunca [] silencioso); exemplo 'implement' corrigido na descrição.
+6. **Erros harmonizados**: brief desconhecido ⇒ found:false + erro + valid_chapter_ids
+   (e aceita número '8', convenção unificada com o checklist); orgScope sem match ⇒
+   warning declarado com sample_section_titles; slot inválido ⇒ lista de slots.
+7. **consult**: projecção DECLARADA (projection_note + descrição: corpos completos via
+   resolve_entities); concerns maxItems 3 no schema; enum harmonizado (agents no
+   threat_landscape); checklist risk_level já era «informational» no schema.
+8. **codegen-instructions**: `line_note` com a ressalva de linha (trace_sbd_toe_graph
+   só na 0.20; nesta linha include_relations=true); remediação interna
+   (checkout:backend) removida do texto servido (prompt + resolve_entities).
+9. **skill/{role}**: L2 fixo DECLARADO na descrição (outro nível via
+   generate_sbd_toe_skill).
+10. **Naming**: aliases ADITIVOS risk_level↔riskLevel nos dois sentidos (shim no
+    dispatch; nada renomeado) + convenção declarada no agent-guide.
+
+**Opcional (assess gaps/per_kpi/kpi_values={})**: DEFERIDO para 0.15.1 — reportado,
+não corrigido (orçamento da sessão).
+
+### Verificação
+
+- 689/689 testes; eval `2026-09-01-v0150`: **126 cenários, 87 PASS · 16 PART ·
+  0 FAIL · 23 SKIP — gate E PASS**; ouro **10/10**; TC-F-18..22 novos + TC-D-10/
+  TC-E-02/TC-C-14/TC-A-10/TC-A-11 re-baselinados (runner + doc §4.4). Orçamentos:
+  std f2 9.123 ≤ 9.200 · min 8.396 ≤ 8.450 · ultrathin 4.833 ≤ 4.840 (dieta).
+
+## 0.14.0 — 2026-09-01
+
+**Minor** — served SEMANTICS change: applicability becomes **GRADUATED**. Author's
+decision (programme lead, 2026-09-01, verbatim): «Sim: capítulo nunca se exclui por
+nível; a exigência escala L1→L3 conforme a matriz do cap. 01 e a proporcionalidade
+das user stories. A noção binária desaparece do serving.» Bundle pin UNCHANGED
+(release KG v1.9.0, sha `11153c85…`).
+
+### Changed — graduated chapter applicability (the binary lists die)
+
+- `RISK_LEVEL_CHAPTERS` (resources) and `ACTIVE_CHAPTERS_BY_RISK` (structured-tools)
+  are GONE, along with the `minLevel` theory, the "13 apenas L3" hack and the ch-06
+  "Sempre para L2+" reason — the 4th content-in-code instance closed. New derivation
+  module `src/serving/applicability.ts`: chapter set ← bundle_catalog (+ the DECLARED
+  `00-fundamentos` fallback — foundational, no bundle entry; precedent: the KG
+  base-set rule); demand ← aggregation of the AUTHORED assignment `proportionality`
+  per chapter × level (obrigatório/recomendado/opcional; free-text counts as
+  `specific`, never re-classified); anchor ← the chapter-01 canonical matrix
+  (addon 05-matriz-controlos-por-risco).
+- `map_sbd_toe_applicability`: `active`/`excluded` REPLACED by `chapters[]` (15,
+  presence unconditional, per-chapter `demand`+`dominant`+roles/user_stories) +
+  `semantics` + `canonical_anchor`; `conditional` (context/technologies overlay)
+  unchanged; `projectRole` now yields a per-role `role_view` (US + authored
+  proportionality) — coherent with `get_guide_by_role` (same assignments).
+  Measured: ≈1.470 tokens (L1), ≈2.325 with role view.
+- Resource `sbd://toe/chapter-applicability/{riskLevel}` and
+  `setup_sbd_toe_agent` prompt: same graduated derivation; the "Excluded chapters"
+  line dies ("No chapter is excluded").
+- `list_sbd_toe_chapters`: riskLevel ANNOTATES, never filters — all chapters with
+  `applicability {L1,L2,L3} = true` and derived `demand_by_level`; `minLevel` retired.
+- The demand really scales in the data: mandatory assignments L1 76 → L2 234;
+  cap. 06 at L1 = 10 obrigatórios / 3 recomendados / 3 opcionais (authored);
+  cap. 13 at L1 present with light demand.
+
+### Verification
+
+- 689/689 tests (16 legacy binary tests re-baselined graduated); scenarios
+  TC-A-06/07/12 + TC-E-10 re-baselined in the SAME change (runner + governance doc);
+  `eval:acceptance` (record `2026-09-01-v0140-*`): 121 scenarios, **80/17/0 FAIL/23 —
+  gate E PASS** (E now 16 PASS/1 PART — TC-E-10 upgraded to full PASS); golden cases
+  **10/10** (selection untouched — would have been a STOP).
+
+## 0.13.0 — 2026-09-01
+
+**Minor** — serving batch: canalização + 1 capacidade. Bundle UNCHANGED: pin release
+**KG v1.9.0** (sha256 `11153c85…`) intacto. Authorised by the programme lead
+(2026-08-31/09-01, «sim confirmo»), incl. the new-tool-on-stable gate.
+
+### Added — `read_sbd_toe_resource(uri)` (mirror of resources/read)
+
+- For clients WITHOUT MCP resource support (real case: Claude Desktop): returns any
+  server resource by URI, templated ones included (value in the URI, e.g.
+  `sbd://toe/codegen-instructions/codegen`) — the `codegen_instructions_ref` of dieted
+  prepare payloads becomes resolvable on ANY client, and `sbd://toe/version` readable
+  as a tool. One shared materializer (`materializeResource`) now backs BOTH
+  resources/read and the tool — no drift; the valid URI set DERIVES from the single
+  `RESOURCE_CATALOG` (also the source of resources/list). Unknown URI ⇒ declared
+  error listing the valid URIs (never-silent). Scenarios TC-F-16 in the same change
+  (§4.4), mirrored to the governance doc.
+
+### Added — per-response version stamp `provenance.kg`
+
+- Every response provenance object carries the compact stamp `kg: <release_tag>` of
+  the served pin (`v1.9.0`), via a cached `servedKgReleaseTag()` — 13 tools + the
+  protocol envelope + prepare. Measured against the payload budgets: fixture totals
+  +3–4 tokens (std f2 9.105 ≤ 9.200, min f2 8.379 ≤ 8.450, ultrathin f2 4.833 ≤
+  4.840) — **no ceiling touched, no re-baseline needed**. Golden snapshots
+  regenerated (diff = +1 provenance line each). Scenario TC-F-17.
+
+### Changed — `inspect_sbd_toe_retrieval` presents the pin provenance
+
+- New "Pin servido (consumed-bundle.json)" line: kg release_tag/source/sha256/
+  contract + manual tag/commit + ontology tag. Root cause of the production
+  `run_id/commit_sha=n/d` CONFIRMED with a correction to the hypothesis: the
+  gateway reads the upstream CHECKOUT's run_manifest (dev-only, absent in
+  production) — `data/reports/run_manifest.json` does ship in the tarball but that
+  code path never read it. The checkout fields now fall back DECLARED ("ausente —
+  identidade de produção no Pin servido"), never a bare "n/d". The
+  "Substrate version: v2-draft" fossil is intentionally untouched (KG manifest
+  lane).
+
+### Changed — number sweep in served prose + cosmetics + teaching
+
+- Data-governed counts no longer live in code prose: verification-matrix description
+  "the 223 published patterns" (real: 273) → "the published patterns — totals
+  declared per response"; ontology resource description drops "8 inference rules /
+  4 resolution pipelines"; server instructions "15 chapters (00–14)" → "Chapters
+  00–14" (range = identity, not a count).
+- `consumed-bundle.json` `release_ref` owner normalized `Shiftleftpt` → `SbD-ToE`
+  (cosmetic; sha unchanged) — AND the generator default in `scripts/sync-bundle.mjs`
+  fixed so the typo cannot regress on the next pin.
+- Teaching: server instructions + agent-guide "Session setup" gain **Step 0 —
+  identify the server** (read `sbd://toe/version`, or the new tool on clients
+  without resources); guide Resources table lists `sbd://toe/version`; routing rows
+  for "what version is this?" and "client cannot read resources".
+
+### Verification
+
+- 689/689 tests; `eval:acceptance` (record `2026-09-01-*`): **121 scenarios, 98
+  executed, 80 PASS · 18 PART · 0 FAIL · 23 SKIP — gate E PASS**; golden cases
+  **10/10** (no divergence — would have been a STOP); **23/23 tools** exercised.
+
+## 0.12.0 — 2026-08-31
+
+**Minor** — the served catalogue gains **FIL/PRI/INT-009..012** and the selection
+engine is v1.8.0-aware. Ships the v1.8.0 wave and the formal pin on top of the MP1 cycle (0.11.0 below).
+*(Correction 2026-09-01: this intro previously claimed the v0.11.0 tag "will not be
+created" — in fact v0.11.0 WAS tagged and published on 2026-08-31, fulfilling the
+G-mp1a two-line gate; see FREEZE-REGISTRY.)*
+
+### Changed — formal KG pin (lote v1.9.0; lead's "3 sims" 2026-08-31)
+
+- Served bundle re-pinned `source: release` **KG v1.9.0** (asset sha256
+  `11153c85d8cb16e022f2be2d999ba131d437275becbbe6dd6b5556915b71f069`, verified;
+  `mcp-stable` = `93fe9fb1` = `v1.9.0^{commit}`): the formal, zero-delta
+  formalization of the dev-build `kg-v1-manual-v1.8.0-aligned-2026-08-31` served
+  since #61 — graph content byte-identical, delta only in `run_manifest.release`.
+  Contract **v1.15**, Manual v1.8.0, ontology v2.3.
+- Payload ceilings **RATIFIED and HARMONIZED across lines** (lead, "3 sims"):
+  fixture 2 `standard` ≤ **9.200**, `minimal` ≤ **8.450** — gates fixed at exactly
+  these values; no declared deviations remain on this line.
+- Formal-pin re-run: suite 689/689; gate E PASS; golden cases **10/10 with zero
+  divergence** vs the 2026-08-31 v1.8.0 run (case-by-case identical).
+
+### (dev-build phase, 2026-08-31 — absorbed by this release)
+
+Serving line pinned to the dev-build **`kg-v1-manual-v1.8.0-aligned-2026-08-31`**
+(sha256 `ad0fc96c…f4df`, contract **v1.15**, Manual v1.8.0): **273 requirements / 29
+categories** (+17: FIL 8, PRI 5, INT 4), 305 links, EP 273/273.
+
+### Added — selection signals for the new catalogues (declared, Manual-anchored)
+
+- `files` concern → FIL: task terms file/upload/uploading/attachment/photo + PT
+  aliases ficheiro(s)/anexo(s)/fotografia(s); `privacy` concern → PRI: pii/personal
+  data + PT dados pessoais/finalidade, and `data_sensitivity: personal|regulated`
+  now also activates PRI.
+- **R-image** (closes the DualGauge replay finding): "image"/"imagem" is a homonym —
+  disambiguated by declared context: image+docker/registry/container → container sense
+  (deployment/distribution → CNT via ch. 09); image+file/upload/photo → FIL; both →
+  both; neither → historical sense. Proven by TC-F-14 (docker → CNT ×11 with 0 FIL;
+  file → FIL ×8 with 0 CNT; GC-05 "push da imagem" unchanged).
+- **`SES-008-por-tecnologia`** (Author's decision): the JWT/user-token signal selects
+  SES-008 at ANY level, named in the `selection_trace` — closes the GC-08 paradox; the
+  level filter still rules everything else (TC-F-15: JWT@L1 → SES-008 in;
+  no JWT → out). The Axis-H runner carries a DECLARED levelGuard exemption for it —
+  the oracle v1 is untouched (the closure annotation is the lead's, v1.1).
+
+### Changed — golden re-run with declared re-baseline (oracle untouched)
+
+- **Axis H stays 10 PASS / 0 / 0** (coverage 100%, strict precision 100%) over the
+  273/29 catalogue, and the oracle's four registered gaps flip to **covered**:
+  GC-01 → FIL-001..008 (upload/file signals); GC-06 → PRI-001..005 (data_sensitivity +
+  personal-data signals); GC-08 → SES-008-por-tecnologia; GC-10 → INT-009..012
+  (messaging: poison messages/DLQ/replay). The per-case reports carry the
+  "transição lacuna → coberto" lines; the oracle file was never edited.
+- Count re-baselines: 256→273 / 27→29 (req-agn suite), links 282→305 (TC-F-08:
+  141 catalogue-rule + 148 recalculated + 16 curated).
+- Payload re-baseline (fixture2 is a file-upload endpoint — FIL now correctly
+  applies, +8 requirements + the ~+1 republished-bundle delta; citationIds 143→152):
+  stable ceilings standard f2 8.900 → **9.200** (measured 9.102), minimal f2
+  8.200 → **8.450** (8.375); sections rest-full 1.600 (1.560), activated_scope
+  5.500/5.500/2.500 (5.396/5.396/2.423). Fixture1 unchanged (104 citations; 6.110 /
+  5.463 / 3.685). Golden snapshots regenerated (diff = FIL additions + bundle
+  provenance).
+
+### Verification
+
+- `npm run check` green (pin sha256-verified); **689/689** tests; `eval:acceptance`
+  (record `2026-08-31-v180-*`): **119 scenarios, 96 executed, 78 PASS · 18 PART ·
+  0 FAIL · 23 SKIP — gate E PASS**; Axis H **10/0/0**; 22/22 tools; TC-F-14/15 added
+  (capability ⇒ scenario).
+
+## 0.11.0 — 2026-08-31 (published: tag v0.11.0 = `102b8166`, npm 0.11.0 — correction 2026-09-01, the earlier "never tagged" note was stale)
 
 **Minor** — the MP1 selection operation lands in the serving layer (new tool), closing the
 four Axis-H defects (ciclo MP1, P2; gate G-mp1a). Served bundle unchanged: formal KG

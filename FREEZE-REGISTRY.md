@@ -54,9 +54,61 @@ TODO — confirm with programme lead.
 - v0.10.4 → `2937236d7521d72be140dbc4d9111dae211eb14b` (2026-08-30; formal KG release v1.7.0
   pinned — see CHANGELOG; npm `@shiftleftpt/sbd-toe-mcp@0.10.4` = `latest`, gitHead same commit;
   GitHub Release `v0.10.4`)
-- v0.11.0 *(MP1 selection operation — see CHANGELOG; annotated tag to be created only after
-  the 0.20 beta absorbs P2 (0.20.0-beta.6) and Pontifex verifies both lines, per the
-  G-mp1a plan; no npm publish before that)*
+- v0.11.0 → `102b8166608717aea8baea2534c05a907175ae7c` (2026-08-31 14:56Z; MP1 cycle —
+  tag DOES exist and npm 0.11.0 was published with that gitHead, same minute as
+  0.20.0-beta.6: the G-mp1a two-line gate was fulfilled. CORRECTION 2026-09-01: earlier
+  rows/notes claiming "superseded — tag never created" were written on stale knowledge
+  during the 0.12.0 lote and are amended by this entry; history append-only.)*
+- v0.12.0 → `b475900e87a3035d36a16201dd80d5e5b36c396d` (2026-08-31; formal lote — KG
+  v1.9.0 pinned, sha256 `11153c85…`, contract v1.15; npm `@shiftleftpt/sbd-toe-mcp@0.12.0`
+  = published, gitHead same commit; GitHub Release `v0.12.0`)
+- v0.19.4 *(«a promessa do minimal» — tecto por-id por detail (78/81/86) c/
+  needs_decomposition declarado e divisão executável ensinada; full sem tecto; custo
+  projectado no next do select; bundle pin unchanged KG v1.11.0; annotated tag on the
+  squash after merge; npm `latest`)*
+- v0.19.3 → `12c5188cadb05d42c511f006aa91d075eaf18aa9` (2026-09-04; ronda 5 + adenda
+  r6 — invariante next-verbatim + verdades matrix/setup; npm
+  `@shiftleftpt/sbd-toe-mcp@0.19.3` = published, gitHead same commit; GitHub Release
+  `v0.19.3`)
+- v0.19.2 → `99ad5a91a27c68c2d29ffc61d928fd0464a6f393` (2026-09-04; micro — next
+  calibrado + START HERE nas descrições; npm `@shiftleftpt/sbd-toe-mcp@0.19.2` =
+  published, gitHead same commit; GitHub Release `v0.19.2`)
+- v0.19.1 → `a80741d298ad62c6463b3c0883265c36a475e4ff` (2026-09-04; ronda 4 — zero=alarme
+  + explicit>lexical; npm `@shiftleftpt/sbd-toe-mcp@0.19.1` = published, gitHead same
+  commit; GitHub Release `v0.19.1`)
+- v0.19.0 → `ab4340d80367d9c8c61a04af52a6bd397b87e6c1` (2026-09-04; ronda 3 — basis +
+  aviso de dominância; npm `@shiftleftpt/sbd-toe-mcp@0.19.0` = published, gitHead same
+  commit; GitHub Release `v0.19.0`)
+- v0.18.1 → `dc5500afe73eecd9724daf52676a5affd575a885` (2026-09-03; lote formal — pin
+  release KG v1.11.0; npm `@shiftleftpt/sbd-toe-mcp@0.18.1` = published, gitHead same
+  commit; GitHub Release `v0.18.1`)
+- v0.18.0 → `b1dbc7e6d15fc760f4c0056b862f1b1dddb97f53` (2026-09-03; estação 3 — trace
+  de fontes; npm `@shiftleftpt/sbd-toe-mcp@0.18.0` = published, gitHead same commit;
+  GitHub Release `v0.18.0`)
+- v0.17.0 → `61183f06454b07f4c40a12bb2df426d68e3d3be3` (2026-09-02; ronda 2 — never-silent
+  no resolve + requisito→prova; npm `@shiftleftpt/sbd-toe-mcp@0.17.0` = published,
+  gitHead same commit; GitHub Release `v0.17.0`)
+- v0.16.1 → `04430cbd28e8a8ca046f1e05c4fc9eb460cd868a` (2026-09-02; lote formal — pin
+  release KG v1.10.0; npm `@shiftleftpt/sbd-toe-mcp@0.16.1` = published, gitHead same
+  commit; GitHub Release `v0.16.1`)
+- v0.16.0 → `3e32af19e62d9009214a09639115310ac3076305` (2026-09-02; dívida de dados
+  exposta — pin dev-build v1.16; npm `@shiftleftpt/sbd-toe-mcp@0.16.0` = published,
+  gitHead same commit; GitHub Release `v0.16.0`)
+- v0.15.1 → `a3536fdee12612dd307994d4cdf62a7a9d33a2c1` (2026-09-02; reverificação Desktop
+  fechada; npm `@shiftleftpt/sbd-toe-mcp@0.15.1` = published, gitHead same commit;
+  GitHub Release `v0.15.1`)
+- v0.15.0 → `7c4d6a7918df988865f801373c07d4bd1a614367` (2026-09-02; Desktop-audit cycle —
+  universal pagination, excluded_by_level band, derived index-compact; npm
+  `@shiftleftpt/sbd-toe-mcp@0.15.0` = published, gitHead same commit; GitHub Release
+  `v0.15.0`)
+- v0.14.0 *(graduated applicability — Author decision 2026-09-01: «capítulo nunca se
+  exclui por nível»; binary lists retired, demand derived from authored assignment
+  proportionality; bundle pin unchanged KG v1.9.0; annotated tag on the squash commit
+  after merge; npm `latest` via release.yml)*
+- v0.13.0 → `8a3a9a90fac66ddcfa2395296d0c763eaa6bc105` (2026-09-01; serving batch —
+  read_sbd_toe_resource + provenance.kg stamp + inspect pin provenance; bundle pin
+  unchanged KG v1.9.0; npm `@shiftleftpt/sbd-toe-mcp@0.13.0` = `latest`, gitHead same
+  commit; GitHub Release `v0.13.0`)*
 
 ### Beta line (`0.20.x-beta`) — NOT citable, NOT a freeze candidate
 
@@ -618,9 +670,16 @@ prohibits tag deletion without explicit authorisation):
 | 2026-08-31 | v0.20.0-beta.6 tag commit recorded (`322c38f4`; npm `beta` confirmed; stable `v0.11.0` → `102b8166`). Dev-build `kg-v1-manual-v1.8.0-aligned-2026-08-31` pinned on the beta serving line (sha256 `ad0fc96c…`, contract v1.15, FIL/PRI). No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-31 | Formal batch («3 sims»): v0.20.0-beta.7 registered — formal KG `v1.9.0` pinned (`source: release`, sha256 `11153c85…`); fixture-2 gates ratified + harmonised (9,200/8,450), deviations emptied. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-31 | v0.20.0-beta.7 tag commit recorded (`4256ee0f`); npm `beta` publish + GitHub pre-release confirmed (run 33433883272). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-31 | Dev-build `kg-v1-manual-v1.8.0-aligned-2026-08-31` pinned on the serving line (sha256 `ad0fc96c…`, contract v1.15, 273 req/29 cat — FIL/PRI). No frozen state touched; formal KG v1.9.0 em lote. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-31 | Re-pin `source: release` KG v1.9.0 (sha256 `11153c85…` verified; zero-delta over the dev-build; mcp-stable = `93fe9fb1`). v0.12.0 registered (protected-tag list); v0.11.0 marked superseded (tag never created). Ceilings ratified+harmonized 9.200/8.450 ("3 sims"). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-01 | v0.20.0-beta.8 tag commit recorded (`4681fd2` — absorbs stable 0.13.0 via cherry-pick `079bb35`: read_sbd_toe_resource + provenance.kg stamp + inspect pin provenance; no ceiling touched; pins unchanged KG v1.9.0); npm dist-tag `beta` + gitHead confirmed. Registry rows land in THIS follow-up: the close-chore registry step aborted on this file's layout and its commit message overstated — declared here. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-01 | v0.20.0-beta.9 registered (absorbs stable 0.14.0 graduated applicability; Axis G scenarios added in runner + governance doc, 24/24 tools; bundle pin unchanged KG v1.9.0). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-01 | v0.20.0-beta.9 tag commit recorded (`3f035b21`); npm `beta` publish + GitHub pre-release confirmed (run 33448740512). Governance catalogue committed in DevelopmentGovernance (Axis G filled; file was previously untracked there — declared). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-01 | v0.12.0 tag commit recorded (`b475900e`, squash of #62); npm publish (`latest`) + GitHub Release confirmed. v0.13.0 registered (protected-tag list; serving batch, bundle pin unchanged). `release_ref` owner normalized SbD-ToE (cosmetic). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-01 | CORRECTION (lead-approved): v0.11.0 WAS tagged (`102b8166`) and published to npm on 2026-08-31 14:56Z alongside 0.20.0-beta.6 — the G-mp1a gate was fulfilled; the "superseded/never tagged" notes from the 0.12.0 lote were stale. Protected-tag entry amended. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-01 | v0.13.0 tag commit recorded (`8a3a9a90`, squash of #63); npm publish (`latest`) + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-01 | v0.14.0 registered (protected-tag list): graduated applicability cycle — binary chapter exclusion retired from the serving per the Author's verbatim decision; derivation from bundle assignments + chapter-01 matrix anchor. Pins unchanged (KG v1.9.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-01 | v0.14.0 tag commit recorded (`1f199ccb`); npm latest + Release confirmed. v0.15.0 registered (Desktop-audit cycle; static index-compact retired from the package lists). Pins unchanged (KG v1.9.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-02 | v0.20.0-beta.10 registered (absorbs stable 0.15.0; line_note inverted for the beta; static index-compact deleted on this line too; bundle pin unchanged KG v1.9.0). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-02 | v0.20.0-beta.10 tag commit recorded (`acba7845`); npm `beta` publish + GitHub pre-release confirmed (run 33609792488). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-02 | v0.20.0-beta.11 registered (absorbs stable 0.15.1; beta-only surfaces audited clean; bundle pin unchanged KG v1.9.0). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
@@ -631,10 +690,16 @@ prohibits tag deletion without explicit authorisation):
 | 2026-09-02 | v0.20.0-beta.13 tag commit recorded (`0795d547`); npm `beta` publish + GitHub pre-release confirmed (run 33629570546). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-02 | v0.20.0-beta.14 registered (absorbs stable 0.17.0; beta-only surfaces audited — no field filters to validate; bundle pin unchanged KG v1.10.0). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-02 | v0.20.0-beta.14 tag commit recorded (`5f30aaa8`); npm `beta` publish + GitHub pre-release confirmed (run 33675619715). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-02 | v0.15.0 tag commit recorded (`7c4d6a79`, squash of #66); npm latest + Release confirmed. v0.15.1 registered (reverificação Desktop; pins unchanged KG v1.9.0). REPAIR NOTE: the 0.15.1 release commit briefly truncated this file by a bad splice — restored from master and re-applied cleanly in the same PR (declared). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-02 | v0.15.1 tag commit recorded (`a3536fde`, squash of #67); npm latest + Release confirmed. v0.16.0 registered — re-pin dev-build 2026-09-02 (`c832fd97…`, v1.16, digest-verified) with the data-debt joins exposed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-02 | v0.16.0 tag commit recorded (`3e32af19`, squash of #68); npm latest + Release confirmed (boleia declarada). v0.16.1 registered — lote formal: re-pin release KG v1.10.0 (`d8df472b…`, digest-verified, byte-igual ao dev-build). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-02 | v0.16.1 tag commit recorded (`04430cbd`, squash of #69); npm latest + Release confirmed (boleia declarada). v0.17.0 registered — never-silent no resolve + requisito→prova na matriz. Pins unchanged (KG v1.10.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-03 | v0.20.0-beta.15 registered (absorbs stable 0.18.0; dev-build kg-2026-09-03 pinned, sha256 `e5c3581b…`, contract v1.17; 2 semantic surfaces as named packaging exceptions, npm pack --dry-run verified). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-03 | v0.20.0-beta.15 tag commit recorded (`1bce819e`); npm `beta` publish + GitHub pre-release confirmed (run 33787544447). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-03 | v0.20.0-beta.16 registered (absorbs stable 0.18.1; formal re-pin release KG v1.11.0, sha256 `b7444094…`, byte-identical to the dev-build; stamp "v1.11.0" verified). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-03 | v0.20.0-beta.16 tag commit recorded (`791b4124`); npm `beta` publish + GitHub pre-release confirmed (run 33790707850). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-03 | v0.17.0 tag commit recorded (`61183f06`, squash of #70); npm latest + Release confirmed (boleia declarada). v0.18.0 registered — estação 3: pin dev-build kg-2026-09-03 (`e5c3581b…`, v1.17, digest-verified) + trace de fontes (directas vs compensadas). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-03 | v0.18.0 tag commit recorded (`b1dbc7e6`, squash of #71); npm latest + Release confirmed (boleia declarada). v0.18.1 registered — lote formal: re-pin release KG v1.11.0 (`b7444094…`, digest-verified, byte-igual). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-04 | v0.20.0-beta.17 registered (absorbs stable 0.19.0; precondition completed by watching the in-flight v0.19.0 publish run before absorbing; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-04 | v0.20.0-beta.17 tag commit recorded (`18cc23fd`); npm `beta` publish + GitHub pre-release confirmed (run 33863271967). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-04 | v0.20.0-beta.18 registered (absorbs stable 0.19.1; V2/V4/replay-guard reproduced; agentic heuristics coherent under the new precedence — no divergence; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
@@ -643,6 +708,11 @@ prohibits tag deletion without explicit authorisation):
 | 2026-09-04 | v0.20.0-beta.19 tag commit recorded (`084cb3f8`); npm `beta` publish + GitHub pre-release confirmed (run 33896956237). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-04 | v0.20.0-beta.20 registered (COMBINED absorption of stable 0.19.3 + 0.19.4; beta invariant extension caught and fixed 2 legend URIs served without naming read_sbd_toe_resource; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-04 | v0.20.0-beta.20 tag commit recorded (`bc101795`); npm `beta` publish + GitHub pre-release confirmed (run 33907019917). | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-04 | v0.18.1 tag commit recorded (`dc5500af`, squash of #72); npm latest + Release confirmed (boleia declarada). v0.19.0 registered — ronda 3 (basis+aviso; near-touch resolvido por dieta; 2º incidente de gate travado em draft → sentinela adoptada). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-04 | v0.19.0 tag commit recorded (`ab4340d8`, squash of #73); npm latest + Release confirmed (boleia declarada). v0.19.1 registered — ronda 4 (zero=alarme; explicit>lexical; a sentinela de gate travou uma 1ª versão errada da precedência antes de docs/PR — mecanismo validado). Pins unchanged (KG v1.11.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-04 | v0.19.1 tag commit recorded (`a80741d2`, squash of #74); npm latest + Release confirmed. v0.19.2 registered — micro (next calibrado com limites do destino; START HERE nas descrições). Pins unchanged (KG v1.11.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-04 | v0.19.2 tag commit recorded (`99ad5a91`, squash of #75); npm latest + Release confirmed. v0.19.3 registered — ronda 5 + adenda r6 (invariante next-verbatim; verdades matrix/setup; record_type declarado; medição item 7 reportada). Pins unchanged (KG v1.11.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-04 | v0.19.3 tag commit recorded (`12c5188c`, squash of #76); npm latest + Release confirmed. v0.19.4 registered — a promessa do minimal (tecto por-id 78/81/86 derivado da medição; declarado; divisão executável ensinada; full sem tecto). Pins unchanged (KG v1.11.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-05 | v0.20.0-beta.21 registered (experiência «declarativo primeiro»: contrato de serviço v1.18-beta, vocabulário de activação publicado, needs_input, modos baseline/discover; oráculo histórico 10/10 em discover + conjunto declarativo novo 6/4/0; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-05 | v0.20.0-beta.21 tag commit recorded (`41553419`); npm `beta` publish + GitHub pre-release confirmed (run 33963546721). | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-08 | **ERRATA de registo (append-only; nada reescrito no histórico).** Os dois ficheiros do Eixo I da b.40 medido sobre o artefacto publicado (`2026-09-07-travessia-publicado-…`) foram commitados a ZERO bytes: o passo de anonimização do caminho local abria o ficheiro para escrita ANTES de o ler, e truncava-o. Regenerados por re-medição do mesmo artefacto ainda publicado no npm (`0.20.0-beta.40`), com o mesmo resultado 5·1·0. **Causa corrigida na origem:** o `run-axis-i-readings.mjs` carimbava a versão do REPO e não a do servidor medido — com `--server` a apontar para um artefacto instalado, o registo dizia ter medido uma versão e tinha medido outra; passa a ler o `package.json` do servidor que mediu. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
