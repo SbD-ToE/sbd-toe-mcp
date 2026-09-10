@@ -43,7 +43,7 @@ export const RESOURCE_CATALOG = [
           uri: "sbd://toe/activation-vocabulary",
           name: "SbD-ToE Activation Vocabulary",
           description:
-            "DECLARATIVE-FIRST (0.20-beta): the CLOSED vocabulary this server accepts and what each value activates — concerns, exposure, data_sensitivity, technologies, changed_files path table, roles, phases, risk levels. Derived from the served bundle and the engine's own tables, never hand-written. Read it, map your reading of the request onto these values, and DECLARE them: the server answers the declared, it does not interpret prose.",
+            "DECLARATIVE-FIRST (line 0.20; the selection contract's maturity is declared inside, in `contract.maturity` — not in this line name): the CLOSED vocabulary this server accepts and what each value activates — concerns, exposure, data_sensitivity, technologies, changed_files path table, roles, phases, risk levels. Derived from the served bundle and the engine's own tables, never hand-written. Read it, map your reading of the request onto these values, and DECLARE them: the server answers the declared, it does not interpret prose.",
           mimeType: "application/json"
         },
         {

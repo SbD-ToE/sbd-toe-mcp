@@ -2690,9 +2690,9 @@ export function buildCodegenInstructionsResourceContent(
       "Static per-mode boilerplate for prepare_sbd_toe_codegen_context at " +
       "detail=standard/minimal (kept inline at detail=full). Also carries the " +
       "detail_encoding legend for the dieted payload.",
-    // 0.15.0 item 8, invertido para esta linha (0.20-beta): aqui o trace EXISTE.
+    // 0.15.0 item 8, invertido para esta linha (0.20): aqui o trace EXISTE.
     line_note:
-      "Nesta linha 0.20 (beta) o trace_sbd_toe_graph existe: execute os " +
+      "Nesta linha 0.20 o trace_sbd_toe_graph existe: execute os " +
       "relations_ref directamente ({lens, anchor}). include_relations=true no " +
       "prepare continua disponível como atalho para relações inline.",
     llm_codegen_instructions: {

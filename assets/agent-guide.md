@@ -8,7 +8,10 @@ You are an engineering agent operating in a repository governed by the
 
 ---
 
-## ⛳ START HERE — declarative first (linha 0.20-beta, contrato v1.18-beta)
+## ⛳ START HERE — declarative first (linha 0.20, contrato `v1.18-beta`)
+
+> O `-beta` no contrato é o NOME, não o estado. A maturidade — do contrato e do pacote, que são
+> independentes — declara-se em `sbd://toe/version` → `serving_contract.maturity`.
 
 **Tu tens o contexto. Eu tenho o conhecimento. A fronteira é essa.**
 
@@ -50,8 +53,8 @@ adjacências do grafo, de forma reproduzível e auditável.
 mesmo**. Auditabilidade real: «porque foi o ENC seleccionado?» → «porque declaraste
 `data_sensitivity=personal`», não «porque a palavra *email* apareceu».
 
-*(Experiência da linha beta autorizada pelo programme lead em 2026-09-05; a linha estável
-mantém a semântica anterior.)*
+*(Experiência da linha 0.20, autorizada pelo programme lead em 2026-09-05. A linha 0.19
+mantém a semântica anterior e continua alcançável para quem lá está pinado.)*
 
 ---
 

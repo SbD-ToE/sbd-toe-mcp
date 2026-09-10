@@ -3,11 +3,68 @@ ai_assisted: true
 model: Claude Opus 5
 date: 2026-09-10
 purpose: documentation
-reasoning: v0.20.0-beta.49 (beta line, npm `beta`) — o artefacto instalável passa a DATAR-SE a si mesmo (P1, bloqueante): bloco de proveniência no ficheiro, nos dois sabores e também no ramo sem role, com Manual/KG/ontologia/substrato/servidor/hora lidos do pin e ausências DECLARADAS; o `meta.provenance` passa a datar o Manual. A cobertura NOMEIA os capítulos fora da fatia nos dois sabores (P2) — uma contagem não é uma declaração. E os dois contratos (serving v1.18-beta a jusante, consumer v1.25 a montante) passam a dizer qual é qual e que não se seguem (P3). Consequência declarada: a hora de geração é volátil por desenho e o gate de determinismo passa a reportar 28 byte-idênticos + 1 idêntico após neutralizar, 0 divergências.
+reasoning: v0.20.0 (promoção da beta.49, linha estável) — a maturidade do contrato de selecção passa a FACTO DECLARADO (`serving_contract.identity` + `.maturity`, com a maturidade do pacote derivada da versão e nunca escrita à mão) em vez de sufixo numa string; o contrato mantém-se beta deliberadamente, por decisão do lead, e o identificador NÃO se renomeia. Sete declarações servidas que a promoção tornava falsas — cinco a dizer que a linha era beta, uma a dizer que a linha estável era outra — reescritas na forma durável: a prosa nomeia a linha, o campo declarado carrega a maturidade. Zero alteração de comportamento: o oráculo do Eixo H veio byte-idêntico à corrida da beta.49.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.20.0 — 2026-09-10
+
+**A maturidade passa a facto declarado.** Promoção da `0.20.0-beta.49`, por decisão do programme
+lead. Pino **inalterado** (KG v1.12.0 · sha256 `c21d35cb…bece2f`); linha **0.19.4 intocada** e
+alcançável para quem lá está pinado. **Zero alteração de comportamento de selecção** — prova
+directa: o oráculo do Eixo H veio **byte-idêntico** à corrida da beta.49, com o `generated_at`
+como única diferença.
+
+### Identidade e maturidade, dois factos separados
+
+A palavra «beta» fazia **dois trabalhos ao mesmo tempo**: marcava o pré-lançamento do **pacote** e
+a maturidade do **contrato de selecção**. Enquanto o pacote também era beta, a coincidência
+disfarçava o problema. No dia em que o pacote deixa de ser beta — este — o mesmo sufixo passaria a
+dizer outra coisa **sem que ninguém o tivesse decidido**. Regra do programa: quando um campo
+carrega uma palavra com semântica, **verifica-se a semântica; não se herda**.
+
+**O contrato de selecção mantém-se beta, deliberadamente.** Mudou comportamento há pouco — v1.17 →
+v1.18-beta introduziu o `needs_input` — e chamar-lhe estável antes de a mudança ter rodagem seria
+dar uma garantia que ainda não se pode dar. **Manter-se beta é uma decisão, não um esquecimento.**
+É por isso que uma release estável serve um contrato declarado beta: são duas maturidades
+independentes, e agora **lêem-se, em vez de se deduzirem**.
+
+O identificador **não se renomeia**. Tirar-lhe o `-beta` seria exactamente graduar o contrato, que
+é o contrário da decisão. O sufixo é **demovido de portador-de-significado a parte-do-nome**, e a
+maturidade ganha campo próprio ao lado:
+
+- `sbd://toe/version` → `serving_contract.identity` (o nome, e que o sufixo **não** é o estado) e
+  `serving_contract.maturity` (`contract`, `package`, o porquê, o que beta significa aqui e o que
+  **não** significa).
+- `sbd://toe/activation-vocabulary` → `contract.identity` e `contract.maturity`, na forma curta.
+- A maturidade do **pacote** é **derivada da versão** (`packageMaturity()`), nunca escrita à mão; se
+  a versão não se puder ler responde `undeclared` — **não se assume nenhuma das duas**.
+
+### A prosa nomeia a linha; o campo declarado carrega a maturidade
+
+Sete declarações servidas diziam ao chamador que a linha era beta — ou, na direcção inversa, que a
+linha estável era outra. **A promoção tornava-as falsas no instante da tag**, e uma delas vivia no
+**mesmo objecto** que o novo `maturity.package: "stable"`: o payload diria «pacote estável» e «linha
+0.20-beta» a três linhas de distância. Não é dívida de prosa — é o que **deixa de ser verdade** por
+efeito da própria promoção.
+
+Corrigidas na forma durável, para que a **próxima** promoção toque na derivação e não na prosa:
+onde a prosa podia largar a afirmação de maturidade, largou-a (*«linha 0.20»*); onde a maturidade
+importa ao leitor, **aponta** para `maturity` em vez de repetir um literal; e a declaração inversa
+foi reescrita como **facto**, não como relação — esta é a linha estável, e serve um contrato de
+selecção declarado beta.
+
+Referências históricas da forma «(0.20.0-beta.NN)», que nomeiam a versão onde um comportamento
+entrou, são **afirmações de proveniência** e continuam verdadeiras. **Não foram tocadas.**
+
+### Verificação
+
+Suite 820/820 · aceitação 180 · 0 FAIL · gate PASS · Eixo H byte-idêntico à beta.49 · Eixo I 6
+SERVIDO · 0 SERVIDO-MAL · 0 NÃO SERVIDO · matriz banda×superfície 0 FALTA · 0 unprobed ·
+determinismo 28 idênticos + 1 após neutralizar · 0 divergências · pacote npm 242 ficheiros, sem
+fugas de caminhos privados · pino verificado por digest contra o substrato distribuído.
 
 ## 0.20.0-beta.49 — 2026-09-10
 

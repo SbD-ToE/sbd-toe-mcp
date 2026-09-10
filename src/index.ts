@@ -15,7 +15,7 @@ import {
   searchManualQuestion
 } from "./orchestrator/ask-manual.js";
 import { loadSystemPromptTemplate } from "./prompt/system-prompt.js";
-import { loadBundleProvenance, servedKgReleaseTag, servingServerVersion } from "./version-info.js";
+import { loadBundleProvenance, packageMaturity, servedKgReleaseTag, servingServerVersion } from "./version-info.js";
 import {
   handleGetSbdToeChapterBrief,
   handleListSbdToeChapters,
@@ -300,15 +300,47 @@ async function materializeResource(uri: string): Promise<{ mimeType: string; tex
             "independentes e **não se seguem um ao outro**: nenhum tem de acompanhar o outro, e o " +
             "`alignment_policy` do pino governa o de montante. Um número maior de um lado não implica " +
             "atraso do outro.",
+          /*
+           * 0.20.0 — IDENTIDADE E MATURIDADE, dois factos separados.
+           *
+           * Até aqui a maturidade do contrato só se lia DEDUZINDO-A do sufixo `-beta` no
+           * número de versão. Isso funcionava enquanto o pacote também era beta; no dia em
+           * que o pacote passa a estável, o mesmo sufixo passa a dizer outra coisa sem que
+           * ninguém o tenha decidido. Quando um campo carrega uma palavra com semântica,
+           * verifica-se a semântica — não se herda.
+           *
+           * O identificador NÃO se renomeia: tirar-lhe o `-beta` seria exactamente graduar o
+           * contrato, e a decisão é o contrário disso. A maturidade ganha campo próprio, ao
+           * lado, e passa a ser lida — não deduzida.
+           */
+          identity: {
+            id: "v1.18-beta",
+            is: "o NOME deste contrato de selecção: identificador opaco, comparável por igualdade. Muda quando o contrato muda.",
+            suffix_is_not_status:
+              "O `-beta` faz parte do NOME, por razões históricas. NÃO é onde se lê o estado — esse está em `maturity`, ao lado. Um identificador sem sufixo não significaria contrato estável, e este com sufixo não significa pacote beta."
+          },
+          maturity: {
+            contract: "beta",
+            package: packageMaturity(),
+            package_version: pkg.version,
+            not_derivable_from_each_other:
+              "Independentes: nem a maturidade do pacote se deduz da do contrato, nem a do contrato da do pacote — cada uma declara-se onde está. Lê os dois campos acima em vez de inferir um do outro: um pacote estável pode servir um contrato de selecção beta.",
+            why_the_contract_is_beta:
+              "A selecção mudou de comportamento há pouco: v1.17 → v1.18-beta introduziu o `needs_input`. Chamar-lhe estável antes de a mudança ter rodagem seria dar uma garantia que ainda não se pode dar. Manter-se beta é uma decisão, não um esquecimento.",
+            what_beta_means_here:
+              "A FORMA da resposta de selecção — campos, bandas, o disparo do needs_input — ainda pode mudar numa versão menor, com migração declarada, como a de v1.17 → v1.18-beta foi. Não quer dizer instável, experimental, nem sem suporte.",
+            what_it_does_not_mean:
+              "Não diz nada sobre a maturidade do pacote, do bundle servido, do Manual ou da ontologia: cada um declara a sua, e o conhecimento servido vem de releases formais, pinadas e verificadas por digest."
+          },
           semantics: "declarative-first",
-          line: "0.20-beta (experiência autorizada pelo programme lead 2026-09-05)",
+          line: "0.20 — linha declarativa (experiência autorizada pelo programme lead 2026-09-05). Este campo NOMEIA a linha; não diz o estado dela. A maturidade está em `maturity`, acima.",
           changed:
             "A selecção passou a ser função APENAS do que o chamador declara (risk_level, concerns, exposure, data_sensitivity, technologies, changed_files). O `task` é contexto registado para auditoria e não influencia o resultado; sem declarações a resposta é needs_input (nunca zero, nunca adivinhado). A baseline do nível pede-se com mode='baseline'.",
           vocabulary_resource: "sbd://toe/activation-vocabulary",
           discover_mode:
             "O motor inferencial anterior (casamento lexical da prosa) continua disponível em mode='discover' — exploratório, marcado na resposta, para o oráculo histórico e o estudo de paráfrase.",
           migration:
-            "v1.17 → v1.18-beta: quem enviava só `task` recebe agora needs_input com o vocabulário e candidatos A CONFIRMAR; declarar os activadores (ou pedir mode='discover'/'baseline') restabelece uma resposta com conteúdo. Linha estável inalterada."
+            "v1.17 → v1.18-beta: quem enviava só `task` recebe agora needs_input com o vocabulário e candidatos A CONFIRMAR; declarar os activadores (ou pedir mode='discover'/'baseline') restabelece uma resposta com conteúdo. Esta linha É a linha estável e serve um contrato de selecção declarado beta: as duas maturidades estão em `maturity` e não se deduzem uma da outra."
         }
       });
       return { mimeType: "application/json", text: payload };

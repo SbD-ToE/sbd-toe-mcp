@@ -22,7 +22,7 @@ import {
 } from "../tools/prepare-codegen-context.js";
 import { CONCERN_TO_DOMAIN_CHAPTERS, TECHNOLOGY_TO_CHAPTERS, SES008_TECHNOLOGY } from "./selection.js";
 import { PATTERN_RULES } from "../tools/map-review-scope.js";
-import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
+import { packageMaturity, servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 
 export interface ConcernVocabularyEntry {
   value: Concern;
@@ -62,7 +62,21 @@ export interface ActivationVocabulary {
     source_data: string;
     note: string;
   };
-  contract: { serving_semantics: "declarative-first"; version: string; note: string };
+  contract: {
+    serving_semantics: "declarative-first";
+    /** Identificador do contrato de selecção. O sufixo faz parte do NOME, não do estado. */
+    version: string;
+    identity: { id: string; is: string };
+    /** 0.20.0 — maturidade como facto declarado, não deduzida do sufixo nem da versão do pacote. */
+    maturity: {
+      contract: "beta";
+      package: "stable" | "pre-release" | "undeclared";
+      package_version: string;
+      not_derivable_from_each_other: string;
+      why_the_contract_is_beta: string;
+    };
+    note: string;
+  };
   how_to_use: string[];
   risk_level: { values: string[]; baseline_requirements: Record<string, number>; note: string };
   concerns: { closed_set: true; note: string; values: ConcernVocabularyEntry[] };
@@ -169,8 +183,23 @@ export function buildActivationVocabulary(): ActivationVocabulary {
     contract: {
       serving_semantics: "declarative-first",
       version: "v1.18-beta",
+      // 0.20.0 — a maturidade não se lê do sufixo; lê-se aqui. Ver `sbd://toe/version`
+      // (`serving_contract.identity` / `.maturity`), que é a autoridade de identidade.
+      identity: {
+        id: "v1.18-beta",
+        is: "o NOME deste contrato de selecção — identificador opaco. O `-beta` faz parte do nome, não é onde se lê o estado."
+      },
+      maturity: {
+        contract: "beta",
+        package: packageMaturity(),
+        package_version: servingServerVersion(),
+        not_derivable_from_each_other:
+          "Independentes: um pacote estável pode servir um contrato de selecção beta, e é este o caso. Nenhuma das duas se deduz da outra.",
+        why_the_contract_is_beta:
+          "A selecção mudou de comportamento há pouco (v1.17 → v1.18-beta introduziu o `needs_input`). Beta aqui quer dizer que a FORMA da resposta ainda pode mudar numa versão menor, com migração declarada — não que seja instável ou sem suporte."
+      },
       note:
-        "Nesta linha (0.20-beta, experiência autorizada pelo lead 2026-09-05) a selecção é função do que o chamador DECLARA. O servidor normaliza o declarado; não decide o que quiseram dizer."
+        "Nesta linha (0.20, experiência autorizada pelo lead 2026-09-05) a selecção é função do que o chamador DECLARA. O servidor normaliza o declarado; não decide o que quiseram dizer."
     },
     how_to_use: [
       "1. Tu (LLM) lês o pedido, o código e a conversa — tens o contexto que o servidor nunca terá.",

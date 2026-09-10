@@ -117,6 +117,24 @@ export function servingServerVersion(): string {
 }
 
 /**
+ * 0.20.0 — MATURIDADE DO PACOTE, derivada da versão e nunca escrita à mão.
+ *
+ * A palavra «beta» fazia dois trabalhos ao mesmo tempo: marcava o pré-lançamento do PACOTE e
+ * a maturidade do CONTRATO de selecção. No dia em que o pacote deixa de ser beta, o sufixo
+ * mudaria de significado sozinho — sem ninguém o decidir. Regra do programa: quando um campo
+ * carrega uma palavra com semântica, VERIFICA-SE a semântica; não se herda.
+ *
+ * Em semver, o identificador de pré-lançamento (`-beta.49`, `-rc.1`) É a declaração de
+ * pré-lançamento, e a sua ausência é a declaração de estável. Se a versão não se puder ler,
+ * responde-se `undeclared` — não se assume nenhuma das duas.
+ */
+export function packageMaturity(): "stable" | "pre-release" | "undeclared" {
+  const v = servingServerVersion();
+  if (v === "unknown") return "undeclared";
+  return /^\d+\.\d+\.\d+-/.test(v) ? "pre-release" : "stable";
+}
+
+/**
  * 0.20.0-beta.46 (G5) — o SUBSTRATO servido, lido do pino e nunca escrito à mão.
  *
  * Três rondas de auditoria pediram identidade de versão, e a terceira foi a primeira em que
