@@ -467,16 +467,6 @@ function declaredActivatorsOf(
   };
 }
 
-function hasAnyDeclaration(d: DeclaredActivators): boolean {
-  return (
-    d.concerns.length > 0 ||
-    d.exposure !== undefined ||
-    d.data_sensitivity !== undefined ||
-    d.technologies.length > 0 ||
-    d.changed_files.length > 0
-  );
-}
-
 /**
  * A aula do `needs_input`: vocabulário aplicável + candidatos DERIVADOS do texto da
  * tarefa marcados como SUGESTÃO A CONFIRMAR (nunca selecção) + um exemplo copiável.

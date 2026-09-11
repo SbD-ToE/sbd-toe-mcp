@@ -521,7 +521,7 @@ md.push("## Células `FALTA` (achados desta corrida — não trabalho desta vaga
 if (missingCells.length === 0) md.push("_Nenhuma._");
 else for (const m of missingCells) md.push(`- **${m.tool}** · banda \`${m.band}\` — ${m.why}`);
 md.push("", "## Superfícies não exercitáveis por argumentos derivados do schema", "");
-if (unprobed.length === 0) md.push("_Nenhuma: as ${tools.length} superfícies responderam a argumentos derivados do próprio schema._".replace("${tools.length}", String(tools.length)));
+if (unprobed.length === 0) md.push(`_Nenhuma: as ${tools.length} superfícies responderam a argumentos derivados do próprio schema._`);
 else for (const u of unprobed) md.push(`- **${u.tool}** — ${u.why}`);
 md.push("", "## Motivos das células `n/a` (por banda)", "");
 for (const r of rows) {

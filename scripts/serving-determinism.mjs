@@ -19,7 +19,7 @@
  * declarada é ACHADO, não ruído.
  */
 import { spawn } from "node:child_process";
-import { writeFileSync, readFileSync } from "node:fs";
+import { writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 

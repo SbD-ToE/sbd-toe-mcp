@@ -18,12 +18,11 @@ import { handleSelectRequirements } from "../tools/select-requirements.js";
 import { handleConsultSecurityRequirements } from "../tools/consult-security-requirements.js";
 import { handleGetThreatLandscape } from "../tools/get-threat-landscape.js";
 import { handleMapSbdToeApplicability } from "../tools/structured-tools.js";
-import { buildActivationVocabulary, EXPOSURE_VALUES, SENSITIVITY_VALUES } from "./activation-vocabulary.js";
+import { buildActivationVocabulary } from "./activation-vocabulary.js";
 import { buildAgentGuide } from "./agent-guide.js";
 
 const LEVELS = ["L1", "L2", "L3"] as const;
 const vocab = buildActivationVocabulary();
-const CONCERNS = vocab.concerns.values.map((c) => String(c.value));
 const TECHNOLOGIES = vocab.technologies.values.map((t) => String(t.value));
 
 type Surface = {

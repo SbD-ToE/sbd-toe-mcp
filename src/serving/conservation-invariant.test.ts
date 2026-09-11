@@ -12,7 +12,7 @@
  */
 import { describe, it, expect } from "vitest";
 import { runSelection, type SelectionResult } from "./selection.js";
-import { buildActivationVocabulary, EXPOSURE_VALUES, SENSITIVITY_VALUES } from "./activation-vocabulary.js";
+import { buildActivationVocabulary } from "./activation-vocabulary.js";
 import { getOntologyData } from "../tools/ontology-loader.js";
 
 const LEVELS = ["L1", "L2", "L3"] as const;

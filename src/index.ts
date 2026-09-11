@@ -71,7 +71,7 @@ import { handleGetPlaybook } from "./tools/get-playbook.js";
 import { handleGetChapterCapability } from "./tools/get-chapter-capability.js";
 import { handleExplainTopic } from "./tools/explain-topic.js";
 import { handleGetMacroProcesses } from "./tools/get-macro-processes.js";
-import { threatConcernSupport, threatDomainConcerns } from "./tools/get-threat-landscape.js";
+import { threatDomainConcerns } from "./tools/get-threat-landscape.js";
 import { reconcileNextWithBands } from "./serving/next-band-reconciliation.js";
 
 type JsonRpcId = string | number;

@@ -385,7 +385,6 @@ export const readingCases = [
       used.push("get_threat_landscape");
       const anti = await client.tool("query_sbd_toe_entities", { query: "antipadrão segredos" });
       used.push("query_sbd_toe_entities");
-      const antiFound = anti.ok && /antipattern|antipadr/i.test(JSON.stringify(anti.data ?? {}));
       const matrix = await client.tool("get_sbd_toe_verification_matrix", { risk_level: "L2" });
       used.push("get_sbd_toe_verification_matrix");
       const guide = await client.tool("get_guide_by_role", { risk_level: "L2", phase: "build" });

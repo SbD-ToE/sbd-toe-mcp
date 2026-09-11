@@ -60,7 +60,6 @@ import type { Affordance } from "../serving/protocol-envelope.js";
 import { requirementCategoryOf } from "../serving/requirement-id.js";
 import { prepareCodegenAffordances } from "../serving/affordances.js";
 import {
-  runSelection,
   runSelectionWithActivation,
   normalizeDeclaredTechnologies,
   stackTokensFromVocabulary,
