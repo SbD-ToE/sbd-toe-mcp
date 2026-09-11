@@ -1179,7 +1179,7 @@ class McpRuntime {
           description:
             "LEITURA PROGRAMA (0.20.0-beta.37) — «por onde começamos e com que SEQUÊNCIA?». Serve os cinco macro-processos MP-01..05 que o Manual publica (pergunta, continuidade, invariante, dono, participantes, percurso de capítulos, indicadores, pontos de controlo, evidência esperada, proporcionalidade L1-L3) e a **ORDEM DE ADOPÇÃO publicada**. " +
             "A ordem deriva EXCLUSIVAMENTE das arestas `dependency`: as `feedback` são realimentação e ficam FORA dela — se entrassem, os cinco macro-processos ciclariam. " +
-            "NÃO é a leitura GUIDE (que requisitos se aplicam a uma tarefa) nem a IMPL (a capacidade de um capítulo): devolver os 273 requisitos, ou um capítulo isolado, seria responder a outra pergunta. " +
+            `NÃO é a leitura GUIDE (que requisitos se aplicam a uma tarefa) nem a IMPL (a capacidade de um capítulo): devolver os ${getOntologyData().requirements.length} requisitos, ou um capítulo isolado, seria responder a outra pergunta. ` +
             "Limites DECLARADOS na resposta: não existe entidade «programa» (recusa de curadoria, ratificada); a travessia MP↔fase do SDLC é lacuna publicada e não se deriva; e MacroProcess, capítulo e fase são três segmentações paralelas — `traverses_bundles` é percurso, nunca contenção.",
           inputSchema: {
             type: "object",
@@ -1226,7 +1226,7 @@ class McpRuntime {
               dimension: { type: "string", description: "Filtra por dimensão (ex.: `T-01`)." },
               risk_level: { type: "string", enum: ["L1", "L2", "L3"], description: "Acrescenta `target_at_level`: o threshold que ESTE nível exige." },
               offset: { type: "number", description: "Paginação sobre os KPIs." },
-              limit: { type: "number", description: "KPIs por página (default 25; 99 publicados no total)." }
+              limit: { type: "number", description: `KPIs por página (default 25; ${loadMetrics().length} publicados no total).` }
             },
             additionalProperties: false
           },

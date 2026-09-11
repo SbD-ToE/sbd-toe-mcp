@@ -286,9 +286,19 @@ export function handleSelectRequirements(args: Record<string, unknown>): SelectR
     if (technologies !== undefined && technologies.length > 0) notComparable.push("technologies (o consult não as aceita)");
     if (exposure !== undefined) notComparable.push("exposure (o consult aceita e NÃO honra — ver ignored_activators lá)");
     if (dataSensitivity !== undefined) notComparable.push("data_sensitivity (idem)");
-    const comparableConcerns = (concerns ?? []).slice(0, 5);
-    if (concerns !== undefined && concerns.length > 5)
-      notComparable.push(`concerns além dos 5 primeiros (o consult tem maxItems: 5; declaraste ${concerns.length})`);
+    /**
+     * 2026-09-11 despacho §6 — `compared_on` levava o argumento CRU: com `["auth","zzz"]`
+     * a mesma resposta dizia que `zzz` foi IGNORADO (unknown_concerns) e que a verificação
+     * cruzada foi feita «sobre» ele — um acordo vácuo (ambos os lados descartavam o mesmo
+     * lixo) e slots dos 5 gastos em tokens inválidos. Agora compara-se SÓ o validado
+     * (`result.input.concerns`), e os desconhecidos ficam nomeados em `not_comparable`.
+     */
+    const validatedConcerns = result.input.concerns;
+    const comparableConcerns = validatedConcerns.slice(0, 5);
+    if (validatedConcerns.length > 5)
+      notComparable.push(`concerns além dos 5 primeiros (o consult tem maxItems: 5; ${validatedConcerns.length} válidos)`);
+    if (unknownConcerns.length > 0)
+      notComparable.push(`concerns desconhecidos — IGNORADOS na comparação: ${unknownConcerns.join(", ")} (ver unknown_concerns)`);
     let agreement: NonNullable<SelectRequirementsOutput["cross_surface_check"]>["agreement"] = null;
     if (comparableConcerns.length > 0) {
       const viaConsult = handleConsultSecurityRequirements({ risk_level: risk, concerns: comparableConcerns });

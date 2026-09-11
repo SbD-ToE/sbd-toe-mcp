@@ -39,3 +39,12 @@ describe("select_sbd_toe_requirements (MP1 tool)", () => {
     expect(ids.some((id) => id.startsWith("IAC-"))).toBe(true);
   });
 });
+
+describe("cross_surface_check compara SÓ o validado (§6, 2026-09-11)", () => {
+  it("concerns desconhecidos ficam fora de compared_on e nomeados em not_comparable", () => {
+    const out = handleSelectRequirements({ risk_level: "L2", concerns: ["auth", "zzz-bogus"] });
+    expect(out.cross_surface_check?.compared_on).toEqual(["auth"]);
+    expect(out.cross_surface_check?.not_comparable.join(" ")).toContain("zzz-bogus");
+    expect(out.unknown_concerns?.values).toContain("zzz-bogus");
+  });
+});

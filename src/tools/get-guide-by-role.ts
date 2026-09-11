@@ -40,6 +40,8 @@ function normalizeToken(value: string): string {
  * or sparse in the substrate are deliberately left out and routed to Codex as
  * data-quality items rather than papered over here:
  *   - devsecops  — cross-cutting (developer + appsec-engineer + devops-sre); not one role
+ *     (re-examined 2026-09-11 §1: the KG also refused the alias — audience column spreads
+ *     DevSecOps across six chapters; the refusal is now declared on both sides)
  *   - architect  — substrate split (software_architect→developer vs empty arquitetos-software)
  *   - product-manager — product_owner appears under both `qa` and `product-owner`
  *   - training-manager / pentester / security — no canonical content home
@@ -49,7 +51,73 @@ const CONSUMER_ROLE_ALIASES: Record<string, string> = {
   "application-security-engineer": "appsec-engineer",
   "sec-engineer": "appsec-engineer",
   "appsec-eng": "appsec-engineer",
+  // 2026-09-11 defect wave §1/adenda: SecOps-family → operacoes. Grounds: the Manual's own
+  // audience column («Operations, SOC, DevSecOps» on the OPS row) and the Orchestrator-verified
+  // adenda (operacoes carries the SOC operation stories; the platform half is devops-sre and is
+  // POINTED AT via the split band below). The KG publishes the same aliases from v1.26 §1.33B —
+  // this map covers the currently pinned bundle until the next re-pin.
+  "secops": "operacoes",
+  "soc": "operacoes",
+  "security-operations": "operacoes",
+  "security_operations": "operacoes",
 };
+
+/** Requested tokens that mean the SecOps/SOC view — used to surface the declared split. */
+const SECOPS_FAMILY_TOKENS = new Set(["secops", "soc", "security-operations", "security_operations"]);
+
+/**
+ * 2026-09-11 adenda §2 — a vista SecOps/SOC está REPARTIDA por dois papéis canónicos.
+ * Fonte: adenda do despacho de defeitos (verificada pelo Orchestrator na fonte); o KG publica
+ * a mesma repartição como `roles.json[].scope_split` a partir do contrato v1.26 §1.33C — quando
+ * o bundle a trouxer, o band abaixo passa a citar os dados; até lá cita esta declaração.
+ */
+const SECOPS_SPLIT_FALLBACK = {
+  perspective: "secops/soc",
+  covers: {
+    operacoes:
+      "operação do SOC: alertas com SLA, playbooks de IR, correlação de eventos, tuning, " +
+      "cobertura ATT&CK com EPSS/KEV, exercícios de IR, monitorização de fornecedores, telemetria de agentes AI",
+    "devops-sre":
+      "plataforma de detecção: integridade de logs WORM 90 dias, integração SIEM, detecção de falha de ingestão",
+  } as Record<string, string>,
+};
+
+/** Levenshtein distance — did_you_mean for unknown roles (despacho 2026-09-11 §1). */
+function editDistance(a: string, b: string): number {
+  const m = a.length, n = b.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+  let prev = Array.from({ length: n + 1 }, (_, j) => j);
+  for (let i = 1; i <= m; i++) {
+    const cur = [i];
+    for (let j = 1; j <= n; j++) {
+      cur[j] = Math.min(prev[j]! + 1, cur[j - 1]! + 1, prev[j - 1]! + (a[i - 1] === b[j - 1] ? 0 : 1));
+    }
+    prev = cur;
+  }
+  return prev[n]!;
+}
+
+/** Closest published role_ids/aliases to an unknown input (≤3, distance-bounded). */
+function didYouMeanRoles(requested: string, roles: { role_id: string; aliases: string[] }[]): string[] {
+  const candidates = new Map<string, string>(); // candidate token -> role_id it resolves to
+  for (const role of roles) {
+    candidates.set(role.role_id, role.role_id);
+    for (const alias of role.aliases) candidates.set(alias, role.role_id);
+  }
+  for (const [alias, roleId] of Object.entries(CONSUMER_ROLE_ALIASES)) candidates.set(alias, roleId);
+  const scored = [...candidates.entries()]
+    .map(([token, roleId]) => ({ token, roleId, d: editDistance(requested, token.toLowerCase()) }))
+    .filter((c) => c.d <= Math.max(2, Math.floor(requested.length / 3)))
+    .sort((a, b) => a.d - b.d || a.token.localeCompare(b.token));
+  const out: string[] = [];
+  for (const c of scored) {
+    const suggestion = c.token === c.roleId ? c.roleId : `${c.token} → ${c.roleId}`;
+    if (!out.includes(suggestion)) out.push(suggestion);
+    if (out.length >= 3) break;
+  }
+  return out;
+}
 
 function applyConsumerAlias(roleArg: string): string {
   return CONSUMER_ROLE_ALIASES[normalizeToken(roleArg)] ?? roleArg;
@@ -108,6 +176,11 @@ export interface AssignmentSlim {
     proportionality_level?: string;
     sdlc_integration?: UserStory["sdlc_integration"];
   };
+  /**
+   * 2026-09-11 §6 — a MESMA história em várias atribuições da resposta é embebida UMA vez;
+   * as repetições trazem esta referência (a US-13 saía 3× verbatim, ≈1,8k tokens).
+   */
+  user_story_ref?: { us_id?: string; id?: string; title: string; embedded_at_assignment_id: string; note: string };
 }
 
 /** Aggregated DoD view of a role's user stories — the "what must role X fulfil" answer. */
@@ -134,6 +207,14 @@ export interface GetGuideByRoleResult {
   by_phase: Record<string, AssignmentWithStory[]>;
   /** 0.20.0-beta.31: papel canónico sem mapeamento nesta superfície. */
   unsupported_role?: { value: string; supported_values: string[]; note: string; absence?: unknown };
+  /** 2026-09-11 §1: papel INEXISTENTE — erro declarado com did_you_mean, nunca canonicidade fabricada. */
+  unknown_role?: { requested: string; resolved: null; did_you_mean: string[]; supported_values: string[]; note: string };
+  /** 2026-09-11 adenda §2: repartição declarada (secops/soc) com ponteiro para o outro papel. */
+  role_scope_split?: {
+    perspective: string; role_id: string; covers: string;
+    counterpart_role_ids: string[]; counterpart_covers?: Record<string, string>;
+    source: string; note: string;
+  };
   meta: {
     assignmentCount: number;
     userStoryCount: number;
@@ -170,6 +251,10 @@ export interface GetGuideByRoleOutput {
   role_checklist?: RoleChecklistEntry[];
   /** 0.20.0-beta.31: papel canónico que esta superfície não mapeia — declarado, nunca vazio mudo. */
   unsupported_role?: { value: string; supported_values: string[]; note: string; absence?: unknown };
+  /** 2026-09-11 §1: papel INEXISTENTE — erro declarado com did_you_mean, nunca canonicidade fabricada. */
+  unknown_role?: GetGuideByRoleResult["unknown_role"];
+  /** 2026-09-11 adenda §2: repartição declarada (secops/soc) com ponteiro para o outro papel. */
+  role_scope_split?: GetGuideByRoleResult["role_scope_split"];
   role_summary: Record<string, number>;
   phase_summary: Record<string, number>;
   meta: {
@@ -210,9 +295,32 @@ export function _resolveGuideByRole(
   const consult = _resolveConsultResult(args, ontologyData);
 
   const roleArg = typeof args["role"] === "string" ? args["role"].trim() : null;
-  const canonicalRole = roleArg
-    ? resolveRoleId(applyConsumerAlias(roleArg), roles) ?? normalizeToken(roleArg)
-    : null;
+  /**
+   * 2026-09-11 despacho §1 (BLOQUEANTE) — o `?? normalizeToken(roleArg)` promovia o input
+   * cru a `canonicalRole`, e a banda beta.31 afirmava «CANÓNICO e publicado» para papéis
+   * INEXISTENTES (a cura do silêncio virou fonte de invenção). Agora: papel que não resolve
+   * fica NULL, filtra para zero, e sai como `unknown_role` com did_you_mean — nunca como
+   * canonicidade fabricada. Papel canónico sem atribuições mantém a banda beta.31.
+   */
+  const canonicalRole = roleArg ? resolveRoleId(applyConsumerAlias(roleArg), roles) ?? null : null;
+  const requestedRoleToken = roleArg ? normalizeToken(roleArg) : null;
+  const unknownRole =
+    roleArg && canonicalRole === null
+      ? {
+          requested: roleArg,
+          resolved: null,
+          did_you_mean: didYouMeanRoles(requestedRoleToken ?? "", roles),
+          supported_values: roles.filter((r) => r.canonical).map((r) => r.role_id).sort(),
+          note:
+            `O papel \`${roleArg}\` NÃO existe no vocabulário publicado — nem como id canónico nem como ` +
+            "alias. Nada é afirmado sobre ele (nenhuma atribuição, nenhuma razão para o zero além desta): " +
+            "escolhe um dos `supported_values` ou um `did_you_mean`." +
+            (requestedRoleToken === "devsecops"
+              ? " Nota declarada: `devsecops` foi CONSIDERADO e recusado como alias — é transversal " +
+                "(developer + appsec-engineer + devops-sre), não um papel; consulta esses três."
+              : ""),
+        }
+      : undefined;
 
   const phaseArg = typeof args["phase"] === "string" ? args["phase"].trim() : null;
   // 0.15.0 (P0-5): alias implement→develop; fase desconhecida ⇒ aviso DECLARADO.
@@ -277,6 +385,9 @@ export function _resolveGuideByRole(
     filteredAssignments = filteredAssignments.filter(
       (assignment) => assignment.canonical_role === canonicalRole
     );
+  } else if (roleArg) {
+    // papel não resolvido: zero por definição (declarado em unknown_role), nunca um join no cru
+    filteredAssignments = [];
   }
   if (canonicalPhase) {
     filteredAssignments = filteredAssignments.filter(
@@ -318,10 +429,44 @@ export function _resolveGuideByRole(
 
   const roleScope = typeof canonicalRole === "string" ? roleScopeOf(canonicalRole, ontologyData.roles ?? []) : undefined;
 
+  /**
+   * 2026-09-11 adenda §2 — papel com trabalho REPARTIDO declara-o, com ponteiro para o outro
+   * (never-silent aplicado a uma repartição). Data-first: usa `roles.json[].scope_split`
+   * quando o bundle pinado o traz (KG v1.26 §1.33C); senão, para a família SecOps e para os
+   * dois papéis da repartição, a declaração verificada da adenda.
+   */
+  const roleRecord = canonicalRole ? (ontologyData.roles ?? []).find((r) => r.role_id === canonicalRole) : undefined;
+  const dataSplit = roleRecord?.scope_split;
+  const viaSecopsFamily = requestedRoleToken !== null && SECOPS_FAMILY_TOKENS.has(requestedRoleToken);
+  const fallbackApplies =
+    canonicalRole !== null && Object.prototype.hasOwnProperty.call(SECOPS_SPLIT_FALLBACK.covers, canonicalRole) &&
+    (viaSecopsFamily || canonicalRole === "operacoes" || canonicalRole === "devops-sre");
+  const roleScopeSplit =
+    canonicalRole && (dataSplit || fallbackApplies)
+      ? {
+          perspective: dataSplit?.perspective ?? SECOPS_SPLIT_FALLBACK.perspective,
+          role_id: canonicalRole,
+          covers: dataSplit?.covers ?? SECOPS_SPLIT_FALLBACK.covers[canonicalRole] ?? "",
+          counterpart_role_ids:
+            dataSplit?.counterpart_role_ids ??
+            Object.keys(SECOPS_SPLIT_FALLBACK.covers).filter((r) => r !== canonicalRole),
+          counterpart_covers:
+            dataSplit?.counterpart_covers ??
+            Object.fromEntries(Object.entries(SECOPS_SPLIT_FALLBACK.covers).filter(([r]) => r !== canonicalRole)),
+          source: dataSplit ? "roles.json scope_split (bundle)" : "adenda 2026-09-11 verificada (data-backed no próximo re-pin)",
+          note:
+            "O trabalho desta vista está REPARTIDO por dois papéis canónicos — esta resposta cobre " +
+            `\`${canonicalRole}\`; para a outra metade chama get_guide_by_role com o counterpart. ` +
+            "Responder com um só papel, sem este aviso, seria silêncio sobre a repartição.",
+        }
+      : undefined;
+
   return {
     risk_level: riskLevel,
     roleFilter: roleArg,
     canonicalRole,
+    ...(unknownRole ? { unknown_role: unknownRole } : {}),
+    ...(roleScopeSplit ? { role_scope_split: roleScopeSplit } : {}),
     phaseFilter: phaseArg,
     canonicalPhase,
     ...(phaseWarning ? { phase_warning: phaseWarning } : {}),
@@ -425,6 +570,35 @@ function slimAssignment(assignment: AssignmentWithStory, includeDetail: boolean)
   }
 
   return slim;
+}
+
+/**
+ * 2026-09-11 §6 — dedupe do conteúdo embebido: a primeira atribuição de cada história leva o
+ * `user_story` completo; as seguintes levam `user_story_ref`. As atribuições continuam TODAS
+ * presentes (desduplicar atribuições perderia o eixo fase — beta.31); só o texto deixa de se
+ * repetir verbatim.
+ */
+export function dedupeEmbeddedStories(assignments: AssignmentSlim[]): AssignmentSlim[] {
+  const firstById = new Map<string, string>(); // story key -> assignment id that embeds it
+  return assignments.map((slim) => {
+    const key = slim.user_story?.us_id ? `${slim.chapter_id}:${slim.user_story.us_id}` : undefined;
+    if (!slim.user_story || !key) return slim;
+    const embeddedAt = firstById.get(key);
+    if (embeddedAt === undefined) {
+      firstById.set(key, slim.id);
+      return slim;
+    }
+    const { user_story, ...rest } = slim;
+    return {
+      ...rest,
+      user_story_ref: {
+        ...(user_story.us_id ? { us_id: user_story.us_id } : {}),
+        title: user_story.title,
+        embedded_at_assignment_id: embeddedAt,
+        note: "história idêntica — conteúdo completo embebido na atribuição referida (dedupe §6, 2026-09-11)",
+      },
+    };
+  });
 }
 
 export function handleGetGuideByRole(
@@ -702,11 +876,15 @@ export function handleGetGuideByRole(
     canonicalRole: full.canonicalRole,
     phaseFilter: full.phaseFilter,
     canonicalPhase: full.canonicalPhase,
-    assignments: hasFilter ? full.assignments.map((a) => slimAssignment(a, includeDetail)) : [],
+    assignments: hasFilter ? dedupeEmbeddedStories(full.assignments.map((a) => slimAssignment(a, includeDetail))) : [],
     ...(emptyCombination ? { empty_result: emptyCombination } : {}),
     ...(levelNamedInLabel.count > 0 ? { level_named_in_label: levelNamedInLabel } : {}),
     ...(role_checklist ? { role_checklist } : {}),
     ...(full.unsupported_role ? { unsupported_role: full.unsupported_role } : {}),
+    // 2026-09-11 §1: o papel referenciado-não-canónico (rh-peopleops) tem banda própria;
+    // unknown_role só sai quando NEM canónico NEM referenciado.
+    ...(full.unknown_role && !referencedRole ? { unknown_role: full.unknown_role } : {}),
+    ...(full.role_scope_split ? { role_scope_split: full.role_scope_split } : {}),
     ...(decisionBand ? { decision_involvements: decisionBand } : {}),
     ...(decisionGap
       ? {

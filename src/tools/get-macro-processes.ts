@@ -20,6 +20,7 @@
  */
 import { readFileSync } from "node:fs";
 import { resolveAppPath } from "../config.js";
+import { getOntologyData } from "./ontology-loader.js";
 import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { absenceBand, absenceNaming } from "../serving/declared-absences.js";
@@ -74,7 +75,7 @@ export function handleGetMacroProcesses(args: Record<string, unknown>): MacroPro
     note:
       "Leitura PROGRAMA — «por onde começamos e com que sequência». É a vista PROCESSUAL: os cinco " +
       "macro-processos e a ordem de adopção publicada. NÃO é a leitura GUIDE (que requisitos se aplicam a " +
-      "uma tarefa) nem a IMPL (a capacidade de um capítulo): pedir o programa e receber 273 requisitos, ou " +
+      `uma tarefa) nem a IMPL (a capacidade de um capítulo): pedir o programa e receber ${getOntologyData().requirements.length} requisitos, ou ` +
       "um capítulo isolado, seria responder a outra pergunta."
   };
 

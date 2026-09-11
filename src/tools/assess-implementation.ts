@@ -85,6 +85,13 @@ export interface KpiResult {
   threshold_raw?: string;
   threshold_value?: number;
   operator?: string;
+  /**
+   * 2026-09-11 despacho §2 — a UNIDADE do threshold, ecoada em CADA veredicto. O dado sempre
+   * a trouxe (`thresholds_by_level_parsed.unit`, 93/99 métricas) e o serving descartava-a:
+   * um KPI submetido em minutos era julgado contra «4» (horas) e saía `below` sem ninguém
+   * poder ver o erro. `unit: null` = threshold sem unidade parseada (só `threshold_raw`).
+   */
+  unit?: string | null;
   value?: number;
   status: KpiStatus;
   /** Source citation — the published KPI catalog document the threshold is grounded in. */
@@ -97,6 +104,8 @@ export interface AssessData {
   per_kpi: KpiResult[];
   gaps: KpiResult[];
   totals: { applicable: number; meets: number; gaps: number; not_reported: number };
+  /** 2026-09-11 §2 — regra das unidades, dita onde os números são julgados. */
+  units_note: string;
   /** 0.20.0-beta.36 — âmbito da avaliação e o DENOMINADOR explicado. */
   scope: {
     chapter?: string;
@@ -193,6 +202,7 @@ export function handleAssessImplementation(args: Record<string, unknown>): Proto
       ...(t.raw ? { threshold_raw: t.raw } : {}),
       threshold_value: t.value,
       operator: t.operator,
+      unit: t.unit ?? null,
       status: "not_reported",
       ...(source ? { source } : {})
     };
@@ -258,6 +268,10 @@ export function handleAssessImplementation(args: Record<string, unknown>): Proto
       posture,
       per_kpi: page.items,
       gaps: boundedGaps,
+      units_note:
+        "Cada veredicto ecoa `unit` (do threshold publicado): submete `kpi_values` NA UNIDADE do " +
+        "KPI — um valor noutra unidade produz meets/below ERRADO e este servidor não converte " +
+        "(não inventa a unidade do que recebeu). `unit: null` = compara contra `threshold_raw` à mão.",
       totals: { applicable, meets, gaps: gaps.length, not_reported: notReported },
       ...(unknownChapter ? { unknown_chapter: unknownChapter } : {}),
       scope: {

@@ -49,6 +49,8 @@ export interface Control {
 export interface CanonicalRole {
   /** 0.20.0-beta.48 — `intra_instance` (12) ou `inter_instance` (1). */
   role_scope?: string;
+  /** 2026-09-11 adenda §2 — repartição declarada (secops/soc) publicada pelo KG (contrato v1.26 §1.33C). */
+  scope_split?: { perspective?: string; covers?: string; counterpart_role_ids?: string[]; counterpart_covers?: Record<string, string> };
   role_id: string;
   aliases: string[];
   canonical: boolean;
@@ -548,6 +550,8 @@ export function getOntologyData(): OntologyData {
       canonical: item.canonical !== false,
       /** 0.20.0-beta.48 (v2.10) — `inter_instance` = onde OUTRA instância começa. */
       ...(strOf(item, "role_scope") ? { role_scope: strOf(item, "role_scope") } : {}),
+      // 2026-09-11 adenda §2: pass-through da repartição declarada (quando o bundle a traz).
+      ...(isRecord(item.scope_split) ? { scope_split: item.scope_split as NonNullable<CanonicalRole["scope_split"]> } : {}),
       source: strOf(item, "source"),
     }))
     .filter((item) => item.role_id.length > 0);

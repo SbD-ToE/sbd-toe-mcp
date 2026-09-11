@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { _resolveGuideByRole, handleGetGuideByRole } from "./get-guide-by-role.js";
+import { _resolveGuideByRole, handleGetGuideByRole, dedupeEmbeddedStories } from "./get-guide-by-role.js";
 import type { OntologyData } from "./ontology-loader.js";
 
 // ---------------------------------------------------------------------------
@@ -146,11 +146,86 @@ describe("consumer role aliases", () => {
     }
   });
 
-  it("leaves an unmapped natural name untouched (no invented routing)", () => {
-    // devsecops is deliberately NOT aliased — it is cross-cutting in the substrate.
+  it("declara um nome não mapeado como unknown_role — nunca o promove a canónico (§1, 2026-09-11)", () => {
+    // devsecops continua deliberadamente NÃO aliasado (cross-cutting); mas o input cru
+    // deixou de ser promovido a `canonicalRole` (era a fabricação de canonicidade).
     const result = _resolveGuideByRole({ risk_level: "L1", role: "devsecops" }, dataWithAppsec());
-    expect(result.canonicalRole).toBe("devsecops");
+    expect(result.canonicalRole).toBeNull();
     expect(result.assignments).toHaveLength(0);
+    expect(result.unknown_role?.requested).toBe("devsecops");
+    expect(result.unknown_role?.note).toContain("NÃO existe no vocabulário publicado");
+    expect(result.unknown_role?.note).toContain("transversal");
+  });
+
+  it("papel inexistente sai com did_you_mean por distância de edição (§1, 2026-09-11)", () => {
+    const result = _resolveGuideByRole({ risk_level: "L1", role: "developr" }, makeOntologyData());
+    expect(result.canonicalRole).toBeNull();
+    expect(result.unknown_role?.did_you_mean).toContain("developer");
+    expect(result.unknown_role?.supported_values).toContain("developer");
+    // a nota NUNCA afirma canonicidade do input
+    expect(result.unknown_role?.note).not.toContain("CANÓNICO e publicado");
+  });
+
+  it("secops/soc resolvem para operacoes com a repartição DECLARADA (adenda §1+§2)", () => {
+    const data = makeOntologyData({
+      roles: [
+        { role_id: "operacoes", aliases: ["ops", "incident_response"], canonical: true, source: "00" },
+        { role_id: "devops-sre", aliases: ["devops", "sre"], canonical: true, source: "00" },
+      ],
+      assignments: [
+        { id: "12-x-operacoes-l2-us13-operate", chapter_id: "12", practice_id: "12:p", role: "operacoes", phase: "operate", risk_level: "L2", action: "Operar alertas", artifacts: [] },
+      ],
+    });
+    for (const name of ["secops", "soc", "SecOps"]) {
+      const result = _resolveGuideByRole({ risk_level: "L2", role: name }, data);
+      expect(result.canonicalRole).toBe("operacoes");
+      expect(result.unknown_role).toBeUndefined();
+      expect(result.role_scope_split?.counterpart_role_ids).toEqual(["devops-sre"]);
+      expect(result.role_scope_split?.note).toContain("REPARTIDO");
+    }
+    // e o outro lado da repartição também a declara quando consultado directamente
+    const other = _resolveGuideByRole({ risk_level: "L2", role: "devops-sre" }, data);
+    expect(other.role_scope_split?.counterpart_role_ids).toEqual(["operacoes"]);
+  });
+
+  it("scope_split do bundle (quando presente) prevalece sobre o fallback declarado", () => {
+    const data = makeOntologyData({
+      roles: [
+        {
+          role_id: "operacoes", aliases: [], canonical: true, source: "00",
+          scope_split: { perspective: "secops/soc", covers: "do bundle", counterpart_role_ids: ["devops-sre"], counterpart_covers: { "devops-sre": "plataforma" } },
+        },
+      ],
+      assignments: [],
+    });
+    const result = _resolveGuideByRole({ risk_level: "L1", role: "operacoes" }, data);
+    expect(result.role_scope_split?.covers).toBe("do bundle");
+    expect(result.role_scope_split?.source).toContain("bundle");
+  });
+});
+
+describe("dedupe de histórias embebidas (§6, 2026-09-11)", () => {
+  it("a mesma história em 3 fases é embebida UMA vez; as repetições levam user_story_ref", () => {
+    const mk = (phase: string) => ({
+      id: `12-x-operacoes-l2-us13-${phase}`, chapter_id: "12", practice_id: "12:p13",
+      role: "operacoes", canonical_role: "operacoes", phase, canonical_phase: phase,
+      action: "Telemetria de agentes AI", artifacts: [],
+      user_story: { us_id: "US-13", title: "Telemetria de agentes AI", goal: "Como Ops quero telemetria." },
+    });
+    const out = dedupeEmbeddedStories([mk("govern"), mk("operate"), mk("test")]);
+    expect(out.filter((a) => a.user_story !== undefined)).toHaveLength(1);
+    const refs = out.filter((a) => a.user_story_ref !== undefined);
+    expect(refs).toHaveLength(2);
+    expect(refs[0]?.user_story_ref?.embedded_at_assignment_id).toBe("12-x-operacoes-l2-us13-govern");
+    expect(refs.every((a) => a.user_story === undefined)).toBe(true);
+  });
+
+  it("invariante no bundle real: nenhuma história embebida 2× na mesma resposta", () => {
+    const out = handleGetGuideByRole({ risk_level: "L2", role: "ops", include_detail: true });
+    const embedded = out.assignments
+      .map((a) => (a.user_story?.us_id ? `${a.chapter_id}:${a.user_story.us_id}` : null))
+      .filter((x): x is string => x !== null);
+    expect(new Set(embedded).size).toBe(embedded.length);
   });
 });
 

@@ -111,3 +111,25 @@ describe("assess_sbd_toe_implementation", () => {
     expect(new Set(seen).size).toBe(total); // no duplicates, no omissions
   });
 });
+
+describe("unidade ecoada em cada veredicto (§2, 2026-09-11)", () => {
+  it("todo o per_kpi carrega `unit` (valor do threshold parseado, ou null) e a resposta a units_note", () => {
+    const r = handleAssessImplementation({ risk_level: "L2", kpi_values: { "ARC-K01": 85 } });
+    expect(r.data.per_kpi.length).toBeGreaterThan(0);
+    expect(r.data.per_kpi.every((k) => "unit" in k)).toBe(true);
+    expect(r.data.units_note).toContain("NA UNIDADE");
+    // no bundle pinado, 93/99 métricas têm unidade em pelo menos um nível — a maioria não pode ser null
+    const withUnit = r.data.per_kpi.filter((k) => typeof k.unit === "string" && k.unit.length > 0);
+    expect(withUnit.length).toBeGreaterThan(0);
+  });
+
+  it("um threshold em horas ecoa unit=hours ao lado do veredicto (o caso MTTD do despacho)", () => {
+    const r = handleAssessImplementation({ risk_level: "L2", kpi_values: { "OPS-K03": 45 } });
+    const kpi = r.data.per_kpi.find((k) => k.metric_id === "OPS-K03");
+    if (kpi) {
+      // se o bundle mudar o id, o teste de cima continua a guardar a classe
+      expect(kpi.unit).toBe("hours");
+      expect(["meets", "below", "not_comparable"]).toContain(kpi.status);
+    }
+  });
+});
