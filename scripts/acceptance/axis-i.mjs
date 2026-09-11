@@ -383,7 +383,7 @@ export const readingCases = [
       const cd = consult.ok ? (consult.data?.data ?? consult.data ?? {}) : {};
       const threats = await client.tool("get_threat_landscape", { risk_level: "L2", concerns: ["secrets"] });
       used.push("get_threat_landscape");
-      const anti = await client.tool("query_sbd_toe_entities", { query: "antipadrão segredos" });
+      await client.tool("query_sbd_toe_entities", { query: "antipadrão segredos" });
       used.push("query_sbd_toe_entities");
       const matrix = await client.tool("get_sbd_toe_verification_matrix", { risk_level: "L2" });
       used.push("get_sbd_toe_verification_matrix");
