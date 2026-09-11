@@ -27,8 +27,9 @@ const ctxLinksTargeting = (ctx, controlId) => ctx ? [...ctx.knownIds].filter((ri
 export const scenarios = [
   // ───────────────────────── Axis A — Tool coverage ─────────────────────────
   { id: "TC-A-01", axis: "A", title: "codegen ready_for_codegen with real citation_map", tool: "prepare_sbd_toe_codegen_context",
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c, ctx) => {
-      const r = await c.tool("prepare_sbd_toe_codegen_context", { task: "Validação de payload no PATCH /users/:id/email, Node/Express", risk_level: "L2" });
+      const r = await c.tool("prepare_sbd_toe_codegen_context", { selection_mode: "discover", task: "Validação de payload no PATCH /users/:id/email, Node/Express", risk_level: "L2" });
       if (!r.ok) return fail(r.error);
       const d = r.data; if (d.status !== "ready_for_codegen") return fail(`status=${d.status}`);
       const keys = Object.keys(d.citation_map ?? {}); const unknown = keys.filter((k) => !ctx.knownIds.has(k));
@@ -38,7 +39,8 @@ export const scenarios = [
       return ok(`ready; ${keys.length} citations all resolve; trace ${d.activation_trace.length}; provenance ${d.provenance ? "yes" : "no"}`);
     } },
   { id: "TC-A-02", axis: "A", title: "codegen vague task → clarification/decomposition, no ids", tool: "prepare_sbd_toe_codegen_context",
-    run: async (c) => { const r = await c.tool("prepare_sbd_toe_codegen_context", { task: "Melhora a segurança da aplicação toda", risk_level: "L2" }); if (!r.ok) return fail(r.error);
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
+    run: async (c) => { const r = await c.tool("prepare_sbd_toe_codegen_context", { selection_mode: "discover", task: "Melhora a segurança da aplicação toda", risk_level: "L2" }); if (!r.ok) return fail(r.error);
       const s = r.data.status; if (!["needs_clarification", "needs_decomposition"].includes(s)) return fail(`status=${s}`);
       if (r.data.citation_map) return fail("citation_map present on non-ready status"); return ok(`status=${s}; no citation_map`); } },
   { id: "TC-A-03", axis: "A", title: "codegen with regulatory overlay (EXT-DORA) — honest degradation", tool: "prepare_sbd_toe_codegen_context",
@@ -84,8 +86,21 @@ export const scenarios = [
   { id: "TC-A-08", axis: "A", title: "generate_skill deterministic canonical agent-guide", tool: "generate_sbd_toe_skill",
     run: async (c) => { const a = await c.tool("generate_sbd_toe_skill", { clientType: "claude-code" }); const b = await c.tool("generate_sbd_toe_skill", { clientType: "claude-code" }); if (!a.ok) return fail(a.error);
       const g = await c.resource("sbd://toe/agent-guide"); const guideCore = (g.text ?? "").slice(0, 200);
-      if (a.data.content !== b.data.content) return fail("non-deterministic"); if (!(a.data.content ?? "").includes("SbD-ToE")) return fail("content not the guide");
-      return ok(`deterministic (${a.data.content.length} chars); guide resource ${g.text ? "readable" : "absent"}${guideCore ? "" : ""}`); } },
+      /*
+       * 0.20.0-beta.49 (P1): o artefacto passou a DATAR-SE a si mesmo, e a hora de geração é
+       * volátil por desenho — um ficheiro instalado sem data fica sem data para sempre. A
+       * asserção mantém-se tão forte como era para TUDO o resto: neutraliza-se o carimbo
+       * DECLARADO (o mesmo padrão preciso do gate de determinismo) e exige-se igualdade byte
+       * a byte no resto. E exige-se que o carimbo esteja lá.
+       */
+      const stamp = /(\*\*Gerado em:\*\* )`[0-9T:.\-]+Z`/g;
+      const norm = (t) => String(t ?? "").replace(stamp, "$1`<volátil>`");
+      if (!stamp.test(String(a.data.content ?? ""))) return fail("o artefacto não se data a si mesmo");
+      stamp.lastIndex = 0;
+      if (norm(a.data.content) !== norm(b.data.content)) return fail("non-deterministic fora do carimbo declarado");
+      if (!(a.data.content ?? "").includes("SbD-ToE")) return fail("content not the guide");
+      if (!/## Provenance/.test(String(a.data.content ?? ""))) return fail("o artefacto não leva bloco de proveniência");
+      return ok(`determinístico fora do carimbo declarado (${a.data.content.length} chars), com proveniência no artefacto; guide resource ${g.text ? "readable" : "absent"}${guideCore ? "" : ""}`); } },
   { id: "TC-A-09", axis: "A", title: "[limite] generate_skill per clientType differentiation", tool: "generate_sbd_toe_skill",
     run: async (c) => { const a = await c.tool("generate_sbd_toe_skill", { clientType: "github-copilot" }); const b = await c.tool("generate_sbd_toe_skill", { clientType: "claude-code" }); if (!a.ok || !b.ok) return fail(a.error ?? b.error);
       return a.data.content === b.data.content ? part("gap confirmed: content identical across clientType (no per-client differentiation)", "roadmap") : ok("content differs per clientType"); } },
@@ -250,11 +265,11 @@ export const scenarios = [
       if (!d.coverage) return fail("no coverage envelope (G1)"); const act = d.data?.activated ?? []; if (act.length === 0) return fail("nothing activated"); if (act.length > 3) return fail("page > limit");
       const u = await c.tool("map_sbd_toe_regulatory_activation", { framework: "PCI" }); const honest = !u.ok || (u.data?.data?.activated?.length ?? 0) === 0;
       return ok(`DORA: ${act.length}/${d.coverage.chapters ?? d.coverage.total} chapters, mappings ${d.coverage.mappings}, obligations ${d.coverage.obligations}; unknown framework → ${honest ? "honest empty/error" : "activated?!"}`); } },
-  { id: "TC-F-08", axis: "F", title: "curated requirement→control layer v3 (KG v1.8.0 dev-build): 305 links, 0 unlinked, curated 16, catalogue rules tolerated", tool: "resolve_entities",
+  { id: "TC-F-08", axis: "F", title: "curated requirement→control layer v3 (KG v1.12.0): 306 links (KG v1.12.0: +CIC-011), 0 unlinked, curated 16, catalogue rules tolerated", tool: "resolve_entities",
     run: async (c, ctx) => { const links = await c.tool("resolve_entities", { record_type: "requirement_control_link", limit: 1 }); if (!links.ok) return fail(links.error);
       const gaps = []; for (const L of ["L1", "L2", "L3"]) { const r = await c.tool("consult_security_requirements", { risk_level: L }); gaps.push(r.data?.coverage_gaps?.requirements_without_control_link?.count); }
-      if (links.data.total !== 305) return fail(`links total ${links.data.total} (expected 305 = 141 catalogue-rule + 148 recalculated + 16 curated; v1.8.0 dev-build)`, "graph");
-      if (ctx.links.total !== 305) return fail(`published file carries ${ctx.links.total} links`, "graph");
+      if (links.data.total !== 306) return fail(`links total ${links.data.total} (expected 306 = 141 catalogue-rule + 149 recalculated + 16 curated; KG v1.12.0 (+CIC-011))`, "graph");
+      if (ctx.links.total !== 306) return fail(`published file carries ${ctx.links.total} links`, "graph");
       if (gaps.some((g) => g !== 0)) return fail(`coverage_gaps ${gaps}`);
       const cur = ctx.links.curationByCurator; if ((cur["archon-2026-08-29"] ?? 0) !== 12 || (cur["archon-2026-08-30"] ?? 0) !== 4) return fail(`curated on surface ${JSON.stringify(cur)} (expected 12 + 4, incl. GOV-013 CAP secondary)`, "graph");
       const unknownJust = ctx.links.justifications.filter((j) => !["bundle_grounding", "catalogue_rule", "catalogue_rule_secondary", "chapter_grounding", "curated_semantic_review", "domain_mapping", "lexical_alignment", "requirement_domain_hint", "single_control_bundle", "domain_owner_fallback", "foundational_domain_unique", "preferred_domain_unique", "preferred_domain_strong", "preferred_domain_disambiguated", "baseline_domain_lexical"].includes(j));
@@ -344,9 +359,10 @@ export const scenarios = [
   { id: "TC-E-17", axis: "E", title: "rich US: US-01 ch.01 foundational bdd + checklist", tool: "resolve_entities",
     run: async (c) => { const r = await c.tool("resolve_entities", { record_type: "user_story", filters: { us_id: "US-01", chapter_id: "01-classificacao-aplicacoes" } }); if (!r.ok) return fail(r.error); const u = r.data.entities?.[0]; return u && (u.bdd?.length ?? 0) >= 3 && (u.checklist_items?.length ?? 0) >= 1 ? ok(`bdd ${u.bdd.length}, checklist ${u.checklist_items.length}`) : fail(`bdd ${u?.bdd?.length}, checklist ${u?.checklist_items?.length}`); } },
   { id: "TC-F-11", axis: "F", title: "select_sbd_toe_requirements (MP1): baseline ∪ contexto, narrowing declarado, G1", tool: "select_sbd_toe_requirements",
-    run: async (c, ctx) => { const r = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Empacotar o serviço em Docker e preparar deploy em K8s", changed_files: ["Dockerfile", "deploy/k8s/service.yaml"], limit: 25 }); if (!r.ok) return fail(r.error); const d = r.data;
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
+    run: async (c, ctx) => { const r = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Empacotar o serviço em Docker e preparar deploy em K8s", changed_files: ["Dockerfile", "deploy/k8s/service.yaml"], limit: 25 }); if (!r.ok) return fail(r.error); const d = r.data;
       if (!d.coverage || d.coverage.total === undefined || d.coverage.hasMore === undefined) return fail("no coverage envelope (G1)");
-      const ids = []; let offset = 0; for (;;) { const p = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Empacotar o serviço em Docker e preparar deploy em K8s", changed_files: ["Dockerfile", "deploy/k8s/service.yaml"], offset, limit: 25 }); ids.push(...p.data.selection.selected.map((x) => x.requirement_id)); if (!p.data.coverage.hasMore) break; offset = p.data.coverage.nextOffset; }
+      const ids = []; let offset = 0; for (;;) { const p = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Empacotar o serviço em Docker e preparar deploy em K8s", changed_files: ["Dockerfile", "deploy/k8s/service.yaml"], offset, limit: 25 }); ids.push(...p.data.selection.selected.map((x) => x.requirement_id)); if (!p.data.coverage.hasMore) break; offset = p.data.coverage.nextOffset; }
       if (new Set(ids).size !== ids.length) return fail("pagination duplicates");
       const bad = ids.filter((id) => !ctx.knownIds.has(id)); if (bad.length) return fail(`ids not in bundle: ${bad.slice(0, 3)}`);
       if (!ids.some((id) => id.startsWith("CNT-")) || !ids.some((id) => id.startsWith("DPL-"))) return fail(`context chapters not selected: ${ids.slice(0, 8)}`);
@@ -355,17 +371,19 @@ export const scenarios = [
       if (!d.selection.selected.every((x) => (x.selection_trace ?? []).length > 0)) return fail("selected item without selection_trace");
       return ok(`walk ${ids.length} selected (CNT/DPL in, AUT narrowed with reason), traces on all, narrowed_out ${d.coverage.narrowed_out_requirements} declared`); } },
   { id: "TC-F-12", axis: "F", title: "select (MP1): activadores declarados (agents, data_sensitivity) + overlay extend", tool: "select_sbd_toe_requirements",
-    run: async (c) => { const a = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", task: "Worker agêntico com mandate, kill-switch e audit por tool-call" }); if (!a.ok) return fail(a.error);
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
+    run: async (c) => { const a = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L3", task: "Worker agêntico com mandate, kill-switch e audit por tool-call" }); if (!a.ok) return fail(a.error);
       const aid = a.data.selection.selected.map((x) => x.requirement_id); for (const id of ["REQ-AGN-001", "REQ-AGN-002", "REQ-AGN-003", "REQ-AGN-004"]) if (!aid.includes(id)) return fail(`${id} not selected for an agentic task`);
       for (const id of ["ACC-002", "AUT-006", "ENC-006", "DEP-011", "DEP-013", "DEP-014"]) if (!aid.includes(id)) return fail(`R1 principal set missing ${id}`);
       const r1 = a.data.selection.selected.find((x) => x.requirement_id === "ACC-002");
       if (!(r1?.selection_trace ?? []).some((t) => String(t.trigger ?? "").startsWith("R1:"))) return fail("R1 not named in selection_trace");
       if (aid.some((id) => id.startsWith("SES-"))) return fail("SES selected for an agentic task (R2)");
-      const b = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", task: "Formulário de registo com dados pessoais", data_sensitivity: "regulated", include_regulatory_overlay: true, regulatory_frameworks: ["EXT-AI-ACT"] }); if (!b.ok) return fail(b.error);
+      const b = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L3", task: "Formulário de registo com dados pessoais", data_sensitivity: "regulated", include_regulatory_overlay: true, regulatory_frameworks: ["EXT-AI-ACT"] }); if (!b.ok) return fail(b.error);
       const bid = b.data.selection.selected.map((x) => x.requirement_id); if (!bid.some((id) => id.startsWith("ENC-"))) return fail("data_sensitivity=regulated did not activate ENC");
       if (b.data.overlay.status !== "resolved" || b.data.overlay.obligations.length === 0) return fail(`overlay extend not resolved: ${b.data.overlay.status}`);
       return ok(`agents → AGN ×4 + wave; regulated → ENC in; overlay extend ${b.data.overlay.obligations.length} AI Act obligations`); } },
   { id: "TC-F-13", axis: "F", title: "camada de ensino (R3): guide → select → aprofundar via narrowed_out/sinal", tool: "select_sbd_toe_requirements",
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c) => {
       const g = await c.resource("sbd://toe/agent-guide");
       const raw = typeof g === "string" ? g : (g?.contents?.[0]?.text ?? g?.text ?? JSON.stringify(g));
@@ -374,32 +392,34 @@ export const scenarios = [
       if (!text.includes("narrowed_out")) return fail("guide does not teach the two bands");
       if (!text.includes('mode=\"index\"') && !text.includes('mode: \"index\"')) return fail("guide does not teach consult mode index");
       if (/m[áa]x(imo)?\s*50|max\s*50|50 activated/i.test(text)) return fail("guide still references the old max-50 scope gate");
-      const a = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Expor API de consulta com chaves de cliente e rate limiting" }); if (!a.ok) return fail(a.error);
+      const a = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Expor API de consulta com chaves de cliente e rate limiting" }); if (!a.ok) return fail(a.error);
       const ses = (a.data.selection.narrowed_out ?? []).find((x) => x.category === "SES");
       if (!ses || !ses.reason) return fail("narrowed_out has no teachable SES group/reason");
       const next = a.data.next ?? []; if (!next.some((n) => n.tool === "prepare_sbd_toe_codegen_context") || !next.some((n) => n.tool === "consult_security_requirements")) return fail("select.next does not suggest prepare+consult");
-      const b = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Expor API de consulta com chaves de cliente, rate limiting e sessões de utilizador autenticado" }); if (!b.ok) return fail(b.error);
+      const b = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Expor API de consulta com chaves de cliente, rate limiting e sessões de utilizador autenticado" }); if (!b.ok) return fail(b.error);
       const bids = b.data.selection.selected.map((x) => x.requirement_id);
       if (!bids.some((id) => id.startsWith("SES-"))) return fail("re-call with the missing session signal did not recover SES");
       return ok(`guide teaches select+bands+index; SES narrowed with reason → recovered by adding the session signal (${bids.filter((i) => i.startsWith("SES-")).length} SES back); next[] → prepare+consult`); } },
   { id: "TC-F-14", axis: "F", title: "R-image (v1.8.0): 'imagem' docker → CNT, 'imagem' ficheiro → FIL (desambiguação declarada)", tool: "select_sbd_toe_requirements",
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c) => {
-      const a = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Publicar a imagem Docker no registry do cluster" }); if (!a.ok) return fail(a.error);
+      const a = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Publicar a imagem Docker no registry do cluster" }); if (!a.ok) return fail(a.error);
       const aid = a.data.selection.selected.map((x) => x.requirement_id);
       if (!aid.some((id) => id.startsWith("CNT-"))) return fail(`docker sense did not reach CNT: ${aid.slice(0, 8)}`);
       if (aid.some((id) => id.startsWith("FIL-"))) return fail("docker sense wrongly selected FIL (homonym misfire)");
-      const b = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Endpoint de upload de imagens de perfil (fotografias) com pré-visualização" }); if (!b.ok) return fail(b.error);
+      const b = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Endpoint de upload de imagens de perfil (fotografias) com pré-visualização" }); if (!b.ok) return fail(b.error);
       const bid = b.data.selection.selected.map((x) => x.requirement_id);
       if (!bid.some((id) => id.startsWith("FIL-"))) return fail(`file sense did not reach FIL: ${bid.slice(0, 8)}`);
       if (bid.some((id) => id.startsWith("CNT-"))) return fail("file sense wrongly selected CNT (homonym misfire)");
       return ok(`docker → CNT ×${aid.filter((i) => i.startsWith("CNT-")).length} sem FIL; ficheiro → FIL ×${bid.filter((i) => i.startsWith("FIL-")).length} sem CNT`); } },
   { id: "TC-F-15", axis: "F", title: "SES-008-por-tecnologia (Author): JWT activa SES-008 a qualquer nível, nomeado no trace", tool: "select_sbd_toe_requirements",
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c) => {
-      const a = await c.tool("select_sbd_toe_requirements", { risk_level: "L1", task: "SPA com login e sessão JWT; app interna de baixo risco" }); if (!a.ok) return fail(a.error);
+      const a = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L1", task: "SPA com login e sessão JWT; app interna de baixo risco" }); if (!a.ok) return fail(a.error);
       const hit = a.data.selection.selected.find((x) => x.requirement_id === "SES-008");
       if (!hit) return fail("SES-008 not selected for a JWT task at L1");
       if (!(hit.selection_trace ?? []).some((t) => String(t.trigger ?? "").startsWith("SES-008-por-tecnologia"))) return fail("SES-008 selected but the named rule is not in the trace");
-      const b = await c.tool("select_sbd_toe_requirements", { risk_level: "L1", task: "SPA com login e sessão de utilizador; app interna de baixo risco" }); if (!b.ok) return fail(b.error);
+      const b = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L1", task: "SPA com login e sessão de utilizador; app interna de baixo risco" }); if (!b.ok) return fail(b.error);
       if (b.data.selection.selected.some((x) => x.requirement_id === "SES-008")) return fail("SES-008 selected without a JWT/user-token signal (level filter must rule)");
       return ok("JWT@L1 → SES-008 com regra nomeada no trace; sem JWT → nível manda (SES-008 fora)"); } },
   { id: "TC-F-16", axis: "F", title: "read_sbd_toe_resource (0.13.0): espelho de resources/read — estático, templado e URI desconhecido declarado", tool: "read_sbd_toe_resource",
@@ -440,12 +460,13 @@ export const scenarios = [
       if (!ag.ok) return fail(`concern agents rejeitado: ${ag.error}`);
       return ok(`default ${d.threats.length}/${d.coverage.total} threats, size≈${d.size_estimate.approx_tokens}tk, página 2 avança, enum agents aceite`); } },
   { id: "TC-F-19", axis: "F", title: "banda excluded_by_level (0.15.0): select declara exclusões de nível; prepare com counts", tool: "select_sbd_toe_requirements",
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c) => {
-      const r = await c.tool("select_sbd_toe_requirements", { risk_level: "L1", task: "SPA com login e sessão de utilizador; app interna" }); if (!r.ok) return fail(r.error);
+      const r = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L1", task: "SPA com login e sessão de utilizador; app interna" }); if (!r.ok) return fail(r.error);
       const ex = r.data.selection.excluded_by_level; if (!Array.isArray(ex) || ex.length === 0) return fail("excluded_by_level vazio em L1 (há requisitos L2+/L3-only)");
       if (!ex.every((g) => g.reason && g.requirement_ids?.length === g.count)) return fail("grupo sem razão/ids coerentes");
       if (typeof r.data.coverage.excluded_by_level_requirements !== "number") return fail("coverage sem o total da banda");
-      const p = await c.tool("prepare_sbd_toe_codegen_context", { task: "Adicionar logging de auditoria ao serviço interno", risk_level: "L1" }); if (!p.ok) return fail(p.error);
+      const p = await c.tool("prepare_sbd_toe_codegen_context", { selection_mode: "discover", task: "Adicionar logging de auditoria ao serviço interno", risk_level: "L1" }); if (!p.ok) return fail(p.error);
       const sel = p.data.completeness_report?.selection;
       if (typeof sel?.excluded_by_level_requirements !== "number") return fail("prepare sem counts da banda");
       return ok(`select L1: ${ex.length} categorias excluídas por nível (${r.data.coverage.excluded_by_level_requirements} reqs) DECLARADAS; prepare counts ✓`); } },
@@ -528,7 +549,7 @@ export const scenarios = [
       return ok(`'id' → unknown_filter_fields + ${bad.data.valid_fields.length} valid_fields derivados; dot-notation ✓/✗ declarada; requirement_id → 2 (o 0-silencioso do lead morreu)`); } },
   { id: "TC-F-27", axis: "F", title: "0.17.0: cadeia requisito→prova — select → verification_matrix(requirement_ids)", tool: "get_sbd_toe_verification_matrix",
     run: async (c) => {
-      const s = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Empacotar o serviço em Docker e preparar deploy em K8s", changed_files: ["Dockerfile"] }); if (!s.ok) return fail(s.error);
+      const s = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Empacotar o serviço em Docker e preparar deploy em K8s", changed_files: ["Dockerfile"], technologies: ["containers", "kubernetes"] }); // beta.22: `Dockerfile` não casa a tabela de paths (inércia agora DECLARADA); a tecnologia é o canal com efeito if (!s.ok) return fail(s.error);
       if (!(s.data.next ?? []).some((n) => n.tool === "get_sbd_toe_verification_matrix" && /requirement_ids/.test(n.with ?? ""))) return fail("next do select não aponta à matriz com ids");
       const ids = s.data.selection.selected.slice(0, 4).map((x) => x.requirement_id);
       const m = await c.tool("get_sbd_toe_verification_matrix", { risk_level: "L2", requirement_ids: [...ids, "REQ-XXX-999"], limit: 50 }); if (!m.ok) return fail(m.error);
@@ -555,9 +576,10 @@ export const scenarios = [
       if (diet.data.requirements[0]?.compensated?.chains) return fail("include_chains=false não dietou");
       return ok(`FIL-002 direct ×${filDirect} + DEP-001 compensado (1º salto ${hop.alignment_type}@${hop.confidence}); fake declarado; meta ${d.meta.counts.with_direct_anchors}/${d.meta.counts.with_compensated_coverage}/${d.meta.counts.without_any_source_declared}; dieta ✓`); } },
   { id: "TC-F-29", axis: "F", title: "0.19.0 (ronda 3): paráfrase — basis declared/lexical + aviso de dominância + razão sensível-à-redacção", tool: "select_sbd_toe_requirements",
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c) => {
-      const rica = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Endpoint de upload com sessão de utilizador e token de acesso" }); if (!rica.ok) return fail(rica.error);
-      const magra = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Receber ficheiros dos utilizadores autenticados" }); if (!magra.ok) return fail(magra.error);
+      const rica = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Endpoint de upload com sessão de utilizador e token de acesso" }); if (!rica.ok) return fail(rica.error);
+      const magra = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Receber ficheiros dos utilizadores autenticados" }); if (!magra.ok) return fail(magra.error);
       const idsR = new Set(rica.data.selection.selected.map((x) => x.requirement_id));
       const idsM = new Set(magra.data.selection.selected.map((x) => x.requirement_id));
       if (idsR.size === idsM.size) return fail("paráfrase não reproduziu a divergência (fixture morta)");
@@ -570,7 +592,7 @@ export const scenarios = [
       if (!w || w.lexical_share <= w.threshold) return fail("aviso de dominância não disparou na variante magra");
       if (!Array.isArray(w.candidate_concerns) || w.candidate_concerns.length === 0) return fail("aviso sem candidate_concerns");
       if (!(magra.data.next ?? []).some((n) => /concerns EXPLÍCITOS|explícitos/i.test(n.intent ?? ""))) return fail("next não sugere estabilizar com concerns");
-      const decl = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Receber ficheiros dos utilizadores autenticados", concerns: w.candidate_concerns.slice(0, 3) }); if (!decl.ok) return fail(decl.error);
+      const decl = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Receber ficheiros dos utilizadores autenticados", concerns: w.candidate_concerns.slice(0, 3) }); if (!decl.ok) return fail(decl.error);
       if (decl.data.lexical_dominance_warning) return fail("com concerns explícitos o aviso devia calar-se");
       const ex = magra.data.selection.excluded_by_level?.[0];
       if (ex && ex.basis !== "declared") return fail("excluded_by_level devia ser basis declared (regra de dados)");
@@ -585,9 +607,10 @@ export const scenarios = [
       if (!slot.when || !slot.text) return fail("slot 0 não devolvido");
       return ok(`slot inválido → catálogo real por índice+when; slot '0' (when=${slot.when}) devolvido`); } },
   { id: "TC-F-31", axis: "F", title: "0.19.1 (ronda 4): V2 vazio=ALARME; V4 declarado vence lexical; replay-SES continua morto", tool: "select_sbd_toe_requirements",
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c) => {
       // V2 (equivalente construído — wording original não registado; declarado): 0 selected → alarme
-      const v2 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Cumprir as políticas internas de segurança da informação no módulo de clientes" }); if (!v2.ok) return fail(v2.error);
+      const v2 = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Cumprir as políticas internas de segurança da informação no módulo de clientes" }); if (!v2.ok) return fail(v2.error);
       if (v2.data.selection.selected.length !== 0) return fail("fixture V2 deixou de dar 0 (re-baseline)");
       const ew = v2.data.empty_selection_warning;
       if (!ew || !ew.candidate_concerns?.length) return fail("selecção vazia SEM alarme/candidatos (ponto cego vivo)");
@@ -599,44 +622,46 @@ export const scenarios = [
       if (suggested.length === 0 || suggested.length > 3) return fail(`next sugere ${suggested.length} concerns (destino aceita ≤3 famílias)`);
       if (ew.candidate_concerns.length <= 3 && ew.candidate_concerns.length !== suggested.length) return fail("aviso perdeu a lista completa");
       // V4: auth DECLARADO → SES fica; sem contradição activated∧narrowed
-      const v4 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Alterar o email da conta do utilizador", concerns: ["auth"] }); if (!v4.ok) return fail(v4.error);
+      const v4 = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Alterar o email da conta do utilizador", concerns: ["auth"] }); if (!v4.ok) return fail(v4.error);
       const sesSel = v4.data.selection.selected.filter((x) => x.category === "SES").length;
       if (sesSel === 0) return fail("V4: SES revogado apesar de auth DECLARADO");
       if (v4.data.selection.narrowed_out.some((g) => g.category === "SES")) return fail("V4: contradição — SES em selected E narrowed");
       // replay-guard: base lexical → R2 continua a matar o SES espúrio
-      const rp = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", task: "Expor API pública de consulta com chaves de cliente e rate limiting", exposure: "public" }); if (!rp.ok) return fail(rp.error);
+      const rp = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L3", task: "Expor API pública de consulta com chaves de cliente e rate limiting", exposure: "public" }); if (!rp.ok) return fail(rp.error);
       const rpNar = rp.data.selection.narrowed_out.find((g) => g.category === "SES");
       if (!rpNar || rp.data.selection.selected.some((x) => x.category === "SES")) return fail("replay-SES REVIVEU (guarda falhou)");
       // V1/V3: divergência lexical conhecida-E-avisada (2 redacções, counts≠, ambas com aviso)
-      const v1 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Endpoint de upload com sessão de utilizador e token de acesso" });
-      const v3 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Receber ficheiros dos utilizadores autenticados" });
+      const v1 = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Endpoint de upload com sessão de utilizador e token de acesso" });
+      const v3 = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Receber ficheiros dos utilizadores autenticados" });
       if (v1.data.selection.selected.length === v3.data.selection.selected.length) return fail("V1/V3 fixture morta");
       if (!v1.data.lexical_dominance_warning || !v3.data.lexical_dominance_warning) return fail("divergência lexical sem aviso em ambas");
       return ok(`V2: alarme c/ ${ew.candidate_concerns.length} candidatos, sem matrix no next; V4: SES ×${sesSel} preservado sem contradição; replay-SES morto (×${rpNar.count} narrowed); V1/V3 ${v1.data.selection.selected.length}≠${v3.data.selection.selected.length} ambas avisadas`); } },
   { id: "TC-F-32", axis: "F", title: "0.19.2: next calibrado com os limites do destino (round-trip executável)", tool: "select_sbd_toe_requirements",
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c) => {
       // V2 vazio → a sugestão do next TEM de ser aceite pelo destino (select re-run) e a jusante (prepare ≤3 famílias)
       const task = "Cumprir as políticas internas de segurança da informação no módulo de clientes";
-      const v2 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task }); if (!v2.ok) return fail(v2.error);
+      const v2 = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task }); if (!v2.ok) return fail(v2.error);
       const suggested = (v2.data.next?.[0]?.with.match(/concerns=\[([^\]]*)\]/)?.[1] ?? "").split(",").map((x) => x.trim()).filter(Boolean);
       if (suggested.length === 0 || suggested.length > 3) return fail(`sugestão fora do tecto: ${suggested.length}`);
-      const rerun = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task, concerns: suggested });
+      const rerun = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task, concerns: suggested });
       if (!rerun.ok) return fail(`o próprio select rejeitou a sugestão: ${rerun.error}`);
       if (rerun.data.selection.selected.length === 0) return fail("re-corrida sugerida continua vazia");
-      const prep = await c.tool("prepare_sbd_toe_codegen_context", { task, risk_level: "L2", concerns: suggested });
+      const prep = await c.tool("prepare_sbd_toe_codegen_context", { selection_mode: "discover", task, risk_level: "L2", concerns: suggested });
       if (!prep.ok) return fail(`prepare rejeitou a sugestão: ${prep.error}`);
       if (prep.data.status === "needs_decomposition") return fail("prepare pediu decomposição à sugestão calibrada (≤3)");
       // matrix: com página >50, o hint declara o tecto do destino (≤50)
-      const big = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", task: "Rever a segurança da plataforma", concerns: ["auth", "validation", "logging"], limit: 200 });
+      const big = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L3", task: "Rever a segurança da plataforma", concerns: ["auth", "validation", "logging"], limit: 200 });
       if (!big.ok) return fail(big.error);
       const prove = (big.data.next ?? []).find((n) => n.tool === "get_sbd_toe_verification_matrix");
       const pageLen = big.data.selection.selected.length;
       if (pageLen > 50 && prove && !/≤50|<=50/.test(prove.with)) return fail(`página ${pageLen}>50 sem tecto declarado no hint da matrix`);
       return ok(`sugestão [${suggested.join(",")}] aceite: select re-run ${rerun.data.selection.selected.length} selected, prepare ${prep.data.status}; página ${pageLen}${pageLen > 50 ? " c/ tecto ≤50 declarado" : ""}`); } },
   { id: "TC-F-33", axis: "F", title: "0.19.3: seguir 3 next à letra → 3 funcionam; matrix impõe o tecto real", tool: "select_sbd_toe_requirements",
+    // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c) => {
       // (1) prepare ready → next resolve_entities com a forma REAL, parseado e executado
-      const p = await c.tool("prepare_sbd_toe_codegen_context", { task: "Implementar login com sessões de utilizador", risk_level: "L2" }); if (!p.ok) return fail(p.error);
+      const p = await c.tool("prepare_sbd_toe_codegen_context", { selection_mode: "discover", task: "Implementar login com sessões de utilizador", risk_level: "L2" }); if (!p.ok) return fail(p.error);
       const pd = p.data.data ?? p.data;
       const resolveRow = (pd.next ?? []).find((n) => n.tool === "resolve_entities");
       if (!resolveRow) return fail("prepare sem next resolve_entities");
@@ -649,14 +674,14 @@ export const scenarios = [
       const nRecs = (rd0.records ?? rd0.entities ?? []).length ?? 0;
       if (!(nRecs > 0 || (rd0.total ?? 0) > 0)) return fail("resolve devolveu 0 para os ids citados");
       // (2) select → proveRow → matrix aceita os ids copiáveis do próprio hint
-      const s = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Implementar login com sessões de utilizador" }); if (!s.ok) return fail(s.error);
+      const s = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Implementar login com sessões de utilizador" }); if (!s.ok) return fail(s.error);
       let prove = (s.data.next ?? []).find((n) => n.tool === "get_sbd_toe_verification_matrix");
       let stabilized = false;
       if (!prove) {
         // contrato 0.19.0: com aviso, next[0] é estabilizar (sem matrix) — SEGUE a própria sugestão
         const sug = (s.data.next?.[0]?.with.match(/concerns=\[([^\]]*)\]/)?.[1] ?? "").split(",").map((x) => x.trim()).filter(Boolean);
         if (sug.length === 0) return fail("sem proveRow e sem sugestão de estabilização parseável");
-        const s2 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Implementar login com sessões de utilizador", concerns: sug });
+        const s2 = await c.tool("select_sbd_toe_requirements", { mode: "discover", risk_level: "L2", task: "Implementar login com sessões de utilizador", concerns: sug });
         if (!s2.ok) return fail(`re-corrida sugerida falhou: ${s2.error}`);
         prove = (s2.data.next ?? []).find((n) => n.tool === "get_sbd_toe_verification_matrix");
         stabilized = true;
@@ -714,6 +739,1573 @@ export const scenarios = [
       const pfd = pf.data.data ?? pf.data;
       if (pfd.status !== "ready_for_codegen") return fail(`full ganhou tecto indevido: ${pfd.status}`);
       return ok(`88@minimal → needs_decomposition declarado (tecto ${rc.limit}, ~${rc.cost_per_req_tk} tk/req, proj ${rc.projected_tk}>${rc.promise_tk}); divisão seguida: ${results.join(", ")}; full sem tecto ✓`); } },
+
+  // ─────────── beta.21: o contrato DECLARATIVO (o que substitui o default inferencial) ───────────
+  { id: "TC-F-35", axis: "F", title: "0.20.0-beta.21: declarativo primeiro — needs_input ensina, declaração selecciona, redacção não decide", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      // 1) sem declarações: needs_input (nunca zero em silêncio, nunca adivinhado)
+      const ni = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "Implementar endpoint de upload de ficheiros com autenticação e auditoria" });
+      if (!ni.ok) return fail(ni.error);
+      const nd = ni.data;
+      if (!nd.needs_input) return fail(`sem declarações devia ser needs_input; veio ${nd.selection?.selected?.length ?? "?"} seleccionados`);
+      if (nd.task?.affects_selection !== false) return fail("task devia estar marcado como contexto registado (affects_selection=false)");
+      if (nd.needs_input.vocabulary_resource !== "sbd://toe/activation-vocabulary") return fail("needs_input não aponta o vocabulário");
+      if (!/SUGESTÃO A CONFIRMAR/i.test(nd.needs_input.candidates_to_confirm?.note ?? "")) return fail("candidatos não estão marcados como sugestão a confirmar");
+      if ((nd.next ?? []).some((n) => n.tool === "get_sbd_toe_verification_matrix")) return fail("next manda lista vazia à matrix");
+      // 2) seguir o exemplo À LETRA tem de produzir selecção
+      const cited = (nd.needs_input.example.with.match(/concerns=\[([^\]]*)\]/)?.[1] ?? "").split(",").map((x) => x.trim()).filter(Boolean);
+      if (cited.length === 0) return fail("exemplo do needs_input sem concerns");
+      const followed = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: cited });
+      if (!followed.ok) return fail(followed.error);
+      if ((followed.data.selection?.selected?.length ?? 0) === 0) return fail("exemplo copiável não produziu selecção");
+      // 3) a REDACÇÃO deixou de decidir: 3 redacções + mesma declaração ⇒ mesmo conjunto
+      const wordings = [
+        "Implementar endpoint de upload de ficheiros com autenticação e registo de auditoria",
+        "Permitir que utilizadores autenticados carreguem documentos, com trilho de auditoria",
+        "Receber ficheiros do utilizador autenticado e auditar a operação"
+      ];
+      const sets = [];
+      for (const task of wordings) {
+        const r = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task, concerns: ["files", "auth", "logging"] });
+        if (!r.ok) return fail(r.error);
+        sets.push((r.data.selection.selected ?? []).map((x) => x.requirement_id).sort().join(","));
+        if ((r.data.basis_summary?.lexical_only ?? -1) !== 0) return fail("basis lexical no caminho declarativo");
+        if (r.data.lexical_dominance_warning || r.data.empty_selection_warning) return fail("avisos lexicais deviam ter perdido objecto");
+      }
+      if (new Set(sets).size !== 1) return fail(`3 redacções deram ${new Set(sets).size} conjuntos com a MESMA declaração`);
+      // 4) baseline só por pedido explícito
+      const base = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", mode: "baseline" });
+      if (!base.ok) return fail(base.error);
+      if ((base.data.selection.selected ?? []).length < 100) return fail("mode=baseline não devolveu a baseline do nível");
+      return ok(`needs_input ensina (candidatos ${nd.needs_input.candidates_to_confirm.from_task_text.length}, exemplo executável → ${followed.data.selection.selected.length} req.); 3 redacções ⇒ 1 conjunto (${sets[0].split(",").length} req.); baseline explícita ${base.data.selection.selected.length}`); } },
+
+  { id: "TC-F-36", axis: "F", title: "0.20.0-beta.21: sbd://toe/activation-vocabulary — vocabulário fechado, derivado e executável", tool: "read_sbd_toe_resource",
+    run: async (c) => {
+      const r = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/activation-vocabulary" });
+      if (!r.ok) return fail(r.error);
+      const text = r.data?.content ?? r.text ?? "";
+      let v; try { v = typeof text === "string" ? JSON.parse(text.slice(text.indexOf("{"))) : text; } catch { return fail("vocabulário não é JSON legível"); }
+      const body = v.content ? JSON.parse(v.content) : v;
+      const vocab = body.concerns ? body : body.data ?? body;
+      if (!vocab.concerns?.values?.length) return fail("vocabulário sem concerns");
+      for (const key of ["exposure", "data_sensitivity", "technologies", "changed_files", "roles", "phases"]) {
+        if (!vocab[key]) return fail(`vocabulário sem ${key}`);
+      }
+      if (vocab.contract?.serving_semantics !== "declarative-first") return fail("vocabulário não declara a semântica");
+      if (!vocab.not_activators?.some((n) => n.field === "task")) return fail("vocabulário não declara `task` como não-activador");
+      // executável: um concern publicado, declarado, selecciona o que o vocabulário promete
+      const sample = vocab.concerns.values.find((c2) => c2.value === "auth");
+      const sel = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"] });
+      if (!sel.ok) return fail(sel.error);
+      const got = (sel.data.selection.selected ?? []).filter((x) => sample.activates_categories.includes(x.category)).length;
+      if (got !== sample.requirements_at.L2) return fail(`vocabulário promete ${sample.requirements_at.L2} em L2 para auth; selecção deu ${got}`);
+      return ok(`${vocab.concerns.values.length} concerns, ${vocab.technologies.values.length} tecnologias, ${vocab.changed_files.patterns.length} padrões de path, ${vocab.roles.values.length} papéis, ${vocab.phases.values.length} fases; promessa auth@L2=${sample.requirements_at.L2} confirmada na selecção`); } },
+
+  { id: "TC-F-37", axis: "F", title: "0.20.0-beta.22 (caminho para 9): guarda anti-zero indexada à ACTIVAÇÃO + ausências declaradas", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      // P1-A — a sonda do avaliador: declarações VÁLIDAS mas INERTES
+      const inert = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", exposure: "local", data_sensitivity: "low" });
+      if (!inert.ok) return fail(inert.error);
+      const i = inert.data;
+      if ((i.selection?.selected?.length ?? 0) !== 0) return fail("sonda deixou de dar 0 (re-baseline)");
+      if (!i.needs_input) return fail("declarações inertes deram selecção vazia SEM needs_input (ponto cego P1-A vivo)");
+      const inertNames = (i.needs_input.inert_declarations ?? []).join(" ");
+      if (!/exposure="local"/.test(inertNames) || !/data_sensitivity="low"/.test(inertNames)) return fail(`needs_input não nomeia as declarações inertes: ${inertNames}`);
+      // 2ª instância da mesma família: activou categorias mas o NÍVEL esvazia
+      const lvl = await c.tool("select_sbd_toe_requirements", { risk_level: "L1", concerns: ["privacy"] });
+      if (!lvl.ok) return fail(lvl.error);
+      if ((lvl.data.selection?.selected?.length ?? 0) !== 0) return fail("fixture do nível mudou");
+      if (!lvl.data.needs_input) return fail("nível esvaziou a selecção SEM needs_input");
+      if (!/N[ÍI]VEL/i.test(lvl.data.needs_input.reason)) return fail("needs_input não explica que o problema é o nível");
+      if ((lvl.data.selection.excluded_by_level ?? []).length === 0) return fail("sem excluded_by_level a provar o que existe noutro nível");
+      // P1-B — gralha no conjunto fechado: declarada, nunca silenciosa
+      const typo = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["authz", "auth"] });
+      if (!typo.ok) return fail(typo.error);
+      const uc = typo.data.unknown_concerns;
+      if (!uc || !uc.values?.includes("authz")) return fail("concern inválido descartado em silêncio (P1-B)");
+      if (!uc.valid_values?.length || !uc.vocabulary_resource) return fail("unknown_concerns sem valid_values/vocabulário");
+      if ((typo.data.selection?.selected?.length ?? 0) === 0) return fail("o concern válido devia continuar a seleccionar");
+      // mode=baseline continua a ser a saída EXPLÍCITA (não fallback)
+      const base = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", exposure: "local", mode: "baseline" });
+      if (!base.ok) return fail(base.error);
+      if ((base.data.selection.selected ?? []).length < 100) return fail("mode=baseline deixou de devolver a baseline");
+      return ok(`inertes → needs_input nomeando ${(i.needs_input.inert_declarations ?? []).length}; nível L1 → needs_input c/ ${lvl.data.selection.excluded_by_level.length} grupos excluded_by_level; gralha 'authz' declarada c/ ${uc.valid_values.length} valores válidos; baseline explícita ${base.data.selection.selected.length}`); } },
+
+  { id: "TC-F-38", axis: "F", title: "0.20.0-beta.22: nada acontece sem traço — stack_token, named_rule, concern_slice_mapping e enum gerado", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      // P1-D — o `stack` (única leitura de texto que resta) deixa rasto
+      const st = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], stack: "docker e kubernetes" });
+      if (!st.ok) return fail(st.error);
+      const stackTrace = (st.data.activation_trace ?? []).filter((t) => t.source === "stack_token");
+      if (stackTrace.length === 0) return fail("stack activou capítulos sem deixar traço (P1-D)");
+      if (!stackTrace.every((t) => /token exacto/i.test(t.reason ?? ""))) return fail("traço do stack não explica a regra do token exacto");
+      // P1-E — regra NOMEADA por tecnologia declarada
+      const jwt = await c.tool("select_sbd_toe_requirements", { risk_level: "L1", concerns: ["auth"], technologies: ["jwt"] });
+      if (!jwt.ok) return fail(jwt.error);
+      if (!jwt.data.selection.selected.some((r) => r.requirement_id === "SES-008")) return fail("SES-008 não entrou com jwt declarado");
+      const named = (jwt.data.activation_trace ?? []).filter((t) => t.source === "named_rule" && t.produced === "SES-008");
+      if (named.length === 0) return fail("regra nomeada SES-008 sem entrada de traço (P1-E)");
+      // P2-A — a etiqueta órfã do motor lexical morreu no caminho declarativo
+      const decl = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"] });
+      if (!decl.ok) return fail(decl.error);
+      const orphan = (decl.data.activation_trace ?? []).filter((t) => t.source === "task_term");
+      if (orphan.length > 0) return fail(`task_term emitido com task vazio (${orphan.length}) — etiqueta órfã viva`);
+      const mapping = (decl.data.activation_trace ?? []).filter((t) => t.source === "concern_slice_mapping");
+      if (mapping.length === 0) return fail("mapeamento concern→slice family sem etiqueta própria");
+      // P1-C — um vocabulário, um contrato: o enum servido é o do recurso
+      const vocabRes = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/activation-vocabulary" });
+      if (!vocabRes.ok) return fail(vocabRes.error);
+      const text = typeof vocabRes.data?.content === "string" ? vocabRes.data.content : JSON.stringify(vocabRes.data);
+      const vocab = JSON.parse(text.slice(text.indexOf("{")));
+      const published = (vocab.concerns?.values ?? []).map((x) => x.value);
+      const tools = c.tools ?? [];
+      const enums = {};
+      for (const name of ["select_sbd_toe_requirements", "consult_security_requirements", "prepare_sbd_toe_codegen_context"]) {
+        const t = tools.find((x) => x.name === name);
+        enums[name] = t?.inputSchema?.properties?.concerns?.items?.enum ?? null;
+      }
+      for (const [name, e] of Object.entries(enums)) {
+        if (!e) return fail(`${name} sem enum de concerns (P1-C)`);
+        if (e.length !== published.length) return fail(`${name}: enum ${e.length} ≠ vocabulário ${published.length}`);
+        const missing = published.filter((v) => !e.includes(v));
+        if (missing.length) return fail(`${name}: faltam ${missing.join(", ")}`);
+      }
+      return ok(`stack_token ×${stackTrace.length}, named_rule SES-008 ✓, 0 task_term órfãos (${mapping.length} concern_slice_mapping), enum ${published.length} idêntico nas 3 tools`); } },
+
+  // ───────────────────────── Axis G — beta-line tools (added 2026-09-01; closes the 24/23 gap) ─────────────────────────
+  // trace_sbd_toe_graph exists only on the 0.20-beta line (SPARQL/Oxigraph over the RDF
+  // projection of the published runtime bundle). Scenarios per the governance doc's Axis G
+  // (placeholder opened 2026-08-30, filled 2026-09-01 in the same change as this runner).
+  { id: "TC-F-39", axis: "F", title: "0.20.0-beta.23 (P0-1): CONSERVAÇÃO — o motor não deita fora o que o vocabulário PROMETE", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      // A sonda do avaliador: `build`@L3 prometia CIC+DEV (10+9=19) e devolvia 10.
+      const vocabRes = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/activation-vocabulary" });
+      if (!vocabRes.ok) return fail(vocabRes.error);
+      const text = typeof vocabRes.data?.content === "string" ? vocabRes.data.content : JSON.stringify(vocabRes.data);
+      const vocab = JSON.parse(text.slice(text.indexOf("{")));
+      const byValue = new Map((vocab.concerns?.values ?? []).map((x) => [String(x.value), x]));
+      const checked = [];
+      // as 4 famílias que a invariante apanhou (era 1 na sonda externa)
+      for (const [concern, level] of [["build", "L3"], ["supply_chain", "L3"], ["release", "L3"], ["deployment", "L3"], ["build", "L1"]]) {
+        const promised = byValue.get(concern)?.requirements_at?.[level];
+        if (typeof promised !== "number") return fail(`vocabulário sem requirements_at para ${concern}@${level}`);
+        const r = await c.tool("select_sbd_toe_requirements", { risk_level: level, concerns: [concern], limit: 500 });
+        if (!r.ok) return fail(r.error);
+        const sel = r.data.selection?.selected ?? [];
+        const narrowed = (r.data.selection?.narrowed_out ?? []).reduce((n, g) => n + (g.count ?? 0), 0);
+        const banded = new Set([
+          ...sel.map((x) => x.requirement_id),
+          ...(r.data.selection?.narrowed_out ?? []).flatMap((g) => g.requirement_ids ?? []),
+          ...(r.data.selection?.excluded_by_level ?? []).flatMap((g) => g.requirement_ids ?? [])
+        ]);
+        if (sel.length + narrowed !== (r.data.meta?.eligible ?? -1))
+          return fail(`${concern}@${level}: selected+narrowed_out (${sel.length}+${narrowed}) ≠ eligible (${r.data.meta?.eligible})`);
+        if (sel.length < promised)
+          return fail(`${concern}@${level}: o vocabulário promete ${promised} e a selecção traz ${sel.length} — promessa perdida (P0-1)`);
+        checked.push(`${concern}@${level}=${sel.length}/${promised} (bandas ${banded.size})`);
+      }
+      // o caso nominal da sonda: DEV-003 (SAST como gate) tem de estar lá
+      const build = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", concerns: ["build"], limit: 500 });
+      if (!build.ok) return fail(build.error);
+      const sel = build.data.selection.selected;
+      if (!sel.some((x) => x.requirement_id === "DEV-003")) return fail("DEV-003 continua a desaparecer de concerns=['build']@L3 (P0-1 vivo)");
+      const dev = sel.find((x) => x.requirement_id === "DEV-003");
+      if (!(dev.selection_trace ?? []).some((t) => t.layer === "declared_category"))
+        return fail("DEV-003 entrou SEM traço próprio — inclusão anónima é a falha simétrica");
+      return ok(`conservação verificada: ${checked.join("; ")}; DEV-003 presente com traço declared_category`); } },
+
+  { id: "TC-F-40", axis: "F", title: "0.20.0-beta.23 (P0-2): get_threat_landscape declara os concerns que NÃO resolve (zero nunca é mudo)", tool: "get_threat_landscape",
+    run: async (c) => {
+      // 0.20.0-beta.27: 'build' PASSOU a ser roteável — a correcção da resolução de
+      // concerns no consult (P0 da adenda) curou também o mapa de ameaças, que roteia
+      // através dele. O mecanismo continua a ser o que se testa, agora com um valor que
+      // o vocabulário não conhece: a garantia é «nunca um vazio mudo», não «build dá 0».
+      const un = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["authz"] });
+      if (!un.ok) return fail(un.error);
+      if ((un.data.coverage?.total ?? -1) !== 0) return fail("fixture mudou: valor inválido já devolve ameaças");
+      const uc = un.data.unsupported_concerns;
+      if (!uc) return fail("total=0 SEM unsupported_concerns — zero mudo (P0-2 vivo)");
+      if (!uc.values?.includes("authz")) return fail("unsupported_concerns não nomeia o valor por resolver");
+      if (!(uc.supported_values?.length > 0)) return fail("unsupported_concerns sem a lista do que É suportado");
+      if (!/N[ÃA]O concluas aus[êe]ncia/i.test(uc.note ?? "")) return fail("a nota não proíbe concluir ausência de ameaças");
+      // o caso PERIGOSO: mistura — vêm ameaças E um concern por resolver
+      const mix = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["authz", "auth"] });
+      if (!mix.ok) return fail(mix.error);
+      if ((mix.data.coverage?.total ?? 0) === 0) return fail("fixture mista mudou");
+      if (!mix.data.unsupported_concerns?.values?.includes("authz"))
+        return fail("num resultado NÃO-vazio o valor por resolver desapareceu — o caller julga cobertura completa");
+      // controlo: concern suportado não gera a banda
+      const sup = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["auth"] });
+      if (!sup.ok) return fail(sup.error);
+      if (sup.data.unsupported_concerns) return fail("concern suportado marcado como não suportado (falso positivo)");
+      return ok(`valor por resolver declarado (${uc.supported_values.length} suportados); misto mantém a declaração com ${mix.data.coverage.total} ameaças; 'auth' limpo`); } },
+
+  { id: "TC-F-41", axis: "F", title: "0.20.0-beta.23 (P0-3): guarda anti-zero cobre `technologies` — e a declaração com efeito não é descartada", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      // a sonda do avaliador: technologies:["jwt"] dizia «nenhum activador DECLARADO»
+      const jwt = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", technologies: ["jwt"] });
+      if (!jwt.ok) return fail(jwt.error);
+      if (jwt.data.needs_input && /Nenhum activador DECLARADO/i.test(jwt.data.needs_input.reason ?? ""))
+        return fail("technologies=['jwt'] ainda diz «nenhum activador DECLARADO» com jwt declarado à frente (P0-3 vivo)");
+      if (!jwt.data.selection.selected.some((r) => r.requirement_id === "SES-008"))
+        return fail("a tecnologia declarada não produziu o seu efeito nomeado (SES-008)");
+      // simetria com o mesmo valor por `stack` (era a contradição do payload)
+      const st = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", stack: "jwt" });
+      if (!st.ok) return fail(st.error);
+      if (st.data.selection.selected.length !== jwt.data.selection.selected.length)
+        return fail(`assimetria viva: stack='jwt' dá ${st.data.selection.selected.length} e technologies=['jwt'] dá ${jwt.data.selection.selected.length}`);
+      // varredura: token FORA do vocabulário é NOMEADO, nunca descartado em silêncio
+      const unknown = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", technologies: ["cobol"] });
+      if (!unknown.ok) return fail(unknown.error);
+      if (!unknown.data.needs_input) return fail("tecnologia desconhecida deu selecção sem pedir declaração");
+      const named = (unknown.data.needs_input.inert_declarations ?? []).join(" ");
+      if (!/technologies=\[cobol\]/.test(named)) return fail(`guarda não nomeia a tecnologia inerte: ${named}`);
+      if (!unknown.data.unknown_technologies?.values?.includes("cobol")) return fail("token fora do vocabulário descartado em silêncio");
+      return ok(`jwt declarado → SES-008 (${jwt.data.selection.selected.length} req.), simétrico com stack; 'cobol' nomeado como inerte e em unknown_technologies`); } },
+
+  { id: "TC-F-42", axis: "F", title: "0.20.0-beta.23 (P1): a proveniência diz QUE SERVIDOR respondeu (kg ≠ server)", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      const ver = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/version" });
+      if (!ver.ok) return fail(ver.error);
+      const vtext = typeof ver.data?.content === "string" ? ver.data.content : JSON.stringify(ver.data);
+      const vjson = JSON.parse(vtext.slice(vtext.indexOf("{")));
+      const pkg = vjson.server?.version ?? vjson.version ?? vjson.package?.version;
+      if (typeof pkg !== "string") return fail("recurso de versão sem a versão do pacote");
+      const checked = [];
+      for (const [tool, args] of [
+        ["select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"] }],
+        ["consult_security_requirements", { risk_level: "L2", concerns: ["auth"] }],
+        ["get_threat_landscape", { risk_level: "L2", concerns: ["auth"] }],
+        ["prepare_sbd_toe_codegen_context", { task: "Implementar login com sessões", risk_level: "L2", concerns: ["auth"], exposure: "public" }]
+      ]) {
+        const r = await c.tool(tool, args);
+        if (!r.ok) return fail(r.error);
+        const prov = r.data.provenance;
+        if (!prov) return fail(`${tool}: resposta sem proveniência`);
+        if (prov.server !== pkg) return fail(`${tool}: provenance.server=${prov.server} ≠ versão do pacote ${pkg} (resposta inatribuível — P1)`);
+        if (!prov.kg || prov.kg === prov.server) return fail(`${tool}: kg e server confundidos (conhecimento servido ≠ quem serviu)`);
+        checked.push(tool);
+      }
+      return ok(`provenance.server=${pkg} em ${checked.length} ferramentas, distinto de kg`); } },
+
+  { id: "TC-F-43", axis: "F", title: "0.20.0-beta.24 (item 1): agent-guide GERADO — publica o vocabulário (24), não a cobertura do mapa de ameaças (13)", tool: "read_sbd_toe_resource",
+    run: async (c) => {
+      const g = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/agent-guide" });
+      if (!g.ok) return fail(g.error);
+      const guide = typeof g.data?.content === "string" ? g.data.content : JSON.stringify(g.data);
+      const vocabRes = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/activation-vocabulary" });
+      if (!vocabRes.ok) return fail(vocabRes.error);
+      const vtext = typeof vocabRes.data?.content === "string" ? vocabRes.data.content : JSON.stringify(vocabRes.data);
+      const vocab = JSON.parse(vtext.slice(vtext.indexOf("{")));
+      const concerns = (vocab.concerns?.values ?? []).map((x) => String(x.value));
+      if (concerns.length < 20) return fail(`vocabulário com ${concerns.length} valores — fixture mudou`);
+      const missing = concerns.filter((x) => !guide.includes("`" + x + "`"));
+      if (missing.length > 0) return fail(`guia não publica ${missing.length} concerns do vocabulário: ${missing.join(", ")}`);
+      // a regressão nominal: os concerns que o mapa de ameaças NÃO resolve têm de estar no guia
+      // beta.27: as coberturas passaram a coincidir; a protecção mantém-se condicional —
+      // se o mapa voltar a perder concerns, o guia não pode segui-lo.
+      const un = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["authz"] });
+      if (!un.ok) return fail(un.error);
+      const unsupported = un.data.unsupported_concerns?.values ?? [];
+      const swallowed = concerns.filter((x) => !guide.includes("`" + x + "`"));
+      if (swallowed.length > 0) return fail(`o guia não publica ${swallowed.length} concerns do vocabulário`);
+      // contagens do guia = contagens do vocabulário (não folclore)
+      const auth = (vocab.concerns?.values ?? []).find((x) => String(x.value) === "auth");
+      const at = auth?.requirements_at ?? {};
+      if (!guide.includes(`${at.L1} / ${at.L2} / ${at.L3}`)) return fail("as contagens do guia não são as do vocabulário");
+      // recursos e prompts reais aparecem no guia
+      if (!guide.includes("sbd://toe/activation-vocabulary")) return fail("o guia não lista o recurso que ele próprio manda ler no passo 1");
+      if (!guide.includes("prepare_grounded_codegen")) return fail("o guia não lista os 3 prompts servidos");
+      return ok(`guia derivado: ${concerns.length} concerns publicados (era 13); mecanismo de não-roteáveis vivo (${unsupported.length} para o valor inválido); contagens = vocabulário; recursos e prompts completos`); } },
+
+  { id: "TC-F-44", axis: "F", title: "0.20.0-beta.24 (item 2): âmbito da promessa — o que nenhuma declaração activou é DECLARADO, não omitido", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      const r = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], limit: 500 });
+      if (!r.ok) return fail(r.error);
+      const band = r.data.out_of_scope_chapters;
+      if (!band) return fail("capítulos não activados desaparecem sem uma linha (item 2 vivo)");
+      if (!(band.count > 0) || !(band.requirements_out_of_scope > 0)) return fail("banda presente mas vazia");
+      if (!/N[ÃA]O são «não aplicáveis»|não-perguntados/i.test(band.scope_note ?? "")) return fail("a nota não distingue «fora de âmbito» de «não aplicável»");
+      if (!/universo/i.test(band.scope_note ?? "")) return fail("o âmbito da promessa não está declarado na resposta");
+      for (const entry of band.chapters) {
+        if (typeof entry.at_level !== "number" || typeof entry.out_of_scope !== "number") return fail(`linha sem contagens: ${entry.chapter}`);
+        if (!entry.activate_with) return fail(`capítulo ${entry.chapter} sem caminho de recuperação`);
+        if (entry.out_of_scope > entry.at_level) return fail(`${entry.chapter}: fora (${entry.out_of_scope}) > total (${entry.at_level})`);
+      }
+      // custo: contagens, NUNCA os requisitos por extenso
+      const raw = JSON.stringify(band);
+      if (/requirement_ids|"[A-Z]{3}-\d{3}"/.test(raw)) return fail("a banda lista requisitos por extenso — declarar a ausência não pode custar o que custaria tê-los");
+      // o caminho de recuperação FUNCIONA: declarar o que ela indica tira o capítulo da banda
+      const target = band.chapters.find((x) => /^05-/.test(x.chapter));
+      if (!target) return fail("fixture mudou: cap. 05 não está fora de âmbito para concerns=['auth']");
+      const m = /concerns=\["([a-z_]+)"/.exec(target.activate_with);
+      if (!m) return fail(`dica não copiável para o cap. 05: ${target.activate_with}`);
+      const after = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth", m[1]], limit: 500 });
+      if (!after.ok) return fail(after.error);
+      const still = (after.data.out_of_scope_chapters?.chapters ?? []).some((x) => /^05-/.test(x.chapter));
+      if (still) return fail(`seguir a dica (${m[1]}) não trouxe o cap. 05 para dentro do âmbito`);
+      // e a selecção NÃO muda por causa da banda (item aditivo)
+      const before = r.data.selection.selected.length;
+      const baseline = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], limit: 500 });
+      if (!baseline.ok) return fail(baseline.error);
+      if (baseline.data.selection.selected.length !== before) return fail("selecção não determinística");
+      return ok(`${band.count} capítulos declarados, ${band.requirements_out_of_scope} requisitos fora de âmbito, dica '${m[1]}' verificada a trazer o cap. 05; selecção inalterada (${before})`); } },
+
+  { id: "TC-F-45", axis: "F", title: "0.20.0-beta.24 (item 3): higiene do `task` — task_context canónico, alias mantido, sem promessas de inferência", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      const canonical = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], task_context: "implementar login" });
+      if (!canonical.ok) return fail(canonical.error);
+      if (canonical.data.task?.text !== "implementar login") return fail("task_context não foi registado");
+      if (canonical.data.task?.affects_selection !== false) return fail("task_context marcado como motor no modo declarativo");
+      const alias = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], task: "implementar login" });
+      if (!alias.ok) return fail(alias.error);
+      if (alias.data.selection.selected.length !== canonical.data.selection.selected.length)
+        return fail("o alias `task` deixou de ser equivalente (compatibilidade partida)");
+      // discover continua a ter o texto como motor
+      const disc = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", task: "implementar login com sessões e tokens", mode: "discover" });
+      if (!disc.ok) return fail(disc.error);
+      if ((disc.data.selection.selected.length ?? 0) === 0) return fail("discover deixou de usar o texto como motor");
+      // resíduos: a descrição da tool não pode prometer inferência a partir do task
+      const tools = c.tools ?? [];
+      const sel = tools.find((t) => t.name === "select_sbd_toe_requirements");
+      if (!sel) return fail("select ausente de tools/list");
+      const desc = String(sel.description ?? "");
+      if (/narrows deterministically by the task's declared signals/.test(desc))
+        return fail("resíduo vivo: a descrição ainda promete narrowing pelo texto da tarefa");
+      if (/activated by the context \([^)]*task/.test(desc))
+        return fail("resíduo vivo: `task` ainda listado como activador de capítulos");
+      if (!/task_context/.test(JSON.stringify(sel.inputSchema ?? {}))) return fail("schema sem o nome canónico task_context");
+      return ok(`task_context canónico e registado (affects_selection=false), alias equivalente, discover intacto (${disc.data.selection.selected.length} req.), descrição sem resíduos`); } },
+
+  { id: "TC-F-46", axis: "F", title: "0.20.0-beta.25 (adenda): o guia não publica a teoria do minLevel nem descreve menos bandas do que a resposta traz", tool: "read_sbd_toe_resource",
+    run: async (c) => {
+      const g = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/agent-guide" });
+      if (!g.ok) return fail(g.error);
+      const guide = typeof g.data?.content === "string" ? g.data.content : JSON.stringify(g.data);
+      // a frase que ENTERRA a teoria nomeia-a; corta-se antes de procurar a teoria viva
+      const obituary = /\*\*Aplicabilidade GRADUADA[\s\S]*?porque nenhum começa\./g;
+      const body = guide.replace(obituary, " ");
+      const banned = [[/Min level/i, "coluna «Min level»"], [/Presente desde/i, "coluna «Presente desde»"],
+                      [/unlocks?\b/i, "linguagem de «unlock»"], [/\+ chapters? \d/i, "«+ chapters NN»"]];
+      const hits = banned.filter(([re]) => re.test(body)).map(([, l]) => l);
+      if (hits.length > 0) return fail(`teoria do minLevel viva no guia: ${hits.join("; ")}`);
+      if (!/nenhum cap[íi]tulo se exclui por n[íi]vel/i.test(guide)) return fail("o guia não afirma a aplicabilidade graduada");
+      // as tools dizem o mesmo — o guia não pode contradizê-las
+      const ch = await c.tool("list_sbd_toe_chapters", {});
+      if (!ch.ok) return fail(ch.error);
+      const chapters = ch.data.chapters ?? [];
+      if (chapters.length === 0) return fail("sem capítulos para verificar");
+      const notPresent = chapters.filter((x) => !(x.applicability?.L1 && x.applicability?.L2 && x.applicability?.L3));
+      if (notPresent.length > 0) return fail(`fixture mudou: ${notPresent.length} capítulos não presentes em todos os níveis`);
+      // bandas: o guia tem de nomear as quatro
+      if (/TWO bands|two-band/i.test(guide)) return fail("o guia ainda anuncia «two bands» (são quatro desde 0.15.0/beta.24)");
+      for (const band of ["selected[]", "narrowed_out[]", "excluded_by_level", "out_of_scope_chapters"])
+        if (!guide.includes(band)) return fail(`banda ausente do guia: ${band}`);
+      // tamanhos anunciados = medidos
+      const l2 = await c.tool("consult_security_requirements", { risk_level: "L2" });
+      if (!l2.ok) return fail(l2.error);
+      const measured = Math.round(JSON.stringify(l2.data).length / 1000);
+      if (!new RegExp(`≈ ${measured}k chars`).test(guide))
+        return fail(`o guia anuncia um tamanho para L2 que não é o medido (${measured}k)`);
+      // e o search continua marcado como não-normativo
+      if (!/search_sbd_toe_manual[\s\S]{0,160}N[ÃA]O-NORMATIVO/i.test(guide))
+        return fail("o guia apresenta search_sbd_toe_manual sem a marca NÃO-NORMATIVO que a tool declara");
+      return ok(`minLevel retirada e declarada, ${chapters.length} capítulos presentes em todos os níveis, 4 bandas nomeadas, tamanho L2 medido (${measured}k), search marcado não-normativo`); } },
+
+  { id: "TC-F-47", axis: "F", title: "0.20.0-beta.26 (item 1): evidence_patterns por PERTENÇA ao âmbito, não por prefixo alfabético", tool: "prepare_sbd_toe_codegen_context",
+    run: async (c) => {
+      // Sonda A do avaliador: validação (âmbito ERR/VAL) trazia 5 em 5 EPs de fora
+      const a = await c.tool("prepare_sbd_toe_codegen_context", { task: "Validar payload de entrada no endpoint", risk_level: "L2", concerns: ["validation"], detail: "minimal", debug: true });
+      if (!a.ok) return fail(a.error);
+      if (a.data.status !== "ready_for_codegen") return fail(`sonda A: status ${a.data.status}`);
+      const scope = new Set((a.data.activated_scope?.requirements ?? []).map((x) => x.requirement_id));
+      const eps = a.data.g2_context?.evidence_patterns ?? [];
+      if (eps.length === 0) return fail("sonda A sem evidence_patterns — fixture mudou");
+      const fora = eps.filter((e) => !(e.maps_to_requirement_id && scope.has(e.maps_to_requirement_id)));
+      if (fora.length > 0) return fail(`sonda A: ${fora.length}/${eps.length} EPs fora do âmbito (${fora.map((e) => e.id).join(", ")})`);
+      // pertença é monótona: nenhum de fora antes de um de dentro, em qualquer detail
+      for (const detail of ["standard", "full"]) {
+        const r = await c.tool("prepare_sbd_toe_codegen_context", { task: "Validar payload de entrada no endpoint", risk_level: "L2", concerns: ["validation"], detail });
+        if (!r.ok) return fail(r.error);
+        const sc = new Set((r.data.activated_scope?.requirements ?? []).map((x) => x.requirement_id));
+        const list = r.data.g2_context?.evidence_patterns ?? [];
+        const inScope = (e) => e.maps_to_requirement_id && sc.has(e.maps_to_requirement_id);
+        const firstOut = list.findIndex((e) => !inScope(e));
+        const lastIn = list.map(inScope).lastIndexOf(true);
+        if (firstOut >= 0 && lastIn > firstOut) return fail(`detail=${detail}: EP fora do âmbito antes de um de dentro`);
+      }
+      // menor do mesmo achado: debug.notes contava o cap CLÁSSICO (25) e não o efectivo
+      const note = (a.data.debug?.notes ?? []).find((n) => n.startsWith("evidence_patterns: total="));
+      if (!note) return fail("sem nota de evidence_patterns em debug");
+      if (!new RegExp(`returned=${eps.length}\\b`).test(note)) return fail(`debug.notes conta o cap clássico, não o efectivo: ${note}`);
+      if (!/cap efectivo/.test(note)) return fail("a nota não diz qual é o cap efectivo deste detail");
+      return ok(`sonda A: 0/${eps.length} EPs fora do âmbito (era 5/5); pertença monótona em minimal/standard/full; debug.notes com returned=${eps.length} e cap efectivo`); } },
+
+  { id: "TC-F-48", axis: "F", title: "0.20.0-beta.26 (itens 2,3,5,6): threat needs_input, traço multi-activador, denominadores, obligation_ids", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      // item 2 — todos os concerns não-roteáveis ⇒ needs_input, não 8k tk de governação
+      // beta.27: `integration`/`privacy` passaram a ser roteáveis (correcção do consult).
+      // O mecanismo testa-se com valores que o vocabulário não conhece.
+      const t = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["authz", "authn"] });
+      if (!t.ok) return fail(t.error);
+      if (!t.data.needs_input) return fail("todos os concerns não-roteáveis e ainda assim devolveu ameaças (item 2 vivo)");
+      if ((t.data.threats ?? []).length !== 0) return fail("needs_input com ameaças no payload");
+      if (!(t.data.needs_input.supported_concerns?.length > 0)) return fail("needs_input sem a lista do que É roteável");
+      const custo = JSON.stringify(t.data).length / 4;
+      if (custo > 1500) return fail(`needs_input a custar ${Math.round(custo)} tk — devia ser barato`);
+      // controlo: misto continua a responder
+      const mix = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["authz", "auth"] });
+      if (!mix.ok) return fail(mix.error);
+      if (mix.data.needs_input) return fail("um concern roteável e mesmo assim needs_input (falso positivo)");
+      if (!mix.data.unsupported_concerns?.values?.includes("authz")) return fail("misto perdeu a declaração do não-roteável");
+      // item 3 — traço multi-activador
+      const s = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["iac"], technologies: ["containers"] });
+      if (!s.ok) return fail(s.error);
+      const ch = (s.data.context?.activated_chapters ?? []).find((x) => x.chapter === "08-iac-infraestrutura");
+      if (!ch) return fail("cap. 08 não activado — fixture mudou");
+      const by = (ch.activated_by ?? []).map((x) => `${x.source}:${x.trigger}`);
+      if (!by.includes("concern:iac") || !by.includes("technology:containers"))
+        return fail(`traço incompleto: ${by.join(", ")} — «porquê este capítulo?» tem de listar TODOS`);
+      // item 5 — denominadores nomeados e definidos
+      const d = s.data.denominators;
+      if (!d) return fail("sem bloco de denominadores (item 5 vivo)");
+      for (const k of ["baseline_at_level", "activated_at_level", "catalogue_at_level", "catalogue_total"]) {
+        if (typeof d[k]?.value !== "number") return fail(`denominador ${k} sem valor`);
+        if (!(d[k]?.definition?.length > 40)) return fail(`denominador ${k} sem definição`);
+      }
+      if (s.data.meta.eligible !== d.activated_at_level.value) return fail("meta.eligible não é o denominador que diz ser");
+      if (s.data.meta.eligible_denominator !== "activated_at_level") return fail("meta.eligible sem denominador nomeado");
+      if (!(d.baseline_at_level.value <= d.activated_at_level.value && d.activated_at_level.value <= d.catalogue_at_level.value))
+        return fail("desigualdades dos denominadores não fecham");
+      // item 6 — obligation_ids
+      const reg = await c.tool("map_sbd_toe_regulatory_activation", { framework: "RGPD" });
+      if (!reg.ok) return fail(reg.error);
+      const area = (reg.data.data?.activated ?? reg.data.activated ?? [])[0];
+      if (!area) return fail("overlay sem áreas activadas");
+      if (!Array.isArray(area.obligation_ids) || area.obligation_ids.length === 0) return fail("obligation_ids ausente (item 6 vivo)");
+      if (area.obligation_ids.length !== area.obligation_count) return fail(`obligation_ids (${area.obligation_ids.length}) ≠ obligation_count (${area.obligation_count})`);
+      if (area.example_citation && !area.example_citation_note) return fail("example_citation sem dizer que é um artigo do diploma");
+      return ok(`threat needs_input a ${Math.round(custo)} tk (era ~8,4k); cap. 08 com ${by.length} activadores; 4 denominadores definidos (${d.baseline_at_level.value}/${d.activated_at_level.value}/${d.catalogue_at_level.value}/${d.catalogue_total.value}); ${area.obligation_ids.length} obligation_ids`); } },
+
+  { id: "TC-F-49", axis: "F", title: "0.20.0-beta.26 (itens 4,7,8): dieta do select sem perda, cobertura parcial declarada, cap. 01 explicado", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      const args = { risk_level: "L3", concerns: ["auth", "iac", "build", "deployment", "logging", "validation"], limit: 500 };
+      const full = await c.tool("select_sbd_toe_requirements", { ...args, detail: "full" });
+      if (!full.ok) return fail(full.error);
+      const ids = (x) => x.selection.selected.map((r) => r.requirement_id).join(",");
+      const custoFull = JSON.stringify(full.data).length / 4;
+      const medidas = [];
+      for (const detail of ["standard", "minimal"]) {
+        const r = await c.tool("select_sbd_toe_requirements", { ...args, detail });
+        if (!r.ok) return fail(r.error);
+        if (ids(r.data) !== ids(full.data)) return fail(`detail=${detail} mudou o CONJUNTO — a dieta é de serialização, não de conteúdo`);
+        const legend = new Map((r.data.selection_trace_legend ?? []).map((e) => [e.ref, e]));
+        if (legend.size === 0) return fail(`detail=${detail} sem legenda`);
+        // reconstrução: legenda + refs == selection_trace clássico
+        for (const row of r.data.selection.selected) {
+          if (!Array.isArray(row.trace) || row.trace.length === 0) return fail(`${row.requirement_id} sem refs de traço`);
+          for (const ref of row.trace) if (!legend.has(ref)) return fail(`ref ${ref} sem entrada na legenda`);
+        }
+        const custo = JSON.stringify(r.data).length / 4;
+        if (custo >= custoFull) return fail(`detail=${detail} não poupou nada (${Math.round(custo)} ≥ ${Math.round(custoFull)})`);
+        medidas.push(`${detail} −${((1 - custo / custoFull) * 100).toFixed(0)}%`);
+      }
+      // item 7 — cobertura PARCIAL declarada
+      const m = await c.tool("get_sbd_toe_verification_matrix", { risk_level: "L2", requirement_ids: ["ENC-001", "ENC-003", "ENC-006", "ENC-007", "AUT-001"] });
+      if (!m.ok) return fail(m.error);
+      const g = (m.data.data ?? m.data).coverage_gaps;
+      if (typeof g.evidence_patterns_without_validation_method !== "number") return fail("ausência parcial de validation_method não declarada (P1-3 vivo)");
+      if (g.evidence_patterns_without_validation_method === 0) return fail("fixture mudou: os EP-ENC já publicam validation_method");
+      if (g.requirements_without_evidence_pattern === 0 && /codex/i.test(g.note))
+        return fail("declara encaminhamento inexistente com 0 lacunas (P1-4 vivo)");
+      // item 8 — cap. 01 explicado, não deixado por explicar
+      const s = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"] });
+      if (!s.ok) return fail(s.error);
+      const c01 = (s.data.out_of_scope_chapters?.chapters ?? []).find((x) => /^01-/.test(x.chapter));
+      if (!c01) return fail("cap. 01 não aparece na banda de fora de âmbito");
+      // 0.20.0-beta.30: o princípio «superfície de engenharia» foi REVOGADO pelo lead (§23) —
+      // o vocabulário cobre o MANUAL, e o cap. 01 ENSINA a classificar (não calcula o nível).
+      // A asserção passa a ser a do contrato novo: caminho VERDADEIRO, nunca um ficheiro.
+      if (!/chapters=\["01-classificacao-aplicacoes"\]/.test(c01.activate_with))
+        return fail(`cap. 01 sem a via estrutural verdadeira: ${c01.activate_with}`);
+      if (/^changed_files=/.test(c01.activate_with)) return fail("cap. 01 a oferecer um ficheiro inventado");
+      return ok(`dieta ${medidas.join(", ")} com o mesmo conjunto e reconstrução verificada; ${g.evidence_patterns_without_validation_method} EP sem validation_method declarados; cap. 01 com porta estrutural verdadeira`); } },
+
+  { id: "TC-F-50", axis: "F", title: "0.20.0-beta.27 (A): consult resolve os 24 concerns e o rule_trace deixa de afirmar o que é falso", tool: "consult_security_requirements",
+    run: async (c) => {
+      const vocabRes = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/activation-vocabulary" });
+      if (!vocabRes.ok) return fail(vocabRes.error);
+      const text = typeof vocabRes.data?.content === "string" ? vocabRes.data.content : JSON.stringify(vocabRes.data);
+      const vocab = JSON.parse(text.slice(text.indexOf("{")));
+      const values = vocab.concerns?.values ?? [];
+      if (values.length < 20) return fail("vocabulário demasiado pequeno — fixture mudou");
+      const zeros = [];
+      for (const entry of values) {
+        const name = String(entry.value);
+        const r = await c.tool("consult_security_requirements", { risk_level: "L2", concerns: [name] });
+        if (!r.ok) return fail(r.error);
+        const n = r.data.meta?.requirementCount ?? 0;
+        const publicado = entry.requirements_at?.L2 ?? 0;
+        if (n !== publicado) return fail(`${name}@L2: consult ${n} ≠ vocabulário ${publicado} — superfícies em desacordo sobre o mesmo bundle`);
+        if (n === 0 && !r.data.unsupported_concerns && !r.data.empty_at_level) zeros.push(name);
+      }
+      if (zeros.length > 0) return fail(`vazio MUDO no consult para ${zeros.join(", ")}`);
+      // o rule_trace não pode afirmar «0 requirements active» quando o nível tem centenas
+      const p = await c.tool("consult_security_requirements", { risk_level: "L2", concerns: ["privacy"] });
+      if (!p.ok) return fail(p.error);
+      if ((p.data.meta?.requirementCount ?? 0) === 0) return fail("privacy voltou a dar 0 (P0 vivo)");
+      const byRisk = (p.data.rule_trace ?? []).find((t) => t.startsWith("REQUIREMENT_APPLIES_BY_RISK"));
+      if (!byRisk || /: 0 requirements active/.test(byRisk)) return fail(`rule_trace afirma falso: ${byRisk}`);
+      // gralha: declarada, com a lista do que resolve
+      const typo = await c.tool("consult_security_requirements", { risk_level: "L2", concerns: ["authz"] });
+      if (!typo.ok) return fail(typo.error);
+      if (!typo.data.unsupported_concerns?.values?.includes("authz")) return fail("valor por resolver descartado em silêncio");
+      if (!/N[ÃA]O são zero requisitos|manual-grounded/i.test(typo.data.unsupported_concerns?.note ?? "")) return fail("a nota não proíbe a conclusão falsa");
+      // nível vazio: resolvido, mas o nível não tem
+      const l1 = await c.tool("consult_security_requirements", { risk_level: "L1", concerns: ["privacy"] });
+      if (!l1.ok) return fail(l1.error);
+      if (!l1.data.empty_at_level) return fail("privacy@L1 dá 0 sem declarar que o problema é o NÍVEL");
+      if (!(l1.data.empty_at_level.present_at_levels ?? []).includes("L2")) return fail("empty_at_level não diz onde existem");
+      return ok(`${values.length} concerns resolvidos e concordantes com o vocabulário; rule_trace verdadeiro; gralha declarada; privacy@L1 com empty_at_level (existem em ${l1.data.empty_at_level.present_at_levels.join("/")})`); } },
+
+  { id: "TC-F-51", axis: "F", title: "0.20.0-beta.27 (B+C): guia manda CONTRAPROVAR e as superfícies concordam sobre o mesmo bundle", tool: "read_sbd_toe_resource",
+    run: async (c) => {
+      const g = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/agent-guide" });
+      if (!g.ok) return fail(g.error);
+      const guide = typeof g.data?.content === "string" ? g.data.content : JSON.stringify(g.data);
+      if (!/CONTRAPROVA/i.test(guide)) return fail("o guia não manda contraprovar um vazio sem declaração");
+      if (!/sinal, não ruído/i.test(guide)) return fail("o guia não diz que a discordância entre superfícies é sinal");
+      if (!/Que superfície resolve o quê|Superfície \| Resolve concerns/i.test(guide)) return fail("sem o bloco derivado de cobertura por superfície");
+      // C — as superfícies concordam, amostradas contra o vocabulário
+      const vocabRes = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/activation-vocabulary" });
+      if (!vocabRes.ok) return fail(vocabRes.error);
+      const text = typeof vocabRes.data?.content === "string" ? vocabRes.data.content : JSON.stringify(vocabRes.data);
+      const vocab = JSON.parse(text.slice(text.indexOf("{")));
+      let checked = 0;
+      for (const entry of vocab.concerns?.values ?? []) {
+        const name = String(entry.value);
+        for (const level of ["L1", "L2", "L3"]) {
+          const publicado = entry.requirements_at?.[level] ?? 0;
+          const named = entry.also_activates_by_named_rule?.requirements_at?.[level] ?? 0;
+          const sel = await c.tool("select_sbd_toe_requirements", { risk_level: level, concerns: [name], limit: 500, detail: "minimal" });
+          if (!sel.ok) return fail(sel.error);
+          const s = sel.data.selection.selected.length;
+          if (s !== publicado + named)
+            return fail(`${name}@${level}: select ${s} ≠ vocabulário ${publicado} + regra nomeada ${named}`);
+          const con = await c.tool("consult_security_requirements", { risk_level: level, concerns: [name] });
+          if (!con.ok) return fail(con.error);
+          if ((con.data.meta?.requirementCount ?? 0) !== publicado)
+            return fail(`${name}@${level}: consult ${con.data.meta?.requirementCount} ≠ vocabulário ${publicado}`);
+          checked += 1;
+        }
+      }
+      return ok(`guia manda contraprovar e publica a cobertura por superfície; ${checked} pares concern×nível concordantes entre vocabulário, select e consult`); } },
+
+  { id: "TC-F-52", axis: "F", title: "0.20.0-beta.28 (classe): activador aceite pelo schema tem efeito OU vem declarado, em TODAS as superfícies", tool: "consult_security_requirements",
+    run: async (c) => {
+      // o P0: consult aceita exposure/data_sensitivity e deitava-os fora
+      const args = { risk_level: "L2", concerns: ["files", "privacy"], exposure: "authenticated", data_sensitivity: "regulated" };
+      const con = await c.tool("consult_security_requirements", args);
+      if (!con.ok) return fail(con.error);
+      const ign = con.data.ignored_activators;
+      if (!ign) return fail("consult aceita exposure/data_sensitivity e não declara que os ignora (classe viva)");
+      for (const k of ["exposure", "data_sensitivity"]) if (!(k in (ign.values ?? {}))) return fail(`ignored_activators não nomeia ${k}`);
+      if (!(ign.requirements_at_stake > 0)) return fail("não diz quantos requisitos estão em causa");
+      if (!ign.honoured_by) return fail("não diz que superfície os honra");
+      // e o número tem de bater com a diferença REAL entre as superfícies
+      const sel = await c.tool("select_sbd_toe_requirements", { ...args, limit: 500, detail: "minimal" });
+      if (!sel.ok) return fail(sel.error);
+      const perdidos = sel.data.selection.selected.filter(
+        (r) => !(con.data.requirements ?? []).some((x) => x.requirement_id === r.requirement_id)
+      ).length;
+      if (ign.requirements_at_stake !== perdidos)
+        return fail(`declara ${ign.requirements_at_stake} em causa, a diferença real é ${perdidos}`);
+      if (!(con.data.rule_trace ?? []).some((t) => t.startsWith("ACTIVATORS_NOT_HONOURED")))
+        return fail("o rule_trace não regista os activadores não honrados");
+      // varredura da CLASSE: nenhum outro par superfície×activador aceite fica mudo
+      const mudos = [];
+      for (const [tool, base, act, val] of [
+        ["consult_security_requirements", { risk_level: "L2", concerns: ["auth"] }, "exposure", "public"],
+        ["consult_security_requirements", { risk_level: "L2", concerns: ["auth"] }, "data_sensitivity", "regulated"],
+        ["map_sbd_toe_applicability", { riskLevel: "L2" }, "technologies", ["containers"]]
+      ]) {
+        const a = await c.tool(tool, base);
+        const b = await c.tool(tool, { ...base, [act]: val });
+        if (!a.ok || !b.ok) return fail((a.error ?? b.error));
+        const mudou = JSON.stringify(a.data) !== JSON.stringify(b.data);
+        const declarado = JSON.stringify(b.data).includes(act);
+        if (!mudou && !declarado) mudos.push(`${tool} × ${act}`);
+      }
+      if (mudos.length > 0) return fail(`pares aceites, inertes e mudos: ${mudos.join("; ")}`);
+      return ok(`consult declara exposure+data_sensitivity com ${ign.requirements_at_stake} requisitos em causa (= diferença real) e rule_trace próprio; 3 pares superfície×activador varridos, nenhum mudo`); } },
+
+  { id: "TC-F-53", axis: "F", title: "0.20.0-beta.28: guia sem contradição entre blocos gerados; threat com base de routing e dedup opcional", tool: "get_threat_landscape",
+    run: async (c) => {
+      // (b) dois blocos GERADOS não podem afirmar coisas incompatíveis sobre a mesma tool
+      const g = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/agent-guide" });
+      if (!g.ok) return fail(g.error);
+      const guide = typeof g.data?.content === "string" ? g.data.content : JSON.stringify(g.data);
+      const blocks = [...guide.matchAll(/<!-- BEGIN GENERATED: ([a-z-]+) -->([\s\S]*?)<!-- END GENERATED: \1 -->/g)];
+      if (blocks.length < 5) return fail("guia deixou de ser derivado");
+      const tool = "get_threat_landscape";
+      const full = blocks.filter(([, , body]) => (body.split("\n").find((l) => l.includes(tool)) ?? "").match(/(\d+)\s+de\s+(\d+)/)?.slice(1).every((v, _i, a) => v === a[0]));
+      const subset = blocks.filter(([, , body]) => body.split(/(?<=\.)\s|\n\n/).some((sent) => sent.includes(tool) && /SUBCONJUNTO|subconjunto/.test(sent)));
+      if (full.length > 0 && subset.length > 0) return fail("dois blocos GERADOS contradizem-se sobre o mapa de ameaças");
+      // base do routing declarada
+      const files = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["files"] });
+      if (!files.ok) return fail(files.error);
+      if (!files.data.routing_basis) return fail("sem base de routing declarada");
+      if (files.data.routing_basis.basis !== "activated_controls")
+        return fail(`files devia rotear por controlos activados, diz ${files.data.routing_basis.basis}`);
+      const iac = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["iac"] });
+      if (!iac.ok) return fail(iac.error);
+      if (iac.data.routing_basis?.basis !== "domain_chapter") return fail("iac tem capítulo próprio e devia dizê-lo");
+      // dedup opcional: full mantém o contrato, minimal poupa
+      const cheio = JSON.stringify(files.data).length;
+      const min = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["files"], detail: "minimal" });
+      if (!min.ok) return fail(min.error);
+      if (!(files.data.threats ?? []).every((t) => Array.isArray(t.associated_control_ids)))
+        return fail("detail=full deixou de publicar associated_control_ids (contrato v1.14 §1.21)");
+      if (!min.data.associated_control_legend) return fail("detail=minimal sem legenda");
+      const magro = JSON.stringify(min.data).length;
+      // A poupança depende de quanta repetição a página traz — e desde a beta.29 a página 1
+      // é do DOMÍNIO, logo menos repetitiva. Garante-se que poupa e que não perde nada,
+      // não uma percentagem fixa (que media a repetição, não a dedup).
+      if (!(magro < cheio)) return fail(`dedup não poupou: ${Math.round(cheio / 4)} → ${Math.round(magro / 4)} tk`);
+      const refsOk = (min.data.threats ?? []).every((t) => Array.isArray(t.associated_control_name_refs));
+      if (!refsOk) return fail("detail=minimal sem referências à legenda");
+      const nomes = min.data.associated_control_legend.names ?? [];
+      const todasResolvem = (min.data.threats ?? []).every((t) => (t.associated_control_name_refs ?? []).every((i) => nomes[i] !== undefined));
+      if (!todasResolvem) return fail("referências da legenda não resolvem — a dedup perderia informação");
+      return ok(`sem contradição entre blocos gerados; routing_basis files=activated_controls / iac=domain_chapter; dedup ${Math.round(cheio / 4)} → ${Math.round(magro / 4)} tk (-${((1 - magro / cheio) * 100).toFixed(0)}%) com full intacto`); } },
+
+  { id: "TC-F-54", axis: "F", title: "0.20.0-beta.29 (item 1): ameaças ordenadas por PERTENÇA — a página 1 deixa de ser governação genérica", tool: "get_threat_landscape",
+    run: async (c) => {
+      const medidas = [];
+      for (const concern of ["integration", "iac", "logging", "files"]) {
+        const p1 = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: [concern] });
+        if (!p1.ok) return fail(p1.error);
+        const threats = p1.data.threats ?? [];
+        if (threats.length === 0) return fail(`${concern} sem ameaças — fixture mudou`);
+        const genericas = threats.filter((t) => /^0?[12]-/.test(String(t.chapter_id ?? ""))).length;
+        if (genericas === threats.length)
+          return fail(`${concern}: a página 1 é toda dos caps. 01/02 (governação genérica) — a ordem não ordena`);
+        // monotonia: nenhuma genérica antes de uma específica
+        const firstGeneric = threats.findIndex((t) => /^0?[12]-/.test(String(t.chapter_id ?? "")));
+        const lastSpecific = threats.map((t) => !/^0?[12]-/.test(String(t.chapter_id ?? ""))).lastIndexOf(true);
+        if (firstGeneric >= 0 && lastSpecific > firstGeneric)
+          return fail(`${concern}: ameaça genérica (${threats[firstGeneric]?.id}) à frente de uma específica (${threats[lastSpecific]?.id})`);
+        medidas.push(`${concern}: ${threats.length - genericas}/${threats.length} específicas na p.1`);
+      }
+      // o conjunto COMPLETO não muda — a ordem muda, o conteúdo não
+      const full = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["integration"], limit: 500 });
+      if (!full.ok) return fail(full.error);
+      if ((full.data.coverage?.total ?? 0) < 100) return fail("total inesperado — fixture mudou");
+      const genericasNoFim = (full.data.threats ?? []).slice(-5).every((t) => /^0?[12]-/.test(String(t.chapter_id ?? "")));
+      if (!genericasNoFim) return fail("as meta-ameaças de processo não ficaram no fim do conjunto completo");
+      return ok(`${medidas.join("; ")}; caps. 01/02 no fim do conjunto completo (${full.data.coverage.total} ameaças)`); } },
+
+  { id: "TC-F-55", axis: "F", title: "0.20.0-beta.29 (itens 2,3,5): roteamento ≠ cobertura, contador da legenda, e a nota do extend diz o que acontece", tool: "read_sbd_toe_resource",
+    run: async (c) => {
+      // item 2 — as duas colunas, com os nomes, e iguais ao comportamento real
+      const g = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/agent-guide" });
+      if (!g.ok) return fail(g.error);
+      const guide = typeof g.data?.content === "string" ? g.data.content : JSON.stringify(g.data);
+      if (!/Roteamento ≠ cobertura/i.test(guide)) return fail("o guia não distingue roteamento de cobertura");
+      const m = /só\s*\n?\*\*(\d+)\*\* têm capítulo de ameaças PRÓPRIO/.exec(guide) ?? /\*\*(\d+)\*\* têm capítulo de ameaças PRÓPRIO/.exec(guide);
+      if (!m) return fail("o guia não publica quantos concerns têm domínio próprio");
+      const publicado = Number(m[1]);
+      const vocabRes = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/activation-vocabulary" });
+      if (!vocabRes.ok) return fail(vocabRes.error);
+      const text = typeof vocabRes.data?.content === "string" ? vocabRes.data.content : JSON.stringify(vocabRes.data);
+      const values = (JSON.parse(text.slice(text.indexOf("{"))).concerns?.values ?? []).map((x) => String(x.value));
+      let reais = 0;
+      for (const concern of values) {
+        const r = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: [concern] });
+        if (!r.ok) return fail(r.error);
+        if (!r.data.routing_basis) return fail(`${concern}: sem routing_basis`);
+        if (r.data.routing_basis.basis === "domain_chapter") reais += 1;
+      }
+      if (publicado !== reais) return fail(`o guia publica ${publicado} com domínio próprio, o servidor produz ${reais}`);
+      // item 3 — o contador da legenda bate com os arrays
+      const min = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["auth"], detail: "minimal" });
+      if (!min.ok) return fail(min.error);
+      const L = min.data.associated_control_legend;
+      if (!L) return fail("sem legenda em detail=minimal");
+      const mm = /Os (\d+) nomes e (\d+) ids/.exec(L.note ?? "");
+      if (!mm) return fail("nota da legenda sem contagens");
+      if (Number(mm[1]) !== L.names.length || Number(mm[2]) !== L.ids.length)
+        return fail(`contador da legenda diz ${mm[1]}/${mm[2]} com arrays ${L.names.length}/${L.ids.length}`);
+      // item 5 — a nota do extend descreve o comportamento REAL
+      const semOverlay = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], limit: 500, detail: "minimal" });
+      const comOverlay = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], limit: 500, detail: "minimal", include_regulatory_overlay: true, regulatory_frameworks: ["RGPD"] });
+      if (!semOverlay.ok || !comOverlay.ok) return fail(semOverlay.error ?? comOverlay.error);
+      const ids = (x) => x.data.selection.selected.map((r) => r.requirement_id).join(",");
+      if (ids(semOverlay) !== ids(comOverlay)) return fail("o overlay mudou a selecção — a nota teria de ser outra");
+      // A nota CITA a frase antiga para dizer o que substituiu; citar não é afirmar (mesmo
+      // tropeço do obituário do minLevel na beta.25). Remove-se a explicação antes de testar.
+      const nota = (comOverlay.data.overlay?.note ?? "").replace(/A nota anterior dizia[\s\S]*?não contam para `meta\.eligible`\./, " ");
+      if (/ACRESCEM à selecção/.test(nota)) return fail("a nota do extend continua a descrever o que NÃO acontece");
+      if (!/LISTA PARALELA|lista paralela/i.test(nota)) return fail("a nota não diz onde as obrigações realmente vêm");
+      return ok(`guia publica ${publicado} com domínio próprio = comportamento real; contador ${mm[1]}/${mm[2]} = arrays; nota do extend descreve a lista paralela (selecção idêntica, ${comOverlay.data.overlay.obligations.length} obrigações)`); } },
+
+  { id: "TC-F-56", axis: "F", title: "0.20.0-beta.30 (forma B): pedir por ESTRUTURA — o cap. 14 e o cap. 01 têm porta VERDADEIRA", tool: "select_sbd_toe_requirements",
+    run: async (c) => {
+      // o caso que motivou o ciclo: 14 concerns correctos não chegavam ao cap. 14
+      const gov = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", chapters: ["14-governanca-contratacao"], limit: 500, detail: "minimal" });
+      if (!gov.ok) return fail(gov.error);
+      const sel = gov.data.selection.selected;
+      if (sel.length === 0) return fail("chapters=['14-governanca-contratacao'] não devolve nada — a forma B não existe");
+      if (!sel.every((r) => /^GOV-/.test(r.requirement_id))) return fail("o pedido por capítulo trouxe requisitos de fora dele");
+      const legend = gov.data.selection_trace_legend ?? [];
+      if (!legend.some((e) => /declared_structure|declared_chapter|forma B/i.test(JSON.stringify(e))))
+        return fail("a inclusão por estrutura não deixou traço próprio");
+      // por categoria
+      const cat = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", categories: ["GOV"], limit: 500, detail: "minimal" });
+      if (!cat.ok) return fail(cat.error);
+      if (cat.data.selection.selected.length !== sel.length) return fail("categories=['GOV'] e chapters=[cap.14] discordam");
+      // cap. 01 — o método de classificação tem porta; o servidor continua a não emitir nível
+      const cla = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", chapters: ["01-classificacao-aplicacoes"], limit: 500, detail: "minimal" });
+      if (!cla.ok) return fail(cla.error);
+      if (cla.data.selection.selected.length === 0) return fail("o cap. 01 continua sem porta");
+      // valor estrutural inválido é DECLARADO, nunca descartado
+      const bad = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", categories: ["XPTO"] });
+      if (!bad.ok) return fail(bad.error);
+      if (!bad.data.unknown_structural?.values?.length) return fail("valor estrutural inválido descartado em silêncio");
+      // a forma A não se mexeu
+      const a1 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], limit: 500, detail: "minimal" });
+      const a2 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], limit: 500, detail: "minimal", chapters: [] });
+      if (!a1.ok || !a2.ok) return fail(a1.error ?? a2.error);
+      if (a1.data.selection.selected.length !== a2.data.selection.selected.length) return fail("a forma A mudou de resultado");
+      return ok(`cap. 14 por estrutura: ${sel.length} requisitos GOV (era inalcançável sem inventar changed_files); categories=[GOV] concorda; cap. 01 com ${cla.data.selection.selected.length}; valor inválido declarado; forma A intacta (${a1.data.selection.selected.length})`); } },
+
+  { id: "TC-F-57", axis: "F", title: "0.20.0-beta.30 (alcançabilidade + modelo): nenhum caminho oferecido é falso, e o modelo publica as três formas", tool: "read_sbd_toe_resource",
+    run: async (c) => {
+      // (b) nenhum activate_with oferece SÓ um ficheiro
+      const s = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], detail: "minimal" });
+      if (!s.ok) return fail(s.error);
+      const banda = s.data.out_of_scope_chapters?.chapters ?? [];
+      if (banda.length === 0) return fail("sem banda de fora-de-âmbito — fixture mudou");
+      for (const entry of banda) {
+        if (/^changed_files=/.test(entry.activate_with))
+          return fail(`${entry.chapter}: o único caminho oferecido é declarar um ficheiro que pode não existir`);
+        if (!/chapters=\[/.test(entry.activate_with))
+          return fail(`${entry.chapter}: sem via estrutural (que é sempre verdadeira)`);
+      }
+      // o modelo publica as três formas, derivado
+      const m = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/model" });
+      if (!m.ok) return fail(m.error);
+      const text = typeof m.data?.content === "string" ? m.data.content : JSON.stringify(m.data);
+      const model = JSON.parse(text.slice(text.indexOf("{")));
+      const ways = (model.how_to_ask?.ways ?? []).map((w) => w.id).sort();
+      if (JSON.stringify(ways) !== JSON.stringify(["A", "B", "C"])) return fail(`o modelo não publica as três formas: ${ways.join(",")}`);
+      if (!(model.entities?.counts?.requirements > 0)) return fail("modelo sem contagens reais");
+      if (!(model.relations?.values?.length > 0)) return fail("modelo sem relações com cardinalidades");
+      // as contagens do modelo são as REAIS (contraprova contra o catálogo)
+      const chapters = await c.tool("list_sbd_toe_chapters", {});
+      if (!chapters.ok) return fail(chapters.error);
+      const comReq = (model.chapters?.values ?? []).length;
+      if (comReq === 0 || comReq > (chapters.data.chapters ?? []).length) return fail("capítulos do modelo incoerentes com o catálogo");
+      // e todo o capítulo do modelo tem pelo menos uma forma
+      const semForma = (model.chapters.values ?? []).filter((x) => !(x.reachable_by ?? []).length);
+      if (semForma.length > 0) return fail(`capítulos sem forma de alcance: ${semForma.map((x) => x.chapter).join(", ")}`);
+      // quick-start existe e é barato
+      const q = await c.tool("read_sbd_toe_resource", { uri: "sbd://toe/quick-start" });
+      if (!q.ok) return fail(q.error);
+      const qtext = typeof q.data?.content === "string" ? q.data.content : JSON.stringify(q.data);
+      const qtk = Math.round(qtext.length / 4);
+      if (qtk > 1200) return fail(`quick-start com ${qtk} tk — devia ser o arranque barato`);
+      const soB = (model.chapters.values ?? []).filter((x) => !x.reachable_by.includes("A")).length;
+      return ok(`${banda.length} capítulos com caminho VERDADEIRO (via estrutural em todos); modelo com 3 formas, ${model.entities.counts.requirements} requisitos e ${model.relations.values.length} relações; ${soB} capítulos só por B; quick-start ${qtk} tk`); } },
+
+  { id: "TC-F-58", axis: "F", title: "0.20.0-beta.31 (classe): TODA a superfície que resolve vocabulário declara o que não mapeia", tool: "get_guide_by_role",
+    run: async (c) => {
+      // o P0: papel canónico, publicado, com assignments vazios e sem uma palavra
+      const r = await c.tool("get_guide_by_role", { risk_level: "L3", role: "fornecedores-terceiros" });
+      if (!r.ok) return fail(r.error);
+      const d = r.data.data ?? r.data;
+      if ((d.assignments ?? []).length !== 0) return fail("fixture mudou: o papel já tem atribuições");
+      if (!d.unsupported_role) return fail("papel canónico com vazio MUDO (o P0 continua vivo)");
+      if (!d.unsupported_role.supported_values?.length) return fail("unsupported_role sem a lista do que a superfície cobre");
+      // A nota PROÍBE a conclusão («Não digas que o papel não tem nada a fazer»); citar a
+      // conclusão para a proibir não é afirmá-la — mesmo tropeço do obituário do minLevel.
+      const semProibicao = (d.unsupported_role.note ?? "").replace(/N[ÃA]O digas[\s\S]*?vazio,?/i, " ");
+      if (/não tem nada a fazer|sem responsabilidades/i.test(semProibicao)) return fail("a nota conclui ausência de responsabilidades");
+      /*
+       * 0.20.0-beta.48: para um papel `inter_instance` a nota é MAIS forte do que «ausência de
+       * mapeamento» — diz que zero é o estado CORRECTO e esperado (zero-esperado, v2.10), e a
+       * ausência que a sustentava foi RETIRADA (ABS-003, premissa errada). O cenário aceita as
+       * duas formas: o que continua proibido é concluir ausência de responsabilidades.
+       */
+      if (!/N[ÃA]O é aus[êe]ncia de responsabilidades|aus[êe]ncia de MAPEAMENTO|estado CORRECTO e esperado/i.test(d.unsupported_role.note ?? ""))
+        return fail("a nota não distingue ausência de mapeamento de ausência de responsabilidades");
+      // o agravante: knownRoles omitia o papel que a própria resposta resolveu
+      if (!(d.meta?.knownRoles ?? []).includes("fornecedores-terceiros"))
+        return fail("meta.knownRoles continua a omitir o papel que a resposta resolve como canónico");
+      // controlo: papel com atribuições não traz a banda
+      const dev = await c.tool("get_guide_by_role", { risk_level: "L3", role: "developer" });
+      if (!dev.ok) return fail(dev.error);
+      const dd = dev.data.data ?? dev.data;
+      if (dd.unsupported_role) return fail("falso positivo num papel mapeado");
+      if (!(dd.meta?.distinctUserStoryCount > 0)) return fail("sem denominador de histórias distintas");
+      // varredura da CLASSE nas outras superfícies de vocabulário
+      const outras = [];
+      const ch = await c.tool("get_sbd_toe_chapter_implementation_checklist", { chapter: "00-fundamentos" });
+      if (!ch.ok) return fail(ch.error);
+      const chd = ch.data.data ?? ch.data;
+      if ((chd.items ?? []).length === 0 && !chd.unsupported_chapter) outras.push("chapter_implementation_checklist × 00-fundamentos");
+      const reg = await c.tool("map_sbd_toe_regulatory_activation", { framework: "ENISA-CSA" });
+      if (!reg.ok) return fail(reg.error);
+      const rd = reg.data.data ?? reg.data;
+      if ((rd.activated ?? []).length === 0 && !rd.unsupported_obligations) outras.push("map_regulatory_activation × ENISA-CSA");
+      if (outras.length > 0) return fail(`vazio mudo noutras superfícies de vocabulário: ${outras.join("; ")}`);
+      return ok(`papel canónico declarado em unsupported_role (${d.unsupported_role.supported_values.length} mapeados) e presente em knownRoles; checklist do cap. 00 e overlay ENISA-CSA também declarados; controlo developer limpo (${dd.meta.assignmentCount} atribuições / ${dd.meta.distinctUserStoryCount} histórias)`); } },
+
+  { id: "TC-F-59", axis: "F", title: "0.20.0-beta.31 (bordas): notas geradas da mesma fonte que as descrições; routing_basis por concern; contraprova possível", tool: "get_threat_landscape",
+    run: async (c) => {
+      // a nota fóssil não pode voltar, e a nota tem de descrever o comportamento REAL
+      const t = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["iac"] });
+      if (!t.ok) return fail(t.error);
+      const note = t.data.meta?.note ?? "";
+      if (/não presumas que as primeiras são as mais relevantes/i.test(note))
+        return fail("a nota FÓSSIL da beta.26 continua viva e dá o conselho oposto ao correcto");
+      if (!/PERTEN[ÇC]A ao âmbito declarado/i.test(note)) return fail("a nota não descreve a ordenação actual");
+      const primeira = String((t.data.threats ?? [])[0]?.chapter_id ?? "");
+      if (/^0?[12]-/.test(primeira)) return fail(`a nota promete domínio na página 1 e a resposta abre com ${primeira}`);
+      // a mesma frase tem de estar na DESCRIÇÃO da tool
+      const tools = c.tools ?? [];
+      const desc = String(tools.find((x) => x.name === "get_threat_landscape")?.description ?? "");
+      const frase = "ORDEM: por PERTENÇA ao âmbito declarado";
+      if (!desc.includes(frase) || !note.includes(frase)) return fail("descrição e nota não partilham a frase publicada");
+      // routing_basis desambiguado e por concern
+      const misto = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["architecture", "api", "encryption"] });
+      if (!misto.ok) return fail(misto.error);
+      const rb = misto.data.routing_basis;
+      if (!Array.isArray(rb?.domain_chapters)) return fail("domain_chapters não é uma lista (o número do capítulo era lido como contagem)");
+      if (!Array.isArray(rb?.by_concern) || rb.by_concern.length !== 3) return fail("routing_basis continua escalar num conjunto misto");
+      const bases = new Set(rb.by_concern.map((x) => x.basis));
+      if (bases.size < 2) return fail("conjunto misto com uma só base — a desambiguação não funcionou");
+      // contraprova possível na chamada que o guia ensina
+      const sel = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], detail: "minimal" });
+      if (!sel.ok) return fail(sel.error);
+      const x = sel.data.cross_surface_check;
+      if (!x) return fail("o guia manda contraprovar e a resposta não traz a verificação");
+      if (!x.comparable || !x.agreement?.same_ids) return fail(`contraprova falhou: ${JSON.stringify(x.agreement)}`);
+      const real = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", chapters: ["14-governanca-contratacao"], exposure: "public", detail: "minimal" });
+      if (!real.ok) return fail(real.error);
+      if ((real.data.cross_surface_check?.not_comparable ?? []).length === 0)
+        return fail("uma chamada sem equivalente no consult não declara o que não é comparável");
+      return ok(`nota e descrição partilham a frase publicada; página 1 do domínio (cap. ${primeira.slice(0, 2)}); routing_basis com ${rb.by_concern.length} concerns e ${bases.size} bases; contraprova ${x.agreement.select}=${x.agreement.consult} e ${real.data.cross_surface_check.not_comparable.length} itens declarados como não comparáveis`); } },
+
+  { id: "TC-F-60", axis: "F", title: "0.20.0-beta.33: caminho NORMATIVO para playbooks — autoridade declarada e exemplo ≠ cross-check", tool: "get_sbd_toe_playbook",
+    run: async (c) => {
+      const idx = await c.tool("get_sbd_toe_playbook", { framework: "DORA" });
+      if (!idx.ok) return fail(idx.error);
+      const d = idx.data;
+      if (!(d.normative_playbooks ?? []).length) return fail("sem playbooks normativos para o DORA");
+      if (!d.illustrative_examples) return fail("exemplos ilustrativos não vêm em banda separada");
+      const misturado = (d.normative_playbooks ?? []).filter((p) => /illustrative/.test(p.playbook_kind));
+      if (misturado.length > 0) return fail(`exemplo ilustrativo servido como normativo: ${misturado.map((x) => x.playbook_id).join(", ")}`);
+      for (const p of d.normative_playbooks)
+        for (const k of ["authority_class", "curation_status", "adoption_status"])
+          if (!p[k]) return fail(`${p.playbook_id} sem ${k}`);
+      // delimitação obrigatória em TODA a resposta
+      if (!/não é uma norma/i.test(d.delimitation ?? "")) return fail("resposta sem a delimitação honesta");
+      if (!/conformidade final depende/i.test(d.delimitation ?? "")) return fail("a delimitação não diz que a conformidade exige formalização");
+      // secções paginadas, com o tier certo
+      const pbId = d.normative_playbooks.find((p) => p.playbook_kind === "implementation_playbook")?.playbook_id;
+      const pb = await c.tool("get_sbd_toe_playbook", { playbook_id: pbId, limit: 5 });
+      if (!pb.ok) return fail(pb.error);
+      if (pb.data.playbook.authority.tier !== "normative") return fail("playbook de implementação sem tier normativo");
+      if ((pb.data.sections ?? []).length === 0) return fail("playbook sem secções");
+      if (!(pb.data.coverage?.total > (pb.data.sections ?? []).length)) return fail("sem paginação sobre as secções");
+      if (!/não é uma norma/i.test(pb.data.delimitation ?? "")) return fail("secções servidas sem delimitação");
+      const ex = await c.tool("get_sbd_toe_playbook", { playbook_id: d.illustrative_examples.values[0]?.playbook_id });
+      if (!ex.ok) return fail(ex.error);
+      if (ex.data.playbook.authority.tier !== "illustrative") return fail("exemplo servido com tier normativo");
+      if (!/n[ãa]o normaliza|N[ÃA]O t[êe]m o estatuto|ILUSTRATIVO/i.test(JSON.stringify(ex.data.playbook.authority)))
+        return fail("o exemplo não avisa que ilustra e não normaliza");
+      // framework sem cross-check: DECLARADO, com o roadmap do Manual
+      const pci = await c.tool("get_sbd_toe_playbook", { framework: "PCI-DSS" });
+      if (!pci.ok) return fail(pci.error);
+      if (pci.data.status !== "no_cross_check") return fail("framework sem cross-check não é declarado");
+      if (!(pci.data.roadmap_declared_by_manual ?? []).includes("PCI-DSS")) return fail("roadmap não derivado do Manual");
+      if (!/ainda não existe/i.test(pci.data.note ?? "")) return fail("a nota não diz que o cross-check não existe");
+      // ligação nos dois sentidos
+      const reg = await c.tool("map_sbd_toe_regulatory_activation", { framework: "DORA" });
+      if (!reg.ok) return fail(reg.error);
+      const aponta = (reg.data.next ?? []).some((n) => n.tool === "get_sbd_toe_playbook");
+      if (!aponta) return fail("o overlay não encaminha para o playbook");
+      const volta = (pb.data.next ?? []).some((n) => n.tool === "map_sbd_toe_regulatory_activation");
+      if (!volta) return fail("o playbook não aponta de volta para as obrigações");
+      return ok(`DORA: ${d.normative_playbooks.length} normativos + ${d.illustrative_examples.values.length} ilustrativos em banda separada, com autoridade e delimitação; ${pb.data.coverage.total} secções paginadas; PCI-DSS declarado com roadmap de ${pci.data.roadmap_declared_by_manual.length}; ligação nos dois sentidos`); } },
+
+  { id: "TC-F-61", axis: "F", title: "0.20.0-beta.34: vista IMPL — a MEDIDA de capacidade tem caminho, com thresholds por nível", tool: "get_sbd_toe_chapter_capability",
+    run: async (c) => {
+      const r = await c.tool("get_sbd_toe_chapter_capability", { chapter: "07-cicd-seguro", risk_level: "L2" });
+      if (!r.ok) return fail(r.error);
+      const d = r.data;
+      const measures = d.measures ?? [];
+      if (measures.length === 0) return fail("sem KPIs para o cap. 07 — a peça central continua sem caminho");
+      // é MEDIR e não listar: thresholds POR NÍVEL como dado
+      for (const m of measures) {
+        if (!m.thresholds_by_level) return fail(`${m.metric_id} sem thresholds_by_level`);
+        for (const lvl of ["L1", "L2", "L3"]) if (!(lvl in m.thresholds_by_level)) return fail(`${m.metric_id} sem ${lvl}`);
+        if (!m.metric_type || !m.period) return fail(`${m.metric_id} sem tipo/período`);
+      }
+      const comAlvo = measures.filter((m) => m.target_at_level && m.target_at_level.value !== undefined);
+      if (comAlvo.length === 0) return fail("risk_level não produziu alvo em nenhum KPI");
+      /*
+       * artefactos da capacidade — 0.20.0-beta.39: este cenário assertava `artifacts.total > 0`,
+       * e era esse `total` a AFIRMAÇÃO FALSA (contagem de arestas da relação servida como total,
+       * contra a proibição escrita da própria fonte). O cenário codificava o defeito; passa a
+       * assertar o contrato honesto — e falha se o `total`/`mandatory` voltarem.
+       */
+      const art = d.artifacts;
+      if (!art) return fail("a vista IMPL não traz os artefactos da capacidade");
+      if ("total" in art || "mandatory" in art)
+        return fail("voltou a servir uma contagem de relação como total/obrigatoriedade");
+      if (art.content_type !== "derived") return fail("a banda de artefactos não se declara derivada");
+      if (!(art.bases?.evidence_pattern?.distinct_artifacts > 0)) return fail("sem o conjunto suportado por padrões de evidência");
+      if (!(art.bases?.cited_by?.relation_edges > 0)) return fail("sem a relação capítulo↔artefacto");
+      if (!/never for totals/i.test(art.bases?.cited_by?.source_declares ?? ""))
+        return fail("a declaração da fonte não é servida VERBATIM");
+      if (!art.declared_limits?.no_mandatory_count || !art.declared_limits?.relation_broader_than_provenance)
+        return fail("os limites recebidos do conteúdo não são declarados");
+      if (!(art.values ?? []).every((v) => Array.isArray(v.bases) && v.bases.length > 0))
+        return fail("há artefactos servidos sem dizer de que base vêm");
+      // a leitura vem DECLARADA e distingue-se da GUIDE
+      if (d.reading?.id !== "IMPL") return fail("a resposta não declara que leitura é");
+      if (!/GUIDE/.test(d.reading?.note ?? "")) return fail("a resposta não distingue IMPL de GUIDE");
+      // capítulo sem KPIs: declarado, nunca vazio mudo
+      const nada = await c.tool("get_sbd_toe_chapter_capability", { chapter: "00-fundamentos" });
+      if (!nada.ok) return fail(nada.error);
+      if ((nada.data.measures ?? []).length === 0 && nada.data.status !== "no_measures_published")
+        return fail("capítulo sem KPIs devolve vazio mudo");
+      // o ciclo fecha-se nos dois sentidos
+      const paraAssess = (d.next ?? []).some((n) => n.tool === "assess_sbd_toe_implementation");
+      if (!paraAssess) return fail("a vista IMPL não encaminha para a avaliação");
+      // `assess` exige os valores medidos — é essa a sua natureza: avalia o que TU mediste.
+      const assess = await c.tool("assess_sbd_toe_implementation", {
+        risk_level: "L2",
+        kpi_values: { [measures[0].metric_id]: 95 }
+      });
+      if (!assess.ok) return fail(assess.error);
+      const volta = (assess.data.next ?? []).some((n) => n.tool === "get_sbd_toe_chapter_capability");
+      if (!volta) return fail("a avaliação não aponta para os KPIs que o Manual define");
+      // o brief serve os artefactos (era defeito da sonda, não do servidor)
+      const brief = await c.tool("get_sbd_toe_chapter_brief", { chapterId: "07-cicd-seguro" });
+      if (!brief.ok) return fail(brief.error);
+      const arts = (brief.data.data ?? brief.data).artifacts ?? [];
+      if (arts.length === 0) return fail("o brief do cap. 07 não traz artefactos");
+      return ok(`cap. 07: ${measures.length} KPIs com thresholds L1/L2/L3 e ${comAlvo.length} com alvo a L2; ${d.artifacts.total} artefactos (${d.artifacts.mandatory} obrigatórios); leitura declarada IMPL; ciclo fechado com o assess; brief com ${arts.length} artefactos`); } },
+
+  { id: "TC-F-62", axis: "F", title: "0.20.0-beta.35: leitura CONSULT — antipadrões com porta e o nível ANOTA em vez de exigir", tool: "explain_sbd_toe_topic",
+    run: async (c) => {
+      // a pergunta do oráculo: conhecimento, sem tarefa, sem projecto e SEM risk_level
+      const r = await c.tool("explain_sbd_toe_topic", { concern: "secrets" });
+      if (!r.ok) return fail(r.error);
+      const d = r.data;
+      if (d.status) return fail(`a pergunta de conhecimento foi recusada: ${d.status}`);
+      if (d.reading?.id !== "CONSULT") return fail("a resposta não declara a leitura");
+      // atravessa o Manual
+      for (const [k, v] of [["requisitos", d.requirements?.total], ["práticas", d.guidance?.practices], ["provas", d.proof?.evidence_patterns], ["ameaças", d.threats?.total]])
+        if (!(v > 0)) return fail(`a travessia não traz ${k}`);
+      if (!(d.where_in_lifecycle?.phases ?? []).length) return fail("sem «onde no ciclo»");
+      // requisito distingue-se de orientação
+      if (!/exig|REQUISITO/i.test(d.requirements?.note ?? "")) return fail("não distingue requisito de orientação");
+      if (!/ORIENTA|não são exigíveis/i.test(d.guidance?.note ?? "")) return fail("a orientação não é marcada como tal");
+      if (!/manual-grounded/i.test(d.provenance?.note ?? "")) return fail("sem proveniência manual-grounded");
+      // ANTIPADRÕES: banda própria; zero é DECLARADO, nunca mudo
+      if (!d.anti_patterns) return fail("sem banda de antipadrões — «o que NÃO fazer» continua sem porta");
+      // 0.20.0-beta.36 (emenda v1.2): o vazio deixa de bastar declarar — tem de trazer
+      // CAMINHO CONCRETO. O predicado antigo procurava a frase que a beta.36 reescreveu.
+      if ((d.anti_patterns.total ?? 0) === 0 && !(d.anti_patterns.elsewhere?.by_chapter ?? []).some((x) => /\(chapter="/.test(String(x.read_with ?? ""))))
+        return fail("zero antipadrões sem CAMINHO CONCRETO para onde eles estão (v1.2)");
+      const iac = await c.tool("explain_sbd_toe_topic", { concern: "iac" });
+      if (!iac.ok) return fail(iac.error);
+      if (!((iac.data.anti_patterns?.total ?? 0) > 0)) return fail("um tópico COM antipadrões devolve zero");
+      const ap = iac.data.anti_patterns.values[0];
+      for (const k of ["antipattern_id", "risk", "chapters"]) if (!(k in ap)) return fail(`antipadrão sem ${k}`);
+      // o nível ANOTA, não filtra
+      const semNivel = await c.tool("explain_sbd_toe_topic", { concern: "iac" });
+      const comNivel = await c.tool("explain_sbd_toe_topic", { concern: "iac", risk_level: "L1" });
+      if (!comNivel.ok) return fail(comNivel.error);
+      if (comNivel.data.requirements.total !== semNivel.data.requirements.total)
+        return fail(`o risk_level FILTROU (${semNivel.data.requirements.total} → ${comNivel.data.requirements.total}) — devia só anotar`);
+      if (!comNivel.data.your_level) return fail("o nível dado não produziu anotação");
+      if (!comNivel.data.requirements.values.some((x) => "applies_to_your_level" in x)) return fail("sem anotação por requisito");
+      // FRONTEIRA: onde o nível é legítimo continua OBRIGATÓRIO
+      const sel = await c.tool("select_sbd_toe_requirements", { concerns: ["auth"] });
+      if (sel.ok) return fail("o select passou a aceitar chamada sem risk_level — a fronteira quebrou");
+      return ok(`CONSULT sem nível: ${d.requirements.total} requisitos, ${d.guidance.practices} práticas, ${d.proof.evidence_patterns} provas, ${d.threats.total} ameaças, ${d.where_in_lifecycle.phases.length} fases; antipadrões com banda própria (${iac.data.anti_patterns.total} em iac, zero DECLARADO em secrets); nível anota e não filtra; select continua a exigi-lo`); } },
+
+  { id: "TC-F-63", axis: "F", title: "0.20.0-beta.36: inventário VIVO, conservação NA BANDA, âmbito do assess e cadeia de activação", tool: "explain_sbd_toe_topic",
+    run: async (c) => {
+      // (1+2) os `next` de TODAS as tools servidas apontam para parâmetros que existem
+      const schemas = new Map((c.tools ?? []).map((t) => [t.name, Object.keys(t.inputSchema?.properties ?? {})]));
+      if (schemas.size < 20) return fail("não foi possível derivar o inventário vivo");
+      const cap = await c.tool("get_sbd_toe_chapter_capability", { chapter: "07-cicd-seguro", risk_level: "L2" });
+      if (!cap.ok) return fail(cap.error);
+      for (const n of cap.data.next ?? []) {
+        const params = schemas.get(n.tool);
+        if (!params) return fail(`sugere tool inexistente: ${n.tool}`);
+        for (const m of String(n.with ?? "").matchAll(/(?:^|[\s,({])([a-z][a-z_]*)\s*=/g))
+          if (!params.includes(String(m[1]))) return fail(`${n.tool}: sugere \`${m[1]}=\` que não existe (tem: ${params.join(", ")})`);
+      }
+      // (3) conservação NA BANDA: vazia havendo conteúdo ⇒ caminho CONCRETO
+      const secrets = await c.tool("explain_sbd_toe_topic", { concern: "secrets" });
+      if (!secrets.ok) return fail(secrets.error);
+      const ap = secrets.data.anti_patterns;
+      if (!ap) return fail("banda de antipadrões não anunciada");
+      if ((ap.total ?? 0) === 0) {
+        const ew = ap.elsewhere?.by_chapter ?? [];
+        if (ew.length === 0) return fail("banda vazia sem caminho: v1.2 exige caminho CONCRETO");
+        if (!ew.every((x) => /\(chapter="/.test(String(x.read_with ?? "")))) return fail("caminho genérico, não concreto");
+        if (!ew.some((x) => (x.labels ?? []).length > 0)) return fail("caminho sem os rótulos — o consumidor não sabe se lhe interessa");
+        const c07 = ew.find((x) => /^07-/.test(x.chapter));
+        if (!c07 || !(c07.labels ?? []).some((l) => /segredo/i.test(l)))
+          return fail("o caminho não expõe os antipadrões do cap. 07 que são sobre segredos");
+      }
+      // (4) o escasso declara-se
+      const chk = await c.tool("get_sbd_toe_chapter_implementation_checklist", { chapter: "07-cicd-seguro" });
+      if (!chk.ok) return fail(chk.error);
+      const cd = chk.data.data ?? chk.data;
+      if ((cd.items ?? []).length <= 3 && !cd.scarcity) return fail("checklist magro e não declarado (v1.2 regra 2)");
+      // (5) âmbito do assess + denominador explicado
+      const global = await c.tool("assess_sbd_toe_implementation", { risk_level: "L3", kpi_values: { "CIC-K01": 90 } });
+      const scoped = await c.tool("assess_sbd_toe_implementation", { risk_level: "L3", chapter: "07-cicd-seguro", kpi_values: { "CIC-K01": 90 } });
+      if (!global.ok || !scoped.ok) return fail(global.error ?? scoped.error);
+      const gd = global.data.data ?? global.data, sd = scoped.data.data ?? scoped.data;
+      if (!(sd.totals.applicable < gd.totals.applicable)) return fail("o `chapter` não restringiu o âmbito");
+      if (!sd.scope || !/DENOMINADORES/.test(sd.scope.note ?? "")) return fail("o denominador continua por explicar");
+      // (6) cadeia de activação completa
+      const sel = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["secrets"], exposure: "public", detail: "minimal" });
+      if (!sel.ok) return fail(sel.error);
+      const arq = (sel.data.context?.activated_chapters ?? []).find((x) => /^04-/.test(x.chapter));
+      if (!arq) return fail("fixture mudou: o cap. 04 não é activado");
+      if (!(arq.activated_by ?? []).some((a) => /^exposure=/.test(a.trigger)))
+        return fail("o activated_by regista só o último elo — a cadeia continua quebrada");
+      if (!(arq.derived_chain ?? []).length) return fail("sem cadeia derivada para um concern não declarado");
+      // (7) unmodelled_signals
+      const mt = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], task_context: "Aplicação multi-tenant com isolamento por cliente", detail: "minimal" });
+      if (!mt.ok) return fail(mt.error);
+      if (!(mt.data.unmodelled_signals?.values ?? []).includes("multi-tenant"))
+        return fail("o servidor não declara o que não conseguiu ancorar");
+      if (!/IGNOR[ÂA]NCIA|não sei/i.test(mt.data.unmodelled_signals.note ?? "")) return fail("a nota não distingue «não perguntei» de «não sei»");
+      return ok(`next validados contra ${schemas.size} schemas vivos; banda vazia com caminho concreto (${(ap.elsewhere?.by_chapter ?? []).length} capítulos com rótulos); escassez declarada; assess ${gd.totals.applicable}→${sd.totals.applicable} com denominador; cadeia exposure→architecture→cap.04; ${mt.data.unmodelled_signals.values.length} sinais não modelados declarados`); } },
+
+  { id: "TC-F-64", axis: "F", title: "0.20.0-beta.37: leitura PROGRAMA — ordem só por dependency (acíclica), limites declarados e sem despejo de requisitos", tool: "get_sbd_toe_macro_processes",
+    run: async (c) => {
+      const r = await c.tool("get_sbd_toe_macro_processes", {});
+      if (!r.ok) return fail(r.error);
+      const d = r.data;
+      if (d.reading?.id !== "PROGRAMA") return fail("a resposta não declara a leitura que serve");
+      // (1) os cinco MP existem como DADOS, com a pergunta/invariante/dono que os identifica
+      const mps = d.macro_processes ?? [];
+      if (mps.length !== 5) return fail(`esperava os 5 macro-processos publicados, vieram ${mps.length}`);
+      if (!mps.every((m) => m.question && m.invariant && m.owner_role)) return fail("MP sem pergunta, invariante ou dono — é rótulo, não entidade");
+      // (2) ORDEM = só dependency, e o subgrafo tem de ser ACÍCLICO
+      const ao = d.adoption_order ?? {};
+      const levels = ao.levels ?? [];
+      if (!levels.length || !ao.rule) return fail("ordem de adopção sem níveis ou sem a regra declarada");
+      if (levels.flat().length !== 5) return fail("a ordem não cobre os cinco MP");
+      if (ao.first_step !== "MP-01") return fail(`primeiro passo publicado mudou: ${ao.first_step}`);
+      const rank = new Map(levels.flatMap((lv, i) => lv.map((m) => [m, i])));
+      const deps = d.prerequisites?.values ?? [];
+      if (!deps.length) return fail("sem pares de pré-requisito — «o que é pré-requisito de quê» fica por responder");
+      for (const e of deps) {
+        if (!(rank.get(e.from_mp) < rank.get(e.to_mp))) return fail(`dependency ${e.from_mp}→${e.to_mp} contradiz a ordem publicada`);
+        if (!e.output) return fail(`dependency ${e.from_mp}→${e.to_mp} sem o artefacto que é consumido`);
+      }
+      // (3) as FEEDBACK ficam fora da ordem — se entrassem, os cinco MP ciclariam (verificado aqui)
+      const fbs = d.feedback_loops?.values ?? [];
+      if (!fbs.length) return fail("realimentação não servida");
+      if (d.adoption_order?.excluded_from_order?.kind !== "feedback") return fail("a exclusão da realimentação não é declarada");
+      const withFb = [...deps.map((e) => [e.from_mp, e.to_mp]), ...fbs.map((e) => [e.from_mp, e.to_mp])];
+      const adj = new Map(); for (const [a, b] of withFb) adj.set(a, [...(adj.get(a) ?? []), b]);
+      const seen = new Set(); let cyclic = false;
+      const walk = (n, stack) => { if (stack.has(n)) { cyclic = true; return; } if (seen.has(n)) return; seen.add(n); stack.add(n); for (const m of adj.get(n) ?? []) walk(m, stack); stack.delete(n); };
+      for (const n of adj.keys()) walk(n, new Set());
+      if (!cyclic) return fail("controlo: com as feedback o grafo devia ciclar — a fixture mudou e a exclusão deixou de ser demonstrável");
+      if (deps.some((e) => fbs.some((f) => f.from_mp === e.from_mp && f.to_mp === e.to_mp && f.via === e.via))) return fail("aresta de realimentação a contar como pré-requisito");
+      // (4) os TRÊS limites declarados — não existe entidade «programa», a fase é lacuna, e não há contenção
+      const L = d.declared_limits ?? {};
+      if (!L.no_programme_entity || !L.sdlc_phase_traversal || !L.three_segmentations) return fail("limites da vista processual não declarados");
+      if (!/percurso/i.test(d.chapter_path?.note ?? "") || /cont[eé]m/i.test(d.chapter_path?.note ?? "")) return fail("o percurso de capítulos é servido como contenção");
+      if (mps.some((m) => "phases" in m || "sdlc_phases" in m)) return fail("travessia MP↔fase DERIVADA — é lacuna declarada, não se infere");
+      // (5) must-NOT do oráculo: a vista de programa não despeja os 273 requisitos nem um capítulo isolado
+      const ids = (JSON.stringify(d).match(/[A-Z]{3}-\d{3}/g) ?? []).length;
+      if (ids > 60) return fail(`a vista de programa traz ${ids} ids de requisito — é a leitura GUIDE disfarçada`);
+      const tk = Math.round(JSON.stringify(d).length / 4);
+      if (tk > 4000) return fail(`vista de programa com ${tk} tk — dieta de tokens`);
+      // (6) nunca-silêncio: um MP inexistente declara-se e mostra os que há
+      const u = await c.tool("get_sbd_toe_macro_processes", { mp_id: "MP-99" });
+      if (!u.ok) return fail("um id desconhecido devia ser resposta declarada, não erro");
+      if (u.data.status !== "unknown_macro_process" || (u.data.known ?? []).length !== 5) return fail("id desconhecido sem declaração ou sem os ids que existem");
+      // (7) o detalhe de um MP responde à mesma pergunta, com a realimentação que RECEBE
+      const one = await c.tool("get_sbd_toe_macro_processes", { mp_id: "MP-03" });
+      if (!one.ok) return fail(one.error);
+      if (one.data.macro_process?.mp_id !== "MP-03") return fail("detalhe não devolve o MP pedido");
+      if (!(one.data.prerequisites?.values ?? []).length) return fail("MP-03 sem pré-requisitos — a fixture publica-os");
+      return ok(`5 MP como dados; ordem ${levels.map((l) => l.join("∥")).join(" → ")} coerente com ${deps.length} dependency; ${fbs.length} feedback fora da ordem (com elas o grafo cicla ✓); 3 limites declarados; ${ids} ids de requisito; ${tk} tk`); } },
+
+  { id: "TC-F-65", axis: "F", title: "0.20.0-beta.39: as superfícies de PROJECÇÃO declaram — relação≠total, autoridade herdada, omissão e ancoragem", tool: "plan_sbd_toe_rollout",
+    run: async (c) => {
+      // (B1) a junção capítulo→artefacto: duas bases, nenhuma delas «tem de produzir»
+      const cap = await c.tool("get_sbd_toe_chapter_capability", { chapter: "01-classificacao-aplicacoes", risk_level: "L2" });
+      if (!cap.ok) return fail(cap.error);
+      const art = cap.data.artifacts;
+      if (!art) return fail("a vista IMPL deixou de servir artefactos");
+      if ("total" in art || "mandatory" in art) return fail("relação servida como total/obrigatoriedade — a afirmação falsa voltou");
+      if (/PRODUZIR/.test(JSON.stringify(art.note ?? ""))) return fail("continua a derivar obrigação de produção de uma aresta");
+      const ep = art.bases?.evidence_pattern, rel = art.bases?.cited_by;
+      if (!(ep?.distinct_artifacts > 0) || !(rel?.relation_edges > 0)) return fail("as duas bases não vêm ambas declaradas");
+      if (!/never for totals/i.test(rel?.source_declares ?? "")) return fail("a proibição da fonte não é servida verbatim");
+      if (!art.declared_limits?.no_mandatory_count) return fail("o `mandatory` 45/45 não é declarado como recebido");
+      // (B2a) rollout: cobertura parcial com banda de omissão e caminho concreto
+      const roll = await c.tool("plan_sbd_toe_rollout", {});
+      if (!roll.ok) return fail(roll.error);
+      const rd = roll.data.data ?? roll.data;
+      /*
+       * 0.20.0-beta.40: a b.39 exigia aqui a banda de omissão POVOADA, porque o roteiro cobria
+       * 8 de 15. Com a travessia N:M da v2.6 já não há nada de fora — o critério passa a ser
+       * cobertura COMPLETA com a banda servida a ZERO (verificável, não apagada) e o cap. 00
+       * declarado como PISO, que não é ausência.
+       */
+      const omit = rd.chapters_not_in_roadmap;
+      if (!omit) return fail("a banda de omissão foi apagada — a zero tem de continuar servida");
+      if (omit.count !== 0) return fail(`o roteiro voltou a deixar ${omit.count} capítulos de fora`);
+      if (rd.totals?.chapters_covered_including_floor !== rd.totals?.chapters_in_manual)
+        return fail("travessia + piso não fecha o total de capítulos do Manual");
+      const floor = rd.chapter_coverage?.floor;
+      if (!floor || floor.species !== "piso" || floor.is_absence !== false)
+        return fail("o capítulo de piso não é servido como espécie própria");
+      if (!/^get_sbd_toe_/.test(floor.reach_with ?? "")) return fail("o piso vem sem caminho concreto");
+      if (!(rd.assignments_without_phase?.assignment_count > 0)) return fail("as atribuições sem fase não são declaradas");
+      // (B2b) operating_model: a autoridade HERDA-SE da fonte
+      const om = await c.tool("get_sbd_toe_operating_model", {});
+      if (!om.ok) return fail(om.error);
+      const auth = (om.data.data ?? om.data).authority;
+      if (!auth) return fail("serve o bundle exemplo-playbook sem declarar autoridade");
+      if (auth.tier !== "illustrative") return fail(`promoveu material ilustrativo: tier=${auth.tier}`);
+      if (!(auth.authority_class ?? []).includes("illustrative_overlay")) return fail("authority_class não herdada da fonte");
+      if (!(auth.adoption_status ?? []).includes("example_only")) return fail("adoption_status não herdado da fonte");
+      if (!/exig/i.test((om.data.data ?? om.data).delimitation ?? "")) return fail("sem a delimitação da superfície de overlay");
+      // (B3) o next não contradiz a banda da própria resposta
+      const g = await c.tool("get_guide_by_role", { risk_level: "L2", role: "fornecedores-terceiros" });
+      if (!g.ok) return fail(g.error);
+      if (!g.data.unsupported_role) return fail("fixture mudou: o papel deixou de ser não-suportado");
+      const offende = (g.data.next ?? []).filter((n) => String(n.with ?? "").includes("fornecedores-terceiros"));
+      if (offende.length > 0) return fail(`o next continua a oferecer ${offende[0].tool} sobre um vazio declarado`);
+      if (!(g.data.next_withheld?.count > 0)) return fail("a retirada não foi declarada");
+      if (!g.data.next_withheld.values.every((v) => v.contradicts_band)) return fail("a retirada não nomeia a banda");
+      // (B4) menores: orgProfile, unassigned, escassez, rótulo com nível
+      const rollProf = await c.tool("plan_sbd_toe_rollout", { orgProfile: "banco regional" });
+      const op = (rollProf.data.data ?? rollProf.data).org_profile;
+      if (op?.affects_result !== false) return fail("orgProfile ecoado sem declarar que não afecta o resultado");
+      const brief = await c.tool("get_sbd_toe_chapter_brief", { chapterId: "02-requisitos-seguranca" });
+      if (!brief.ok) return fail(brief.error);
+      const bd = brief.data.data ?? brief.data;
+      if ((bd.phases ?? []).includes("unassigned")) return fail("a sentinela `unassigned` continua a chegar à superfície");
+      if (!(bd.phases_unassigned?.count > 0)) return fail("a sentinela foi filtrada em SILÊNCIO");
+      const gm = await c.tool("get_guide_by_role", { risk_level: "L2", role: "gestao-executiva" });
+      const lvl = gm.data.level_named_in_label;
+      if (!(lvl?.count > 0)) return fail("rótulo que cita outro nível continua sem sinalização");
+      if (!lvl.values.every((v) => v.proportionality_at_served_level)) return fail("sinaliza sem dar a proporcionalidade do nível pedido");
+      return ok(`artefactos com 2 bases (${ep.distinct_artifacts} por EP / ${rel.relation_edges} arestas) e a proibição da fonte verbatim; roteiro cobre ${rd.totals.chapters_covered_including_floor}/${rd.totals.chapters_in_manual} (${rd.chapter_coverage.traversed} atravessados + piso), omissão a ${omit.count}; autoridade herdada ${auth.authority_class.join("/")}; 1 next retirado e declarado; orgProfile affects_result=false; ${bd.phases_unassigned.count} atribuições sem fase declaradas; ${lvl.count} rótulo(s) com nível sinalizado`); } },
+
+  { id: "TC-F-66", axis: "F", title: "0.20.0-beta.40: travessia N:M (roteiro cobre os 15), definidores≠citadores e ausências TIPADAS", tool: "plan_sbd_toe_rollout",
+    run: async (c) => {
+      // (A) o roteiro cobre os 15 — 14 atravessados + o cap. 00 como PISO
+      const roll = await c.tool("plan_sbd_toe_rollout", {});
+      if (!roll.ok) return fail(roll.error);
+      const rd = roll.data.data ?? roll.data;
+      const t = rd.totals ?? {};
+      if (t.chapters_covered_including_floor !== t.chapters_in_manual)
+        return fail(`cobertura ${t.chapters_covered_including_floor}/${t.chapters_in_manual} — o roteiro ainda deixa capítulos de fora`);
+      if (rd.chapters_not_in_roadmap?.count !== 0) return fail("a banda de omissão não está a zero");
+      const floor = rd.chapter_coverage?.floor;
+      if (!floor || floor.species !== "piso") return fail("o cap. 00 não é servido como PISO");
+      if (floor.is_absence !== false) return fail("o piso continua a ser tratado como ausência");
+      // a travessia é N:M e desfaz as escolhas falsas do escalar editorial
+      const ph = rd.phases ?? [];
+      const chaptersOf = (id) => (ph.find((p) => p.phase_id === id)?.chapters ?? []);
+      if (!chaptersOf("design").some((x) => x.startsWith("04-"))) return fail("`design` não atravessa a arquitectura segura");
+      if (!chaptersOf("develop").some((x) => x.startsWith("06-"))) return fail("`develop` não atravessa o desenvolvimento seguro");
+      if (!ph.every((p) => p.chapter)) return fail("a âncora editorial `manual_chapter` deixou de vir — devia ganhar companhia, não sair");
+      if (!(rd.assignments_without_phase?.assignment_count > 0)) return fail("as atribuições autoradas sem fase não são declaradas");
+      // (B) definidores ≠ citadores — o cap. 01 deixa de reclamar SBOM/container/SAST
+      const cap = await c.tool("get_sbd_toe_chapter_capability", { chapter: "01-classificacao-aplicacoes" });
+      if (!cap.ok) return fail(cap.error);
+      const art = cap.data.artifacts;
+      /*
+       * 0.20.0-beta.43: a base mudou de nome porque o `own` SAIU — o verbo publicado é
+       * `produced_or_operated_by`, e a asserção da fonte diz que ele NÃO afirma posse. O
+       * cenário passa a assertar o verbo e a asserção negativa, não a palavra que a v2.7
+       * veio proibir.
+       */
+      const pob = art?.bases?.produced_or_operated_by;
+      if (!(pob?.artifacts > 0)) return fail("a base `produced_or_operated_by` não é servida");
+      if ("own" in JSON.parse(JSON.stringify(art.values[0] ?? {}))) return fail("o `own` voltou ao vocabulário servido");
+      if (!/não afirma|does_not/.test(JSON.stringify(pob.asserts ?? {}))) return fail("a base vem sem a asserção da fonte");
+      if (!/posse/.test(String(pob.asserts?.does_not_assert ?? ""))) return fail("a asserção negativa não chega ao consumidor");
+      if (!(pob.artifacts < art.bases.cited_by.relation_edges))
+        return fail("produtores e citadores continuam a ser o mesmo conjunto");
+      const produced = new Set(art.values.filter((v) => (v.bases ?? []).includes("produced_or_operated_by")).map((v) => v.name ?? v.artifact_type_id));
+      for (const alheio of ["Sbom", "Container Image", "Sast Report"])
+        if (produced.has(alheio)) return fail(`o cap. 01 continua a reclamar \`${alheio}\` como seu`);
+      if (!art.values.some((v) => !(v.bases ?? []).includes("produced_or_operated_by"))) return fail("nenhum artefacto marcado como apenas citado");
+      const brief = await c.tool("get_sbd_toe_chapter_brief", { chapterId: "01-classificacao-aplicacoes" });
+      const bd = brief.data.data ?? brief.data;
+      if (!(bd.artifacts_basis?.cited_only > 0)) return fail("o brief não separa citados de produzidos");
+      if (!/posse/.test(String(bd.artifacts_basis?.asserts?.does_not_assert ?? ""))) return fail("o brief serve o verbo sem a asserção negativa");
+      if (!(bd.artifacts_basis.cited_values ?? []).length) return fail("a nota do brief aponta para um campo que não vem");
+      // (D) required_for_levels servido pelo que é, sem lhe vestir significado
+      if (!/degenerado/i.test(art.bases?.required_for_levels?.what ?? ""))
+        return fail("`required_for_levels` servido como se discriminasse");
+      // (C) ausências TIPADAS, com o tipo vindo do índice central e espécies distintas
+      const g = await c.tool("get_guide_by_role", { risk_level: "L2", role: "fornecedores-terceiros" });
+      const pb = await c.tool("get_sbd_toe_playbook", { framework: "PCI-DSS" });
+      const mp = await c.tool("get_sbd_toe_macro_processes", {});
+      const bands = [
+        g.data.unsupported_role?.absence,
+        (pb.data.data ?? pb.data).absence,
+        (mp.data.data ?? mp.data).declared_limits?.sdlc_phase_traversal /* b.41: banda fundida — uma só declaração */
+      ];
+      if (bands.some((b) => !b)) return fail("há vazios servidos sem dizer de que espécie são");
+      if (!bands.every((b) => b.absence_id && b.what_it_means)) return fail("banda de ausência sem id do índice ou sem consequência");
+      const kinds = new Set(bands.map((b) => b.absence_type));
+      if (kinds.size < 3) return fail(`as três ausências vieram do mesmo tipo (${[...kinds].join(",")}) — a tipagem não discrimina`);
+      const boundary = bands.find((b) => b.is_boundary);
+      if (!boundary || boundary.absence_type !== "out_of_scope") return fail("nenhuma fronteira declarada onde há uma decisão do lead");
+      if (!bands.find((b) => b.absence_type === "gap")?.debt_of) return fail("dívida sem dono declarado");
+      if (!bands.find((b) => b.absence_type === "deferred")?.trigger) return fail("`deferred` sem gatilho — sem gatilho seria gap");
+      return ok(`roteiro cobre ${t.chapters_covered_including_floor}/${t.chapters_in_manual} (${rd.chapter_coverage.traversed} atravessados + piso), omissão a 0, ${rd.assignments_without_phase.assignment_count} atribuições sem fase declaradas; cap.01 produz/opera ${pob.artifacts} e cita ${art.bases.cited_by.relation_edges}; ausências tipadas ${[...kinds].join("/")} com o tipo vindo do índice`); } },
+
+  { id: "TC-F-67", axis: "F", title: "0.20.0-beta.41: vazio por COMBINAÇÃO declarado, vocabulário de papel reconciliado, e uma só espécie por ausência", tool: "get_guide_by_role",
+    run: async (c) => {
+      // (C1a) applicability: papel legado sem alias publicado — vazio DECLARADO, não silencioso
+      const mgr = await c.tool("map_sbd_toe_applicability", { riskLevel: "L2", projectRole: "manager" });
+      if (!mgr.ok) return fail(mgr.error);
+      const md = mgr.data.data ?? mgr.data;
+      if (!md.empty_role_view) return fail("`manager` continua a devolver 15 vistas vazias em silêncio");
+      if (md.empty_role_view.cause !== "unresolved_vocabulary") return fail("a causa do vazio não é a que se observa");
+      if (!(md.role_vocabulary?.canonical_roles ?? []).length) return fail("o vazio não mostra que papéis existem");
+      // (C2) o alias PUBLICADO resolve — e a resolução é declarada
+      const dev = await c.tool("map_sbd_toe_applicability", { riskLevel: "L2", projectRole: "devops" });
+      const dd = dev.data.data ?? dev.data;
+      if (dd.role_vocabulary?.resolution !== "published_alias") return fail("`devops` não é resolvido pelo alias publicado");
+      if (dd.role_vocabulary.resolved_to !== "devops-sre") return fail(`resolveu para ${dd.role_vocabulary.resolved_to}`);
+      const us = (dd.chapters ?? []).reduce((a, x) => a + ((x.role_view?.user_stories ?? []).length), 0);
+      if (us === 0) return fail("resolveu o alias e continua vazio");
+      if (dd.empty_role_view) return fail("declara vazio tendo resultados");
+      // (C1b) guide: combinação legítima sem resultados — banda que isola QUEM esvaziou
+      /*
+       * 0.20.0-beta.45: o par `gestao-executiva × plan` DEIXOU de estar vazio — o Manual v1.9.0
+       * tabelou o cap. 14 e pôs governação a acontecer ao planear. A fixture melhorou, e por
+       * isso o cenário deixa de a fixar: procura um par LEGÍTIMO ainda vazio (cada lado com
+       * resultados, o cruzamento sem nenhum). Se um dia nenhum existir, diz-se — é resultado,
+       * não falha.
+       */
+      let g = null, e = null;
+      for (const [role, phase] of [["gestao-executiva", "design"], ["gestao-executiva", "test"], ["product-owner", "develop"], ["auditores", "build"]]) {
+        const r = await c.tool("get_guide_by_role", { risk_level: "L2", role, phase });
+        if (!r.ok) return fail(r.error);
+        if ((r.data.assignments ?? []).length === 0) { g = r; e = r.data.empty_result; break; }
+      }
+      if (g === null) return ok("nenhum par papel×fase legítimo está vazio neste pino — a banda não foi exercitada (achado, não falha)");
+      if (!e) return fail("combinação legítima sem resultados continua a sair sem banda");
+      if (e.emptied_by !== "combination") return fail(`isolou mal a causa: ${e.emptied_by}`);
+      if (!(e.assignments_for_role_alone > 0 && e.assignments_for_phase_alone > 0))
+        return fail("a banda não prova que cada filtro tem resultados por si");
+      if (!(g.data.next ?? []).some((n) => n.tool === "get_guide_by_role" && !/phase=/.test(String(n.with ?? ""))))
+        return fail("o `next` não oferece o caminho de recuperação que a banda nomeia");
+      // e o mesmo corte SEM a fase não pode trazer a banda
+      const g2 = await c.tool("get_guide_by_role", { risk_level: "L2", role: String(g.data.canonicalRole) });
+      if (g2.data.empty_result) return fail(`declara vazio num corte que tem ${(g2.data.assignments ?? []).length} atribuições`);
+      // (C3) uma ausência não é lacuna E fronteira ao mesmo tempo
+      const mp = await c.tool("get_sbd_toe_macro_processes", {});
+      const t = (mp.data.data ?? mp.data).declared_limits?.sdlc_phase_traversal;
+      if (!t) return fail("o limite da travessia desapareceu");
+      if (t.absence_type !== "out_of_scope" || t.is_boundary !== true) return fail("a tipagem do índice deixou de prevalecer");
+      if (t.is_debt === true) return fail("a mesma ausência declarada como dívida E fronteira");
+      if (t.supersedes_local_label?.label !== "unpublished_gap")
+        return fail("o rótulo local não é servido como superseded — ou desapareceu sem se declarar");
+      const blob = JSON.stringify(mp.data);
+      if ((blob.match(/unpublished_gap/g) ?? []).length !== 1)
+        return fail("o rótulo superseded aparece mais do que uma vez — voltou a haver duas declarações");
+      // (C4, classe) o erro entrega o vocabulário AO CLIENTE, não só ao log
+      const bad = await c.tool("get_sbd_toe_chapter_implementation_checklist", { chapter: "zzz-inexistente" });
+      if (bad.ok) return fail("um capítulo inexistente devia ser recusado");
+      if (!/known chapters/i.test(String(bad.error ?? ""))) return fail("recusa sem entregar o vocabulário ao cliente");
+      return ok(`manager declarado (${md.role_vocabulary.canonical_roles.length} canónicos à vista); devops→devops-sre com ${us} user stories; vazio por combinação isolado (papel ${e.assignments_for_role_alone} / fase ${e.assignments_for_phase_alone}) com recuperação no next; ABS-001 só como fronteira, unpublished_gap superseded 1×; erro nomeia os capítulos`); } },
+
+  { id: "TC-F-68", axis: "F", title: "0.20.0-beta.43 (v2.7): a asserção NEGATIVA chega ao consumidor; papel referenciado ≠ canónico; lacuna do pino declarada", tool: "get_sbd_toe_chapter_capability",
+    run: async (c) => {
+      // (1) cada travessia derivada traz o VERBO e o que NÃO afirma
+      const cap = await c.tool("get_sbd_toe_chapter_capability", { chapter: "01-classificacao-aplicacoes" });
+      if (!cap.ok) return fail(cap.error);
+      const art = cap.data.artifacts;
+      const pob = art?.bases?.produced_or_operated_by, ev = art?.bases?.required_as_evidence_by;
+      if (!pob?.asserts?.published) return fail("a travessia de produção vem sem asserção publicada");
+      if (pob.asserts.verb !== "produced_or_operated_by") return fail(`verbo servido: ${pob.asserts.verb}`);
+      if (!/posse/.test(pob.asserts.does_not_assert)) return fail("«não afirma posse» não chega ao consumidor");
+      if (!ev?.asserts?.published) return fail("a travessia probatória vem sem asserção");
+      if (!/produção/.test(ev.asserts.does_not_assert)) return fail("«não afirma produção» não chega ao consumidor");
+      // a palavra que a v2.7 veio proibir NÃO volta ao vocabulário servido
+      const blob = JSON.stringify(cap.data);
+      if (/"own"\s*:/.test(blob)) return fail("o `own` voltou ao payload");
+      // (2) os órfãos probatórios vêm declarados UM A UM
+      const orf = ev.orphans;
+      if (!(orf?.count > 0)) return fail("os artefactos sem capítulo probatório não são declarados");
+      if (orf.count !== (orf.values ?? []).length) return fail("a contagem de órfãos não bate com a lista");
+      if (!orf.values.every((v) => v.artifact_type_id && v.declared_absence)) return fail("órfão sem a ausência que a fonte lhe atribui");
+      // (3) papel REFERENCIADO não vira canónico
+      const rh = await c.tool("get_guide_by_role", { risk_level: "L2", role: "RH/PeopleOps" });
+      if (!rh.ok) return fail(rh.error);
+      const ref = rh.data.referenced_role;
+      if (!ref) return fail("um papel que o Manual NOMEIA cai no vazio como se não existisse");
+      if (ref.canonical !== false) return fail("o papel referenciado foi promovido a canónico");
+      if (!(ref.anchors ?? []).length) return fail("referenciado sem as âncoras que o provam");
+      if (!/13/.test(ref.note)) return fail("a nota não diz que os canónicos continuam a ser 13");
+      const known = (rh.data.meta?.knownRoles ?? []).filter((r) => r !== "unassigned");
+      if (known.includes(ref.referenced_role_id)) return fail("entrou no vocabulário canónico");
+      // (4) o que o manifesto do pino promete e o pino não traz, declara-se
+      const gap = rh.data.decision_involvement_unavailable;
+      if (gap) {
+        if (gap.shipped !== false || !(gap.declared_in_manifest > 0)) return fail("lacuna do pino mal declarada");
+        if (!/não traz|não foi empacotad/.test(gap.note)) return fail("a lacuna não diz que é de empacotamento");
+      }
+      return ok(`verbos servidos com asserção negativa (produção: «${pob.asserts.does_not_assert}»; prova: «${ev.asserts.does_not_assert}»); ${orf.count} órfãos declarados um a um; RH/PeopleOps referenciado com ${ref.anchors.length} âncoras e fora dos ${known.length} canónicos${gap ? `; lacuna do pino declarada (${gap.declared_in_manifest} ${gap.entity_type})` : ""}`); } },
+
+  { id: "TC-F-69", axis: "F", title: "0.20.0-beta.44 (v2.7-r2): quem DECIDE ao lado de quem executa, com âncora verbatim e o que não afirma", tool: "get_guide_by_role",
+    run: async (c) => {
+      const g = await c.tool("get_guide_by_role", { risk_level: "L2", role: "product-owner", include_detail: true });
+      if (!g.ok) return fail(g.error);
+      const di = g.data.decision_involvements;
+      if (!di) return fail("a espécie de DECISÃO não é servida ao lado da execução");
+      // a banda de indisponível da b.43 tem de SAIR — não fica pendurada quando os dados chegam
+      if (g.data.decision_involvement_unavailable) return fail("a banda de indisponível continua a disparar com o ficheiro presente");
+      // asserção negativa da fonte, servida ao consumidor
+      if (!/execução/.test(String(di.asserts?.does_not_assert ?? ""))) return fail("«não afirma execução» não chega ao consumidor");
+      if (!/RACI/.test(String(di.asserts?.does_not_assert ?? ""))) return fail("«não afirma RACI completo» não chega ao consumidor");
+      if (di.asserts?.published !== true) return fail("a asserção não vem da ontologia");
+      // os dois lados, para o único papel que tem ambos
+      if (!(di.by_kind?.approves > 0)) return fail("sem o lado que o papel APROVA");
+      if (!(di.by_kind?.consulted > 0)) return fail("sem o lado em que o papel é CONSULTADO");
+      // cada envolvimento traz a ÂNCORA VERBATIM — é o que permite contraprovar
+      if (!(di.values ?? []).length) return fail("banda sem envolvimentos");
+      if (!di.values.every((v) => v.anchor && v.anchor_text)) return fail("envolvimento sem âncora verbatim");
+      if (!di.values.every((v) => v.chapter && v.kind)) return fail("envolvimento sem capítulo ou tipo");
+      // a espécie é PARALELA: as contagens de execução não mudam
+      if (!(g.data.meta?.assignmentCount > 0)) return fail("as atribuições de execução desapareceram");
+      // e o âmbito global vem declarado, para o vazio de um papel não parecer o vazio do Manual
+      if (!(di.published_total >= di.total)) return fail("o total publicado não enquadra o âmbito servido");
+      // um papel SEM envolvimentos declara-o, e não como ausência de responsabilidade
+      const sem = await c.tool("get_guide_by_role", { risk_level: "L2", role: "operacoes" });
+      const semDi = sem.data.decision_involvements;
+      if (semDi && semDi.total === 0 && !/ausência de estrutura publicada/.test(semDi.note ?? ""))
+        return fail("um papel sem envolvimentos não distingue «sem responsabilidade» de «sem estrutura de onde derivar»");
+      return ok(`decisão servida ao lado da execução: ${di.by_kind.approves} aprova / ${di.by_kind.consulted} consultado em ${di.chapters.length} capítulos, ${di.values.length}/${di.values.length} com âncora verbatim; asserção «${di.asserts.does_not_assert}»; ${di.published_total} publicados no total; execução intocada (${g.data.meta.assignmentCount} atribuições)`); } },
+
+  { id: "TC-F-70", axis: "F", title: "0.20.0-beta.45 (Manual v1.9.0 × v2.8): ausência FECHADA não sai como dívida; sem-fase é visibilidade e traz o rótulo", tool: "get_guide_by_role",
+    run: async (c) => {
+      // (1) uma ausência FECHADA no índice não pode ser servida como dívida em aberto
+      const mp = await c.tool("get_sbd_toe_macro_processes", {});
+      if (!mp.ok) return fail(mp.error);
+      const fronteira = (mp.data.data ?? mp.data).declared_limits?.sdlc_phase_traversal;
+      if (fronteira?.status !== "open") return fail("ABS-001 devia continuar ABERTA (é fronteira, não fecha)");
+      if (fronteira.is_boundary !== true) return fail("a fronteira deixou de ser fronteira");
+      // a fechada: chega por qualquer superfície que a sirva; usamos a do papel referenciado
+      const rh = await c.tool("get_guide_by_role", { risk_level: "L2", role: "RH/PeopleOps" });
+      const refAbs = rh.data.referenced_role?.absence;
+      if (refAbs && refAbs.status === undefined) return fail("banda de ausência sem `status` — fechada e aberta ficam iguais");
+      // (2) o vazio por combinação continua a distinguir dívida de fecho
+      const g = await c.tool("get_guide_by_role", { risk_level: "L2", role: "gestao-executiva", phase: "design" });
+      if (!g.ok) return fail(g.error);
+      if ((g.data.assignments ?? []).length === 0 && !g.data.empty_result) return fail("vazio por combinação sem banda");
+      // (3) as sem-fase trazem o RÓTULO autorado e leem-se como visibilidade
+      const roll = await c.tool("plan_sbd_toe_rollout", {});
+      if (!roll.ok) return fail(roll.error);
+      const rd = roll.data.data ?? roll.data;
+      const swp = rd.assignments_without_phase;
+      if (!swp) return fail("as atribuições sem fase deixaram de ser declaradas");
+      if (!swp.unmapped_phase_labels?.values) return fail("os rótulos que não mapeiam não são servidos");
+      if (!(swp.unmapped_phase_labels.values["Execução"] > 0)) return fail("o rótulo `Execução` do cap. 14 não é declarado");
+      if (!/VISIBILIDADE|visibilidade/.test(swp.reading ?? "")) return fail("a redacção deixa ler a subida como dívida");
+      if (!/afirmar o que a fonte não diz/.test(swp.unmapped_phase_labels.note ?? "")) return fail("não diz porque não se força uma fase");
+      // (4) o cap. 14 entrou em mais fases — e o roteiro continua a cobrir os 15
+      const fases14 = (rd.phases ?? []).filter((p) => (p.chapters ?? []).some((x) => x.startsWith("14-"))).map((p) => p.phase_id);
+      if (fases14.length < 2) return fail(`o cap. 14 continua concentrado em ${fases14.length} fase(s): ${fases14.join(",")}`);
+      if (rd.totals?.chapters_covered_including_floor !== rd.totals?.chapters_in_manual) return fail("o roteiro deixou de cobrir os 15");
+      if (rd.chapters_not_in_roadmap?.count !== 0) return fail("voltou a haver capítulos fora");
+      return ok(`ABS-001 aberta como fronteira e as fechadas com \`status\`; cap. 14 em ${fases14.length} fases (${fases14.join(", ")}); ${swp.assignment_count} sem fase com ${Object.keys(swp.unmapped_phase_labels.values).length} rótulos declarados (Execução ×${swp.unmapped_phase_labels.values["Execução"]}), lidas como visibilidade; cobertura ${rd.totals.chapters_covered_including_floor}/${rd.totals.chapters_in_manual}`); } },
+
+  { id: "TC-F-71", axis: "F", title: "0.20.0-beta.46 (auditoria 3): verbo não se herda da base vizinha, o nível não filtra e diz-se, e o estatuto é de CONSULTA", tool: "get_sbd_toe_chapter_capability",
+    run: async (c) => {
+      // (G1) cada base traz a SUA asserção; a citação não resolve para «produz ou opera»
+      const cap = await c.tool("get_sbd_toe_chapter_capability", { chapter: "01-classificacao-aplicacoes" });
+      if (!cap.ok) return fail(cap.error);
+      const b = cap.data.artifacts?.bases;
+      if (!b?.cited_by) return fail("a base da citação desapareceu");
+      if (b.cited_by.asserts?.verb === b.produced_or_operated_by?.asserts?.verb)
+        return fail("a citação voltou a publicar o verbo da produção");
+      if (b.cited_by.asserts?.published !== false) return fail("a citação publica asserção que a fonte não tem");
+      const soCitados = (cap.data.artifacts.values ?? []).filter((v) => (v.bases ?? []).length === 1 && v.bases[0] === "cited_by");
+      if (soCitados.length === 0) return fail("nenhum artefacto apenas citado — a fixture mudou");
+      for (const nome of ["Sbom", "Container Image", "Sca Report", "Iac Plan"])
+        if (!soCitados.some((v) => v.name === nome)) return fail(`${nome} devia estar entre os apenas citados`);
+      // (G2) o nível NÃO filtra os envolvimentos — e a resposta di-lo, com os níveis à vista
+      const g = await c.tool("get_guide_by_role", { risk_level: "L2", role: "gestao-executiva" });
+      if (!g.ok) return fail(g.error);
+      const lf = g.data.decision_involvements?.level_filtering;
+      if (!lf) return fail("a banda de decisão não declara o efeito do nível");
+      if (lf.filters_this_band !== false) return fail("declara que filtra — verifica se passou a filtrar");
+      if (!(lf.at_requested_level < g.data.decision_involvements.total))
+        return fail("a fixture mudou: ao nível pedido já não é menos do que o total");
+      if (!(lf.without_levels?.published_total > 0)) return fail("os que não têm níveis não são declarados");
+      if (!/não é «aplica-se a todos»|não é .aplica-se a todos./.test(lf.without_levels.note ?? ""))
+        return fail("ausência de níveis pode ser lida como «aplica-se a todos»");
+      if (!(g.data.decision_involvements.values ?? []).every((v) => v.applicable_levels))
+        return fail("os itens não trazem `applicable_levels` à vista");
+      // (G3) o estatuto pragmático nas primeiras palavras — o servidor SERVE, quem age é quem chama
+      const schemas = new Map((c.tools ?? []).map((t) => [t.name, String(t.description ?? "")]));
+      const esperado = {
+        plan_sbd_toe_rollout: /^CONSULTA/,
+        plan_sbd_toe_repo_governance: /^PROJEC/,
+        prepare_sbd_toe_codegen_context: /NÃO AGE/,
+        generate_sbd_toe_skill: /SEM VALIDAR O TEU AMBIENTE/,
+        assess_sbd_toe_implementation: /a leitura é tua/,
+        answer_sbd_toe_manual: /não responde/
+      };
+      for (const [tool, re] of Object.entries(esperado)) {
+        const d = schemas.get(tool);
+        if (d === undefined) return fail(`${tool} não está no inventário vivo`);
+        if (!re.test(d.split(/\s+/).slice(0, 14).join(" "))) return fail(`${tool}: estatuto pragmático ausente das primeiras palavras`);
+      }
+      // (G4) as três da via lenta
+      const tg = await c.tool("trace_sbd_toe_graph", { lens: "slice_implementation" });
+      if (!tg.data.provenance?.kg || !tg.data.provenance?.server) return fail("trace_graph continua sem substrato identificável");
+      const rg = await c.tool("plan_sbd_toe_repo_governance", { riskLevel: "L2" });
+      if (!/degenerado|Filtra pouco/.test((rg.data.data ?? rg.data).risk_level_effect?.note ?? ""))
+        return fail("o repo_governance continua a vender o riskLevel como filtro forte");
+      const rs = await c.tool("map_sbd_toe_review_scope", { changedFiles: ["src/auth/login.ts"], riskLevel: "L2" });
+      const eb = (rs.data.data ?? rs.data).evidence_basis;
+      if (eb?.cited !== false || eb?.authored_by !== "mcp_serving") return fail("a prosa do servidor não é distinguida de citação");
+      if (!/SOBREPOR|sobrepõe/i.test(eb.path_overlap ?? "")) return fail("a sobreposição de paths não é declarada");
+      return ok(`citação sem verbo herdado (${soCitados.length} apenas citados, incl. SBOM e Container Image); nível declarado como NÃO-filtro (${lf.at_requested_level} de ${g.data.decision_involvements.total} ao nível, ${lf.without_levels.published_total} sem níveis no total); 6 estatutos pragmáticos nas primeiras palavras; trace com kg+server; riskLevel do repo_gov declarado; evidência marcada como redacção do servidor`); } },
+
+  { id: "TC-F-72", axis: "F", title: "0.20.0-beta.47: enum de papéis do vocabulário, a banda de âncora declara o que mede, e o serving é determinístico entre processos", tool: "map_sbd_toe_applicability",
+    run: async (c) => {
+      // (R1) o enum oferece o VOCABULÁRIO e a descrição deixa de mentir sobre o efeito
+      const schema = (c.tools ?? []).find((t) => t.name === "map_sbd_toe_applicability")?.inputSchema?.properties?.projectRole;
+      if (!schema) return fail("projectRole desapareceu do schema");
+      if (!(schema.enum ?? []).includes("gestao-executiva")) return fail("o enum continua sem os papéis canónicos");
+      if ((schema.enum ?? []).includes("manager")) return fail("o enum continua a OFERECER valores legados");
+      if (/Informational only/i.test(schema.description ?? "")) return fail("a descrição continua a dizer que não afecta o resultado");
+      if (!/AFECTA/.test(schema.description ?? "")) return fail("a descrição não diz que o papel afecta a resposta");
+      // legado continua ACEITE (aditivo) e declarado
+      const leg = await c.tool("map_sbd_toe_applicability", { riskLevel: "L2", projectRole: "manager" });
+      if (!leg.ok) return fail("um valor legado deixou de ser aceite — isto não era aditivo");
+      if (!(leg.data.data ?? leg.data).empty_role_view) return fail("o legado deixou de ser declarado");
+      // e um canónico do enum novo produz vista
+      const can = await c.tool("map_sbd_toe_applicability", { riskLevel: "L2", projectRole: "gestao-executiva" });
+      const us = ((can.data.data ?? can.data).chapters ?? []).reduce((a, x) => a + ((x.role_view?.user_stories ?? []).length), 0);
+      if (us === 0) return fail("um papel canónico do enum devolve vista vazia");
+      // (R2) a banda de ancoragem declara O QUE MEDE, e mostra o que ancorou
+      const r = await c.tool("search_sbd_toe_manual", { question: "Qual é a política de teletrabalho da organização?", topK: 3 });
+      if (!r.ok) return fail(r.error);
+      const txt = String(r.text ?? r.data?._text ?? "");
+      if (!/O QUE ESTA VERIFICAÇÃO MEDE/.test(txt)) return fail("a banda não declara o que mede");
+      if (!/NÃO mede relevância/.test(txt)) return fail("a banda não diz que não mede relevância");
+      if (!/ANCORARAM/.test(txt)) return fail("a banda não mostra os termos que ancoraram");
+      if (!/teletrabalho/.test(txt)) return fail("o termo sem âncora não é nomeado");
+      return ok("enum com 13 canónicos e legado aceite+declarado; descrição diz que AFECTA; banda de ancoragem declara a medida e mostra os termos ancorados"); } },
+
+  { id: "TC-F-73", axis: "F", title: "0.20.0-beta.49: o artefacto instalável DATA-SE a si mesmo e a cobertura NOMEIA os órfãos", tool: "generate_sbd_toe_skill",
+    run: async (c) => {
+      // (P1) lido ISOLADO do servidor, o ficheiro permite nomear Manual/KG/servidor/hora
+      for (const flavour of ["skilled", "harnessed"]) {
+        const r = await c.tool("generate_sbd_toe_skill", { role: "developer", format: "subagent", flavour });
+        if (!r.ok) return fail(r.error);
+        const t = String(r.data.content ?? "");
+        if (!/## Provenance/.test(t)) return fail(`${flavour}: o artefacto instalável não leva proveniência`);
+        for (const [what, re] of [["Manual", /\*\*Manual:\*\*/], ["KG", /\*\*KG \(bundle consumido\)/], ["servidor", /\*\*Servidor que gerou:\*\*/], ["hora", /\*\*Gerado em:\*\*/]])
+          if (!re.test(t)) return fail(`${flavour}: o artefacto não nomeia ${what}`);
+        // nenhuma versão FIXA em código: o que sai tem de bater com o pin servido
+        const ver = await c.resource("sbd://toe/version");
+        const pin = JSON.parse(ver.text ?? "{}");
+        const tag = pin.manual?.tag;
+        if (tag && !t.includes(tag)) return fail(`${flavour}: o artefacto não cita a tag do Manual do pin (${tag})`);
+      }
+      // o ramo SEM role também se data (a assimetria era ao contrário do que interessa)
+      const noRole = await c.tool("generate_sbd_toe_skill", { clientType: "claude-code" });
+      if (!/## Provenance/.test(String(noRole.data.content ?? ""))) return fail("o ramo sem role continua sem proveniência");
+      // (P1, JSON) o meta.provenance data o Manual
+      const one = await c.tool("generate_sbd_toe_skill", { role: "developer", format: "skill" });
+      const mp = one.data.meta?.provenance;
+      if (!mp?.manual) return fail("meta.provenance continua sem datar o Manual");
+      if (mp.manual.tag === undefined || mp.manual.commit === undefined) return fail("meta.provenance.manual incompleto");
+      // (P2) a cobertura NOMEIA os capítulos fora da fatia, nos dois sabores
+      for (const flavour of ["skilled", "harnessed"]) {
+        const r = await c.tool("generate_sbd_toe_skill", { role: "developer", format: "subagent", flavour });
+        const t = String(r.data.content ?? "");
+        const fora = r.data.meta?.coverage?.chapters_outside ?? [];
+        if (fora.length === 0) return fail("fixture mudou: a fatia do developer passou a cobrir tudo");
+        if (!/Chapters outside this slice/.test(t)) return fail(`${flavour}: a cobertura conta e não nomeia`);
+        for (const ch of fora) if (!t.includes(ch)) return fail(`${flavour}: capítulo fora da fatia não nomeado: ${ch}`);
+        // e a prosa não fixa o número
+        const m = t.match(/A count would say (\d+) are missing/);
+        if (m && Number(m[1]) !== fora.length) return fail(`${flavour}: a prosa diz ${m[1]} e são ${fora.length}`);
+      }
+      // (P3) os dois contratos declaram qual é qual
+      const init = await c.resource("sbd://toe/version");
+      if (!init.text) return fail("recurso de versão ilegível");
+      const one2 = await c.tool("generate_sbd_toe_skill", { role: "qa", format: "skill" });
+      const fora2 = one2.data.meta?.coverage?.chapters_outside ?? [];
+      return ok(`artefacto datado nos dois sabores e no ramo sem role; meta.provenance com Manual ${mp.manual.tag}; cobertura nomeia ${fora2.length} capítulos fora da fatia (qa) e ${(one.data.meta?.coverage?.chapters_outside ?? []).length} (developer)`); } },
+
+  { id: "TC-G-01", axis: "G", title: "trace válido: determinismo + paginação G1 (3 lentes, total, cursor, sem IRIs)", tool: "trace_sbd_toe_graph",
+    run: async (c) => {
+      const shas = [];
+      for (const lens of ["slice_implementation", "objective_realization", "mechanism_provenance"]) {
+        const a = await c.tool("trace_sbd_toe_graph", { lens, pageSize: 100 }); if (!a.ok) return fail(`${lens}: ${a.error}`);
+        const b = await c.tool("trace_sbd_toe_graph", { lens, pageSize: 100 }); if (!b.ok) return fail(`${lens} (2ª): ${b.error}`);
+        if (JSON.stringify(a.data) !== JSON.stringify(b.data)) return fail(`${lens}: duas chamadas idênticas divergem (não determinístico)`);
+        if (a.data.total === undefined || a.data.cursor === undefined) return fail(`${lens}: sem envelope total/cursor (G1)`);
+        const rows = []; const maxPages = Math.ceil(a.data.total / 100) + 1; let sawNullCursor = false;
+        for (let page = 0; page < maxPages; page++) {
+          const p = await c.tool("trace_sbd_toe_graph", { lens, pageSize: 100, page }); if (!p.ok) return fail(`${lens} paging: ${p.error}`);
+          if (p.data.page !== page) return fail(`${lens}: page não ecoada (${p.data.page} ≠ ${page})`);
+          rows.push(...p.data.rows);
+          if (p.data.cursor === null) { sawNullCursor = true; break; }
+          // `cursor` é o offset da PRÓXIMA linha (row offset), não um índice de página.
+          if (p.data.cursor !== (page + 1) * 100) return fail(`${lens}: cursor ${p.data.cursor} ≠ offset seguinte ${(page + 1) * 100}`);
+        }
+        if (!sawNullCursor) return fail(`${lens}: última página sem cursor=null (fim não declarado)`);
+        if (rows.length !== a.data.total) return fail(`${lens}: walk ${rows.length} ≠ total ${a.data.total}`);
+        if (JSON.stringify(rows).includes("http")) return fail(`${lens}: fuga de IRI nas rows`);
+        shas.push(`${lens}=${a.data.total}`);
+      }
+      return ok(`determinístico; walks completos sem fuga de IRI: ${shas.join(", ")}`); } },
+  { id: "TC-G-02", axis: "G", title: "trace sem resultado: resposta declarada, nunca silenciosa (anchor fora da projecção v1)", tool: "trace_sbd_toe_graph",
+    run: async (c) => {
+      const r = await c.tool("trace_sbd_toe_graph", { lens: "slice_implementation", anchor: "REQ-AGN-001", pageSize: 5 }); if (!r.ok) return fail(r.error);
+      if (!Array.isArray(r.data.rows) || r.data.rows.length !== 0 || r.data.total !== 0) return fail(`esperava 0 declarado, veio rows=${r.data.rows?.length}/total=${r.data.total}`);
+      if (r.data.anchor !== "REQ-AGN-001") return fail("anchor não ecoado (resposta não auto-descritiva)");
+      if (!r.data.provenance?.note) return fail("sem provenance.note a declarar o âmbito da projecção (silêncio)");
+      const n = await c.tool("trace_sbd_toe_graph", { lens: "slice_implementation", anchor: "XX-NOPE-999", pageSize: 5 }); if (!n.ok) return fail(n.error);
+      if (n.data.total !== 0) return fail("anchor inexistente devolveu resultados");
+      return ok(`0 rows/total 0 declarados com anchor ecoado + provenance.note (âmbito v1); anchor inexistente idem`); } },
+  { id: "TC-G-03", axis: "G", title: "trace com input inválido: erro declarado (-32602), nunca sucesso vazio", tool: "trace_sbd_toe_graph",
+    run: async (c) => {
+      const bad = await c.tool("trace_sbd_toe_graph", { lens: "banana" });
+      if (bad.ok) return fail("lens inválida aceite (devia ser erro declarado)");
+      if (!/lens/i.test(String(bad.error))) return fail(`erro não nomeia o campo: ${String(bad.error).slice(0, 80)}`);
+      const missing = await c.tool("trace_sbd_toe_graph", {});
+      if (missing.ok) return fail("lens em falta aceite");
+      return ok(`lens inválida/em falta → erro declarado que nomeia o campo («${String(bad.error).slice(0, 40)}…»)`); } },
 
   // ───────────────────────── Axis H — selection vs golden oracle (measurement, NOT gate) ─────────────────────────
   // Oracle: golden-selection-cases.md v1 (programme lead's, read-only). One scenario per

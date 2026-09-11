@@ -19,6 +19,8 @@
  */
 
 export interface ProtocolProvenance {
+  /** 0.20.0-beta.23: versão do SERVIDOR que produziu esta resposta (≠ `kg`, o conhecimento servido). */
+  server: string;
   /** Compact version stamp: kg release_tag of the served pin (0.13.0). */
   kg: string;
   content_type: "canonical" | "derived" | "inferred";
@@ -51,4 +53,25 @@ export interface ProtocolEnvelope<T> {
 /** Caps the advisory band at the protocol limit (≤3), preserving rank order. */
 export function boundAffordances(affordances: Affordance[]): Affordance[] {
   return affordances.slice(0, 3);
+}
+
+import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
+
+/**
+ * 0.20.0-beta.42 — PROVENIÊNCIA para as projecções estruturais que não a tinham.
+ *
+ * Cinco superfícies serviam sem dizer de onde vinha o que serviam — a matriz banda ×
+ * superfície apanhou-as todas de uma vez, que é o que ela existe para fazer. Ter uma fonte
+ * única evita o que já nos mordeu três vezes: cada superfície a escrever a sua versão e a
+ * divergirem em silêncio.
+ */
+export function structuralProvenance(producedBy: string, sourceData: string, note: string) {
+  return {
+    kg: servedKgReleaseTag(),
+    server: servingServerVersion(),
+    content_type: "derived" as const,
+    produced_by: producedBy,
+    source_data: sourceData,
+    note
+  };
 }

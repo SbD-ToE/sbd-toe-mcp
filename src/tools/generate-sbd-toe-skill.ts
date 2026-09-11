@@ -17,7 +17,8 @@
  * Contract: agentic/em-curso/2026-06-12-pontifex-rfs-stage1-contract.md
  */
 
-import { servedKgReleaseTag } from "../version-info.js";
+import { servedKgReleaseTag, servingServerVersion, loadBundleProvenance } from "../version-info.js";
+import { buildAgentGuide } from "../serving/agent-guide.js";
 import { readFileSync } from "node:fs";
 import { resolveAppPath } from "../config.js";
 import { getOntologyData } from "./ontology-loader.js";
@@ -48,6 +49,10 @@ const HARNESSED_MCP_TOOLS = [
 
 export interface GenerateSkillCoverage {
   chapters: number;
+  /** 0.20.0-beta.49 (P2) — os capítulos DA fatia, para se poder nomear os que ficam fora. */
+  chapter_ids: string[];
+  /** Os capítulos do Manual que a fatia NÃO cobre — nomeados, não contados. */
+  chapters_outside: string[];
   of_total_chapters: number;
   assignments: number;
   user_stories: number;
@@ -69,6 +74,13 @@ export interface GenerateSkillOutput {
     coverage: GenerateSkillCoverage;
     provenance: {
       kg: string;
+      server: string;
+      /** 0.20.0-beta.49 (P1) — o Manual passa a ser DATADO aqui; `null` = ausente no pin. */
+      manual: { tag: string | null; version: string | null; commit: string | null; generated_at: string | null };
+      ontology: { tag: string | null; commit: string | null };
+      substrate_version: string | null;
+      /** O artefacto de texto leva a sua própria proveniência — não depende desta resposta. */
+      artifact_carries_provenance: boolean;
       content_type: "derived";
       produced_by: string;
       source_data: string;
@@ -87,9 +99,10 @@ function extractGuideSection(guide: string, heading: string): string {
 }
 
 function readAgentGuide(): string {
-  const guidePath = resolveAppPath("assets/agent-guide.md");
+  // 0.20.0-beta.24: a skill gerada leva o guia DERIVADO, não o template. Servir o
+  // template aqui reintroduziria pela porta das traseiras a lista escrita à mão.
   try {
-    return readFileSync(guidePath, "utf-8");
+    return buildAgentGuide();
   } catch {
     throw new Error("Could not read SbD-ToE agent guide from assets/agent-guide.md.");
   }
@@ -153,16 +166,77 @@ function renderSlice(
   return lines.join("\n").trim();
 }
 
-function coverageOf(guide: GetGuideByRoleOutput, totalChapters: number): GenerateSkillCoverage {
+function coverageOf(
+  guide: GetGuideByRoleOutput,
+  allChapters: readonly string[]
+): GenerateSkillCoverage {
   const checklist = guide.role_checklist ?? [];
-  const chapterIds = new Set(checklist.map((e) => e.chapter_id).filter(Boolean));
+  const chapterIds = new Set(
+    checklist.map((e) => e.chapter_id).filter((x): x is string => typeof x === "string" && x.length > 0)
+  );
   return {
     chapters: chapterIds.size,
-    of_total_chapters: totalChapters,
+    chapter_ids: [...chapterIds].sort(),
+    /*
+     * 0.20.0-beta.49 (P2) — a diferença entre dois conjuntos que já existiam no mesmo escopo.
+     * O bloco dizia «N of the manual's M chapters» debaixo de «nothing hidden» e nunca nomeava
+     * os que ficavam fora: **uma contagem não é uma declaração**, e «12 de 15» diz que faltam
+     * três e esconde quais. É o `traversal_assertion_rule` — cobertura com órfãos declarados —
+     * quebrado nas palavras do próprio programa.
+     */
+    chapters_outside: allChapters.filter((c) => !chapterIds.has(c)).sort(),
+    of_total_chapters: allChapters.length,
     assignments: guide.meta.assignmentCount,
     user_stories: checklist.length,
     checklist_items: checklist.reduce((n, e) => n + e.checklist_items.length, 0)
   };
+}
+
+/**
+ * 0.20.0-beta.49 (P1) — O ARTEFACTO DATA-SE A SI MESMO.
+ *
+ * O ficheiro que sai daqui instala-se em `.claude/agents/` e passa a viver sozinho, longe do
+ * servidor que o produziu. Até aqui não dizia de onde vinha: o frontmatter era `name` /
+ * `description` / `tools`, o corpo não levava proveniência nenhuma, e o `meta.provenance` —
+ * que nem sequer datava o Manual — viajava na resposta JSON, **que o chamador descarta no
+ * momento em que escreve o ficheiro**. A assimetria era ao contrário do que interessa: o ramo
+ * SEM role emitia um comentário com a fonte; o ramo COM role, o que se instala, não emitia
+ * nada.
+ *
+ * E há um efeito irreversível: **um artefacto instalado sem data fica sem data para sempre** —
+ * não há como datar retroactivamente um ficheiro que já está no disco de alguém.
+ *
+ * REGRA DO MÓDULO, aplicada: «Never invents versions/tags». Tudo vem do pin
+ * (`loadBundleProvenance()`) e da versão do servidor. **Um valor que o pin não traga é
+ * declarado ausente** — não se deduz, não se omite em silêncio.
+ */
+function renderProvenanceBlock(): string {
+  const p = loadBundleProvenance();
+  const MISSING = "*não declarado no pin*";
+  const v = (x: string | undefined): string => (typeof x === "string" && x.length > 0 ? `\`${x}\`` : MISSING);
+  if (p === undefined)
+    return (
+      "## Provenance\n" +
+      "**O pino do bundle não pôde ser lido** (`consumed-bundle.json` ausente ou ilegível no momento da " +
+      "geração). Este artefacto **não é datável** a partir de si próprio: não uses as suas afirmações " +
+      "como se estivessem ancoradas a uma versão do Manual — re-gera com um servidor com pino válido.\n\n" +
+      `- Servidor que gerou: ${v(servingServerVersion())}\n` +
+      `- Gerado em: \`${new Date().toISOString()}\` (UTC)\n`
+    );
+  return (
+    "## Provenance\n" +
+    "Este ficheiro é uma **projecção estrutural** do Manual SbD-ToE, congelada no momento em que foi " +
+    "gerado. Lê-se sozinho: as versões abaixo são as que o produziram, e **não se actualizam** quando o " +
+    "Manual avança. Para o refrescar, re-gera com `generate_sbd_toe_skill`.\n\n" +
+    `- **Manual:** tag ${v(p.manual.tag)} · versão ${v(p.manual.version)} · commit ${v(p.manual.commit)} · ` +
+    `publicado em ${v(p.manual.generated_at)}\n` +
+    `- **KG (bundle consumido):** ${v(p.kg.release_tag)} · sha256 ${v(p.kg.sha256)} · origem ${v(p.kg.source)}\n` +
+    `- **Substrato:** ${v(p.kg.substrate_version)} · contrato de consumo ${v(p.kg.consumer_contract_version)}\n` +
+    `- **Ontologia:** tag ${v(p.ontology.tag)} · commit ${v(p.ontology.commit)}\n` +
+    `- **Servidor que gerou:** \`@shiftleftpt/sbd-toe-mcp@${servingServerVersion()}\`\n` +
+    `- **Gerado em:** \`${new Date().toISOString()}\` (UTC)\n\n` +
+    "Um campo marcado *não declarado no pin* está ausente na origem — **não foi deduzido nem omitido**."
+  );
 }
 
 function renderCoverageBlock(
@@ -181,12 +255,27 @@ function renderCoverageBlock(
       `chapters listed by \`list_sbd_toe_chapters\` on a connected client — where ` +
       `\`select_sbd_toe_requirements\` narrows the requirements to a concrete task ` +
       `(selected[] recommendation + narrowed_out[] with reasons, never silent).`;
+  /*
+   * 0.20.0-beta.49 (P2) — os órfãos NOMEADOS, nos dois sabores.
+   *
+   * O título promete que nada está escondido, e o que estava escondido era exactamente isto.
+   * No sabor `skilled` é o que mais pesa: não há ferramenta viva para percorrer o resto, e o
+   * agente ficava a saber que lhe faltavam N capítulos sem maneira de saber quais.
+   */
+  const outside = coverage.chapters_outside;
+  const outsideBlock =
+    outside.length === 0
+      ? `\n\n**Chapters outside this slice:** none — this slice touches all ${coverage.of_total_chapters} chapters.`
+      : `\n\n**Chapters outside this slice (${outside.length} of ${coverage.of_total_chapters}), named:**\n` +
+        outside.map((c) => `- \`${c}\``).join("\n") +
+        `\n\nThey are outside the **${canonicalRole}** slice at **${riskLevel}** — not outside the manual, and ` +
+        `not irrelevant to you. A count would say ${outside.length} are missing and hide which.`;
   return (
     `## Coverage (declared — nothing hidden)\n` +
     `This is the **${canonicalRole}** slice at **${riskLevel}**: ${coverage.assignments} assignments, ` +
     `${coverage.user_stories} user stories, ${coverage.checklist_items} checklist items across ` +
     `${coverage.chapters} of the manual's ${coverage.of_total_chapters} chapters. ` +
-    `It is **not** the whole manual. ${pathToRest}`
+    `It is **not** the whole manual.${outsideBlock}\n\n${pathToRest}`
   );
 }
 
@@ -285,7 +374,9 @@ function buildRoleContent(args: {
     sliceHeading,
     slice,
     "",
-    renderCoverageBlock(canonicalRole, riskLevel, coverage, harnessed)
+    renderCoverageBlock(canonicalRole, riskLevel, coverage, harnessed),
+    "",
+    renderProvenanceBlock()
   ].join("\n");
 }
 
@@ -300,10 +391,16 @@ export function handleGenerateSbdToeSkill(args: Record<string, unknown> = {}): G
 
   // No role → original behaviour: the generic agent guide, unchanged.
   if (!roleArg) {
+    /*
+     * 0.20.0-beta.49 — este ramo já nomeava a fonte mas NÃO a versão: «source:
+     * sbd://toe/agent-guide» sem dizer de que Manual. Passa a levar o mesmo bloco de
+     * proveniência do ramo com role — o artefacto data-se, seja qual for o ramo que o produz.
+     */
     const content =
       `<!-- SbD-ToE skill content — source: sbd://toe/agent-guide (@shiftleftpt/sbd-toe-mcp) -->\n` +
       `<!-- Re-run generate_sbd_toe_skill to refresh. -->\n\n` +
-      readAgentGuide();
+      readAgentGuide() +
+      `\n\n---\n\n${renderProvenanceBlock()}\n`;
     return { content, next: generateSkillAffordances() };
   }
 
@@ -348,7 +445,7 @@ export function handleGenerateSbdToeSkill(args: Record<string, unknown> = {}): G
   }
 
   const chapters = chapterIndex();
-  const coverage = coverageOf(guideOutput, chapters.size);
+  const coverage = coverageOf(guideOutput, [...chapters.keys()]);
   const content = buildRoleContent({
     roleArg,
     canonicalRole,
@@ -361,9 +458,24 @@ export function handleGenerateSbdToeSkill(args: Record<string, unknown> = {}): G
     coverage
   }, toolPrefix, prefixProvided);
 
+  /*
+   * 0.20.0-beta.42 — o ramo POR PAPEL servia sem `next` (célula da matriz), enquanto o ramo
+   * genérico o tinha: o consumidor recebia um skill instalável e ficava sem saber o que
+   * verificar a seguir. Mesma superfície, dois ramos, contratos diferentes — a forma exacta
+   * de defeito que a matriz existe para expor.
+   */
   return {
     content,
     suggested_path: suggestedPathFor(clientType, format, `sbd-${canonicalRole}`),
+    next: [
+      {
+        intent: "O que este papel faz de facto, para contraprovar o skill gerado",
+        tool: "get_guide_by_role",
+        with: `risk_level="${riskLevel}", role="${canonicalRole}"`,
+        kind: "structural" as const
+      },
+      ...generateSkillAffordances()
+    ],
     meta: {
       role: roleArg,
       canonical_role: canonicalRole,
@@ -374,6 +486,24 @@ export function handleGenerateSbdToeSkill(args: Record<string, unknown> = {}): G
       coverage,
       provenance: {
         kg: servedKgReleaseTag(),
+        server: servingServerVersion(),
+        /*
+         * 0.20.0-beta.49 (P1) — o `meta.provenance` carregava `kg` e `server` e **não datava o
+         * Manual**: é a mesma omissão do artefacto, no mesmo sítio, com a mesma correcção. Lido
+         * do pin; um campo que o pin não traga sai `null` e não desaparece.
+         */
+        manual: {
+          tag: loadBundleProvenance()?.manual.tag ?? null,
+          version: loadBundleProvenance()?.manual.version ?? null,
+          commit: loadBundleProvenance()?.manual.commit ?? null,
+          generated_at: loadBundleProvenance()?.manual.generated_at ?? null
+        },
+        ontology: {
+          tag: loadBundleProvenance()?.ontology.tag ?? null,
+          commit: loadBundleProvenance()?.ontology.commit ?? null
+        },
+        substrate_version: loadBundleProvenance()?.kg.substrate_version ?? null,
+        artifact_carries_provenance: true,
         content_type: "derived",
         produced_by: "role_skill_projection",
         source_data:

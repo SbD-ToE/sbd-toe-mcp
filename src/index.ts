@@ -15,7 +15,7 @@ import {
   searchManualQuestion
 } from "./orchestrator/ask-manual.js";
 import { loadSystemPromptTemplate } from "./prompt/system-prompt.js";
-import { loadBundleProvenance, servedKgReleaseTag } from "./version-info.js";
+import { loadBundleProvenance, packageMaturity, servedKgReleaseTag, servingServerVersion } from "./version-info.js";
 import {
   handleGetSbdToeChapterBrief,
   handleListSbdToeChapters,
@@ -36,9 +36,23 @@ import { handleSelectRequirements } from "./tools/select-requirements.js";
 import { handleGetThreatLandscape } from "./tools/get-threat-landscape.js";
 import { handleGetGuideByRole } from "./tools/get-guide-by-role.js";
 import { handleResolveEntities } from "./tools/resolve-entities.js";
+import { handleTraceGraph } from "./tools/trace-graph.js";
+import { buildActivationVocabulary } from "./serving/activation-vocabulary.js";
+
+/**
+ * P1-C (0.20.0-beta.22) — UM vocabulário, UM contrato: o `enum` dos `concerns` nas
+ * três tools é GERADO pelo mesmo builder que produz sbd://toe/activation-vocabulary.
+ * Antes havia três posturas para o mesmo conjunto fechado (select sem enum, consult
+ * com 13 dos 24, prepare só na descrição) — sob declarative-first o vocabulário É a
+ * interface, logo a divergência era um defeito de 1ª ordem. Agora não pode derivar:
+ * se o vocabulário mudar, os schemas mudam com ele.
+ */
+const DECLARED_CONCERNS: string[] = buildActivationVocabulary().concerns.values.map((c) => String(c.value));
+const CONCERNS_VOCABULARY_NOTE =
+  `Conjunto FECHADO de ${DECLARED_CONCERNS.length} valores, gerado do mesmo vocabulário que sbd://toe/activation-vocabulary publica (com o que cada valor activa e quantos requisitos traz por nível). Valores fora do conjunto são DECLARADOS na resposta (unknown_concerns), nunca descartados em silêncio.`;
 import {
-  handlePrepareCodegenContext,
   buildCodegenInstructionsResourceContent,
+  handlePrepareCodegenContext,
   type CodegenMode
 } from "./tools/prepare-codegen-context.js";
 import {
@@ -47,6 +61,18 @@ import {
   buildSetupAgentPrompt,
   readGroundedCodegenGuide
 } from "./resources/sbd-toe-resources.js";
+import { RESOURCE_CATALOG, PROMPT_CATALOG } from "./serving/server-surface.js";
+import { loadMetrics } from "./tools/assess-implementation.js";
+import { getOntologyData } from "./tools/ontology-loader.js";
+import { buildAgentGuide } from "./serving/agent-guide.js";
+import { buildModelResource, buildQuickStart } from "./serving/model-resource.js";
+import { THREAT_ORDERING, SELECT_PAGINATION } from "./serving/behaviour-notes.js";
+import { handleGetPlaybook } from "./tools/get-playbook.js";
+import { handleGetChapterCapability } from "./tools/get-chapter-capability.js";
+import { handleExplainTopic } from "./tools/explain-topic.js";
+import { handleGetMacroProcesses } from "./tools/get-macro-processes.js";
+import { threatDomainConcerns } from "./tools/get-threat-landscape.js";
+import { reconcileNextWithBands } from "./serving/next-band-reconciliation.js";
 
 type JsonRpcId = string | number;
 
@@ -159,85 +185,7 @@ interface LogEvent {
   message: string;
 }
 
-/** The single source of the resource surface — resources/list AND the
- * read_sbd_toe_resource tool derive from THIS list (never hardcoded twice). */
-const RESOURCE_CATALOG = [
-        {
-          uri: "sbd://toe/agent-guide",
-          name: "SbD-ToE Agent Guide",
-          description:
-            "ENTRY POINT — READ THIS FIRST. Operational guide for AI agents: SbD-ToE identity (Security by Design — Theory of Everything), CONSULT/GUIDE modes, routing by SDLC phase and domain, tool selection, epistemic standards, chapter map, risk levels, identifier conventions.",
-          mimeType: "text/markdown"
-        },
-        {
-          uri: "sbd://toe/chapter-applicability/{riskLevel}",
-          name: "SbD-ToE Chapter Applicability",
-          description:
-            "Graduated chapter applicability for a risk level (L1/L2/L3): presence always, demand scales — derived from authored assignment proportionality (0.14.0).",
-          mimeType: "application/json"
-        },
-        {
-          uri: "sbd://toe/index-compact",
-          name: "SbD-ToE Index Compact",
-          description:
-            "Compact JSON index of the manual, DERIVED at read-time from the served bundle (graduated demand_by_level; no minLevel). Injectable into system prompt to eliminate exploratory discovery.",
-          mimeType: "application/json"
-        },
-        {
-          uri: "sbd://toe/ontology",
-          name: "SbD-ToE Ontology",
-          description:
-            "Full SbD-ToE ontology YAML: domain_mapping (requirement category → control domains), " +
-            "inference rules with priorities, resolution pipelines (consult/guide/threats/review), " +
-            "and entity schemas. Read once per session to understand the deterministic resolution model " +
-            "before calling consult_security_requirements, get_threat_landscape or get_guide_by_role.",
-          mimeType: "application/yaml"
-        },
-        {
-          uri: "sbd://toe/skill/{role}",
-          name: "SbD-ToE Role Skill",
-          description:
-            "Role-specialised SbD-ToE skill for a canonical role — RISK LEVEL FIXED AT L2 neste URI; " +
-            "para outro nível usa generate_sbd_toe_skill(role, risk_level=…). Same output as generate_sbd_toe_skill(role, format=skill).",
-          mimeType: "text/markdown"
-        },
-        {
-          uri: "sbd://toe/subagent/{role}",
-          name: "SbD-ToE Role Sub-agent Definition",
-          description:
-            "Installable sub-agent definition for a canonical role (default risk L2, harnessed flavour — " +
-            "grants mcp__sbd-toe__* tools). Same output as generate_sbd_toe_skill(role, format=subagent).",
-          mimeType: "text/markdown"
-        },
-        {
-          uri: "sbd://toe/codegen-instructions/{mode}",
-          name: "SbD-ToE Codegen Instructions (per mode)",
-          description:
-            "Static per-mode boilerplate of prepare_sbd_toe_codegen_context (mode: codegen, review or " +
-            "test-plan): llm_codegen_instructions slots + security_rationale_template skeleton — " +
-            "byte-identical to the detail=full inline content when assembled per the embedded rules — " +
-            "plus the detail_encoding legend for detail=standard/minimal payloads (v2 token diet). " +
-            "Referenced by codegen_instructions_ref in dieted payloads.",
-          mimeType: "application/json"
-        },
-        {
-          uri: "sbd://toe/version",
-          name: "SbD-ToE MCP Version",
-          description: "Version of the running SbD-ToE MCP server (name, version, description) plus the provenance of the served knowledge: manual {version, commit}, kg {release_tag, substrate_version, consumer_contract_version} and ontology {tag, commit}, read from the consumed-bundle pin.",
-          mimeType: "application/json"
-        },
-        {
-          uri: "sbd://toe/grounded-codegen-guide",
-          name: "SbD-ToE Grounded Codegen Guide",
-          description:
-            "Agent-facing guide for using prepare_sbd_toe_codegen_context. " +
-            "Covers workflow, branching by status (ready_for_codegen / needs_clarification / " +
-            "needs_decomposition / unsupported_scope), output discipline (cite citation_map, fill " +
-            "security_rationale, distinguish code/tests/evidence), and explicit prohibitions " +
-            "(no invented IDs, no compliance claims, no rastreabilidade-noise inside source files).",
-          mimeType: "text/markdown"
-        }
-] as const;
+
 
 /** Declared resource-read failure (never-silent): carries the JSON-RPC code. */
 /**
@@ -281,14 +229,24 @@ async function materializeResource(uri: string): Promise<{ mimeType: string; tex
     }
   }
 
+  if (uri === "sbd://toe/activation-vocabulary") {
+    return { mimeType: "application/json", text: JSON.stringify(buildActivationVocabulary(), null, 2) };
+  }
+
   if (uri === "sbd://toe/index-compact") {
     // 0.15.0 (P0-2): DERIVADO do bundle no arranque — o estático de Março morreu.
     return { mimeType: "application/json", text: JSON.stringify(buildDerivedIndexCompact(TECHNOLOGY_TO_CHAPTERS), null, 2) };
   }
 
+  if (uri === "sbd://toe/quick-start") {
+    return { mimeType: "application/json", text: JSON.stringify(buildQuickStart(), null, 2) };
+  }
+  if (uri === "sbd://toe/model") {
+    return { mimeType: "application/json", text: JSON.stringify(buildModelResource(), null, 2) };
+  }
   if (uri === "sbd://toe/agent-guide") {
     try {
-      return { mimeType: "text/markdown", text: readFileSync(resolveAppPath("assets/agent-guide.md"), "utf-8") };
+      return { mimeType: "text/markdown", text: buildAgentGuide() };
     } catch {
       throw new ResourceReadError(-32603, "Could not read SbD-ToE agent guide.");
     }
@@ -322,7 +280,68 @@ async function materializeResource(uri: string): Promise<{ mimeType: string; tex
         // Absent if the pin cannot be read; never invented.
         manual: provenance?.manual,
         kg: provenance?.kg,
-        ontology: provenance?.ontology
+        ontology: provenance?.ontology,
+        // 0.20.0-beta.21 — a SEMÂNTICA de serviço mudou nesta linha, não só a versão:
+        // para um produto que vende reprodutibilidade, mudar isto em silêncio seria a
+        // pior violação da própria promessa.
+        serving_contract: {
+          version: "v1.18-beta",
+          /*
+           * 0.20.0-beta.49 (P3) — LEGIBILIDADE, não divergência.
+           *
+           * Este número e o `consumer_contract_version` do `consumed-bundle.json` (v1.25) são
+           * DOIS CONTRATOS DIFERENTES, em eixos opostos e com donos diferentes — e a
+           * semelhança dos nomes fez um auditor ler uma divergência onde não há nenhuma.
+           */
+          axis: "downstream — o contrato pelo qual ESTE servidor SERVE selecção a quem o chama",
+          not_to_be_confused_with:
+            "`consumer_contract_version` em `consumed-bundle.json` (hoje v1.25), que é o contrato a MONTANTE: " +
+            "aquele pelo qual este servidor CONSOME o bundle publicado pelo Codex. Os dois números são " +
+            "independentes e **não se seguem um ao outro**: nenhum tem de acompanhar o outro, e o " +
+            "`alignment_policy` do pino governa o de montante. Um número maior de um lado não implica " +
+            "atraso do outro.",
+          /*
+           * 0.20.0 — IDENTIDADE E MATURIDADE, dois factos separados.
+           *
+           * Até aqui a maturidade do contrato só se lia DEDUZINDO-A do sufixo `-beta` no
+           * número de versão. Isso funcionava enquanto o pacote também era beta; no dia em
+           * que o pacote passa a estável, o mesmo sufixo passa a dizer outra coisa sem que
+           * ninguém o tenha decidido. Quando um campo carrega uma palavra com semântica,
+           * verifica-se a semântica — não se herda.
+           *
+           * O identificador NÃO se renomeia: tirar-lhe o `-beta` seria exactamente graduar o
+           * contrato, e a decisão é o contrário disso. A maturidade ganha campo próprio, ao
+           * lado, e passa a ser lida — não deduzida.
+           */
+          identity: {
+            id: "v1.18-beta",
+            is: "o NOME deste contrato de selecção: identificador opaco, comparável por igualdade. Muda quando o contrato muda.",
+            suffix_is_not_status:
+              "O `-beta` faz parte do NOME, por razões históricas. NÃO é onde se lê o estado — esse está em `maturity`, ao lado. Um identificador sem sufixo não significaria contrato estável, e este com sufixo não significa pacote beta."
+          },
+          maturity: {
+            contract: "beta",
+            package: packageMaturity(),
+            package_version: pkg.version,
+            not_derivable_from_each_other:
+              "Independentes: nem a maturidade do pacote se deduz da do contrato, nem a do contrato da do pacote — cada uma declara-se onde está. Lê os dois campos acima em vez de inferir um do outro: um pacote estável pode servir um contrato de selecção beta.",
+            why_the_contract_is_beta:
+              "A selecção mudou de comportamento há pouco: v1.17 → v1.18-beta introduziu o `needs_input`. Chamar-lhe estável antes de a mudança ter rodagem seria dar uma garantia que ainda não se pode dar. Manter-se beta é uma decisão, não um esquecimento.",
+            what_beta_means_here:
+              "A FORMA da resposta de selecção — campos, bandas, o disparo do needs_input — ainda pode mudar numa versão menor, com migração declarada, como a de v1.17 → v1.18-beta foi. Não quer dizer instável, experimental, nem sem suporte.",
+            what_it_does_not_mean:
+              "Não diz nada sobre a maturidade do pacote, do bundle servido, do Manual ou da ontologia: cada um declara a sua, e o conhecimento servido vem de releases formais, pinadas e verificadas por digest."
+          },
+          semantics: "declarative-first",
+          line: "0.20 — linha declarativa (experiência autorizada pelo programme lead 2026-09-05). Este campo NOMEIA a linha; não diz o estado dela. A maturidade está em `maturity`, acima.",
+          changed:
+            "A selecção passou a ser função APENAS do que o chamador declara (risk_level, concerns, exposure, data_sensitivity, technologies, changed_files). O `task` é contexto registado para auditoria e não influencia o resultado; sem declarações a resposta é needs_input (nunca zero, nunca adivinhado). A baseline do nível pede-se com mode='baseline'.",
+          vocabulary_resource: "sbd://toe/activation-vocabulary",
+          discover_mode:
+            "O motor inferencial anterior (casamento lexical da prosa) continua disponível em mode='discover' — exploratório, marcado na resposta, para o oráculo histórico e o estudo de paráfrase.",
+          migration:
+            "v1.17 → v1.18-beta: quem enviava só `task` recebe agora needs_input com o vocabulário e candidatos A CONFIRMAR; declarar os activadores (ou pedir mode='discover'/'baseline') restabelece uma resposta com conteúdo. Esta linha É a linha estável e serve um contrato de selecção declarado beta: as duas maturidades estão em `maturity` e não se deduzem uma da outra."
+        }
       });
       return { mimeType: "application/json", text: payload };
     } catch {
@@ -341,6 +360,48 @@ class ResourceReadError extends Error {
 
 function validResourceUris(): string {
   return RESOURCE_CATALOG.map((r) => r.uri).join(", ");
+}
+
+/**
+ * 0.20.0-beta.42 — EXEMPLOS DERIVADOS para os parâmetros de vocabulário aberto.
+ *
+ * Três superfícies não eram exercitáveis por argumentos derivados do schema — `kpi_values`,
+ * `query` e `uri` — porque o schema descrevia a FORMA e não dava um valor. É a mesma lacuna
+ * do erro que não nomeava o vocabulário: quem consome não tem como saber o que é válido.
+ * Os exemplos derivam do bundle servido e do próprio catálogo de recursos; se a derivação
+ * falhar, o campo simplesmente não sai — nunca se inventa um exemplo.
+ */
+/**
+ * 0.20.0-beta.47 — o enum de papéis vem do VOCABULÁRIO, não de uma lista à mão. Se a
+ * derivação falhar, cai nos valores legados: um enum vazio no schema seria pior do que um
+ * enum desactualizado, porque nenhum cliente conseguiria sequer chamar a tool.
+ */
+function canonicalRoleEnum(): string[] {
+  try {
+    const roles = getOntologyData().roles ?? [];
+    const ids = roles.map((r) => r.role_id).filter((x) => typeof x === "string" && x.length > 0).sort();
+    return ids.length > 0 ? ids : ["developer", "architect", "security", "devops", "manager"];
+  } catch {
+    return ["developer", "architect", "security", "devops", "manager"];
+  }
+}
+
+function derivedExamples(): { kpiValues: unknown[]; entityQuery: unknown[]; resourceUri: unknown[] } {
+  const safe = <T>(f: () => T, fallback: T): T => {
+    try {
+      return f();
+    } catch {
+      return fallback;
+    }
+  };
+  const metricId = safe(() => loadMetrics()[0]?.metric_id, undefined);
+  const requirementId = safe(() => getOntologyData().requirements[0]?.requirement_id, undefined);
+  const staticResource = RESOURCE_CATALOG.find((r) => !r.uri.includes("{"))?.uri;
+  return {
+    kpiValues: metricId ? [{ [metricId]: 85 }] : [],
+    entityQuery: requirementId ? [requirementId] : [],
+    resourceUri: staticResource ? [staticResource] : []
+  };
 }
 
 class McpRuntime {
@@ -425,11 +486,41 @@ class McpRuntime {
   }
 
   private sendResponse(id: JsonRpcId, result: unknown): void {
+    /*
+     * 0.20.0-beta.39 — a reconciliação do `next` com as bandas da própria resposta corre
+     * AQUI, no único ponto por onde todas as respostas passam: uma tool nova é coberta sem
+     * ninguém se lembrar dela, e as bandas de silêncio novas não herdam o defeito.
+     */
+    McpRuntime.reconcileToolResultPayload(result);
     this.writeMessage({
       jsonrpc: "2.0",
       id,
       result
     });
+  }
+
+  /**
+   * Um resultado de tool viaja como `content[].text` com JSON dentro. Reconcilia-se em
+   * memória e reserializa-se só quando houve retirada — o custo é uma verificação de
+   * substring nas respostas que não têm `next`.
+   */
+  private static reconcileToolResultPayload(result: unknown): void {
+    if (result === null || typeof result !== "object") return;
+    const content = (result as { content?: unknown }).content;
+    if (!Array.isArray(content)) return;
+    for (const part of content) {
+      if (part === null || typeof part !== "object") continue;
+      const entry = part as { type?: unknown; text?: unknown };
+      if (entry.type !== "text" || typeof entry.text !== "string") continue;
+      if (!entry.text.includes('"next"')) continue;
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(entry.text);
+      } catch {
+        continue; // texto que não é JSON (o `search` é prosa) — nada a reconciliar
+      }
+      if (reconcileNextWithBands(parsed)) entry.text = JSON.stringify(parsed);
+    }
   }
 
   private sendError(id: JsonRpcId | null, code: number, message: string, data?: unknown): void {
@@ -679,7 +770,7 @@ class McpRuntime {
           name: "search_sbd_toe_manual",
           title: "Search SbD-ToE Manual",
           description:
-            "Retrieves grounded context from the SbD-ToE manual using the embedded local semantic snapshot.",
+            "NÃO-NORMATIVO — leitura e orientação, NUNCA caminho para um conjunto de requisitos. Pesquisa semântica sobre os chunks publicados do manual: serve para LER e localizar passagens (e para tu, LLM, formares a tua leitura), não para decidir âmbito. O conjunto de requisitos vem de select_sbd_toe_requirements com activadores DECLARADOS (vocabulário em sbd://toe/activation-vocabulary) — o que aqui sai não selecciona nada e não deve ser citado como se fosse selecção.",
           inputSchema: {
             type: "object",
             properties: {
@@ -714,7 +805,9 @@ class McpRuntime {
           name: "answer_sbd_toe_manual",
           title: "Answer SbD-ToE Manual",
           description:
-            "Retrieves SbD-ToE manual context and requests the final answer from the client's model via MCP sampling. " +
+            "SERVE CONTEXTO PARA O TEU MODELO RESPONDER — não responde: a resposta é do modelo do cliente, via " +
+            "sampling, e o juízo é de quem pergunta. Recupera contexto do Manual e pede a resposta final ao " +
+            "modelo do cliente via MCP sampling. " +
             "Requires sampling support from the MCP client. " +
             "Without sampling, falls back to formatted retrieval output (same as search_sbd_toe_manual). " +
             "Prefer search_sbd_toe_manual for clients without sampling support.",
@@ -804,7 +897,7 @@ class McpRuntime {
           inputSchema: {
             type: "object",
             properties: {
-              query: { type: "string", minLength: 1, maxLength: 200, description: "Free text, or an exact entity id (resolved directly: match=exact_id)." },
+              query: { type: "string", minLength: 1, maxLength: 200, description: "Free text, or an exact entity id (resolved directly: match=exact_id).", examples: derivedExamples().entityQuery },
               entityType: { type: "string", description: "Filter chunks by the entity type they mention: Requirement | UserStory | Metric | Threat (aliases accepted, e.g. requirements, us, kpi). Structured records (controls, control objectives, mechanisms, artifacts) are queried with resolve_entities instead." },
               chapterId: { type: "string", description: "Filter by chapter bundle id (e.g. 06-desenvolvimento-seguro) or its numeric prefix." },
               riskLevel: { type: "string", enum: ["L1", "L2", "L3"], description: "Filter by the chunk's published risk facet; chunks without a facet are not returned (declared in the `filters` field of the result)." },
@@ -834,7 +927,8 @@ class McpRuntime {
           name: "plan_sbd_toe_repo_governance",
           title: "List SbD-ToE Manual Artefacts",
           description:
-            "Returns the list of artefacts/documents identified in the SbD-ToE manual, " +
+            "PROJECÇÃO DOS ARTEFACTOS PUBLICADOS — não governa o teu repositório: serve o que o Manual identifica, " +
+            "por capítulo, para tu decidires o que instalas. Lista de artefactos/documentos do SbD-ToE, " +
             "grouped by chapter, with risk level applicability. " +
             "Optionally filter by riskLevel (L1/L2/L3). " +
             "All data comes from the manual indices — nothing is invented. " +
@@ -867,6 +961,8 @@ class McpRuntime {
           name: "generate_sbd_toe_skill",
           title: "Generate SbD-ToE Skill Content",
           description:
+            "GERA A PARTIR DO PUBLICADO, SEM VALIDAR O TEU AMBIENTE — não instala, não configura e não verifica " +
+            "nada do teu lado: devolve o texto para TU instalares onde souberes. " +
             "Use this tool when asked to 'create a skill for SbD-ToE', 'set up instructions', " +
             "'configure this client/agent to use SbD-ToE', 'configure yourself for role X', or 'integrate SbD-ToE'. " +
             "Without arguments returns the canonical skill content from sbd://toe/agent-guide. " +
@@ -1025,16 +1121,24 @@ class McpRuntime {
           name: "assess_sbd_toe_implementation",
           title: "Assess SbD-ToE Implementation",
           description:
-            "Progress / 'how implemented am I': compares submitted KPI values against the published per-level " +
+            "SERVE OS LIMIARES PUBLICADOS APLICADOS AOS VALORES QUE DECLARASTE — a leitura é tua: não mede, não " +
+            "verifica os teus valores e não emite juízo de suficiência. Aritmética sobre dado publicado. " +
+            "Progresso auto-declarado: compara os KPI submetidos com os limiares publicados por nível " +
             "thresholds (metrics.json) → posture (below/at/above) + gaps per KPI. Stateless self-report — values " +
             "in, posture out, nothing stored; thresholds never invented; an applicable KPI with no value is " +
             "not_reported (never a pass). Use to answer 'am I compliant at L2 / where are my gaps?'.",
           inputSchema: {
             type: "object",
             properties: {
+              chapter: {
+                type: "string",
+                description:
+                  "0.20.0-beta.36 — restringe a avaliação a UM capítulo (ex.: `07-cicd-seguro`). Sem isto, avalia o Manual inteiro: 4 KPIs de um capítulo faziam o `posture` fechar sobre 95 KPIs com 91 não reportados — um veredicto que não é o da pergunta. O bloco `scope` explica sempre o denominador."
+              },
               kpi_values: {
                 type: "object",
                 description: "Map of metric_id → numeric value (e.g. {\"ARC-K01\": 85}). Non-numeric values ignored.",
+                examples: derivedExamples().kpiValues,
                 additionalProperties: { type: "number" }
               },
               risk_level: { type: "string", enum: ["L1", "L2", "L3"], description: "Target/'compliant' band." },
@@ -1052,7 +1156,8 @@ class McpRuntime {
           name: "plan_sbd_toe_rollout",
           title: "Plan SbD-ToE Rollout (MVP)",
           description:
-            "A phased rollout roadmap: the canonical lifecycle phases (phase-order) mapped to manual chapters. " +
+            "CONSULTA À SEQUÊNCIA PUBLICADA — não planeia por ti: serve a ordem das fases que o Manual publica, " +
+            "mapeada aos capítulos que cada uma atravessa. O roteiro é teu; isto é o que existe para o fazeres. " +
             "MVP — phase-ordered, the dependency DAG is deferred (declared, not faked). Grounded in the published " +
             "runtime; nothing invented. Use to answer 'in what order do we roll out SbD?'.",
           inputSchema: {
@@ -1064,6 +1169,86 @@ class McpRuntime {
               limit: { type: "number" }
             },
             required: [],
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
+          name: "get_sbd_toe_macro_processes",
+          title: "Get SbD-ToE Macro-Processes (PROGRAMA)",
+          description:
+            "LEITURA PROGRAMA (0.20.0-beta.37) — «por onde começamos e com que SEQUÊNCIA?». Serve os cinco macro-processos MP-01..05 que o Manual publica (pergunta, continuidade, invariante, dono, participantes, percurso de capítulos, indicadores, pontos de controlo, evidência esperada, proporcionalidade L1-L3) e a **ORDEM DE ADOPÇÃO publicada**. " +
+            "A ordem deriva EXCLUSIVAMENTE das arestas `dependency`: as `feedback` são realimentação e ficam FORA dela — se entrassem, os cinco macro-processos ciclariam. " +
+            "NÃO é a leitura GUIDE (que requisitos se aplicam a uma tarefa) nem a IMPL (a capacidade de um capítulo): devolver os 273 requisitos, ou um capítulo isolado, seria responder a outra pergunta. " +
+            "Limites DECLARADOS na resposta: não existe entidade «programa» (recusa de curadoria, ratificada); a travessia MP↔fase do SDLC é lacuna publicada e não se deriva; e MacroProcess, capítulo e fase são três segmentações paralelas — `traverses_bundles` é percurso, nunca contenção.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              mp_id: { type: "string", description: "Um macro-processo em detalhe (ex.: `MP-01`). Sem isto, devolve a vista de PROGRAMA: ordem de adopção, os cinco MP e os pré-requisitos." }
+            },
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
+          name: "explain_sbd_toe_topic",
+          title: "Explain SbD-ToE Topic (CONSULT)",
+          description:
+            "LEITURA CONSULT (0.20.0-beta.35) — «o que é que o Manual DIZ sobre X?», pergunta de CONHECIMENTO, sem tarefa e sem projecto. Atravessa o Manual: requisitos (com `applies_at`), ORIENTAÇÃO (práticas), PROVAS, AMEAÇAS, **ANTIPADRÕES** («o que NÃO fazer» — a metade que não tinha caminho próprio) e onde no ciclo. Distingue requisito de orientação e marca a proveniência manual-grounded. " +
+            "**`risk_level` é OPCIONAL aqui e ANOTA, nunca filtra** — uma pergunta de conhecimento não tem nível. Fronteira deliberada: o nível continua OBRIGATÓRIO na selecção (`select_sbd_toe_requirements`), no `prepare_sbd_toe_codegen_context` e na vista de capacidade, onde a pergunta é «o que se aplica ao MEU caso». " +
+            "Pede por conceito (`concern`) ou por estrutura (`category` / `chapter`).",
+          inputSchema: {
+            type: "object",
+            properties: {
+              concern: { type: "string", enum: DECLARED_CONCERNS, description: `Tópico por CONCEITO. ${CONCERNS_VOCABULARY_NOTE}` },
+              category: { type: "string", description: "Tópico por ESTRUTURA: código de categoria (ex.: `ENC`)." },
+              chapter: { type: "string", description: "Tópico por ESTRUTURA: id de capítulo (ex.: `08-iac-infraestrutura`)." },
+              risk_level: { type: "string", enum: ["L1", "L2", "L3"], description: "OPCIONAL — ANOTA que requisitos se aplicam a este nível. NÃO filtra: a resposta é a mesma sem ele." },
+              offset: { type: "number", description: "Paginação sobre os requisitos." },
+              limit: { type: "number", description: "Requisitos por página (default 20)." }
+            },
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
+          name: "get_sbd_toe_chapter_capability",
+          title: "Get SbD-ToE Chapter Capability (IMPL)",
+          description:
+            "LEITURA IMPL (0.20.0-beta.34) — «a organização quer implementar o cap. N: que capacidade precisa de ter, como sabe que está capaz, e COMO MEDE?». Publica os KPIs que o MANUAL define para o capítulo, com os `thresholds_by_level` (L1/L2/L3) como dado — é isso que distingue MEDIR de listar — mais os ARTEFACTOS que a capacidade tem de produzir. " +
+            "NÃO é a leitura GUIDE: se a pergunta é «que requisitos se aplicam a ESTA tarefa», isso é `select_sbd_toe_requirements`. A resposta declara qual das duas recebeste no campo `reading`. " +
+            "Alcançável por capítulo (`chapter`), por KPI (`metric_id`) ou por dimensão (`dimension`); `risk_level` acrescenta o alvo desse nível. Fecha o ciclo com `assess_sbd_toe_implementation`, que avalia os valores que TU medires contra estes mesmos KPIs.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              chapter: { type: "string", description: "Id do capítulo (ex.: `07-cicd-seguro`). Sem isto, devolve todos os KPIs publicados." },
+              metric_id: { type: "string", description: "Um KPI concreto (ex.: `ARC-K01`)." },
+              dimension: { type: "string", description: "Filtra por dimensão (ex.: `T-01`)." },
+              risk_level: { type: "string", enum: ["L1", "L2", "L3"], description: "Acrescenta `target_at_level`: o threshold que ESTE nível exige." },
+              offset: { type: "number", description: "Paginação sobre os KPIs." },
+              limit: { type: "number", description: "KPIs por página (default 25; 99 publicados no total)." }
+            },
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
+          name: "get_sbd_toe_playbook",
+          title: "Get SbD-ToE Cross-Check / Playbook",
+          description:
+            "CAMINHO NORMATIVO para cross-checks e playbooks (0.20.0-beta.33). Responde a «somos sujeitos ao DORA/NIS2/CRA/RGPD/AI-Act — como é que o SbD-ToE nos serve?» com o PLAYBOOK publicado pelo Manual: mapa artigo→capítulo→acção, fases com marcos e checklist de leitura, servidos com a AUTORIDADE declarada. Ao contrário do `search_sbd_toe_manual` (NÃO-NORMATIVO, leitura), esta superfície é normativa. " +
+            "Sem argumentos devolve o ÍNDICE (barato); `framework=\"DORA\"` os playbooks desse diploma; `playbook_id=…` as secções paginadas. Os EXEMPLOS ILUSTRATIVOS vêm em banda SEPARADA e nunca com o estatuto dos cross-checks. " +
+            "Framework sem cross-check publicado (ISO 27001, HIPAA, PCI-DSS, SOC2, FedRAMP, CSA STAR) devolve `status: \"no_cross_check\"` com o roadmap do próprio Manual — declarado, nunca improvisado. " +
+            "Toda a resposta traz a DELIMITAÇÃO: o SbD-ToE não é uma norma, e implementá-lo não é conformidade.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              framework: { type: "string", description: "Código ou id do framework (DORA, NIS2, CRA, RGPD, AI-ACT, ENISA-CSA; ou EXT-DORA…). Sem isto, devolve o índice completo." },
+              playbook_id: { type: "string", description: "Id do playbook para ler as SECÇÕES (ex.: `OVR-DORA-playbook`). Os ids vêm do índice." },
+              kind: { type: "string", enum: ["normative_cross_check", "implementation_playbook", "convergence_note", "illustrative_example", "illustrative_index"], description: "Filtra o índice por tipo." },
+              offset: { type: "number", description: "Paginação sobre as secções do playbook." },
+              limit: { type: "number", description: "Secções por página (default 10; 450 secções publicadas no total)." }
+            },
             additionalProperties: false
           },
           annotations: { readOnlyHint: true }
@@ -1125,9 +1310,25 @@ class McpRuntime {
               },
               projectRole: {
                 type: "string",
-                enum: ["developer", "architect", "security", "devops", "manager"],
+                /*
+                 * 0.20.0-beta.47 (R1) — o enum passa a ser o VOCABULÁRIO PUBLICADO.
+                 *
+                 * Oferecia cinco valores legados dos quais só o `developer` coincidia com um
+                 * papel canónico; os outros quatro devolviam vista vazia, e desde a b.41 a
+                 * própria resposta os chamava LEGADO. O schema contradizia a banda. Continuam
+                 * ACEITES — aditivo, nada parte — mas deixam de ser oferecidos.
+                 *
+                 * E a descrição dizia «Informational only — does not affect the returned
+                 * scope», o que é FALSO: o papel produz a vista `role_view` por capítulo.
+                 */
+                enum: canonicalRoleEnum(),
                 description:
-                  "User role in the project. Informational only — does not affect the returned scope."
+                  "Papel canónico do vocabulário publicado. **AFECTA a resposta**: produz a vista `role_view` " +
+                  "por capítulo (as user stories atribuídas a este papel) — não altera é a activação de " +
+                  "capítulos/controlos, que deriva do `riskLevel` e das `technologies`. Aliases publicados em " +
+                  "`roles.json` são aceites e a resposta declara a resolução em `role_vocabulary`. Os valores " +
+                  "legados desta tool (`architect`, `security`, `manager`) continuam aceites mas NÃO são papéis " +
+                  "do vocabulário: devolvem vista vazia, declarada."
               }
             },
             required: ["riskLevel"],
@@ -1148,7 +1349,7 @@ class McpRuntime {
           inputSchema: {
             type: "object",
             properties: {
-              uri: { type: "string", minLength: 1, description: "Resource URI (see the valid list in the tool description; templated URIs take the concrete value in place of {…})." },
+              uri: { type: "string", minLength: 1, description: "Resource URI (see the valid list in the tool description; templated URIs take the concrete value in place of {…}).", examples: derivedExamples().resourceUri },
               slot: { type: "string", description: "0.15.0: para recursos JSON com slots (codegen-instructions): devolve só o slot pedido; slot desconhecido ⇒ erro com a lista de slots." },
               char_offset: { type: "number", description: "0.15.0: paginação por caracteres sobre o texto do recurso (coverage + size_estimate sempre)." },
               char_limit: { type: "number", description: "Máx. caracteres por página (default: texto completo)." }
@@ -1183,24 +1384,53 @@ class McpRuntime {
           name: "select_sbd_toe_requirements",
           title: "Select SbD-ToE Requirements (MP1)",
           description:
-            "START HERE — para qualquer tarefa concreta esta é a 1ª tool. Arranque: lê sbd://toe/agent-guide (read_sbd_toe_resource); setup_sbd_toe_agent é um PROMPT MCP — clientes sem prompts (p.ex. Desktop) não o expõem: segue directo por aqui. ACTIVADORES ESTRUTURADOS são a via primária de estabilidade — preenche task + exposure + data_sensitivity + stack (+ changed_files) a partir do enunciado, sem léxico; concerns declarados REFORÇAM (a task descobre; ver basis/lexical_dominance_warning). The MP1 selection operation (Classificar → Seleccionar): which requirements apply to THIS task in THIS " +
+            "START HERE — para qualquer tarefa concreta esta é a 1ª tool. Arranque: lê sbd://toe/agent-guide (read_sbd_toe_resource); setup_sbd_toe_agent é um PROMPT MCP — clientes sem prompts (p.ex. Desktop) não o expõem: segue directo por aqui. DECLARATIVO PRIMEIRO (contrato v1.18-beta, linha 0.20): TU tens o contexto — lê o pedido, o código e a conversa e DECLARA o que interpretaste (risk_level, concerns, exposure, data_sensitivity, technologies, changed_files). EU NÃO INTERPRETO PROSA: respondo com o que o KG sabe sobre o declarado, mais as adjacências do grafo, de forma reproduzível. Vocabulário fechado em sbd://toe/activation-vocabulary. O `task` fica REGISTADO para auditoria e NÃO influencia o resultado; sem nenhuma declaração devolvo needs_input com o vocabulário e candidatos A CONFIRMAR (nunca adivinho, nunca devolvo zero em silêncio); a baseline do nível pede-se explicitamente (mode='baseline'); o motor inferencial antigo fica em mode='discover' (exploratório). The MP1 selection operation (Classificar → Seleccionar): which requirements apply to THIS task in THIS " +
             "context. Composes the reference semantics the published ontology declares — baseline (cap. 02 base " +
-            "catalogue, by risk level) ∪ domain chapters activated by the context (changed_files, technologies, stack, " +
-            "task) ⊕ regulatory overlay (extend) — then narrows deterministically by the task's declared signals. " +
-            "Returns BOTH bands: selected[] (each with its selection_trace: source/trigger/score) and narrowed_out[] " +
-            "(eligible-without-signal, grouped by category, with reason) — never silent. Paginated. " +
+            "catalogue, by risk level) ∪ domain chapters activated by the DECLARED activators (concerns, exposure, " +
+            "data_sensitivity, technologies, changed_files) ∪ the categories the published vocabulary promises " +
+            "⊕ regulatory overlay (extend) — then narrows deterministically by those same declarations. The task " +
+            "text is NEVER an activator in declarative mode (it is recorded context; it is only an engine in " +
+            "mode='discover'). Returns the bands: selected[] (each with its selection_trace: source/trigger/score), " +
+            "narrowed_out[] (eligible-without-signal, grouped by category, with reason), excluded_by_level[] and " +
+            "out_of_scope_chapters (what no declaration activated, by chapter and count, with how to bring it in) — " +
+            "never silent, and the SCOPE of that promise is the universe, not just the baseline. Paginated. " +
+            SELECT_PAGINATION + " " +
             "All data from the published deterministic runtime bundle — nothing is invented.",
           inputSchema: {
             type: "object",
             properties: {
               risk_level: { type: "string", enum: ["L1", "L2", "L3"], description: "Application risk level (drives the baseline)." },
-              task: { type: "string", description: "The task being performed — drives the narrowing signals (verbs/objects, PT/EN)." },
-              stack: { type: "string", description: "Tech stack hint (e.g. 'Node.js/Express', 'Terraform')." },
+              chapters: {
+                type: "array",
+                items: { type: "string" },
+                description:
+                  "FORMA B — pedir por ESTRUTURA (0.20.0-beta.30). Ids de capítulo do catálogo publicado (`list_sbd_toe_chapters`), ex.: [\"14-governanca-contratacao\"]. Declaração VERDADEIRA e verificável: não depende de existir um atalho de `concerns` nem de inventar `changed_files`. Mesmas bandas, mesmo traço (`layer: \"declared_structure\"`), mesmos denominadores. Um valor que o catálogo não conhece vem em `unknown_structural`."
+              },
+              categories: {
+                type: "array",
+                items: { type: "string" },
+                description:
+                  "FORMA B — pedir por ESTRUTURA (0.20.0-beta.30). Códigos de categoria (o prefixo dos ids: `AUT-001` → `AUT`), ex.: [\"GOV\"]. Para quando queres exactamente uma família de requisitos e não um agrupamento pré-cozinhado. Ver `sbd://toe/model` para a lista e o que cada uma cobre."
+              },
+              detail: {
+                type: "string",
+                enum: ["full", "standard", "minimal"],
+                description:
+                  "Nível de SERIALIZAÇÃO da resposta (0.20.0-beta.26; default `full` = comportamento anterior, byte-idêntico). `standard` e `minimal` movem as justificações DISTINTAS do `selection_trace` para `selection_trace_legend` e deixam cada item a referi-las em `trace` — medido: −40% e −48% de payload numa selecção de 115 requisitos (12 justificações distintas para 115 entradas), com o MESMO conjunto de ids. Dieta de serialização, nunca de conteúdo: nenhum id e nenhuma justificação se perdem. `minimal` elide ainda `type` e `source_chapter` (deriváveis)."
+              },
+              task_context: { type: "string", description: "CONTEXTO REGISTADO (auditoria): o enunciado da tarefa. NOME CANÓNICO desde 0.20.0-beta.24 — um campo chamado `task` convidava a ser o motor, e não é: NÃO influencia a selecção no modo declarativo. Alias `task` continua aceite (aditivo, nunca renomeámos nada); em mode='discover' o texto é motor e `task` é o nome a usar." },
+              task: { type: "string", description: "ALIAS de `task_context` (compatibilidade). Em mode='discover' é o MOTOR (casamento lexical, exploratório); no modo declarativo é apenas contexto registado." },
+              mode: { type: "string", enum: ["declarative", "baseline", "discover"], description: "declarative (default): responde ao DECLARADO; sem declarações devolve needs_input com vocabulário e candidatos a confirmar. baseline: baseline completa do nível, por pedido EXPLÍCITO (nunca fallback). discover: motor inferencial histórico (casamento lexical da prosa), exploratório — investigação e estudo de paráfrase." },
+              stack: { type: "string", description: "Texto livre da stack. No modo declarativo só conta quando traz, como TOKEN EXACTO, um valor de `technologies` (normalizar o declarado é legítimo; adivinhar prosa não). Preferir `technologies`." },
               exposure: { type: "string", enum: ["local", "internal", "authenticated", "public"], description: "Declared activator: authenticated/public activate auth+logging (+api/validation/architecture for public)." },
               data_sensitivity: { type: "string", enum: ["low", "personal", "regulated", "secrets"], description: "Declared activator: personal/regulated activate encryption+validation+logging." },
-              concerns: { type: "array", items: { type: "string" }, description: "Explicit concerns (full WP5 lexicon incl. agents)." },
-              changed_files: { type: "array", items: { type: "string" }, description: "Changed paths — activate domain chapters via the review-scope path map." },
-              technologies: { type: "array", items: { type: "string" }, description: "Technology hints (containers, kubernetes, iac, ci-cd, sca-sbom, sast, dast, monitoring) — activate domain chapters." },
+              concerns: {
+                type: "array",
+                items: { type: "string", enum: DECLARED_CONCERNS },
+                description: `DECLARADOS por ti a partir da tua leitura do pedido. ${CONCERNS_VOCABULARY_NOTE} Somam activação, não restringem.`
+              },
+              changed_files: { type: "array", items: { type: "string" }, description: "Caminhos reais do repositório — activam capítulos pela TABELA de padrões de path publicada (sbd://toe/activation-vocabulary), não por interpretação do nome." },
+              technologies: { type: "array", items: { type: "string" }, description: "Conjunto FECHADO (containers, kubernetes, iac, ci-cd, sca-sbom, sast, dast, monitoring, jwt) — activação por TABELA publicada, não por semelhança de texto; `jwt` aciona a regra nomeada SES-008. Ver sbd://toe/activation-vocabulary." },
               regulatory_frameworks: { type: "array", items: { type: "string" }, description: "Overlay frameworks to EXTEND with (e.g. 'EXT-AI-ACT')." },
               include_regulatory_overlay: { type: "boolean", description: "When true, resolves overlay obligations (operator extend; replace awaits ADR 0014)." },
               offset: { type: "integer", minimum: 0, description: "Pagination offset over selected[]." },
@@ -1233,12 +1463,15 @@ class McpRuntime {
                 type: "array",
                 items: {
                   type: "string",
-                  enum: ["auth", "logging", "validation", "api", "config", "integrity", "distribution", "ide", "requirements", "architecture", "iac", "encryption", "agents"]
+                  enum: DECLARED_CONCERNS
                 },
                 // 0.15.1 (item 7): re-avaliado POR MEDIÇÃO — 5 concerns ≈4,3k tk (payload manda,
                 // não a contagem); recomendação de ensino continua ≤3; sem corte no servidor.
+                // 0.20.0-beta.22 (P1-C): o enum passou a ser GERADO do vocabulário (eram 13 de 24);
+                // o maxItems mantém-se — é um limite de PAYLOAD medido, não do vocabulário — e é
+                // declarado como tal na descrição, para não se confundir com o conjunto fechado.
                 maxItems: 5,
-                description: "Optional concern domains to narrow scope (intersects with risk-level filter, does not replace). 'agents' = AI-agent / automation governance catalogue (REQ-AGN-001…004)."
+                description: `Concern domains DECLARADOS (intersecta com o filtro de nível, não o substitui). ${CONCERNS_VOCABULARY_NOTE} O \`maxItems: 5\` NÃO é um limite do vocabulário: é um tecto de PAYLOAD medido (5 concerns ≈4,3k tk) — o ensino recomenda ≤3.`
               },
               exposure: {
                 type: "string",
@@ -1265,6 +1498,17 @@ class McpRuntime {
           name: "get_threat_landscape",
           title: "Get SbD-ToE Threat Landscape",
           description:
+            `ROTEAMENTO ≠ COBERTURA (0.20.0-beta.29): aceita os ${DECLARED_CONCERNS.length} concerns do vocabulário sem erro, mas só ` +
+            `${threatDomainConcerns().length} têm capítulo de ameaças PRÓPRIO — ${threatDomainConcerns().join(", ")}. ` +
+            `Para os outros ${DECLARED_CONCERNS.length - threatDomainConcerns().length} as ameaças chegam pelos capítulos onde se DEFINEM os controlos que o concern activa: ` +
+            "são reais e do âmbito activado, mas NÃO são «as ameaças deste domínio». A resposta declara-o em `routing_basis` " +
+            "(`domain_chapter` | `activated_controls`) — e a tabela acima diz-to ANTES de gastares a chamada. " +
+            "Em detail='standard'/'minimal' os nomes e ids dos controlos vêm por REFERÊNCIA à `associated_control_legend` — a promessa de campos completos é do detail='full'. " +
+            // 0.20.0-beta.31: a frase da ORDEM vem da mesma constante que a nota da resposta
+            // usa. Enquanto foram dois textos, divergiram duas versões (o `meta.note` ficou a
+            // dar o conselho oposto ao correcto). A guarda em behaviour-notes.test.ts vigia-o.
+            THREAT_ORDERING + " " +
+            "Qualquer outro concern é VÁLIDO e tem requisitos, mas não é roteável AQUI: vem declarado em `unsupported_concerns`, e se TODOS os declarados forem não-roteáveis a resposta é `needs_input` em vez de um payload cheio de ameaças de governação sem relação com o pedido. " +
             "Deterministic threat resolution for an application context using the SbD-ToE ontology threats pipeline. " +
             "Returns threats from the published runtime bundle relevant to the active requirement/chapter scope " +
             "(the defining chapters of activated controls count as in-scope), with structural mitigation confidence, " +
@@ -1275,6 +1519,12 @@ class McpRuntime {
           inputSchema: {
             type: "object",
             properties: {
+              detail: {
+                type: "string",
+                enum: ["full", "standard", "minimal"],
+                description:
+                  "Nível de SERIALIZAÇÃO (0.20.0-beta.28; default `full` = byte-idêntico ao anterior, mantém `associated_control_ids`/`associated_control_names` como o contrato v1.14 §1.21 os publica). `standard`/`minimal` trocam-nos por referências + `associated_control_legend` — medido −50% do payload (os mesmos 13 nomes vinham repetidos verbatim em cada ameaça). Dedup de serialização: nada se perde."
+              },
               risk_level: {
                 type: "string",
                 enum: ["L1", "L2", "L3"],
@@ -1284,9 +1534,9 @@ class McpRuntime {
                 type: "array",
                 items: {
                   type: "string",
-                  enum: ["auth", "logging", "validation", "api", "config", "integrity", "distribution", "ide", "requirements", "architecture", "iac", "encryption", "agents"]
+                  enum: DECLARED_CONCERNS
                 },
-                description: "Optional concern domains to narrow which chapters are in scope ('agents' = AI-agent governance, harmonizado com consult)."
+                description: "Optional concern domains to narrow which chapters are in scope ('agents' = AI-agent governance, harmonizado com consult; enum gerado do vocabulário)."
               },
               offset: { type: "number", description: "Página de threats (0.15.0): índice inicial; ver coverage.nextOffset." },
               limit: { type: "number", description: "Máx. threats por página (default 25). coverage{total,hasMore} + size_estimate sempre presentes." }
@@ -1416,10 +1666,51 @@ class McpRuntime {
           annotations: { readOnlyHint: true }
         },
         {
+          name: "trace_sbd_toe_graph",
+          title: "Trace SbD-ToE Ontology Graph",
+          description:
+            "Curated multi-hop traversal over the AppSec Core v1 relation graph (slices, control " +
+            "objectives, mechanisms, practices). Answers traceability questions the high-level tools " +
+            "do not expose directly. Pick a `lens`: " +
+            "'slice_implementation' (a slice -> its control objectives -> the mechanisms that implement " +
+            "and practices that realize them); " +
+            "'objective_realization' (a control objective -> its mechanisms + practices); " +
+            "'mechanism_provenance' (a mechanism/practice -> the objectives it serves -> their slices). " +
+            "Optionally scope with `anchor` (an entity id). Results are deterministic and paginated " +
+            "(total + cursor; never silently truncated). All edges from the published deterministic " +
+            "runtime — nothing is invented.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              lens: {
+                type: "string",
+                description:
+                  "Traversal lens. slice_implementation: slice -> objectives -> mechanisms/practices. " +
+                  "objective_realization: objective -> mechanisms/practices. " +
+                  "mechanism_provenance: mechanism/practice -> objectives -> slices.",
+                enum: ["slice_implementation", "objective_realization", "mechanism_provenance"]
+              },
+              anchor: {
+                type: "string",
+                description:
+                  "Optional entity id to scope the traversal (a slice id for slice_implementation, a " +
+                  "control objective id for objective_realization, a mechanism/practice id for " +
+                  "mechanism_provenance). Omit to traverse the whole graph."
+              },
+              page: { type: "number", description: "0-based page index. Default: 0." },
+              pageSize: { type: "number", description: "Rows per page. Default: 50, max: 200." }
+            },
+            required: ["lens"],
+            additionalProperties: false
+          },
+          annotations: { readOnlyHint: true }
+        },
+        {
           name: "prepare_sbd_toe_codegen_context",
           title: "Prepare SbD-ToE Grounded Codegen Context",
           description:
-            "Prepares deterministic, bite-sized grounded context for a downstream LLM to generate, " +
+            "MONTA CONTEXTO, NÃO AGE — não escreve, não altera e não valida o teu código: reúne o contexto " +
+            "determinístico e citável para TU gerares. Contexto grounded, em porções, para um LLM a jusante gerar, " +
             "review or plan tests for code. This tool DOES NOT generate code and DOES NOT edit files. " +
             "It runs a scope gate (rejecting vague or overly broad asks), an auditable semantic " +
             "activation step (explicit concerns, single-token lexicon, compound phrases such as " +
@@ -1429,9 +1720,13 @@ class McpRuntime {
             "Returns one of four statuses: ready_for_codegen, needs_clarification, needs_decomposition, " +
             "unsupported_scope. On ready_for_codegen the output carries activation_trace (with score, " +
             "source and reason), activated_scope, g2_context, manual_grounding, regulatory_overlay, " +
-            "citation_map, completeness_report (incl. evidence-pattern relevance-cap metrics), " +
+            "citation_map, completeness_report (incl. as métricas do cap de evidence_patterns — o cap é por PERTENÇA ao âmbito, não por relevância), " +
             "llm_codegen_instructions and security_rationale_template — with provenance for each section. " +
-            "Evidence patterns are ranked by relevance to the activated scope and capped (default 25) so " +
+            "Evidence patterns are ordered by MEMBERSHIP of the activated scope — first those whose "
+            + "`maps_to_requirement_id` is a requirement of the activated scope, then those of a direct "
+            + "control, then of a derived control; WITHIN each tier the order is by id, which is NOT a "
+            + "ranking: two patterns of the same tier are equally in scope and the id only makes the cut "
+            + "deterministic. Capped (default 25) so " +
             "the LLM context stays manageable; the dropped patterns are listed in debug.rejected_candidates " +
             "when debug=true. No canonical IDs are ever invented; names are surfaced only when " +
             "manual_rastreabilidade publishes them.",
@@ -1469,12 +1764,8 @@ class McpRuntime {
               },
               concerns: {
                 type: "array",
-                items: { type: "string" },
-                description:
-                  "Explicit concerns to activate. Lexicon: auth, logging, validation, api, config, " +
-                  "integrity, distribution, ide, requirements, architecture, iac, encryption, secrets, " +
-                  "build, supply_chain, testing, threat_modeling, monitoring, release, deployment, integration. " +
-                  "Unknown values are rejected (visible in debug.rejected_candidates)."
+                items: { type: "string", enum: DECLARED_CONCERNS },
+                description: `Concerns DECLARADOS. ${CONCERNS_VOCABULARY_NOTE}`
               },
               changed_files: {
                 type: "array",
@@ -1493,32 +1784,58 @@ class McpRuntime {
                 description:
                   "When true (and overlay is published), enriches the response with regulatory_overlay context."
               },
+              technologies: {
+                type: "array",
+                items: { type: "string" },
+                description:
+                  "Tecnologias DECLARADAS do vocabulário fechado (containers, kubernetes, iac, ci-cd, sca-sbom, sast, dast, monitoring, jwt) — activam capítulos por TABELA publicada em sbd://toe/activation-vocabulary. Preferir a `stack` em texto livre."
+              },
+              selection_mode: {
+                type: "string",
+                enum: ["declarative", "discover"],
+                description:
+                  "Semântica da SELECÇÃO (não confundir com `mode`, que é codegen/review/test-plan). declarative (default, contrato v1.18-beta): o conjunto vem do que DECLARASTE (concerns/exposure/data_sensitivity/technologies/changed_files) — sem declarações devolvo needs_input com o vocabulário; o `task` serve para grounding/citações e auditoria, não para escolher requisitos. discover: motor inferencial histórico (a prosa activa), exploratório."
+              },
               detail: {
                 type: "string",
                 enum: ["ultrathin", "minimal", "standard", "full"],
                 description:
-                  "Response encoding level (v2 token diet, ported from the 0.20 beta line). 0.19.4: níveis dieted têm TECTO de requisitos por chamada — minimal 78, standard 81, ultrathin 86 (derivados da medição ~68/~68/~29 tk/req vs promessas 8450/9200/4840 tk); acima ⇒ needs_decomposition c/ requirement_ceiling e divisão ensinada; 'full' sem tecto (promessa = completude). 'full' (default) returns " +
-                  "the classic payload, byte-identical to previous releases. 'standard'/'minimal' return the SAME " +
-                  "citable ID set with a deduplicated encoding: inverted `citations` replaces `citation_map`, " +
-                  "`manual_grounding` is grouped, derivable fields are elided per the `provenance_legend`/resource " +
-                  "legend, and `g2_context.relations` is replaced by `g2_context.relations_ref` (set " +
-                  "include_relations=true to keep relations inline). Additionally: evidence_patterns are capped " +
-                  "(deterministic prefix; counts + rest-reference in completeness_report), llm_codegen_instructions + " +
-                  "security_rationale_template move to the MCP resource sbd://toe/codegen-instructions/{mode}, " +
-                  "activation_trace is included only with debug=true (activation_trace_ref keeps the count), and " +
-                  "requirements + direct controls carry the verbatim published `description`. Nothing is silently " +
-                  "dropped. 'minimal' keeps the SAME complete activated scope and trims only traceability " +
-                  "serialization (evidence cap 5, minimal manual_grounding). 'ultrathin' additionally drops the " +
-                  "published descriptions (executable activated_scope.descriptions_ref) and inlines 0 evidence " +
-                  "patterns (counts + rest-ref)."
+                  "Response encoding level (v2 token diet). 'full' (default) returns the classic payload, " +
+                  "Níveis dieted têm TECTO de requisitos por chamada — minimal 78, standard 81, " +
+                  "ultrathin 86 (derivados da medição ~68/~68/~29 tk/req vs promessas " +
+                  "8450/9200/4840 tk); acima ⇒ needs_decomposition c/ requirement_ceiling e divisão " +
+                  "ensinada; 'full' sem tecto (promessa = completude). " +
+                  "byte-identical to previous releases. 'standard'/'minimal' return the SAME citable ID set " +
+                  "with a deduplicated encoding: inverted `citations` (run-length source_data + ids_from " +
+                  "payload paths) replaces `citation_map`, `manual_grounding` is grouped, per-item `source` " +
+                  "and other derivable fields (requirement category, entity_type/slice_family, " +
+                  "relevance_score) are elided per the `provenance_legend`/resource legend, and " +
+                  "`g2_context.relations` is replaced by `g2_context.relations_ref` — executable " +
+                  "trace_sbd_toe_graph {lens, anchor} calls (set include_relations=true to keep relations " +
+                  "inline instead). Additionally at 'standard'/'minimal': evidence_patterns are capped " +
+                  "(deterministic prefix; counts + rest-reference in completeness_report), " +
+                  "llm_codegen_instructions + security_rationale_template move to the MCP resource " +
+                  "sbd://toe/codegen-instructions/{mode} (see codegen_instructions_ref), activation_trace is " +
+                  "included only with debug=true (activation_trace_ref keeps the count), and requirements + " +
+                  "direct controls carry the verbatim published `description`. Nothing is silently dropped. " +
+                  "'minimal' keeps the SAME complete activated scope as 'standard' (no ranking/subsetting) " +
+                  "and trims only traceability serialization: evidence_patterns cap 5 (vs 10) and " +
+                  "manual_grounding as counts + shared manual_commit_sha + executable groups_ref " +
+                  "(same input, detail='standard'). 'ultrathin' goes one level below 'minimal' with the same " +
+                  "rules (complete activated set, nothing id-only, never silent): requirements/controls keep " +
+                  "id+name(+type/domain/control_type/confidence) but drop the published description " +
+                  "(executable activated_scope.descriptions_ref, detail='minimal'), evidence_patterns are 0 " +
+                  "inline (counts + rest-ref to detail='minimal'), manual_grounding is " +
+                  "{total_entries, manual_commit_sha, groups_ref} and completeness_report diagnostics become " +
+                  "exact counts (+ executable ref)."
               },
               include_relations: {
                 type: "boolean",
                 description:
-                  "When true at detail='standard'/'minimal', keeps g2_context.relations inline (dieted) instead of " +
-                  "the relations_ref reference. Default false. Ignored at detail='full'. NOTE (stable line): the " +
-                  "trace_sbd_toe_graph tool that executes relations_ref lenses ships on the 0.20 beta line — on this " +
-                  "line use include_relations=true to keep the edges inline."
+                  "Escape hatch for clients that cannot make a second call (v2 token diet). When true at " +
+                  "detail='standard'/'minimal', keeps g2_context.relations inline (dieted: no per-item source) " +
+                  "instead of the relations_ref reference. Default false. Ignored at detail='full' (full always " +
+                  "carries relations inline, byte-identical to previous releases)."
               },
               debug: {
                 type: "boolean",
@@ -1535,94 +1852,11 @@ class McpRuntime {
   }
 
   private getPromptDefinition(): Record<string, unknown> {
-    return {
-      name: "ask_sbd_toe_manual",
-      title: "Ask SbD-ToE Manual",
-      description:
-        "MCP prompt to guide the AI chat to answer questions about the SbD-ToE manual with grounding.",
-      arguments: [
-        {
-          name: "question",
-          description: "Question about the SbD-ToE manual.",
-          required: true
-        }
-      ]
-    };
+    return PROMPT_CATALOG[0] as Record<string, unknown>;
   }
 
   private handlePromptsList(request: JsonRpcRequest): void {
-    this.sendResponse(request.id, {
-      prompts: [
-        this.getPromptDefinition(),
-        {
-          name: "setup_sbd_toe_agent",
-          title: "Setup SbD-ToE Agent",
-          description:
-            "START HERE — entry point (2ª chamada, após leres sbd://toe/agent-guide): MCP PROMPT (clientes sem suporte de prompts não o expõem — alternativa: activadores estruturados directos no select) to configure an agent with SbD-ToE manual context and rules for a given risk level.",
-          arguments: [
-            {
-              name: "riskLevel",
-              description: "Project risk level: L1, L2 or L3.",
-              required: true
-            },
-            {
-              name: "projectRole",
-              description: "Project role or description (optional).",
-              required: false
-            }
-          ]
-        },
-        {
-          name: "prepare_grounded_codegen",
-          title: "Prepare Grounded Codegen (SbD-ToE)",
-          description:
-            "MCP prompt that bundles the grounded-codegen guide with a user task and instructs the " +
-            "agent to call prepare_sbd_toe_codegen_context before producing code. Forces citation of " +
-            "citation_map IDs, fills security_rationale_template, distinguishes code/tests/evidence, " +
-            "blocks compliance claims, and routes needs_clarification / needs_decomposition / " +
-            "unsupported_scope to user dialog instead of silent guessing.",
-          arguments: [
-            {
-              name: "task",
-              description: "Concrete coding task (e.g. 'Add payload validation to PATCH /users/:id/email').",
-              required: true
-            },
-            {
-              name: "mode",
-              description: "codegen | review | test-plan. Defaults to codegen.",
-              required: false
-            },
-            {
-              name: "riskLevel",
-              description: "Project risk level: L1, L2 or L3.",
-              required: false
-            },
-            {
-              name: "concerns",
-              description:
-                "Optional explicit concerns (comma-separated string or array). Otherwise inferred by the activation engine.",
-              required: false
-            },
-            {
-              name: "stack",
-              description: "Stack hint (e.g. 'Node.js/Express'). Informational.",
-              required: false
-            },
-            {
-              name: "regulatoryFrameworks",
-              description:
-                "Optional regulatory framework short codes or IDs (e.g. 'GDPR', 'EXT-DORA'). Comma-separated string or array.",
-              required: false
-            },
-            {
-              name: "includeRegulatoryOverlay",
-              description: "When true, asks the tool to surface regulatory overlay context.",
-              required: false
-            }
-          ]
-        }
-      ]
-    });
+    this.sendResponse(request.id, { prompts: [...PROMPT_CATALOG] });
   }
 
   private handlePromptGet(request: JsonRpcRequest): void {
@@ -2160,6 +2394,34 @@ class McpRuntime {
           });
           return;
         }
+        case "get_sbd_toe_macro_processes": {
+          const result = handleGetMacroProcesses(args);
+          this.sendResponse(request.id, {
+            content: [{ type: "text", text: JSON.stringify(result) }]
+          });
+          return;
+        }
+        case "explain_sbd_toe_topic": {
+          const result = handleExplainTopic(args);
+          this.sendResponse(request.id, {
+            content: [{ type: "text", text: JSON.stringify(result) }]
+          });
+          return;
+        }
+        case "get_sbd_toe_chapter_capability": {
+          const result = handleGetChapterCapability(args);
+          this.sendResponse(request.id, {
+            content: [{ type: "text", text: JSON.stringify(result) }]
+          });
+          return;
+        }
+        case "get_sbd_toe_playbook": {
+          const result = handleGetPlaybook(args);
+          this.sendResponse(request.id, {
+            content: [{ type: "text", text: JSON.stringify(result) }]
+          });
+          return;
+        }
         case "map_sbd_toe_regulatory_activation": {
           const result = handleMapRegulatoryActivation(args);
           this.sendResponse(request.id, {
@@ -2227,6 +2489,7 @@ class McpRuntime {
               size_estimate: { chars: text.length, approx_tokens: Math.ceil(text.length / 4) },
               provenance: {
                 kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
                 content_type: "canonical" as const,
                 produced_by: "resources_read_mirror",
                 source_data: uriArg,
@@ -2318,6 +2581,20 @@ class McpRuntime {
         }
         case "resolve_entities": {
           const result = handleResolveEntities(args);
+          this.sendResponse(request.id, {
+            content: [{ type: "text", text: JSON.stringify(result) }]
+          });
+          await this.log("info", {
+            event_type: "tool.call",
+            outcome: "succeeded",
+            duration_ms: Date.now() - startedAt,
+            ...metadata,
+            message: "Tool invocation completed"
+          });
+          return;
+        }
+        case "trace_sbd_toe_graph": {
+          const result = handleTraceGraph(args);
           this.sendResponse(request.id, {
             content: [{ type: "text", text: JSON.stringify(result) }]
           });

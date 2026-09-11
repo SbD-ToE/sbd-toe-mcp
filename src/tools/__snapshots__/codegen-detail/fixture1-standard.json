@@ -3,6 +3,7 @@
   "mode": "codegen",
   "input_echo": {
     "task": "Adicionar validação de payload e autenticação ao endpoint POST /users/:id/email",
+    "task_role": "recorded_context",
     "risk_level": "L2",
     "mode": "codegen",
     "detail": "standard"
@@ -12,7 +13,7 @@
     "note": "activation_trace elided at detail=standard/minimal — re-call with debug=true to include it (always inline at detail=full)."
   },
   "provenance_legend": {
-    "note": "Deduplicated encoding (detail=standard/minimal): per-item `source` fields are elided (every list is source-homogeneous), requirement `category` = requirement_id category segment (the one before the number: AUT-003→AUT, REQ-AGN-001→AGN), g2_context entity lists are grouped as {slice_id: {entity_id: name|null}}, and citations ids are referenced via ids_from payload paths. Full legend: MCP resource sbd://toe/codegen-instructions/{mode}, section detail_encoding."
+    "note": "Deduplicated encoding (detail=standard/minimal): per-item `source` fields are elided (every list is source-homogeneous), requirement `category` = requirement_id category segment (the one before the number: AUT-003→AUT, REQ-AGN-001→AGN), g2_context entity lists are grouped as {slice_id: {entity_id: name|null}}, and citations ids are referenced via ids_from payload paths. Full legend: read_sbd_toe_resource(sbd://toe/codegen-instructions/{mode}), section detail_encoding."
   },
   "activated_scope": {
     "requirements": [
@@ -542,17 +543,6 @@
         ]
       },
       {
-        "id": "EP-ACC-009",
-        "maps_to_requirement_id": "ACC-009",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Logs com avaliação de atributos. Teste com variação de contexto.",
-        "verification_logic": "Testar decisão de acesso com atributos distintos. Confirmar aplicação de política dinâmica.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e",
-          "ART-policy-report-7e52280504"
-        ]
-      },
-      {
         "id": "EP-ACC-010",
         "maps_to_requirement_id": "ACC-010",
         "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
@@ -561,6 +551,17 @@
         "expected_artifact_type_ids": [
           "ART-approval-record-6fe32eb803",
           "ART-finding-register-b39d52b4e7"
+        ]
+      },
+      {
+        "id": "EP-API-001",
+        "maps_to_requirement_id": "API-001",
+        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
+        "evidence_expectation": "Logs de rejeição. Testes automatizados de endpoints.",
+        "verification_logic": "Testar endpoints sem credenciais. Confirmar rejeição 401/403.",
+        "expected_artifact_type_ids": [
+          "ART-log-stream-b67ee06f7e",
+          "ART-test-report-b11c5dfb8a"
         ]
       }
     ]
@@ -572,7 +573,7 @@
         "rastreabilidade_role": "substrate_landing",
         "manual_chapter": "04-arquitetura-segura",
         "manual_file": "canon/25-rastreabilidade.md",
-        "manual_commit_sha": "f78dfe734a83b01fa9283c2df5a3eb0ba9528001",
+        "manual_commit_sha": "0576e914d4c933ddc1af25cb2c5570dd2afcf60f",
         "v1_entity_ids": [
           "ACO-IAT-001",
           "ACO-IAT-002",
@@ -599,7 +600,7 @@
         "rastreabilidade_role": "substrate_landing",
         "manual_chapter": "06-desenvolvimento-seguro",
         "manual_file": "canon/25-rastreabilidade.md",
-        "manual_commit_sha": "f78dfe734a83b01fa9283c2df5a3eb0ba9528001",
+        "manual_commit_sha": "0576e914d4c933ddc1af25cb2c5570dd2afcf60f",
         "v1_entity_ids": [
           "ACO-IVF-001",
           "ACO-IVF-002",
@@ -627,7 +628,7 @@
         "rastreabilidade_role": "placeholder",
         "manual_chapter": null,
         "manual_file": null,
-        "manual_commit_sha": "f78dfe734a83b01fa9283c2df5a3eb0ba9528001",
+        "manual_commit_sha": "0576e914d4c933ddc1af25cb2c5570dd2afcf60f",
         "v1_entity_ids": [
           "ACA-IAT-001",
           "ACA-IAT-002",
@@ -712,9 +713,9 @@
       "ASC-09 artifacts: declared=12 actual=8 (slice contract status=working_contract)",
       "ASC-10 mechanisms: declared=6 actual=4 (slice contract status=working_contract)"
     ],
-    "evidence_patterns_total": 170,
+    "evidence_patterns_total": 171,
     "evidence_patterns_returned": 10,
-    "evidence_patterns_capped": 160,
+    "evidence_patterns_capped": 161,
     "evidence_pattern_cap": 10,
     "evidence_patterns_rest": {
       "tool": "prepare_sbd_toe_codegen_context",
@@ -733,7 +734,8 @@
   },
   "repeat_call_hint": "Identical input returns this exact payload (deterministic) — reuse the context already received; deepen via detail:'minimal' or a targeted consult_security_requirements.",
   "provenance": {
-    "kg": "v1.11.0",
+    "kg": "v1.12.0",
+    "server": "<pkg>",
     "runtime_v0": "data/publish/runtime/*.json + data/publish/ontology/*",
     "runtime_v1": "data/publish/runtime/v1/*",
     "overlay": "absent"

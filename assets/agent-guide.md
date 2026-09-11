@@ -8,14 +8,67 @@ You are an engineering agent operating in a repository governed by the
 
 ---
 
+## ⛳ START HERE — declarative first (linha 0.20, contrato `v1.18-beta`)
+
+> O `-beta` no contrato é o NOME, não o estado. A maturidade — do contrato e do pacote, que são
+> independentes — declara-se em `sbd://toe/version` → `serving_contract.maturity`.
+
+**Tu tens o contexto. Eu tenho o conhecimento. A fronteira é essa.**
+
+O contrário de «adivinhar prosa» não é «escolher de uma lista» — é **pedir com precisão**.
+Há três formas de o fazer, e as três são declarativas.
+
+Lê o pedido, o código e a conversa — e **DECLARA** o que interpretaste:
+`risk_level`, `concerns`, `exposure`, `data_sensitivity`, `technologies`, `changed_files`.
+**Eu não interpreto prosa**: respondo com o que o KG sabe sobre o que declaraste, mais as
+adjacências do grafo, de forma reproduzível e auditável.
+
+### As LEITURAS — qual das respostas queres
+
+<!-- BEGIN GENERATED: readings -->
+<!-- END GENERATED: readings -->
+
+### As TRÊS FORMAS DE PEDIR
+
+<!-- BEGIN GENERATED: how-to-ask -->
+<!-- END GENERATED: how-to-ask -->
+
+1. **Lê o vocabulário** — `read_sbd_toe_resource(uri="sbd://toe/activation-vocabulary")`.
+   É a lista **fechada** de valores que aceito e, para cada valor, **o que ele activa**
+   (categorias, capítulos, contagens por nível). É ele que substitui a adivinhação de palavras.
+2. **Mapeia e declara** — `select_sbd_toe_requirements(risk_level, concerns=[…], …)`.
+   O enunciado podes enviá-lo à mesma em **`task_context`** (nome canónico desde
+   0.20.0-beta.24; `task` continua aceite): fica **registado para auditoria** (`role:
+   "recorded_context"`, `affects_selection: false`) e **não influencia o resultado**.
+   O campo mudou de nome porque o nome antigo convidava a acreditar que o texto decide.
+3. **Sem declarações** recebes `needs_input`: o vocabulário aplicável, **candidatos A
+   CONFIRMAR** derivados do texto (sugestão, nunca selecção) e um exemplo copiável.
+   Nunca devolvo zero em silêncio e nunca invento o teu âmbito.
+4. **Baseline do nível?** Pede-a explicitamente: `mode="baseline"` (nunca aparece como fallback).
+5. **Investigação/paráfrase?** `mode="discover"` corre o motor inferencial antigo, marcado
+   exploratório na resposta — é instrumento de estudo, não o contrato.
+
+**Porquê:** a mesma feature escrita de cinco maneiras dava cinco conjuntos diferentes
+(0 a 58 requisitos) quando a prosa decidia; com a declaração, dá **um conjunto, sempre o
+mesmo**. Auditabilidade real: «porque foi o ENC seleccionado?» → «porque declaraste
+`data_sensitivity=personal`», não «porque a palavra *email* apareceu».
+
+*(Experiência da linha 0.20, autorizada pelo programme lead em 2026-09-05. A linha 0.19
+mantém a semântica anterior e continua alcançável para quem lá está pinado.)*
+
+---
+
 ## Scope — what SbD-ToE is and is not
 
 SbD-ToE is a **security guidance framework only**. It guides *what security practices should
 be applied* at each phase of the development lifecycle. It does **not** impose development
 standards, testing requirements, coding conventions, or any non-security practice.
 
-**Project rules always take precedence.** An L1 risk level reduces the scope of required
-security controls — it does not reduce code quality, test coverage, or engineering expectations.
+**Project rules always take precedence.** An L1 risk level reduces the **DEMAND** on the
+security controls — never the scope: graduated applicability (0.14.0) keeps every chapter
+present at every level, and `map_sbd_toe_applicability` states it outright («nothing is
+excluded by level»). And it does not reduce code quality, test coverage, or engineering
+expectations.
 
 ---
 
@@ -34,23 +87,31 @@ or — on clients without resource support — call `read_sbd_toe_resource(uri="
 It returns the server name/version plus the served knowledge identity from the verified pin:
 `manual {tag, commit}`, `kg {release_tag, sha256, source, consumer_contract_version}`,
 `ontology {tag, commit}`. Every tool response also carries the compact stamp
-`provenance.kg` (the served kg release_tag). The same tool mirrors ANY resource of the
+`provenance.kg` (the served kg release_tag) **and `provenance.server`** (the package version
+that produced the answer — since 0.20.0-beta.23: `kg` is the knowledge served, `server` is
+who served it). The same tool mirrors ANY resource of the
 list below — including the templated ones (e.g. `sbd://toe/codegen-instructions/codegen`,
 the target of `codegen_instructions_ref` in dieted payloads).
 
-After reading this guide, run:
+> **ANTES de o tentares chamar — verdade do canal:** `setup_sbd_toe_agent` é um **prompt
+> MCP**, não uma tool. Clientes sem suporte de prompts (p.ex. Claude Desktop) **não o
+> expõem**, e um agente que siga esta secção em sequência chama uma tool que não existe.
+> Confirma que o teu cliente lista prompts; se não listar, salta o passo — a alternativa
+> equivalente está aqui em baixo e é completa.
+
+Se o teu cliente expõe prompts, corre:
 
 ```
 setup_sbd_toe_agent(riskLevel="<L1|L2|L3>", projectRole="<role>")
 ```
 
-This returns the list of active chapters and risk-level specific rules for the project.
+Devolve os capítulos activos e as regras específicas do nível de risco.
 
-> **Verdade do canal:** `setup_sbd_toe_agent` é um **prompt MCP**, não uma tool — clientes
-> sem suporte de prompts (p.ex. Claude Desktop) não o expõem. Alternativa equivalente: já
-> leste este guia (via `read_sbd_toe_resource`); passa `risk_level` e os **activadores
-> estruturados** (`exposure`, `data_sensitivity`, `stack`, `changed_files`) directamente
-> ao `select_sbd_toe_requirements`.
+> **Se não expõe (ou preferes ir direito):** já leste este guia (via
+> `read_sbd_toe_resource`); passa `risk_level` e os **activadores DECLARADOS**
+> (`concerns`, `exposure`, `data_sensitivity`, `technologies`, `changed_files`)
+> directamente ao `select_sbd_toe_requirements`. O `stack` é texto livre e só conta quando
+> traz um valor de `technologies` como token exacto — prefere `technologies`.
 
 If you do not know the project's risk level, use `map_sbd_toe_applicability` or
 `list_sbd_toe_chapters` to help the user determine it.
@@ -64,28 +125,40 @@ Use when the user asks *what the manual says*, what applies, how to classify a p
 what controls or artefacts are required, or whether something is aligned with the manual.
 
 ```
-search_sbd_toe_manual            ← conceptual questions, narrative context
+search_sbd_toe_manual            ← NÃO-NORMATIVO: ler e localizar passagens, NUNCA caminho
+                                    para um conjunto de requisitos (o que sai daqui não
+                                    selecciona nada e não se cita como selecção)
 map_sbd_toe_applicability        ← which chapters/controls apply to this project
 get_sbd_toe_chapter_brief        ← what a specific chapter covers (phases, artefacts, topics)
 list_sbd_toe_chapters            ← chapter discovery and navigation
 query_sbd_toe_entities           ← specific controls (CTRL-*), artefacts (ART-*), practices
 
 select_sbd_toe_requirements      ← MP1 selection: which requirements apply to THIS task in THIS
-                                    context — baseline (ch. 02, by level) ∪ context-activated
-                                    chapters ⊕ overlay(extend), narrowed by declared task signals;
-                                    params: risk_level (required), task?, changed_files?,
-                                    technologies?, exposure?, data_sensitivity?, concerns?
-                                    returns TWO bands, both always listed:
-                                      selected[]     — the recommendation for the task (each item
-                                                       carries its selection_trace: source/trigger/
-                                                       score, incl. named rules like
-                                                       R1:principal-nao-humano)
-                                      narrowed_out[] — what was ELIGIBLE and why it left (grouped
-                                                       by category, with reason). Nothing is dropped
-                                                       silently: if you need something from there,
-                                                       call again WITH the missing signal (e.g. the
-                                                       SES group returns when the task mentions the
-                                                       user session/login/token surface)
+                                    context — baseline (ch. 02, by level) ∪ chapters activated by
+                                    the DECLARED activators ∪ the categories the vocabulary
+                                    promises ⊕ overlay(extend), narrowed by those same
+                                    declarations. The task text is NEVER an activator here;
+                                    params: risk_level (required), concerns?, exposure?,
+                                    data_sensitivity?, technologies?, changed_files?,
+                                    task_context? (recorded, inert), mode? (declarative|baseline|
+                                    discover)
+                                    returns FOUR bands, all always listed:
+                                      selected[]           — the answer to what you declared (each
+                                                             item carries its selection_trace:
+                                                             layer/source/trigger/score, incl.
+                                                             named rules like R1:principal-nao-humano
+                                                             and declared_category)
+                                      narrowed_out[]       — what was ELIGIBLE and why it left
+                                                             (grouped by category, with reason)
+                                      excluded_by_level[]  — what exists at ANOTHER level (0.15.0)
+                                      out_of_scope_chapters — what NO declaration activated, per
+                                                             chapter, with a copyable activate_with
+                                                             (0.20.0-beta.24)
+                                    Nothing is dropped silently, and the SCOPE of that promise is
+                                    the universe, not just the baseline: if you need something from
+                                    a band, call again DECLARING what brings it (e.g. the SES group
+                                    returns with technologies=["jwt"], not by mentioning tokens in
+                                    the task text)
 consult_security_requirements    ← deterministic: requirements + controls for a risk level
                                     (mode: "index" opt-in returns a per-category id index)
                                     params: risk_level (L1|L2|L3), concerns? (string[])
@@ -98,9 +171,9 @@ resolve_entities                 ← low-level ontology filter engine
                                     listing requirements by category, exploring the ontology
 ```
 
-**Choosing between the three requirement surfaces:** *(ACTIVADORES ESTRUTURADOS primeiro — `task` + `exposure` + `data_sensitivity` + `stack` (+ `changed_files`): qualquer agente os preenche a partir do enunciado, sem léxico — medição da ronda 5: 63 requisitos vs 7 da task sozinha; concerns declarados REFORÇAM e estabilizam vocabulário; a task refina)*
+**Choosing between the three requirement surfaces:** *(DECLARA os activadores do vocabulário fechado — `concerns` + `exposure` + `data_sensitivity` + `technologies` (+ `changed_files`): lês o pedido, o código e a conversa e mapeias para valores publicados. O `task_context` NÃO refina nada no modo declarativo — fica registado para auditoria. Porquê: a mesma feature escrita de cinco maneiras dava de 0 a 58 requisitos quando a prosa decidia; declarada, dá um conjunto, sempre o mesmo.)*
 - `select_sbd_toe_requirements` — *"which requirements apply to THIS task / this change?"*
-  Task-scoped recommendation with declared narrowing (two bands, above). Start here for
+  Task-scoped recommendation with declared narrowing (the four bands, above). Start here for
   any concrete piece of work.
 - `consult_security_requirements` — *"what does the catalogue hold at this level?"*
   Level-wide, deterministic. `mode: "index"` (opt-in) returns a compact per-category id
@@ -111,30 +184,26 @@ resolve_entities                 ← low-level ontology filter engine
 
 **Prefer `consult_security_requirements` over `search_sbd_toe_manual`** when the question
 is structured ("what requirements apply at L2?", "which controls are active for auth?").
-Use `search_sbd_toe_manual` for narrative/conceptual questions.
+Use `search_sbd_toe_manual` for narrative/conceptual questions — **e nunca para decidir
+âmbito**: é NÃO-NORMATIVO por declaração da própria tool. O conjunto de requisitos vem
+sempre de `select_sbd_toe_requirements` com activadores DECLARADOS.
 
-**Output size:** L1 ≈ 22k chars, L2 ≈ 36k chars, L3 ≈ 36k chars (may exceed context).
-**Always use `concerns` to scope L2/L3 queries** — reduces to ~9k chars per concern set.
+**Output size — medido, não recordado:**
 
-#### Valid `concerns` values (ontology-controlled vocabulary)
+<!-- BEGIN GENERATED: output-sizes -->
+<!-- END GENERATED: output-sizes -->
 
-| concern | Categories resolved | Meaning |
-|---|---|---|
-| `auth` | AUT, ACC, SES | Authentication, access control, sessions |
-| `logging` | LOG | Audit logging, monitoring |
-| `validation` | VAL, ERR | Input validation, error handling |
-| `api` | API | API security |
-| `config` | CFG | Configuration & environment hardening |
-| `integrity` | INT | Integrity & integration |
-| `distribution` | DST | Supply chain, packaging |
-| `ide` | IDE | Development environment |
-| `requirements` | REQ | Security requirements in SDLC |
-| `architecture` | ARC | Secure architecture |
-| `iac` | IAC | Infrastructure-as-Code |
-| `encryption` | ENC | Cryptography & sensitive data |
-| `agents` | AGN | AI-agent / automation governance — mandate, autonomy A0–A4, kill-switch, intent declaration (`REQ-AGN-001…004`; consult only) |
+#### `concerns` — o vocabulário FECHADO desta linha (derivado do bundle)
 
-Pass concerns as exact lowercase strings from the table above.
+<!-- BEGIN GENERATED: concerns -->
+<!-- END GENERATED: concerns -->
+
+#### Os restantes activadores declaráveis
+
+<!-- BEGIN GENERATED: activators -->
+<!-- END GENERATED: activators -->
+
+
 
 ### GUIDE mode
 Use when the user asks *how to implement, design, structure, document, or review* something
@@ -160,13 +229,10 @@ get_threat_landscape         ← deterministic: threats relevant to a risk level
                                 use for: threat modelling context, "what threats apply to auth?"
 ```
 
-#### Valid `role` values for `get_guide_by_role`
+#### `role` — papéis aceites por `get_guide_by_role`
 
-Canonical role IDs (pass exact or common alias — resolved automatically):
-
-`developer` · `appsec` · `devops` · `grc` · `qa` · `security_champion` · `software_architect`
-· `product_owner` · `scrum_master` · `team_lead` · `ciso` · `executive_management`
-· `ops` · `compliance` · `auditor` · `ir` · `sre`
+<!-- BEGIN GENERATED: roles -->
+<!-- END GENERATED: roles -->
 
 #### Interpreting tool output
 
@@ -175,14 +241,16 @@ Canonical role IDs (pass exact or common alias — resolved automatically):
 | `rule_trace` contains `CONCERNS_FILTER_REQUIREMENTS` | Tell user scope was narrowed to the specified concerns |
 | `mitigation_confidence: "heuristic"` | Flag as inferred linkage — not structural evidence |
 | `mitigation_confidence: "derived"` | Structural chapter-match — reliable |
-| `assignments: []` / `threats: []` | Say "manual-grounded: not applicable in this scope" — do not invent |
+| `threats: []` **with** `unsupported_concerns` | **Do NOT say "not applicable in this scope".** The concern is valid and its requirements exist — this THREAT MAP does not route it. Cite `unsupported_concerns.note`, then call `select_sbd_toe_requirements` for the same concern; assert nothing about absence of threats |
+| `assignments: []` / `threats: []` / `requirements: []` **with no** `unsupported_concerns` | **CONTRAPROVA ANTES DE COMUNICAR.** Um vazio sem declaração pode ser um concern que ESTA superfície não resolve (aconteceu: o `consult` devolvia 0 para 11 dos 24 concerns e o `rule_trace` afirmava «0 requirements active»). Confirma com `select_sbd_toe_requirements` (mesmos concerns) ou com `sbd://toe/activation-vocabulary`, que publica quantos requisitos cada valor activa por nível. **Uma discordância entre superfícies é sinal, não ruído** — comunica-a. Só depois de contraprovado podes dizer "manual-grounded: no entries at this risk level for this scope" (e verifica que `meta.activeChapters`/`active_categories` não está vazio antes de reclamar cobertura) |
 | `active_domains` | List the security domains active at this risk level |
 | `coverage_gaps.requirements_without_control_link` (consult) | Those requirements are active but have **no published control link** — say so (declared gap, routed to Codex); do not invent controls |
 | `match: "declared_gap"` / `meta.declared_gap` (query_sbd_toe_entities, resolve_entities) | Cite `declared_gap.note` verbatim — a legacy / unresolvable citation, not a missing requirement |
 | `citation_note` / `meta.citation_note` (informative) | The id is an illustrative example (`REQ-NNN`) or a non-requirement token (`CWE-`, `SHA-`) cited by the Manual — say so; it is not a requirement and not a gap |
 | `selection.selected[]` (select) | The recommendation for the task — cite each item's `selection_trace` when asked *why* |
+| `selection.out_of_scope_chapters` (select) | O que **nenhuma declaração activou**, por capítulo e por contagem, com `activate_with` copiável. **Não é «não aplicável»** — é não-perguntado: se o capítulo é relevante para a tarefa, re-chama com a declaração indicada. `SEM ACTIVADOR PUBLICADO` significa que o vocabulário não tem forma de o activar — diz-se, não se inventa |
 | `selection.narrowed_out[]` (select) | Eligible-but-narrowed, grouped with reason — never treat as "not applicable"; re-call with the missing signal to recover a group |
-| `completeness_report.selection` (prepare) | The same two-band summary behind the codegen context — `narrowed_out_ref` names the tool to inspect it |
+| `completeness_report.selection` (prepare) | The same band summary behind the codegen context — `narrowed_out_ref` names the tool to inspect it |
 
 #### Pattern for complex answers (threat model / security plan / checklist)
 
@@ -220,6 +288,20 @@ generate_sbd_toe_skill(role, format, flavour)  ← per-role configuration (RF-S)
                            Use this to answer "configure yourself/this agent for role X".
                            Also exposed as resources sbd://toe/skill/{role} and sbd://toe/subagent/{role}.
 ```
+
+---
+
+## Quando a resposta traz um vazio: dívida ou fronteira?
+
+<!-- BEGIN GENERATED: absences -->
+<!-- END GENERATED: absences -->
+
+---
+
+## Que superfície resolve o quê (e como contraprovar)
+
+<!-- BEGIN GENERATED: cross-surface -->
+<!-- END GENERATED: cross-surface -->
 
 ---
 
@@ -280,13 +362,13 @@ Always distinguish between:
 
 | Question | Approach |
 |---|---|
-| "What is X?" / "How does Y work?" | `search_sbd_toe_manual` |
+| "What is X?" / "How does Y work?" | `search_sbd_toe_manual` (NÃO-NORMATIVO — leitura, não selecção) |
 | "What applies to my project?" | `map_sbd_toe_applicability` → `get_sbd_toe_chapter_brief` |
 | "What does chapter N cover?" | `get_sbd_toe_chapter_brief` |
 | "List all chapters" | `list_sbd_toe_chapters` |
 | "Find control / artefact / practice" | `query_sbd_toe_entities` |
 | "What requirements apply at L1/L2/L3?" | `consult_security_requirements(risk_level)` |
-| "Which requirements apply to THIS task / this change?" | `select_sbd_toe_requirements(risk_level, task, changed_files?)` — `selected[]` is the recommendation; `narrowed_out[]` explains what left and why (re-call with the missing signal to recover it) |
+| "Which requirements apply to THIS task / this change?" | `select_sbd_toe_requirements(risk_level, concerns=[…], exposure?, data_sensitivity?, technologies?, changed_files?)` — **declara** o que a tua leitura justifica (vocabulário: `sbd://toe/activation-vocabulary`); `selected[]` é a resposta ao declarado, `narrowed_out[]` diz o que ficou de fora e porquê. Sem declarações → `needs_input` (com candidatos a confirmar). O `task_context` (antes `task`, alias mantido) é contexto registado, não motor. |
 | "How do I PROVE these requirements?" | `get_sbd_toe_verification_matrix(risk_level, requirement_ids=[…os selected…])` — o fecho requisito → prova; ids sem EvidencePattern vêm declarados |
 | "Where is the SOURCE of this requirement?" | `trace_sbd_toe_requirement_sources(requirement_ids)` — directas (autoria) vs cadeia compensada (cobertura, NÃO autoria; rótulo coverage_compensated); sem-fonte declarados |
 | "Give me a compact id map of the catalogue by category" | `consult_security_requirements(risk_level, mode="index")` |
@@ -309,54 +391,29 @@ Always distinguish between:
 
 ## Resources
 
-| Resource URI | When to use |
-|---|---|
-| `sbd://toe/agent-guide` | This document — full operational guide |
-| `sbd://toe/index-compact` | Full chapter map as JSON — fast structured lookup |
-| `sbd://toe/chapter-applicability/{riskLevel}` | Graduated applicability: every chapter present, per-chapter demand for the level |
-| `sbd://toe/ontology` | Full ontology YAML — domain_mapping, concerns, inference rules |
-| `sbd://toe/version` | Server identity + served knowledge provenance (manual/kg/ontology, from the pin) — read at session start |
+<!-- BEGIN GENERATED: resources -->
+<!-- END GENERATED: resources -->
 
 ---
 
 ## Prompts
 
-| Prompt | When to use |
-|---|---|
-| `setup_sbd_toe_agent(riskLevel, projectRole)` | Session setup — active chapters + risk-specific rules. **Prompt MCP** (clientes sem prompts: activadores directos no select) |
-| `ask_sbd_toe_manual(question)` | Direct grounded Q&A |
+<!-- BEGIN GENERATED: prompts -->
+<!-- END GENERATED: prompts -->
 
 ---
 
 ## Chapter reference
 
-| chapterId | Title | Min level | Domains |
-|---|---|---|---|
-| `00-fundamentos` | Fundamentos SbD-ToE | L1 | governance, foundation |
-| `01-classificacao-aplicacoes` | Classificação de Aplicações | L1 | governance, risk |
-| `02-requisitos-seguranca` | Requisitos de Segurança | L1 | governance, requirements |
-| `03-threat-modeling` | Threat Modeling | L1 | risk, architecture |
-| `04-arquitetura-segura` | Arquitetura Segura | L1 | architecture, design |
-| `05-dependencias-sbom-sca` | Dependências, SBOM e SCA | L1 | supply-chain |
-| `06-desenvolvimento-seguro` | Desenvolvimento Seguro | L2 | development, coding |
-| `07-cicd-seguro` | CI/CD Seguro | L1 | devops, pipeline |
-| `08-iac-infraestrutura` | IaC e Infraestrutura | L1 | infrastructure |
-| `09-containers-imagens` | Containers e Imagens | L1 | containers |
-| `10-testes-seguranca` | Testes de Segurança | L1 | testing |
-| `11-deploy-seguro` | Deploy Seguro | L2 | deploy |
-| `12-monitorizacao-operacoes` | Monitorização e Operações | L1 | monitoring |
-| `13-formacao-onboarding` | Formação e Onboarding | L3 | training |
-| `14-governanca-contratacao` | Governança e Contratação | L1 | governance |
+<!-- BEGIN GENERATED: chapters -->
+<!-- END GENERATED: chapters -->
 
 ---
 
 ## Risk levels
 
-| Level | Scope | Unlocks |
-|---|---|---|
-| `L1` | Low risk — internal, no sensitive data | ALL chapters — demand mostly recomendado/opcional |
-| `L2` | Medium risk — public APIs, user data | + chapters 06, 11 |
-| `L3` | High risk — PII, regulated systems | + chapter 13 |
+<!-- BEGIN GENERATED: risk-levels -->
+<!-- END GENERATED: risk-levels -->
 
 ---
 

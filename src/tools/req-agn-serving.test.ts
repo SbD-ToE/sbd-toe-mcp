@@ -1,7 +1,8 @@
 /**
  * Serving verification over the pinned dev-build
  * kg-v1-manual-v1.7.0-aligned-2026-08-29 (consumer contract v1.11 §1.19):
- * 273 requirements / 29 categories (v1.8.0: FIL/PRI/INT-009..012) (AGN + OPS-015), curated requirement→control layer
+ * 274 requirements / 29 categories (KG v1.12.0: +CIC-011, o primeiro requisito NOVO do arco —
+ * nasceu de uma declaração de escassez dos antipadrões) (AGN + OPS-015), curated requirement→control layer
  * (0 requirements without a link), 0 legacy REQ-<CAT>-NNN citations, illustrative REQ-NNN
  * ids informative (not gaps), EX- illustrative ids rejected, macro-processos page in the
  * guide profile, guide-by-role still answering.
@@ -83,9 +84,9 @@ describe("resolve_entities — REQ-AGN-001…004 and OPS-015 resolve from the pi
 });
 
 describe("consult_security_requirements — full catalogue served, curated control layer (0 gaps)", () => {
-  it("L3 serves 273 requirements across 29 categories, AGN and OPS-015 included", () => {
+  it("L3 serves 274 requirements across 29 categories, AGN and OPS-015 included", () => {
     const r = handleConsultSecurityRequirements({ risk_level: "L3" });
-    expect(r.meta.requirementCount).toBe(273);
+    expect(r.meta.requirementCount).toBe(274); // KG v1.12.0: +CIC-011 (aditivo autorado)
     expect(r.active_categories).toHaveLength(29);
     expect(r.active_categories).toContain("AGN");
     const ids = r.requirements.map((x) => x.requirement_id);
@@ -131,7 +132,10 @@ describe("query_sbd_toe_entities — exact id, informative citation, illustrativ
     }
   });
 
-  it("no legacy REQ-<CAT>-NNN citation yields a declared gap in v1.7.0 (0 unresolvable)", async () => {
+  // Beta line: 20s timeout — the three semantic retrievals measure ~5.1s under the
+  // full 42-file v2 suite (vs master's 31 files), tripping vitest's 5s default.
+  // Result-correct in isolation; timeout is test infra, not serving behaviour.
+  it("no legacy REQ-<CAT>-NNN citation yields a declared gap in v1.7.0 (0 unresolvable)", { timeout: 20000 }, async () => {
     for (const q of ["REQ-AUT-003", "REQ-DAT-005", "REQ-IAM-001"]) {
       const r = (await handleQuerySbdToeEntities({ query: q })) as { match?: string };
       expect(r.match, q).not.toBe("declared_gap");
@@ -172,10 +176,10 @@ describe("guide profile — 00-fundamentos/macro-processos is served in guide (n
   });
 });
 
-describe("verification matrix — EvidencePattern coverage complete (273/273)", () => {
+describe("verification matrix — EvidencePattern coverage complete (274/274, KG v1.12.0: +CIC-011)", () => {
   it("L3 has 0 requirements without an EvidencePattern and 256 patterns", () => {
     const r = handleGetVerificationMatrix({ risk_level: "L3" });
     expect(r.data.coverage_gaps.requirements_without_evidence_pattern).toBe(0);
-    expect(r.data.totals.evidence_patterns).toBe(273);
+    expect(r.data.totals.evidence_patterns).toBe(274); // KG v1.12.0: +CIC-011 e o seu padrão de evidência
   });
 });

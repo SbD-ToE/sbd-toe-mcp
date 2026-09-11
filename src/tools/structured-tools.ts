@@ -9,7 +9,9 @@ import { readFileSync } from "node:fs";
 import { retrievePublishedContext } from "../backend/semantic-index-gateway.js";
 import { resolveAppPath } from "../config.js";
 import type { LooseRecord } from "../types.js";
-import { getOntologyData } from "./ontology-loader.js";
+import { getOntologyData, resolveRoleId } from "./ontology-loader.js";
+import { structuralProvenance } from "../serving/protocol-envelope.js";
+import { assertionFor } from "../serving/traversal-assertions.js";
 import { describeRequirementCitation, describeRequirementGap } from "../serving/requirement-id.js";
 import {
   listChaptersAffordances,
@@ -101,7 +103,16 @@ function summarizeChunkText(text: string | undefined): string | undefined {
 }
 
 export function handleListSbdToeChapters(args: Record<string, unknown>): unknown {
-  return { ...(handleListSbdToeChaptersCore(args) as Record<string, unknown>), next: listChaptersAffordances() };
+  return {
+    provenance: structuralProvenance(
+      "chapter_catalogue_projection",
+      "indexes/bundle_catalog.jsonl + runtime/assignments.json",
+      "Catálogo dos capítulos com aplicabilidade graduada e `demand_by_level` derivada dos assignments " +
+        "autorados. Títulos legíveis do catálogo publicado; nada é inventado."
+    ),
+    ...(handleListSbdToeChaptersCore(args) as Record<string, unknown>),
+    next: listChaptersAffordances()
+  };
 }
 
 function handleListSbdToeChaptersCore(
@@ -174,7 +185,16 @@ export async function handleQuerySbdToeEntities(
     const citation = describeRequirementCitation(query, knownRequirementIds);
     if (citation) core["citation_note"] = citation;
   }
-  return { ...core, next: queryEntitiesAffordances() };
+  return {
+    provenance: structuralProvenance(
+      "entity_query_projection",
+      "runtime/* + indexes/* (bundle publicado)",
+      "Resolução semântica de entidades: id exacto quando o `query` é um id publicado, senão pesquisa " +
+        "sobre o bundle. É RECUPERAÇÃO, não decisão de âmbito — o `match` diz por que via foi resolvido."
+    ),
+    ...core,
+    next: queryEntitiesAffordances()
+  };
 }
 
 async function handleQuerySbdToeEntitiesCore(
@@ -329,7 +349,16 @@ export function handleGetSbdToeChapterBrief(args: Record<string, unknown>): unkn
   const chapterId = typeof args["chapterId"] === "string" ? args["chapterId"] : undefined;
   const briefCore = handleGetSbdToeChapterBriefCore(args) as Record<string, unknown>;
   // 0.15.1 (P0-7b): nunca sugerir tools com o id que ESTA resposta acabou de invalidar.
-  return { ...briefCore, next: chapterBriefAffordances(briefCore["found"] === false ? undefined : chapterId) };
+  return {
+    provenance: structuralProvenance(
+      "chapter_brief_projection",
+      "runtime/assignments.json + runtime/artifact_requirements.json + indexes/mcp_chunks.jsonl",
+      "Retrato do capítulo: papéis e fases derivados dos assignments autorados, artefactos separados " +
+        "entre os que o capítulo DEFINE e os que apenas cita, objectivo resumido do chunk de intro."
+    ),
+    ...briefCore,
+    next: chapterBriefAffordances(briefCore["found"] === false ? undefined : chapterId)
+  };
 }
 
 function handleGetSbdToeChapterBriefCore(
@@ -355,10 +384,23 @@ function handleGetSbdToeChapterBriefCore(
   }
 
   const ontology = getOntologyData();
+  /**
+   * 0.20.0-beta.39 — `unassigned` é a SENTINELA do dado para «sem fase atribuída», e chegava
+   * à superfície do utilizador como se fosse uma fase do ciclo de vida. Sai da lista — e é
+   * DECLARADA, com quantas atribuições estão nesse estado: filtrá-la em silêncio trocaria um
+   * defeito por outro. O `explain_sbd_toe_topic` já a filtrava; filtrava-a sem dizer.
+   */
+  const chapterAssignments = ontology.assignments.filter((a) => a.chapter_id === chapterIdEff);
+  const unassignedPhaseCount = chapterAssignments.filter((a) => a.phase === UNASSIGNED_SENTINEL).length;
   const phases = Array.from(
     new Set(
       ontology.assignments
-        .filter((assignment) => assignment.chapter_id === chapterIdEff && assignment.phase.length > 0)
+        .filter(
+          (assignment) =>
+            assignment.chapter_id === chapterIdEff &&
+            assignment.phase.length > 0 &&
+            assignment.phase !== UNASSIGNED_SENTINEL
+        )
         .map((assignment) => assignment.phase)
     )
   ).sort();
@@ -369,13 +411,31 @@ function handleGetSbdToeChapterBriefCore(
         .map((assignment) => assignment.role)
     )
   ).sort();
-  const artifacts = Array.from(
+  /*
+   * 0.20.0-beta.40 (v2.6, decisão K) — DEFINIDORES vs CITADORES, também aqui.
+   *
+   * O brief listava em `artifacts` tudo o que CITA o capítulo, e o consumidor lia posse. O
+   * capítulo da classificação aparecia a reclamar SBOM, imagem de container e relatório de
+   * SAST. Passa a servir os que o capítulo DEFINE, com os citados em banda própria — a mesma
+   * separação da vista de capacidade, para que as duas superfícies digam o mesmo.
+   */
+  const artifactRecords = (ontology.artifactRequirements ?? []).filter((ar) =>
+    (ar.chapter_ids ?? []).includes(chapterId)
+  );
+  const hasDefiningSurface = (ontology.artifactRequirements ?? []).some((ar) => ar.defining_chapter_ids !== undefined);
+  const definingArtifacts = Array.from(
     new Set(
       (ontology.artifactRequirements ?? [])
-        .filter((artifactRequirement) => (artifactRequirement.chapter_ids ?? []).includes(chapterId))
-        .map((artifactRequirement) => artifactRequirement.artifact_type_id)
+        .filter((ar) => (ar.defining_chapter_ids ?? []).includes(chapterId))
+        .map((ar) => ar.artifact_type_id)
     )
   ).sort();
+  const citedOnly = Array.from(
+    new Set(artifactRecords.map((ar) => ar.artifact_type_id).filter((id) => !definingArtifacts.includes(id)))
+  ).sort();
+  const artifacts = hasDefiningSurface
+    ? definingArtifacts
+    : Array.from(new Set(artifactRecords.map((ar) => ar.artifact_type_id))).sort();
   const introChunk = loadMcpChunks().find((item) => {
     const bundleId = getStr(item, "bundle_id");
     const documentRole = getStr(item, "document_role");
@@ -399,9 +459,39 @@ function handleGetSbdToeChapterBriefCore(
     ...(objective !== undefined ? { objective } : {}),
     ...(roles.length > 0 ? { role: roles } : {}),
     ...(phases.length > 0 ? { phases } : {}),
-    ...(artifacts.length > 0 ? { artifacts } : {})
+    ...(unassignedPhaseCount > 0
+      ? {
+          phases_unassigned: {
+            count: unassignedPhaseCount,
+            of_assignments: chapterAssignments.length,
+            note:
+              "`unassigned` é a SENTINELA da fonte para «sem fase atribuída» — não é uma fase do ciclo de " +
+              "vida e por isso não entra em `phases`. Estas atribuições existem e o Manual não lhes atribui " +
+              "fase; o servidor declara-o em vez de as esconder ou de inventar a fase que falta."
+          }
+        }
+      : {}),
+    ...(artifacts.length > 0 ? { artifacts } : {}),
+    ...(hasDefiningSurface
+      ? {
+          artifacts_basis: {
+            asserts: assertionFor("artifact_defining_chapters"),
+            produced_or_operated_by: artifacts.length,
+            cited_only: citedOnly.length,
+            note:
+              "`artifacts` são os que este capítulo PRODUZ OU OPERA (`produced_or_operated_by`, verbo " +
+              "publicado). Os que apenas o CITAM vêm em `cited_values`. **O verbo não afirma posse** — vê " +
+              "`asserts.does_not_assert`: a lista única fazia o capítulo da classificação parecer dono do " +
+              "SBOM e da imagem de container, e é isso que a asserção negativa existe para impedir.",
+            ...(citedOnly.length > 0 ? { cited_values: citedOnly } : {})
+          }
+        }
+      : {})
   };
 }
+
+/** Sentinela da fonte para «sem atribuição» — nunca um valor de domínio na superfície. */
+const UNASSIGNED_SENTINEL = "unassigned";
 
 const VALID_TECHNOLOGIES = [
   "containers", "serverless", "kubernetes", "ci-cd", "iac", "api-gateway",
@@ -513,7 +603,16 @@ function buildActivatedBundles(
 
 export function handleMapSbdToeApplicability(args: Record<string, unknown>): unknown {
   const riskLevel = typeof args["riskLevel"] === "string" ? args["riskLevel"] : undefined;
-  return { ...(handleMapSbdToeApplicabilityCore(args) as Record<string, unknown>), next: mapApplicabilityAffordances(riskLevel) };
+  return {
+    provenance: structuralProvenance(
+      "graduated_applicability_projection",
+      "runtime/assignments.json (proportionality) + indexes/bundle_catalog.jsonl",
+      "Aplicabilidade GRADUADA: presença em todos os capítulos, exigência derivada da proporcionalidade " +
+        "dos assignments autorados por nível. O campo estático de nível mínimo morreu na 0.14.0."
+    ),
+    ...(handleMapSbdToeApplicabilityCore(args) as Record<string, unknown>),
+    next: mapApplicabilityAffordances(riskLevel)
+  };
 }
 
 function handleMapSbdToeApplicabilityCore(
@@ -551,21 +650,68 @@ function handleMapSbdToeApplicabilityCore(
     technologies = (technologiesArg as unknown[]).filter(isValidTechnology);
   }
 
-  // Validate optional projectRole allowlist
+  /*
+   * 0.20.0-beta.41 — DOIS VOCABULÁRIOS DE PAPEL, reconciliados pela fonte publicada.
+   *
+   * Esta tool tinha um enum próprio de 5 valores — developer · architect · security ·
+   * devops · manager — DISJUNTO dos 13 papéis canónicos. Só o `developer` coincidia por
+   * acaso: os outros quatro devolviam `user_stories: []` nos 15 capítulos, em silêncio,
+   * como se o papel não tivesse nada a fazer.
+   *
+   * O bundle PUBLICA aliases (`roles.json`), e o `resolveRoleId` já os lê — esta tool é que
+   * não os usava. Passa a aceitar os canónicos e os aliases publicados, e o legado resolve-se
+   * por eles: `devops` → `devops-sre` é resolução, não invenção. Onde NÃO há alias publicado
+   * (`architect`, `security`, `manager`), o servidor **não inventa a correspondência** —
+   * declara que o valor não é um papel do vocabulário e mostra os que existem.
+   */
   const projectRoleArg = args["projectRole"];
-  if (projectRoleArg !== undefined && !isValidProjectRole(projectRoleArg)) {
+  const ontologyRoles = getOntologyData().roles ?? [];
+  const requestedRole = typeof projectRoleArg === "string" ? projectRoleArg : undefined;
+  const resolvedRole = requestedRole !== undefined ? resolveRoleId(requestedRole, ontologyRoles) : undefined;
+  if (projectRoleArg !== undefined && resolvedRole === undefined && !isValidProjectRole(projectRoleArg)) {
+    const canonical = ontologyRoles.map((r) => r.role_id).sort();
     const err = {
       code: -32602,
-      message: `Valor inválido em "projectRole": "${String(projectRoleArg)}". Valores permitidos: ${VALID_PROJECT_ROLES.join(", ")}.`,
-      data: { invalidValue: projectRoleArg }
+      message: `Valor inválido em "projectRole": "${String(projectRoleArg)}". Papéis canónicos: ${canonical.join(", ")} (aliases publicados também são aceites).`,
+      data: { invalidValue: projectRoleArg, canonical_roles: canonical }
     };
     throw Object.assign(new Error(err.message), { rpcError: err });
   }
 
   // Ciclo 0.14.0 (decisão do Author): aplicabilidade GRADUADA — presença sempre,
   // exigência derivada dos assignments autorados; active/excluded binários morreram.
-  const projectRoleForView = typeof args["projectRole"] === "string" ? (args["projectRole"] as string) : undefined;
+  const projectRoleForView = resolvedRole ?? (typeof projectRoleArg === "string" ? projectRoleArg : undefined);
   const chapters = gradedChapters(riskLevel, projectRoleForView);
+
+  /**
+   * A banda do vocabulário: como o que pediste foi lido. Só sai quando pediste um papel —
+   * e sai SEMPRE que pediste, resolvido ou não, porque «foi resolvido para outro id» é
+   * informação tanto como «não é um papel deste vocabulário».
+   */
+  const role_vocabulary =
+    requestedRole === undefined
+      ? undefined
+      : {
+          requested: requestedRole,
+          resolved_to: resolvedRole ?? null,
+          resolution:
+            resolvedRole === undefined
+              ? "unresolved"
+              : resolvedRole === requestedRole
+                ? "canonical"
+                : "published_alias",
+          canonical_roles: ontologyRoles.map((r) => r.role_id).sort(),
+          note:
+            resolvedRole === undefined
+              ? `\`${requestedRole}\` é um valor LEGADO desta tool e **não é um papel do vocabulário publicado** — ` +
+                "não tem alias em `roles.json`, e o servidor não inventa a correspondência. A vista por papel vem " +
+                "VAZIA por isso, e não porque o papel não tenha responsabilidades. Escolhe um dos canónicos acima " +
+                "(ou um alias publicado) para a obteres."
+              : resolvedRole === requestedRole
+                ? "papel canónico, usado tal como o pediste."
+                : `resolvido pelo ALIAS publicado em \`roles.json\`: \`${requestedRole}\` → \`${resolvedRole}\`. ` +
+                  "A resolução vem da fonte, não de uma tabela desta tool."
+        };
 
   const activatedBundles = buildActivatedBundles(riskLevel, technologies);
 
@@ -591,10 +737,47 @@ function handleMapSbdToeApplicabilityCore(
     }
   }
 
+  /**
+   * 0.20.0-beta.41 — BANDA POR RESULTADO VAZIO (C1).
+   *
+   * A maquinaria de declaração estava indexada a VALORES não suportados, não a RESULTADOS
+   * vazios: um papel que a tool aceita mas para o qual não há uma única user story sai com
+   * 15 vistas vazias e nenhuma palavra. Passa a haver banda — e ela distingue as duas causas,
+   * que pedem reacções diferentes: **vocabulário** (pediste algo que não é um papel) ou
+   * **combinação sem resultados** (o papel existe e este corte não devolve nada).
+   */
+  const roleStories = requestedRole === undefined
+    ? 0
+    : chapters.reduce((acc, c) => acc + ((c.role_view?.user_stories ?? []).length), 0);
+  const empty_role_view =
+    requestedRole !== undefined && roleStories === 0
+      ? {
+          requested_role: requestedRole,
+          ...(resolvedRole !== undefined ? { resolved_to: resolvedRole } : {}),
+          user_stories: 0,
+          chapters_examined: chapters.length,
+          cause: resolvedRole === undefined ? "unresolved_vocabulary" : "no_results_for_combination",
+          note:
+            resolvedRole === undefined
+              ? "VAZIO POR VOCABULÁRIO: o valor pedido não é um papel publicado, e por isso não há vista " +
+                "por papel. Vê `role_vocabulary.canonical_roles`. **Não concluas que o papel não tem " +
+                "responsabilidades** — conclui que não é este o nome dele."
+              : "VAZIO POR COMBINAÇÃO: o papel é canónico e o bundle não publica user stories para ele " +
+                `ao nível \`${riskLevel}\`. **Não é ausência de responsabilidades — é ausência de MAPEAMENTO ` +
+                "nesta superfície.** Para o que o Manual exige nesta área usa `select_sbd_toe_requirements`.",
+          reach_with:
+            resolvedRole === undefined
+              ? `map_sbd_toe_applicability(riskLevel="${riskLevel}", projectRole="developer")`
+              : `get_guide_by_role(risk_level="${riskLevel}", role="${resolvedRole}")`
+        }
+      : undefined;
+
   return {
     riskLevel,
     semantics: GRADUATED_SEMANTICS,
     canonical_anchor: CANONICAL_ANCHOR,
+    ...(role_vocabulary ? { role_vocabulary } : {}),
+    ...(empty_role_view ? { empty_role_view } : {}),
     chapters,
     conditional,
     activatedBundles

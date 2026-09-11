@@ -1,0 +1,291 @@
+---
+ai_assisted: true
+model: Claude Fable 5
+date: 2026-07-05
+purpose: governance-doc
+produced_by: sync
+target: executor+tester
+epic: v2-token-diet
+review_status: pending-human-review
+---
+
+# EPIC — v2: token diet do `prepare_sbd_toe_codegen_context` (linha beta `0.20.x`)
+
+**Home:** `sbd-toe-mcp-poc_0.20.0` (branch `0.20-beta`, versão `0.20.0-beta.1`).
+**Estável paralelo:** `0.10.x` (`master`, `latest`) — **intocado** (a experiência D-a/D-b congelou o 0.10.1).
+
+## Motivação — medição, não intuição
+
+Eval externo (D-a MCP-off vs D-b MCP-on, block48, 14 tarefas) mediu **custo 5,5×** com o MCP:
+turnos 2→12 (6×), output 6,6×, **cache-read 10×** (32K→324K). Decomposição: *payload grande ×
+muitos turnos = re-leitura de contexto amplificada*.
+
+Medição local do payload (2026-07-05, `dist` da `0.20.0-beta.1`, task típica auth+validation,
+`risk_level: L2`) — **baseline de regressão**:
+
+| Secção | Itens | ≈Tokens | % | Natureza |
+|---|---|---|---|---|
+| `g2_context.relations` | 106 | 4.370 | 23% | dump inline do grafo, raramente usado pelo codegen |
+| `manual_grounding` | 51 | 3.572 | 19% | `manual_commit_sha`/paths repetidos por entrada |
+| `g2_context.evidence_patterns` | 25 | 2.846 | 15% | conteúdo útil; cap generoso |
+| `citation_map` | 111 | 2.677 | 14% | 111× `{source, source_data}` quase idênticos |
+| `activated_scope` | ~100 | 2.145 | 11% | **núcleo — manter** |
+| `g2_context` (entidades) | 51 | 2.057 | 11% | **núcleo — manter** |
+| `activation_trace` + boilerplate estático + echo | — | ~1.240 | 7% | audit + template constante por modo |
+| **TOTAL** | | **≈18.900** | | (task com 3 famílias: ≈24.700) |
+
+Fatores estruturais: (a) o seam `src/serving/response-shaping.ts` (perfis `inline`/`agentic`/
+`governance`/`diagnostic`, budgets, truncagem nunca-silenciosa) é usado por 8 tools **mas não por
+esta**; (b) `source: "runtime_v1"` repetido item-a-item em todas as listas.
+
+**Fixtures baseline (reproduzir a medição exatamente com isto; tokens ≈ `JSON.stringify(r).length / 4`):**
+
+```json
+[
+  { "task": "Adicionar validação de payload e autenticação ao endpoint POST /users/:id/email",
+    "risk_level": "L2", "mode": "codegen" },
+  { "task": "Implement a secure endpoint for uploading documents with logging",
+    "risk_level": "L2", "mode": "codegen" }
+]
+```
+
+(1ª fixture ⇒ 18.903 tokens / 111 ids no `citation_map`; 2ª ⇒ 24.731 tokens / 150 ids.)
+
+> **Re-baseline 2026-08-29 (0.20.0-beta.3, pin `kg-v1-manual-v1.7.0-aligned-2026-08-29`, contrato v1.11):** a 2ª fixture activa agora OPS-015 (publicado neste bundle) ⇒ 24.792 tokens / **151 ids**; `standard` mede 8.645 (> gate 8.500, +223 vs v1.6.7 — crescimento de dados, não de codificação). Gate mantido; desvio tolerado a 8.700 em `KNOWN_TOTAL_DEVIATIONS` (budget.test) — **tolerância ≤8.700 ratificada pelo programme lead a 2026-08-29** (pin formal KG v1.6.0, conteúdo idêntico ao dev-build v1.7.0). 1ª fixture inalterada (18.903 / 111).
+>
+> **Re-baseline 2026-08-30 (0.20.0-beta.4, pin formal `v1.6.1`, contrato v1.12 — camada curada requisito→controlo v2):** 1ª fixture ⇒ 18.992 tokens / **112 ids** (um re-target acrescenta 1 controlo directo); `standard` 6.280 / `minimal` 5.641 / `ultrathin` 3.746 — dentro dos gates. 2ª fixture ⇒ 24.790 / 151; `standard` **8.617** (≤ 8.700 ratificado; gate 8.500 mantido), `minimal` 7.898, `ultrathin` 4.642.
+>
+> **Re-baseline 2026-08-30/b e ratificação 2026-08-31** (nota do dev-build v2.2 em falta no commit `97d28be`, que a alegava — reposta aqui): a camada de ligações curada v3 (dev-build v2.2, contrato v1.13; mantida no formal `v1.7.0`, contrato v1.14, 0.20.0-beta.5) muda os controlos directos das fixtures. Medições (idênticas em v2.2 e v1.7.0 formal): f1 full 19.092 / standard 6.409 / minimal 5.763 (`activated_scope` 3.243 → orç. 3.290) / ultrathin 3.775; f2 full 24.890 / standard **8.746** / minimal **8.019** / ultrathin 4.671; ids 112/151. **O programme lead ratificou a 2026-08-31 os novos gates hard: f2 standard ≤ 8.800, f2 minimal ≤ 8.100** — fixados em BUDGETS, `KNOWN_TOTAL_DEVIATIONS` esvaziado.
+
+## ⟳ ADENDA (2026-07-05) — correção de arquitetura do D-b + achados novos
+
+Trace das sessões D-b reais (agente executor do eval) corrigiu duas premissas:
+
+1. **D-b é UMA sessão, não duas.** Codegen e review acontecem no mesmo contexto (`claude -p` ×1);
+   o 2º agente do DualGauge é o árbitro (gpt-5-nano, não usa este MCP). Os ~12 turnos são o loop
+   real write-test-edit do agente — **não são compressíveis pelo MCP**. ⇒ o s4 original
+   ("review reutiliza contexto entre sessões") cai; substituído pelo s4 revisto abaixo.
+2. **Desperdício observado: chamadas MCP repetidas na mesma sessão** (uma sessão chamou
+   `prepare_codegen_context` ×3 ≈ 60K tokens acumulados). ⇒ gate novo: 1 chamada por sessão.
+3. **O bundle publicado já carrega o "how" que falta ao codegen**: 251/251 requirements têm
+   `description` imperativa (média 193 chars; ex.: ACC-001 "Perfis e permissões mapeados; role com
+   privilégio reduzido não acede a recursos restritos") e os controls também — **a projeção atual
+   descarta-a** (só id+name+category). Incluí-la é serialização de dados publicados (permitido),
+   não knowledge-builder logic (proibido). ⇒ alavanca de QUALIDADE além de custo (fecha o gap
+   "how" identificado no eval F6).
+4. **Consequência nos números:** com turnos ≈ constantes, o ganho vem quase todo do payload.
+   Projeção revista: cache-read 324K → ~110–130K; custo/amostra 5,5× → ~2–2,5×.
+5. **Protocolo do próximo run (decisão do operador, 2026-07-05):** o run limpo do DualGauge será
+   **1 run vanilla sem MCP + 1 run com contexto MCP em single-pass** — *sem* loop de improvement
+   e *sem* re-chamadas (exatamente 1 chamada MCP, depois implementa, termina). Isola a variável
+   "o contexto MCP muda o resultado de segurança?" sem confundir com o efeito do workflow
+   iterativo. O loop iterativo fica para um braço experimental futuro (D-c), se se quiser medir
+   o efeito do workflow separadamente. A imposição é feita na instrução do agente D-b (lado do
+   bench), não no servidor.
+
+---
+
+## Objetivo
+
+Reduzir o payload típico de **≈19K para ≤6,5K tokens** (−65%; `minimal` ≤2K) para que o loop
+grounded (obtém contexto → escreve → testa contra o contexto → corrige) fique barato **sem mexer
+no loop em si** — os turnos são o comportamento desejado. Sem perder acesso a nenhuma informação
+(detalhe pesado passa a *on-demand*) e sem degradar a qualidade do grounding (citações VAL-xxx
+no eval qualitativo); idealmente **melhorá-la**, expondo o `description` publicado (o "how").
+
+**Onde o grafo v2 ajuda (e onde não):** a única secção onde o SPARQL ajuda é `relations` — o
+`trace_sbd_toe_graph` já serve travessias on-demand com lenses curadas, tornando o dump inline
+redundante. O resto do payload é projeção plana de atributos → mesma conclusão da decisão 0002:
+sem refactor SPARQL das tools existentes.
+
+---
+
+## Invariantes (MANTER — violação = gate falha)
+
+1. **Aditivo na linha beta.** Novo parâmetro `detail: "minimal" | "standard" | "full"`, com
+   **default = `full` = output byte-idêntico ao atual**. Flip do default só na graduação
+   (release estável seguinte, documentado como breaking).
+2. **Sem truncagem silenciosa.** Todo o corte reporta `total`/`returned`/`omitted`
+   (padrão `boundList` do response-shaping) ou vem com referência para obter o resto.
+3. **Grounding determinístico intacto:** nenhum ID inventado; `citation_map`/`citations`
+   cobrem exatamente os mesmos IDs em todos os níveis de `detail` (muda a *codificação*,
+   não o *conjunto*).
+4. **`consumed-bundle.json` idêntico ao estável.** Dieta é serialização, nunca dados.
+5. **Qualidade não regride:** eval qualitativo (`scripts/run-qualitative-eval.mjs`) verde
+   a par do gate de tamanho.
+6. **Sem fuga de IRIs** nas referências para `trace_sbd_toe_graph`.
+
+---
+
+## Orçamento (gates deste epic)
+
+| Gate | Tipo | Orçamento | Baseline |
+|---|---|---|---|
+| Payload típico `detail=standard` | 🔴 hard | ≤ 6.500 tokens | 18.903 |
+| Payload 3-famílias `detail=standard` | 🔴 hard | ≤ 8.500 tokens | 24.731 |
+| `detail=full` byte-idêntico ao atual | 🔴 hard | diff vazio | — |
+| Conjunto de IDs citáveis por `detail` | 🔴 hard | idêntico em todos os níveis | 111 ids |
+| Eval qualitativo | 🔴 hard | sem regressão vs baseline | — |
+| Custo/amostra no re-run D-b | 🟡 soft | ≤ 2,5× do D-a (era 5,5×) | $0.60 vs $0.11 |
+| Chamadas MCP por sessão D-b | 🟡 soft | 1 (observado: até 3) | 60K tokens acumulados |
+
+---
+
+## Slices
+
+### s0 — Gates de medição *(foundation — fazer PRIMEIRO)*
+- **Create:** teste vitest de orçamento de payload por secção (usa `sizeEstimate` do
+  response-shaping; fixtures = as 2 tasks baseline acima) + script
+  `scripts/measure-codegen-payload.mjs` (versão do script de medição desta análise).
+- **Gate:** teste falha se qualquer secção exceder o budget declarado; baseline atual passa
+  com budgets `full`.
+
+### s1 — Dieta estrutural (dedup sem remover nada) *(depends_on: s0)*
+- **Alter (aditivo):** `src/tools/prepare-codegen-context.ts` —
+  1. `citations` invertido: `{runtime_v0: {source_data, ids: [...]}, runtime_v1: …, overlay: …}`
+     em `minimal`/`standard` (`citation_map` clássico mantém-se em `full`). *(−2,4K)*
+  2. `manual_grounding` agrupado por `(manual_chapter, manual_file, manual_commit_sha)` com
+     lista de `v1_entity_ids` por grupo. *(−2,5K)*
+  3. Legend de proveniência top-level; remove `source:` por item em `minimal`/`standard`. *(−1–1,5K)*
+- **Gate:** golden snapshots por `detail`; conjunto de IDs idêntico entre níveis; `full` byte-idêntico.
+
+### s2 — Relations on-demand (a ponte para o grafo v2) *(depends_on: s1)*
+- **Alter (aditivo):** em `minimal`/`standard`, `g2_context.relations` → `relations_ref`:
+  `{tool: "trace_sbd_toe_graph", lenses: [{lens, anchor}...], total_relations}` com anchors
+  = slice_ids/entity_ids ativados (ids, nunca IRIs). `include_relations: true` restaura inline. *(−4,3K)*
+- **Gate:** para cada `relations_ref`, executar as lenses referidas devolve um superset das
+  relations que iam inline (coverage-preserving por referência); no-leak.
+
+### s3 — Caps, boilerplate e o "how" publicado *(depends_on: s1)*
+- **Alter (aditivo):** `evidence_patterns` cap 25→10 em `standard` (10→5 em `minimal`;
+  `completeness_report` já reporta `total/capped`). *(−1,7K)*
+  `llm_codegen_instructions` + `security_rationale_template` → recurso MCP
+  `sbd://toe/codegen-instructions/{mode}` referenciado por URI; inline só em `full`. *(−0,4K)*
+  `activation_trace` só com `debug: true` em `minimal`/`standard`. *(−0,4K)*
+- **Alter (aditivo, qualidade):** incluir `description` (bundle publicado, verbatim) nos
+  requirements ativados e nos controls `direct` em `minimal`/`standard`. *(+~1–1,5K, dentro
+  do budget; fecha o gap "how" do eval F6 — o modelo passa a receber o COMO, não só o id.)*
+- **Gate:** budget hard `standard` ≤ 6,5K atingido nas fixtures; recurso MCP resolve e devolve
+  o texto exato que ia inline; `description` é byte-igual ao campo do bundle (nunca parafraseada).
+
+### s3b — Perfil `minimal` codegen-lean *(depends_on: s3)*
+
+> **⟳ ADENDA s3b (2026-07-05, decisão do operador — human review; SUBSTITUI o desenho abaixo):**
+> **Sem top-N. Não há ranking/subsetting de requirements — a ativação é determinística e o
+> conjunto ativado vai COMPLETO em todos os níveis de `detail`.** O top-N original contradizia
+> a própria Nota de segurança deste slice (o servidor não julga o que a task precisa).
+> Princípio ratificado: *minimizar o package sem reduzir contexto* — o que o ponto de execução
+> precisa (requirements completos COM `description`, controls direct com `description`) vai
+> inline; o que é rasto de traceability (grounding por item, proveniência repetida, projeção
+> derivável) vai por referência/contagem. "Se for melhor o input, melhor o output."
+> - `minimal` = conjunto ativado completo com `description`; corta apenas serialização de
+>   traceability e projeção derivável (nunca-silencioso: contagens + referência).
+> - **Alvo revisto:** ≤ 2K era inviável sem top-N; novo alvo ~4–4,5K típico — o número hard é
+>   fixado pela medição real do slice e ratificado pelo operador na validação.
+>   **RATIFICADO (2026-07-05, operador): 5.800 típico / 8.000 3-famílias** (medido 5.518/7.639
+>   +5%; acima da projeção porque o activated_scope completo com descriptions = 56–63% do
+>   payload e é intocável por decisão do próprio operador). O minimal re-emagrece (~3K) quando
+>   o KG upstream publicar o campo `brief` (ver D-C-ABLATION-BACKLOG.md, pacote upstream) —
+>   nova medição + nova ratificação nessa altura.
+> - Gates que se mantêm: `omitted + returned == total` onde houver contagem; conjunto de IDs
+>   citáveis idêntico entre níveis; referências executáveis; determinismo 2× byte-igual.
+
+*(Desenho original, superseded pela adenda acima — mantido por história append-only:)*
+- **Alter (aditivo):** `detail: "minimal"` para tarefas pequenas: requirements top-N (N=10)
+  ordenados por score de ativação **determinístico** (score do concern que ativou a categoria;
+  desempate `requirement_id`), com `description`; controls só `direct`; `omitted` explícito +
+  referência para obter o resto (mesma tool com `detail: "standard"` ou
+  `consult_security_requirements`). Alvo ≤ 2K tokens.
+- **Nota de segurança (coverage):** o servidor NÃO decide "quais os 1–2 requisitos que esta
+  task precisa" — isso exigiria julgamento semântico que o servidor não tem. O corte é ranking
+  determinístico + contagem de omitidos + como obter o resto; a decisão de aprofundar é do cliente.
+- **Gate:** `omitted + returned == total` em qualquer input; ranking estável (2× idêntico);
+  conjunto de IDs recuperável na íntegra via a referência indicada.
+
+### s3c — Perfil `ultrathin` (id+nome, sem descriptions) *(ADENDA 2026-07-05, pedido do operador; depends_on: s3b)*
+
+> **ESTADO: especificado, ADIADO (decisão do operador 2026-07-05, "5–7K já é razoável").**
+> Não executar antes do s5: o standard 6,2K já resolve o problema medido (custo 5,5× era
+> payload×turnos), o ultrathin sacrifica o "how" (a alavanca de qualidade do s3), e a
+> re-consulta barata já existe (consult_security_requirements ≈3K). Executar apenas SE o s5
+> mostrar custo ainda alto OU quando o D-c precisar do braço A do E1. Spec abaixo pronta.
+>
+> **REATIVADO no mesmo dia (2026-07-05, decisão do operador): executar já** — o braço E1
+> fica disponível via `detail` desde a beta.2 e o custo de implementação é baixo (pipeline
+> dieted já ramifica). Gate por medição + ratificação, como no s3b.
+> **RATIFICADO (2026-07-05, operador): 3.870 típico / 4.840 3-famílias** (medido 3.688/4.606
+> +5%; acima da estimativa ~3–3,2K pelo chão incompressível: scope completo sem descriptions
+> 1.712/2.293 + âncoras g2 + referências nunca-silenciosas). −80,5%/−81,4% vs full.
+- **Alter (aditivo):** novo nível `detail: "ultrathin"` abaixo de `minimal`: mesmas regras
+  (conjunto ativado COMPLETO, sem top-k, nada só-id, nunca-silencioso), mas requirements/
+  controls só `id + name (+ type/confidence)` — sem `description`; `evidence_patterns` 0 inline
+  (contagens + rest-ref); `manual_grounding` só `{total_entries, sha, groups_ref}`;
+  `completeness_report` aparado ao essencial. MANTÉM entidades g2 id→nome (âncoras de contexto
+  + invariante 3 via `ids_from`), `relations_ref`, `citations`, refs e `repeat_call_hint`.
+- **Duplo propósito:** braço A do E1 (D-C-ABLATION-BACKLOG: id+nome vs id+nome+descrição
+  comparável só via `detail`) e alvo das re-consultas baratas do s4. Quando o KG publicar
+  `brief`, o ultrathin passa a id+name+brief (verbatim) — nova medição nessa altura.
+- **Gate:** estimativa ~3,0–3,2K típico / ~3,9–4,1K 3-famílias; número hard fixado por medição
+  (+~5%) e ratificado pelo operador. Conjunto citável idêntico a todos os níveis; full/standard/
+  minimal byte-idênticos ao pós-s4; suite + eval qualitativo verdes.
+
+### s4 — Workflow: turnos baratos, não menos turnos *(depends_on: s3; independente de s2)*
+*(Revisto pela ADENDA: em uso de PRODUÇÃO o loop "obtém contexto → escreve → testa contra o
+contexto → corrige" é legítimo — não se cortam turnos; corta-se o custo de cada turno e de
+cada re-consulta. No BENCH, por decisão do operador (ADENDA §5), o D-b corre single-pass —
+a imposição é da instrução do bench, não deste slice.)*
+- **Alter:** templates de `generate_sbd_toe_skill` — (a) instruir que o payload já em contexto
+  é a fonte para o loop (testar/corrigir contra o `citations` recebido, sem re-chamada com a
+  mesma task); (b) re-consultas legítimas (refinar `concerns`, aprofundar um requisito) devem
+  usar `detail: "minimal"` ou `consult_security_requirements` pontual — nunca repetir o payload
+  completo; (c) o passo de review usa `mode: "review"` só se for sessão nova.
+- **Alter (aditivo, servidor):** chamada repetida com input idêntico na mesma perspetiva devolve
+  o mesmo resultado (já é determinístico) — acrescentar ao output `standard`/`minimal` uma nota
+  `repeat_call_hint` a apontar para a reutilização do contexto.
+- **Gate:** skill gerado contém as instruções (a)–(c); smoke do skill; re-chamada idêntica em
+  `minimal` custa ≤ 2K (vs 20K observados ×3 no trace do eval).
+
+### s5 — Validação de custo (re-run do eval) *(depends_on: s2+s3+s4)*
+- **Protocolo (ADENDA §5):** D-a vanilla + D-b **single-pass** (1 chamada MCP, sem loop de
+  improvement, sem re-chamadas) — imposto na instrução do agente do bench.
+- **Test (gate):** re-run com o beta desta dieta (`detail=standard`): custo ≤ **1,5×** do D-a
+  (o alvo aperta porque single-pass elimina o multiplicador de turnos; payload é o único delta),
+  exatamente 1 tool_result MCP por sessão nos audit logs, eval qualitativo sem regressão
+  (citações VAL-xxx preservadas) — e, hipótese a testar, delta de segurança MELHOR com o
+  `description` no payload.
+- Se qualidade regredir → sobe caps/inclui secção em falta e re-mede (o mecanismo `detail`
+  permite recuar sem reverter código).
+
+### s6 — Release beta *(depends_on: s5)*
+- **Create:** CHANGELOG `0.20.0-beta.2`; nota FREEZE-REGISTRY (linha beta já excluída).
+- **Gate:** tag `v0.20.0-beta.2` → `@beta`, `latest` intocado; suite completa verde.
+
+### s7 *(opcional, pós-beta)* — Resources MCP para secções pesadas
+- `sbd://toe/codegen-context/{id}/relations|grounding` — cliente lê só o que precisa.
+  Depende de suporte de resources nos clientes-alvo; decidir com dados do s5.
+
+---
+
+## Fallback
+
+Como tudo é gateado por `detail` com default `full`, qualquer regressão (qualidade, contrato,
+cliente que não suporte referências) recua para o comportamento atual **sem reverter código**.
+Se o s5 mostrar ganho <2× no custo, reavaliar se o s7 (resources) é o desbloqueio ou se o teto
+é o round-trip por turno (irredutível no workflow grounded).
+
+## Inventário
+
+**CRIAR:** teste de orçamento de payload (s0), `scripts/measure-codegen-payload.mjs`, golden
+snapshots por `detail`, recurso `sbd://toe/codegen-instructions/{mode}`, CHANGELOG beta.2.
+**ALTERAR (aditivo):** `src/tools/prepare-codegen-context.ts`, `src/index.ts` (schema do input:
+`detail`, `include_relations`), templates do `generate_sbd_toe_skill`.
+**MANTER:** todas as outras tools; `consumed-bundle.json`; contratos com `detail=full`;
+determinismo/no-leak; offline/`npx`.
+**TESTAR:** budgets por secção, golden por `detail`, superset das lenses (s2), suite completa,
+eval qualitativo, re-run D-a/D-b.
+
+## Papéis
+
+sync/guardian (mantém epic + baseline + valida gates entre sessões) · executor (implementa,
+sessão separada) · tester (valida gate por slice) · programme-lead (ratifica flip de default
+na graduação).

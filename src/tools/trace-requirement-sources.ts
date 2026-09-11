@@ -12,7 +12,7 @@
  */
 import { existsSync, readFileSync } from "node:fs";
 import { resolveAppPath } from "../config.js";
-import { servedKgReleaseTag } from "../version-info.js";
+import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 import { boundAffordances, type Affordance } from "../serving/protocol-envelope.js";
 
 const COVERAGE_PATH = "data/publish/semantic/requirement_source_coverage.jsonl";
@@ -45,6 +45,7 @@ function loadCoverage(): { meta: CoverageMeta; rows: Map<string, Record<string, 
 export interface TraceSourcesOutput {
   provenance: {
     kg: string;
+    server: string;
     content_type: "canonical";
     produced_by: "requirement_source_trace";
     source_data: string;
@@ -110,6 +111,7 @@ export function handleTraceRequirementSources(args: Record<string, unknown>): Tr
   return {
     provenance: {
       kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
       content_type: "canonical",
       produced_by: "requirement_source_trace",
       source_data:

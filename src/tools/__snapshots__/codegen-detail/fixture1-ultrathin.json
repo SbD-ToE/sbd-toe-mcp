@@ -3,6 +3,7 @@
   "mode": "codegen",
   "input_echo": {
     "task": "Adicionar validação de payload e autenticação ao endpoint POST /users/:id/email",
+    "task_role": "recorded_context",
     "risk_level": "L2",
     "mode": "codegen",
     "detail": "ultrathin"
@@ -12,7 +13,7 @@
     "note": "activation_trace elided at detail=ultrathin — re-call with debug=true to include it (always inline at detail=full)."
   },
   "provenance_legend": {
-    "note": "Deduplicated encoding (detail=ultrathin): same rules as detail=standard/minimal — per-item `source` elided, requirement `category` = requirement_id category segment (before the number), g2_context entity lists grouped as {slice_id: {entity_id: name|null}}, citations ids via ids_from payload paths — PLUS: published `description` fields elided (executable activated_scope.descriptions_ref, detail='minimal'), evidence_patterns 0 inline (counts + rest-ref in completeness_report), manual_grounding aggregate-only (total + sha + groups_ref) and completeness diagnostics as exact counts (+ ref). Nothing silently dropped. Full legend: MCP resource sbd://toe/codegen-instructions/{mode}, section detail_encoding."
+    "note": "Deduplicated encoding (detail=ultrathin): same rules as detail=standard/minimal — per-item `source` elided, requirement `category` = requirement_id category segment (before the number), g2_context entity lists grouped as {slice_id: {entity_id: name|null}}, citations ids via ids_from payload paths — PLUS: published `description` fields elided (executable activated_scope.descriptions_ref, detail='minimal'), evidence_patterns 0 inline (counts + rest-ref in completeness_report), manual_grounding aggregate-only (total + sha + groups_ref) and completeness diagnostics as exact counts (+ ref). Nothing silently dropped. Full legend: MCP read_sbd_toe_resource(sbd://toe/codegen-instructions/{mode}), detail_encoding."
   },
   "activated_scope": {
     "requirements": [
@@ -417,7 +418,7 @@
   },
   "manual_grounding": {
     "total_entries": 51,
-    "manual_commit_sha": "f78dfe734a83b01fa9283c2df5a3eb0ba9528001",
+    "manual_commit_sha": "0576e914d4c933ddc1af25cb2c5570dd2afcf60f",
     "groups_ref": {
       "tool": "prepare_sbd_toe_codegen_context",
       "with": {
@@ -482,9 +483,9 @@
         "note": "Categorias elegíveis sem sinal na tarefa foram excluídas pelo narrowing MP1 — a lista completa (por categoria, com razão) vem de select_sbd_toe_requirements com o mesmo contexto."
       }
     },
-    "evidence_patterns_total": 170,
+    "evidence_patterns_total": 171,
     "evidence_patterns_returned": 0,
-    "evidence_patterns_capped": 170,
+    "evidence_patterns_capped": 171,
     "evidence_pattern_cap": 0,
     "evidence_patterns_rest": {
       "tool": "prepare_sbd_toe_codegen_context",
@@ -512,7 +513,8 @@
   },
   "repeat_call_hint": "Identical input returns this exact payload (deterministic) — reuse the context already received; deepen via detail:'minimal' or a targeted consult_security_requirements.",
   "provenance": {
-    "kg": "v1.11.0",
+    "kg": "v1.12.0",
+    "server": "<pkg>",
     "runtime_v0": "data/publish/runtime/*.json + data/publish/ontology/*",
     "runtime_v1": "data/publish/runtime/v1/*",
     "overlay": "absent"

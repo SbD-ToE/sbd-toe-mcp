@@ -23,10 +23,12 @@ import {
   resolveThreatChapterNumber
 } from "./ontology-loader.js";
 import { estimateSize } from "../serving/response-shaping.js";
-import { servedKgReleaseTag } from "../version-info.js";
+import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 import { _resolveConsultResult } from "./consult-security-requirements.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { threatLandscapeAffordances } from "../serving/affordances.js";
+import { buildActivationVocabulary } from "../serving/activation-vocabulary.js";
+import { THREAT_ORDERING } from "../serving/behaviour-notes.js";
 
 export interface MitigatingControl {
   control_id: string;
@@ -51,6 +53,8 @@ export interface ThreatWithConfidence extends Threat {
 }
 
 export interface McpProvenance {
+  /** 0.20.0-beta.23: versão do SERVIDOR que produziu esta resposta (≠ `kg`, o conhecimento servido). */
+  server: string;
   /** Compact version stamp: kg release_tag of the served pin (0.13.0). */
   kg: string;
   content_type: "canonical" | "derived" | "inferred";
@@ -68,6 +72,17 @@ export interface GetThreatLandscapeResult {
     activeChapters: string[];
     activeBundles: string[];
     concernsApplied: string[] | null;
+    note: string;
+  };
+  /**
+   * 0.20.0-beta.23 (P0-2): concerns VÁLIDOS do vocabulário que este mapa de ameaças
+   * não resolve. Sem isto, 11 dos 24 concerns devolviam `total: 0` + `activeChapters: []`
+   * indistinguíveis de «não há ameaças» — e o agente afirmava ausência com fundamento
+   * no manual a partir de uma lista vazia. Zero mudo é o que este contrato proíbe.
+   */
+  unsupported_concerns?: {
+    values: string[];
+    supported_values: string[];
     note: string;
   };
   /** RF-H advisory band — adjacent tools the caller likely needs next (advisory; set by the handler). */
@@ -94,6 +109,63 @@ const CONCERN_TO_DOMAIN_CHAPTER: Readonly<Record<string, number>> = {
   architecture: 4,
   requirements: 2
 };
+
+/**
+ * Quais concerns o ROTEAMENTO DE AMEAÇAS resolve. Derivado (não declarado à mão): um
+ * concern é suportado quando, declarado sozinho, activa pelo menos um capítulo de
+ * ameaças. Estável entre níveis (verificado nos três) e calculado uma vez por processo.
+ */
+let SUPPORT_CACHE: { supported: string[]; unsupported: string[] } | null = null;
+let probingSupport = false;
+/**
+ * 0.20.0-beta.29 (item 2) — que concerns têm capítulo de ameaças PRÓPRIO.
+ *
+ * «24 de 24» confundia ROTEAMENTO com COBERTURA: é verdade só no sentido de «não dá erro».
+ * O terceiro estado — `routing_basis: domain_chapter` vs `activated_controls` — só aparecia
+ * DEPOIS de gastar a chamada. Esta lista é derivada e publica-se antes.
+ */
+let domainConcernsCache: string[] | null = null;
+export function threatDomainConcerns(): string[] {
+  if (domainConcernsCache) return domainConcernsCache;
+  // Mesma regra do handler: capítulo próprio de domínio, EXCLUINDO 01/02 (classificação e
+  // meta-ameaças de processo). `requirements` mapeia para o cap. 02 e por isso NÃO conta —
+  // a lista publicada tem de ser a mesma que o `routing_basis` produz, ou é folclore outra vez.
+  const out = new Set<string>();
+  for (const entry of buildActivationVocabulary().concerns.values) {
+    const concern = String(entry.value);
+    const chapters = new Set<number>();
+    const own = CONCERN_TO_DOMAIN_CHAPTER[concern];
+    if (own !== undefined) chapters.add(own);
+    for (const chapter of entry.activates_chapters) {
+      const n = chapterNumber(chapter);
+      if (!Number.isNaN(n)) chapters.add(n);
+    }
+    chapters.delete(1);
+    chapters.delete(2);
+    if (chapters.size > 0) out.add(concern);
+  }
+  domainConcernsCache = [...out].sort();
+  return domainConcernsCache;
+}
+
+export function threatConcernSupport(): { supported: string[]; unsupported: string[] } {
+  if (SUPPORT_CACHE) return SUPPORT_CACHE;
+  if (probingSupport) return { supported: [], unsupported: [] };
+  probingSupport = true;
+  const supported: string[] = [];
+  const unsupported: string[] = [];
+  try {
+    for (const entry of buildActivationVocabulary().concerns.values) {
+      const concern = String(entry.value);
+      const probe = handleGetThreatLandscape({ risk_level: "L3", concerns: [concern] });
+      (probe.meta.threatCount > 0 ? supported : unsupported).push(concern);
+    }
+  } finally {
+    probingSupport = false;
+  }
+  SUPPORT_CACHE = { supported: supported.sort(), unsupported: unsupported.sort() };
+  return SUPPORT_CACHE;
+}
 
 function buildAntipatternIndexes(
   antipatterns: AntiPattern[],
@@ -163,9 +235,19 @@ export function _resolveThreatLandscape(
   // (CONCERN_TO_DOMAIN_CHAPTER) and by the chapters the resolved CONTROLS live in.
   const activeChapterNumbers = new Set<number>();
   const activeBundles = new Set<string>();
+  // Capítulos de DOMÍNIO dos concerns declarados — o escalão 1 da ordenação por pertença.
+  const orderingDomainChapters = new Set<number>();
   for (const concern of inputConcerns) {
     const domainChapter = CONCERN_TO_DOMAIN_CHAPTER[concern];
-    if (domainChapter !== undefined) activeChapterNumbers.add(domainChapter);
+    if (domainChapter !== undefined) {
+      activeChapterNumbers.add(domainChapter);
+      orderingDomainChapters.add(domainChapter);
+    }
+    for (const chapter of buildActivationVocabulary().concerns.values.find((x) => String(x.value) === concern)
+      ?.activates_chapters ?? []) {
+      const n = chapterNumber(chapter);
+      if (!Number.isNaN(n)) orderingDomainChapters.add(n);
+    }
   }
   // G-b decision 2 (2026-08-30): the DEFINING chapters of the activated controls count
   // as in-scope — a control that defines its content in a chapter brings that chapter's
@@ -306,11 +388,40 @@ export function _resolveThreatLandscape(
     });
   }
 
+  /**
+   * 0.20.0-beta.29 — ORDENAÇÃO POR PERTENÇA AO ÂMBITO DECLARADO.
+   *
+   * A ordem anterior era `mitigation_confidence` e depois `chapter_id`. Como quase tudo é
+   * `derived`, na prática era ALFABÉTICA POR CAPÍTULO: as 40 primeiras eram MT-001..040 dos
+   * caps. 01/02 («Overengineering», «Segurança opcional») e as relevantes ficavam nas
+   * páginas 2-6 — ~15.800 tk de payload com retorno nulo. Avisar que a ordem é inútil não a
+   * torna útil.
+   *
+   * É a MESMA correcção que fechou os `evidence_patterns` na beta.27: PERTENÇA primeiro.
+   * Três escalões, todos derivados do que foi declarado:
+   *   1. capítulo de domínio dos concerns declarados (o mais específico que existe);
+   *   2. restantes capítulos activados (chegaram cá pelos controlos que os concerns activam);
+   *   3. capítulos 01 e 02 — classificação e meta-ameaças de PROCESSO: verdadeiras, mas
+   *      genéricas, e por isso ao fim.
+   * Dentro de cada escalão mantém-se a ordem antiga (confidence, depois capítulo, depois id)
+   * para o resultado continuar determinístico.
+   */
+  const GENERIC_CHAPTERS = new Set([1, 2]);
+  const tierOf = (chapterId: string | undefined): number => {
+    const n = chapterNumber(String(chapterId ?? ""));
+    if (Number.isNaN(n)) return 2;
+    if (GENERIC_CHAPTERS.has(n)) return 3;
+    return orderingDomainChapters.has(n) ? 1 : 2;
+  };
   threats.sort((left, right) => {
+    const tier = tierOf(left.chapter_id) - tierOf(right.chapter_id);
+    if (tier !== 0) return tier;
     const rank = { direct: 0, derived: 1, heuristic: 2 } as const;
     const confidenceOrder = rank[left.mitigation_confidence] - rank[right.mitigation_confidence];
     if (confidenceOrder !== 0) return confidenceOrder;
-    return (left.chapter_id ?? "").localeCompare(right.chapter_id ?? "");
+    const byChapter = (left.chapter_id ?? "").localeCompare(right.chapter_id ?? "");
+    if (byChapter !== 0) return byChapter;
+    return (left.id ?? "").localeCompare(right.id ?? "");
   });
 
   return {
@@ -322,7 +433,7 @@ export function _resolveThreatLandscape(
       activeBundles: [...activeBundles].sort(),
       concernsApplied: consult.meta.concernsApplied,
       note:
-        "Threat applicability resolves from consult-mode requirement scope; the defining chapters of activated controls count as in-scope (G-b 2026-08-30). mitigation_confidence uses direct control references first, then chapter/bundle or antipattern-derived alignment, then heuristic domain fallback.",
+        "Threat applicability resolves from consult-mode requirement scope; the defining chapters of activated controls count as in-scope (G-b 2026-08-30). mitigation_confidence uses direct control references first, then chapter/bundle or antipattern-derived alignment, then heuristic domain fallback. " + THREAT_ORDERING + "",
     },
   };
 }
@@ -332,25 +443,186 @@ export function handleGetThreatLandscape(
 ): GetThreatLandscapeResult {
   const full = _resolveThreatLandscape(args, getOntologyData());
   // 0.15.0 (P0-1): paginação universal — default 25; coverage + size_estimate sempre.
+  /**
+   * 0.20.0-beta.28 — a deduplicação é um NÍVEL DE SERIALIZAÇÃO, não uma remoção.
+   * `associated_control_ids` é contrato publicado (v1.14 §1.21): renomeá-lo por omissão
+   * seria a mesma classe de dano que este ciclo combate. `full` fica byte-idêntico;
+   * `standard`/`minimal` trocam os arrays repetidos por refs + legenda (−50% medido).
+   */
+  const detailArg = typeof args["detail"] === "string" ? (args["detail"] as string) : undefined;
+  if (detailArg !== undefined && !["full", "standard", "minimal"].includes(detailArg)) {
+    throw Object.assign(new Error(`Invalid detail: "${detailArg}". Allowed: full, standard, minimal.`), {
+      rpcError: { code: -32602, message: `Invalid detail: "${detailArg}". Allowed: full, standard, minimal.` }
+    });
+  }
+  const dedupe = detailArg === "standard" || detailArg === "minimal";
+
   const offsetArg = typeof args["offset"] === "number" ? Math.max(0, Math.floor(args["offset"] as number)) : 0;
   const limitArg = typeof args["limit"] === "number" ? Math.max(1, Math.floor(args["limit"] as number)) : 25;
   const totalThreats = full.threats.length;
+  const allThreatsForRouting = full.threats;
   const pagedThreats = full.threats.slice(offsetArg, offsetArg + limitArg);
   const nextOffset = offsetArg + pagedThreats.length < totalThreats ? offsetArg + pagedThreats.length : null;
   full.threats = pagedThreats;
-  const shaped = {
-    ...full,
-    coverage: { total: totalThreats, returned: pagedThreats.length, offset: offsetArg, nextOffset, hasMore: nextOffset !== null },
-    provenance: {
-      kg: servedKgReleaseTag(),
-      content_type: "derived",
-      produced_by: "threat_resolution_pipeline",
-      source_data:
-        "runtime/v1/manual_threat_mitigation.jsonl (threat_substantive; legacy runtime/threats.json superseded) + runtime/requirement_control_links.json + runtime/antipatterns.json + runtime/antipattern_requirement_links.json + runtime/antipattern_threat_links.json",
-      note:
-        "Threat entries are canonical runtime entities. Mitigation and antipattern enrichment are derived structurally from the published deterministic runtime bundle.",
-    },
-    threats: full.threats.map((threat) => ({
+  // 0.20.0-beta.23 (P0-2): concerns válidos que este roteamento não resolve são
+  // DECLARADOS. `total: 0` com `activeChapters: []` não distingue «não há ameaças» de
+  // «este concern não se resolve aqui» — e o agent-guide mandava afirmar ausência
+  // fundamentada no manual a partir dessa lista vazia.
+  const declaredConcerns = Array.isArray(args["concerns"])
+    ? (args["concerns"] as unknown[]).filter((c): c is string => typeof c === "string")
+    : [];
+  const support = declaredConcerns.length > 0 ? threatConcernSupport() : { supported: [], unsupported: [] };
+  const unsupportedHere = declaredConcerns.filter((c) => support.unsupported.includes(c));
+  // beta.27: valores FORA do vocabulário eram ignorados em silêncio aqui (o `select`
+  // declara-os em `unknown_concerns` desde a beta.22). Mesma classe, quarta instância —
+  // apanhada pela invariante entre superfícies, não por um avaliador.
+  // A fonte de «conhecido» é o VOCABULÁRIO, não a sondagem de suporte: `threatConcernSupport()`
+  // devolve listas vazias enquanto está a sondar (guarda de recursão), e usá-la aqui fazia a
+  // cache classificar TODOS os concerns como desconhecidos — resultado dependente da ordem
+  // da primeira chamada. Apanhado pela suite antes de sair da lane.
+  const knownConcerns = new Set(buildActivationVocabulary().concerns.values.map((c) => String(c.value)));
+  const unknownHere = declaredConcerns.filter((c) => !knownConcerns.has(c));
+  /**
+   * 0.20.0-beta.26 (§17-C) — quando TODOS os concerns declarados são não-roteáveis, o
+   * roteamento cai para o âmbito largo e devolve ~25 ameaças de GOVERNAÇÃO (MT-001..025,
+   * 8,4k tk) que não têm nada a ver com o que foi pedido. Cobrar esse payload para dizer
+   * «não sei» é o oposto do contrato: agora pede DECLARAÇÃO, com a lista do que resolve.
+   */
+  const allUnsupported =
+    declaredConcerns.length > 0 && unsupportedHere.length + unknownHere.length === declaredConcerns.length;
+  if (allUnsupported) {
+    return {
+      provenance: {
+        kg: servedKgReleaseTag(),
+        server: servingServerVersion(),
+        content_type: "derived",
+        produced_by: "threat_resolution_pipeline",
+        source_data: "runtime/v1/manual_threat_mitigation.jsonl + activation vocabulary",
+        note: "Pedido de DECLARAÇÃO, não resultado: nenhum dos concerns declarados é roteável por este mapa."
+      },
+      risk_level: full.risk_level,
+      threats: [],
+      /**
+       * A garantia da beta.23 mantém-se LITERAL: quem aprendeu a ler
+       * `unsupported_concerns` continua a lê-lo. O `needs_input` acrescenta-se — não
+       * substitui. Uma promessa cumprida não se retira por se ter arranjado melhor.
+       */
+      unsupported_concerns: {
+        values: [...new Set([...unsupportedHere, ...unknownHere])].sort(),
+        supported_values: support.supported,
+        note:
+          `Concerns VÁLIDOS do vocabulário que o mapa de ameaças não resolve: ${[...new Set(unsupportedHere)].sort().join(", ")}. ` +
+          "Não são zero ameaças — são zero ameaças ROTEÁVEIS por este mapa. Como são TODOS os que declaraste, " +
+          "a resposta é um pedido de declaração (`needs_input`) em vez de um panorama largo que não pediste. " +
+          "NÃO concluas ausência de ameaças a partir desta resposta: para estes concerns usa select_sbd_toe_requirements."
+      },
+      needs_input: {
+        reason:
+          `Nenhum dos concerns declarados (${[...new Set(declaredConcerns)].sort().join(", ")}) é roteável pelo mapa de ameaças` +
+          (unknownHere.length > 0 ? ` (fora do vocabulário: ${[...new Set(unknownHere)].sort().join(", ")})` : "") + ". " +
+          "Sem esta paragem a resposta seria o âmbito largo — ameaças de GOVERNAÇÃO sem relação com o que pediste, " +
+          "a custo de payload cheio, para acabar a dizer que não sabe. Zero útil não é uma resposta.",
+        supported_concerns: support.supported,
+        note:
+          "Estes concerns TÊM requisitos — o que falta é roteamento de AMEAÇAS. Para eles usa " +
+          "`select_sbd_toe_requirements` com os mesmos concerns; para ameaças, declara um valor de `supported_concerns` " +
+          "(ou chama sem `concerns` se queres mesmo o panorama largo, sabendo que é largo).",
+        next: [
+          { intent: "Requisitos dos concerns que declaraste (existem)", tool: "select_sbd_toe_requirements", with: `risk_level="${full.risk_level}", concerns=[${declaredConcerns.map((c) => `"${c}"`).join(", ")}]`, kind: "structural" as const },
+          { intent: "Ameaças de um concern que este mapa resolve", tool: "get_threat_landscape", with: `risk_level="${full.risk_level}", concerns=["${support.supported[0] ?? "auth"}"]`, kind: "structural" as const }
+        ]
+      },
+      meta: {
+        threatCount: 0,
+        activeChapters: [],
+        activeBundles: [],
+        concernsApplied: declaredConcerns,
+        note: "needs_input: nenhum concern roteável declarado. Nada foi resolvido — e por isso nada é cobrado."
+      },
+      coverage: { total: 0, returned: 0, offset: 0, nextOffset: null, hasMore: false },
+      // RF-H: a banda `next` está em TODAS as respostas — um pedido de declaração também
+      // é uma resposta. Apanhado pela suite de affordances antes de sair da lane.
+      next: threatLandscapeAffordances(full.risk_level, support.supported.slice(0, 2))
+    } as unknown as GetThreatLandscapeResult;
+  }
+
+  /**
+   * 0.20.0-beta.27 — o concern RESOLVE mas o NÍVEL não traz capítulos: zero ameaças sem
+   * uma palavra. Mesma classe do `empty_at_level` do consult, encontrada pela invariante
+   * entre superfícies (privacy@L1, threat_modeling@L1).
+   */
+  const emptyByLevel =
+    declaredConcerns.length > 0 &&
+    unsupportedHere.length === 0 &&
+    unknownHere.length === 0 &&
+    full.threats.length === 0;
+
+  /**
+   * 0.20.0-beta.28 — COBERTURA NOMINAL SEM ROUTING REAL.
+   *
+   * `files` e `privacy` devolviam ~15 meta-ameaças de governação (MT-021..) vindas do
+   * cap. 02, sem uma única ameaça dos capítulos do próprio concern — «pior que o
+   * unsupported_concerns honesto: antes dizia que não sabia, agora entrega irrelevante com
+   * ar de fundamentado». O routing continua nominalmente a resolver; o que faltava era
+   * dizer que nada veio do domínio pedido.
+   */
+  /**
+   * 0.20.0-beta.28 — BASE DO ROUTING declarada.
+   *
+   * `files`/`privacy` devolviam dezenas de ameaças de capítulos sem relação com o concern
+   * (06/07/08/12 para manipulação de ficheiros) porque o routing passa pelos capítulos onde
+   * os CONTROLOS activados se definem — não por um domínio de ameaças do concern. As
+   * ameaças eram reais; a relevância era nominal, e nada o dizia.
+   *
+   * Duas afirmações, ambas derivadas dos dados do próprio roteamento:
+   *  - a BASE: domínio próprio do concern, ou capítulos dos controlos activados;
+   *  - se o concern TEM domínio próprio e ele não contribuiu com uma única ameaça, isso é
+   *    cobertura NOMINAL e é dito como tal.
+   * O cap. 02 nunca conta como prova de domínio: é o capítulo das meta-ameaças de processo.
+   */
+  const vocabForRouting = buildActivationVocabulary();
+  const domainChapters = new Set<number>();
+  for (const c of declaredConcerns) {
+    const own = CONCERN_TO_DOMAIN_CHAPTER[c];
+    if (own !== undefined) domainChapters.add(own);
+    const entry = vocabForRouting.concerns.values.find((x) => String(x.value) === c);
+    for (const chapter of entry?.activates_chapters ?? []) {
+      const n = chapterNumber(chapter);
+      if (!Number.isNaN(n)) domainChapters.add(n);
+    }
+  }
+  domainChapters.delete(2);
+  // conjunto COMPLETO (antes da paginação): paginar não pode mudar o veredicto
+  const allThreatChapters = new Set(allThreatsForRouting.map((t) => chapterNumber(String(t.chapter_id ?? ""))));
+  const hasDomain = domainChapters.size > 0;
+  const fromDomain = [...domainChapters].some((c) => allThreatChapters.has(c));
+  const nominalOnly = declaredConcerns.length > 0 && totalThreats > 0 && hasDomain && !fromDomain;
+
+  /**
+   * Deduplicação: `associated_control_names` vinha repetido verbatim em cada ameaça —
+   * 241 entradas para 13 nomes distintos, 2.585 tk de um payload de 11.944 (~22%).
+   * Legenda + referências: nenhum nome se perde, muda só a codificação.
+   */
+  const controlLegend: string[] = [];
+  const refOf = (name: string): number => {
+    const at = controlLegend.indexOf(name);
+    if (at >= 0) return at;
+    controlLegend.push(name);
+    return controlLegend.length - 1;
+  };
+  // `associated_control_ids` era a instância AO LADO da mesma classe, no mesmo payload:
+  // os CTRL-* repetidos verbatim ×36. A varredura apanhou-a; corrige-se com a de cima.
+  const controlIdLegend: string[] = [];
+  const refOfId = (id: string): number => {
+    const at = controlIdLegend.indexOf(id);
+    if (at >= 0) return at;
+    controlIdLegend.push(id);
+    return controlIdLegend.length - 1;
+  };
+  // Mapeamento ANTES do literal: é ele que preenche as legendas via `refOf`/`refOfId`.
+  // Enquanto vivia dentro do literal, a nota da legenda era interpolada primeiro e saía
+  // sempre «0 nomes e 0 ids» com os arrays cheios — o bug do contador (beta.28).
+  const mappedThreats = full.threats.map((threat) => ({
       id: threat.id,
       name: threat.name,
       mitigation_confidence: threat.mitigation_confidence,
@@ -361,9 +633,15 @@ export function handleGetThreatLandscape(
       // DECLARED derivation; associated_controls_text is the Manual's prose;
       // associated_controls stays as-is for compatibility. Nothing invented.
       associated_controls: threat.associated_controls ?? [],
-      // 0.16.0 (v1.16 §1.23): nomes legíveis expostos — os dados subiram, a promessa diz a verdade nova.
-      associated_control_names: threat.associated_control_names ?? [],
-      associated_control_ids: threat.associated_control_ids ?? [],
+      // 0.20.0-beta.28: os NOMES vão para uma legenda e ficam aqui as referências —
+      // vinham repetidos verbatim em cada ameaça (241 entradas para 13 nomes distintos,
+      // ~22% do payload). Dedup de serialização: nenhum nome se perde.
+      ...(dedupe
+        ? { associated_control_name_refs: (threat.associated_control_names ?? []).map(refOf) }
+        : { associated_control_names: threat.associated_control_names ?? [] }),
+      ...(dedupe
+        ? { associated_control_id_refs: (threat.associated_control_ids ?? []).map(refOfId) }
+        : { associated_control_ids: threat.associated_control_ids ?? [] }),
       ...(threat.associated_controls_text ? { associated_controls_text: threat.associated_controls_text } : {}),
       ...(threat.associated_control_ids_derivation
         ? { associated_control_ids_derivation: threat.associated_control_ids_derivation }
@@ -376,7 +654,130 @@ export function handleGetThreatLandscape(
       ...(threat.essence ? { essence: threat.essence } : {}),
       ...(threat.threat_category ? { threat_category: threat.threat_category } : {}),
       ...(threat.mitigation_strength ? { mitigation_strength: threat.mitigation_strength } : {}),
-    })),
+  }));
+
+  const shaped = {
+    ...full,
+    ...(dedupe
+      ? {
+          associated_control_legend: {
+            names: controlLegend,
+            ids: controlIdLegend,
+      note:
+        `Os ${controlLegend.length} nomes e ${controlIdLegend.length} ids DISTINTOS de controlos associados; cada ameaça ` +
+        "refere-os por índice em `associated_control_name_refs` e `associated_control_id_refs`. Dedup de " +
+              "serialização (0.20.0-beta.28): nada se perde — antes vinham repetidos verbatim em cada ameaça."
+          }
+        }
+      : {}),
+    ...(declaredConcerns.length > 0 && totalThreats > 0
+      ? {
+          routing_basis: {
+            /**
+             * 0.20.0-beta.31 — desambiguado e POR CONCERN.
+             *
+             * A nota trazia «capítulo(s) próprio(s): 4», onde o `4` era o NÚMERO DO CAPÍTULO
+             * e foi lido como contagem. E o `basis` era escalar para um conjunto MISTO: com
+             * [architecture, api, encryption, integration] só o `architecture` roteia por
+             * capítulo mapeado, e a resposta dizia uma coisa só para os quatro.
+             *
+             * Também se separam dois sentidos que partilhavam o nome «capítulo próprio»:
+             * O VALOR `domain_chapter` mantém-se (é contrato publicado desde a beta.28 —
+             * renomeá-lo seria a classe de dano que esta vaga combate). O que muda são os
+             * campos que o desambiguam: `threat_domain_chapters` é o MAPEAMENTO DE AMEAÇAS (pode ser um
+             * capítulo partilhado com outro concern — `logging` e `monitoring` mapeiam ambos
+             * o 12); `activates_chapters` (no vocabulário) é o que o concern activa na
+             * SELECÇÃO, e pode ser vazio para o mesmo concern.
+             */
+            basis: hasDomain ? ("domain_chapter" as const) : ("activated_controls" as const),
+            domain_chapters: [...domainChapters].sort((a, b) => a - b).map((n) => String(n).padStart(2, "0")),
+            by_concern: [...new Set(declaredConcerns)].sort().map((concern) => {
+              const own = CONCERN_TO_DOMAIN_CHAPTER[concern];
+              const vocabEntry = vocabForRouting.concerns.values.find((x) => String(x.value) === concern);
+              const mapped = [
+                ...(own !== undefined && own !== 1 && own !== 2 ? [String(own).padStart(2, "0")] : []),
+                ...(vocabEntry?.activates_chapters ?? [])
+                  .map((c) => chapterNumber(c))
+                  .filter((n) => !Number.isNaN(n) && n !== 1 && n !== 2)
+                  .map((n) => String(n).padStart(2, "0"))
+              ];
+              return {
+                concern,
+                basis: mapped.length > 0 ? ("domain_chapter" as const) : ("activated_controls" as const),
+                threat_domain_chapters: [...new Set(mapped)].sort(),
+                shared_with: [...new Set(mapped)].flatMap((ch) =>
+                  Object.entries(CONCERN_TO_DOMAIN_CHAPTER)
+                    .filter(([other, n]) => other !== concern && String(n).padStart(2, "0") === ch)
+                    .map(([other]) => other)
+                )
+              };
+            }),
+            note:
+              "`threat_domain_chapters` são NÚMEROS DE CAPÍTULO, não contagens. `basis` por concern porque um " +
+              "conjunto misto tem concerns dos dois tipos. Atenção ao termo: um capítulo mapeado para ameaças pode " +
+              "ser PARTILHADO com outro concern (ver `shared_with`) e é coisa diferente do `activates_chapters` que " +
+              "o vocabulário publica para a SELECÇÃO — o mesmo concern pode ter um e não ter o outro. " +
+              (hasDomain
+                ? "Os concerns com `threat_domain_chapter` trazem ameaças do domínio mapeado."
+                : "Sem capítulo mapeado, as ameaças chegam pelos capítulos onde se DEFINEM os controlos que o concern activa: são reais e do âmbito activado, mas não são «as ameaças deste domínio». Os REQUISITOS existem: `select_sbd_toe_requirements`.")
+          }
+        }
+      : {}),
+    ...(nominalOnly
+      ? {
+          routing_note: {
+            declared_concerns: [...new Set(declaredConcerns)].sort(),
+            domain_chapters: [...domainChapters].sort((a, b) => a - b).map(String),
+            threat_chapters: [...allThreatChapters].filter((n) => !Number.isNaN(n)).sort((a, b) => a - b).map(String),
+            note:
+              (hasDomain
+                ? `COBERTURA NOMINAL: nenhuma das ${totalThreats} ameaças vem dos capítulos de domínio dos concerns ` +
+                  `declarados (${[...domainChapters].sort((a, b) => a - b).join(", ")}). `
+                : `COBERTURA NOMINAL: os concerns declarados não têm capítulo de ameaças próprio — as ${totalThreats} ` +
+                  "ameaças vêm todas do âmbito alargado. ") +
+              "São sobretudo meta-ameaças de PROCESSO (cap. 02) e do âmbito largo, NÃO ameaças específicas do domínio " +
+              "que pediste. Não as apresentes como o panorama de ameaças desse domínio: para estes concerns o manual " +
+              "pode simplesmente não publicar ameaças roteáveis. Os REQUISITOS existem — usa `select_sbd_toe_requirements`."
+          }
+        }
+      : {}),
+    ...(emptyByLevel
+      ? {
+          empty_at_level: {
+            concerns: [...new Set(declaredConcerns)].sort(),
+            level: full.risk_level,
+            note:
+              `Os concerns declarados são roteáveis, mas a ${full.risk_level} não activam capítulo nenhum — por isso zero ameaças. ` +
+              "NÃO é ausência de ameaças nem «não aplicável»: é o NÍVEL. Confirma noutro nível ou com " +
+              "`select_sbd_toe_requirements`, e não apresentes este vazio como «manual-grounded»."
+          }
+        }
+      : {}),
+    ...(unsupportedHere.length + unknownHere.length > 0
+      ? {
+          unsupported_concerns: {
+            values: [...new Set([...unsupportedHere, ...unknownHere])].sort(),
+            supported_values: support.supported,
+            note:
+              `Concerns VÁLIDOS do vocabulário que o mapa de ameaças não resolve: ${[...new Set(unsupportedHere)].sort().join(", ")}. ` +
+              "Não são zero ameaças — são zero ameaças ROTEÁVEIS por este mapa, que cobre os domínios listados em supported_values. " +
+              "NÃO concluas ausência de ameaças a partir desta resposta, nem a declares fundamentada no manual: para estes concerns usa " +
+              "select_sbd_toe_requirements (os requisitos existem e aplicam-se) e consulta o capítulo de domínio."
+          }
+        }
+      : {}),
+    coverage: { total: totalThreats, returned: pagedThreats.length, offset: offsetArg, nextOffset, hasMore: nextOffset !== null },
+    provenance: {
+      kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
+      content_type: "derived",
+      produced_by: "threat_resolution_pipeline",
+      source_data:
+        "runtime/v1/manual_threat_mitigation.jsonl (threat_substantive; legacy runtime/threats.json superseded) + runtime/requirement_control_links.json + runtime/antipatterns.json + runtime/antipattern_requirement_links.json + runtime/antipattern_threat_links.json",
+      note:
+        "Threat entries are canonical runtime entities. Mitigation and antipattern enrichment are derived structurally from the published deterministic runtime bundle.",
+    },
+    threats: mappedThreats,
     next: threatLandscapeAffordances(full.risk_level, full.meta.concernsApplied ?? undefined),
   };
   return { ...shaped, size_estimate: estimateSize(shaped) } as unknown as GetThreatLandscapeResult;

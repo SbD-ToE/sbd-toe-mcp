@@ -19,7 +19,7 @@ import {
   chapterBundleIds,
   type ManualChunk
 } from "../serving/chunk-index.js";
-import { servedKgReleaseTag } from "../version-info.js";
+import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 import { paginate, type PageCoverage } from "../serving/response-shaping.js";
 import { boundAffordances, type ProtocolEnvelope } from "../serving/protocol-envelope.js";
 
@@ -63,7 +63,19 @@ export function handleGetChapterImplementationChecklist(
   if (!bundle) {
     throw Object.assign(
       new Error(`Unknown chapter: "${chapterArg}". Known chapters: ${chapterBundleIds().join(", ")}.`),
-      { rpcError: { code: -32602, message: `Unknown chapter: "${chapterArg}"` } }
+      /*
+       * 0.20.0-beta.41 — o vocabulário estava CALCULADO e era deitado fora no `rpcError`,
+       * que é o que chega ao cliente: a mensagem rica ficava no Error local e o consumidor
+       * recebia «Unknown chapter» e mais nada. É a promessa nunca-silêncio no caminho de
+       * ERRO, que a matriz banda × superfície revelou por varredura às superfícies irmãs.
+       */
+      {
+        rpcError: {
+          code: -32602,
+          message: `Unknown chapter: "${chapterArg}". Known chapters: ${chapterBundleIds().join(", ")}.`,
+          data: { invalidValue: chapterArg, known_chapters: chapterBundleIds() }
+        }
+      }
     );
   }
 
@@ -104,10 +116,49 @@ export function handleGetChapterImplementationChecklist(
       chapter: bundle,
       ...(riskArg ? { risk_level: riskArg } : {}),
       items: page.items.map(toItem),
+      /**
+       * 0.20.0-beta.31 — capítulo publicado SEM itens de checklist: declarado.
+       * `00-fundamentos` é um capítulo canónico e devolvia `items: []` sem uma palavra —
+       * apanhado pela invariante alargada das superfícies de vocabulário, não por um
+       * avaliador. Zero itens não é «nada a implementar»: é um capítulo cujo conteúdo
+       * publicado não tem forma de checklist.
+       */
+      ...(chunks.length === 0
+        ? {
+            unsupported_chapter: {
+              value: bundle,
+              note:
+                `O capítulo \`${bundle}\` é CANÓNICO e publicado, mas o bundle servido não traz chunks de ` +
+                `tipo \`${kind}\` para ele — não há checklist de implementação a projectar. NÃO concluas que o ` +
+                "capítulo não exige nada: usa `get_sbd_toe_chapter_brief` para o que ele cobre, e " +
+                '`select_sbd_toe_requirements(chapters=["' + "${bundle}" + '"])` para os requisitos, se os tiver.',
+            },
+          }
+        : {}),
+      /**
+       * 0.20.0-beta.36 (emenda v1.2, 2ª regra) — O ESCASSO DECLARA-SE.
+       * O cap. 07 devolve 2 blocos e nada dizia que era pouco. Mesma regra do «zero
+       * declarado»: a resposta diz que é magro e porquê (é o que o Manual publica ali).
+       * A magreza sobe como achado de CONTEÚDO ao Author — não se enriquece aqui.
+       */
+      ...(chunks.length > 0 && chunks.length <= 3
+        ? {
+            scarcity: {
+              items: chunks.length,
+              note:
+                `MAGRO e declarado: o Manual publica ${chunks.length} bloco(s) de checklist para \`${bundle}\` — ` +
+                "não é um checklist de capacidade organizacional, são as secções de prosa que existem. " +
+                `NÃO concluas que implementar este capítulo tem ${chunks.length} passo(s). Para a capacidade e a medida usa ` +
+                `\`get_sbd_toe_chapter_capability(chapter="${bundle}")\`; para o que o capítulo cobre, ` +
+                `\`get_sbd_toe_chapter_brief(chapterId="${bundle}")\`.`
+            }
+          }
+        : {}),
       totals: { items: chunks.length }
     },
     provenance: {
       kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
       content_type: "canonical",
       produced_by: "implementation_checklist_projection",
       source_data: `data/publish/indexes/mcp_chunks.jsonl (chunk_kind=${kind}, bundle=${bundle})`,

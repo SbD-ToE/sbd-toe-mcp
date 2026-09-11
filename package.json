@@ -1,6 +1,6 @@
 {
   "name": "@shiftleftpt/sbd-toe-mcp",
-  "version": "0.19.4",
+  "version": "0.20.0",
   "license": "Apache-2.0",
   "description": "MCP server for the SbD-ToE (Security by Design — Theory of Everything) security manual — structured tools for Claude, GitHub Copilot and other MCP clients",
   "keywords": [
@@ -56,6 +56,13 @@
     "data/publish/indexes/chunk_entity_mentions.jsonl",
     "data/publish/indexes/chunk_relation_hints.jsonl",
     "data/publish/indexes/bundle_catalog.jsonl",
+    "data/publish/indexes/cross_layer_referrals.jsonl",
+    "data/publish/indexes/bundle_policy_links.jsonl",
+    "data/publish/semantic/requirement_source_coverage.jsonl",
+    "data/publish/semantic/ctrl_acore_alignment.jsonl",
+    "data/publish/semantic/macro_processes.jsonl",
+    "data/publish/semantic/mp_edges.jsonl",
+    "data/publish/semantic/antipattern_authored_links.jsonl",
     "data/publish/runtime/",
     "data/publish/overlay/external_frameworks.json",
     "data/publish/overlay/external_obligations.json",
@@ -64,6 +71,7 @@
     "data/publish/overlay/framework_overlay_index.json",
     "data/publish/ontology/appsec-core-ontology.yaml",
     "data/publish/ontology/sbdtoe-ontology.yaml",
+    "data/publish/ontology/declared-absences-ledger.yaml",
     "data/entities/proportionality.json",
     "data/entities/sdlc_integration.json",
     "data/reports/run_manifest.json",
@@ -71,9 +79,7 @@
     "prompts/",
     "examples/",
     "assets/",
-    ".env.example",
-    "data/publish/semantic/ctrl_acore_alignment.jsonl",
-    "data/publish/semantic/requirement_source_coverage.jsonl"
+    ".env.example"
   ],
   "scripts": {
     "clean:dist": "node scripts/clean-dist.mjs",
@@ -90,11 +96,15 @@
     "package:release": "node scripts/package-release.mjs",
     "prepack": "npm run build",
     "test": "vitest run",
+    "smoke:mcp": "node scripts/smoke-mcp.mjs",
     "test:qualitative-smoke": "vitest run src/qualitative-eval-smoke.test.ts",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "eval:acceptance": "node scripts/run-acceptance-scenarios.mjs",
-    "eval:axis-h": "node scripts/run-axis-h-selection.mjs"
+    "eval:axis-h": "node scripts/run-axis-h-selection.mjs",
+    "eval:axis-i": "node scripts/run-axis-i-readings.mjs",
+    "gate:band-matrix": "node scripts/band-surface-matrix.mjs",
+    "gate:determinism": "node scripts/serving-determinism.mjs"
   },
   "engines": {
     "node": ">=20.9.0"
@@ -107,6 +117,7 @@
     "vitest": "^4.1.9"
   },
   "dependencies": {
+    "oxigraph": "^0.5.9",
     "yaml": "^2.8.3"
   }
 }

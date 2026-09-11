@@ -1,6 +1,6 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 305,
+  "count": 306,
   "entity_type": "RequirementControlLink",
   "items": [
     {
@@ -2241,6 +2241,38 @@
       },
       "source_id": "CIC-010",
       "source_label": "Protecção contra execução de código não autorizado em runners",
+      "source_type": "Requirement",
+      "target_id": "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
+      "target_label": "Integridade e governação de pipelines",
+      "target_type": "Control"
+    },
+    {
+      "bundle_ids": [
+        "07-cicd-seguro"
+      ],
+      "confidence": 0.87,
+      "evidence_unit_ids": [],
+      "justification": [
+        "bundle_grounding",
+        "chapter_grounding",
+        "domain_mapping"
+      ],
+      "link_id": "CIC-011|maps_to_control|CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
+      "link_type": "maps_to_control",
+      "matched_control_field": "alias",
+      "matched_control_text": "Agentes AI como *principals* na pipeline {#us-19}",
+      "score_components": {
+        "chapter_overlap": [
+          "07-cicd-seguro"
+        ],
+        "runner_up_margin": 0.03,
+        "shared_salient_tokens": [
+          "agente"
+        ],
+        "token_similarity": 0.02
+      },
+      "source_id": "CIC-011",
+      "source_label": "Promoção entre ambientes atribuível a um responsável identificado",
       "source_type": "Requirement",
       "target_id": "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
       "target_label": "Integridade e governação de pipelines",
@@ -9952,5 +9984,11 @@
     "review",
     "threats"
   ],
-  "source_artifact": "data/publish/semantic/requirement_control_links.jsonl"
+  "source_artifact": "data/publish/semantic/requirement_control_links.jsonl",
+  "traversal_assertion": {
+    "does_not_assert": "exclusividade (multi-aresta permitida); que a secundária é primária; posse do requisito por um capítulo",
+    "note": "a ponte curada requisito→controlo — a maior travessia do produto e a afirmação central do programa; estava servida sem asserção (lacuna máxima do catálogo, fechada aqui)",
+    "source": "TRÊS vias declaradas, por precedência: curation (juízo humano ratificado) > catalogue_rules (regra de catálogo, type base) > scoring (grounding + léxico declarado); 305 ligações à data",
+    "verb": "mapeia-para-controlo"
+  }
 }

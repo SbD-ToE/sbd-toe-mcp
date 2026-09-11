@@ -1,6 +1,6 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 273,
+  "count": 274,
   "entity_type": "Requirement",
   "items": [
     {
@@ -1117,6 +1117,25 @@
       "evidence_types": [],
       "name": "Protecção contra execução de código não autorizado em runners",
       "requirement_id": "CIC-010",
+      "source_anchors": null,
+      "source_anchors_provenance": null,
+      "source_bundle": "07-cicd-seguro",
+      "source_chapter": 7,
+      "source_file": "07-cicd-seguro/addon/00-catalogo-requisitos.md",
+      "type": "domain-specific"
+    },
+    {
+      "applicable_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
+      "category": "CIC",
+      "description": "Cada promoção entre ambientes é atribuível a uma pessoa identificada: quem a decidiu ou, quando promove automaticamente, quem aprovou os critérios ao abrigo dos quais promove. O registo identifica a pessoa (não apenas papel ou conta de serviço), o critério aplicado e a evidência avaliada. A promoção automática exige critérios determinísticos, versionados e pré-aprovados, e o nível de autonomia declarado quando a promoção for executada por um agente; saída de modelo probabilístico não constitui critério de promoção.",
+      "domain": "cicd",
+      "evidence_types": [],
+      "name": "Promoção entre ambientes atribuível a um responsável identificado",
+      "requirement_id": "CIC-011",
       "source_anchors": null,
       "source_anchors_provenance": null,
       "source_bundle": "07-cicd-seguro",

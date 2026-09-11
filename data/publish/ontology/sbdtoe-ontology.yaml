@@ -1,12 +1,30 @@
 meta:
   name: SbD-ToE Manual Ontology
-  version: '2.4'
+  version: '2.10'
   status: current
   scope: Manual ontology
-  tag: sbdtoe-ontology-v2.4
+  tag: sbdtoe-ontology-v2.10
   history:
   - version: '2.0'
     note: V2 backbone + semantic layer (imported baseline from sbd-toe-knowledge-graph)
+  - version: '2.10'
+    date: '2026-09-09'
+    note: "Pacote ratificado (gate 2026-09-09, registo agentic/decisions/2026-09-09-principio-de-alcance-da-prescricao.md) + resposta à devolução Q-T2: prescription_reach_principle (3 alcances com verbo; fractal, não cascata; tier do meio vazio DE PAPÉIS porque o Manual o exprime como REQUISITOS — «(Jurídico + Procurement)» aparece entre parênteses, nunca canonizado); Role.role_scope (12 intra_instance · 1 inter_instance · tier do meio declarado vazio; expectativas estruturais: intra com 0 atribuições é ACHADO, inter com 0 é ESTADO CORRECTO DECLARADO); absence_model.transitions (open/closed/withdrawn/reopened; re-tipar = índice/corta versão, retirar = ledger/não corta); Q-T2: a premissa da base por-exigência CAIU (a única aresta artefacto↔prova é pontuada — correspondência, «não prescreve»; deriver prescrição dela violaria a asserção publicada; limiar recusado) — required_by_level_profile fica NÃO-MATERIALIZÁVEL no estado actual (ABS-013, gap/ontology_model/Archon), a união mantém-se com asserção sólida (cadeia curada/declarada, sem scoring), e o caminho legítimo é camada curada texto-autorado(addon-07 «Evidência esperada»)→artifact_type — decisão do lead. Zero valores alterados; aditivo."
+  - version: '2.9'
+    date: '2026-09-09'
+    note: "Pacote único ratificado (gate 2026-09-09 + ledger ratificado 2026-09-08): Q-T1 mandatory APOSENTADO (diagnóstico corrigido: FABRICADO, hardcoded artifact_catalog.py:574 — a v2.6 dizia «legacy constante», sub-diagnóstico; serve-se published:false; remoção física = contrato KG); Q-T2 required_by_level_profile como BASE por-exigência (risk_level_hint dos EPs, 273/0 nulls) com required_for_levels documentado como PROJECÇÃO-∃ e o mínimo como segunda projecção; traversal_assertion_rule alargada a campos derivados + TERCEIRA VIA (dado legado sem verbo enunciável → asserção NONE, published:false, VIA EXCLUSIVA DE LEGADO — nenhuma travessia nova nasce nela); catálogo de asserções 8 → 19 entradas (achado principal: requirement_maps_to_control — 305 ligações, a ponte curada requisito→controlo, a maior travessia do produto — servida sem asserção; entra com as 3 vias declaradas) + artifact_cited_chapters registado como assertion:none; LEDGER de ausências estreado (ontology/declared-absences-ledger.yaml, append-only; índice = tipagens, ledger = transições; ledger prevalece para status; sync por emissão). ABS-011 NÃO entra (errata por aterrar — será a primeira transição do ledger). Zero valores alterados: tudo aditivo (comentários + chaves novas)."
+  - version: '2.8'
+    date: '2026-09-08'
+    note: "Manutenção do índice de ausências (dispatch do Orchestrator; painel 6·0·0 na beta.44): fecho registado de ABS-005 (163 decision_involvements servidos; gestão executiva 18, 12 no cap. 01 — 7 âncoras ratificadas + 5 encontradas pelas regras) e de ABS-012 (13 células FALTA a zero, estáveis por dois re-pins); correcção factual na evidence de ABS-005 (são 7 linhas, não 6); triagem de ABS-003 resolvida com a espécie nova (0 involvements + 0 assignments → debt_of manual_content, dono Author); absence_model ganha closure_rule (o registo de fecho é do índice, nunca da superfície — regra b.40 generalizada) e a distinção prevenção-vs-declaração na via de build (portão de completude = primeira instância medida do never_silence_principle; espécie que nunca pode instanciar-se não existe). Invariantes v2.2–v2.7 intocadas."
+  - version: '2.7'
+    date: '2026-09-08'
+    note: "Aditiva sobre 2.6 (gate 2026-09-08, registo em agentic/decisions do programa; inclui absorção da matriz do Pontifex beta.41 e da extracção nunca-silenciosa do Codex): traversal_assertion_rule (verbo · fonte · o-que-NÃO-afirma · cobertura; join sem verbo não se publica) + catálogo de asserções das travessias existentes; «posse» abandonada — ArtifactRequirement ganha evidence_chapter_ids (required_as_evidence_by, 37/45, 8 órfãos declarados) e defining_chapter_ids fica re-documentado pelo verbo produced_or_operated_by (nome mantido); entidade DecisionInvolvement (approves|consulted, entidade paralela, âncora verbatim por registo, sem RACI) + relação authority_view; never_silence_principle (inclui caminhos de erro e conjuntos vazios); absence_model.build_declarations (3 espécies do Codex = gap/kg_surface a nível de registo — sem valor novo); referenced_roles (RH/PeopleOps referenciado-não-canónico) + ABS-011/ABS-012; ABS-005 re-tipado (ontology_model, fecha com a espécie) e ABS-003 com nota de reexame — alterações ao índice ratificadas e declaradas. Invariantes v2.2–v2.6 intocadas."
+  - version: '2.6'
+    date: '2026-09-07'
+    note: "Aditiva sobre 2.5 (dispatch Orchestrator + decisões do programme lead 2026-09-07, registo em agentic/decisions do programa): epistemic_model.absence_model (gap | out_of_scope | deferred | elsewhere, critério em cascata, debt_of, autoridade/prova), índice declared_absences (5 nomeadas tipadas + re-tipagem das ausências v2.2–v2.5 SEM tocar nos blocos originais — o índice prevalece), segmentation_principle nomeado com TRÊS espécies de relação inter-segmentação (travessia, dependência, piso — cap. 00 é piso, não ausência), schema aditivo em SDLCPhase (+bundle_ids derivado de assignments; manual_chapter documentado como âncora editorial) e ArtifactRequirement (+defining/cited_chapter_ids por decisão K, +required_for_levels; mandatory documentado como legacy constante), relação bundle_operates_in_phase. Nada removido nem alterado; bateria de aditividade estrita."
+  - version: '2.5'
+    date: '2026-09-06'
+    note: "Aditiva sobre 2.4 (ciclo macro-processos, gate ratificado pelo programme lead 2026-09-06 + adenda das três segmentações): entidade MacroProcess (MP-01..05) com travessias como dados declarados, 18 pares inter-MP tipados verbatim (9 dependency + 9 feedback; 23 registos de consumo; errata declarada face aos 17 do mapa: +MP2→MP4), DAG de adopção MP1 → {MP2 ∥ MP4} → MP3 → MP5, relações process_view, lacuna declarada da travessia de fases (não derivar). Ids dos 20 controlos, resolution_order, 260 práticas, catalogue_rules e acore_alignment inalterados."
   - version: '2.4'
     date: '2026-09-03'
     note: "Aditiva sobre 2.3 (walkthrough CTRL↔ACore, gate ratificado pelo programme lead 2026-09-03): secção acore_alignment — 102 alinhamentos curados CTRL(20)↔ACO(75) com taxonomia exact/partial/related (0,95/0,85/0,70), derivação ACP via supports_objectives, ACM deferidos (F-W1), CAP/C4/C3 e rollups *-007 declarados; nota epistémica: correspondência entre modelos, não autoria — o composto é cobertura compensada. Ids dos 20 controlos, resolution_order, 260 práticas e catalogue_rules inalterados."
@@ -94,6 +112,28 @@ epistemic_model:
     deterministic: Result is exact given canonical source data
     bounded: Result is deterministic but thresholded and contestable
     probabilistic: Result depends on a probabilistic extraction step; not allowed in runtime
+  absence_model:
+    # v2.6 (decisão do lead 2026-09-07): vocabulário tipado para ausências declaradas. «É bom ser honesto no que
+    # não apresentamos, mas temos que distinguir o que é fora do âmbito do que é uma lacuna. A lacuna é erro ou
+    # omissão e tem que ser definido. Out-of-scope é decisão.»
+    criterion: "cascata — existe decisão registada sobre esta ausência? não → gap; sim e «nunca» → out_of_scope; sim e «depois» com gatilho declarado → deferred; sim e existe noutra superfície resolúvel → elsewhere (pointer que não resolve degrada para gap da superfície apontada)"
+    values:
+      gap: "erro ou omissão — dívida com dono (debt_of) e destino (closes_in); qualquer persona propõe, o dono da camada confirma, o lead arbitra se contestado; prova: fonte esperada identificada + ausência demonstrada"
+      out_of_scope: "fronteira deliberada; não fecha; SÓ O PROGRAMME LEAD atribui — é o que impede que uma lacuna incómoda vire fronteira por conveniência; prova: decisão registada ou declaração de fronteira na fonte + ratificação"
+      deferred: "decisão «depois» COM gatilho de activação declarado (sem gatilho não é deferred, é gap); atribui o dono da camada + autorização do lead; prova: decisão + trigger"
+      elsewhere: "existe noutra superfície; atribui o dono da camada; prova: pointer resolúvel mecanicamente"
+    debt_of: [manual_content, ontology_model, kg_surface, mcp_serving]
+    note: "«não modelado» NÃO é valor próprio — é gap/deferred com debt_of: ontology_model"
+    build_declarations: "v2.7 (extracção nunca-silenciosa do Codex, confirmada sem valor novo): declarações de build — tabela que não conseguiu ler, rótulo que não mapeou, papel que não resolveu — usam este vocabulário AO NÍVEL DO REGISTO: absence_type gap, debt_of kg_surface por defeito, re-triável para manual_content quando o diagnóstico é forma autoral (ex.: coluna SLA em falta no cap. 05; linha-pipe sem cabeçalho no cap. 11); a triagem pode mover debt_of, nunca silenciar o registo."
+    closure_rule: "v2.8: fechar uma ausência é REGISTO NO ÍNDICE — com evidência verificável, quem verificou e onde — nunca declaração da superfície («o registo é do índice, nunca da superfície», regra da b.40 generalizada para o fecho). Uma superfície pode evidenciar a condição cumprida; só o índice fecha. Itens fechados ficam no índice (append-only) com status: closed."
+    status_ledger: "v2.9 (ratificado 2026-09-08, estreado nesta emissão): as TRANSIÇÕES DE ESTADO registam-se em ontology/declared-absences-ledger.yaml (append-only) NO MOMENTO, com evidência e verificador, SEM corte de versão; o índice mantém as definições e tipagens (nascer/re-tipar = modelo = corta versão); EM DIVERGÊNCIA, O LEDGER PREVALECE PARA status; cada emissão de modelo absorve o ledger com sync declarado (à imagem do two-pass do registry). O ledger é DO ÍNDICE — a closure_rule mantém-se: a superfície nunca fecha nada."
+    transitions: {open: "estado inicial de qualquer ausência declarada", closed: "condição cumprida, com evidência verificável e verificador (registo do índice/ledger, nunca da superfície)", withdrawn: "a PREMISSA do registo era errada — nada faltava e nada se corrige; o registo mantém-se append-only com o fundamento e o ponteiro para o princípio que o dissolve", reopened: "nova evidência reabre"}  # v2.10 ratificado; re-tipar = índice (modelo, corta versão) · transitar = ledger (não corta)
+    build_prevention_vs_declaration: "v2.8 (pergunta do Pontifex, respondida): a via de build tem DOIS regimes sob o never_silence_principle — PREVENÇÃO, quando um portão de completude converte a ausência silenciosa em falha de build (o artefacto não chega a produzir-se: caso do bundle incompleto — primeira instância medida do princípio na via de build; NÃO ganha espécie de ausência própria, porque uma espécie que nunca pode ser instanciada não deve existir e impedir é melhor que declarar quando impedir é possível) — e DECLARAÇÃO, quando impedir não é possível e o registo declara (as três espécies da extracção: tabela não lida, rótulo não mapeado, papel não resolvido)."
+  never_silence_principle:
+    # v2.7 — nomeado a partir da banda que a matriz do Pontifex descobriu por medir (caminho de erro sem banda).
+    statement: "Toda a resposta de toda a superfície — INCLUINDO caminhos de erro e conjuntos vazios — declara o que falta e porquê (absence_type quando aplicável). Um conjunto vazio sem declaração e um erro que não nomeia o vocabulário são violações da mesma classe que o silêncio numa superfície de dados."
+    scope: [data_surfaces, error_paths, empty_sets, build_declarations]
+    grounding: "disciplina já praticada secção-a-secção desde v2.2 (nunca silêncio no ponto de uso); v2.7 nomeia-a como princípio para que a classe seja varrida às superfícies irmãs em vez de fechada onde o achado foi reportado (diagnóstico do auditor externo)"
 requirement_selection_model:
   # v2.2 (2026-08-30) — semântica declarada pelo programme lead (pré-G-b, ciclo D2). Formulação normativa:
   description: "O catálogo do cap. 02 (requisitos type: base) é a baseline normativa por defeito — catálogo real, seleccionado sempre, salvo overlay; os catálogos dos capítulos 03–14 (type: domain-specific) são requisitos do domínio, activados pelo contexto (Docker → 09, IaC → 08, infra → 08/11, CI → 07…); os overlays operam por categoria com replace ou extend. Selecção = baseline ∪ específicos(contexto) ⊕ overlay."
@@ -280,6 +320,48 @@ entities:
     - applicability_notes: string
     - operational_expectation: string
     - verification_notes: string
+  MacroProcess:
+    layer: core
+    description: Vista processual do Manual — macro-processo que preserva uma continuidade entre capacidades (v2.5; fonte 00-fundamentos/macro-processos.md). Instâncias canónicas em `macro_processes.items` deste ficheiro; compilado para data/publish/semantic/macro_processes.jsonl.
+    id_field: mp_id
+    source_file: ontology/sbdtoe-ontology.yaml#macro_processes
+    authority_class: normative
+    attributes:
+    - mp_id: string  # MP-01..MP-05 (ontology-owned; label MPn é editorial)
+    - label: string
+    - name_pt: string
+    - name_en: string
+    - continuity: string   # novo, declarado (sem contraparte)
+    - invariant: string    # novo, declarado (sem contraparte)
+    - question: string
+    - traverses_bundles: list[string]
+    - path_edges: list[object]
+    - scope_subjects: list[object]
+    - triggers: list[object]
+    - inputs: list[object]
+    - activities: list[object]
+    - outputs: list[object]  # outputs[].consumed_by carrega as arestas inter-MP tipadas
+    - owner_role: string
+    - participant_roles: list[string]
+    - control_points: list[object]
+    - expected_evidence: list[object]
+    - indicators: list[string]
+    - provenance: object
+  DecisionInvolvement:
+    layer: core
+    description: "v2.7 (Q2) — envolvimento de decisão publicado pelo Manual: papéis como aprovadores ou consultados (DoD, alçadas, aceitação de risco, tabelas de responsáveis). É o lado-grafo do invariante de MP4 («capacidade não implica autoridade»): a espécie protagonista («Como X, quero…») executa; esta decide ou é ouvida. Entidade PARALELA aos practice_assignments — os 1296 registos e as suas contagens ficam intocados. SEM RACI completo (accountable/responsible ficam com ABS-002)."
+    id_field: involvement_id
+    source_file: data/entities/decision_involvements.json  # a materializar pelo Codex
+    authority_class: normative
+    attributes:
+    - involvement_id: string
+    - role_id: string           # dos 13 canónicos (papéis referenciados não-canónicos NÃO entram aqui — ver referenced_roles)
+    - kind: enum[approves, consulted]  # approves = autoridade de gate (a decisão é condição para o resultado valer); consulted = envolvimento publicado sem gate nem execução
+    - bundle_id: string
+    - anchor: string            # âncora verbatim ficheiro:linha — OBRIGATÓRIA por registo
+    - applicable_levels: object # ex.: «Em L3: aprovação adicional» carrega L3
+    - refs: list[string]
+    - source_mode: enum[derived, explicit]  # derived = estrutura publicada (tabelas, checkboxes DoD, colunas); explicit = prosa curada com âncora
   Practice:
     layer: core
     description: Operational practice that implements one or more controls
@@ -358,6 +440,14 @@ entities:
     attributes:
     - role_id: string
     - aliases: list[string]
+    - role_scope: enum[intra_instance, inter_instance]  # v2.10 (Q2 ratificada): valores declarados em role_scope_assignments; o tier intra_org_other_domain fica DELIBERADAMENTE sem papéis canónicos (prescription_reach_principle)
+    role_scope_assignments:
+      intra_instance: [developer, appsec-engineer, qa, devops-sre, arquitetos-software, scrum-master, product-owner, operacoes, grc-compliance, gestao-executiva, security-champion, auditores]
+      inter_instance: [fornecedores-terceiros]
+      note_auditores: "externos ao projecto mas dentro do sistema de asseguramento da instância — intra_instance com nota; se se mostrar de fronteira, é uma linha"
+    structural_expectations_by_scope:
+      intra_instance: "assignments/involvements esperados — 0 atribuições é ACHADO"
+      inter_instance: "ZERO-ESPERADO DECLARADO — 0 assignments e 0 involvements NA NOSSA instância é o estado CORRECTO; o papel é OBJECTO dos deveres do cliente (GOV-006/007, TRN-007, GOV-014); mata a classe de falsos-achados que enganou três leitores (GR-04)"
   SDLCPhase:
     layer: core
     description: Canonical SDLC phase
@@ -367,6 +457,8 @@ entities:
     - phase_id: string
     - label: string
     - aliases: list[string]
+    - manual_chapter: integer  # legado (v2.6): âncora editorial histórica, NÃO é contenção — não usar para cobertura; mantido inalterado (aditividade)
+    - bundle_ids: list[string]  # v2.6, aditivo: travessia N:M fase↔capítulo DERIVADA dos assignments autorados (papel×nível×fase) — regra em segmentation_principle.derivations.phase_bundles
   EvidencePattern:
     layer: core
     description: 'Expected evidence pattern used for deterministic review. Interprets one or more artifacts or signals as verifiable evidence; the artifact itself is not the evidence judgement. Designed as input for deterministic verification models in future ontology versions (V3).
@@ -555,6 +647,14 @@ entities:
     - source_control_ids: list[string]
     - source_practice_ids: list[string]
     - chapter_id: string
+    - chapter_ids: list[string]  # legado: união indiferenciada (semântica histórica; mantido inalterado)
+    - defining_chapter_ids: list[string]  # v2.6, aditivo (decisão K aplicada): capítulos das source_practice_ids — onde o artefacto é PRESCRITO
+    - cited_chapter_ids: list[string]  # v2.6, aditivo: chapter_ids ∖ defining_chapter_ids — proveniência sem prescrição
+    - mandatory: boolean  # APOSENTADO (v2.9; gate 2026-09-09): FABRICADO — hardcoded no construtor (artifact_catalog.py:574), nunca leu a fonte; o Manual não publica obrigatório-vs-recomendado por artefacto (publica obrigação POR NÍVEL). Correcção do sub-diagnóstico v2.6 («legacy constante»). Serve-se published:false; fica nos dados por compat; remoção física = decisão de contrato KG. Redefinição «∃ nível» desqualificada: re-daria 45/45
+    - required_for_levels: object  # v2.6; v2.9: documentado como PROJECÇÃO-∃ da base required_by_level_profile — verbo «alguma-vez-exigido-no-nível»; NÃO afirma limiar, contagem, nem obrigatório-vs-recomendado; degenera para all-true em 43/45
+    - evidence_chapter_ids: list[string]  # v2.7, aditivo (Q1): capítulos cujos requisitos EXIGEM o artefacto como prova (EP→requisito→capítulo); verbo required_as_evidence_by; 37/45, 8 órfãos declarados um a um na materialização
+    - required_by_level_profile: object  # v2.10: NÃO-MATERIALIZÁVEL no estado actual (ABS-013) — a premissa v2.9 caiu: a única aresta artefacto↔prova disponível é PONTUADA (correspondência; semantic_scored_family «não prescreve»), derivar prescrição dela violaria a asserção publicada e um limiar seria número nosso (recusado pelo Orchestrator). A união (required_for_levels) mantém-se com asserção sólida — a cadeia dela (requisito→controlo curado/regra → controlo declara-produzir) é autorada/curada, sem scoring, e foi ela que reproduziu os 2 discriminantes {L2,L3}. Caminho legítimo para o perfil: camada curada texto-autorado→artifact_type a partir da coluna «Evidência esperada» do addon-07 (autorada por requisito; ENC sem plano — F2) — decisão do lead (ABS-013)
+    assertion_notes: "v2.7 (Q1 — «posse» não existe na fonte e a palavra sai do vocabulário servido): defining_chapter_ids afirma produced_or_operated_by (as práticas autoradas do capítulo produzem/operam o artefacto; 45/45, 35 com >1 — a multiplicidade é facto) e NÃO afirma exclusividade, casa única, nem exigência; evidence_chapter_ids afirma required_as_evidence_by e NÃO afirma produção; nenhuma das duas afirma prioridade entre capítulos nem implicação entre produção e exigência (Jaccard 0,36). O nome defining_chapter_ids mantém-se por aditividade — nos CONTROLOS «defining» é possessivo legítimo (17/20 com um único capítulo definidor no template); nos artefactos era nome herdado, corrigido por documentação, não por rename."
   ImplementationRule:
     layer: stub
     description: Reserved future layer for code-generation-facing implementation rules
@@ -655,6 +755,66 @@ relations:
       source_mode: heuristic
       authority_class: normative
       confidence_model: bounded
+  authority_view:
+    # v2.7 (Q2) — vista de autoridade. Verbo declarado por relação (traversal_assertion_rule).
+    role_holds_decision_involvement:
+      from: Role
+      to: DecisionInvolvement
+      status: stable
+      source_mode: derived
+      authority_class: normative
+      confidence_model: deterministic
+      note: "afirma «o papel aprova (gate) ou é consultado no âmbito publicado»; NÃO afirma execução (essa é a espécie protagonista) nem RACI completo; cada registo com âncora verbatim"
+  segmentation_traversals:
+    # v2.6 — travessias entre segmentações (ver segmentation_principle). Nunca contenção.
+    bundle_operates_in_phase:
+      from: KnowledgeBundle
+      to: SDLCPhase
+      status: stable
+      source_mode: derived
+      authority_class: normative
+      confidence_model: deterministic
+      note: "N:M derivada dos practice_assignments autorados (capítulo tem >=1 assignment na fase); regra declarada em segmentation_principle.derivations.phase_bundles; verificado 2026-09-07: plan 8 · design 7 · develop 9 · build 6 · test 6 · deploy 10 · operate 12 · govern 11. O cap. 00-fundamentos não entra por derivação: é PISO (terceira espécie), não ausência."
+  process_view:
+    # v2.5 — vista processual (MacroProcess). NOTA: deliberadamente NÃO existe relação MacroProcess↔SDLCPhase
+    # (ver macro_processes.sdlc_phase_traversal — lacuna declarada; travessia parcial e não publicada).
+    mp_traverses_bundle:
+      from: MacroProcess
+      to: KnowledgeBundle
+      status: stable
+      source_mode: explicit
+      authority_class: normative
+      confidence_model: deterministic
+      note: percurso publicado (ordenado); nunca contenção — MP, capítulo e fase são segmentações paralelas
+    mp_consumes_from:
+      from: MacroProcess
+      to: MacroProcess
+      status: stable
+      source_mode: explicit
+      authority_class: normative
+      confidence_model: deterministic
+      note: tipada dependency|feedback pela edge_typing_rule; materializada de outputs[].consumed_by
+    mp_owned_by_role:
+      from: MacroProcess
+      to: Role
+      status: stable
+      source_mode: explicit
+      authority_class: normative
+      confidence_model: deterministic
+    mp_involves_role:
+      from: MacroProcess
+      to: Role
+      status: stable
+      source_mode: explicit
+      authority_class: normative
+      confidence_model: deterministic
+    mp_measured_by:
+      from: MacroProcess
+      to: Metric
+      status: stable
+      source_mode: explicit
+      authority_class: normative
+      confidence_model: deterministic
   semantic_layer:
     mechanism_implements_control:
       from: Mechanism
@@ -3347,3 +3507,1470 @@ acore_alignment:
     - {id: CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a, reason: "sem slice de ambiente/tooling de desenvolvimento no Core V1; candidato a ACR-watch se surgir pressão multi-fonte"}
     acm:
     - {ids_count: 58, reason: "a superfície V1 servida não materializa a aresta ACM→CO (supports/implements vazio nos components-drafts); deferido até F-W1 (materializar mecanismo→objectivo no V1) e então derivar como as ACP"}
+# ---------------------------------------------------------------------------
+# macro_processes — vista processual MP1–MP5 (v2.5, 2026-09-06; gate ratificado + adenda do programme lead)
+# ---------------------------------------------------------------------------
+macro_processes:
+  schema_version: '1.0'
+  model_note: MacroProcess, KnowledgeBundle (capítulo) e SDLCPhase são TRÊS SEGMENTAÇÕES do mesmo substrato — agregações/percursos
+    diferentes de olhar para o processo de desenvolvimento segundo SbD — e não níveis de uma hierarquia nem partições umas
+    das outras; nenhuma relação entre as três se tipa como contenção. `MP → capítulos` é «percurso publicado», e é só isso.
+    Os rótulos MP1–MP5 são ontology-owned (MP-0N); não são IDs de requisito.
+  sdlc_phase_traversal:
+    status: unpublished_gap
+    reason: 'a travessia MP↔fase existe mas é PARCIAL e NÃO PUBLICADA: um MP atravessa várias fases e não necessariamente
+      na íntegra; uma fase pode conter partes de vários MP. O Manual publica por MP o percurso de CAPÍTULOS, nunca um percurso
+      de fases («fase» ocorre uma única vez no capítulo, na frase que nega a equivalência). Lacuna declarada — NÃO derivar
+      a travessia a partir de capítulos/assignments.'
+    decided_by: programme-lead 2026-09-06 (adenda à ratificação)
+  edge_typing_rule: consumo que aparece nas «Entradas» do MP consumidor ⇒ dependency; consumo que aparece nos «Gatilhos»
+    do consumidor ou nas realimentações declaradas (fecho, laço, realimentar, «nos seus gatilhos») ⇒ feedback. Cada aresta
+    vive em outputs[].consumed_by com o artefacto (via) e refs.
+  adoption_order_rule: 'ordem topológica do subconjunto dependency (feedback excluído por definição): MP-01 → {MP-02 ∥ MP-04}
+    → MP-03 → MP-05; MP-02 e MP-04 são incomparáveis na fonte (declarado, não inferido).'
+  counts:
+    macro_processes: 5
+    inter_mp_typed_pairs: 18
+    dependency_pairs: 9
+    feedback_pairs: 9
+    consumption_records: 23
+    path_edges: 22
+  erratum_vs_gate_map: 'o mapa ratificado dizia 17 pares; na emissão a aplicação da regra ratificada à fonte encontrou a
+    18.ª — MP2→MP4 («threat model … consumido por MP4: risco aceite entra na cadeia de autoridade», CLA-007), tipada feedback
+    porque não figura nas Entradas de MP4; declarada aqui, nunca silenciada.'
+  curation:
+    curator: archon-2026-09-06
+    ratified_by: programme-lead
+    ratified_on: '2026-09-06'
+    source: agentic/briefs/2026-09-06-archon-proposta-macro-processos.md
+    adenda: três segmentações + lacuna de fases (2026-09-06)
+  ref_conventions: refs com padrão [A-Z]{3}-\d{3} / REQ-AGN-\d{3} são Requirement ids validados; [A-Z]{3}-K\d{2} são metric_id
+    validados; US-nn@cc refere a user story nn do capítulo cc (validação na materialização, Codex); F-0n e T-0n são a estrutura
+    de medição transversal do cap. 14 — refs textuais declaradas não-modeladas (lacuna para o ciclo de assurance); restantes
+    refs são âncoras editoriais textuais.
+  items:
+  - mp_id: MP-01
+    label: MP1
+    name_pt: Classificar → Selecionar
+    name_en: CLASSIFY → SELECT
+    continuity: Aplicabilidade
+    invariant: Um perfil de segurança registado seleciona requisitos, gates, profundidade de revisão, evidência e formação.
+    question: O que se aplica aqui?
+    provenance:
+      source: 'SbD-ToE-Manual: 010-sbd-manual/00-fundamentos/macro-processos.md'
+      anchor: '#mp1-classificar-selecionar'
+      manual_pin: v1.8.0 f78dfe734a83b01fa9283c2df5a3eb0ba9528001
+    traverses_bundles:
+    - 00-fundamentos
+    - 01-classificacao-aplicacoes
+    - 02-requisitos-seguranca
+    - 05-dependencias-sbom-sca
+    - 06-desenvolvimento-seguro
+    - 07-cicd-seguro
+    - 08-iac-infraestrutura
+    - 09-containers-imagens
+    - 10-testes-seguranca
+    - 11-deploy-seguro
+    - 12-monitorizacao-operacoes
+    - 13-formacao-onboarding
+    - 14-governanca-contratacao
+    path_edges:
+    - from: 01-classificacao-aplicacoes
+      to:
+      - 02-requisitos-seguranca
+      kind: fluxo
+      via_refs:
+      - CLA-001
+      - CLA-002
+    - from: 02-requisitos-seguranca
+      to:
+      - 05-dependencias-sbom-sca
+      - 06-desenvolvimento-seguro
+      - 07-cicd-seguro
+      - 08-iac-infraestrutura
+      - 09-containers-imagens
+      - 10-testes-seguranca
+      - 11-deploy-seguro
+      - 12-monitorizacao-operacoes
+      - 13-formacao-onboarding
+      kind: fluxo
+      via_refs:
+      - REQ-003
+      - US-04@02
+      - US-12@02
+      note: backlog SEC-Lx-* propaga aplicabilidade aos capítulos técnicos
+    - from: 00-fundamentos
+      to: todas as aplicações
+      kind: piso
+      via_refs:
+      - baseline (oito obrigações mínimas)
+      note: independente do nível; a seleção acrescenta, nunca subtrai
+    - from: 01-classificacao-aplicacoes
+      to:
+      - 14-governanca-contratacao
+      kind: ramo
+      via_refs:
+      - GOV-006
+      - GOV-007
+      note: ramo de aquisição — fornecedores e terceiros
+    scope_subjects:
+    - subject: application
+      refs:
+      - CLA-001
+      - CLA-008
+    - subject: supplier
+      refs:
+      - GOV-007
+    - subject: ai_agent
+      refs:
+      - A0–A4 por agente e contexto
+    triggers:
+    - text: Aplicação nova ou início de projeto
+      refs:
+      - US-01@01
+    - text: Alteração significativa, reavaliação ≤ 30 dias
+      refs:
+      - CLA-006
+      - CLA-004
+    - text: Ciclo periódico por nível (L1 anual, L2 semestral, L3 trimestral)
+      refs:
+      - CLA-005
+    - text: Alteração relevante de requisitos; pode disparar novo threat modeling
+      refs:
+      - REQ-005
+      - US-02@02
+    - text: Introdução/modificação de automação ou apoio à decisão (incl. IA); regra de reforço da matriz
+      refs: []
+    inputs:
+    - text: Eixos E/D/I e limiares L1–L3 (modelo de classificação)
+      refs: []
+    - text: Inventário central de aplicações
+      refs:
+      - CLA-008
+    - text: Matriz de controlos por nível de risco
+      refs: []
+    - text: Catálogos com colunas L1/L2/L3 (caps. 02–14) + baseline (Fundamentos)
+      refs: []
+    activities:
+    - order: 1
+      text: Classificar pelos três eixos e obter o nível
+      refs:
+      - CLA-001
+      - US-01@01
+    - order: 2
+      text: Aprovar proporcionalmente e registar no inventário
+      refs:
+      - CLA-002
+      - CLA-008
+      - US-15@01
+    - order: 3
+      text: Aplicar a matriz de controlos ao nível
+      refs:
+      - CLA-003
+      - US-02@01
+    - order: 4
+      text: Selecionar requisitos no backlog com SEC-Lx-* e registar a decisão
+      refs:
+      - REQ-003
+      - US-01@02
+    - order: 5
+      text: Propagar a aplicabilidade aos capítulos técnicos
+      refs:
+      - matriz transversal (cap. 10)
+    - order: 6
+      text: Validar no pipeline tags e ligação a REQ-XXX
+      refs:
+      - US-12@02
+    - order: 7
+      text: Reavaliar por gatilho ou ciclo, com registo
+      refs:
+      - CLA-004
+      - CLA-005
+      - CLA-006
+      - US-03@01
+      - US-02@02
+    - order: 8
+      text: Estender a fornecedores cláusulas e validação proporcionais
+      refs:
+      - GOV-006
+      - GOV-007
+    outputs:
+    - text: Perfil de segurança registado (classificação aprovada + inventário + seleção de requisitos)
+      consumed_by:
+      - mp: MP-02
+        kind: dependency
+        via: threat modeling formal aplica-se a L2+
+        refs:
+        - THR-001
+      - mp: MP-03
+        kind: dependency
+        via: gates e profundidade de verificação por nível
+        refs: []
+      - mp: MP-04
+        kind: dependency
+        via: alçadas de aprovação por nível
+        refs:
+        - GOV-003
+      - mp: MP-05
+        kind: dependency
+        via: inventário classificado é o denominador F-02 de todos os KPIs
+        refs:
+        - F-02
+    owner_role: appsec-engineer
+    participant_roles:
+    - developer
+    - scrum-master
+    - arquitetos-software
+    - product-owner
+    - gestao-executiva
+    - grc-compliance
+    - qa
+    control_points:
+    - text: Aprovação da classificação pela entidade proporcional
+      refs:
+      - CLA-002
+    - text: Verificação de tags no PR
+      refs:
+      - US-12@02
+    - text: Validação antes do go-live
+      refs:
+      - US-05@01
+    - text: Prazo de reavaliação (30 dias)
+      refs:
+      - CLA-006
+    - text: 'Completude do denominador: F-02 = F-01'
+      refs:
+      - F-01
+      - F-02
+    expected_evidence:
+    - text: Documento de classificação versionado + matriz aplicada
+      refs:
+      - US-01@01
+    - text: Inventário central completo
+      refs:
+      - CLA-008
+    - text: Backlog com tags SEC-Lx-* e relatórios exportáveis
+      refs:
+      - US-04@02
+    - text: Registo de revisão com trigger e justificação
+      refs:
+      - US-03@01
+    indicators:
+    - CLA-K01
+    - CLA-K03
+    - CLA-K04
+    - RQS-K01
+    - RQS-K06
+    foundation_refs:
+    - F-01
+    - F-02
+    ai_agentic_extension:
+      text: Classificar e depois selecionar, com o eixo adicional A0–A4; o nível A seleciona REQ-AGN-001..004 e os requisitos
+        AI dos capítulos; formação por perfil e nível
+      refs:
+      - REQ-AGN-001
+      - REQ-AGN-002
+      - REQ-AGN-003
+      - REQ-AGN-004
+      - US-19@13
+    proportionality_l1_l3:
+      L1: piso das oito obrigações + matriz de nível baixo; aprovação pelo responsável técnico; revisão anual
+      L2: classificação validada por AppSec (CLA-K04); revisão por alteração obrigatória
+      L3: aprovação Gestão Executiva/CISO; revisão trimestral
+  - mp_id: MP-02
+    label: MP2
+    name_pt: Desenhar → Assegurar
+    name_en: DESIGN → ASSURE
+    continuity: Intenção
+    invariant: Ameaças, decisões de arquitetura e testes fecham sobre o mesmo resultado declarado.
+    question: O que foi desenhado e implementado satisfaz a intenção de segurança?
+    provenance:
+      source: 'SbD-ToE-Manual: 010-sbd-manual/00-fundamentos/macro-processos.md'
+      anchor: '#mp2-desenhar-assegurar'
+      manual_pin: v1.8.0 f78dfe734a83b01fa9283c2df5a3eb0ba9528001
+    traverses_bundles:
+    - 02-requisitos-seguranca
+    - 03-threat-modeling
+    - 04-arquitetura-segura
+    - 10-testes-seguranca
+    path_edges:
+    - from: 02-requisitos-seguranca
+      to:
+      - 03-threat-modeling
+      kind: fluxo
+      via_refs:
+      - REQ-003
+      - REQ-005
+    - from: 03-threat-modeling
+      to:
+      - 04-arquitetura-segura
+      kind: fluxo
+      via_refs:
+      - THR-004
+      - THR-005
+      - THR-002
+    - from: 04-arquitetura-segura
+      to:
+      - 10-testes-seguranca
+      kind: fluxo
+      via_refs:
+      - ARC-005
+      - US-02@04
+      - TST-001
+    - from: 10-testes-seguranca
+      to:
+      - 02-requisitos-seguranca
+      kind: fecho
+      via_refs:
+      - TST-004
+      - REQ-006
+      - US-09@02
+    scope_subjects:
+    - subject: application
+      refs:
+      - L2+ (THR-*, maioria dos TST-*)
+    - subject: significant_architectural_change
+      refs:
+      - THR-006
+      - US-06@04
+      - US-11@04
+    - subject: ai_ml_component
+      refs:
+      - THR-008
+      - ARC-014
+    notes:
+    - ARC-015 (agente como principal) pertence à continuidade de autoridade — tratado em MP4 (declaração da própria fonte)
+    triggers:
+    - text: Nova aplicação L2+ antes do go-live
+      refs:
+      - THR-001
+      - THR-007
+    - text: Alteração arquitetural significativa (threat model ≤ 30 dias)
+      refs:
+      - THR-006
+      - US-03@03
+      - US-11@04
+    - text: Alteração relevante de requisito
+      refs:
+      - REQ-005
+    - text: Vulnerabilidade corrigida → teste de regressão
+      refs:
+      - TST-006
+    - text: Pipeline com alteração relevante sem threat model atualizado (gate de consistência)
+      refs:
+      - US-05@03
+    inputs:
+    - text: Requisitos selecionados com SEC-Lx-* (MP1)
+      refs:
+      - REQ-003
+    - text: DFDs com trust boundaries; zonas de confiança
+      refs:
+      - THR-002
+      - ARC-001
+    - text: Catálogo de ameaças mitigadas (MT-NNN)
+      refs: []
+    - text: Catálogo de padrões de arquitetura + estratégia de testes
+      refs:
+      - US-13@04
+      - TST-001
+    activities:
+    - order: 1
+      text: Modelar ameaças (STRIDE baseline; LINDDUN dados pessoais; PASTA alto risco) sobre DFDs
+      refs:
+      - THR-002
+      - THR-003
+      - US-01@03
+    - order: 2
+      text: Dispor cada ameaça com owner e aprovar o modelo
+      refs:
+      - THR-004
+      - THR-005
+      - US-09@03
+    - order: 3
+      text: Sincronizar com a arquitetura (ADR; rastreabilidade decisão↔ameaça↔controlo↔requisito)
+      refs:
+      - ARC-005
+      - US-04@04
+    - order: 4
+      text: Rever independentemente antes do go-live (L2+)
+      refs:
+      - THR-007
+      - US-03@04
+    - order: 5
+      text: Definir critérios de validação e estratégia/cobertura de testes
+      refs:
+      - US-05@02
+      - TST-001
+      - TST-007
+    - order: 6
+      text: Verificar com o oráculo adequado (SAST gate; DAST staging; regressão)
+      refs:
+      - DEV-003
+      - TST-002
+      - TST-005
+    - order: 7
+      text: Fechar sobre o requisito (REQ-XXX → evidência; matriz)
+      refs:
+      - US-09@02
+      - REQ-006
+    - order: 8
+      text: Decidir o release com aceitação explícita de risco residual; gate arquitetural
+      refs:
+      - US-07@10
+      - US-12@04
+      - ARC-012
+    - order: 9
+      text: Excecionar desvios arquiteturais em ADR com aceitação de risco
+      refs:
+      - processo canónico de exceções (cap. 14)
+    outputs:
+    - text: Threat model aprovado e versionado com decisões
+      consumed_by:
+      - mp: MP-03
+        kind: dependency
+        via: gates de promoção
+        refs: []
+      - mp: MP-04
+        kind: feedback
+        via: risco aceite entra na cadeia de autoridade (não é Entrada declarada de MP4; entra pelo circuito de exceção/aceitação)
+        refs:
+        - CLA-007
+    - text: Evidência de verificação ligada ao build
+      consumed_by:
+      - mp: MP-03
+        kind: dependency
+        via: promoção só com evidência
+        refs:
+        - TST-004
+      - mp: MP-05
+        kind: dependency
+        via: indicadores
+        refs:
+        - RQS-K03
+        - THR-K02
+    - text: Matriz requisito → ameaça → teste
+      consumed_by:
+      - mp: MP-05
+        kind: dependency
+        via: medição e auditoria
+        refs:
+        - REQ-006
+    owner_role: appsec-engineer
+    participant_roles:
+    - arquitetos-software
+    - developer
+    - qa
+    - product-owner
+    - scrum-master
+    - gestao-executiva
+    - devops-sre
+    control_points:
+    - text: Aprovação formal do threat model
+      refs:
+      - US-09@03
+    - text: Gate de consistência no CI/CD (alerta L2, bloqueante L3)
+      refs:
+      - US-05@03
+    - text: Revisão independente antes do go-live (L2+)
+      refs:
+      - THR-007
+    - text: Gate arquitetural antes do go-live (checklist assinada em L3)
+      refs:
+      - US-12@04
+      - ARC-012
+    - text: Critérios de release (L2 bloqueia High/Critical; L3 nenhum crítico sem exceção)
+      refs:
+      - US-07@10
+    expected_evidence:
+    - text: Threat model versionado com aprovação
+      refs:
+      - US-09@03
+    - text: ADR e ficha de solução alinhadas
+      refs:
+      - US-04@04
+      - US-09@04
+    - text: Matriz requisito↔ameaça↔teste
+      refs:
+      - REQ-006
+      - THR-005
+    - text: Resultado e evidência por REQ-XXX
+      refs:
+      - US-09@02
+    - text: Relatórios de teste ligados ao build; checklist de arquitetura
+      refs:
+      - TST-004
+      - US-12@04
+    indicators:
+    - THR-K02
+    - THR-K05
+    - ARC-K02
+    - RQS-K03
+    - RQS-K05
+    - TST-K04
+    ai_agentic_extension:
+      text: Threat model estendido a componentes AI/ML e agentes com tool-use; padrões arquitetónicos dedicados
+      refs:
+      - THR-008
+      - US-11@03
+      - US-12@03
+      - ARC-014
+    proportionality_l1_l3:
+      L1: zonas de confiança (ARC-001), SAST como gate (DEV-003), validação funcional (REQ-001)
+      L2: threat modeling formal + rastreabilidade requisito→ameaça→teste
+      L3: revisão formal reforçada; ARC-012; critérios de release estritos
+  - mp_id: MP-03
+    label: MP3
+    name_pt: Construir → Executar
+    name_en: BUILD → RUN
+    continuity: Proveniência / execução
+    invariant: A evidência de dependências, pipeline, artefacto, deployment e runtime descreve a mesma versão lançada.
+    question: O que está a correr e de onde veio?
+    provenance:
+      source: 'SbD-ToE-Manual: 010-sbd-manual/00-fundamentos/macro-processos.md'
+      anchor: '#mp3-construir-executar'
+      manual_pin: v1.8.0 f78dfe734a83b01fa9283c2df5a3eb0ba9528001
+    traverses_bundles:
+    - 05-dependencias-sbom-sca
+    - 06-desenvolvimento-seguro
+    - 07-cicd-seguro
+    - 08-iac-infraestrutura
+    - 09-containers-imagens
+    - 11-deploy-seguro
+    - 12-monitorizacao-operacoes
+    path_edges:
+    - from: 05-dependencias-sbom-sca
+      to:
+      - 07-cicd-seguro
+      kind: fluxo
+      via_refs:
+      - DEP-001
+      - DEP-002
+    - from: 06-desenvolvimento-seguro
+      to:
+      - 07-cicd-seguro
+      kind: fluxo
+      via_refs:
+      - DEV-006
+      - DEV-003
+    - from: 07-cicd-seguro
+      to:
+      - 09-containers-imagens
+      kind: fluxo
+      via_refs:
+      - CIC-007
+      - CIC-005
+    - from: 09-containers-imagens
+      to:
+      - 11-deploy-seguro
+      kind: fluxo
+      via_refs:
+      - CNT-009
+      - DPL-002
+    - from: 08-iac-infraestrutura
+      to:
+      - 11-deploy-seguro
+      kind: ramo
+      via_refs:
+      - IAC-007
+      - IAC-004
+    - from: 11-deploy-seguro
+      to:
+      - 12-monitorizacao-operacoes
+      kind: fluxo
+      via_refs:
+      - DPL-004
+    - from: 12-monitorizacao-operacoes
+      to:
+      - 05-dependencias-sbom-sca
+      kind: laço
+      via_refs:
+      - DEP-010
+      - DEP-007
+      - DPL-005
+    scope_subjects:
+    - subject: released_version
+      refs:
+      - build → artefacto → imagem → deploy → runtime
+    - subject: pipeline_as_code
+      refs:
+      - CIC-001
+    - subject: declared_infrastructure
+      refs:
+      - cap. 08
+    - subject: ai_agent
+      refs:
+      - em operação
+    triggers:
+    - text: Cada build, cada PR, cada promoção
+      refs:
+      - DEP-001
+      - DEV-003
+      - CIC-004
+      - DPL-003
+    - text: CVE nova (SLA por severidade); atualização de imagem base
+      refs:
+      - DEP-007
+      - TST-003
+      - CNT-010
+    - text: Drift IaC/real ou drift operacional pós-deploy
+      refs:
+      - IAC-012
+      - US-14@11
+    - text: Incidente em produção (reconstituir até ao commit)
+      refs:
+      - DPL-004
+      - US-09@07
+    - text: Mudança de modelo, skill files ou system prompts (agentes)
+      refs:
+      - DPL-010
+      - DPL-011
+    inputs:
+    - text: Código revisto + guidelines por stack
+      refs:
+      - DEV-004
+      - DEV-001
+    - text: Dependências e imagens de origem aprovada; IaC versionado
+      refs:
+      - DEP-005
+      - DEP-006
+      - CNT-001
+      - IAC-005
+    - text: Gates por nível (MP1); threat model e evidência (MP2); aprovação de deploy (MP4)
+      refs: []
+    activities:
+    - order: 1
+      text: Inventariar e verificar dependências por build (SBOM, SCA, versões fixas)
+      refs:
+      - DEP-001
+      - DEP-002
+      - DEP-003
+      - DEP-004
+    - order: 2
+      text: Construir com gates de integração (linters, SAST, secrets scanning)
+      refs:
+      - DEV-002
+      - DEV-003
+      - CIC-003
+      - IAC-011
+    - order: 3
+      text: Executar o pipeline como código, triggers restritos, runners isolados
+      refs:
+      - CIC-001
+      - CIC-002
+      - CIC-006
+    - order: 4
+      text: Assinar e registar proveniência de artefacto e imagem
+      refs:
+      - CIC-007
+      - CNT-007
+      - CNT-008
+    - order: 5
+      text: Policy-as-code e admission control
+      refs:
+      - IAC-003
+      - IAC-007
+      - CNT-009
+    - order: 6
+      text: Promover só com proveniência verificada, gates passados e aprovação humana
+      refs:
+      - DPL-002
+      - DPL-003
+      - DPL-001
+      - US-15@07
+      - US-16@11
+    - order: 7
+      text: Registar o deploy com rastreabilidade end-to-end; validar em staging
+      refs:
+      - DPL-004
+      - US-17@11
+      - DPL-007
+    - order: 8
+      text: Observar em runtime (logging estruturado, eventos, alertas, drift)
+      refs:
+      - OPS-001
+      - OPS-002
+      - OPS-004
+      - OPS-005
+      - OPS-015
+    - order: 9
+      text: Fechar o laço de vulnerabilidade e incidente (SBOM→CVE→correção; rollback testado)
+      refs:
+      - DEP-010
+      - DPL-005
+      - US-15@11
+    outputs:
+    - text: Release rastreável (pipeline ID, hash, commit, aprovador, gates)
+      consumed_by:
+      - mp: MP-05
+        kind: dependency
+        via: indicador de evidência de deploy
+        refs:
+        - DPL-K06
+    - text: Telemetria de runtime
+      consumed_by:
+      - mp: MP-05
+        kind: dependency
+        via: MTTD/MTTR
+        refs:
+        - OPS-010
+      - mp: MP-02
+        kind: feedback
+        via: vulnerabilidade corrigida origina teste de regressão (gatilho de MP2)
+        refs:
+        - TST-006
+    - text: Findings e desvios
+      consumed_by:
+      - mp: MP-04
+        kind: feedback
+        via: quando exigem exceção (gatilho de MP4)
+        refs:
+        - páginas de exceções caps. 05–12
+    owner_role: devops-sre
+    participant_roles:
+    - developer
+    - appsec-engineer
+    - operacoes
+    - product-owner
+    - grc-compliance
+    - gestao-executiva
+    control_points:
+    - text: Gate SCA com bloqueio + gates de pipeline bloqueantes
+      refs:
+      - DEP-002
+      - CIC-004
+    - text: Verificação de assinatura/proveniência antes de promoção
+      refs:
+      - CIC-007
+      - CNT-007
+      - DPL-002
+    - text: Admission control + plan aprovado antes de apply
+      refs:
+      - CNT-009
+      - IAC-007
+    - text: Aprovação humana para ações irreversíveis; bypass só com aprovação registada
+      refs:
+      - DPL-001
+      - CIC-004
+      - CIC-K02
+    - text: Janela de observação pós-deploy; falha de ingestão de logs é sinal
+      refs:
+      - DPL-008
+      - OPS-004
+    expected_evidence:
+    - text: SBOM ligado ao build; relatório SCA; SBOM→CVE→ação
+      refs:
+      - DEP-001
+      - DEP-002
+      - DEP-010
+    - text: Execução de pipeline identificável; artefacto com commit SHA e run ID
+      refs:
+      - CIC-005
+      - CIC-007
+    - text: SBOM e assinatura por imagem; logs de admissão
+      refs:
+      - CNT-007
+      - CNT-008
+      - CNT-009
+    - text: Registo de deploy completo
+      refs:
+      - DPL-004
+    - text: Logs estruturados persistidos e retidos
+      refs:
+      - OPS-001
+      - OPS-003
+    indicators:
+    - DEP-K01
+    - CIC-K03
+    - CNT-K03
+    - DPL-K06
+    - DEP-K02
+    - IAC-K02
+    ai_agentic_extension:
+      text: Identidade do que executa inclui modelo/versão, prompts/skill files, tools/MCP e mandate; AI BOM; pesos como
+        ativo crítico; eval suite como gate; telemetria dedicada. O mandate é matéria de MP4; MP3 garante que o que corre
+        é o que o mandate referencia
+      refs:
+      - DEP-011
+      - DEP-012
+      - US-14@05
+      - US-19@07
+      - DPL-010
+      - DPL-011
+      - OPS-011
+      - OPS-012
+      - OPS-013
+      - OPS-014
+    proportionality_l1_l3:
+      L1: SBOM, SCA com bloqueio, versões fixas, gates, aprovação formal de deploy, rollback testado, logging estruturado
+      L2: assinatura e proveniência
+      L3: reforços das colunas L3 dos catálogos
+  - mp_id: MP-04
+    label: MP4
+    name_pt: Autorizar → Agir / Excecionar
+    name_en: AUTHORISE → ACT / EXCEPT
+    continuity: Autoridade e agência
+    invariant: Papéis, deveres de fornecedor, automatismos e exceções exigem autoridade explícita e evidência retida.
+    question: Quem pode fazer isto — e onde fica registado?
+    provenance:
+      source: 'SbD-ToE-Manual: 010-sbd-manual/00-fundamentos/macro-processos.md'
+      anchor: '#mp4-autorizar-agir-excecionar'
+      manual_pin: v1.8.0 f78dfe734a83b01fa9283c2df5a3eb0ba9528001
+    traverses_bundles:
+    - 00-fundamentos
+    - 13-formacao-onboarding
+    - 14-governanca-contratacao
+    - 02-requisitos-seguranca
+    path_edges:
+    - from: 00-fundamentos
+      to:
+      - 13-formacao-onboarding
+      kind: fluxo
+      via_refs:
+      - GOV-002
+      - 13 papéis canónicos
+    - from: 13-formacao-onboarding
+      to:
+      - 14-governanca-contratacao
+      kind: fluxo
+      via_refs:
+      - TRN-004
+      - TRN-005
+    - from: 14-governanca-contratacao
+      to: acção ou exceção registada
+      kind: fluxo
+      via_refs:
+      - GOV-003
+      - GOV-004
+    - from: 14-governanca-contratacao
+      to:
+      - 02-requisitos-seguranca
+      kind: ramo
+      via_refs:
+      - REQ-AGN-001
+      note: 'ramo automatismos: alçadas → mandate A0–A4'
+    scope_subjects:
+    - subject: person_in_role
+      refs:
+      - colaborador, owner, aprovador
+    - subject: supplier
+      refs:
+      - TRN-007
+      - GOV-013
+    - subject: ai_agent
+      refs:
+      - A1+
+      - REQ-AGN-001
+    triggers:
+    - text: Entrada/mudança de função; designação ou rotação de owner
+      refs:
+      - US-01@13
+      - TRN-002
+      - US-09@14
+    - text: Onboarding de fornecedor/contractor; revisão periódica de acesso; offboarding
+      refs:
+      - GOV-007
+      - GOV-013
+      - GOV-014
+      - US-17@14
+    - text: Pedido de exceção; expiração (90 dias por defeito) ou trigger fora de prazo
+      refs:
+      - processo canónico, passo 1
+    - text: Novo agente ou mudança de nível/scope/allowlist (reabre proposta → aprovação)
+      refs:
+      - US-15@02
+    - text: Emergency deploy (aprovação post-facto ≤ 24h, notificação a Gestão Executiva/CISO)
+      refs:
+      - exceções de deploy (cap. 11)
+    inputs:
+    - text: Modelo formal de governação + 13 papéis
+      refs:
+      - GOV-001
+    - text: Classificação por nível (MP1) que fixa as alçadas
+      refs:
+      - GOV-003
+    - text: Trilhos de formação por perfil/nível; contratos com cláusulas
+      refs:
+      - TRN-001
+      - GOV-006
+    - text: Esquema mínimo de mandate (Policy 38)
+      refs:
+      - US-15@02
+    activities:
+    - order: 1
+      text: Definir papéis e atribuir ownership por aplicação
+      refs:
+      - GOV-001
+      - GOV-002
+      - US-09@14
+    - order: 2
+      text: Condicionar a autoridade à competência (onboarding validado; formação contínua; terceiros equivalente)
+      refs:
+      - TRN-002
+      - TRN-004
+      - TRN-005
+      - TRN-007
+    - order: 3
+      text: Exercer a autoridade dentro das alçadas (L1/L2/L3)
+      refs:
+      - GOV-003
+    - order: 4
+      text: Excecionar pelo processo canónico em seis passos
+      refs:
+      - GOV-004
+      - GOV-005
+    - order: 5
+      text: Aplicar especificidades por domínio sem substituir o processo
+      refs:
+      - gestão de exceções por capítulo
+    - order: 6
+      text: Mandatar automatismos e agentes (mandate em VCS; aprovação por nível A1–A4)
+      refs:
+      - REQ-AGN-001
+      - REQ-AGN-002
+      - US-15@02
+    - order: 7
+      text: Governar terceiros (validação, preparação pré-acesso, revisão, remoção no próprio dia)
+      refs:
+      - GOV-007
+      - GOV-013
+      - GOV-014
+    - order: 8
+      text: Reter a evidência da decisão (artefactos referenciáveis; registo consolidado)
+      refs:
+      - GOV-009
+      - GOV-008
+    outputs:
+    - text: Registo de exceções ativo (validade + cadeia de autoridade)
+      consumed_by:
+      - mp: MP-05
+        kind: dependency
+        via: indicadores de exceções
+        refs:
+        - GOV-K02
+        - GOV-K03
+        - GOV-K04
+      - mp: MP-01
+        kind: feedback
+        via: risco residual aceite com owner e TTL re-entra na reavaliação
+        refs:
+        - CLA-007
+      - mp: MP-02
+        kind: feedback
+        via: idem, no desenho
+        refs:
+        - CLA-007
+    - text: Mandate referenciável (mandate_ref)
+      consumed_by:
+      - mp: MP-03
+        kind: dependency
+        via: audit events por tool invocation; identidade de pipeline
+        refs:
+        - OPS-012
+        - US-19@07
+    - text: Aprovação de deploy por papel autorizado
+      consumed_by:
+      - mp: MP-03
+        kind: dependency
+        via: promoção
+        refs:
+        - DPL-001
+    - text: Acesso concedido/revisto/revogado com evidência
+      consumed_by:
+      - mp: MP-05
+        kind: dependency
+        via: indicadores de acesso e formação
+        refs:
+        - TRN-K03
+        - GOV-K01
+    owner_role: grc-compliance
+    participant_roles:
+    - gestao-executiva
+    - appsec-engineer
+    - scrum-master
+    - product-owner
+    - security-champion
+    - developer
+    - fornecedores-terceiros
+    - auditores
+    control_points:
+    - text: Acesso bloqueado até onboarding validado
+      refs:
+      - TRN-004
+      - US-01@13
+    - text: Aprovação formal explícita, nominal e registada (sem aprovações tácitas)
+      refs:
+      - processo canónico
+    - text: Expiração (90 dias por defeito) — não renovação = não conformidade ativa
+      refs:
+      - GOV-005
+    - text: Revisão periódica de acesso de terceiros com remoção no próprio dia
+      refs:
+      - GOV-014
+      - US-19@14
+    - text: Reabertura do ciclo do mandate a cada mudança; kill-switch exercitado
+      refs:
+      - US-15@02
+      - REQ-AGN-003
+    - text: Separação entre sinal automático e decisão
+      refs:
+      - US-15@07
+      - US-16@10
+      - US-16@11
+    expected_evidence:
+    - text: Registo de exceção completo com cadeia de autoridade
+      refs:
+      - processo canónico
+    - text: Certificados/LMS; bloqueios de acesso; ready-for-access de terceiros
+      refs:
+      - US-01@13
+      - US-15@14
+    - text: Mandate versionado com mandate_ref; audit events
+      refs:
+      - REQ-AGN-001
+      - OPS-012
+    - text: Checklist de revisão de acesso; designação de owner
+      refs:
+      - US-19@14
+      - US-09@14
+    - text: Artefactos de decisão referenciáveis
+      refs:
+      - GOV-009
+    indicators:
+    - GOV-K02
+    - GOV-K03
+    - GOV-K04
+    - GOV-K01
+    - TRN-K02
+    - TRN-K03
+    - CIC-K02
+    ai_agentic_extension:
+      text: 'O agente é o caso de maior distância capacidade↔autoridade: o que está autorizado é o que o mandate declara'
+      refs:
+      - REQ-AGN-001
+      - REQ-AGN-002
+      - REQ-AGN-003
+      - REQ-AGN-004
+    proportionality_l1_l3:
+      L1: exceção aprovada pelo responsável técnico; onboarding básico obrigatório; terceiros recomendado
+      L2: aprovação AppSec + responsável; formação contínua semestral
+      L3: AppSec + GRC/CISO com medida compensatória obrigatória; trimestral
+  - mp_id: MP-05
+    label: MP5
+    name_pt: Medir → Melhorar
+    name_en: MEASURE → IMPROVE
+    continuity: Asseguramento e aprendizagem
+    invariant: Cada capítulo precisa de população elegível, contrato de evidência, dono e medida de estado resultante.
+    question: O sistema funcionou, e o que temos de mudar?
+    provenance:
+      source: 'SbD-ToE-Manual: 010-sbd-manual/00-fundamentos/macro-processos.md'
+      anchor: '#mp5-medir-melhorar'
+      manual_pin: v1.8.0 f78dfe734a83b01fa9283c2df5a3eb0ba9528001
+    traverses_bundles:
+    - 00-fundamentos
+    - 01-classificacao-aplicacoes
+    - 02-requisitos-seguranca
+    - 03-threat-modeling
+    - 04-arquitetura-segura
+    - 05-dependencias-sbom-sca
+    - 06-desenvolvimento-seguro
+    - 07-cicd-seguro
+    - 08-iac-infraestrutura
+    - 09-containers-imagens
+    - 10-testes-seguranca
+    - 11-deploy-seguro
+    - 12-monitorizacao-operacoes
+    - 13-formacao-onboarding
+    - 14-governanca-contratacao
+    path_edges:
+    - from: 00/01 fundação de portfólio
+      to:
+      - 01-classificacao-aplicacoes
+      - 02-requisitos-seguranca
+      - 03-threat-modeling
+      - 04-arquitetura-segura
+      - 05-dependencias-sbom-sca
+      - 06-desenvolvimento-seguro
+      - 07-cicd-seguro
+      - 08-iac-infraestrutura
+      - 09-containers-imagens
+      - 10-testes-seguranca
+      - 11-deploy-seguro
+      - 12-monitorizacao-operacoes
+      - 13-formacao-onboarding
+      - 14-governanca-contratacao
+      kind: fluxo
+      via_refs:
+      - F-01
+      - F-02
+      - CLA-K01
+      - CLA-008
+      note: denominador comum
+    - from: KPIs de domínio (01–14)
+      to: dimensões transversais T-01..T-06
+      kind: fluxo
+      via_refs:
+      - catálogos KPIs por capítulo
+    - from: dimensões T-01..T-06
+      to: ação corretiva com owner e prazo
+      kind: fluxo
+      via_refs:
+      - GOV-K08
+      - GOV-010
+    scope_subjects:
+    - subject: organisation_practices_controls_knowledge
+      refs:
+      - medidos sobre o portfólio classificado; a evolução do próprio Manual fica fora
+    triggers:
+    - text: Período de cada indicador; ciclo de validação contínua por tipo de ativo
+      refs:
+      - GOV-010
+    - text: Avaliação anual de maturidade com comparação ao ciclo anterior
+      refs:
+      - T-06
+      - GOV-012
+    - text: Desvio face ao threshold → ação corretiva
+      refs:
+      - GOV-011
+      - US-18@13
+    - text: Incidente → MTTD/MTTR e causa raiz de formação
+      refs:
+      - OPS-006
+      - OPS-010
+      - TRN-K05
+    inputs:
+    - text: Inventário classificado e requisitos mapeados
+      refs:
+      - F-01
+      - F-02
+      - F-03
+      - CLA-008
+    - text: Catorze catálogos de indicadores + catálogo de governação
+      refs: []
+    - text: Evidência dos outros MP (exceções, releases, telemetria, matrizes, testes)
+      refs: []
+    - text: Metodologia de validação de claims (evidência sobre plausibilidade)
+      refs:
+      - canon metodologia-validacao-claims (cap. 00)
+    activities:
+    - order: 1
+      text: Estabelecer a fundação (F-02 = F-01) antes de qualquer percentagem
+      refs:
+      - CLA-008
+      - CLA-K01
+    - order: 2
+      text: Recolher indicadores de domínio com fonte primária e evidência
+      refs:
+      - TRN-009
+      - GOV-011
+      - OPS-010
+    - order: 3
+      text: Agregar nas dimensões T-01..T-06 e reportar no painel executivo
+      refs:
+      - US-05@14
+      - US-11@14
+    - order: 4
+      text: Validar por evidência, não por plausibilidade (backtrace por claim)
+      refs:
+      - metodologia de validação de claims
+    - order: 5
+      text: Priorizar com contexto de ameaça (EPSS/KEV sobre CVSS, nunca além do SLA)
+      refs:
+      - EPSS/KEV (cap. 12)
+    - order: 6
+      text: Agir sobre desvios (owner + prazo; indicadores inversos com alvo zero = SLA de finding crítico)
+      refs:
+      - RQS-K06
+      - GOV-K04
+      - TRN-K05
+    - order: 7
+      text: Avaliar maturidade por domínio (escala 1–3 de T-06; estagnação = dois ciclos sem plano)
+      refs:
+      - GOV-012
+    - order: 8
+      text: Realimentar os outros macro-processos
+      refs:
+      - TST-006
+      - TRN-006
+      - TRN-K04
+      - CLA-004
+      - CLA-006
+      - US-13@12
+    outputs:
+    - text: Painel executivo e relatórios por período
+      consumed_by: []
+    - text: Ações corretivas com owner e prazo
+      consumed_by:
+      - mp: MP-01
+        kind: feedback
+        via: reclassificação
+        refs:
+        - CLA-004
+      - mp: MP-02
+        kind: feedback
+        via: regressão de segurança
+        refs:
+        - TST-006
+      - mp: MP-03
+        kind: feedback
+        via: 'ações corretivas nos gatilhos (ex.: sinais de jailbreak → eval suite)'
+        refs:
+        - US-13@12
+      - mp: MP-04
+        kind: feedback
+        via: conteúdos formativos; renovação de exceções
+        refs:
+        - TRN-006
+        - GOV-005
+    - text: Avaliação de maturidade anual por domínio (T-06)
+      consumed_by: []
+    owner_role: grc-compliance
+    participant_roles:
+    - appsec-engineer
+    - gestao-executiva
+    - operacoes
+    - product-owner
+    - scrum-master
+    - security-champion
+    - auditores
+    control_points:
+    - text: F-02 = F-01 antes de qualquer percentagem
+      refs:
+      - F-01
+      - F-02
+    - text: Thresholds cumulativos por nível; indicadores inversos com alvo zero
+      refs: []
+    - text: Evidência obrigatória por indicador (sem fonte primária não é cobertura)
+      refs: []
+    - text: Comparação obrigatória com o ciclo anterior (T-06; OPS-010)
+      refs:
+      - OPS-010
+    - text: Desvio sem ação corretiva atribuída é falha do próprio processo
+      refs:
+      - GOV-K08
+    expected_evidence:
+    - text: Registos de indicadores por período com fonte primária
+      refs: []
+    - text: Painel executivo com F-01..F-04 e T-01..T-06
+      refs: []
+    - text: Avaliação anual de maturidade com evidência por domínio
+      refs:
+      - GOV-012
+    - text: Registo de ações corretivas com owner, prazo e fecho
+      refs:
+      - GOV-010
+    indicators:
+    - CLA-K01
+    - GOV-K07
+    - GOV-K08
+    foundation_refs:
+    - F-01
+    - F-02
+    - F-03
+    - F-04
+    dimension_refs:
+    - T-01
+    - T-02
+    - T-03
+    - T-04
+    - T-05
+    - T-06
+    ai_agentic_extension:
+      text: 'Fontes de medição para agentes: telemetria dedicada, audit por tool invocation, budget/runaway, jailbreak/off-policy'
+      refs:
+      - OPS-011
+      - OPS-012
+      - OPS-013
+      - OPS-014
+    proportionality_l1_l3:
+      L1: thresholds de base; T-06 espera nível 1
+      L2: thresholds apertam; validação contínua semestral
+      L3: trimestral; obrigações cumulativas
+# ---------------------------------------------------------------------------
+# segmentation_principle + declared_absences (v2.6, 2026-09-07 — decisões do programme lead)
+# ---------------------------------------------------------------------------
+prescription_reach_principle:
+  # v2.10 (ratificado 2026-09-09) — terceiro princípio nomeado: o que a prescrição ALCANÇA.
+  statement: "O Manual prescreve com três alcances, e cada afirmação sobre um actor carrega o seu: dentro do domínio, PRESCREVE; dentro da organização mas noutro domínio, REQUER-QUE-EXISTA; fora da organização, REQUER-ALINHAMENTO-DEMONSTRÁVEL. O Manual é FRACTAL, não em cascata: o fornecedor não é um actor dentro da instância — é onde OUTRA INSTÂNCIA começa; perguntar que práticas executa é perguntar o que a instância dele executa, e a resposta é «as mesmas, no seu próprio grafo». A nossa instância modela a INTERFACE (cláusulas, validação, evidência entregue, acesso condicionado)."
+  reaches:
+    prescribes: {position: dentro-do-domínio, verb: prescreve, expressed_as: "práticas, US na voz do papel, assignments, decision_involvements", evidence: "260 US · 1296 assignments · 163 involvements"}
+    requires_existence: {position: dentro-da-organização-outro-domínio, verb: requer-que-exista, expressed_as: "REQUISITOS sobre o que precisa de existir — nunca prescrição de como esse domínio trabalha", evidence: "GOV-006 «os contratos INCLUEM cláusulas» (não diz como o jurídico redige); GOV-007 «SÃO VALIDADOS» (não diz como o procurement negoceia); reforço verificado pelo Orchestrator: «Como GRC / Compliance (Jurídico + Procurement)» — jurídico e procurement entre PARÊNTESES, nunca canonizados. O tier do meio está vazio DE PAPÉIS porque o Manual o exprime como REQUISITOS — não se nomeiam actores num domínio que não se governa"}
+    requires_demonstrable_alignment: {position: fora-da-organização, verb: requer-alinhamento-demonstrável, expressed_as: "alinhamento provado, não adopção — «quando perguntamos o que o fornecedor tem que fazer, é o que está no CONTRATO. Se adoptar o mesmo manual, o manual diz-lhe o que fazer» (programme lead)", evidence: "0/260 US na voz do fornecedor; papel sempre objecto («cumprem, entregam, submetem-se»); «devem cumprir os mesmos padrões» = alinhamento"}
+  retroactive_power: "explica decisões tomadas antes de o princípio existir e sem o conhecer: ABS-011 (RH/PeopleOps não canonizado — tier do meio), GOV-006/007 (a fronteira já praticada), e o zero de fornecedores-terceiros lido como dívida (ABS-003 → withdrawn no ledger)"
+  authorial_note_scope: "poucas linhas na página de papéis dos fundamentos, nomeando os três alcances; SEM capítulo (âmbito fixado pelo lead)"
+segmentation_principle:
+  # v2.6 — nomeado e normativo (generaliza a adenda v2.5; decisões do lead 2026-09-06 e 2026-09-07)
+  statement: "MacroProcess, KnowledgeBundle (capítulo) e SDLCPhase são segmentações PARALELAS do mesmo substrato. Relações entre segmentações nunca se tipam como contenção (campo 1:1, int, «pertence a»). A cardinalidade é propriedade da vista (a vista processual cobre 15 capítulos; a vista de fases tem 8): nenhuma vista substitui ou vence outra."
+  relation_species:
+    travessia: "N:M entre segmentações, PUBLICADA na fonte (ex.: MP → capítulos) ou DERIVADA de dados autorados com regra declarada (ex.: fase ↔ capítulos via assignments). Sem fonte, não há travessia — deriva-se o que é publicado, nunca o que é conveniente."
+    dependencia: "consumo tipado entre instâncias da MESMA segmentação (ex.: arestas inter-MP dependency|feedback, regra do template)"
+    piso: "relação transversal de fundação — aplica-se a tudo, independentemente do eixo da segmentação (ex.: cap. 00-fundamentos: «capítulo de definição para que se entenda o resto do manual; roles e mínimos — transversal a todo o manual»). O piso NÃO é ausência de nenhuma vista, não recebe fase nem se tipa out_of_scope; a v2.5 já o publica (path_edge kind: piso; MP-01/MP-04/MP-05 atravessam-no)."
+  traversal_assertion_rule:
+    # v2.7 (ratificada 2026-09-08) — a regra que faltava ao princípio: não só a cardinalidade, o que se AFIRMA.
+    statement: "Toda a travessia derivada declara: (i) o VERBO que afirma; (ii) a fonte autorada de que deriva; (iii) o que NÃO afirma (asserções negativas obrigatórias); (iv) a cobertura, com órfãos declarados um a um. Um join que não consegue nomear o verbo NÃO SE PUBLICA — «join permissivo» é violação nomeada."
+    applies_to: [travessias, campos_derivados]  # v2.9: alargada a campos derivados (Q-T2) — mesma quadra: verbo · fonte · não-afirma · cobertura
+    legacy_no_verb_clause: "v2.9 (terceira via, ratificada): quando a relação existe como DADO LEGADO e nenhum verbo fundado na fonte é enunciável, a asserção é NONE — não se inventa verbo (violação nomeada); o dado não se apaga por essa razão (remoção é decisão de contrato); as superfícies servem-no NÃO-ASSERIDO (published: false, com razão). VIA EXCLUSIVA DE LEGADO — nenhuma travessia nova pode nascer nela; nascer exige verbo."
+  traversal_assertions:
+    # catálogo das travessias existentes com verbo e asserções negativas (documentação; nada muda de conteúdo)
+    phase_bundles: {verb: opera-na-fase, source: practice_assignments autorados, does_not_assert: "contenção; cobertura do cap. 00 (piso); equivalência fase↔capítulo"}
+    control_defining_chapters: {verb: define, source: "template de controlos (defining_chapters, decisão K)", does_not_assert: "exclusividade de citação", note: "possessivo LEGÍTIMO — 17/20 controlos têm um único capítulo definidor publicado"}
+    artifact_defining_chapters: {verb: produced_or_operated_by, source: source_practice_ids autoradas, does_not_assert: "posse; casa única; exigência probatória"}
+    artifact_evidence_chapters: {verb: required_as_evidence_by, source: "EP→requisito→capítulo", does_not_assert: "produção; cobertura total (8/45 órfãos declarados)"}
+    mp_traverses_bundle: {verb: atravessa, source: "percursos publicados (macro-processos.md)", does_not_assert: "contenção; ordem entre capítulos fora do percurso"}
+    mp_consumes_from: {verb: consome, source: "outputs[].consumed_by verbatim + regra Entradas/Gatilhos", does_not_assert: "ordem linear única; equivalência dependency↔feedback"}
+    acore_alignment: {verb: corresponde-a, source: "curadoria ratificada (102, tipada exact/partial/related)", does_not_assert: "autoria de conteúdo; cobertura por related"}
+    role_holds_decision_involvement: {verb: "aprova | é-consultado", source: "estruturas publicadas (DoD, alçadas, tabelas) + curadoria com âncora", does_not_assert: "execução; RACI completo"}
+    # --- v2.9: catálogo completado (varredura ratificada; achado principal em primeiro) ---
+    requirement_maps_to_control: {verb: mapeia-para-controlo, source: "TRÊS vias declaradas, por precedência: curation (juízo humano ratificado) > catalogue_rules (regra de catálogo, type base) > scoring (grounding + léxico declarado); 305 ligações à data", does_not_assert: "exclusividade (multi-aresta permitida); que a secundária é primária; posse do requisito por um capítulo", note: "a ponte curada requisito→controlo — a maior travessia do produto e a afirmação central do programa; estava servida sem asserção (lacuna máxima do catálogo, fechada aqui)"}
+    normative_explicit_family: {verb: "implementado-por | atribui | ocorre-na-fase | operacionaliza", source: "estruturas autoradas explícitas (practice_assignments dos templates, US, tabelas)", does_not_assert: "autoridade de decisão (essa é role_holds_decision_involvement); completude fora do publicado", covers: [control_implemented_by_practice, practice_has_assignment, assignment_assigns_role, assignment_occurs_in_phase, practice_has_user_story]}
+    control_produces_artifact: {verb: declara-produzir, source: "artifact_types dos templates de controlo", does_not_assert: "produção observada em runtime; exigência probatória"}
+    threat_mitigated_by_control: {verb: "mitigado-por (composto)", source: "cadeia declarada ameaça→requisito→controlo (mitigated_by estrutural + camada requisito→controlo)", does_not_assert: "mitigação directa autorada; suficiência da mitigação"}
+    semantic_scored_family: {verb: "implementa | operacionaliza | viola | expõe | suporta-prova", source: "tier semântico PONTUADO (bounded; extracção assistida, preservada)", does_not_assert: "prescrição; autoria do Manual; nada acima da confiança bounded declarada", covers: [mechanism_control_links, pattern_control_links, pattern_requirement_links, antipattern_requirement_links, antipattern_threat_links, signal_evidence_links]}
+    ep_maps_to: {verb: interpreta-como-prova-de, source: "EPs determinísticos (critério do catálogo / docs de validação)", does_not_assert: "que a prova existe na organização; só o que contaria como prova"}
+    external_overlay_family: {verb: "cobre | aponta-para", source: "overlay externo curado (obligation_maps_to_*, playbook_*)", does_not_assert: "autoria do Manual — correspondência externa, coverage_compensated", covers: [obligation_maps_to_bundle, obligation_maps_to_requirement, obligation_maps_to_control, obligation_maps_to_practice, obligation_expects_evidence, playbook_highlights_bundle, playbook_references_overlay]}
+    navigation_family: {verb: "remete-para | referencia-política", source: "referrals e links de política derivados de estrutura editorial", does_not_assert: "relação normativa; só navegação", covers: [cross_layer_referrals, bundle_policy_links]}
+    chunk_entity_mentions: {verb: menciona, source: "presença literal do id no texto autorado", does_not_assert: "prescrição; relevância — só ocorrência", note: "o único verbo de citação REAL disponível; se um consumidor precisar de citação verdadeira de artefactos, deriva-se DAQUI como travessia nova"}
+    chunk_relation_hints: {verb: sugere, source: "hints estruturados de proximidade editorial", does_not_assert: "NADA além de sugestão — não é asserção; consumo exige revalidação"}
+    artifact_cited_chapters: {assertion: none, reason: "terceira via (legacy_no_verb_clause): resto de união legada (chapter_ids ∖ defining) — o critério de pertença não é enunciável como verbo fundado na fonte; servido published:false (correcção do Pontifex confirmada como estado final); a AUSÊNCIA é a resposta certa", does_not_assert: "tudo"}
+    field_assertions_pointer: {note: "asserções de CAMPOS derivados (applies_to alargado): mandatory (aposentado — sem asserção, fabricado) e required_by_level_profile/projecções — documentadas no schema de ArtifactRequirement"}
+  derivations:
+    phase_bundles: "SDLCPhase.bundle_ids = capítulos com >=1 practice_assignment autorado na fase (papel×nível×fase publicados no Manual). Verificado 2026-09-07: plan 8 · design 7 · develop 9 · build 6 · test 6 · deploy 10 · operate 12 · govern 11 — design inclui o cap. 04 e develop o cap. 06 porque os assignments o publicam; 6 dos 7 capítulos ausentes do rollout regressam (o 00 entra como piso). O cap. 00 fica fora desta derivação POR SER PISO, não por ausência."
+    artifact_defining_chapters: "ArtifactRequirement.defining_chapter_ids = capítulos das source_practice_ids (decisão K, precedente ratificado v2.1/contrato §1.20); cited_chapter_ids = chapter_ids ∖ defining (ex. verificado: SBOM 7 definidores vs 15 citados)"
+    artifact_required_levels: "ArtifactRequirement.required_for_levels derivado pela cadeia de níveis ratificada (requisito→controlo→artefacto; applicable_levels autorados)"
+  prohibitions:
+  - "MacroProcess ↔ SDLCPhase: travessia N:M parcial nos dois sentidos e NÃO publicada — out_of_scope (ABS-001); derivação proibida"
+  - "manual_chapter e mandatory não são removidos nem alterados — ganham companhia (bundle_ids; required_for_levels)"
+declared_absences:
+  status_ledger: ontology/declared-absences-ledger.yaml  # v2.9 — transições de estado; prevalece para status; ver absence_model.status_ledger
+  # v2.6 — índice central das ausências declaradas, tipadas pelo absence_model. Regra de imutabilidade aditiva:
+  # os blocos locais de v2.2–v2.5 (requirement_selection_model.status.*, acore_alignment.unaligned,
+  # macro_processes.sdlc_phase_traversal, catalogue_rules) mantêm o texto original SEM alteração; A TIPAGEM DESTE
+  # ÍNDICE PREVALECE sobre qualquer rótulo local anterior. Decisões: SecurityByDesign-TheoryOfEverything/agentic/decisions/2026-09-07-ausencias-tipadas-travessia-vs-contencao.md
+  items:
+  - absence_id: ABS-001
+    statement: "Travessia MacroProcess ↔ SDLCPhase"
+    absence_type: out_of_scope
+    decided_by: programme-lead
+    decided_on: '2026-09-07'
+    evidence: "«não há esse walkthrough possível. Um MP pode passar várias fases e as fases podem cruzar vários MPs» — relação N:M e parcial nos dois sentidos; o Manual publica percursos ao grão capítulo («fase» ocorre 1× no capítulo, na frase que nega a equivalência)"
+    note: "a derivação a partir de capítulos/assignments continua PROIBIDA (mantém macro_processes.sdlc_phase_traversal, cujo rótulo local unpublished_gap fica superseded por esta tipagem)"
+  - absence_id: ABS-002
+    statement: "Semântica decide-vs-delega por papel (GR-04)"
+    absence_type: gap
+    debt_of: manual_content
+    owner: Author
+    decided_by: "Orchestrator (proposta) + programme-lead (concordou: falha de conteúdo no painel há vários ciclos, confirmada por auditor externo)"
+    decided_on: '2026-09-07'
+    closes_in: "vaga de conteúdo do Manual a agendar"
+    note: "hipótese elsewhere PARCADA para análise posterior (avaliar se há pointer real de operating model e no que resultaria); não usada aqui, não eliminada do vocabulário"
+  - absence_id: ABS-003
+    statement: "Atribuições (practice_assignments) para o papel fornecedores-terceiros"
+    absence_type: gap
+    debt_of: manual_content
+    owner: Author
+    decided_on: '2026-09-07'
+    evidence: "papel canónico existe; deveres em prosa existem (cap. 14, TRN-007, GOV-013, MP4); 0 assignments servidos (GR-04)"
+    review_note: "v2.7: reexaminar a triagem com a espécie DecisionInvolvement — parte dos deveres publicados pode ser approves/consulted; o que sobrar continua gap"
+    review_resolved_on: '2026-09-08'
+    review_resolution: "reexaminado com a espécie nova, nos dados publicados: fornecedores-terceiros tem 0 decision_involvements E 0 assignments — o Manual publica-lhe deveres em prosa e NUNCA em forma estruturada de espécie nenhuma (nem execução, nem decisão). Sem estrutura de onde derivar em qualquer das duas espécies, a dívida é do CONTEÚDO: debt_of resolve para manual_content, dono Author. Contraste que confirma o método: operacoes tem 0 envolvimentos mas 33 assignments — executa e não decide; não é achado."
+  - absence_id: ABS-004
+    statement: "Cross-checks normativos ISO/PCI/SOC2/HIPAA/FedRAMP/CSA"
+    absence_type: deferred
+    debt_of: manual_content
+    owner: "Author / lane overlay"
+    trigger: "ciclo do cross-check normativo (roadmap declarado)"
+    decided_on: '2026-09-07'
+  - absence_id: ABS-005
+    statement: "Atribuições para gestao-executiva no cap. 01"
+    absence_type: gap
+    debt_of: ontology_model
+    owner: Archon
+    decided_on: '2026-09-07'
+    retyped_on: '2026-09-08'
+    retyped_by: "programme-lead (gate Q2): «foi o absence_model ratificado a 07-09 que apanhou uma dívida atribuída ao lado errado»"
+    evidence: "o cap. 01 PUBLICA o papel 7× como aprovador/consultado (l.42, 225, 273, 292, 432, 447, 452) — contagem corrigida em v2.8 (a evidence anterior dizia 6× e enumerava sete linhas; apanhado pelo Pontifex); o conteúdo sempre lá esteve — faltava a espécie DecisionInvolvement ao modelo"
+    closes_in: "materialização de DecisionInvolvement (Codex, pós-v2.7)"
+    status: closed
+    closed_on: '2026-09-08'
+    closed_evidence: "163 decision_involvements materializados e servidos (runtime/decision_involvements.json); gestao-executiva com 18 envolvimentos, 12 no cap. 01 — as 7 âncoras ratificadas + 5 encontradas pelas regras (l.561, 615, 761, 772, 829); verificado pelo Orchestrator no tarball publicado e re-verificado pelo Archon nos dados servidos"
+    closed_registered_by: "Archon (índice), por dispatch do Orchestrator — o Pontifex recusou declarar o fecho da superfície, correctamente (closure_rule)"
+  # --- re-tipagem das ausências declaradas em v2.2–v2.5 (blocos originais intocados; este índice prevalece) ---
+  - absence_id: ABS-006
+    statement: "Operadores de overlay replace|extend (requirement_selection_model.status.overlay_operators)"
+    absence_type: deferred
+    debt_of: ontology_model
+    owner: Archon
+    trigger: "ADR 0014 (overlay corporativo)"
+    decided_on: '2026-08-30'
+  - absence_id: ABS-007
+    statement: "Operação de selecção em runtime (requirement_selection_model.status.runtime_selection)"
+    absence_type: deferred
+    debt_of: mcp_serving
+    owner: Pontifex
+    trigger: "ciclo do Pontifex (pipeline d, MP1 como operação)"
+    decided_on: '2026-08-30'
+  - absence_id: ABS-008
+    statement: "Alinhamento dos 58 ACM (acore_alignment.unaligned.acm)"
+    absence_type: deferred
+    debt_of: ontology_model
+    owner: Archon
+    trigger: "F-W1 — materializar a aresta ACM→CO na superfície V1 e derivar como as ACP"
+    decided_on: '2026-09-03'
+  - absence_id: ABS-009
+    statement: "CTRL sem contraparte AppSec Core (CAP, C4, C3 — acore_alignment.unaligned.ctrl)"
+    absence_type: out_of_scope
+    decided_by: programme-lead
+    decided_on: '2026-09-03'
+    evidence: "âmbito do Core V1 por desenho (gate do walkthrough)"
+  - absence_id: ABS-010
+    statement: "Estrutura de medição F-01..F-04 / T-01..T-06 não modelada"
+    absence_type: deferred
+    debt_of: ontology_model
+    owner: Archon
+    trigger: "ciclo do desenho de assurance"
+    decided_on: '2026-08-30'
+  - absence_id: ABS-011
+    statement: "RH/PeopleOps — papel usado pelo Manual (protagonista de US-01 do cap. 13) fora do vocabulário canónico de 13 papéis"
+    absence_type: gap
+    debt_of: manual_content
+    owner: Author
+    decided_by: "Archon (decisão delegada pelo lead no gate 2026-09-08); registado em referenced_roles para nunca-silêncio"
+    decided_on: '2026-09-08'
+    evidence: "13-formacao-onboarding/aplicacao-lifecycle.md:47; o próprio Manual declara «13 papéis canónicos» em 00-fundamentos — canonizar como 14.º ou mapear é decisão de conteúdo, não da ontologia"
+    closes_in: "vaga de conteúdo do Manual (canonizar ou mapear); entretanto a extracção declara-o referenciado-não-canónico"
+  - absence_id: ABS-012
+    statement: "13 células FALTA da matriz banda×superfície do Pontifex (beta.41: provenance ×5, absence_typed ×3, next ×2, paginação ×2, never_silent ×1) + banda de caminho de erro"
+    absence_type: gap
+    debt_of: mcp_serving
+    owner: Pontifex
+    decided_on: '2026-09-08'
+    evidence: "matriz 29×8 (63 tem · 32 n/a · 13 FALTA · 119 «?»); verificado pelo Archon: são bandas de SERVING — o modelo já fornece o substrato (absence_model, proveniência nos registos, never_silence_principle nomeado nesta versão); as 3 células absence_typed dependem apenas da materialização do vocabulário já emitido"
+    closes_in: "Vaga E do Pontifex (dispatch do Orchestrator 2026-09-08); os 119 «?» são inventário de serving, não ausência de modelo"
+    status: closed
+    closed_on: '2026-09-08'
+    closed_evidence: "as 13 células FALTA a ZERO, no repo e no publicado, estáveis através de dois re-pins; painel das leituras 6·0·0 (beta.44), verificado pelo Orchestrator no tarball publicado"
+    closed_registered_by: "Archon (índice), por dispatch do Orchestrator"
+  - absence_id: ABS-013
+    statement: "required_by_level_profile (v2.9) sem base legítima — o perfil por-exigência não é derivável das arestas pontuadas artefacto↔prova"
+    absence_type: gap
+    debt_of: ontology_model
+    owner: Archon
+    decided_on: '2026-09-09'
+    evidence: "caso-teste da própria emissão v2.9 falhou (os 2 discriminantes não reproduziram); evidência das arestas verbatim «REFERENCES/MATCHED ALIAS» (correspondência, não autoria); confidence null nos 45; pontuações ~0.54 internas, não publicadas; evidence_types vazio em 273/273 requisitos; limiar recusado (violaria semantic_scored_family «não prescreve»)"
+    closes_in: "decisão do lead: (a) camada curada texto-autorado(addon-07 «Evidência esperada», por requisito)→artifact_type — extracção kg_surface + mapeamento curado com âncora (mecânica das camadas curadas; ENC sem plano, F2) e o perfil nasce legítimo; ou (b) o perfil declara-se inexistente e o atributo fica documentado como não-materializável"
+    note: "erro de premissa próprio, reconhecido: a v2.9 assumiu que os risk_level_hint chegavam ao artefacto por aresta autorada; chegam por correspondência. A ausência foi declarada à superfície pelo serving com debt_of correcto (ontology_model) — o absence_model a funcionar contra o seu autor"
+# ---------------------------------------------------------------------------
+# referenced_roles (v2.7, 2026-09-08 — caso RH/PeopleOps; ver ABS-011)
+# ---------------------------------------------------------------------------
+referenced_roles:
+  # v2.7 — papéis que o Manual USA mas que não pertencem ao vocabulário canónico («13 papéis canónicos», declaração
+  # do próprio Manual em 00-fundamentos). A ontologia NÃO canoniza papéis por conta própria (seria contradizer a
+  # fonte); regista-os como referenciados-não-canónicos para que a extracção os declare resolvidos-como-referenciados
+  # em vez de não-resolvidos (nunca-silêncio). Canonizar (14.º) ou mapear é decisão de conteúdo (Author) — ABS-011.
+  items:
+  - referenced_role_id: rh-peopleops
+    label: RH/PeopleOps
+    canonical: false
+    anchors:
+    - "13-formacao-onboarding/aplicacao-lifecycle.md:47 (US-01: «Como RH/PeopleOps, quero garantir formação obrigatória de onboarding em SbD…» — PROTAGONISTA de US autorada)"
+    - "02-requisitos-seguranca/addon/02-lista-requisitos-base.md (mapeamento por domínio: responsável típico do cap. 13 inclui PeopleOps)"
+    absence_ref: ABS-011

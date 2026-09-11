@@ -1,10 +1,25 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
+  "assertion_notes": "v2.7 (Q1 — «posse» não existe na fonte e a palavra sai do vocabulário servido): defining_chapter_ids afirma produced_or_operated_by (as práticas autoradas do capítulo produzem/operam o artefacto; 45/45, 35 com >1 — a multiplicidade é facto) e NÃO afirma exclusividade, casa única, nem exigência; evidence_chapter_ids afirma required_as_evidence_by e NÃO afirma produção; nenhuma das duas afirma prioridade entre capítulos nem implicação entre produção e exigência (Jaccard 0,36). O nome defining_chapter_ids mantém-se por aditividade — nos CONTROLOS «defining» é possessivo legítimo (17/20 com um único capítulo definidor no template); nos artefactos era nome herdado, corrigido por documentação, não por rename.",
   "chapter_relation_count": 469,
   "count": 45,
   "count_semantics": "`count` = distinct ArtifactRequirement records (45); `chapter_ids` rows form the chapter<->artifact relation (469 rows) — sum them for relation edges, never for totals.",
   "distinct_count": 45,
   "entity_type": "ArtifactRequirement",
+  "evidence_chapter_coverage": {
+    "covered": 37,
+    "orphans_declared_individually": [
+      "ART-architecture-baseline-57234e937b",
+      "ART-architecture-checklist-abc8e3982a",
+      "ART-architecture-decision-record-504be0e5f1",
+      "ART-architecture-review-5bbd6e5876",
+      "ART-guideline-catalog-5e53974142",
+      "ART-integration-review-179347cc14",
+      "ART-supplier-assessment-43fc2de564",
+      "ART-trust-boundary-model-e661186e9f"
+    ],
+    "total": 45
+  },
   "items": [
     {
       "artifact_type_id": "ART-access-review-e0648977e7",
@@ -16,14 +31,36 @@
         "11-deploy-seguro",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "02-requisitos-seguranca",
+        "04-arquitetura-segura",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "14-governanca-contratacao"
+      ],
       "description": "Access Review must be produced and retained as auditable evidence for practices such as Janela de mudança e aprovações por papel, Segregação de ambientes, tagging e permissões mínimas, RBAC Mínimo e ServiceAccounts Dedicadas.",
       "evidence": [
         "control CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af references access_review",
         "control CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82 references access_review",
         "corpus document 010-sbd-manual/04-arquitetura-segura/canon/25-rastreabilidade.md matched aliases ['access review']"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-access-000",
       "source_control_ids": [
         "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
@@ -58,7 +95,33 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "02-requisitos-seguranca",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "14-governanca-contratacao"
+      ],
       "description": "Alert Policy must be produced and retained as auditable evidence for practices such as Geração de SBOM e assinatura de artefactos de build, Incorporação de restrições legais, normativas e contratuais, AI BOM e gestão de *providers* de modelos AI {#us 14}.",
       "evidence": [
         "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references alert_policy",
@@ -67,7 +130,19 @@
         "control CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70 references alert_policy",
         "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references alert_policy"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "08-iac-infraestrutura",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-alert-000",
       "source_control_ids": [
         "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
@@ -197,7 +272,35 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "14-governanca-contratacao"
+      ],
       "description": "Approval Record must be produced and retained as auditable evidence for practices such as Produção e manutenção do inventário central com autoridade de aprovação proporcional, Uso controlado de assistentes automatizados (incluindo IA) no desenvolvimento, Validação e aprovação final.",
       "evidence": [
         "control CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a references approval_record",
@@ -206,7 +309,27 @@
         "practice 01-classificacao-aplicacoes:producao-e-manutencao-do-inventario-central-com-autoridade-de-aprovacao-proporcional matched alias 'aprovacao'",
         "practice 02-requisitos-seguranca:validacao-e-aprovacao-final matched alias 'aprovacao'"
       ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-approval-000",
       "source_control_ids": [
         "CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a",
@@ -248,13 +371,30 @@
       "chapter_ids": [
         "04-arquitetura-segura"
       ],
+      "cited_chapter_ids": [
+        "04-arquitetura-segura"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "04-arquitetura-segura"
+      ],
       "description": "Architecture Baseline must be produced and retained as auditable evidence for practices such as Atualização da baseline após alteração arquitetural significativa, Avaliação de impacto no negócio e priorização de trade offs, Catálogo de padrões de arquitetura segura (reutilização governada).",
       "evidence": [
         "control CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4 references architecture_baseline",
         "corpus document 010-sbd-manual/04-arquitetura-segura/canon/25-rastreabilidade.md matched aliases ['architecture baseline']"
       ],
+      "evidence_chapter_ids": [],
+      "evidence_chapters_absence": {
+        "absence_type": "gap",
+        "note": "nenhum evidence pattern exige este artefacto como prova — required_as_evidence_by não cobre este registo (v2.7 Q1; declarado um a um)",
+        "status": "orphan_no_evidence_pattern"
+      },
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-architecture-000",
       "source_control_ids": [
         "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4"
@@ -284,12 +424,29 @@
       "chapter_ids": [
         "04-arquitetura-segura"
       ],
+      "cited_chapter_ids": [
+        "04-arquitetura-segura"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "04-arquitetura-segura"
+      ],
       "description": "Architecture Checklist must be produced and retained as auditable evidence for practices such as Atualização da baseline após alteração arquitetural significativa, Avaliação de impacto no negócio e priorização de trade offs, Catálogo de padrões de arquitetura segura (reutilização governada).",
       "evidence": [
         "control CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4 references architecture_checklist"
       ],
+      "evidence_chapter_ids": [],
+      "evidence_chapters_absence": {
+        "absence_type": "gap",
+        "note": "nenhum evidence pattern exige este artefacto como prova — required_as_evidence_by não cobre este registo (v2.7 Q1; declarado um a um)",
+        "status": "orphan_no_evidence_pattern"
+      },
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-architecture-000",
       "source_control_ids": [
         "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4"
@@ -319,7 +476,13 @@
       "chapter_ids": [
         "04-arquitetura-segura"
       ],
+      "cited_chapter_ids": [
+        "04-arquitetura-segura"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "04-arquitetura-segura"
+      ],
       "description": "Architecture Decision Record must be produced and retained as auditable evidence for practices such as Atualização da baseline após alteração arquitetural significativa, Avaliação de impacto no negócio e priorização de trade offs, Catálogo de padrões de arquitetura segura (reutilização governada).",
       "evidence": [
         "control CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4 references architecture_decision_record",
@@ -328,7 +491,18 @@
         "corpus document 010-sbd-manual/04-arquitetura-segura/addon/07-termos-e-glossario-arquitetura.md matched aliases ['architecture decision record']",
         "corpus document 010-sbd-manual/04-arquitetura-segura/addon/10-kpis-metricas.md matched aliases ['architecture decision record']"
       ],
+      "evidence_chapter_ids": [],
+      "evidence_chapters_absence": {
+        "absence_type": "gap",
+        "note": "nenhum evidence pattern exige este artefacto como prova — required_as_evidence_by não cobre este registo (v2.7 Q1; declarado um a um)",
+        "status": "orphan_no_evidence_pattern"
+      },
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-architecture-000",
       "source_control_ids": [
         "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4"
@@ -358,12 +532,26 @@
       "chapter_ids": [
         "04-arquitetura-segura"
       ],
+      "cited_chapter_ids": [
+        "04-arquitetura-segura"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "04-arquitetura-segura"
+      ],
       "description": "Architecture Diagram must be produced and retained as auditable evidence for practices such as Revisão de fronteiras de confiança e integrações, Segmentação de ambientes e validação de topologia como código (L3).",
       "evidence": [
         "control CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b references architecture_diagram"
       ],
+      "evidence_chapter_ids": [
+        "04-arquitetura-segura"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-architecture-000",
       "source_control_ids": [
         "CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b"
@@ -379,13 +567,30 @@
       "chapter_ids": [
         "04-arquitetura-segura"
       ],
+      "cited_chapter_ids": [
+        "04-arquitetura-segura"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "04-arquitetura-segura"
+      ],
       "description": "Architecture Review must be produced and retained as auditable evidence for practices such as Atualização da baseline após alteração arquitetural significativa, Avaliação de impacto no negócio e priorização de trade offs, Catálogo de padrões de arquitetura segura (reutilização governada).",
       "evidence": [
         "control CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4 references architecture_review",
         "corpus document 010-sbd-manual/04-arquitetura-segura/canon/25-rastreabilidade.md matched aliases ['architecture review']"
       ],
+      "evidence_chapter_ids": [],
+      "evidence_chapters_absence": {
+        "absence_type": "gap",
+        "note": "nenhum evidence pattern exige este artefacto como prova — required_as_evidence_by não cobre este registo (v2.7 Q1; declarado um a um)",
+        "status": "orphan_no_evidence_pattern"
+      },
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-architecture-000",
       "source_control_ids": [
         "CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4"
@@ -429,7 +634,36 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "02-requisitos-seguranca",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "14-governanca-contratacao"
+      ],
       "description": "Artifact Provenance must be produced and retained as auditable evidence for practices such as Classificação do tipo de controlo na matriz de rastreabilidade, Geração de SBOM e assinatura de artefactos de build, Rastreabilidade de requisitos.",
       "evidence": [
         "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references artifact_provenance",
@@ -438,7 +672,27 @@
         "control CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905 references artifact_provenance",
         "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references artifact_provenance"
       ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-artifact-000",
       "source_control_ids": [
         "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
@@ -600,7 +854,33 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "02-requisitos-seguranca",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "11-deploy-seguro"
+      ],
       "description": "Artifact Signature must be produced and retained as auditable evidence for practices such as Geração de SBOM e assinatura de artefactos de build, AI BOM e gestão de *providers* de modelos AI {#us 14}, Alertas sobre Vulnerabilidades em Componentes Usados.",
       "evidence": [
         "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references artifact_signature",
@@ -609,7 +889,22 @@
         "control CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905 references artifact_signature",
         "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references artifact_signature"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "07-cicd-seguro",
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-artifact-000",
       "source_control_ids": [
         "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
@@ -746,7 +1041,26 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "07-cicd-seguro",
+        "09-containers-imagens"
+      ],
       "description": "Container Image must be produced and retained as auditable evidence for practices such as Validação de integridade de imagens base, Aplicação de políticas formais de segurança no runtime com OPA/Kyverno, Aprovação, depreciação e revogação de Golden Base Images (catálogo organizacional).",
       "evidence": [
         "control CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d references container_image",
@@ -755,7 +1069,20 @@
         "practice 09-containers-imagens:aprovacao-depreciacao-e-revogacao-de-golden-base-images-catalogo-organizacional matched alias 'imagens'",
         "practice 09-containers-imagens:assinatura-e-verificacao-de-proveniencia-de-imagens-com-cosign-e-rekor matched alias 'imagens'"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-container-000",
       "source_control_ids": [
         "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d"
@@ -793,14 +1120,30 @@
         "03-threat-modeling",
         "04-arquitetura-segura"
       ],
+      "cited_chapter_ids": [
+        "03-threat-modeling",
+        "04-arquitetura-segura"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "04-arquitetura-segura"
+      ],
       "description": "Data Flow Diagram must be produced and retained as auditable evidence for practices such as Revisão de fronteiras de confiança e integrações, Segmentação de ambientes e validação de topologia como código (L3).",
       "evidence": [
         "control CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b references data_flow_diagram",
         "corpus document 010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md matched aliases ['data flow diagrams']",
         "corpus document 010-sbd-manual/03-threat-modeling/addon/13-linddun-privacidade.md matched aliases ['data flow diagram', 'data flow diagrams']"
       ],
+      "evidence_chapter_ids": [
+        "03-threat-modeling",
+        "04-arquitetura-segura"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-data-000",
       "source_control_ids": [
         "CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b"
@@ -820,7 +1163,18 @@
         "05-dependencias-sbom-sca",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "02-requisitos-seguranca",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "02-requisitos-seguranca",
+        "05-dependencias-sbom-sca"
+      ],
       "description": "Dependency Inventory must be produced and retained as auditable evidence for practices such as Geração de SBOM e assinatura de artefactos de build, AI BOM e gestão de *providers* de modelos AI {#us 14}, Alertas sobre Vulnerabilidades em Componentes Usados.",
       "evidence": [
         "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references dependency_inventory",
@@ -829,7 +1183,18 @@
         "corpus document 010-sbd-manual/04-arquitetura-segura/addon/01-catalogo-requisitos.md matched aliases ['inventario de componentes']",
         "corpus document 010-sbd-manual/04-arquitetura-segura/addon/05-validacao.md matched aliases ['inventario de componentes']"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "12-monitorizacao-operacoes"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-dependency-000",
       "source_control_ids": [
         "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb"
@@ -874,7 +1239,28 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "07-cicd-seguro",
+        "11-deploy-seguro"
+      ],
       "description": "Deployment Plan must be produced and retained as auditable evidence for practices such as Separação CI/CD, build/test/deploy e templates versionados {#us 21}, Controlo de execução com *feature flags*, Controlo e validação de drift operacional.",
       "evidence": [
         "control CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0 references deployment_plan",
@@ -883,7 +1269,17 @@
         "practice 11-deploy-seguro:controlo-e-validacao-de-drift-operacional matched alias 'deploy'",
         "practice 11-deploy-seguro:credenciais-de-deploy-isoladas-por-aplicacao-e-efemeras matched alias 'deploy'"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "08-iac-infraestrutura",
+        "11-deploy-seguro"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-deployment-000",
       "source_control_ids": [
         "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0"
@@ -931,7 +1327,28 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "04-arquitetura-segura",
+        "08-iac-infraestrutura",
+        "11-deploy-seguro"
+      ],
       "description": "Environment Inventory must be produced and retained as auditable evidence for practices such as Segmentação de ambientes e validação de topologia como código (L3), Assinatura e Proveniência de artefactos IaC, Backend remoto, locking e rastreabilidade.",
       "evidence": [
         "control CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905 references environment_inventory",
@@ -940,7 +1357,20 @@
         "practice 11-deploy-seguro:controlo-e-validacao-de-drift-operacional matched alias 'ambientes'",
         "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['ambientes']"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "04-arquitetura-segura",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "10-testes-seguranca",
+        "11-deploy-seguro"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-environment-000",
       "source_control_ids": [
         "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905"
@@ -987,7 +1417,35 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "02-requisitos-seguranca",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "12-monitorizacao-operacoes",
+        "14-governanca-contratacao"
+      ],
       "description": "Exception Record must be produced and retained as auditable evidence for practices such as Gestão de Exceções com TTL e Revalidação Obrigatória, Incorporação de restrições legais, normativas e contratuais, Gestão de exceções arquiteturais com controlos compensatórios.",
       "evidence": [
         "control CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628 references exception_record",
@@ -996,7 +1454,15 @@
         "practice 05-dependencias-sbom-sca:excecoes-a-cves-formais-e-temporarias matched alias 'excecoes'",
         "practice 06-desenvolvimento-seguro:gestao-de-excecoes-tecnicas matched alias 'excecoes'"
       ],
+      "evidence_chapter_ids": [
+        "06-desenvolvimento-seguro"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-exception-000",
       "source_control_ids": [
         "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628"
@@ -1042,7 +1508,25 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "09-containers-imagens",
+        "10-testes-seguranca"
+      ],
       "description": "Finding Register must be produced and retained as auditable evidence for practices such as Exceções temporárias a findings/policies com TTL, compensações e revalidação, Avaliação crítica de cobertura real e limitações, Critérios de release e aceitação de risco.",
       "evidence": [
         "control CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34 references finding_register",
@@ -1051,7 +1535,18 @@
         "practice 10-testes-seguranca:feedback-automatico-de-findings-as-equipas matched alias 'findings'",
         "practice 10-testes-seguranca:gestao-centralizada-de-findings-com-triagem-e-sla matched alias 'findings'"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "08-iac-infraestrutura",
+        "10-testes-seguranca",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-finding-000",
       "source_control_ids": [
         "CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34"
@@ -1102,7 +1597,34 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "10-testes-seguranca",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "description": "Governance Kpi must be produced and retained as auditable evidence for practices such as Incorporação de restrições legais, normativas e contratuais, Recolha e thresholds dos indicadores RQS, Validação de arquitetura com threat modeling.",
       "evidence": [
         "control CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628 references governance_kpi",
@@ -1111,7 +1633,16 @@
         "practice 03-threat-modeling:validacao-de-arquitetura-com-threat-modeling matched alias 'metricas'",
         "practice 06-desenvolvimento-seguro:guidelines-de-desenvolvimento-seguro matched alias 'metricas'"
       ],
+      "evidence_chapter_ids": [
+        "12-monitorizacao-operacoes",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-governance-000",
       "source_control_ids": [
         "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628",
@@ -1161,7 +1692,19 @@
         "06-desenvolvimento-seguro",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "02-requisitos-seguranca",
+        "06-desenvolvimento-seguro"
+      ],
       "description": "Guideline Catalog must be produced and retained as auditable evidence for practices such as Uso controlado de assistentes automatizados (incluindo IA) no desenvolvimento, Arquivo Central de Evidências de Validação, Automatização em CI/CD (Linters & SAST).",
       "evidence": [
         "control CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a references guideline_catalog",
@@ -1170,7 +1713,18 @@
         "practice 06-desenvolvimento-seguro:guidelines-de-desenvolvimento-seguro matched alias 'guidelines'",
         "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['guidelines']"
       ],
+      "evidence_chapter_ids": [],
+      "evidence_chapters_absence": {
+        "absence_type": "gap",
+        "note": "nenhum evidence pattern exige este artefacto como prova — required_as_evidence_by não cobre este registo (v2.7 Q1; declarado um a um)",
+        "status": "orphan_no_evidence_pattern"
+      },
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-guideline-000",
       "source_control_ids": [
         "CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a",
@@ -1214,7 +1768,25 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "08-iac-infraestrutura"
+      ],
       "description": "Iac Plan must be produced and retained as auditable evidence for practices such as Assinatura e Proveniência de artefactos IaC, Backend remoto, locking e rastreabilidade, Deteção e correção de *drift*.",
       "evidence": [
         "control CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905 references iac_plan",
@@ -1223,7 +1795,15 @@
         "practice 08-iac-infraestrutura:detecao-e-correcao-de-drift matched alias 'iac'",
         "practice 08-iac-infraestrutura:determinismo-e-reprodutibilidade-do-plan matched alias 'iac'"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-iac-000",
       "source_control_ids": [
         "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905"
@@ -1269,7 +1849,30 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "14-governanca-contratacao"
+      ],
       "description": "Identity Binding must be produced and retained as auditable evidence for practices such as Gestão de segredos, Gestão de segredos e identidades para IaC, Janela de mudança e aprovações por papel.",
       "evidence": [
         "control CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af references identity_binding",
@@ -1278,7 +1881,15 @@
         "practice 09-containers-imagens:rbac-minimo-e-serviceaccounts-dedicadas matched alias 'rbac'",
         "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/devops-sre.md matched aliases ['rbac']"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-identity-000",
       "source_control_ids": [
         "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af",
@@ -1318,7 +1929,29 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding"
+      ],
       "description": "Incident Metrics must be produced and retained as auditable evidence for practices such as Monitorização e Resposta a Incidentes em Runtime, Reprodutibilidade de incidentes em runtime, Alertas com SLAs definidos.",
       "evidence": [
         "control CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70 references incident_metrics",
@@ -1327,7 +1960,18 @@
         "practice 12-monitorizacao-operacoes:exercicios-de-resposta-a-incidentes-end-to-end matched alias 'incidentes'",
         "practice 12-monitorizacao-operacoes:integracao-com-processos-de-resposta-a-incidentes matched alias 'incidentes'"
       ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "12-monitorizacao-operacoes"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-incident-000",
       "source_control_ids": [
         "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70"
@@ -1362,7 +2006,13 @@
       "chapter_ids": [
         "04-arquitetura-segura"
       ],
+      "cited_chapter_ids": [
+        "04-arquitetura-segura"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "04-arquitetura-segura"
+      ],
       "description": "Integration Review must be produced and retained as auditable evidence for practices such as Revisão de fronteiras de confiança e integrações, Segmentação de ambientes e validação de topologia como código (L3).",
       "evidence": [
         "control CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b references integration_review",
@@ -1370,7 +2020,18 @@
         "corpus document 010-sbd-manual/04-arquitetura-segura/aplicacao-lifecycle.md matched aliases ['integration review']",
         "corpus document 010-sbd-manual/04-arquitetura-segura/canon/25-rastreabilidade.md matched aliases ['integration review']"
       ],
+      "evidence_chapter_ids": [],
+      "evidence_chapters_absence": {
+        "absence_type": "gap",
+        "note": "nenhum evidence pattern exige este artefacto como prova — required_as_evidence_by não cobre este registo (v2.7 Q1; declarado um a um)",
+        "status": "orphan_no_evidence_pattern"
+      },
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-integration-000",
       "source_control_ids": [
         "CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b"
@@ -1400,7 +2061,28 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "07-cicd-seguro",
+        "12-monitorizacao-operacoes"
+      ],
       "description": "Log Stream must be produced and retained as auditable evidence for practices such as Contenção de contexto e higiene de logs/outputs, Alertas com SLAs definidos, Classificação e Cobertura de Domínios de Monitorização.",
       "evidence": [
         "control CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82 references log_stream",
@@ -1409,7 +2091,27 @@
         "practice 12-monitorizacao-operacoes:seguranca-e-integridade-de-logs matched alias 'logs'",
         "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['logs']"
       ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-log-000",
       "source_control_ids": [
         "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
@@ -1457,7 +2159,30 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "02-requisitos-seguranca",
+        "10-testes-seguranca",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "description": "Onboarding Checklist must be produced and retained as auditable evidence for practices such as Política, Formação e Procedimentos Operacionais, Avaliação crítica de cobertura real e limitações, Decisão Assistida para Findings de Testes de Segurança.",
       "evidence": [
         "control CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf references onboarding_checklist",
@@ -1466,7 +2191,16 @@
         "practice 10-testes-seguranca:feedback-automatico-de-findings-as-equipas matched alias 'checklist'",
         "practice 10-testes-seguranca:gestao-centralizada-de-findings-com-triagem-e-sla matched alias 'checklist'"
       ],
+      "evidence_chapter_ids": [
+        "06-desenvolvimento-seguro",
+        "13-formacao-onboarding"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-onboarding-000",
       "source_control_ids": [
         "CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf"
@@ -1520,7 +2254,14 @@
         "02-requisitos-seguranca",
         "11-deploy-seguro"
       ],
+      "cited_chapter_ids": [
+        "02-requisitos-seguranca",
+        "11-deploy-seguro"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "11-deploy-seguro"
+      ],
       "description": "Operational Evidence must be produced and retained as auditable evidence for practices such as Controlo de execução com *feature flags*, Controlo e validação de drift operacional, Deploy apenas de artefactos assinados.",
       "evidence": [
         "control CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0 references operational_evidence",
@@ -1529,7 +2270,15 @@
         "corpus document 010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md matched aliases ['evidencia operacional']",
         "corpus document 010-sbd-manual/11-deploy-seguro/canon/25-rastreabilidade.md matched aliases ['evidencia operacional']"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-operational-000",
       "source_control_ids": [
         "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0"
@@ -1574,7 +2323,35 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca"
+      ],
       "description": "Pipeline Config must be produced and retained as auditable evidence for practices such as Adoção de modelo de classificação alternativo (DRP/BIA) mapeado para E/D/I, Análise de risco residual, Aplicação da matriz de controlo.",
       "evidence": [
         "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references pipeline_config",
@@ -1583,7 +2360,23 @@
         "control CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29 references pipeline_config",
         "control CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0 references pipeline_config"
       ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "05-dependencias-sbom-sca",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-pipeline-000",
       "source_control_ids": [
         "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
@@ -1769,7 +2562,32 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "02-requisitos-seguranca",
+        "05-dependencias-sbom-sca",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "14-governanca-contratacao"
+      ],
       "description": "Policy Report must be produced and retained as auditable evidence for practices such as Política, Formação e Procedimentos Operacionais, Governação documentada de política de severidade, registries e registo de aprovação, Evidência empírica obrigatória (anti “relatórios sem execução”).",
       "evidence": [
         "control CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905 references policy_report",
@@ -1778,7 +2596,25 @@
         "practice 07-cicd-seguro:evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao matched alias 'relatorios'",
         "practice 08-iac-infraestrutura:enforcement-automatico-de-politicas matched alias 'politicas'"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-policy-000",
       "source_control_ids": [
         "CTRL-infrastructure-infraestrutura-como-codigo-governada-5228bca905"
@@ -1820,7 +2656,21 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "02-requisitos-seguranca",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "description": "Quiz Result must be produced and retained as auditable evidence for practices such as Política, Formação e Procedimentos Operacionais, Ação Corretiva sobre Desvios de KPIs, Caminho de Remediação Abaixo do Limiar.",
       "evidence": [
         "control CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf references quiz_result",
@@ -1829,7 +2679,17 @@
         "corpus document 010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md matched aliases ['quiz']",
         "corpus document 010-sbd-manual/01-classificacao-aplicacoes/pre-note.md matched aliases ['assessment']"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-quiz-000",
       "source_control_ids": [
         "CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf"
@@ -1879,7 +2739,34 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "10-testes-seguranca",
+        "11-deploy-seguro"
+      ],
       "description": "Release Gate must be produced and retained as auditable evidence for practices such as Gates automáticos em CI/CD para requisitos de segurança, Gate de controlo de consistência no CI/CD, Gate arquitetural antes do Go live.",
       "evidence": [
         "control CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34 references release_gate",
@@ -1888,7 +2775,27 @@
         "practice 04-arquitetura-segura:gate-arquitetural-antes-do-go-live matched alias 'gate'",
         "practice 05-dependencias-sbom-sca:sca-automatico-com-gates matched alias 'gates'"
       ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-release-000",
       "source_control_ids": [
         "CTRL-testing-testes-de-seguranca-baseados-em-risco-55dcb62d34"
@@ -1949,7 +2856,31 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "10-testes-seguranca",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "description": "Review Checklist must be produced and retained as auditable evidence for practices such as Adoção de modelo de classificação alternativo (DRP/BIA) mapeado para E/D/I, Análise de risco residual, Aplicação da matriz de controlo.",
       "evidence": [
         "control CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29 references review_checklist",
@@ -1958,7 +2889,21 @@
         "practice 10-testes-seguranca:decisao-assistida-para-findings-de-testes-de-seguranca matched alias 'checklist'",
         "practice 10-testes-seguranca:feedback-automatico-de-findings-as-equipas matched alias 'checklist'"
       ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-review-000",
       "source_control_ids": [
         "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
@@ -2034,7 +2979,23 @@
         "11-deploy-seguro",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "03-threat-modeling"
+      ],
       "description": "Risk Acceptance Record must be produced and retained as auditable evidence for practices such as Análise de risco residual, Aplicação LINDDUN quando existir tratamento de dados pessoais  *(novo)*, Aprovação formal do Threat Model (baseline e revisões).",
       "evidence": [
         "control CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0 references risk_acceptance_record",
@@ -2043,7 +3004,19 @@
         "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/appsec-engineer.md matched aliases ['risco residual']",
         "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/gestao-executiva.md matched aliases ['risco residual']"
       ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "10-testes-seguranca",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-risk-000",
       "source_control_ids": [
         "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0"
@@ -2076,7 +3049,17 @@
         "10-testes-seguranca",
         "13-formacao-onboarding"
       ],
+      "cited_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "10-testes-seguranca",
+        "13-formacao-onboarding"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca"
+      ],
       "description": "Risk Matrix must be produced and retained as auditable evidence for practices such as Adoção de modelo de classificação alternativo (DRP/BIA) mapeado para E/D/I, Análise de risco residual, Aplicação da matriz de controlo.",
       "evidence": [
         "control CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29 references risk_matrix",
@@ -2084,7 +3067,17 @@
         "corpus document 010-sbd-manual/10-testes-seguranca/addon/06-cobertura-e-priorizacao.md matched aliases ['matriz de risco']",
         "corpus document 010-sbd-manual/13-formacao-onboarding/aplicacao-lifecycle.md matched aliases ['matriz de riscos']"
       ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "10-testes-seguranca"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-risk-000",
       "source_control_ids": [
         "CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29"
@@ -2133,7 +3126,24 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "05-dependencias-sbom-sca",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "08-iac-infraestrutura",
+        "11-deploy-seguro"
+      ],
       "description": "Rollback Plan must be produced and retained as auditable evidence for practices such as *Rollback* e salvaguarda de *destroy*, Controlo de execução com *feature flags*, Controlo e validação de drift operacional.",
       "evidence": [
         "control CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0 references rollback_plan",
@@ -2142,7 +3152,15 @@
         "practice 11-deploy-seguro:rollback-rapido-e-testado matched alias 'rollback'",
         "corpus document 010-sbd-manual/00-fundamentos/canon/25-rastreabilidade.md matched aliases ['rollback']"
       ],
+      "evidence_chapter_ids": [
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-rollback-000",
       "source_control_ids": [
         "CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0"
@@ -2185,7 +3203,25 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "06-desenvolvimento-seguro",
+        "10-testes-seguranca"
+      ],
       "description": "Sast Report must be produced and retained as auditable evidence for practices such as Arquivo Central de Evidências de Validação, Automatização em CI/CD (Linters & SAST), Gate de Segurança Pré release.",
       "evidence": [
         "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references sast_report",
@@ -2194,7 +3230,18 @@
         "practice 10-testes-seguranca:sast-obrigatorio-em-pull-request matched alias 'sast'",
         "corpus document 010-sbd-manual/00-fundamentos/baseline.md matched aliases ['sast']"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "08-iac-infraestrutura",
+        "10-testes-seguranca",
+        "13-formacao-onboarding"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-sast-000",
       "source_control_ids": [
         "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460"
@@ -2238,7 +3285,33 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "09-containers-imagens",
+        "14-governanca-contratacao"
+      ],
       "description": "Sbom must be produced and retained as auditable evidence for practices such as Geração de SBOM e assinatura de artefactos de build, Incorporação de restrições legais, normativas e contratuais, Aplicação LINDDUN quando existir tratamento de dados pessoais  *(novo)*.",
       "evidence": [
         "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references sbom",
@@ -2247,7 +3320,18 @@
         "control CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0 references sbom",
         "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references sbom"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "05-dependencias-sbom-sca",
+        "09-containers-imagens",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-sbom-000",
       "source_control_ids": [
         "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
@@ -2378,7 +3462,32 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "09-containers-imagens",
+        "14-governanca-contratacao"
+      ],
       "description": "Sca Report must be produced and retained as auditable evidence for practices such as Geração de SBOM e assinatura de artefactos de build, Incorporação de restrições legais, normativas e contratuais, Aplicação LINDDUN quando existir tratamento de dados pessoais  *(novo)*.",
       "evidence": [
         "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references sca_report",
@@ -2387,7 +3496,21 @@
         "control CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0 references sca_report",
         "control CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb references sca_report"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "05-dependencias-sbom-sca",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "13-formacao-onboarding"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-sca-000",
       "source_control_ids": [
         "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
@@ -2519,7 +3642,31 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes"
+      ],
       "description": "Secret Config must be produced and retained as auditable evidence for practices such as Agentes AI como *principals* na pipeline {#us 19}, Assinatura e proveniência, Cobertura ampliada (containers e SBOM).",
       "evidence": [
         "control CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2 references secret_config",
@@ -2528,7 +3675,15 @@
         "practice 07-cicd-seguro:gestao-de-segredos matched alias 'segredos'",
         "practice 08-iac-infraestrutura:gestao-de-segredos-e-identidades-para-iac matched alias 'segredos'"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-secret-000",
       "source_control_ids": [
         "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
@@ -2585,7 +3740,29 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "02-requisitos-seguranca",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens"
+      ],
       "description": "Signature Attestation must be produced and retained as auditable evidence for practices such as Geração de SBOM e assinatura de artefactos de build, Assinatura e proveniência, Identidade empresarial no SCM e assinatura de commits/tags {#us 20}.",
       "evidence": [
         "control CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d references signature_attestation",
@@ -2594,7 +3771,18 @@
         "practice 07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20 matched alias 'assinatura'",
         "practice 08-iac-infraestrutura:assinatura-e-proveniencia-de-artefactos-iac matched alias 'assinatura'"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "05-dependencias-sbom-sca",
+        "12-monitorizacao-operacoes",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-signature-000",
       "source_control_ids": [
         "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d"
@@ -2638,16 +3826,40 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "02-requisitos-seguranca",
+        "05-dependencias-sbom-sca",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "02-requisitos-seguranca",
+        "14-governanca-contratacao"
+      ],
       "description": "Supplier Assessment must be produced and retained as auditable evidence for practices such as Incorporação de restrições legais, normativas e contratuais, Ciclo contínuo de revisão e reavaliação de exceções, Cláusulas contratuais de segurança.",
       "evidence": [
         "control CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628 references supplier_assessment",
+        "corpus document 010-sbd-manual/00-fundamentos/intro.md matched aliases ['fornecedor']",
         "corpus document 010-sbd-manual/00-fundamentos/macro-processos.md matched aliases ['fornecedor']",
-        "corpus document 010-sbd-manual/05-dependencias-sbom-sca/addon/01-inventario-sbom.md matched aliases ['fornecedor']",
-        "corpus document 010-sbd-manual/09-containers-imagens/addon/12-self-hosted-inference.md matched aliases ['third party']",
-        "corpus document 010-sbd-manual/10-testes-seguranca/addon/14-tlpt-readiness.md matched aliases ['third party']"
+        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/fornecedores-terceiros.md matched aliases ['fornecedor']",
+        "corpus document 010-sbd-manual/05-dependencias-sbom-sca/addon/01-inventario-sbom.md matched aliases ['fornecedor']"
       ],
+      "evidence_chapter_ids": [],
+      "evidence_chapters_absence": {
+        "absence_type": "gap",
+        "note": "nenhum evidence pattern exige este artefacto como prova — required_as_evidence_by não cobre este registo (v2.7 Q1; declarado um a um)",
+        "status": "orphan_no_evidence_pattern"
+      },
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-supplier-000",
       "source_control_ids": [
         "CTRL-governance-governacao-de-fornecedores-e-excecoes-a9a9ab3628"
@@ -2686,7 +3898,31 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "10-testes-seguranca"
+      ],
       "description": "Test Report must be produced and retained as auditable evidence for practices such as Adoção de modelo de classificação alternativo (DRP/BIA) mapeado para E/D/I, Análise de risco residual, Aplicação da matriz de controlo.",
       "evidence": [
         "control CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460 references test_report",
@@ -2695,7 +3931,22 @@
         "control CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29 references test_report",
         "control CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82 references test_report"
       ],
+      "evidence_chapter_ids": [
+        "02-requisitos-seguranca",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-test-000",
       "source_control_ids": [
         "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
@@ -2811,7 +4062,30 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "13-formacao-onboarding"
+      ],
       "description": "Threat Model must be produced and retained as auditable evidence for practices such as Mapeamento de ameaças por nível de risco, Aplicação LINDDUN quando existir tratamento de dados pessoais  *(novo)*, Aprovação formal do Threat Model (baseline e revisões).",
       "evidence": [
         "control CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0 references threat_model",
@@ -2820,7 +4094,19 @@
         "practice 03-threat-modeling:aprovacao-formal-do-threat-model-baseline-e-revisoes matched alias 'threat modeling'",
         "practice 03-threat-modeling:atualizacao-do-modelo-apos-alteracao-tecnica matched alias 'threat modeling'"
       ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "13-formacao-onboarding"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": false,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-threat-000",
       "source_control_ids": [
         "CTRL-governance-threat-modeling-e-gestao-de-risco-272c9a8ed0"
@@ -2863,7 +4149,26 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "02-requisitos-seguranca",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "description": "Training Plan must be produced and retained as auditable evidence for practices such as Política, Formação e Procedimentos Operacionais, Ação Corretiva sobre Desvios de KPIs, Caminho de Remediação Abaixo do Limiar.",
       "evidence": [
         "control CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf references training_plan",
@@ -2872,7 +4177,15 @@
         "practice 13-formacao-onboarding:caminho-de-remediacao-abaixo-do-limiar matched alias 'formacao'",
         "practice 13-formacao-onboarding:code-clinics-estruturadas-e-recorrentes matched alias 'formacao'"
       ],
+      "evidence_chapter_ids": [
+        "13-formacao-onboarding"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-training-000",
       "source_control_ids": [
         "CTRL-governance-capacitacao-e-onboarding-de-seguranca-f84db7abdf"
@@ -2908,13 +4221,30 @@
       "chapter_ids": [
         "04-arquitetura-segura"
       ],
+      "cited_chapter_ids": [
+        "04-arquitetura-segura"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "04-arquitetura-segura"
+      ],
       "description": "Trust Boundary Model must be produced and retained as auditable evidence for practices such as Revisão de fronteiras de confiança e integrações, Segmentação de ambientes e validação de topologia como código (L3).",
       "evidence": [
         "control CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b references trust_boundary_model",
         "corpus document 010-sbd-manual/04-arquitetura-segura/canon/25-rastreabilidade.md matched aliases ['trust boundary models']"
       ],
+      "evidence_chapter_ids": [],
+      "evidence_chapters_absence": {
+        "absence_type": "gap",
+        "note": "nenhum evidence pattern exige este artefacto como prova — required_as_evidence_by não cobre este registo (v2.7 Q1; declarado um a um)",
+        "status": "orphan_no_evidence_pattern"
+      },
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-trust-000",
       "source_control_ids": [
         "CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b"
@@ -2944,7 +4274,28 @@
         "13-formacao-onboarding",
         "14-governanca-contratacao"
       ],
+      "cited_chapter_ids": [
+        "00-fundamentos",
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "06-desenvolvimento-seguro",
+        "07-cicd-seguro",
+        "08-iac-infraestrutura",
+        "09-containers-imagens",
+        "10-testes-seguranca",
+        "11-deploy-seguro",
+        "12-monitorizacao-operacoes",
+        "13-formacao-onboarding",
+        "14-governanca-contratacao"
+      ],
       "confidence": null,
+      "defining_chapter_ids": [
+        "02-requisitos-seguranca",
+        "06-desenvolvimento-seguro"
+      ],
       "description": "Validation Evidence must be produced and retained as auditable evidence for practices such as Uso controlado de assistentes automatizados (incluindo IA) no desenvolvimento, Arquivo Central de Evidências de Validação, Automatização em CI/CD (Linters & SAST).",
       "evidence": [
         "control CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a references validation_evidence",
@@ -2953,7 +4304,22 @@
         "control CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82 references validation_evidence",
         "practice 06-desenvolvimento-seguro:arquivo-central-de-evidencias-de-validacao matched alias 'evidencias'"
       ],
+      "evidence_chapter_ids": [
+        "01-classificacao-aplicacoes",
+        "02-requisitos-seguranca",
+        "03-threat-modeling",
+        "04-arquitetura-segura",
+        "05-dependencias-sbom-sca",
+        "09-containers-imagens",
+        "11-deploy-seguro",
+        "14-governanca-contratacao"
+      ],
       "mandatory": true,
+      "required_for_levels": {
+        "L1": true,
+        "L2": true,
+        "L3": true
+      },
       "requirement_id": "REQ-validation-000",
       "source_control_ids": [
         "CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a",
@@ -2987,5 +4353,35 @@
     "consult",
     "review"
   ],
-  "source_artifact": "data/entities/artifact_requirements.json"
+  "required_by_level_profile_absence": {
+    "absence_type": "gap",
+    "debt_of": "ontology_model",
+    "decided_by": "Orchestrator 2026-09-09 (veredicto sobre a paragem do caso-teste)",
+    "reason": "base por-exigência não derivável de arestas autoradas: as expected_artifacts dos EPs nascem de correspondência (aliases/refs de controlos), sem confiança publicada em superfície — e semantic_scored_family declara «pontuado, não autorado, não prescreve»; devolvida ao modelo (Archon)",
+    "status": "not_materialized"
+  },
+  "retired_fields": {
+    "cited_chapter_ids": {
+      "assertion": null,
+      "published": false,
+      "reason": "terceira via (legacy_no_verb_clause v2.9): resto de união legada — critério de pertença não enunciável como verbo fundado; sem asserção, não se serve como afirmação"
+    },
+    "mandatory": {
+      "published": false,
+      "reason": "APOSENTADO (gate 2026-09-09, Q-T1): FABRICADO — hardcoded no construtor (artifact_catalog.py:574), nunca leu a fonte; o Manual não publica obrigatório-vs-recomendado por artefacto (sinal autorado é por nível → required_by_level_profile)"
+    }
+  },
+  "source_artifact": "data/entities/artifact_requirements.json",
+  "traversal_assertions": {
+    "defining_chapter_ids": {
+      "does_not_assert": "posse; casa única; exigência probatória",
+      "source": "source_practice_ids autoradas",
+      "verb": "produced_or_operated_by"
+    },
+    "evidence_chapter_ids": {
+      "does_not_assert": "produção; cobertura total (8/45 órfãos declarados)",
+      "source": "EP→requisito→capítulo",
+      "verb": "required_as_evidence_by"
+    }
+  }
 }

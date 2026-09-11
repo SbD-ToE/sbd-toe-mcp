@@ -14,7 +14,7 @@
  * Contract: agentic/em-curso/2026-06-14-pontifex-implementation-view-tool-contracts-v0.1.md
  */
 
-import { servedKgReleaseTag } from "../version-info.js";
+import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 import { chapterNumber } from "./ontology-loader.js";
 import { loadRegulatoryOverlay, type RegulatoryMapping } from "./regulatory-overlay-loader.js";
 import { paginate, type PageCoverage } from "../serving/response-shaping.js";
@@ -31,8 +31,12 @@ export interface ActivatedArea {
   mapping_count: number;
   /** Distinct obligations of the framework that touch this area. */
   obligation_count: number;
+  /** 0.20.0-beta.26: os ids das obrigações desta área — poupa a viagem ao resolve_entities. */
+  obligation_ids: string[];
   /** Mapping counts broken down by target type (Practice/Requirement/Control/…). */
   by_target_type: Record<string, number>;
+  /** 0.20.0-beta.26: diz o que a citação É (artigo do diploma), para "30"/"25" não passarem por contagens. */
+  example_citation_note?: string;
   /** A representative citation from the framework for this area (first non-empty). */
   example_citation?: string;
 }
@@ -59,6 +63,15 @@ const CROSS_CUTTING = "(cross-cutting)";
 
 function buildAffordances(frameworkShort: string): Affordance[] {
   return boundAffordances([
+    {
+      // 0.20.0-beta.33 — ligação nos DOIS sentidos: quem pede as áreas activadas passa a
+      // saber que o Manual publica um CROSS-CHECK/PLAYBOOK para o mesmo diploma. As duas
+      // coisas viviam separadas e a mais rica era a invisível.
+      intent: "o CROSS-CHECK/PLAYBOOK do Manual para este framework (mapa artigo→capítulo, fases, checklist)",
+      tool: "get_sbd_toe_playbook",
+      with: `framework="${frameworkShort}"`,
+      kind: "structural"
+    },
     {
       intent: "scope the activated areas to a risk level + see active chapters/controls",
       tool: "map_sbd_toe_applicability",
@@ -109,7 +122,14 @@ export function handleMapRegulatoryActivation(
   if (!framework) {
     throw Object.assign(
       new Error(`Unknown framework: "${frameworkArg}". Known frameworks: ${knownShort.join(", ")}.`),
-      { rpcError: { code: -32602, message: `Unknown framework: "${frameworkArg}"` } }
+      /* 0.20.0-beta.41 — mesma classe: o vocabulário calculado não chegava ao cliente. */
+      {
+        rpcError: {
+          code: -32602,
+          message: `Unknown framework: "${frameworkArg}". Known frameworks: ${knownShort.join(", ")}.`,
+          data: { invalidValue: frameworkArg, known_frameworks: knownShort }
+        }
+      }
     );
   }
 
@@ -143,11 +163,43 @@ export function handleMapRegulatoryActivation(
       chapter,
       mapping_count: g.count,
       obligation_count: g.obligations.size,
+      /**
+       * 0.20.0-beta.26 (§17-D): os IDs, não só a contagem. Antes o consumidor via
+       * `obligation_count: 7` e tinha de ir ao `resolve_entities` adivinhar quais —
+       * uma viagem inteira para obter o que já estava calculado aqui.
+       */
+      obligation_ids: [...g.obligations].sort(),
       by_target_type: g.byType,
-      ...(g.citation ? { example_citation: g.citation } : {})
+      ...(g.citation
+        ? {
+            example_citation: g.citation,
+            example_citation_note:
+              `Citação do texto do framework (ex.: "${g.citation}" é o ARTIGO/secção do diploma, não um id do manual nem uma contagem). ` +
+              "Os ids das obrigações estão em `obligation_ids`."
+          }
+        : {})
     }));
 
   const distinctObligations = new Set(mappings.map((m) => m.obligation_id).filter(Boolean)).size;
+  /**
+   * 0.20.0-beta.31 — framework PUBLICADO sem mapeamentos: declarado, nunca vazio mudo.
+   *
+   * `ENISA-CSA` é aceite como valor canónico e devolvia `activated: []` sem uma palavra —
+   * a mesma classe do `unsupported_concerns` (beta.23), numa superfície que nunca tinha
+   * sido varrida. O modelo já existia escrito; faltava aplicá-lo aqui. Pedido quatro vezes
+   * pelo avaliador.
+   */
+  const unsupportedObligations =
+    mappings.length === 0
+      ? {
+          framework: framework.short_code,
+          note:
+            `O framework \`${framework.short_code}\` é RECONHECIDO (está no conjunto publicado), mas o ` +
+            "bundle servido não traz mapeamentos obrigação→manual para ele: zero áreas activadas não significa que o " +
+            "framework não se aplique, significa que esta camada de mapeamento ainda não o cobre. É lacuna DECLARADA, " +
+            "não ausência de obrigação. Não afirmes conformidade nem isenção a partir desta resposta.",
+        }
+      : undefined;
 
   // Coverage-preserving pagination over the activated areas.
   const offsetArg = args["offset"];
@@ -176,6 +228,7 @@ export function handleMapRegulatoryActivation(
         name: framework.name
       },
       activated: page.items,
+      ...(unsupportedObligations ? { unsupported_obligations: unsupportedObligations } : {}),
       totals: {
         mappings: mappings.length,
         obligations: distinctObligations,
@@ -184,6 +237,7 @@ export function handleMapRegulatoryActivation(
     },
     provenance: {
       kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
       content_type: "canonical",
       produced_by: "regulatory_overlay_projection",
       source_data: "data/publish/overlay/overlay_mappings.jsonl + external_frameworks.json",
@@ -192,6 +246,11 @@ export function handleMapRegulatoryActivation(
         "by manual chapter. Counts are the full set (coverage-preserving) — nothing invented."
     },
     coverage,
+    /**
+     * 0.20.0-beta.33 — ligação nos DOIS sentidos. As áreas activadas e o PLAYBOOK viviam
+     * separados, e a peça mais rica era a invisível: quem pedia o overlay não sabia que o
+     * Manual publica um cross-check para o mesmo diploma.
+     */
     next: buildAffordances(framework.short_code)
   };
 }

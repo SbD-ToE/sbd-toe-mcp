@@ -15,7 +15,7 @@ methodological substance, not an AI-content-generation event).
 
 | Tool | Provider | Used for |
 |------|----------|----------|
-| **Claude** (Opus 4.6, Opus 4.7, Opus 4.8, Sonnet 4.6, Fable 5) | Anthropic | Implementation pair-programming, README and documentation drafting, code review, refactoring, release-pipeline scripting |
+| **Claude** (Opus 4.6, Opus 4.7, Opus 4.8, Sonnet 4.6, Fable 5, Opus 5) | Anthropic | Implementation pair-programming, README and documentation drafting, code review, refactoring, release-pipeline scripting, optimization planning |
 | **Codex** | OpenAI | Initial code-generation drafts for selected modules during early development iterations |
 
 ## Development Use
@@ -71,7 +71,7 @@ AI was explicitly **not** used to:
 - Generate or invent SHA-256 hashes, DOIs, release tags, or any provenance
   identifier; all provenance references in the code and documentation are
   verified against the upstream programme. The served bundle is pinned in
-  `consumed-bundle.json` to a named upstream release (from v0.10.2: KG formal
+  `consumed-bundle.json` to a named upstream release (from v0.10.2 / v0.20.0-beta.3: KG formal
   release `v1.6.0`, Manual `v1.7.0`) whose archive digest is verified against the
   upstream-published `.sha256` before it is materialised; the AI agent never
   edits the served data.

@@ -31,13 +31,14 @@
         "Ferramenta, versão, data documentados",
         "Referência: [addon-11: Validação Assistida por Ferramentas](/sbd-toe/sbd-manual/classificacao-aplicacoes/addon/validacao-assistida-ferramentas)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-01 - Classificação inicial da aplicação",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "classificar a aplicação com base nos eixos Exposição, Dados e Impacto (E+D+I)",
@@ -75,13 +76,14 @@
         "Exceções documentadas, aprovadas por AppSec Engineer com justificação técnica",
         "AppSec Engineer valida mapeamento antes de entrada em backlog"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-02 - Aplicação da matriz de controlo",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "aplicar a matriz de controlos e mapear cada requisito para REQ-XXX do Capítulo 02",
@@ -127,13 +129,14 @@
         "Se nível alterou: trilho de escalação documentado",
         "Referência: [addon-11: Validação Assistida por Ferramentas](/sbd-toe/sbd-manual/classificacao-aplicacoes/addon/validacao-assistida-ferramentas)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-03 - Revisão por alteração relevante (event-based)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "rever a classificação de criticidade sempre que houver alterações relevantes",
@@ -171,13 +174,14 @@
         "Em L3: aprovação adicional por Gestão Executiva/CISO",
         "Entrada em ferramenta GRC com audit trail"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-04 - Análise de risco residual",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "registar o risco residual após aplicar os controlos definidos",
@@ -215,13 +219,14 @@
         "Nenhuma exceção não-aprovada pendente",
         "Rastreamento: cada controlo ↔ evidência documentado"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-05 - Validação antes do go-live",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "validar que os requisitos aplicáveis por nível de risco estão cumpridos antes da entrada em produção",
@@ -267,13 +272,14 @@
         "Validação por Arquitetos + especialistas de domínio concluída",
         "Referência: [addon-11: Validação Assistida por Ferramentas](/sbd-toe/sbd-manual/classificacao-aplicacoes/addon/validacao-assistida-ferramentas)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-06 - Mapeamento de ameaças por nível de risco",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "verificar se as ameaças esperadas para o nível de criticidade estão cobertas por controlos aplicados ou exceções rastreáveis",
@@ -1481,13 +1487,14 @@
         "Saída do gate registada (logs + referência ao artefacto versionado)",
         "Exceções seguem workflow de aprovação (quando aplicável)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/03-threat-modeling/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-05 - Gate de controlo de consistência no CI/CD",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "aplicar um gate determinístico que verifique se o Threat Model está atualizado face a alterações relevantes",
@@ -1566,13 +1573,14 @@
         "Decisões críticas revalidadas (mitigar/aceitar/transferir)",
         "Aprovação registada e auditável"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/03-threat-modeling/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-07 - Reutilização controlada e revisão de modelos anteriores",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "reutilizar modelos anteriores apenas com revisão explícita de mudanças de contexto",
@@ -1655,13 +1663,14 @@
         "Evidência mínima anexada (diagramas/versionamento/decisão)",
         "Aprovação registada (PR/issue/assinatura conforme processo)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/03-threat-modeling/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-09 - Aprovação formal do Threat Model (baseline e revisões)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "aprovar formalmente o Threat Model (baseline e revisões)",
@@ -1699,13 +1708,14 @@
         "Retenção e eliminação definidas (quando aplicável)",
         "Evidência de acessos e alterações disponível/auditável"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/03-threat-modeling/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-10 - Controlo de acesso, classificação e retenção dos artefactos de Threat Modeling",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "controlar acesso e retenção dos artefactos de Threat Modeling",
@@ -2851,13 +2861,14 @@
         "SBOM versionado e associado à release",
         "Acessível para auditoria"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/05-dependencias-sbom-sca/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-02 - SBOM em cada build",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "gerar SBOM em cada build",
@@ -2935,13 +2946,14 @@
         "Controlo compensatório especificado",
         "Revisão periódica agendada"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/05-dependencias-sbom-sca/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-04 - Exceções a CVEs formais e temporárias",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "formalizar exceções a CVEs",
@@ -3885,13 +3897,14 @@
         "Bloqueio automático em caso de falha",
         "Aprovação final por AppSec Engineer (e, em L3 quando aplicável, por Gestão Executiva)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/06-desenvolvimento-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-09 - Gate de Segurança Pré-release",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "executar um gate de segurança pré-release que agregue todas as evidências de validação",
@@ -3928,13 +3941,14 @@
         "Gates G1–G3 parametrizados por perfil (thresholds e exceções)",
         "Auditoria trimestral aos perfis e thresholds"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/06-desenvolvimento-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-10 - Perfis de Validação por Nível de Risco (L1–L3)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "definir e aplicar perfis de validação L1–L3 que determinem regras, limiares e quality gates adequados ao risco",
@@ -3971,13 +3985,14 @@
         "Política de retenção definida (≥ 2 anos; L3 ≥ 5 anos)",
         "Acesso auditado e controlado"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/06-desenvolvimento-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-11 - Arquivo Central de Evidências de Validação",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "arquivar centralmente todas as evidências de validação (relatórios SAST, SBOM, exceções, @sec:)",
@@ -4246,13 +4261,14 @@
         "Status checks configurados",
         "Proibido force push"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-01 - Gestão segura de código fonte",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "que todas as alterações ao repositório sejam protegidas por PR e revisão obrigatória",
@@ -4297,13 +4313,14 @@
         "Configuração efetiva registada (sem segredos)",
         "Histórico de versões mantido"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-02 - Design seguro dos pipelines (versionamento, determinismo e revisão)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "pipelines versionados e aprovados por PR, com comportamento determinístico",
@@ -4348,13 +4365,14 @@
         "Logs/artefactos de execução guardados",
         "Falhas High bloqueiam merge (L2/L3)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-03 - Scanners integrados (validação empírica obrigatória)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "que o pipeline execute validadores de segurança com execução observável",
@@ -4394,13 +4412,14 @@
         "Variáveis mascaradas",
         "Logging revisto para não expor contexto sensível"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-04 - Gestão de segredos",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "segredos injetados por OIDC com TTL curto e outputs mascarados",
@@ -4440,13 +4459,14 @@
         "Segmentação de rede",
         "Sem estado persistente entre jobs"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-05 - Isolamento de runners",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "runners ephemerais e segregados",
@@ -4488,13 +4508,14 @@
         "Verificação antes de release",
         "Rejeição automática em falha (L2/L3)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-06 - Assinatura e proveniência",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "que todos os artefactos sejam assinados e tenham proveniência validada",
@@ -4537,13 +4558,14 @@
         "Thresholds definidos",
         "Separação entre sinal e decisão documentada"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-07 - Gates por risco (separação sinal/decisão)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "gates distintos por L1–L3 e explicitamente binários",
@@ -4583,13 +4605,14 @@
         "Base images validadas",
         "Evidência de execução guardada"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-08 - Cobertura ampliada (containers e SBOM)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "validação de containers e SBOM em pipelines",
@@ -4629,13 +4652,14 @@
         "Export imutável (quando aplicável)",
         "Ligação explícita entre artefactos e execução"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-09 - Rastreabilidade ponta-a-ponta (commit→pipeline→release)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "rastrear commit→pipeline→release",
@@ -4676,13 +4700,14 @@
         "Registo de compensações",
         "Reversão automática no fim do prazo"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-10 - Gestão de exceções (bypass controlado)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "exceções registadas, aprovadas e temporárias",
@@ -4722,13 +4747,14 @@
         "Relatório correlacionado com commit",
         "Bloqueio automático em High/Critical (L2/L3)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-11 - Testes de segurança dinâmicos (DAST)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "executar DAST em staging após deployment",
@@ -4769,13 +4795,14 @@
         "Alertas em anomalias",
         "Relatórios periódicos para GRC"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-12 - Métricas e conformidade organizacional",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "visualizar métricas de CI/CD (cobertura, gates, exceções, bloqueios, MTTR)",
@@ -4815,13 +4842,14 @@
         "Rejeição em mismatch (L2/L3)",
         "Correlação contínua com vulnerabilidades"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-13 - Validação de integridade de imagens base",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "validar integridade de imagens base (hash/assinatura/drift) e correlacionar com vulnerabilidades",
@@ -4861,13 +4889,14 @@
         "Configuração efetiva registada",
         "Divergências documentadas quando inevitáveis"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-14 - Reprodutibilidade e determinismo do pipeline",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "que execuções do pipeline sejam reprodutíveis e determinísticas (na medida do possível)",
@@ -4907,13 +4936,14 @@
         "Registo inclui evidência referenciada",
         "Bloqueio automático a promoções “sem owner”"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-15 - Separação formal entre sinal automático e decisão de promoção",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "que qualquer recomendação/score/flag seja formalmente classificada como sinal, e que a promoção exija decisão humana explícita",
@@ -4954,13 +4984,14 @@
         "Artefactos preservados conforme retenção",
         "Rejeição de evidência não verificável"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-16 - Evidência empírica obrigatória (anti-“relatórios sem execução”)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "que qualquer evidência de controlo em CI/CD seja baseada em execução observável (logs, exit codes, artefactos)",
@@ -5000,13 +5031,14 @@
         "Debug temporário controlado e auditável",
         "Revisão periódica de logs e configurações"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-17 - Contenção de contexto e higiene de logs/outputs",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "que logs e outputs do pipeline sejam minimizados e higienizados",
@@ -5046,13 +5078,14 @@
         "Evidência referenciada (runs, artefactos, relatórios)",
         "Bloqueio a promoções sem registo"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-18 - Não-repúdio e ownership de promoções (ações irreversíveis)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "que qualquer promoção para produção tenha owner humano explícito e registo de decisão",
@@ -5356,13 +5389,14 @@
         "Encriptação em trânsito e em repouso",
         "Histórico de planos versionado"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/08-iac-infraestrutura/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-01 - Backend remoto, locking e rastreabilidade",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "armazenar o estado em backend remoto com locking e encriptação",
@@ -5405,13 +5439,14 @@
         "Permissões com princípio de privilégio mínimo",
         "Validação de tagging + permissões em policy-as-code"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/08-iac-infraestrutura/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-02 - Segregação de ambientes, tagging e permissões mínimas",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "ambientes segregados com tagging obrigatório e permissões mínimas por default",
@@ -5455,13 +5490,14 @@
         "Policy-as-code (OPA/Rego, Sentinel)",
         "Pre-commit hooks obrigatórios"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/08-iac-infraestrutura/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-03 - Validações automáticas integradas",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "validações automáticas obrigatórias no pipeline (lint, segurança, policies)",
@@ -5521,13 +5557,14 @@
         "Digest/SHA256 verificado em pipeline",
         "Attestation exigida para fontes externas"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/08-iac-infraestrutura/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-04 - Governança e origem confiável de módulos",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "governança formal de módulos com verificação de origem confiável",
@@ -5572,13 +5609,14 @@
         "Tagging semântico em releases",
         "Documentação de changelog"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/08-iac-infraestrutura/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-05 - Rastreabilidade, versionamento e naming",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "histórico completo de alterações com naming conventions, tags git e releases versionadas",
@@ -5623,13 +5661,14 @@
         "Aprovação requerida (no mínimo 2 roles)",
         "Auditoria de aprovação registada"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/08-iac-infraestrutura/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-06 - Revisão formal de plan antes de apply",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "aprovação formal de terraform plan em PR antes de apply",
@@ -5674,13 +5713,14 @@
         "Dashboard/script que mapeia recurso → ficheiro → commit",
         "Documentação de relações entre módulos"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/08-iac-infraestrutura/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-07 - Rastreabilidade ficheiro → recurso → ambiente",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "mapeamento documentado de ficheiro IaC → recurso → ambiente",
@@ -5725,13 +5765,14 @@
         "Mecanismo de exceção rastreável",
         "Métricas de conformidade (% bloqueios, exceções ativas)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/08-iac-infraestrutura/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-08 - Enforcement automático de políticas",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "enforcement automático de políticas em pipeline (bloqueio de permissões amplas, ausência de tags, etc.)",
@@ -5771,13 +5812,14 @@
         "Attestation (SLSA-like) do pipeline",
         "Gate de verificação antes de prod"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/08-iac-infraestrutura/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-09 - Assinatura e Proveniência de artefactos IaC",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "assinar plans e registar attestations de pipeline",
@@ -5816,13 +5858,14 @@
         "Scopes mínimos e boundaries por ambiente",
         "Proibição de chaves estáticas no repositório"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/08-iac-infraestrutura/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-10 - Gestão de segredos e identidades para IaC",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "emitir credenciais temporárias via OIDC/workload identity com permissões mínimas",
@@ -5861,13 +5904,14 @@
         "Relatórios versionados",
         "Correções via PR + revisão"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/08-iac-infraestrutura/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-11 - Deteção e correção de *drift*",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "auditorias periódicas de drift e correção controlada",
@@ -5907,13 +5951,14 @@
         "Procedimento de rollback testado",
         "Kill-switch para destroy em prod"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/08-iac-infraestrutura/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-12 - *Rollback* e salvaguarda de *destroy*",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "pontos de restauração, confirmações explícitas para destroy e procedimento de rollback",
@@ -5948,13 +5993,14 @@
         "Fluxo de aprovação multinível",
         "Trilha de auditoria completa"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/08-iac-infraestrutura/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-13 - Janela de mudança e aprovações por papel",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "janelas de mudança definidas e aprovações por papel antes do apply em prod",
@@ -5994,12 +6040,13 @@
         "Prazo e contramedidas",
         "Revisão periódica automatizada"
       ],
-      "confidence": 0.75,
+      "confidence": 0.85,
       "context": null,
       "document_path": "010-sbd-manual/08-iac-infraestrutura/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-14 - Exceções formais em IaC",
         ":::userstory block extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "exceções registadas com prazo e contramedidas",
@@ -6043,13 +6090,14 @@
         "SoD documentado (quem propõe ≠ quem executa, quando aplicável)",
         "Evidência de execução associada a aprovações"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/08-iac-infraestrutura/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-15 - Separação de funções (SoD) e controlo de execução de `apply`",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "impor separação de funções e controlo de execução de apply",
@@ -6093,13 +6141,14 @@
         "Política de “mínimo necessário” para integrações externas",
         "Exceções rastreáveis e temporárias"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/08-iac-infraestrutura/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-16 - Minimização de contexto e proteção de informação sensível em IaC",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "impor minimização de contexto e redaction automática de informação sensível em artefactos e logs de IaC",
@@ -6143,13 +6192,14 @@
         "Registo de versões efetivas usadas no plan",
         "Reexecução/verificação de consistência quando aplicável"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": null,
       "document_path": "010-sbd-manual/08-iac-infraestrutura/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-17 - Determinismo e reprodutibilidade do `plan`",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "garantir determinismo e reprodutibilidade do plan",
@@ -8173,7 +8223,10 @@
     {
       "artifacts": [
         "relatorio_de_cobertura_comentado",
-        "list"
+        "lista_de_limitacoes_e_areas_nao_testadas",
+        "registo_de_ameacas_nao_cobertas",
+        "plano_de_mitigacao_por_lacuna_com_owner_e_prazo",
+        "e_registo_de_revisao_e_aprovacao_por_appsec_qa"
       ],
       "bdd": [
         "Dado um conjunto de testes executado para uma release",
@@ -8193,12 +8246,13 @@
         "Plano de mitigação por lacuna (owner + prazo)",
         "Revisão e aprovação por role humano (AppSec/QA)"
       ],
-      "confidence": 0.75,
+      "confidence": 0.85,
       "context": "Cobertura “boa” em métricas não significa segurança real. Esta US introduz o controlo de processo que previne over-confidence e força documentação de lacunas.",
       "document_path": "010-sbd-manual/10-testes-seguranca/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-17 - Avaliação crítica de cobertura real e limitações",
         ":::userstory block extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "avaliar criticamente a cobertura real dos testes de segurança e documentar limitações",
@@ -9020,12 +9074,13 @@
       "benefit": "assegurar que não existem impactos inesperados antes de considerar a release concluída",
       "chapter_id": "11-deploy-seguro",
       "checklist_items": [],
-      "confidence": 0.75,
+      "confidence": 0.85,
       "context": "Um deploy automático bem-sucedido não é sinónimo de operação segura. Esta US garante que qualquer promoção automática para produção é validada por um responsável humano.",
       "document_path": "010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-13 - Validação humana obrigatória após deploy automatizado",
         ":::userstory block extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "validar explicitamente o estado de segurança após deploy automático",
@@ -9057,12 +9112,13 @@
       "benefit": "garantir que alterações automáticas ou manuais não introduzem desvios inseguros",
       "chapter_id": "11-deploy-seguro",
       "checklist_items": [],
-      "confidence": 0.75,
+      "confidence": 0.85,
       "context": "Automação contínua introduz risco de drift silencioso entre estado desejado e real.",
       "document_path": "010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-14 - Controlo e validação de drift operacional",
         ":::userstory block extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "detetar e validar drift operacional",
@@ -9093,12 +9149,13 @@
       "benefit": "validar causas raiz e eficácia das correções",
       "chapter_id": "11-deploy-seguro",
       "checklist_items": [],
-      "confidence": 0.75,
+      "confidence": 0.85,
       "context": "Sem reprodutibilidade, não existe auditoria nem melhoria.",
       "document_path": "010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-15 - Reprodutibilidade de incidentes em runtime",
         ":::userstory block extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "garantir que incidentes em produção são reprodutíveis",
@@ -9130,12 +9187,13 @@
       "benefit": "garantir controlo e responsabilidade explícita",
       "chapter_id": "11-deploy-seguro",
       "checklist_items": [],
-      "confidence": 0.75,
+      "confidence": 0.85,
       "context": "Ferramentas podem agir, mas não decidir impactos irreversíveis.",
       "document_path": "010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-16 - Separação entre ação automática e autorização irreversível",
         ":::userstory block extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "separar execução automática de ações irreversíveis da autorização humana",
@@ -9166,12 +9224,13 @@
       "benefit": "demonstrar controlo efetivo em operação",
       "chapter_id": "11-deploy-seguro",
       "checklist_items": [],
-      "confidence": 0.75,
+      "confidence": 0.85,
       "context": "Logs e métricas só têm valor quando tratados como evidência.",
       "document_path": "010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-17 - Evidência operacional auditável",
         ":::userstory block extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "tratar evidência operacional como artefacto auditável",
@@ -10200,8 +10259,10 @@
       "id": "13-formacao-onboarding-us-01",
       "links": [],
       "practice_id": "13-formacao-onboarding:onboarding-seguro-obrigatorio",
-      "role_raw": "RH/PeopleOps",
-      "roles_normalized": [],
+      "role_raw": "Security Champion (RH)",
+      "roles_normalized": [
+        "security-champion"
+      ],
       "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-01-onboarding-seguro-obrigatorio",
       "title": "Onboarding seguro obrigatório",
@@ -10318,13 +10379,14 @@
         "Resultados registados",
         "Métricas analisadas"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Formação teórica sem prática tem baixa retenção.",
       "document_path": "010-sbd-manual/13-formacao-onboarding/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-04 - Exercícios práticos e simulações",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "realizar exercícios práticos (labs, CTFs, simulações)",
@@ -10357,13 +10419,14 @@
         "Métricas recolhidas",
         "Relatórios trimestrais"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Sem medir eficácia, não há melhoria contínua.",
       "document_path": "010-sbd-manual/13-formacao-onboarding/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-05 - Medição de eficácia da formação",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "medir KPIs de capacitação (taxa de conclusão, eficácia em auditoria)",
@@ -10818,13 +10881,14 @@
       "benefit": "garantir consistência e qualidade na formação",
       "chapter_id": "13-formacao-onboarding",
       "checklist_items": [],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. A falta de especificação mínima por formato (labs, code clinics, microlearning, simulações) dificulta replicabilidade e níveis de qualidade.",
       "document_path": "010-sbd-manual/13-formacao-onboarding/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-15 - Formatos de Entrega e DoD por Formato",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "definir os formatos de entrega e o DoD mínimo por formato (labs, code clinics, microlearning, quizzes, simulações)",
@@ -11104,13 +11168,14 @@
         "Issue de mitigação criada no backlog de segurança para próxima release",
         "Notificação automática enviada a owner se exceção se aproxima de vencer"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Sem exceções formais, práticas são ignoradas sem transparência. Sem alçadas claras por nível de risco, decisões são inconsistentes e responsabilidade dispersa.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-01 - Processo formal de exceções com alçadas por nível de risco",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "submeter exceções de segurança em fluxo formal com roteamento automático por nível de risco (L1→gestor app, L2→AppSec+gestor, L3→CISO+AppSec+direção)",
@@ -11145,13 +11210,14 @@
         "Contratos validados juridicamente",
         "Monitorização de conformidade"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Fornecedores sem cláusulas podem comprometer toda a cadeia.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-02 - Cláusulas contratuais de segurança",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "incluir cláusulas SbD-ToE em contratos",
@@ -11184,13 +11250,14 @@
         "Relatório publicado",
         "Findings registados"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Fornecedores comprometidos propagam risco.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-03 - Validação contínua de fornecedores",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "validar fornecedores de forma contínua",
@@ -11224,13 +11291,14 @@
         "Métricas por capítulo recolhidas",
         "Relatórios entregues à direção"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Sem rastreabilidade, a gestão não tem visibilidade real.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-04 - Rastreabilidade organizacional",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "agregar práticas de segurança por projeto em dashboard organizacional",
@@ -11263,13 +11331,14 @@
         "Métricas recolhidas",
         "Relatório partilhado"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Sem métricas, não há melhoria contínua.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-05 - KPIs de governação",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "definir e monitorizar KPIs de governação",
@@ -11305,13 +11374,14 @@
         "Decisão formalizada (Aprovação / Rejeição / Exceção) registada em GRC",
         "Owner de Fornecedor designado e notificado"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Fornecedores não validados introduzem risco não rastreável na cadeia de suprimentos.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-06 - Execução de fluxo formal de validação de fornecedores",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "executar o fluxo formal de validação de fornecedores (questionário → análise AppSec → aprovação)",
@@ -11347,13 +11417,14 @@
         "Reavaliação documentada (mantém-se, prolonga-se, encerra-se)",
         "Owner de Segurança notificado e decisão aprovada"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Exceções esquecidas tornam-se risco permanente não mitigado.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-07 - Ciclo contínuo de revisão e reavaliação de exceções",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "revisar e reavaliar exceções e compensações de forma periódica",
@@ -11390,13 +11461,14 @@
         "Histórico de alterações mantido e auditável",
         "Atualizado por release relevante ou evento crítico"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Sem repositório centralizado, estado de segurança fica invisível para auditores e gestão.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-08 - Repositório de conformidade por aplicação (controlo sistemático)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "manter um repositório estruturado de conformidade para cada aplicação",
@@ -11434,13 +11506,14 @@
         "Registo centralizado mantido (Git, Confluence, SharePoint)",
         "Notificação formal ao owner anterior (se houver rotação)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Sem owner claro, responsabilidade dispersa resulta em negligência de exceções e validações.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-09 - Designação formal de owners de segurança por aplicação",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "designar formalmente um owner de segurança (Security Champion) por cada aplicação crítica",
@@ -11479,13 +11552,14 @@
         "Findings e desvios registados em sistema de tracking (Jira, etc.)",
         "Plano de ação criado para não-conformidades críticas"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Sem validações recorrentes, desvios não são detetados até auditoria ou incidente.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-10 - Validação periódica de aplicações (ciclo de conformidade)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "executar validações periódicas de conformidade com SbD-ToE em cada aplicação",
@@ -11525,13 +11599,14 @@
         "Tendências identificadas e recomendações incluídas",
         "Histórico mantido para análise evolutiva"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Sem métricas consolidadas, decisão executiva sobre eficácia do SbD-ToE fica sem base empírica.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-11 - Consolidação de KPIs de governação e maturidade",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "consolidar e reportar KPIs de governação (exceções, fornecedores auditados, conformidade por capítulo, maturidade)",
@@ -11572,13 +11647,14 @@
         "Formação executada para todos os approvers (Cap. 13 - Trilho Formação Governação)",
         "Comunicação oficial publicada em canais corporativos"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Sem modelo formal documentado, decisões de segurança ficam dispersas entre AppSec, Gestão e Jurídico. A falta de critérios explícitos para aprovação por nível resulta em inconsistência, risco não rastreável, e desconfiança dos stakeholders.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-12 - Formalização de modelo de governação por nível de risco",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "formalizar e documentar o modelo de governação com níveis de alçada explícitos, papéis e responsabilidades claras",
@@ -11621,13 +11697,14 @@
         "Artefactos de evidência ligados ou referenciados no checklist (links a testes, scans, relatórios, auditorias)",
         "Notificação automática enviada a Scrum Master / Team Lead e AppSec Engineer quando ciclo é acionado"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Sem checklist centralizado de conformidade, o estado de conformidade de uma aplicação com Cap. 2–13 fica invisível. Desvios não são detetados até auditoria ou incidente crítico. Gestão não tem visibilidade do progresso.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-13 - Controlo sistemático e periódico por capítulo SbD-ToE",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "manter um checklist centralizado, versionado e auditável de conformidade com todos os capítulos SbD-ToE (2–13), com verificação periódica por release ou evento crítico",
@@ -11671,13 +11748,14 @@
         "Plano de mitigação criado se gaps identificados (prazo, responsável AppSec, validação esperada)",
         "Registo atualizado no repositório de fornecedores com data, decisor, e histórico"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Fornecedores são validados no onboarding, mas sem revisão periódica, desvios surgem ao longo do tempo (novos CVEs não mitigados, SLA não cumprido, mudanças de propriedade, evolução do risco). Risco residual acumula invisível. Contratos expiram sem renovação de validação.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-14 - Reavaliação contínua e rotação de fornecedores pós-onboarding",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "reavalia e reaprovar fornecedores periodicamente (anual por defaut, semestral para L2, trimestral para L3), com validação técnica atualizada, análise de compliance SLA, e escalonamento para decisão de penalização ou substituição se necessário",
@@ -11722,13 +11800,14 @@
         "Acesso real a sistemas concedido apenas após todos os passos de aprovação",
         "Registo de \"ready for access\" documentado em GRC com data, validador, e referência a todas as validações"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Contractors ganham acesso sem compreender políticas de segurança, ferramentas obrigatórias, ou procedimentos. Risco de erro involuntário (credenciais expostas, acesso a dados não autorizados, práticas inseguras).",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-15 - Preparação Técnica e Validação de Contractors pré-Acesso",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "executar processo estruturado de preparação técnica de contractors (triagem, formação obrigatória, teste de compreensão, ambiente sandbox) antes de ganhem acesso a sistemas",
@@ -11777,13 +11856,14 @@
         "Sign-off de \"formação completa\" fornecido ao AppSec Engineer (libera acesso técnico)",
         "Histórico mantido por 3 anos (DORA, NIS2 requirement)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Contractors iniciados sem completar formação de segurança obrigatória. Falta de integração clara entre Cap. 13 (Formação) e Cap. 14 (Governação): quem aprova, qual o SLA, como é tracked.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-16 - Trilho de Formação Obrigatória pré-Acesso (Contractors)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "definir e executar trilho de formação obrigatória por perfil de contractor, com SLA explícito de conclusão antes de acesso técnico",
@@ -11837,13 +11917,14 @@
         "Reminder legal enviado ao contractor: Confidentiality obligations continuam pós-término (duração, consequências)",
         "Relatório de offboarding arquivado por 7 anos (DORA requirement)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Contractors terminam projeto ou contrato sem processo formal: acesso mantém-se ativo, ativos (código, credenciais, documentos) não são recuperados. Risco de vazamento pós-rescisão, acesso residual, violação de confidencialidade.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-17 - Offboarding Seguro de Contractors e Rescisão de Fornecedores",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "executar processo formal e automático de offboarding seguro quando contractor termina ou fornecedor é rescindido",
@@ -11893,13 +11974,14 @@
         "Registo de alerta, escalonamento, e ação documentado em GRC (audit trail)",
         "Dashboard em tempo real com status de fornecedores críticos e alertas ativas (visível a board)"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Fornecedores são avaliados periodicamente (US-14), mas risco entre ciclos não é detetado. CVEs, incidentes críticos, mudanças de SLA, ou breaches não são monitorados em tempo real.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-18 - Monitorização Contínua de Conformidade de Fornecedores (Alertas e Escalação)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "monitorizar continuamente conformidade de fornecedores críticos (incidentes, CVEs, SLA, mudanças organizacionais) e escalar automaticamente se gaps surgem",
@@ -11947,13 +12029,14 @@
         "Registo de mudanças documentado em audit trail (Git logs, IAM change log, etc.)",
         "Relatório consolidado (% de acesso mantido, % removido) entregue ao AppSec Engineer"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Contractors ganham acesso inicial, mas permissões acumulam ao longo do tempo (\"acesso creep\"). Sem revisão periódica, principle of least privilege é violado.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-19 - Revisão Trimestral de Acesso de Contractors (Least Privilege)",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "revisar trimestralmente acesso de contractors em ativo, validando que têm apenas acesso necessário ao projeto",
@@ -12000,13 +12083,14 @@
         "Se múltiplos contractors de mesmo fornecedor: insights agregados para revisão de fornecedor (US-14)",
         "Resultados consolidados publicados em relatório trimestral de programa de contractors"
       ],
-      "confidence": 0.85,
+      "confidence": 0.95,
       "context": "Contexto. Contractors terminam projeto sem feedback sobre desempenho de segurança. Sem dados de avaliação, impossível tomar decisão informada sobre re-hire ou referência.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
         "user story heading detected: US-20 - Feedback Pós-Projeto e Rating de Contractors",
         ":::userstory block extracted",
         "proportionality table extracted",
+        "sdlc integration table extracted",
         "artifact list extracted"
       ],
       "goal": "recolher feedback estruturado pós-projeto de contractors sobre compreensão de segurança, incidentes, e recomendações",

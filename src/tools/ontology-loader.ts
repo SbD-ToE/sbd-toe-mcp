@@ -47,6 +47,8 @@ export interface Control {
 }
 
 export interface CanonicalRole {
+  /** 0.20.0-beta.48 — `intra_instance` (12) ou `inter_instance` (1). */
+  role_scope?: string;
   role_id: string;
   aliases: string[];
   canonical: boolean;
@@ -151,7 +153,41 @@ export interface ArtifactRequirement {
   source_practice_ids: string[];
   mandatory: boolean;
   chapter_ids?: string[];
+  /** 0.20.0-beta.40 (v2.6, decisão K) — capítulos que DEFINEM o artefacto (proveniência). */
+  defining_chapter_ids?: string[];
+  /** 0.20.0-beta.40 — capítulos que apenas o CITAM. `chapter_ids` continua intacto. */
+  cited_chapter_ids?: string[];
+  /** 0.20.0-beta.40 — níveis em que é exigido. QUASE degenerado: 43 dos 45 são {L1,L2,L3}. */
+  required_for_levels?: Record<string, boolean>;
+  /** 0.20.0-beta.43 (v2.7) — capítulos que o EXIGEM COMO PROVA (`required_as_evidence_by`). */
+  evidence_chapter_ids?: string[];
+  /**
+   * 0.20.0-beta.43 — a ausência declarada, para os artefactos sem capítulo probatório. É um
+   * OBJECTO com `absence_type` — a fonte já o tipa, e por isso liga-se ao vocabulário de
+   * ausências sem o servidor inferir nada.
+   */
+  evidence_chapters_absence?: Record<string, unknown>;
   description?: string;
+}
+
+/**
+ * 0.20.0-beta.44 (v2.7-r2, contrato v1.22 §1.29) — QUEM APROVA e QUEM É CONSULTADO.
+ *
+ * Espécie PARALELA aos assignments: estes dizem quem EXECUTA, aquela diz quem DECIDE. Os
+ * 1 305 assignments ficam intocados e as contagens não mudam. Cada registo traz a ÂNCORA
+ * verbatim de onde foi derivado — é o que permite ao consumidor verificar em vez de confiar.
+ */
+export interface DecisionInvolvement {
+  involvement_id: string;
+  role_id: string;
+  role_canonical: boolean;
+  bundle_id: string;
+  kind: string;
+  anchor: string;
+  anchor_text: string;
+  applicable_levels: Record<string, boolean>;
+  source_mode: string;
+  refs: string[];
 }
 
 export interface EvidencePattern {
@@ -214,6 +250,7 @@ export interface OntologyData {
   artifacts?: Artifact[];
   artifactRequirements?: ArtifactRequirement[];
   evidencePatterns?: EvidencePattern[];
+  decisionInvolvements?: DecisionInvolvement[];
   requirementControlLinks?: RequirementControlLink[];
   signals?: Signal[];
   signalEvidenceLinks?: SignalEvidenceLink[];
@@ -237,6 +274,22 @@ function loadRuntimeItems(relativePath: string): unknown[] {
   const path = resolveAppPath(relativePath);
   const envelope = JSON.parse(readFileSync(path, "utf-8")) as RuntimeArtifactEnvelope;
   return Array.isArray(envelope.items) ? envelope.items : [];
+}
+
+/**
+ * 0.20.0-beta.39 — o que um artefacto do runtime DECLARA SOBRE SI MESMO. Vários envelopes
+ * trazem `count_semantics` a dizer como as suas contagens podem (e não podem) ser lidas; o
+ * `artifact_requirements.json` proíbe por escrito somar as arestas da relação como total.
+ * Servimos essa declaração VERBATIM em vez de a parafrasear — e é ela que impede uma
+ * superfície de projectar uma contagem que a fonte já disse não ser uma.
+ */
+export function runtimeCountSemantics(relativePath: string): string | undefined {
+  const path = resolveAppPath(relativePath);
+  if (!existsSync(path)) return undefined;
+  const envelope = JSON.parse(readFileSync(path, "utf-8")) as { count_semantics?: unknown };
+  return typeof envelope.count_semantics === "string" && envelope.count_semantics.length > 0
+    ? envelope.count_semantics
+    : undefined;
 }
 
 /** Like loadRuntimeItems but returns [] when the file is absent (optional side-files). */
@@ -291,6 +344,12 @@ function normalizeKey(value: string): string {
 export function chapterNumber(chapterId: string): number {
   const match = /^(\d+)/.exec(chapterId);
   return match?.[1] !== undefined ? Number.parseInt(match[1], 10) : NaN;
+}
+
+/** 0.20.0-beta.48 (v2.10) — alcance do papel: dentro da instância, ou onde outra começa. */
+export function roleScopeOf(roleId: string, roles: CanonicalRole[]): string | undefined {
+  const r = roles.find((x) => x.role_id === roleId) as (CanonicalRole & { role_scope?: string }) | undefined;
+  return typeof r?.role_scope === "string" ? r.role_scope : undefined;
 }
 
 export function resolveRoleId(input: string, roles: CanonicalRole[]): string | undefined {
@@ -487,6 +546,8 @@ export function getOntologyData(): OntologyData {
       role_id: strOf(item, "role_id"),
       aliases: arrStr(item, "aliases"),
       canonical: item.canonical !== false,
+      /** 0.20.0-beta.48 (v2.10) — `inter_instance` = onde OUTRA instância começa. */
+      ...(strOf(item, "role_scope") ? { role_scope: strOf(item, "role_scope") } : {}),
       source: strOf(item, "source"),
     }))
     .filter((item) => item.role_id.length > 0);
@@ -524,6 +585,19 @@ export function getOntologyData(): OntologyData {
       source_practice_ids: arrStr(item, "source_practice_ids"),
       mandatory: item.mandatory === true,
       chapter_ids: arrStr(item, "chapter_ids"),
+      ...(Array.isArray(item["defining_chapter_ids"]) ? { defining_chapter_ids: arrStr(item, "defining_chapter_ids") } : {}),
+      ...(Array.isArray(item["cited_chapter_ids"]) ? { cited_chapter_ids: arrStr(item, "cited_chapter_ids") } : {}),
+      ...(Array.isArray(item["evidence_chapter_ids"]) ? { evidence_chapter_ids: arrStr(item, "evidence_chapter_ids") } : {}),
+      ...(isRecord(item["evidence_chapters_absence"])
+        ? { evidence_chapters_absence: item["evidence_chapters_absence"] as Record<string, unknown> }
+        : {}),
+      ...(isRecord(item["required_for_levels"])
+        ? {
+            required_for_levels: Object.fromEntries(
+              Object.entries(item["required_for_levels"] as Record<string, unknown>).map(([k, v]) => [k, v === true])
+            )
+          }
+        : {}),
       ...(strOf(item, "description") ? { description: strOf(item, "description") } : {}),
     }))
     .filter((item) => item.artifact_type_id.length > 0 && item.requirement_id.length > 0);
@@ -607,6 +681,26 @@ export function getOntologyData(): OntologyData {
     }))
     .filter((item) => item.id.length > 0);
 
+  const decisionInvolvements: DecisionInvolvement[] = loadRuntimeItemsOptional(
+    "data/publish/runtime/decision_involvements.json"
+  )
+    .filter(isRecord)
+    .map((item) => ({
+      involvement_id: strOf(item, "involvement_id"),
+      role_id: strOf(item, "role_id"),
+      role_canonical: item["role_canonical"] === true,
+      bundle_id: strOf(item, "bundle_id"),
+      kind: strOf(item, "kind"),
+      anchor: strOf(item, "anchor"),
+      anchor_text: strOf(item, "anchor_text"),
+      applicable_levels: isRecord(item["applicable_levels"])
+        ? Object.fromEntries(Object.entries(item["applicable_levels"] as Record<string, unknown>).map(([k, v]) => [k, v === true]))
+        : {},
+      source_mode: strOf(item, "source_mode"),
+      refs: arrStr(item, "refs")
+    }))
+    .filter((item) => item.involvement_id.length > 0);
+
   const requirementControlLinks: RequirementControlLink[] = loadRuntimeItems("data/publish/runtime/requirement_control_links.json")
     .filter(isRecord)
     .map((item) => ({
@@ -680,6 +774,7 @@ export function getOntologyData(): OntologyData {
     artifacts,
     artifactRequirements,
     evidencePatterns,
+    decisionInvolvements,
     requirementControlLinks,
     signals,
     signalEvidenceLinks,

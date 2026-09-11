@@ -24,13 +24,26 @@ const pin = JSON.parse(readFileSync(path.join(repoRoot, "consumed-bundle.json"),
 
 const catalogue = loadCatalogue();
 const client = await startClient();
+// 0.20.0-beta.21: DOIS braços, lado a lado (decisão do lead (c), 2026-09-05).
+// - `discover`: os 10 casos históricos, redigidos em `task` — continuidade da série.
+// - `declarative`: as MESMAS 10 situações expressas por DECLARAÇÕES (os concerns
+//   anotados no próprio oráculo + os activadores já declarados no caso) — a tese nova.
+// As expectativas do oráculo são propriedade do lead: nenhuma foi tocada.
 const results = [];
+const declarativeResults = [];
 for (const gc of goldenCases) {
-  const r = await runGoldenCase(client, gc, catalogue);
+  const r = await runGoldenCase(client, gc, catalogue, "discover");
   results.push(r);
   process.stderr.write(`${r.status.padEnd(4)} ${r.case}  ${r.title}\n       ${r.note}\n`);
 }
+for (const gc of goldenCases) {
+  const r = await runGoldenCase(client, gc, catalogue, "declarative");
+  declarativeResults.push(r);
+  process.stderr.write(`[decl] ${r.status.padEnd(4)} ${r.case}\n       ${r.note}\n`);
+}
 client.stop();
+const declCounts = { PASS: 0, PART: 0, FAIL: 0 };
+for (const r of declarativeResults) declCounts[r.status] = (declCounts[r.status] ?? 0) + 1;
 
 const pct = (v) => `${(v * 100).toFixed(0)}%`;
 const counts = { PASS: 0, PART: 0, FAIL: 0 };
@@ -44,7 +57,15 @@ const report = {
   consumed_bundle: { release_tag: pin.kg_bundle.release_tag, source: pin.kg_bundle.source, sha256: pin.kg_bundle.release_sha256, contract: pin.consumer_contract_version },
   oracle: { version: ORACLE_VERSION, path: ORACLE_PATH },
   gate: "not-in-gate (Axis E remains the only promotion gate)",
+  arms: {
+    discover: { note: "os 10 casos históricos, redigidos em `task` (continuidade da série)", verdicts: counts },
+    declarative: {
+      note: "as mesmas 10 situações expressas por DECLARAÇÕES (concerns anotados do oráculo + activadores declarados do caso); expectativas do oráculo INTOCADAS",
+      verdicts: declCounts
+    }
+  },
   verdicts: counts, results,
+  declarative_results: declarativeResults,
 };
 writeFileSync(`${base}.json`, JSON.stringify(report, null, 2) + "\n");
 
@@ -57,6 +78,14 @@ for (const r of results) {
   md.push(`| ${r.case} | ${r.level ?? "—"} | ${r.status} | ${pct(r.prepare.coverage)} | ${pct(r.prepare.strict_precision)} | ${r.prepare.excess_count} | ${c[0]} | ${c[1]} | ${c[2]} |`);
 }
 md.push("", `Verdicts: **${counts.PASS} PASS · ${counts.PART} PART · ${counts.FAIL} FAIL**. Médias (prepare): cobertura ${pct(avg("prepare", "coverage"))}, precisão-estrita ${pct(avg("prepare", "strict_precision"))}.`, "");
+md.push(`## Braço DECLARATIVO (0.20.0-beta.21) — as mesmas 10 situações, expressas por declarações`, "");
+md.push(`Verdicts: **${declCounts.PASS} PASS · ${declCounts.PART} PART · ${declCounts.FAIL} FAIL** (braço \`discover\` acima: ${counts.PASS}/${counts.PART}/${counts.FAIL}). Expectativas do oráculo intocadas; muda só a FORMA de pedir.`, "");
+md.push("| Caso | Verdict (discover) | Verdict (declarativo) | cob. discover | cob. declarativo | prec. discover | prec. declarativo |", "|---|---|---|---|---|---|---|");
+for (const [i, r] of declarativeResults.entries()) {
+  const d = results[i];
+  md.push(`| ${r.case} | ${d.status} | ${r.status} | ${pct(d.prepare.coverage)} | ${pct(r.prepare.coverage)} | ${pct(d.prepare.strict_precision)} | ${pct(r.prepare.strict_precision)} |`);
+}
+md.push("");
 md.push("## Faltas, violações e excessos por caso", "");
 for (const r of results) {
   md.push(`### ${r.case} — ${r.title}`);

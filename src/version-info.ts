@@ -93,3 +93,55 @@ export function loadBundleProvenance(): BundleProvenance | undefined {
 export function _resetBundleProvenanceCache(): void {
   cached = undefined;
 }
+
+/**
+ * 0.20.0-beta.23 (P1) — versão do SERVIDOR na estampa de proveniência.
+ *
+ * A validação externa correu a MESMA sonda em duas builds e obteve 33 e 42
+ * requisitos, com `serving_contract` e `kg` idênticos: a resposta não dizia QUE
+ * servidor a produziu, e o resultado ficava inatribuível. `kg` identifica o
+ * conhecimento servido; `server` identifica quem o serviu. São coisas diferentes e
+ * ambas fazem parte da proveniência.
+ */
+let cachedPkgVersion: string | undefined;
+export function servingServerVersion(): string {
+  if (cachedPkgVersion !== undefined) return cachedPkgVersion;
+  try {
+    const raw = readFileSync(resolveAppPath("package.json"), "utf8");
+    const parsed = JSON.parse(raw) as { version?: unknown };
+    cachedPkgVersion = typeof parsed.version === "string" ? parsed.version : "unknown";
+  } catch {
+    cachedPkgVersion = "unknown";
+  }
+  return cachedPkgVersion;
+}
+
+/**
+ * 0.20.0 — MATURIDADE DO PACOTE, derivada da versão e nunca escrita à mão.
+ *
+ * A palavra «beta» fazia dois trabalhos ao mesmo tempo: marcava o pré-lançamento do PACOTE e
+ * a maturidade do CONTRATO de selecção. No dia em que o pacote deixa de ser beta, o sufixo
+ * mudaria de significado sozinho — sem ninguém o decidir. Regra do programa: quando um campo
+ * carrega uma palavra com semântica, VERIFICA-SE a semântica; não se herda.
+ *
+ * Em semver, o identificador de pré-lançamento (`-beta.49`, `-rc.1`) É a declaração de
+ * pré-lançamento, e a sua ausência é a declaração de estável. Se a versão não se puder ler,
+ * responde-se `undeclared` — não se assume nenhuma das duas.
+ */
+export function packageMaturity(): "stable" | "pre-release" | "undeclared" {
+  const v = servingServerVersion();
+  if (v === "unknown") return "undeclared";
+  return /^\d+\.\d+\.\d+-/.test(v) ? "pre-release" : "stable";
+}
+
+/**
+ * 0.20.0-beta.46 (G5) — o SUBSTRATO servido, lido do pino e nunca escrito à mão.
+ *
+ * Três rondas de auditoria pediram identidade de versão, e a terceira foi a primeira em que
+ * piorou: uma nota de superfície dizia «ontologia v2.5 × Manual v1.8.1» com o pino em v1.9.0.
+ * O conteúdo não estava desactualizado — o RÓTULO é que mentia, e um consumidor não tem como
+ * o saber sem ir à fonte. Prosa que cita versões passa a derivá-las daqui.
+ */
+export function servedSubstrateVersion(): string {
+  return loadBundleProvenance()?.kg.substrate_version ?? "substrato não declarado no pino";
+}

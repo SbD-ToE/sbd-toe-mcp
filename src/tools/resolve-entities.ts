@@ -28,7 +28,7 @@ import {
   type MechanismV1,
   type PracticeV1
 } from "./g2-runtime-loader.js";
-import { servedKgReleaseTag } from "../version-info.js";
+import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
 import { getOntologyData } from "./ontology-loader.js";
 import {
   getRegulatoryOverlay,
@@ -63,6 +63,8 @@ function isComparisonOp(v: unknown): v is ComparisonOp {
 }
 
 export interface McpProvenance {
+  /** 0.20.0-beta.23: versão do SERVIDOR que produziu esta resposta (≠ `kg`, o conhecimento servido). */
+  server: string;
   /** Compact version stamp: kg release_tag of the served pin (0.13.0). */
   kg: string;
   content_type: "canonical" | "derived" | "inferred";
@@ -363,6 +365,7 @@ export function _resolveEntities(
 
 const RUNTIME_V0_PROVENANCE: McpProvenance = {
   kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
   content_type: "canonical",
   produced_by: "direct_runtime_lookup",
   source_data: "data/publish/runtime/*.json",
@@ -371,6 +374,7 @@ const RUNTIME_V0_PROVENANCE: McpProvenance = {
 
 const RUNTIME_V1_PROVENANCE: McpProvenance = {
   kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
   content_type: "canonical",
   produced_by: "direct_runtime_v1_lookup",
   source_data: "data/publish/runtime/v1/*",
@@ -381,6 +385,7 @@ const RUNTIME_V1_PROVENANCE: McpProvenance = {
 
 const OVERLAY_PROVENANCE_PUBLISHED: McpProvenance = {
   kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
   content_type: "canonical",
   produced_by: "direct_overlay_lookup",
   source_data: "data/publish/overlay/*",
@@ -390,6 +395,7 @@ const OVERLAY_PROVENANCE_PUBLISHED: McpProvenance = {
 
 const OVERLAY_PROVENANCE_ABSENT: McpProvenance = {
   kg: servedKgReleaseTag(),
+      server: servingServerVersion(),
   content_type: "canonical",
   produced_by: "direct_overlay_lookup",
   source_data: "data/publish/overlay/* (absent)",
@@ -421,6 +427,36 @@ function emptyOverlayResult(
     meta: {
       filtersApplied: filters,
       note: `Overlay regulatório ausente: ${absentReason}. Nenhum registo regulatório disponível.`
+    }
+  };
+}
+
+/**
+ * 0.20.0-beta.42 — COBERTURA DECLARADA (célula `pagination` da matriz).
+ *
+ * A superfície servia `total: 273` e devolvia 5, e o consumidor não tinha como saber que
+ * estava a olhar para uma fatia — nem como chegar ao resto: **o schema tem `limit` e não tem
+ * `offset`**. O silêncio aqui é o mesmo da b.41, noutra forma: um resultado truncado sem
+ * banda. Declara-se o que se devolveu, quanto existe, que está truncado, e que o caminho
+ * para estreitar é `filters` — porque uma segunda página, esta superfície não a tem.
+ */
+function withCoverage<T extends { entities?: unknown[]; total?: number; limit?: number }>(payload: T): T {
+  const returned = Array.isArray(payload.entities) ? payload.entities.length : 0;
+  const total = typeof payload.total === "number" ? payload.total : returned;
+  const truncated = returned < total;
+  return {
+    ...payload,
+    coverage: {
+      returned,
+      total,
+      truncated,
+      ...(typeof payload.limit === "number" ? { limit: payload.limit } : {}),
+      pagination: "limit_only",
+      note: truncated
+        ? `Estás a ver ${returned} de ${total}. **Esta superfície não tem \`offset\`** — não há segunda ` +
+          "página. Para chegar ao resto, ESTREITA com `filters` (dot-notation, {in:[…]}, {gte,lte}) ou sobe " +
+          "o `limit`. Se leres estes como se fossem todos, lês uma fatia arbitrária."
+        : `${returned} de ${total} — o conjunto veio completo.`
     }
   };
 }
@@ -464,7 +500,7 @@ function resolveEntitiesCore(
       note:
         "Regulatory overlay records. Filters support dot-notation, {gte,lte}, {in:[...]} and array membership. Provenance: data/publish/overlay/*."
     });
-    return { provenance: OVERLAY_PROVENANCE_PUBLISHED, ...result };
+    return withCoverage({ provenance: OVERLAY_PROVENANCE_PUBLISHED, ...result });
   }
 
 
@@ -502,7 +538,7 @@ function resolveEntitiesCore(
       if (citation) result.meta = { ...result.meta, note: `${citation.note} ${result.meta.note}`, citation_note: citation };
     }
   }
-  return { provenance: RUNTIME_V0_PROVENANCE, ...result };
+  return withCoverage({ provenance: RUNTIME_V0_PROVENANCE, ...result });
 }
 
 export { RuntimeV1AssetMissingError };

@@ -110,9 +110,481 @@ TODO — confirm with programme lead.
   unchanged KG v1.9.0; npm `@shiftleftpt/sbd-toe-mcp@0.13.0` = `latest`, gitHead same
   commit; GitHub Release `v0.13.0`)*
 
+### Beta line (`0.20.x-beta`) — NOT citable, NOT a freeze candidate
+
+Prerelease tags on the `0.20-beta` branch (e.g. `v0.20.0-beta.0`) publish to the npm
+`beta` dist-tag for engine R&D (the SPARQL graph-query capability, `trace_sbd_toe_graph`).
+They are **experimental, non-citable, and explicitly excluded from the scientific record**
+— no DOI, no freeze, no archival deposit. `CITATION.cff` and the published states above
+track **only** the stable line. A beta graduates to the scientific record only by being
+folded into a stable `vX.Y.Z` release (with canonical, upstream-ratified IRIs).
+
+Prerelease tags issued on `0.20-beta` (annotated; immutable like every pushed tag, but
+**not** protected/frozen states and never archived):
+
+| Tag | Commit | Date | Served bundle | npm |
+|---|---|---|---|---|
+| v0.20.0-beta.1 | cf4f011 | 2026-06-29 | KG v1.5.0 (`feaa0155…`) | `beta` (superseded) |
+| v0.20.0-beta.2 | 0cc9e14 | 2026-07-05 | KG v1.5.0 (`feaa0155…`) | `beta` (superseded) |
+| v0.20.0-beta.3 | 5b34638 (`5b346387cdfd48146d64422c0e7a217d9b3f320f`; annotated tag object `48cdd14d`) | 2026-08-29 | formal KG `v1.6.0` (`baf5913b…`, contract v1.11, Manual v1.7.0) — same pin and content as stable v0.10.2 | `beta` (superseded) |
+| v0.20.0-beta.4 | d89b30d (`d89b30dfacbc89c023ec53c1b5b882b77a9f86a9`; annotated tag object `6291f50d`) | 2026-08-30 | formal KG `v1.6.1` (`df6920cb…`, contract v1.12, Manual v1.7.1) — same pin and content as stable v0.10.3 | `beta` (superseded) |
+| v0.20.0-beta.5 | 62a1eda (`62a1eda3982147e44369c8a9271ca3697af2680f`; annotated tag object `5165a04a`) | 2026-08-31 | formal KG `v1.7.0` (`29156b86…`, contract v1.14, ontology v2.2, Manual v1.7.1) — same pin and content as stable v0.10.4 | `beta` (superseded) |
+| v0.20.0-beta.6 | 322c38f (`322c38f4dc440aad40bf110b8e20d3d40f623318`; annotated tag object `71098136`) | 2026-08-31 | formal KG `v1.7.0` + MP1 selection operation (= stable 0.11.0 → `102b8166`) | `beta` (superseded) |
+| v0.20.0-beta.7 | 4256ee0 (`4256ee0f09386a45e69012ec565375965f49b0de`; annotated tag object `6e75ef23`) | 2026-08-31 | formal KG `v1.9.0` (`11153c85…`, contract v1.15, 273/29 FIL/PRI — zero-delta over the verified v1.8.0 dev-build) | `beta` (formal batch, «3 sims») |
+| v0.20.0-beta.49 | a6609be (`a6609be5202d484e88b0bd96946ada3fdfb3fce6`) | 2026-09-10 | **o artefacto instalável DATA-SE a si mesmo** (P1, bloqueante do braço C do benchmark e da promoção): bloco `## Provenance` visível no ficheiro — Manual (tag·versão·commit·publicado em), KG (release·sha256·origem), substrato, ontologia, servidor e hora — nos dois sabores E no ramo sem role, tudo lido do pin, com ausências DECLARADAS e nada fixo em código; `meta.provenance` passa a datar o Manual. **A cobertura NOMEIA os capítulos fora da fatia** nos dois sabores (P2) — uma contagem não é uma declaração. Os dois contratos (serving v1.18-beta a jusante · consumer v1.25 a montante) declaram qual é qual e que não se seguem (P3); nenhuma versão mudou. Pino INALTERADO; `latest` 0.19.4 não tocada e nenhuma tag de promoção cortada | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.48 | 2b09aed (`2b09aede4ecaadf4ef651a9c2df70c645fc0a842`) | 2026-09-10 | **re-pin na primeira release FORMAL desde a v1.11.0: KG v1.12.0** (`c21d35cb7fea…`, contrato v1.25, Manual v1.14.0 × ontologia v2.10). **PRECEDÊNCIA DO LEDGER**: as transições vivem em `declared-absences-ledger.yaml` e prevalecem sobre o índice — ABS-003 `withdrawn` (premissa errada; NÃO é `closed`) e ABS-011 `closed`, com a divergência declarada em `index_disagrees`; sem isto reintroduzia-se o defeito da b.45. `fornecedores-terceiros` com `role_scope: inter_instance` — zero é o estado CORRECTO, não lacuna, e a porta é GOV-006/007. 50 ligações AUTORADAS dos antipadrões na leitura CONSULT, camada distinta da pontuada, com o descasamento 5/25 DECLARADO e não alinhado e as 9 ausências autoradas. CIC-011 (273→274). **Ouro H: conjuntos seleccionados, causas e veredictos byte-idênticos** | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.47 | b5fa4f5 (`b5fa4f538a68bd138eb03137a9b235e7213d8238`) | 2026-09-09 | resíduos da 3.ª auditoria e a promessa central verificada. **R3: DETERMINISMO DO SERVING entre processos, testado pela 1.ª vez em quatro auditorias e posto no portão — 29/29 superfícies byte-idênticas em dois processos independentes, 0 divergências, 0 não comparáveis, 0 campos voláteis.** R1: enum de `projectRole` derivado do vocabulário (13 canónicos; legado aceite mas não oferecido) e a descrição deixa de dizer «Informational only» sobre um argumento que produz vista. R2: a banda de ancoragem declara O QUE MEDE (ocorrência de termo, não relevância) e mostra os termos que ancoraram. R4: bateria de encaminhamento para modelo pequeno preparada e entregue por correr, com o motivo declarado | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.46 | 9698e85 (`9698e85e0e364f155b8c84d6b9eff98a1ef97250`) | 2026-09-08 | **os dois bloqueios da 3.ª auditoria (9/10) e o estatuto pragmático.** G1: a base da CITAÇÃO publicava a asserção da vizinha e resolvia `produced_or_operated_by` para 31 artefactos quando só 7 o produzem — passa a `cited_by` com `published: false` (a ontologia não publica verbo para citação) e uma INVARIANTE impede que duas bases partilhem asserção. G2: a banda de decisão não filtrava por nível nem o dizia — declara `filters_this_band: false`, contagem por nível e os 104/164 sem níveis, com «ausência de níveis não é aplica-se a todos». G3: estatuto pragmático nas primeiras palavras de 6 descrições — **o MCP nunca é o actor; o verbo pertence a quem chama**. G4: `trace_graph` com kg+server, `riskLevel` do repo_governance declarado como filtro fraco, evidência do review_scope marcada como redacção do servidor. G5: **teste de release** que compara todas as versões servidas contra `sbd://toe/version` | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.45 | 458a12d (`458a12d08fac6802a2129cc31dc4a7ae08faa1ad`) | 2026-09-08 | **re-pin `kg-v1-manual-v1.9.0-aligned-2026-09-08-v2.8`** (`347f5cfd305e…`, contrato v1.23, Manual v1.9.0, ontologia v2.8). **Uma ausência FECHADA deixa de ser servida como dívida aberta** — a banda lia `absence_type` e ignorava o `status`; ABS-005 e ABS-012 saem `closed` com evidência e quem registou, `is_debt: false`. As 20 tabelas do cap. 14 entram: 108 → 174 atribuições, `govern` 102 → 24, `plan`/`test`/`operate` 0/0/6 → 36/45/39, e o capítulo passa de 1 para 4 fases no roteiro (cobertura mantém-se 15/15). `phases_unassigned` 195 → 219 servido como VISIBILIDADE com os `unmapped_phase_labels` verbatim (Execução ×6) — corrigida a REDACÇÃO, não o número. **Ouro do Eixo H byte-idêntico apesar de 66 atribuições mudarem de fase por desenho: zero registos perdidos, ids e ordem intactos** | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.44 | 4af9197 (`4af9197598715a26d993d4803997851d945c96ae`) | 2026-09-08 | **re-pin `kg-v1-manual-v1.8.1-aligned-2026-09-08-v2.7-r2`** (`b9bb73fd240e…`, contrato v1.22 §1.29) — empacotamento puro, dados byte-idênticos ao v2.7, resolve o bloqueio reportado na b.43. Os **163 envolvimentos de decisão** (158 approves + 5 consulted, 12 capítulos, 163/163 com âncora VERBATIM) são servidos ao lado da execução, com a asserção da fonte a chegar ao consumidor («não afirma execução; RACI completo»); a banda `decision_involvement_unavailable` sai limpa. **ABS-005: as 7 âncoras ratificadas TODAS servidas (12 no cap. 01) — condição cumprida, mas o índice não regista closure e NÃO a declaro fechada por conta própria.** **GR-04 → SERVIDO: painel do Eixo I fecha em 6·0·0** | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.43 | 6645503 (`6645503092d97b55b4648bb16315603f66992bf0`) | 2026-09-08 | **re-pin `kg-v1-manual-v1.8.1-aligned-2026-09-08-v2.7`** (`97bd7b583594…`, contrato v1.21 §1.28, ontologia v2.7) e as ASSERÇÕES DE TRAVESSIA passam a chegar ao consumidor: verbo + fonte autorada + **o que NÃO afirma**, verbatim. O `own` da b.40 SAIU (o verbo é `produced_or_operated_by` e a fonte diz que não afirma posse). Nova base `required_as_evidence_by` (37/45) com os 8 órfãos declarados um a um e já tipados. RH/PeopleOps como REFERENCIADO-NÃO-CANÓNICO com âncoras; canónicos continuam 13. **BLOQUEIO REPORTADO: o manifesto declara 163 `DecisionInvolvement` e o arquivo NÃO traz o ficheiro** (classe da b.38, a montante) — declarado na superfície onde seria procurado, nunca servido de fora do pino; ABS-005 não fecha a partir deste artefacto | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.42 | e9233dc (`e9233dc0fb56b2a463633712876e8f5592b6486b`) | 2026-09-08 | **as 13 células FALTA da matriz, resolvidas**: 9 eram defeitos do servidor e fecharam-se (nunca-silêncio e `next` no `trace_graph`, com as âncoras válidas DERIVADAS do grafo; proveniência em 5 projecções + `query_entities`; cobertura no `resolve_entities`, que serve 5 de 273 e não tem `offset`; `next` no ramo por papel do `generate_skill`; capítulo inexistente declarado no `assess`, que calculava postura sobre zero KPIs; papel do `task` no `prepare`), 4 eram regras do próprio instrumento demasiado largas e corrigiram-se NELE. `?` de 116 → 74 por sondas desenhadas (combinação de selectores + **prova por variação** de que um argumento ecoado afecta o resultado); superfícies não exercitáveis 4 → **0**, com o schema a declarar EXEMPLOS derivados do bundle. Baseline do portão passa a ZERO | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.41 | b2e95d7 (`b2e95d7d99f9e0fb0e4a4683506250bec34deeda`) | 2026-09-08 | **a declaração passa a olhar para o RESULTADO, não só para o VALOR** (2.ª auditoria externa, 8,5/10). Vazio por COMBINAÇÃO legítima ganha banda: `empty_result` no `get_guide_by_role` com a causa ISOLADA por recontagem (papel 14 · fase 21 · cruzamento 0) e o `next` a oferecer a recuperação; `empty_role_view` na `map_sbd_toe_applicability`. Os dois vocabulários de papel reconciliam pelos ALIASES PUBLICADOS (`devops` → `devops-sre`: 0 → 75 user stories); onde não há alias, declara-se em vez de se inventar. ABS-001 deixa de ser lacuna E fronteira: o rótulo local `unpublished_gap` passa a `supersedes_local_label` DENTRO da banda. **Matriz BANDA × SUPERFÍCIE** (29 superfícies × 8 bandas, colunas derivadas do `tools/list` vivo) passa a portão de pré-promoção — 13 células FALTA reportadas como achados, e revelou o contrato nunca-silêncio no caminho de ERRO, que 2 superfícies calculavam e deitavam fora no `rpcError` | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.40 | 43afda8 (`43afda8e8736a3f066be2aea07106b2f94375db1`) | 2026-09-07 | **re-pin dev-build `kg-v1-manual-v1.8.1-aligned-2026-09-07`** (`15d3ddd11b59…`, contrato v1.19 §1.26, ontologia v2.6) e a travessia N:M passa a ser servida. O roteiro deixa de deixar capítulos de fora: consome `bundle_ids` (14 atravessados, `design` com o cap. 04 e `develop` com o 06) e serve o cap. 00 como **PISO**, não como omissão — 14 + piso = 15, `chapters_not_in_roadmap` a ZERO (servido, para ser verificável); 219 atribuições sem fase declaradas. `chapter_capability`/`chapter_brief` separam DEFINIDORES de CITADORES (cap. 01: 7 que define vs 24 que cita — fim do achado central do auditor). Ausências TIPADAS com `absence_type` do índice central `declared_absences`, nunca inferido — dívida (`gap`/`deferred`) vs fronteira (`out_of_scope`), com invariante que parte se uma superfície o carimbar. `required_for_levels` declarado como quase degenerado (2 de 45) | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.39 | aae175e (`aae175e227c647a337512925b161edb27bb90051`) | 2026-09-07 | **as superfícies de PROJECÇÃO passam a declarar**. B1: a junção capítulo→artefacto deixa de servir a RELAÇÃO como total sob «tem de PRODUZIR» carimbado canonical — operação que a própria fonte proíbe por escrito; duas bases com a base de cada uma e a proibição verbatim (11 artefactos por EP CONFIRMADOS, 31 arestas). B2: banda de omissão no rollout (7 de 15 fora, 5 obrigatórios), autoridade HERDADA no operating_model (illustrative_overlay/example_only — deixa de promover exemplo a exigência) e ancoragem da pergunta no search. B3: o `next` lê as bandas da própria resposta, reconciliado no `sendResponse` (a classe). B4: orgProfile com affects_result, `unassigned` declarado, escassez sem número fixo, rótulo com nível sinalizado. Achados de CONTEÚDO subidos ao lead, não compensados | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.38 | 6169d50 (`6169d50d57683de517b15e460e0041ebdaf2393b`) | 2026-09-07 | **defeito de EMPACOTAMENTO fechado à CLASSE**: a beta.37 enviava a tool da vista processual e NÃO os dados (três listas estáticas — `files`, `REQUIRED_PATHS` e um `BANNED_PATHS` que proibia um ficheiro para o qual o servidor já encaminhava). O conjunto obrigatório passa a ser DERIVADO (pin + carregadas + ENCAMINHADAS) e o gate do CI assere-o contra o TARBALL real; provado por mutação. Quatro superfícies passam a ser enviadas (`macro_processes`, `mp_edges`, `cross_layer_referrals`, `bundle_policy_links`), sem relaxar o wildcard de `semantic/`. **GR-03 re-medido SOBRE O ARTEFACTO: publicado b.37 = NÃO SERVIDO 0/6 (controlo negativo arquivado); b.38 = SERVIDO 6/6. Painel 5·1·0** | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.37 | 6fb82c9 (`6fb82c9d616fe1bf8a2cca7031b1f9c5e0ee1360`) | 2026-09-06 | vista PROCESSUAL servida: `get_sbd_toe_macro_processes` (leitura PROGRAMA) com os cinco MP-01..05, a ordem de adopção publicada (só `dependency`; as 9 `feedback` fora dela, com prova de que com elas o grafo cicla), pré-requisitos com o artefacto consumido, papéis e percurso de capítulos; três limites DECLARADOS (sem entidade «programa»; travessia MP↔fase é lacuna; três segmentações sem contenção). Re-pin do beta para o dev-build `kg-v1-manual-v1.8.1-aligned-2026-09-06` (`f87d5b46bf10`, contract v1.18): moveu só proveniência — ouro H byte-idêntico. **Eixo I: 4·1·1 → 5·1·0, GR-03 NÃO SERVIDO → SERVIDO (6/6)** | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.36 | b264611 (`b26461181e74ecf8e8f5628f010b1bda00e5ffe5`) | 2026-09-06 | as invariantes varrem o INVENTÁRIO VIVO (tools/list em tempo de teste) e apanharam o `metrics=`/`kpi_values` à primeira; conservação NA BANDA com caminho concreto (v1.2); escassez declarada; assess com âmbito e denominador; cadeia de activação completa; `unmodelled_signals`. **Eixo I sob v1.2: 3·2·1 → 4·1·1, GR-05 volta a SERVIDO** | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.35 | fe4f59a (`fe4f59aeec8972db0b6cd02d35b121de8621e9ee`) | 2026-09-06 | GR-05 fechado: `explain_sbd_toe_topic` (leitura CONSULT) com banda própria para os 26 ANTIPADRÕES e o `risk_level` a ANOTAR em vez de exigir — fronteira mantida na selecção/prepare/capacidade. **GR-05: SERVIDO-MAL → SERVIDO**; GR-04 fica SERVIDO-MAL e é ACHADO DE CONTEÚDO (o bundle não publica decide-vs-delega; serve-se a `proportionality` que existe) | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.34 | 4f56bbe (`4f56bbe29cba92696324faa2be27e8857b709bbd`) | 2026-09-06 | CAPACIDADE: `get_sbd_toe_chapter_capability` (99 KPIs com thresholds por nível + artefactos), ciclo fechado com o assess nos dois sentidos, leitura IMPL vs GUIDE declarada na resposta e no guia. **GR-01 no Eixo I: NÃO SERVIDO → SERVIDO**; o «0 artefactos» era defeito da SONDA (o brief servia 29); lacuna do checklist declarada | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.33 | f2262f8 (`f2262f81d8bc83cb8ba253c3ad38f50580676ef3`) | 2026-09-06 | PLAYBOOKS com caminho próprio: `get_sbd_toe_playbook` (20 playbooks + 450 secções que o bundle já publicava e só eram alcançáveis por retrieval NÃO-NORMATIVO); autoridade servida, exemplo ilustrativo em banda separada, delimitação obrigatória, frameworks sem cross-check declarados com o roadmap do Manual, ligação nos dois sentidos. **GR-02 no Eixo I: NÃO SERVIDO → SERVIDO** | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.32 | aad6ea7 (`aad6ea768aab79e0d9ed9689ea4edfa4fd9aca9b`) | 2026-09-06 | EIXO I (leituras): medição implementada no runner + PRIMEIRA BASELINE contra o oráculo novo do lead (golden-reading-cases.md v1) — 1 SERVIDO · 5 SERVIDO-MAL · 0 NÃO SERVIDO; nada corrigido (a baseline é o produto); o controlo positivo apanhou um falso positivo da SONDA, não do servidor | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.31 | 711b6b5 (`711b6b523f00876fb65b7aa9f7e2677e4b97b5f8`) | 2026-09-06 | AS BORDAS: invariante alargada às 11 superfícies de vocabulário (4 instâncias, 2 desconhecidas — get_guide_by_role, checklist cap. 00, overlay ENISA-CSA); notas das respostas e descrições com FONTE ÚNICA (a nota fóssil do threat dava o conselho oposto); routing_basis por concern e desambiguado; cross_surface_check; unsupported_obligations, equivalent_to, distinctUserStoryCount | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.30 | e374f7c (`e374f7c8c1a514b621c314f629b9ad1937224df0`) | 2026-09-06 | TRÊS FORMAS DE PEDIR: forma B (chapters/categories na superfície de selecção, traço declared_structure) e C de primeira classe; recurso `sbd://toe/model` (entidades, relações e cardinalidades reais) + `quick-start` (500 tk vs 13.135); invariante de ALCANÇABILIDADE (0 inalcançáveis, 9 caminhos falsos eliminados); cap. 14 e cap. 01 com porta verdadeira. Selecção por A INALTERADA | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.29 | 2ff3809 (`2ff38091657b20769c250740f8f2ab770e131850`) | 2026-09-06 | navegação: ameaças por PERTENÇA ao âmbito (página 1 deixa de ser governação genérica); roteamento ≠ cobertura publicado antes da chamada (24 sem erro · 11 com domínio próprio, nomeados e medidos); bug do contador da legenda; ordem do setup no guia; nota do operator extend. Selecção INALTERADA | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.28 | 37ef114 (`37ef1144acc86a9949e321949489cec627a82629`) | 2026-09-06 | INVARIANTES ENTRE SUPERFÍCIES (a classe): suite antes dos fixes, inventário de 5 candidatos → 3 reais + 2 falsos positivos da própria suite; `ignored_activators` no consult (59 req. em causa, incl. controlo de acesso); caixa do guia derivada (fim da contradição entre blocos GERADOS); `routing_basis` e dedup opcional (−51%) no threat. Zero dívida | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.27 | f1bc7dc (`f1bc7dcf77268291b0ab24c11bb3000fbb77139c`) | 2026-09-06 | adenda beta.26 (assessment da beta.25): P0 do consult (11 dos 24 concerns perdidos em silêncio + rule_trace a AFIRMAR «0 requirements active») corrigido à raiz — curou também o mapa de ameaças (24 roteáveis); guia manda CONTRAPROVAR + bloco derivado de cobertura por superfície; INVARIANTE ENTRE SUPERFÍCIES (24×3) que apanhou 4 defeitos, 2 deles desta vaga | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.26 | b1ab9a7 (`b1ab9a73fb862f88db1ed4233f58ff00937a67c3`) | 2026-09-06 | economia e auditoria (o que restava da lista do avaliador): evidence_patterns por PERTENÇA ao âmbito (era prefixo alfabético); threat_landscape com needs_input (8,3k→434 tk) + cobertura na descrição; traço multi-activador; dieta do `select` (−21% a −58%, mesmo conjunto); denominadores nomeados; obligation_ids; P1-3/P1-4; cap. 01 explicado. Selecção INALTERADA | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.25 | 0c3060e (`0c3060e9d4e64fc9ad3c459d54831ba86719d015`) | 2026-09-06 | adenda ao beta.24: teoria do minLevel morta na GERAÇÃO do guia (sobrevivia na coluna «Presente desde» introduzida pela beta.24) + varredura do guia inteiro (10 afirmações que contradiziam o comportamento: «TWO bands», «L1 reduz o âmbito», doutrina pré-declarativa, tamanhos folclóricos, search sem a marca NÃO-NORMATIVO); guarda de 6→10 propriedades; bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.24 | 863ed99 (`863ed99bacb3797b9603ef387b4c736dd8ec40c1`) | 2026-09-06 | agent-guide GERADO do vocabulário e da superfície real (os «13 concerns» eram o supported_values do mapa de ameaças); `out_of_scope_chapters` dá ÂMBITO à promessa never-silent e a invariante de conservação varre o universo; higiene do `task` (resíduos + `task_context` canónico, alias mantido); bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.23 | e99a2cb (`e99a2cb2e09e33b25c8d3a42e959b3513f5f08f8`) | 2026-09-05 | CONSERVAÇÃO: invariante de conservação sobre o vocabulário todo (apanhou 12 violações em 4 famílias); motor cede à promessa por CATEGORIA (traço `declared_category`); `unsupported_concerns` em get_threat_landscape; guarda anti-zero cobre `technologies`; `provenance.server`; bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.22 | 6a695af (`6a695af9e0002e876ad5eb5163f578ea79073987`) | 2026-09-05 | «caminho para 9»: 7 itens da validação externa (guarda anti-zero como INVARIANTE, vocabulário como fonte única dos enums, traços em falta); bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.21 | 4155341 (`415534192f02defcb64f60b878df4252851e6957`) | 2026-09-05 | EXPERIÊNCIA «declarativo primeiro» (contrato de serviço v1.18-beta): selecção = f(declarado), sbd://toe/activation-vocabulary, needs_input, modos baseline/discover; bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.4, estável inalterada) |
+| v0.20.0-beta.20 | bc10179 (`bc101795a0959dcece37e4d277c2e061a4a77b22`; annotated tag object `31d41684`) | 2026-09-04 | COMBINED: absorbs stable 0.19.3 + 0.19.4 (next-verbatim invariant extended to beta refs — 2 legend URIs fixed; per-detail requirement ceilings); bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.4 untouched) |
+| v0.20.0-beta.19 | 084cb3f (`084cb3f801484550926b8565c53156124d277e0b`; annotated tag object `5c510d30`) | 2026-09-04 | absorbs stable 0.19.2 — next calibrated with destination limits + START HERE in descriptions; bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.2 untouched) |
+| v0.20.0-beta.18 | 6289bb8 (`6289bb8b11478656438bfd612d59bff9f26d0f34`; annotated tag object `8fdb4b7a`) | 2026-09-04 | absorbs stable 0.19.1 — empty-selection alarm + declared-beats-lexical precedence; bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.1 untouched) |
+| v0.20.0-beta.17 | 18cc23f (`18cc23fd7c872b5b1074f7ff303eb66cda67560c`; annotated tag object `440f602c`) | 2026-09-04 | absorbs stable 0.19.0 — selection stability to wording (basis declared/lexical, dominance warning, slots by index); bundle pin unchanged (KG `v1.11.0`) | `beta` (`latest` = 0.19.0 untouched) |
+| v0.20.0-beta.16 | 791b412 (`791b4124ff1c7b1a412fb927d5cbbe79b6f525f3`; annotated tag object `a4dbc640`) | 2026-09-03 | absorbs stable 0.18.1 — formal batch: re-pin release KG `v1.11.0` (`b7444094…`, byte-identical to the dev-build; stamp "v1.11.0") | `beta` (`latest` = 0.18.1 untouched) |
+| v0.20.0-beta.15 | 1bce819 (`1bce819ed42a603b1d37c8e9844e999b732c6fdc`; annotated tag object `4707ed4d`) | 2026-09-03 | absorbs stable 0.18.0 — re-pin dev-build kg-2026-09-03 (`e5c3581b…`, contract v1.17) + trace_sbd_toe_requirement_sources | `beta` (`latest` = 0.18.0 untouched) |
+| v0.20.0-beta.14 | 5f30aaa (`5f30aaa814dc1a04a96660a92f597809f267885c`; annotated tag object `bafe13b4`) | 2026-09-02 | absorbs stable 0.17.0 — never-silent resolve filters + requirement→proof chain; bundle pin unchanged (KG `v1.10.0`) | `beta` (`latest` = 0.17.0 untouched) |
+| v0.20.0-beta.13 | 0795d54 (`0795d54727841abad94089e41765cb5ac3ee537d`; annotated tag object `10239f57`) | 2026-09-02 | absorbs stable 0.16.1 — formal batch: re-pin release KG `v1.10.0` (`d8df472b…`, byte-identical to the dev-build; stamp "v1.10.0") | `beta` (`latest` = 0.16.1 untouched) |
+| v0.20.0-beta.12 | 9c7c177 (`9c7c177cf0efe2d74a8a4675e8584748d866c4a5`; annotated tag object `d0b65cdd`) | 2026-09-02 | absorbs stable 0.16.0 — re-pin dev-build `kg-v1-manual-v1.8.0-aligned-2026-09-02` (`c832fd97…`, contract v1.16, joins served, stamp dev:<sha12>) | `beta` (`latest` = 0.16.0 untouched) |
+| v0.20.0-beta.11 | df78dd2 (`df78dd2967190468a167156bf3ff72562130adc2`; annotated tag object `e607435c`) | 2026-09-02 | absorbs stable 0.15.1 (Desktop reverification closed on both lines); bundle pin unchanged (KG `v1.9.0`) | `beta` (`latest` = 0.15.1 untouched) |
+| v0.20.0-beta.10 | acba784 (`acba78458cf43ed837602662213ee6187f80bc62`; annotated tag object `a5665f4a`) | 2026-09-02 | absorbs stable 0.15.0 (Desktop-audit cycle; line_note inverted for this line); bundle pin unchanged (KG `v1.9.0`) | `beta` (`latest` = 0.15.0 untouched) |
+| v0.20.0-beta.9 | 3f035b2 (`3f035b213c75f245cc7c61735adda475efbab5c1`; annotated tag object `48d6a6f2`) | 2026-09-01 | absorbs stable 0.14.0 (graduated applicability) + Axis G scenarios (24/24 tools); bundle pin unchanged (KG `v1.9.0`) | `beta` (`latest` = 0.14.0 untouched) |
+| v0.20.0-beta.8 | 4681fd2 (`4681fd2039c443e6628162bb822d083a1885504c`) | 2026-09-01 | absorbs stable 0.13.0 (`8a3a9a90` via cherry-pick `079bb35`): read_sbd_toe_resource + provenance.kg stamp + inspect pin provenance; bundle pin unchanged (KG `v1.9.0`) | `beta` |
+
 ## Current working state
 
-**Current branch:** master
+**Current branch:** `0.20-beta` — this copy of the registry lives on the beta branch; the
+stable-line rows mirror master (`102b816`, 0.11.0 prepared) and are maintained there.
+**Beta line:** v0.20.0-beta.49 → `a6609be5202d484e88b0bd96946ada3fdfb3fce6` (2026-09-10; `release.yml` run 34481282995 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.49` = `beta`, gitHead igual; GitHub pre-release) fecha uma omissão com efeito
+irreversível: o artefacto que sai do `generate_sbd_toe_skill` instala-se em `.claude/agents/` e passa a
+viver longe do servidor que o produziu — e não dizia de onde vinha. O `meta.provenance` existia mas nem
+datava o Manual e viajava na resposta JSON, que o chamador descarta ao escrever o ficheiro; e a
+assimetria era ao contrário do que interessa, com o ramo SEM role a nomear a fonte e o ramo COM role,
+o que se instala, a não emitir nada. Um artefacto instalado sem data fica sem data para sempre. Agora
+leva um bloco de proveniência visível, nos dois sabores e no ramo sem role, com tudo lido do pin e as
+ausências declaradas em vez de deduzidas. A par disso, o bloco de cobertura deixou de contar e passou a
+NOMEAR: dizia «N de M capítulos» debaixo de um título que promete que nada está escondido, exactamente
+sobre a coisa escondida — e no sabor `skilled`, que não tem ferramenta viva para percorrer o resto, o
+agente ficava a saber que lhe faltavam capítulos sem saber quais. A hora de geração é volátil por
+desenho, o gate de determinismo apanhou-a, e a resposta não foi relaxá-lo: o carimbo entra nos voláteis
+DECLARADOS com padrão preciso, e o gate reporta 28 byte-idênticos, 1 idêntico após neutralizar, zero
+divergências.
+Prior: v0.20.0-beta.48 → `2b09aede4ecaadf4ef651a9c2df70c645fc0a842` (2026-09-10; `release.yml` run 34422540156 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.48` = `beta`, gitHead igual; GitHub pre-release) assenta na primeira release
+FORMAL do KG desde a v1.11.0, e a peça que a torna delicada é a precedência do ledger. O bundle traz
+dois ficheiros de ausências DELIBERADAMENTE em desacordo — o índice absorve transições só quando corta
+versão, o ledger regista-as no momento — e a regra ratificada é que o ledger prevalece para `status`.
+Não o ler teria reintroduzido exactamente o defeito que esta linha apanhou na b.45: servir como dívida
+em aberto o que já não é, desta vez pelo mecanismo desenhado para evitar churn de versões. O `withdrawn`
+entra como estado próprio e NÃO como `closed`: a premissa do registo era errada, nada faltava e nada se
+corrige — dizer que fechou afirmaria uma dívida que nunca existiu. E a divergência com o índice vai à
+vista, porque achatá-la esconderia o mecanismo. Com o ABS-003 retirado, a banda do `fornecedores-terceiros`
+deixa de se ler como lacuna: o papel é `inter_instance`, zero é o estado correcto, e o que a instância
+modela é a interface. Entram ainda as 50 ligações AUTORADAS dos antipadrões, ao lado da camada pontuada
+e sem se somarem a ela, com o descasamento 5/25 declarado e NÃO alinhado — qual conjunto é a entidade
+AntiPattern é decisão de modelo, em triagem. O `CIC-011` é o primeiro requisito novo do arco e nasceu de
+uma declaração de escassez. O ouro do Eixo H manteve os conjuntos seleccionados, as causas e os
+veredictos byte-idênticos: o requisito novo aparece só onde deve, nas listas do que não é seleccionado.
+Prior: v0.20.0-beta.47 → `b5fa4f538a68bd138eb03137a9b235e7213d8238` (2026-09-09; `release.yml` run 34327616461 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.47` = `beta`, gitHead igual; GitHub pre-release) fecha os resíduos da 3.ª
+auditoria e verifica, pela primeira vez em quatro rondas, a promessa que sustenta tudo o resto: o
+DETERMINISMO DO SERVING. Dois processos independentes sobre o mesmo bundle pinado, a mesma chamada em
+cada um, payloads comparados byte a byte — 29 de 29 idênticos, zero divergências, e nem sequer um
+campo volátil a precisar de neutralização. A primeira corrida do runner mentiu e o guarda nasceu daí:
+as três superfícies de recuperação, as de maior risco, foram chamadas sem pergunta, devolveram 36
+bytes de erro e contaram como byte-idênticas; comparar dois erros não testa determinismo, e o runner
+passou a recusar payloads minúsculos como inconclusivos. O `projectRole` deixou de ter um schema que
+contradizia a sua própria banda — o enum vem do vocabulário publicado e a descrição diz que o
+argumento AFECTA a resposta, coisa que negava. A banda de ancoragem passou a declarar que mede
+ocorrência de termo e não relevância, e a mostrar por que palavras a recuperação entrou. E a bateria
+para modelo pequeno fica preparada e por correr, com o motivo dito: corrê-la num modelo grande mediria
+o leitor que as auditorias já mediram.
+Prior: v0.20.0-beta.46 → `9698e85e0e364f155b8c84d6b9eff98a1ef97250` (2026-09-08; `release.yml` run 34285440632 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.46` = `beta`, gitHead igual; GitHub pre-release) fecha os dois bloqueios da 3.ª
+auditoria externa (9/10) e dá ao servidor o estatuto pragmático que lhe faltava. O primeiro bloqueio
+era um defeito meu e do pior tipo: a base da CITAÇÃO passava a `assertionFor` o mesmo argumento da base
+de produção, e por isso publicava `verb: produced_or_operated_by` enquanto o seu próprio texto dizia
+«não uma obrigação de produção» — 31 artefactos a resolver para «produz ou opera» quando só 7 o fazem,
+pelo mecanismo construído para o impedir. Um bug num guarda-corpo é pior do que a ausência de
+guarda-corpo, porque é lido como garantia. A ontologia não publica verbo para a citação, e não se
+inventou um: a base passa a usar o campo que a fonte nomeia e a declarar que não há asserção
+publicada. O segundo era a banda mais atraente da build a mentir por omissão: os envolvimentos de
+decisão não filtravam por nível e não diziam que não filtravam, com 104 dos 164 sem níveis nenhuns —
+agora a entrada fica completa e LEGÍVEL, porque o produto é de consulta e filtrar em silêncio
+esconderia o que existe. E o estatuto pragmático entra nas primeiras palavras de seis descrições, com
+o critério que o lead fixou: **o MCP nunca é o actor — ele serve, quem faz é quem chama**, e o juízo
+«isto é suficiente?» nunca sai do chamador. A via lenta fechou as três superfícies que a auditoria
+tocou, e a identidade de versão passa a ter teste em vez de promessa.
+Prior: v0.20.0-beta.45 → `458a12d08fac6802a2129cc31dc4a7ae08faa1ad` (2026-09-08; `release.yml` run 34268945245 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.45` = `beta`, gitHead igual; GitHub pre-release) traz o Manual v1.9.0 ao serving
+e corrige um defeito próprio que só a v2.8 tornou visível: a banda de ausências lia a ESPÉCIE e
+ignorava o ESTADO, e por isso servia ABS-005 e ABS-012 — fechadas no índice — como dívida em aberto.
+Um consumidor que agisse sobre isso ia trabalhar sobre uma dívida já paga. Passa a servir `status`,
+`closed_on`, `closed_evidence` e quem registou; a espécie mantém-se (foi um `gap`), o `is_debt` não.
+Do lado do conteúdo, as 20 tabelas que o Author transpôs mudam o cap. 14 de forma substantiva: 108 →
+174 atribuições, e as 102 que estavam em `govern` por política de recurso dão lugar a 24 verdadeiras
+mais 36 em `plan`, 45 em `test` e 39 em `operate` — o capítulo passa de uma fase para quatro no
+roteiro, sem que a cobertura deixe de ser 15/15. O `phases_unassigned` sobe de 195 para 219 e isso é
+desmascaramento, não regressão: o capítulo tinha zero porque não tinha tabelas nenhumas. Corrigiu-se a
+REDACÇÃO e não o número — a banda diz agora que um número alto ali é visibilidade, que um zero pode
+ser pior do que um número alto, e traz os rótulos autorados que não assentam numa fase (`Execução` ×6)
+com a razão de não se forçar nenhuma. E o ouro do Eixo H ficou byte-idêntico nos dois braços apesar de
+66 atribuições mudarem de fase por desenho: nada se perdeu, nenhum id mudou, nenhuma ordem se mexeu.
+Prior: v0.20.0-beta.44 → `4af9197598715a26d993d4803997851d945c96ae` (2026-09-08; `release.yml` run 34254474985 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.44` = `beta`, gitHead igual; GitHub pre-release) fecha o bloqueio que a
+b.43 reportou e, com ele, o painel das leituras. O r2 é vaga de empacotamento pura — dados
+byte-idênticos, o re-pin moveu 8 linhas de ouro e todas o carimbo `kg` — e traz dentro o
+`decision_involvements.json` que faltava. Os 163 envolvimentos passam a ser servidos ao lado da
+execução, espécie PARALELA que não mexe nas contagens de atribuições: 158 `approves` + 5 `consulted`,
+12 capítulos, 163/163 com âncora verbatim, cada uma a permitir contraprovar em vez de confiar. A
+asserção da fonte vai na banda — **não afirma execução nem RACI completo** — e a banda de
+indisponibilidade que a b.43 criou deixou de disparar e saiu limpa, sem ficar pendurada. **ABS-005:
+as sete âncoras ratificadas estão todas servidas** (12 envolvimentos de `gestao-executiva` no cap. 01),
+e portanto o `closes_in` está cumprido e é verificável — **mas o índice não regista a closure, e pela
+regra da b.40 (o tipo vem do índice, nunca da superfície) não a declaro fechada por conta própria**.
+**O GR-04 subiu a SERVIDO e o Eixo I fecha em 6·0·0**, com a sonda a olhar para a espécie nova sem
+que a expectativa mudasse e com a ressalva da fonte na evidência: «delega» não é publicado como tal.
+**Errata de diagnóstico:** o relatório do bloqueio afirmou «não é a allowlist»; era. Li o
+`release_bundle.py` da árvore de trabalho, já corrigida, em vez do ficheiro em `f6d4b97` — apliquei a
+disciplina do pino aos dados e falhei-a no diagnóstico.
+Prior: v0.20.0-beta.43 → `6645503092d97b55b4648bb16315603f66992bf0` (2026-09-08; `release.yml` run 34246978069 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.43` = `beta`, gitHead igual; GitHub pre-release) expõe a ontologia v2.7, e o que
+lhe dá sentido é a terceira parte da `traversal_assertion_rule`: **uma asserção negativa que fica no
+envelope não protege ninguém**. Cada travessia derivada passa a servir o VERBO publicado, a fonte
+autorada e o que NÃO afirma, verbatim. A prova de que a regra é necessária é nossa: a b.40 separou
+correctamente produtores de citadores e chamou `own` ao lado produtor — o verbo publicado é
+`produced_or_operated_by`, e a fonte diz explicitamente que não afirma posse. A palavra saiu do
+vocabulário servido e não volta. Entrou a base `required_as_evidence_by` (37/45) com os 8 órfãos
+declarados um a um, cada um com a ausência que a fonte já lhes tipa; e o RH/PeopleOps passa a ser
+servido como REFERENCIADO-NÃO-CANÓNICO, com as âncoras autoradas que o provam e a contagem canónica
+intacta nos 13 — lida do vocabulário e não do `knownRoles`, que inclui a sentinela `unassigned`.
+**Um bloqueio ficou por fechar e é reportado como achado:** o `deterministic_manifest.json` do pino
+declara 163 registos de `DecisionInvolvement` e o arquivo não traz o ficheiro. Os números do dispatch
+conferem todos contra a árvore upstream — o conteúdo está certo, o empacotamento deixou-o de fora — e
+é exactamente a classe que a b.38 fechou no nosso pacote. O servidor NÃO o vai buscar fora do
+artefacto pinado: a proveniência é verificada por digest, e servir de fora seria servir o que ninguém
+verificou. A falta é declarada onde o consumidor a procuraria, e o ABS-005 não fecha a partir daqui.
+Prior: v0.20.0-beta.42 → `e9233dc0fb56b2a463633712876e8f5592b6486b` (2026-09-08; `release.yml` run 34222106758 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.42` = `beta`, gitHead igual; GitHub pre-release) fecha as 13 células
+`FALTA` que o portão banda × superfície tinha encontrado na sua primeira corrida — e a lição está na
+repartição: **9 eram defeitos do servidor e 4 eram regras do próprio instrumento demasiado largas**,
+corrigidas nele e não reportadas como achados. O mais urgente era o `never_silent` do `trace_graph`:
+uma âncora do tipo errado devolvia `rows: []` sem uma palavra, e o cenário que o cobria dava-o por
+declarado porque a âncora vinha ecoada — a matriz subiu a fasquia e ele caiu. As âncoras válidas
+passam a derivar-se do próprio grafo. O `?` desceu de 116 para 74 sem relaxar critério nenhum: por
+sondas desenhadas para PROVOCAR a condição, entre elas uma prova por variação que chama duas vezes com
+valores diferentes do mesmo argumento e compara o payload — foi ela que apanhou o `task` do `prepare`
+a ser ecoado e inerte, enquanto a superfície irmã já declarava o mesmo input como contexto registado.
+As três superfícies não exercitáveis passaram a zero porque o schema passou a declarar EXEMPLOS
+derivados do bundle, e ao tornarem-se exercitáveis trouxeram um defeito real: o `assess` calculava uma
+postura sobre zero KPIs num capítulo que não existe. Declarar o papel do `task` custou tokens que o
+`prepare` não tinha: reduziu-se a declaração ao termo do vocabulário, os gates DUROS do EPIC passaram
+sem se mexer, e o que se ajustou foi a guarda por secção do `full` — +6 tokens medidos e declarados na
+linha. Inventário reconciliado: **29 tools, 12 resources, 3 prompts**, todas as 29 chamadas por
+cenários.
+Prior: v0.20.0-beta.41 → `b2e95d7d99f9e0fb0e4a4683506250bec34deeda` (2026-09-08; `release.yml` run 34216416581 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.41` = `beta`, gitHead igual; GitHub pre-release) fecha os dois bloqueios da 2.ª
+auditoria externa (8,5/10, «promoveria com dois bloqueios») e entrega o portão de processo que ela
+pediu. O diagnóstico era sobre a FORMA da nossa maquinaria: **estava indexada a valores não
+suportados, não a resultados vazios** — e por isso a classe da b.30 continuava viva, alcançável por
+combinação. Um papel canónico cruzado com uma fase canónica devolvia zero atribuições em silêncio; um
+papel do enum legado devolvia 15 vistas vazias sem uma palavra. Agora um vazio nunca sai sem banda, e a
+banda **isola a causa por recontagem** em vez de a adivinhar: papel sozinho 14, fase sozinha 21,
+cruzamento 0. Os dois vocabulários de papel reconciliam-se pelos ALIASES QUE O BUNDLE PUBLICA — o
+`devops` passou de 0 a 75 user stories, e onde não há alias publicado (`architect`, `security`,
+`manager`) o servidor declara que o valor não é do vocabulário em vez de inventar a correspondência.
+O ABS-001 deixou de ser declarado como lacuna E como fronteira ao mesmo tempo: era o único sítio onde
+uma ausência era as duas coisas, e a própria fonte já dizia que o rótulo local ficava superseded. E a
+MATRIZ BANDA × SUPERFÍCIE — colunas derivadas do `tools/list` vivo, nunca de uma lista à mão — passa a
+correr antes de promover, com 13 células FALTA nomeadas como achados desta corrida. A matriz provou-se
+logo à primeira: revelou uma banda que não estávamos a medir (o nunca-silêncio no caminho de ERRO,
+com duas superfícies a calcular o vocabulário e a deitá-lo fora no `rpcError`) e acusou quatro falsos
+positivos da própria sonda, corrigidos na sonda e não no servidor.
+Prior: v0.20.0-beta.40 → `43afda8e8736a3f066be2aea07106b2f94375db1` (2026-09-07; `release.yml` run 34146451879 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.40` = `beta`, gitHead igual; GitHub pre-release) responde à dúvida que
+travou a promoção: a b.39 tornou o roteiro HONESTO — declarava que deixava 7 capítulos de fora — e
+**um aviso bem escrito não é um roteiro que serve**. O re-pin ao dev-build `kg-v1-manual-v1.8.1-aligned-2026-09-07`
+(contrato v1.19 §1.26, ontologia v2.6) traz a travessia N:M em `bundle_ids`, derivada de 1 296
+assignments autorados, e o roteiro passa a consumi-la em vez do escalar editorial `manual_chapter` —
+que forçava um capítulo por fase e produzia escolhas falsas (o `design` sem a arquitectura segura, o
+`develop` sem o desenvolvimento seguro). União das oito fases: 14 capítulos; o 15.º é o cap. 00, servido
+como **PISO** (`species: piso`) e não como falta — fica fora da derivação por não ser travessia, não por
+ausência. O `chapters_not_in_roadmap` passa a zero e MANTÉM-SE servido, para que a cobertura completa
+seja verificável em vez de assumida. A v2.6 parte também a aresta capítulo↔artefacto em DEFINIDORES e
+CITADORES, e com isso fecha o achado central do auditor: o capítulo da classificação define 7 artefactos
+e cita 24, e deixa de reclamar o SBOM, a imagem de container e o relatório de SAST como seus. E as
+bandas de ausência passam a dizer DE QUE ESPÉCIE são — a decisão do lead: «a lacuna é erro ou omissão e
+tem que ser definido; out-of-scope é decisão». O `absence_type` vem do índice central `declared_absences`
+e NUNCA da superfície; a ligação deriva-se das palavras do próprio índice, não de uma tabela à mão; e uma
+invariante varre o `src` e parte se algum ficheiro fora do módulo do índice carimbar um tipo — é o que
+impede uma lacuna incómoda de virar fronteira por conveniência. O `required_for_levels` é servido pelo
+que é: 2 dos 45 discriminam. O re-pin moveu 8 linhas de ouro, todas o carimbo `kg`, e o ouro do Eixo H
+ficou byte-idêntico nos dois braços ATRAVÉS da mudança de substrato.
+Prior: v0.20.0-beta.39 → `aae175e227c647a337512925b161edb27bb90051` (2026-09-07; `release.yml` run 34100010506 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.39` = `beta`, gitHead igual; GitHub pre-release) fecha a classe que a
+auditoria externa isolou: **as bandas de silêncio existiam onde o servidor CALCULA e faltavam onde
+PROJECTA.** A peça grave era a única afirmação FALSA da build — a vista de capacidade servia as 31
+arestas da relação capítulo↔artefacto como `total`/`mandatory` sob «artefactos que esta capacidade tem
+de PRODUZIR» e carimbadas `canonical`, quando o `count_semantics` do próprio ficheiro diz *«sum them
+for relation edges, never for totals»*. Passa a servir DUAS bases declaradas — 11 artefactos com
+suporte em padrões de evidência (o número do auditor, **confirmado por rota independente**) e 31
+arestas da relação, com a proibição da fonte VERBATIM — e nenhuma delas se apresenta como «o que o
+capítulo tem de produzir», que o Manual não publica. As três projecções ganharam banda: o roteiro
+declara os 7 capítulos que deixa de fora (5 `obrigatorio`), o modelo operacional HERDA a autoridade da
+fonte (`illustrative_overlay` / `example_only`) em vez de promover um exemplo a exigência, e a
+recuperação diz que termos da pergunta não têm âncora no corpus. E o `next` passou a ler as bandas da
+resposta que o transporta, reconciliado no `sendResponse` — o único ponto por onde tudo passa — para
+que as bandas novas não herdassem o defeito que a b.30 deixara aberto. Dois achados subiram como
+CONTEÚDO, declarados e não compensados: `mandatory: true` em 45 de 45, e `chapter_ids` mais largo que
+a própria proveniência (o SBOM nomeia os 15 capítulos com proveniência em 7). E um veredicto de
+investigação: a prática «para L3» servida a L2 **não é defeito nenhum** — a proporcionalidade é
+graduada nos três níveis e o nível filtra bem; o que enganava era o rótulo, agora sinalizado.
+Prior: v0.20.0-beta.38 → `6169d50d57683de517b15e460e0041ebdaf2393b` (2026-09-07; `release.yml` run 34096736399 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.38` = `beta`, gitHead igual; GitHub pre-release) fecha um defeito
+de EMPACOTAMENTO que a estação não viu porque **testava o repo e o utilizador recebe o tarball**: a
+beta.37 enviou a tool da vista processual e não os dados, e uma auditoria externa recebeu,
+correctamente, `not_published`. A causa era de classe, não de instância — **três** listas estáticas a
+falhar ao mesmo tempo: o `files` do package.json (lista branca por ficheiro em quatro pastas), o
+`REQUIRED_PATHS` do `check-npm-package`, e um `BANNED_PATHS` que ainda proibia o
+`bundle_policy_links.jsonl` **para o qual o servidor já encaminhava o consumidor** — apontar para o que
+não se envia era a causa do achado «as políticas instanciadas não têm caminho em nenhuma leitura».
+A partir daqui o conjunto obrigatório é **derivado** (`scripts/derive-published-surfaces.mjs`, fonte
+única) de três lados: o que o pin materializa, o que o código carrega, e o que o código **encaminha**
+— esta última via é a que apanha o caso que uma derivação por `readFileSync` perderia (3 de 4). O gate
+vive onde o CI já olha (`check:npm-package`, antes do publish) e assere contra o **tarball real**;
+provado por mutação nos dois casos, incluindo o que só existe por encaminhamento. A política de
+`semantic/` **não foi relaxada**: as duas superfícies novas entram como excepções NOMEADAS, como as de
+0.18.0. E o Eixo I passa a poder medir **sobre o artefacto** (`--server`), com o relatório a declarar
+contra o que mediu: o beta.37 **publicado** dá **GR-03 NÃO SERVIDO 0/6** (controlo negativo arquivado)
+e o corrigido dá **6/6** — a via de medição discrimina, e isso é prova, não afirmação. Painel
+**5·1·0 sobre o publicado**; a chegada das remissões inter-camada não moveu nenhuma outra leitura.
+Prior: v0.20.0-beta.37 → `6fb82c9d616fe1bf8a2cca7031b1f9c5e0ee1360` (2026-09-06; `release.yml` run 34063791062 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.37` = `beta`, gitHead igual; GitHub pre-release) serve a VISTA
+PROCESSUAL. A montante, o Codex publicou os macro-processos como dados; faltava a última perna — o
+serving. `get_sbd_toe_macro_processes` dá a leitura PROGRAMA («por onde começamos, e com que
+sequência?»): os cinco MP com pergunta, invariante, dono e percurso de capítulos, e a ORDEM DE ADOPÇÃO
+que a fonte publica — `MP-01 → {MP-02 ∥ MP-04} → MP-03 → MP-05`. **A ordem deriva exclusivamente das
+arestas `dependency`**; as 9 de `feedback` vêm servidas em banda própria e fora da ordem por definição.
+O TC-F-64 não acredita na declaração: reconstrói o grafo COM as feedback e **exige que cicle** — se
+deixar de ciclar, a exclusão deixou de ser demonstrável e a suite parte. Três limites vão declarados na
+resposta e no guia: **não existe entidade «programa»** (recusa de curadoria, ratificada), a travessia
+MP↔fase do SDLC é **lacuna publicada** que não se deriva de capítulos, e MacroProcess/capítulo/fase são
+**três segmentações paralelas** — `traverses_bundles` é percurso, nunca contenção. O beta re-pina o
+dev-build `kg-v1-manual-v1.8.1-aligned-2026-09-06` (`f87d5b46bf10`, contract v1.18, manual v1.8.1 +
+ontologia v2.5), que traz `semantic/macro_processes.jsonl` e `semantic/mp_edges.jsonl`: **moveu 139
+linhas de proveniência e ZERO de conteúdo**, e o ouro do Eixo H ficou byte-idêntico nos dois braços.
+**Eixo I: 4·1·1 → 5·1·0**, com o GR-03 a subir de NÃO SERVIDO (2/6) a SERVIDO (6/6) — e a subir **sem**
+que a entidade «programa» exista, porque a peça central ratificada é «MP1–MP5 como dados» e a ausência
+da entidade está declarada, não contornada.
+Prior: v0.20.0-beta.36 → `b26461181e74ecf8e8f5628f010b1bda00e5ffe5` (2026-09-06; `release.yml` run 34055196074 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.36` = `beta`, gitHead igual; GitHub pre-release) fecha a classe que o
+assessment externo (8/10, a nota mais alta desde a b.21) identificou como a única que resta: «texto e
+metadados que descrevem a interface sem serem gerados a partir dela». A lição própria é que a
+invariante next-verbatim não apanhou o `metrics` vs `kpi_values` porque a tool era NOVA — a lista era
+estática. Agora o varrimento deriva do `tools/list` REAL em tempo de teste, uma tool nova entra sozinha,
+e a suite PARTE se a derivação falhar; à primeira corrida apanhou a instância prevista. Mais: a
+conservação NA BANDA da emenda v1.2 (banda vazia havendo conteúdo dá CAMINHO CONCRETO — o consumidor
+que pergunta por segredos vê «uso de segredos estáticos» com a chamada ao lado, sem o servidor inferir
+relevância que o bundle não publica), a escassez declarada, o `assess` com âmbito e denominador
+explicado, a cadeia `exposure → architecture → capítulo` no traço, e os `unmodelled_signals` que
+separam «não te perguntei» de «não sei». Eixo I sob v1.2: **3·2·1 medido na build anterior → 4·1·1**.
+Prior: v0.20.0-beta.35 → `fe4f59aeec8972db0b6cd02d35b121de8621e9ee` (2026-09-06; `release.yml` run 34052937325 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.35` = `beta`, gitHead igual; GitHub pre-release) fecha a leitura CONSULT: a
+pergunta de CONHECIMENTO estava a ser servida por superfícies de SELECÇÃO, e daí vinham as duas peças em
+falta do GR-05. `explain_sbd_toe_topic` atravessa o Manual (requisitos com `applies_at`, orientação,
+provas, ameaças, ANTIPADRÕES e onde no ciclo), dá banda própria aos 26 antipadrões — com as ligações que
+o bundle tem, declaradas como poucas, e o zero DECLARADO quando o tópico não tem — e aplica a regra do
+programa: **o nível ANOTA, não filtra**. A fronteira ficou explícita e testada: o `risk_level` continua
+OBRIGATÓRIO na selecção, no prepare e na capacidade. **GR-05: SERVIDO-MAL → SERVIDO (7/7)**; o GR-04
+fica em SERVIDO-MAL porque a peça que falta é de CONTEÚDO — o bundle não publica taxonomia
+decide-vs-delega, e serve-se a `proportionality` que existe sem a fazer passar pelo que não é.
+Prior: v0.20.0-beta.34 → `4f56bbe29cba92696324faa2be27e8857b709bbd` (2026-09-06; `release.yml` run 34051699997 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.34` = `beta`, gitHead igual; GitHub pre-release) dá caminho à MEDIDA DE
+CAPACIDADE — a peça central da leitura IMPL, que a medição do Eixo I tinha dado como sem caminho. As 99
+métricas já estavam publicadas com thresholds por nível e só o `assess_implementation` lhes tocava, para
+avaliar KPIs que o CHAMADOR trazia; a superfície nova publica os que o MANUAL define, com
+`thresholds_by_level` como dado (é isso que distingue medir de listar), mais os artefactos da capacidade,
+e fecha o ciclo com o assess nos dois sentidos. A leitura IMPL passa a declarar-se na própria resposta e o
+guia ganha o bloco gerado «As LEITURAS». **GR-01: NÃO SERVIDO → SERVIDO** (5/5); nenhum outro caso mexeu.
+Dois registos: o «0 artefactos» era defeito da SONDA (o brief servia 29 — chamava-se com o parâmetro
+errado), e fica DECLARADA a lacuna do `chapter_implementation_checklist`, que não cobre capacidade
+organizacional. Selecção intocada; ouro do Eixo H byte-idêntico.
+Prior: v0.20.0-beta.33 → `f2262f81d8bc83cb8ba253c3ad38f50580676ef3` (2026-09-06; `release.yml` run 34050890354 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.33` = `beta`, gitHead igual; GitHub pre-release) dá caminho NORMATIVO aos
+cross-checks e playbooks — a leitura que os clientes fazem primeiro e a que a baseline do Eixo I tinha
+medido pior (1 de 5 peças; NÃO SERVIDO sob o critério v1.1, porque o playbook só era alcançável por
+`search_sbd_toe_manual`, declarado não-normativo). Não havia nada a construir a montante: o bundle já
+publicava 20 playbooks e 450 secções; faltava a PORTA. A superfície serve a autoridade com o conteúdo
+(os 5 exemplos ilustrativos em banda SEPARADA, nunca com o estatuto dos cross-checks), impõe a
+delimitação honesta em toda a resposta («o SbD-ToE não é uma norma»), declara os frameworks sem
+cross-check com o roadmap derivado do próprio Manual, e liga nos dois sentidos com o overlay
+regulatório. **GR-02: NÃO SERVIDO → SERVIDO** (5/5 peças). GR-01 e GR-03 passam a NÃO SERVIDO pela
+re-classificação da emenda v1.1, não por regressão. Selecção intocada; ouro do Eixo H byte-idêntico.
+Prior: v0.20.0-beta.32 → `aad6ea768aab79e0d9ed9689ea4edfa4fd9aca9b` (2026-09-06; `release.yml` run 34049524817 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.32` = `beta`, gitHead igual; GitHub pre-release) implementa o EIXO I —
+leituras — a par do Eixo H e mede-o pela primeira vez contra o oráculo novo do programme lead
+(`golden-reading-cases.md` v1, ratificado «adjudico», imutável e transcrito sem emendas). Baseline:
+**1 SERVIDO (GR-06, o controlo positivo) · 5 SERVIDO-MAL · 0 NÃO SERVIDO**, sem nenhum must-NOT
+violado. NADA foi corrigido — a medição é o produto da vaga, e as lacunas que ela expõe (KPIs por
+capítulo, playbooks só por superfície não-normativa, MP1–MP5 inexistentes no KG, antipadrões sem porta,
+decide-vs-delega não publicado, `risk_level` exigido para perguntas de conhecimento) passam a ser fila
+de trabalho com alvo medido. O controlo positivo fez o seu papel: na 1ª corrida deu SERVIDO-MAL e a
+investigação mostrou que o defeito era da SONDA, não do servidor. Selecção intocada; ouro do Eixo H
+byte-idêntico.
+Prior: v0.20.0-beta.31 → `711b6b523f00876fb65b7aa9f7e2677e4b97b5f8` (2026-09-06; `release.yml` run 34041253012 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.31` = `beta`, gitHead igual; GitHub pre-release) aplica às BORDAS a
+disciplina que o núcleo já tinha: o que descreve comportamento passa a ser gerado a partir do
+comportamento. A invariante entre superfícies alargou-se às 11 tools que resolvem vocabulário — o P0
+entrou porque o `get_guide_by_role` nunca estivera no varrimento — e o inventário deu 4 instâncias,
+DUAS delas desconhecidas (checklist do cap. 00 e overlay ENISA-CSA). As notas das respostas e as
+descrições das tools passam a ler de uma fonte única (`behaviour-notes.ts`), depois de se confirmar que
+o `meta.note` do mapa de ameaças descrevia a ordenação de duas versões antes e dava o conselho OPOSTO
+ao correcto. Mais: `routing_basis` desambiguado e por concern (o número do capítulo era lido como
+contagem), a contraprova que o guia exige passa a ser possível via `cross_surface_check` sem alargar o
+consult, e os menores pedidos há várias rondas (`unsupported_obligations`, `equivalent_to`,
+`distinctUserStoryCount`).
+Prior: v0.20.0-beta.30 → `e374f7c8c1a514b621c314f629b9ad1937224df0` (2026-09-06; `release.yml` run 34035926529 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.30` = `beta`, gitHead igual; GitHub pre-release) implementa o desenho das
+TRÊS FORMAS DE PEDIR ratificado pelo lead: o contrário de «adivinhar prosa» não é «escolher de uma
+lista», é «pedir com precisão». A forma B (estrutura) abre na própria superfície de selecção
+(`chapters`/`categories`, com traço `declared_structure`, mesmas bandas e denominadores), a forma C
+(navegação, `trace_sbd_toe_graph`) ganha estatuto no arranque, e publica-se o recurso de MODELO —
+entidades, relações e cardinalidades REAIS, com a forma que alcança cada capítulo e categoria — mais um
+quick-start de 500 tk contra os 13.135 do arranque completo. A invariante de ALCANÇABILIDADE, corrida
+ANTES das correcções, deu o inventário: 0 capítulos inalcançáveis, 3 categorias órfãs (CLA/GOV/TRN) e
+9 caminhos FALSOS (13 e 14 ofereciam só `changed_files` inventados; 01 não oferecia nada) — todos
+eliminados: a via estrutural é sempre verdadeira e está em todos. O cap. 14 e o cap. 01 passam a ter
+porta; o servidor continua a nunca emitir nível de risco.
+Prior: v0.20.0-beta.29 → `2ff38091657b20769c250740f8f2ab770e131850` (2026-09-06; `release.yml` run 34034024200 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.29` = `beta`, gitHead igual; GitHub pre-release) é a lane SERVING da fase
+de NAVEGAÇÃO. As ameaças passam a vir ordenadas por PERTENÇA ao âmbito declarado — a mesma correcção
+que fechou os evidence_patterns na beta.27 — e a página 1 de `integration` deixa de ser MT-001..008
+(«Overengineering», cap. 01) para ser MT-039.. do cap. 03; os caps. 01/02 vão para o fim. A tabela do
+guia e a descrição da tool passam a distinguir ROTEAMENTO de COBERTURA (24 resolvem sem erro; 11 têm
+capítulo de ameaças próprio, nomeados) — publicado ANTES de se gastar a chamada, e o número é o MEDIDO,
+não o estimado. Mais o bug do contador da legenda (dizia 0 com 13 nos arrays), a ordem do setup no guia
+(a ressalva passa a vir antes da instrução) e a nota do `operator: extend`, que descrevia o que NÃO
+acontece. Selecção inalterada; ouro byte-idêntico.
+Prior: v0.20.0-beta.28 → `37ef1144acc86a9949e321949489cec627a82629` (2026-09-06; `release.yml` run 34031389949 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.28` = `beta`, gitHead igual; GitHub pre-release) é o primeiro ciclo com
+âmbito por CLASSE em vez de instância. A suite de invariantes entre superfícies correu ANTES de
+qualquer correcção e produziu o inventário: 5 candidatos, 3 instâncias reais (o consult a aceitar e
+deitar fora `exposure`/`data_sensitivity` — 59 requisitos em causa, incluindo controlo de acesso — e
+dois blocos GERADOS do guia a contradizerem-se sobre a mesma tool) e 2 falsos positivos da PRÓPRIA
+suite, corrigidos antes de se confiar nela. Todas as instâncias reais fechadas: zero dívida.
+Acresce a base de routing declarada no mapa de ameaças (`activated_controls` vs `domain_chapter`) e a
+deduplicação como nível de serialização (−51%), sem renomear campos publicados.
+Prior: v0.20.0-beta.27 → `f1bc7dcf77268291b0ab24c11bb3000fbb77139c` (2026-09-06; `release.yml` run 34028041205 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.27` = `beta`, gitHead igual; GitHub pre-release) fecha a adenda do
+assessment da beta.25. O `consult` perdia 11 dos 24 concerns em silêncio e o `rule_trace` AFIRMAVA
+«0 requirements active» com 247 aplicáveis ao nível — resolvia por `concernsMap` cru em vez do mapa
+publicado. Corrigido à RAIZ, o que curou também o mapa de ameaças (os 24 passam a roteáveis: uma
+causa alimentava três superfícies). O guia passa a mandar CONTRAPROVAR um vazio sem declaração, com
+bloco derivado de cobertura por superfície. E a INVARIANTE ENTRE SUPERFÍCIES (24 concerns × 3
+níveis, 5 propriedades) apanhou quatro defeitos à primeira execução — incluindo o vocabulário a
+prometer MENOS do que o servidor entrega para `agents` — e dois defeitos introduzidos nesta própria
+vaga, antes de saírem da lane.
+Prior: v0.20.0-beta.26 → `b1ab9a73fb862f88db1ed4233f58ff00937a67c3` (2026-09-06; `release.yml` run 34026770992 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.26` = `beta`, gitHead igual; GitHub pre-release) fecha a
+Fase 4 com a vaga de ECONOMIA E AUDITORIA: nenhum item toca fidelidade, motor ou documentação
+derivada, e a selecção fica byte-a-byte na mesma (ouro idêntico nos dois braços). Os
+`evidence_patterns` passam a ordenar por PERTENÇA ao âmbito (a sonda de validação trazia 5 em 5
+de fora; a de auth funcionava por sorte alfabética); o mapa de ameaças pára com `needs_input` a
+434 tk em vez de cobrar 8,3k de ameaças de governação; o traço regista TODOS os activadores de um
+capítulo; o `select` ganha dieta por legenda de justificações (12 distintas para 115 entradas →
+−21% a −58%, com reconstrução byte-a-byte garantida por invariante); os denominadores passam a ter
+nome, valor e definição; o overlay devolve `obligation_ids`; a cobertura PARCIAL (EP sem
+`validation_method`) passa a ser declarada e o gap inexistente deixa de o ser; e o cap. 01 é
+explicado em vez de ganhar um activador que mudaria a selecção.
+Prior: v0.20.0-beta.25 → `0c3060e9d4e64fc9ad3c459d54831ba86719d015` (2026-09-06; `release.yml` run 34024615011 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.25` = `beta`, gitHead igual; GitHub pre-release) fecha a adenda
+ao ciclo beta.24: a teoria do minLevel (retirada em 0.14.0) sobrevivia na documentação-mãe e, depois
+da beta.24, num bloco GERADO — a coluna «Presente desde» reintroduzia-a pela forma; morre
+explicitamente, com a afirmação positiva («nenhum capítulo se exclui por nível») nos dois blocos.
+A varredura do guia inteiro achou mais nove afirmações que contradiziam o comportamento actual,
+incluindo «TWO bands» (são quatro desde 0.15.0), tamanhos de resposta com 30-45% de erro (agora
+medidos e gerados) e o `search_sbd_toe_manual` apresentado sem a marca NÃO-NORMATIVO que a própria
+tool declara. Guarda de suite de 6 para 10 propriedades.
+Prior: v0.20.0-beta.24 → `863ed99bacb3797b9603ef387b4c736dd8ec40c1` (2026-09-06; `release.yml` run 33999753605 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.24` = `beta`, gitHead igual; GitHub pre-release;
+`latest` = 0.19.4 intocado) tira da mão a última peça manual e dá âmbito à promessa: o agent-guide
+passa a ser GERADO do vocabulário e da superfície MCP real (a tabela que publicava como
+«ontology-controlled vocabulary» era, carácter a carácter, o `supported_values` do mapa de ameaças —
+13 valores em vez de 24, e o seu complemento eram exactamente os 11 `unsupported_concerns` da
+beta.23), com guarda de suite da família next-verbatim; a promessa «nunca em silêncio» passa a
+declarar o seu ÂMBITO com `out_of_scope_chapters` (133 requisitos em 14 capítulos que desapareciam
+sem uma linha, agora por contagem e com caminho de recuperação derivado, a 538 tokens contra os
+3.689 que custaria listá-los); e a invariante de conservação deixa de varrer só a baseline.
+Prior: v0.20.0-beta.23 → `e99a2cb2e09e33b25c8d3a42e959b3513f5f08f8` (2026-09-05; `release.yml` run 33990234962 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.23` = `beta`, gitHead igual; GitHub pre-release;
+`latest` = 0.19.4 intocado) fecha a classe CONSERVAÇÃO: a invariante nova varre o vocabulário
+todo (24 concerns × 3 níveis + exposure + data_sensitivity + technologies + paths) e exige que
+tudo o que é PROMETIDO apareça nalguma banda — apanhou 12 violações em 4 famílias (`build`,
+`supply_chain`, `release`, `deployment`), quando a sonda externa só tocava uma. O motor cede à
+promessa publicada por categoria (traço próprio `declared_category`); efeito cirúrgico: 12 de 72
+combinações mudam, 60 ficam idênticas e o ouro não se move em nenhum dos braços. `get_threat_landscape`
+declara `unsupported_concerns` (11 de 24 devolviam zero mudo) e o agent-guide deixou de mandar afirmar
+ausência fundamentada a partir de lista vazia; a guarda anti-zero cobre `technologies` e deixa de
+descartar declarações com efeito; `provenance.server` torna cada resposta atribuível.
+Prior: v0.20.0-beta.22 → `6a695af9e0002e876ad5eb5163f578ea79073987` (2026-09-05;
+`release.yml` run 33980538378 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.22` = `beta`,
+gitHead igual; GitHub pre-release; `latest` = 0.19.4 intocado) fecha os 7 itens da validação externa da linha declarativa: a guarda anti-zero passou a
+INVARIANTE indexada à activação (192 combinações; apanhou 2 instâncias novas), o vocabulário passou a
+fonte única dos `enum` das tools, e as activações que não deixavam rasto (stack, regra nomeada) passaram
+a declará-lo. Prior: v0.20.0-beta.21 → `415534192f02defcb64f60b878df4252851e6957` (2026-09-05;
+`release.yml` run 33963546721 publicou npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.21` = `beta`,
+gitHead igual; GitHub pre-release; `latest` = 0.19.4 intocado) é a EXPERIÊNCIA «declarativo primeiro» autorizada pelo programme lead: a selecção passa
+a responder ao que o chamador DECLARA (vocabulário publicado em `sbd://toe/activation-vocabulary`), a
+ausência de declaração é `needs_input`, e o motor inferencial fica em `mode="discover"`. Contrato de
+SERVIÇO v1.18-beta anunciado em `sbd://toe/version` (o pin do KG não muda). A linha ESTÁVEL mantém a
+semântica anterior — nada se propaga sem números e decisão do lead. Prior: v0.20.0-beta.20 → `bc101795a0959dcece37e4d277c2e061a4a77b22` (2026-09-04;
+`release.yml` run 33907019917 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.20` = `beta`,
+gitHead same commit; GitHub pre-release; `latest` = 0.19.4) is a COMBINED wave absorbing stable 0.19.3 + 0.19.4: the next-verbatim invariant was
+extended to this line's executable references (2 beta-only legend URIs fixed) and the per-detail
+requirement ceilings landed (88-req case + taught-batch round-trip verified). Prior: v0.20.0-beta.19 → `084cb3f801484550926b8565c53156124d277e0b` (2026-09-04;
+`release.yml` run 33896956237 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.19` = `beta`,
+gitHead same commit; GitHub pre-release; `latest` = 0.19.2) absorbs stable 0.19.2 — next calibrated (top-3 by weight; matrix cap declared);
+START HERE in the select/setup descriptions; beta-only next sweep clean (trace has no next[]).
+Prior: v0.20.0-beta.18 → `6289bb8b11478656438bfd612d59bff9f26d0f34` (2026-09-04;
+`release.yml` run 33890710115 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.18` = `beta`,
+gitHead same commit; GitHub pre-release; `latest` = 0.19.1) absorbs stable 0.19.1 — the zero becomes an alarm (empty_selection_warning), R2 yields
+only to explicit_concern (invariant selected∧narrowed=∅; replay-SES guard re-run); eval gate now
+asserts package_version. Prior: v0.20.0-beta.17 → `18cc23fd7c872b5b1074f7ff303eb66cda67560c` (2026-09-04;
+`release.yml` run 33863271967 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.17` = `beta`,
+gitHead same commit; GitHub pre-release; `latest` = 0.19.0) absorbs stable 0.19.0 — basis declared|lexical on selection, lexical-dominance
+warning, form-diet, slots by index; two-wordings case reproduced live; sentinel hard-gate adopted.
+Prior: v0.20.0-beta.16 → `791b4124ff1c7b1a412fb927d5cbbe79b6f525f3` (2026-09-03;
+`release.yml` run 33790707850 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.16` = `beta`,
+gitHead same commit; GitHub pre-release; `latest` = 0.18.1) closes the formal batch on this line — `source: release` KG `v1.11.0` (sha256
+`b7444094…`, contract v1.17), stamp transition to the tag verified live; TC-F-28 re-run on the
+formal pin. Prior: v0.20.0-beta.15 → `1bce819ed42a603b1d37c8e9844e999b732c6fdc` (2026-09-03;
+`release.yml` run 33787544447 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.15` = `beta`,
+gitHead same commit; GitHub pre-release; `latest` = 0.18.0) absorbs stable 0.18.0 — station 3: requirement→source traceability served
+(direct vs compensated); dev-build kg-2026-09-03 pinned (sha256 `e5c3581b…`, contract v1.17);
+semantic-layer projection lens declared as an opportunity, not implemented. Prior: v0.20.0-beta.14 → `5f30aaa814dc1a04a96660a92f597809f267885c` (2026-09-02;
+`release.yml` run 33675619715 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.14` = `beta`,
+gitHead same commit; GitHub pre-release; `latest` = 0.17.0) absorbs stable 0.17.0 — never-silent filter-key validation on resolve_entities and the
+requirement→proof chain; no beta-only surface accepts field filters (audited, declared). Prior: v0.20.0-beta.13 → `0795d54727841abad94089e41765cb5ac3ee537d` (2026-09-02;
+`release.yml` run 33629570546 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.13` = `beta`,
+gitHead same commit; GitHub pre-release; `latest` = 0.16.1) closes the formal batch on this line — `source: release` KG `v1.10.0` (sha256
+`d8df472b…`, contract v1.16), stamp transition to the tag verified live. Prior: v0.20.0-beta.12 → `9c7c177cf0efe2d74a8a4675e8584748d866c4a5` (2026-09-02;
+`release.yml` run 33626266819 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.12` = `beta`,
+gitHead same commit; GitHub pre-release; `latest` = 0.16.0) absorbs stable 0.16.0 — the serving line re-pins the dev-build
+`kg-v1-manual-v1.8.0-aligned-2026-09-02` (sha256 `c832fd97…`, contract v1.16 «data debt» served);
+the v1.16 join fields are outside the RDF projection (declared). Prior: v0.20.0-beta.11 → `df78dd2967190468a167156bf3ff72562130adc2` (2026-09-02;
+`release.yml` run 33619034393 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.11` = `beta`,
+gitHead same commit; GitHub pre-release; `latest` = 0.15.1) absorbs stable 0.15.1 — the Desktop-audit reverification series closes on both lines
+(tool_prefix placeholder, assess complete, maxItems 5 measured). Prior: v0.20.0-beta.10 → `acba78458cf43ed837602662213ee6187f80bc62` (2026-09-02;
+`release.yml` run 33609792488 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.10` = `beta`,
+gitHead same commit; GitHub pre-release; `latest` = 0.15.0) absorbs stable 0.15.0 — universal pagination, excluded_by_level band, derived
+index-compact (static file deleted here too), harmonized errors; codegen-instructions line_note
+inverted (the trace tool exists on this line). Prior: v0.20.0-beta.9 → `3f035b213c75f245cc7c61735adda475efbab5c1` (2026-09-01;
+`release.yml` run 33448740512 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.9` = `beta`,
+gitHead same commit; GitHub pre-release) absorbs stable 0.14.0 (graduated applicability — Author decision verbatim) and
+closes Axis G (trace_sbd_toe_graph scenarios; 24/24 tools). Prior: v0.20.0-beta.8 → `4681fd20`
+(absorbs 0.13.0; npm `beta` was 0.20.0-beta.8, gitHead confirmed; 727/727, gate E PASS, golden 10/10,
+ceilings intact). Prior: v0.20.0-beta.7 → `4256ee0f09386a45e69012ec565375965f49b0de` (2026-08-31, formal batch
+«3 sims»; `release.yml` run 33433883272 published npm `@shiftleftpt/sbd-toe-mcp@0.20.0-beta.7` =
+`beta`, gitHead same commit; GitHub pre-release; `latest` = 0.12.0, stable lane) serves the **formal KG `v1.9.0`** (sha256
+`11153c85…`, contract v1.15, FIL/PRI 273/29); fixture-2 payload gates ratified + harmonised
+(9,200/8,450). Prior: v0.20.0-beta.6 → `322c38f4` (KG v1.7.0 + MP1). Not a published/frozen state.
 **Most recent published state:** icsme-2026-tool-demonstration / v0.9.0 (2026-05-21)
 **Most recent release:** v0.10.4 (2026-08-30) — served bundle: formal KG release
 `v1.7.0` (commit `894af32a85d6a50f648f10d8a643848e806e533e` = `mcp-stable`; asset sha256
@@ -121,9 +593,9 @@ v1.14), ontology `sbdtoe-ontology-v2.2` (`2be86e8b`), Manual v1.7.1
 (`8e03454c5137ded5a0a88ac2b91b1c4d6ee8fdac`). Tag `v0.10.4` = squash commit of the PR
 introducing this row (recorded here once created). Prior: v0.10.3 (2026-08-30,
 `06f8bbaa`, KG v1.6.1), v0.10.2 (2026-08-29, `31aa22af`, KG v1.6.0).
-**Expected next freeze event:** annotated tag `v0.12.0` on the squash commit of the
-formal-lote PR (npm `latest` via release.yml). The `v0.11.0` gate is dissolved —
-superseded by 0.12.0. Next beta absorbs the MP1 cycle + v1.8.0 wave in its own session.
+**Expected next freeze event:** none scheduled — the formal KG v1.9.0 batch is executing
+(this beta.7; stable 0.12.0 on master). Prior tags: `v0.11.0` (`102b8166`),
+`v0.20.0-beta.6` (`322c38f4`), cut 2026-08-31 after the side-by-side.
 
 ## Cross-references
 
@@ -163,6 +635,19 @@ prohibits tag deletion without explicit authorisation):
   (2026-04-17) and after the §8.1 four-week retroactive window. Class B per §9.2
   (reversible; no scientific damage if completed promptly).
 
+- **Tag `v0.2.5` diverges between a local clone and origin** (observed 2026-08-29 while
+  preparing v0.20.0-beta.3). `origin` `refs/tags/v0.2.5` → `8a479c81892e12a249279c772be313d7efffd777`
+  (lightweight; «ci: remove NODE_AUTH_TOKEN from npm publish step», 2026-03-27 18:07:05Z; the
+  GitHub Release `v0.2.5` was created at that instant on that commit). The local clone at
+  `SecurityByDesign-TheoryOfEverything/sbd-toe-mcp-poc` carries `v0.2.5` →
+  `318b8ee7e952c6e968a2836aa59223e778e62ec7` («chore: bump to 0.2.5», 18:07:36Z). The two
+  commits are siblings (neither is an ancestor of the other; both reachable from master) and
+  npm never published 0.2.5 (`npm view …@0.2.5` → 404). **Canonical = origin (`8a479c81`)** —
+  the pushed tag and its GitHub Release are the published state (§3.2); the local ref is a
+  stale pre-push variant. Per Rule 9 nothing was re-pointed; the only remediation, if the
+  programme lead wants it, is refreshing the local ref in that clone
+  (`git fetch origin --tags --force`), which touches no published state.
+
 ## Change log for this registry
 
 | Date | Change | Author |
@@ -170,27 +655,122 @@ prohibits tag deletion without explicit authorisation):
 | 2026-06-25 | Initial skeleton created (file was absent). Populated from git tags + CITATION.cff; uncertain mappings marked TODO. | Claude (AI agent), under Pedro Farinha |
 | 2026-08-29 | v0.10.2 registered (protected tag list, current working state, upstream pins with exact tags/hashes: KG v1.6.0, Manual v1.7.0, ontology v1.1). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-29 | v0.10.2 tag commit recorded (`31aa22af`, squash of #47); npm publish + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-29 | Beta-line copy (branch `0.20-beta`): prerelease-tag table (beta.1/beta.2/beta.3), beta current working state, `v0.2.5` local/origin divergence recorded (canonical = origin; nothing re-pointed). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-29 | v0.20.0-beta.3 tag commit recorded (`5b346387`); npm `beta` publish + GitHub pre-release confirmed (run 33266147054). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-30 | v0.10.3 registered (protected tag list, current working state, upstream pins: KG v1.6.1, Manual v1.7.1). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-30 | v0.10.3 tag commit recorded (`06f8bbaa`, squash of #51); npm publish + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-30 | v0.10.4 registered (protected tag list, current working state, upstream pins: KG v1.7.0, ontology v2.2, Manual v1.7.1). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-31 | v0.10.4 tag commit recorded (`2937236d`, squash of #54); npm publish + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-31 | v0.11.0 registered as pending (protected-tag list; tag gated on 0.20.0-beta.6 + two-line verification). Served bundle pins unchanged (KG v1.7.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-30 | Beta-line copy: stable rows synced from master (v0.10.3, KG v1.6.1); v0.20.0-beta.4 registered in the prerelease table (tag on the commit introducing this row). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-30 | v0.20.0-beta.4 tag commit recorded (`d89b30df`, fix-forward over `272d8c9`); npm `beta` publish + GitHub pre-release confirmed (run 33282763025). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-31 | Beta-line copy: stable rows synced from master (v0.10.4, KG v1.7.0); v0.20.0-beta.5 registered in the prerelease table (tag on the commit introducing this row). No published/frozen-state rows changed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-31 | v0.20.0-beta.5 tag commit recorded (`62a1eda3`); npm `beta` publish + GitHub pre-release confirmed (run 33376552153). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-31 | Beta-line copy: MP1 cycle absorbed (beta.6 prepared row; stable rows synced incl. 0.11.0 prepared). No published/frozen-state rows changed; no tag yet. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-31 | v0.20.0-beta.6 tag commit recorded (`322c38f4`; npm `beta` confirmed; stable `v0.11.0` → `102b8166`). Dev-build `kg-v1-manual-v1.8.0-aligned-2026-08-31` pinned on the beta serving line (sha256 `ad0fc96c…`, contract v1.15, FIL/PRI). No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-31 | Formal batch («3 sims»): v0.20.0-beta.7 registered — formal KG `v1.9.0` pinned (`source: release`, sha256 `11153c85…`); fixture-2 gates ratified + harmonised (9,200/8,450), deviations emptied. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-08-31 | v0.20.0-beta.7 tag commit recorded (`4256ee0f`); npm `beta` publish + GitHub pre-release confirmed (run 33433883272). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-31 | Dev-build `kg-v1-manual-v1.8.0-aligned-2026-08-31` pinned on the serving line (sha256 `ad0fc96c…`, contract v1.15, 273 req/29 cat — FIL/PRI). No frozen state touched; formal KG v1.9.0 em lote. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-08-31 | Re-pin `source: release` KG v1.9.0 (sha256 `11153c85…` verified; zero-delta over the dev-build; mcp-stable = `93fe9fb1`). v0.12.0 registered (protected-tag list); v0.11.0 marked superseded (tag never created). Ceilings ratified+harmonized 9.200/8.450 ("3 sims"). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-01 | v0.20.0-beta.8 tag commit recorded (`4681fd2` — absorbs stable 0.13.0 via cherry-pick `079bb35`: read_sbd_toe_resource + provenance.kg stamp + inspect pin provenance; no ceiling touched; pins unchanged KG v1.9.0); npm dist-tag `beta` + gitHead confirmed. Registry rows land in THIS follow-up: the close-chore registry step aborted on this file's layout and its commit message overstated — declared here. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-01 | v0.20.0-beta.9 registered (absorbs stable 0.14.0 graduated applicability; Axis G scenarios added in runner + governance doc, 24/24 tools; bundle pin unchanged KG v1.9.0). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-01 | v0.20.0-beta.9 tag commit recorded (`3f035b21`); npm `beta` publish + GitHub pre-release confirmed (run 33448740512). Governance catalogue committed in DevelopmentGovernance (Axis G filled; file was previously untracked there — declared). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-01 | v0.12.0 tag commit recorded (`b475900e`, squash of #62); npm publish (`latest`) + GitHub Release confirmed. v0.13.0 registered (protected-tag list; serving batch, bundle pin unchanged). `release_ref` owner normalized SbD-ToE (cosmetic). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-01 | CORRECTION (lead-approved): v0.11.0 WAS tagged (`102b8166`) and published to npm on 2026-08-31 14:56Z alongside 0.20.0-beta.6 — the G-mp1a gate was fulfilled; the "superseded/never tagged" notes from the 0.12.0 lote were stale. Protected-tag entry amended. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-01 | v0.13.0 tag commit recorded (`8a3a9a90`, squash of #63); npm publish (`latest`) + GitHub Release confirmed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-01 | v0.14.0 registered (protected-tag list): graduated applicability cycle — binary chapter exclusion retired from the serving per the Author's verbatim decision; derivation from bundle assignments + chapter-01 matrix anchor. Pins unchanged (KG v1.9.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-01 | v0.14.0 tag commit recorded (`1f199ccb`); npm latest + Release confirmed. v0.15.0 registered (Desktop-audit cycle; static index-compact retired from the package lists). Pins unchanged (KG v1.9.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
-
+| 2026-09-02 | v0.20.0-beta.10 registered (absorbs stable 0.15.0; line_note inverted for the beta; static index-compact deleted on this line too; bundle pin unchanged KG v1.9.0). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-02 | v0.20.0-beta.10 tag commit recorded (`acba7845`); npm `beta` publish + GitHub pre-release confirmed (run 33609792488). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-02 | v0.20.0-beta.11 registered (absorbs stable 0.15.1; beta-only surfaces audited clean; bundle pin unchanged KG v1.9.0). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-02 | v0.20.0-beta.11 tag commit recorded (`df78dd29`); npm `beta` publish + GitHub pre-release confirmed (run 33619034393). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-02 | v0.20.0-beta.12 registered (absorbs stable 0.16.0; dev-build 2026-09-02 pinned, sha256 `c832fd97…`, contract v1.16; v1.16 join fields declared outside the RDF projection). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-02 | v0.20.0-beta.12 tag commit recorded (`9c7c177c`); npm `beta` publish + GitHub pre-release confirmed (run 33626266819). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-02 | v0.20.0-beta.13 registered (absorbs stable 0.16.1; formal re-pin release KG v1.10.0, sha256 `d8df472b…`, byte-identical to the dev-build; stamp "v1.10.0" verified). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-02 | v0.20.0-beta.13 tag commit recorded (`0795d547`); npm `beta` publish + GitHub pre-release confirmed (run 33629570546). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-02 | v0.20.0-beta.14 registered (absorbs stable 0.17.0; beta-only surfaces audited — no field filters to validate; bundle pin unchanged KG v1.10.0). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-02 | v0.20.0-beta.14 tag commit recorded (`5f30aaa8`); npm `beta` publish + GitHub pre-release confirmed (run 33675619715). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-02 | v0.15.0 tag commit recorded (`7c4d6a79`, squash of #66); npm latest + Release confirmed. v0.15.1 registered (reverificação Desktop; pins unchanged KG v1.9.0). REPAIR NOTE: the 0.15.1 release commit briefly truncated this file by a bad splice — restored from master and re-applied cleanly in the same PR (declared). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-02 | v0.15.1 tag commit recorded (`a3536fde`, squash of #67); npm latest + Release confirmed. v0.16.0 registered — re-pin dev-build 2026-09-02 (`c832fd97…`, v1.16, digest-verified) with the data-debt joins exposed. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-02 | v0.16.0 tag commit recorded (`3e32af19`, squash of #68); npm latest + Release confirmed (boleia declarada). v0.16.1 registered — lote formal: re-pin release KG v1.10.0 (`d8df472b…`, digest-verified, byte-igual ao dev-build). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-02 | v0.16.1 tag commit recorded (`04430cbd`, squash of #69); npm latest + Release confirmed (boleia declarada). v0.17.0 registered — never-silent no resolve + requisito→prova na matriz. Pins unchanged (KG v1.10.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-03 | v0.20.0-beta.15 registered (absorbs stable 0.18.0; dev-build kg-2026-09-03 pinned, sha256 `e5c3581b…`, contract v1.17; 2 semantic surfaces as named packaging exceptions, npm pack --dry-run verified). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-03 | v0.20.0-beta.15 tag commit recorded (`1bce819e`); npm `beta` publish + GitHub pre-release confirmed (run 33787544447). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-03 | v0.20.0-beta.16 registered (absorbs stable 0.18.1; formal re-pin release KG v1.11.0, sha256 `b7444094…`, byte-identical to the dev-build; stamp "v1.11.0" verified). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-03 | v0.20.0-beta.16 tag commit recorded (`791b4124`); npm `beta` publish + GitHub pre-release confirmed (run 33790707850). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-03 | v0.17.0 tag commit recorded (`61183f06`, squash of #70); npm latest + Release confirmed (boleia declarada). v0.18.0 registered — estação 3: pin dev-build kg-2026-09-03 (`e5c3581b…`, v1.17, digest-verified) + trace de fontes (directas vs compensadas). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-03 | v0.18.0 tag commit recorded (`b1dbc7e6`, squash of #71); npm latest + Release confirmed (boleia declarada). v0.18.1 registered — lote formal: re-pin release KG v1.11.0 (`b7444094…`, digest-verified, byte-igual). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-04 | v0.20.0-beta.17 registered (absorbs stable 0.19.0; precondition completed by watching the in-flight v0.19.0 publish run before absorbing; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-04 | v0.20.0-beta.17 tag commit recorded (`18cc23fd`); npm `beta` publish + GitHub pre-release confirmed (run 33863271967). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-04 | v0.20.0-beta.18 registered (absorbs stable 0.19.1; V2/V4/replay-guard reproduced; agentic heuristics coherent under the new precedence — no divergence; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-04 | v0.20.0-beta.18 tag commit recorded (`6289bb8b`); npm `beta` publish + GitHub pre-release confirmed (run 33890710115). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-04 | v0.20.0-beta.19 registered (absorbs stable 0.19.2; beta-only next sweep declared clean; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-04 | v0.20.0-beta.19 tag commit recorded (`084cb3f8`); npm `beta` publish + GitHub pre-release confirmed (run 33896956237). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-04 | v0.20.0-beta.20 registered (COMBINED absorption of stable 0.19.3 + 0.19.4; beta invariant extension caught and fixed 2 legend URIs served without naming read_sbd_toe_resource; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-04 | v0.20.0-beta.20 tag commit recorded (`bc101795`); npm `beta` publish + GitHub pre-release confirmed (run 33907019917). | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-04 | v0.18.1 tag commit recorded (`dc5500af`, squash of #72); npm latest + Release confirmed (boleia declarada). v0.19.0 registered — ronda 3 (basis+aviso; near-touch resolvido por dieta; 2º incidente de gate travado em draft → sentinela adoptada). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-04 | v0.19.0 tag commit recorded (`ab4340d8`, squash of #73); npm latest + Release confirmed (boleia declarada). v0.19.1 registered — ronda 4 (zero=alarme; explicit>lexical; a sentinela de gate travou uma 1ª versão errada da precedência antes de docs/PR — mecanismo validado). Pins unchanged (KG v1.11.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-04 | v0.19.1 tag commit recorded (`a80741d2`, squash of #74); npm latest + Release confirmed. v0.19.2 registered — micro (next calibrado com limites do destino; START HERE nas descrições). Pins unchanged (KG v1.11.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-04 | v0.19.2 tag commit recorded (`99ad5a91`, squash of #75); npm latest + Release confirmed. v0.19.3 registered — ronda 5 + adenda r6 (invariante next-verbatim; verdades matrix/setup; record_type declarado; medição item 7 reportada). Pins unchanged (KG v1.11.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-04 | v0.19.3 tag commit recorded (`12c5188c`, squash of #76); npm latest + Release confirmed. v0.19.4 registered — a promessa do minimal (tecto por-id 78/81/86 derivado da medição; declarado; divisão executável ensinada; full sem tecto). Pins unchanged (KG v1.11.0). | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-05 | v0.20.0-beta.21 registered (experiência «declarativo primeiro»: contrato de serviço v1.18-beta, vocabulário de activação publicado, needs_input, modos baseline/discover; oráculo histórico 10/10 em discover + conjunto declarativo novo 6/4/0; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-05 | v0.20.0-beta.21 tag commit recorded (`41553419`); npm `beta` publish + GitHub pre-release confirmed (run 33963546721). | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-08 | **ERRATA de registo (append-only; nada reescrito no histórico).** Os dois ficheiros do Eixo I da b.40 medido sobre o artefacto publicado (`2026-09-07-travessia-publicado-…`) foram commitados a ZERO bytes: o passo de anonimização do caminho local abria o ficheiro para escrita ANTES de o ler, e truncava-o. Regenerados por re-medição do mesmo artefacto ainda publicado no npm (`0.20.0-beta.40`), com o mesmo resultado 5·1·0. **Causa corrigida na origem:** o `run-axis-i-readings.mjs` carimbava a versão do REPO e não a do servidor medido — com `--server` a apontar para um artefacto instalado, o registo dizia ter medido uma versão e tinha medido outra; passa a ler o `package.json` do servidor que mediu. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-08 | Achado a montante REPORTADO ao Orchestrator: `decision_involvements` declarado no `deterministic_manifest.json` do pino v2.7 (163 `DecisionInvolvement`) e **ausente do arquivo** — listado na allowlist do empacotador (`release_bundle.py:54`), presente na árvore upstream (87 511 bytes, mtime 8 min antes do zip), e mesmo assim não empacotado, sem o passo falhar. Única ausência real em 69 entradas da allowlist e em 19 do manifesto. Relatório em `handover/em-curso/2026-09-08-pontifex-bloqueio-decision-involvements-fora-do-bundle.md`. **Não servido de fora do pino** (proveniência verificada por digest); declarado no `get_guide_by_role`. ABS-005 não fecha a partir deste artefacto; GR-04 medido e inalterado (3/4). | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-08 | **ERRATA de mensagem (append-only; nada reescrito).** O commit de fecho `8ad727f` perdeu a palavra `own` no corpo: crases num argumento `-m` foram interpretadas pelo shell. **Segunda ocorrência da mesma causa** (a 1.ª foi a anotação da tag v0.20.0-beta.39). O artefacto, a tag, o CHANGELOG e as linhas acima estão correctos. **Regra adoptada:** mensagens de commit e de tag escrevem-se sempre por heredoc com delimitador citado (`<<'EOF'`) ou por ficheiro (`-F`), nunca por `-m` com crases. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-10 | v0.20.0-beta.49 tag commit recorded (`a6609be`); npm `beta` publish + GitHub pre-release confirmed (run 34481282995); gitHead = tag commit; **`latest` = 0.19.4 NÃO movida**. **Verificado no ARTEFACTO PUBLICADO**: o ficheiro gerado, lido isolado, nomeia Manual v1.14.0/0576e914 · KG v1.12.0/c21d35cb · ontologia · substrato · servidor 0.20.0-beta.49 · hora UTC; 3 capítulos fora da fatia nomeados; `meta.provenance.manual.tag` = v1.14.0. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-10 | v0.20.0-beta.49 registered (P1 proveniência no artefacto instalável + no `meta.provenance`; P2 cobertura nomeia os órfãos; P3 legibilidade dos dois contratos). Bundle pin UNCHANGED (formal release KG v1.12.0). Atestação AGENTS.md §0 emitida antes de qualquer modificação; verificação §0.6 feita contra artefactos. `latest` NÃO movida e nenhuma tag de promoção cortada — a promoção a 0.20.0 é decisão do programme lead. Tag on the commit introducing this row. No frozen state touched; stable line (0.19.4) unaffected. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-10 | v0.20.0-beta.48 tag commit recorded (`2b09aede`); npm `beta` publish + GitHub pre-release confirmed (run 34422540156); gitHead = tag commit; `latest` = 0.19.4 unchanged. **Verificado DENTRO do tarball:** ledger e ligações autoradas presentes, 274 requisitos com CIC-011, `fornecedores-terceiros` com `role_scope: inter_instance`. Controlo negativo contra a b.47: ABS-003 `open`+dívida → `withdrawn` sem dívida; `role_scope` ausente → declarado; ligações autoradas 0 → 16 (architecture). Eixo I **6·0·0**; matriz 0 FALTA; determinismo 29/29. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-10 | v0.20.0-beta.48 registered (**bundle re-pin: dev-build → FORMAL RELEASE KG v1.12.0, sha256 c21d35cb7fea…, contrato v1.25, Manual v1.14.0 × ontologia v2.10**, verificado pelo Orchestrator; precedência do ledger com `withdrawn` como estado próprio; `role_scope` inter_instance; 50 ligações autoradas com descasamento declarado; CIC-011). Duas mudanças a montante declaradas e verificadas: CIC-011 (aditivo autorado, 273→274) e 36 rotações de id de assignment por ganho de fase — o `id` não é estável a mudanças que dêem fase, e nenhuma superfície indexa por ele. Tag on the commit introducing this row. No frozen state touched; stable line (latest 0.19.4, KG formal v1.11.0 `688863a`) unaffected. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-09 | v0.20.0-beta.47 tag commit recorded (`b5fa4f53`); npm `beta` publish + GitHub pre-release confirmed (run 34327616461); gitHead = tag commit; `latest` = 0.19.4 unchanged. **Determinismo do serving medido SOBRE O ARTEFACTO PUBLICADO: 29/29 byte-idênticos, 0 divergências, 0 não comparáveis.** Controlo negativo contra a b.46: enum de 5 → 13 valores, «Informational only» sai, a banda passa a declarar a medida e a mostrar os ancorados. Eixo I 6·0·0; matriz 0 FALTA. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-09 | v0.20.0-beta.47 registered (R1 enum/descrição do `projectRole`; R2 a banda de ancoragem declara o que mede; **R3 determinismo do serving entre processos — 29/29 byte-idênticos, no portão**; R4 bateria para modelo pequeno preparada). Bundle pin UNCHANGED (dev-build kg-v1-manual-v1.9.0-aligned-2026-09-08-v2.8). Tag on the commit introducing this row. No frozen state touched; stable line (latest 0.19.4, KG formal v1.11.0 `688863a`) unaffected. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-08 | v0.20.0-beta.46 tag commit recorded (`9698e85e`); npm `beta` publish + GitHub pre-release confirmed (run 34285440632); gitHead = tag commit; `latest` = 0.19.4 unchanged. **Verificado no ARTEFACTO PUBLICADO** com controlo negativo contra a b.45: verbo da citação `produced_or_operated_by` → `não publicado`; banda de nível ausente → declarada; `rollout` passa a abrir com CONSULTA; `trace_graph` ganha `kg`. Eixo I: **6·0·0**; matriz 0 FALTA, 0 não exercitáveis. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-08 | v0.20.0-beta.46 registered (bloqueios G1/G2 da 3.ª auditoria; estatuto pragmático em 6 descrições; via lenta G4; teste de identidade de versão G5). Bundle pin UNCHANGED (dev-build kg-v1-manual-v1.9.0-aligned-2026-09-08-v2.8). **Achado a montante reportado:** o pino declara `release_tag …-v2.8` e `substrate_version …ontology-v2.7` — rótulo divergente dentro do próprio pino. Tag on the commit introducing this row. No frozen state touched; stable line (latest 0.19.4, KG formal v1.11.0 `688863a`) unaffected. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-08 | v0.20.0-beta.45 tag commit recorded (`458a12d0`); npm `beta` publish + GitHub pre-release confirmed (run 34268945245); gitHead = tag commit; `latest` = 0.19.4 unchanged. **Verificado DENTRO do tarball:** 1 371 assignments, cap. 14 com 174 (30 unassigned · 36 plan · 45 test · 39 operate · 24 govern), `phases_unassigned` 219 com 14 rótulos, 164 involvements. Controlo negativo contra a b.44: cap. 14 de `operate+govern` para `plan+test+operate+govern`; banda de ausência ganha `status`. **Eixo I sobre o publicado: 6·0·0**; matriz 0 FALTA, 0 não exercitáveis. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-08 | v0.20.0-beta.45 registered (**bundle re-pin → kg-v1-manual-v1.9.0-aligned-2026-09-08-v2.8, sha256 347f5cfd305e…, contrato v1.23, Manual v1.9.0, ontologia v2.8**, verificado pelo Orchestrator; banda de ausências passa a ler `status` e serve ABS-005/ABS-012 como fechadas; cap. 14 em 4 fases; `phases_unassigned` servido como visibilidade com `unmapped_phase_labels`). Tag on the commit introducing this row. No frozen state touched; stable line (latest 0.19.4, KG formal v1.11.0 `688863a`) unaffected. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-08 | v0.20.0-beta.44 tag commit recorded (`4af91975`); npm `beta` publish + GitHub pre-release confirmed (run 34254474985); gitHead = tag commit; `latest` = 0.19.4 unchanged. **Verificado DENTRO do tarball publicado:** `decision_involvements.json` presente com count 163 / items 163 / 158 approves + 5 consulted / 12 capítulos / 163 ancorados. Controlo negativo contra a b.43: decisão servida (false→true), banda de indisponibilidade (true→false), gestao-executiva 0→18. **Eixo I sobre o publicado: 6·0·0 — o painel fecha.** Matriz: 0 FALTA, 0 não exercitáveis. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-08 | v0.20.0-beta.44 registered (**bundle re-pin → kg-v1-manual-v1.8.1-aligned-2026-09-08-v2.7-r2, sha256 b9bb73fd240e…, contrato v1.22 §1.29**, verificado pelo Orchestrator; 163 envolvimentos de decisão servidos com âncora verbatim e asserção negativa; GR-04 → SERVIDO, Eixo I 6·0·0). **ERRATA de diagnóstico do achado de 2026-09-08:** afirmei «não é a allowlist» com base no `release_bundle.py` da ÁRVORE DE TRABALHO, já corrigida; em `f6d4b97` o ficheiro não estava listado — era a allowlist. Lição registada: a disciplina do pino vale também para o diagnóstico, não só para os dados. A DECISÃO da vaga (não servir de fora do pino) mantém-se correcta e independente da causa. Tag on the commit introducing this row. No frozen state touched; stable line (latest 0.19.4, KG formal v1.11.0 `688863a`) unaffected. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-08 | v0.20.0-beta.43 tag commit recorded (`66455030`); npm `beta` publish + GitHub pre-release confirmed (run 34246978069); gitHead = tag commit; `latest` = 0.19.4 unchanged. **Verificado no ARTEFACTO PUBLICADO** com controlo negativo contra a b.42: o `own` desaparece do payload, a asserção negativa e a base probatória aparecem, RH/PeopleOps passa a referenciado. Tarball: 37/45 `evidence_chapter_ids` + 8 órfãos com ausência; `decision_involvements.json` **ausente, como reportado**. Eixo I = 5·1·0 sem regressão; matriz 0 FALTA, 0 não exercitáveis. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-08 | v0.20.0-beta.43 registered (**bundle re-pin: dev-build → kg-v1-manual-v1.8.1-aligned-2026-09-08-v2.7, sha256 97bd7b583594…, contrato v1.21 §1.28, ontologia v2.7**, verificado pelo Orchestrator na fonte; asserções de travessia servidas ao consumidor; `own` retirado do vocabulário servido; base probatória com órfãos declarados; papel referenciado não-canónico). **Achado a montante reportado:** manifesto declara 163 `DecisionInvolvement`, arquivo não traz o ficheiro. Tag on the commit introducing this row. No frozen state touched; stable line (latest 0.19.4, KG formal v1.11.0 `688863a`) unaffected. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-08 | v0.20.0-beta.42 tag commit recorded (`e9233dc0`); npm `beta` publish + GitHub pre-release confirmed (run 34222106758); gitHead = tag commit; `latest` = 0.19.4 unchanged. **Verificado no ARTEFACTO PUBLICADO** com controlo negativo contra a b.41: trace vazio, proveniência do brief e capítulo inexistente do assess passam de silêncio a declaração. Matriz sobre o publicado: 0 FALTA, 0 não exercitáveis. Eixo I = 5·1·0, sem regressão. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-08 | v0.20.0-beta.42 registered (13 células FALTA resolvidas — 9 defeitos fechados, 4 regras do instrumento corrigidas; `?` 116→74; não exercitáveis 4→0 com exemplos derivados no schema; baseline do portão a zero). Bundle pin UNCHANGED (dev-build kg-v1-manual-v1.8.1-aligned-2026-09-07). Tag on the commit introducing this row. No frozen state touched; stable line (latest 0.19.4, KG formal v1.11.0 `688863a`) unaffected. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-08 | v0.20.0-beta.41 tag commit recorded (`b2e95d7d`); npm `beta` publish + GitHub pre-release confirmed (run 34216416581); gitHead = tag commit; `latest` = 0.19.4 unchanged. **Verificado no ARTEFACTO PUBLICADO** com controlo negativo contra a b.40 publicada: `manager` e a combinação papel×fase passam de silêncio a banda, `devops` de 0 a 75 user stories; Eixo I = 5·1·0 sem regressão; matriz 13 FALTA, igual ao repo. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-08 | v0.20.0-beta.41 registered (banda por resultado vazio; vocabulário de papel reconciliado por aliases publicados; ABS-001 com uma só espécie; matriz banda × superfície como portão de pré-promoção; nunca-silêncio no caminho de erro). Bundle pin UNCHANGED (dev-build kg-v1-manual-v1.8.1-aligned-2026-09-07, `15d3ddd11b59…`). Tag on the commit introducing this row. No frozen state touched; stable line (latest 0.19.4, KG formal v1.11.0 `688863a`) unaffected. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-07 | v0.20.0-beta.40 tag commit recorded (`43afda8e`); npm `beta` publish + GitHub pre-release confirmed (run 34146451879); gitHead = tag commit; `latest` = 0.19.4 unchanged. **Verificado no ARTEFACTO PUBLICADO**: o roteiro cobre 15/15 (14 travessia + piso) com omissão a 0; `floor_bundle`, `bundle_ids` e `defining_chapter_ids` presentes no tarball; Eixo I medido sobre ele = 5·1·0, sem regressão. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-07 | v0.20.0-beta.40 registered (**bundle re-pin: dev-build kg-v1-manual-v1.8.1-aligned-2026-09-06 → kg-v1-manual-v1.8.1-aligned-2026-09-07, sha256 15d3ddd11b59…, contrato v1.19 §1.26, ontologia v2.6**, verificado pelo Orchestrator na fonte; travessia N:M no rollout com o cap. 00 como piso; definidores vs citadores; ausências tipadas do índice central; required_for_levels declarado como quase degenerado). Tag on the commit introducing this row. No frozen state touched; stable line (latest 0.19.4, KG formal v1.11.0 `688863a`) unaffected. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-07 | v0.20.0-beta.39 tag commit recorded (`aae175e2`); npm `beta` publish + GitHub pre-release confirmed (run 34100010506); gitHead = tag commit; `latest` = 0.19.4 unchanged. **Eixo I medido sobre o ARTEFACTO PUBLICADO: 5·1·0, sem regressão** (as bandas novas não moveram nenhuma leitura). **ERRATA da anotação da tag** (append-only; a tag NÃO é reescrita): o corpo perdeu a palavra `unassigned` na linha da B4 — as crases foram interpretadas pelo shell no momento da criação. O commit, o artefacto publicado e o CHANGELOG estão correctos; fica registado aqui em vez de corrigido lá. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-07 | v0.20.0-beta.39 registered (projecções declaram: relação≠total com a proibição da fonte verbatim; omissão no rollout; autoridade herdada no operating_model; ancoragem no search; `next` reconciliado com as bandas no sendResponse; menores B4). Bundle pin UNCHANGED (dev-build kg-v1-manual-v1.8.1-aligned-2026-09-06, `f87d5b46bf10…`). Content findings raised to the lead, not compensated. Tag on the commit introducing this row. No frozen state touched; stable line (latest 0.19.4, KG formal v1.11.0 `688863a`) unaffected. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-07 | v0.20.0-beta.38 tag commit recorded (`6169d50d`); npm `beta` publish + GitHub pre-release confirmed (run 34096736399); gitHead = tag commit; `latest` = 0.19.4 unchanged. **Artefacto publicado VERIFICADO no npm**: as 4 superfícies presentes e Eixo I medido SOBRE ELE = 5·1·0 (GR-03 6/6). | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-07 | v0.20.0-beta.38 registered (defeito de empacotamento da b.37 fechado à classe: conjunto obrigatório derivado + gate sobre o tarball real; 4 superfícies passam a ser enviadas; `bundle_policy_links.jsonl` sai do BANNED_PATHS por ser encaminhado; Eixo I com `--server` para medir sobre o artefacto; GR-03 re-medido no publicado). Bundle pin UNCHANGED (dev-build kg-v1-manual-v1.8.1-aligned-2026-09-06, `f87d5b46bf10…`). Tag on the commit introducing this row. No frozen state touched; stable line (latest 0.19.4, KG formal v1.11.0 `688863a`) unaffected. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.37 tag commit recorded (`6fb82c9d`); npm `beta` publish + GitHub pre-release confirmed (run 34063791062); gitHead = tag commit; `latest` = 0.19.4 unchanged. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.37 registered (vista processual MP-01..05 + ordem de adopção; ordem só por dependency com prova de ciclo; três limites declarados; **bundle re-pin: release KG v1.11.0 → dev-build kg-v1-manual-v1.8.1-aligned-2026-09-06, sha256 f87d5b46bf10…, contract v1.18** — proveniência apenas, conteúdo inalterado; Eixo I 4·1·1 → 5·1·0). Tag on the commit introducing this row. No frozen state touched; stable line (latest 0.19.4, KG formal v1.11.0) unaffected. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.36 tag commit recorded (`b2646118`); npm `beta` publish + GitHub pre-release confirmed (run 34055196074); gitHead = tag commit. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.36 registered (invariantes sobre inventário vivo; conservação na banda v1.2; assess com âmbito; cadeia de activação; unmodelled_signals; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.35 tag commit recorded (`fe4f59ae`); npm `beta` publish + GitHub pre-release confirmed (run 34052937325); gitHead = tag commit. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.35 registered (leitura CONSULT com antipadrões e nível que anota; GR-05 sobe a SERVIDO; GR-04 declarado achado de conteúdo; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.34 tag commit recorded (`4f56bbe2`); npm `beta` publish + GitHub pre-release confirmed (run 34051699997); gitHead = tag commit. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.34 registered (vista IMPL com KPIs e thresholds por nível; GR-01 sobe a SERVIDO no Eixo I; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.33 tag commit recorded (`f2262f81`); npm `beta` publish + GitHub pre-release confirmed (run 34050890354); gitHead = tag commit. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.33 registered (get_sbd_toe_playbook: caminho normativo para cross-checks/playbooks com autoridade e delimitação; GR-02 sobe a SERVIDO no Eixo I; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.32 tag commit recorded (`aad6ea76`); npm `beta` publish + GitHub pre-release confirmed (run 34049524817); gitHead = tag commit. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.32 registered (Eixo I implementado e primeira baseline das leituras: 1 SERVIDO / 5 SERVIDO-MAL / 0 NÃO SERVIDO; medição nunca entra no gate; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.31 tag commit recorded (`711b6b52`); npm `beta` publish + GitHub pre-release confirmed (run 34041253012); gitHead = tag commit. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.31 registered (bordas: invariante alargada a 11 superfícies com 4 instâncias; fonte única para notas e descrições; routing_basis por concern; cross_surface_check; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.30 tag commit recorded (`e374f7c8`); npm `beta` publish + GitHub pre-release confirmed (run 34035926529); gitHead = tag commit. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.30 registered (três formas de pedir: B/C de primeira classe, recurso de modelo + quick-start, invariante de alcançabilidade com 9 caminhos falsos eliminados; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.29 tag commit recorded (`2ff38091`); npm `beta` publish + GitHub pre-release confirmed (run 34034024200); gitHead = tag commit. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.29 registered (ordenação de ameaças por pertença; roteamento ≠ cobertura com 11 nomeados e medidos; contador da legenda; ordem do guia; nota do extend; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.28 tag commit recorded (`37ef1144`); npm `beta` publish + GitHub pre-release confirmed (run 34031389949); gitHead = tag commit. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.28 registered (suite de invariantes entre superfícies antes dos fixes; inventário 5→3 reais, zero dívida; ignored_activators; caixa do guia derivada; routing_basis + dedup opcional no threat; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.27 tag commit recorded (`f1bc7dcf`); npm `beta` publish + GitHub pre-release confirmed (run 34028041205); gitHead = tag commit. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.27 registered (P0 do consult corrigido à raiz; guia com regra de contraprova; invariante entre superfícies 24×3 com 4 defeitos apanhados; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.26 tag commit recorded (`b1ab9a73`); npm `beta` publish + GitHub pre-release confirmed (run 34026770992); gitHead = tag commit. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.26 registered (economia e auditoria: EP por pertença ao âmbito; threat needs_input; traço multi-activador; dieta do select; denominadores nomeados; obligation_ids; P1-3/P1-4; cap. 01 explicado; selecção inalterada, ouro idêntico). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.25 tag commit recorded (`0c3060e9`); npm `beta` publish + GitHub pre-release confirmed (run 34024615011); gitHead = tag commit. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.25 registered (adenda beta.24: minLevel morta na geração + varredura do guia com 10 correcções; guarda 6→10; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.24 tag commit recorded (`863ed99b`); npm `beta` publish + GitHub pre-release confirmed (run 33999753605); gitHead = tag commit. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-06 | v0.20.0-beta.24 registered (agent-guide derivado + guarda de suite; out_of_scope_chapters e âmbito declarado da promessa; invariante de conservação estendida ao universo; higiene do `task` com `task_context` canónico; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-05 | v0.20.0-beta.23 tag commit recorded (`e99a2cb2`); npm `beta` publish + GitHub pre-release confirmed (run 33990234962); gitHead = tag commit. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-05 | v0.20.0-beta.23 registered (CONSERVAÇÃO: invariante de conservação sobre o vocabulário completo — 12 violações apanhadas em 4 famílias; motor cede à promessa por categoria com traço `declared_category`; `unsupported_concerns` no threat landscape + agent-guide corrigido; guarda anti-zero cobre `technologies`; `provenance.server` em 20 sítios; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-05 | v0.20.0-beta.22 registered («caminho para 9»: P1-A..E + P2-A; invariante anti-zero com 192 combinações; enum gerado do vocabulário nas 3 tools; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-05 | v0.20.0-beta.22 tag commit recorded (`6a695af9`); npm `beta` publish + GitHub pre-release confirmed (run 33980538378). | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |

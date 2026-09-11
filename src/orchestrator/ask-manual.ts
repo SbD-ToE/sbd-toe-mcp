@@ -3,6 +3,7 @@ import { getConfig } from "../config.js";
 import { retrievePublishedContext } from "../backend/semantic-index-gateway.js";
 import { buildAnswerPrompt } from "../prompt/build-answer-prompt.js";
 import { boundList, resolveBudget, truncateText } from "../serving/response-shaping.js";
+import { anchorQuery, NOTHING_PUBLISHED_NOTE } from "../serving/query-anchoring.js";
 import type {
   ManualToolResult,
   PromptBundle,
@@ -188,6 +189,49 @@ export async function prepareManualAnsweringContext(
   };
 }
 
+/**
+ * 0.20.0-beta.39 — a banda de ancoragem, à cabeça da resposta.
+ *
+ * O `search` é PROSA: a banda vai no texto, porque é aí que o consumidor lê. Vai à CABEÇA
+ * e não no fim — uma ressalva depois de três excertos convincentes chega tarde.
+ */
+function anchoringBanner(question: string): string {
+  const a = anchorQuery(question);
+  if (a === undefined) return "";
+  /*
+   * 0.20.0-beta.47 (R2) — A BANDA DECLARA O QUE MEDE.
+   *
+   * Ela mede OCORRÊNCIA DE TERMO no corpus, não relevância de tópico — e não o dizia. Uma
+   * pergunta sobre política de teletrabalho recebe conteúdo de governação porque «política»
+   * e «organização» ocorrem em todo o lado; só «teletrabalho» é que não. Dizer «1 de 3 sem
+   * âncora» sem dizer que os outros 2 são genéricos deixa a impressão de que 2/3 da pergunta
+   * está coberta.
+   *
+   * Não há piso numérico aqui — recusei-o antes e continuo a recusá-lo: um limiar de
+   * relevância seria um número nosso. O que se acrescenta é a MEDIDA declarada e os termos
+   * ANCORADOS à vista, para o consumidor ver por que palavras a recuperação entrou.
+   */
+  const lines = [
+    "⚠️  RECUPERAÇÃO, NÃO ÂMBITO — o que se segue é o que CASOU lexicalmente com a tua pergunta,",
+    "    e não necessariamente a resposta à pergunta que fizeste. Esta superfície é NÃO-NORMATIVA.",
+    "",
+    "    O QUE ESTA VERIFICAÇÃO MEDE: se cada termo da tua pergunta OCORRE no corpus publicado.",
+    "    NÃO mede relevância nem cobertura do tópico — um termo genérico («política», «processo»)",
+    "    ancora em quase tudo e não significa que o Manual trate do teu assunto."
+  ];
+  if (a.nothing_published) lines.push("", `    ${NOTHING_PUBLISHED_NOTE}`);
+  else if (a.without_corpus_anchor.length > 0)
+    lines.push(
+      "",
+      `    SEM ÂNCORA NO MANUAL (${a.without_corpus_anchor.length} de ${a.content_terms} termos da tua pergunta` +
+        ` não ocorrem no corpus publicado): ${a.without_corpus_anchor.join(", ")}.`,
+      `    ANCORARAM (ocorrem algures, o que NÃO quer dizer que sejam o assunto): ${a.anchored.join(", ")}.`,
+      "    Se o teu assunto está entre os primeiros, o Manual não o publica — e o que recebes casou",
+      "    pelos segundos, que podem ser palavras genéricas."
+    );
+  return `${lines.join("\n")}\n\n`;
+}
+
 export async function searchManualQuestion(
   question: string,
   debugOverride?: boolean,
@@ -204,10 +248,11 @@ export async function searchManualQuestion(
     excerptMaxChars: budget.maxExcerptChars,
   });
   const boundedRetrieved = boundList(prepared.retrieval.retrieved, budget.maxRecords);
+  const banner = anchoringBanner(question);
   const text =
     debugOverride ?? config.debugMode
-      ? `${prepared.retrievalText}\n\n---\n\n${prepared.debugText}`
-      : prepared.retrievalText;
+      ? `${banner}${prepared.retrievalText}\n\n---\n\n${prepared.debugText}`
+      : `${banner}${prepared.retrievalText}`;
 
   return {
     text,

@@ -1,7 +1,184 @@
 {
   "agent": "lifecycle_extractor",
-  "generated_at": "2026-09-03T17:05:02Z",
+  "generated_at": "2026-09-09T23:00:38Z",
   "items": [
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-01"
+      ],
+      "id": "01-classificacao-aplicacoes-us-01-plan-1",
+      "phase": "Início",
+      "phase_normalized": "plan",
+      "practice_id": "01-classificacao-aplicacoes:classificacao-inicial-da-aplicacao",
+      "responsible": "**Developer + Scrum Master / Team Lead + AppSec Engineer**",
+      "responsible_normalized": [
+        "developer",
+        "scrum-master",
+        "appsec-engineer"
+      ],
+      "sla": "Antes da primeira release",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-01-classificacao-inicial-da-aplicacao",
+      "trigger": "Kick-off / Definição de projeto",
+      "user_story_id": "01-classificacao-aplicacoes-us-01",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-01"
+      ],
+      "id": "01-classificacao-aplicacoes-us-01-design-2",
+      "phase": "Arquitetura",
+      "phase_normalized": "design",
+      "practice_id": "01-classificacao-aplicacoes:classificacao-inicial-da-aplicacao",
+      "responsible": "**Developer + Arquitetos de Software + AppSec Engineer**",
+      "responsible_normalized": [
+        "developer",
+        "arquitetos-software",
+        "appsec-engineer"
+      ],
+      "sla": "Antes da aprovação de arquitetura",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-01-classificacao-inicial-da-aplicacao",
+      "trigger": "Revisão de design inicial",
+      "user_story_id": "01-classificacao-aplicacoes-us-01",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-02"
+      ],
+      "id": "01-classificacao-aplicacoes-us-02-plan-1",
+      "phase": "Planeamento",
+      "phase_normalized": "plan",
+      "practice_id": "01-classificacao-aplicacoes:aplicacao-da-matriz-de-controlo",
+      "responsible": "**Developer + Scrum Master / Team Lead + AppSec Engineer**",
+      "responsible_normalized": [
+        "developer",
+        "scrum-master",
+        "appsec-engineer"
+      ],
+      "sla": "Antes de implementação",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-02-aplicacao-da-matriz-de-controlo",
+      "trigger": "Após classificação",
+      "user_story_id": "01-classificacao-aplicacoes-us-02",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-03"
+      ],
+      "id": "01-classificacao-aplicacoes-us-03-operate-1",
+      "phase": "Contínuo",
+      "phase_normalized": "operate",
+      "practice_id": "01-classificacao-aplicacoes:revisao-por-alteracao-relevante-event-based",
+      "responsible": "**AppSec Engineer + Developer + GRC/Compliance + Product Owner**",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "developer",
+        "grc-compliance",
+        "product-owner"
+      ],
+      "sla": "3 dias úteis após trigger",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-03-revisao-por-alteracao-relevante-event-based",
+      "trigger": "Mudança arquitetura, dados ou exposição",
+      "user_story_id": "01-classificacao-aplicacoes-us-03",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-04"
+      ],
+      "id": "01-classificacao-aplicacoes-us-04-test-1",
+      "phase": "Validação",
+      "phase_normalized": "test",
+      "practice_id": "01-classificacao-aplicacoes:analise-de-risco-residual",
+      "responsible": "**GRC/Compliance + AppSec Engineer + Developer**",
+      "responsible_normalized": [
+        "grc-compliance",
+        "appsec-engineer",
+        "developer"
+      ],
+      "sla": "5 dias úteis",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-04-analise-de-risco-residual",
+      "trigger": "Após mapeamento de matrix; pré-release",
+      "user_story_id": "01-classificacao-aplicacoes-us-04",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-05"
+      ],
+      "id": "01-classificacao-aplicacoes-us-05-test-1",
+      "phase": "Pré-Release",
+      "phase_normalized": "test",
+      "practice_id": "01-classificacao-aplicacoes:validacao-antes-do-go-live",
+      "responsible": "**QA + AppSec Engineer + Gestão Executiva (L3)**",
+      "responsible_normalized": [
+        "qa",
+        "appsec-engineer",
+        "gestao-executiva",
+        "l3",
+        "untitled"
+      ],
+      "sla": "2 dias úteis antes de deploy",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-05-validacao-antes-do-go-live",
+      "trigger": "Aplicação pronta para go-live",
+      "user_story_id": "01-classificacao-aplicacoes-us-05",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-06"
+      ],
+      "id": "01-classificacao-aplicacoes-us-06-design-1",
+      "phase": "Design",
+      "phase_normalized": "design",
+      "practice_id": "01-classificacao-aplicacoes:mapeamento-de-ameacas-por-nivel-de-risco",
+      "responsible": "**AppSec Engineer + Arquitetos + Developer**",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "arquitetos",
+        "developer"
+      ],
+      "sla": "Antes de dev começar",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-06-mapeamento-de-ameacas-por-nivel-de-risco",
+      "trigger": "Após arquitetura definida",
+      "user_story_id": "01-classificacao-aplicacoes-us-06",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-06"
+      ],
+      "id": "01-classificacao-aplicacoes-us-06-test-2",
+      "phase": "Validação",
+      "phase_normalized": "test",
+      "practice_id": "01-classificacao-aplicacoes:mapeamento-de-ameacas-por-nivel-de-risco",
+      "responsible": "**AppSec Engineer**",
+      "responsible_normalized": [
+        "appsec-engineer"
+      ],
+      "sla": "1 semana antes de release",
+      "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-06-mapeamento-de-ameacas-por-nivel-de-risco",
+      "trigger": "Pré-release (L2/L3)",
+      "user_story_id": "01-classificacao-aplicacoes-us-06",
+      "warnings": []
+    },
     {
       "confidence": 0.91,
       "evidence": [
@@ -629,6 +806,27 @@
     {
       "confidence": 0.91,
       "evidence": [
+        "sdlc integration extracted for US-05"
+      ],
+      "id": "03-threat-modeling-us-05-build-1",
+      "phase": "CI/CD",
+      "phase_normalized": "build",
+      "practice_id": "03-threat-modeling:gate-de-controlo-de-consistencia-no-ci-cd",
+      "responsible": "DevOps/SRE + AppSec Engineer",
+      "responsible_normalized": [
+        "devops-sre",
+        "appsec-engineer"
+      ],
+      "sla": "Gate não-bloqueante com alerta (L2); bloqueante com exceção formal e prazo (L3)",
+      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-05-gate-de-controlo-de-consistencia-no-ci-cd",
+      "trigger": "Alteração relevante (novo fluxo, nova dependência, nova *trust boundary*)",
+      "user_story_id": "03-threat-modeling-us-05",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
         "sdlc integration extracted for US-06"
       ],
       "id": "03-threat-modeling-us-06-plan-1",
@@ -650,6 +848,27 @@
     {
       "confidence": 0.91,
       "evidence": [
+        "sdlc integration extracted for US-07"
+      ],
+      "id": "03-threat-modeling-us-07-design-1",
+      "phase": "Design / Revisão",
+      "phase_normalized": "design",
+      "practice_id": "03-threat-modeling:reutilizacao-controlada-e-revisao-de-modelos-anteriores",
+      "responsible": "Arquitetos de Software + AppSec Engineer",
+      "responsible_normalized": [
+        "arquitetos-software",
+        "appsec-engineer"
+      ],
+      "sla": "Antes de o modelo reutilizado ser considerado válido",
+      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-07-reutilizacao-controlada-e-revisao-de-modelos-anteriores",
+      "trigger": "Reutilização de um modelo anterior como base",
+      "user_story_id": "03-threat-modeling-us-07",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
         "sdlc integration extracted for US-08"
       ],
       "id": "03-threat-modeling-us-08-design-1",
@@ -666,6 +885,48 @@
       "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-08-aplicacao-linddun-quando-existir-tratamento-de-dados-pessoais-novo",
       "trigger": "Presença de dados pessoais",
       "user_story_id": "03-threat-modeling-us-08",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-09"
+      ],
+      "id": "03-threat-modeling-us-09-unassigned-1",
+      "phase": "Aprovação",
+      "phase_normalized": "unassigned",
+      "practice_id": "03-threat-modeling:aprovacao-formal-do-threat-model-baseline-e-revisoes",
+      "responsible": "Scrum Master / Team Lead + AppSec Engineer",
+      "responsible_normalized": [
+        "scrum-master",
+        "appsec-engineer"
+      ],
+      "sla": "Aprovação leve por registo simples (L1); formal (L2); formal + revisão independente (L3)",
+      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-09-aprovacao-formal-do-threat-model-baseline-e-revisoes",
+      "trigger": "Conclusão da revisão de um Threat Model atualizado",
+      "user_story_id": "03-threat-modeling-us-09",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-10"
+      ],
+      "id": "03-threat-modeling-us-10-operate-1",
+      "phase": "Contínuo",
+      "phase_normalized": "operate",
+      "practice_id": "03-threat-modeling:controlo-de-acesso-classificacao-e-retencao-dos-artefactos-de-threat-modeling",
+      "responsible": "Arquitetos de Software + DevOps/SRE",
+      "responsible_normalized": [
+        "arquitetos-software",
+        "devops-sre"
+      ],
+      "sla": "Controlo básico com armazenamento interno (L1); formal com rastreio de alterações (L2); reforçado com segregação e auditoria (L3)",
+      "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-10-controlo-de-acesso-classificacao-e-retencao-dos-artefactos-de-threat-modeling",
+      "trigger": "Armazenamento ou partilha de artefactos de Threat Modeling",
+      "user_story_id": "03-threat-modeling-us-10",
       "warnings": []
     },
     {
@@ -1315,6 +1576,26 @@
     {
       "confidence": 0.91,
       "evidence": [
+        "sdlc integration extracted for US-02"
+      ],
+      "id": "05-dependencias-sbom-sca-us-02-build-1",
+      "phase": "CI",
+      "phase_normalized": "build",
+      "practice_id": "05-dependencias-sbom-sca:sbom-em-cada-build",
+      "responsible": "DevOps",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "Conforme ciclo da US",
+      "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-02-sbom-em-cada-build",
+      "trigger": "Execução de build",
+      "user_story_id": "05-dependencias-sbom-sca-us-02",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
         "sdlc integration extracted for US-03"
       ],
       "id": "05-dependencias-sbom-sca-us-03-build-1",
@@ -1331,6 +1612,27 @@
       "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-03-sca-automatico-com-gates",
       "trigger": "Geração de SBOM",
       "user_story_id": "05-dependencias-sbom-sca-us-03",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-04"
+      ],
+      "id": "05-dependencias-sbom-sca-us-04-deploy-1",
+      "phase": "Release",
+      "phase_normalized": "deploy",
+      "practice_id": "05-dependencias-sbom-sca:excecoes-a-cves-formais-e-temporarias",
+      "responsible": "AppSec + Product Owner",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "product-owner"
+      ],
+      "sla": "Conforme prazo definido na exceção",
+      "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-04-excecoes-a-cves-formais-e-temporarias",
+      "trigger": "Findings pendentes",
+      "user_story_id": "05-dependencias-sbom-sca-us-04",
       "warnings": []
     },
     {
@@ -1782,9 +2084,9 @@
       "evidence": [
         "sdlc integration extracted for US-16"
       ],
-      "id": "05-dependencias-sbom-sca-us-16-unassigned-1",
+      "id": "05-dependencias-sbom-sca-us-16-plan-1",
       "phase": "Início de projeto",
-      "phase_normalized": "unassigned",
+      "phase_normalized": "plan",
       "practice_id": "05-dependencias-sbom-sca:governacao-documentada-de-politica-de-severidade-registries-e-registo-de-aprovacao",
       "responsible": "AppSec + GRC",
       "responsible_normalized": [
@@ -2016,6 +2318,68 @@
     {
       "confidence": 0.91,
       "evidence": [
+        "sdlc integration extracted for US-09"
+      ],
+      "id": "06-desenvolvimento-seguro-us-09-test-1",
+      "phase": "Pré-release",
+      "phase_normalized": "test",
+      "practice_id": "06-desenvolvimento-seguro:gate-de-seguranca-pre-release",
+      "responsible": "**DevOps / SRE**",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "Resultado binário registado como artefacto da release, com bloqueio automático em falha",
+      "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-09-gate-de-seguranca-pre-release",
+      "trigger": "Execução do *security gate* sobre uma release candidata",
+      "user_story_id": "06-desenvolvimento-seguro-us-09",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-10"
+      ],
+      "id": "06-desenvolvimento-seguro-us-10-build-1",
+      "phase": "CI/CD",
+      "phase_normalized": "build",
+      "practice_id": "06-desenvolvimento-seguro:perfis-de-validacao-por-nivel-de-risco-l1l3",
+      "responsible": "**AppSec Engineer**",
+      "responsible_normalized": [
+        "appsec-engineer"
+      ],
+      "sla": "A cada execução, com as regras e limiares do perfil correspondente",
+      "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-10-perfis-de-validacao-por-nivel-de-risco-l1l3",
+      "trigger": "Execução do pipeline sobre aplicação classificada L1–L3",
+      "user_story_id": "06-desenvolvimento-seguro-us-10",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-11"
+      ],
+      "id": "06-desenvolvimento-seguro-us-11-build-1",
+      "phase": "CI/CD",
+      "phase_normalized": "build",
+      "practice_id": "06-desenvolvimento-seguro:arquivo-central-de-evidencias-de-validacao",
+      "responsible": "**Quality Assurance (QA)** + **DevOps / SRE**",
+      "responsible_normalized": [
+        "qa",
+        "untitled",
+        "devops-sre"
+      ],
+      "sla": "Export por *build*/*release*; retenção ≥ 2 anos (≥ 5 anos em L3)",
+      "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-11-arquivo-central-de-evidencias-de-validacao",
+      "trigger": "Conclusão da execução de validações no pipeline",
+      "user_story_id": "06-desenvolvimento-seguro-us-11",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
         "sdlc integration extracted for US-12"
       ],
       "id": "06-desenvolvimento-seguro-us-12-develop-1",
@@ -2117,6 +2481,786 @@
       "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-16-proveniencia-e-quality-gate-com-baseline-aprovada",
       "trigger": "Incorporação de código de origem não interna / execução do SAST",
       "user_story_id": "06-desenvolvimento-seguro-us-16",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-01"
+      ],
+      "id": "07-cicd-seguro-us-01-build-1",
+      "phase": "PR/MR",
+      "phase_normalized": "build",
+      "practice_id": "07-cicd-seguro:gestao-segura-de-codigo-fonte",
+      "responsible": "Developers",
+      "responsible_normalized": [
+        "developer"
+      ],
+      "sla": "Antes do *merge*",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-01-gestao-segura-de-codigo-fonte",
+      "trigger": "Submissão de PR para `main`",
+      "user_story_id": "07-cicd-seguro-us-01",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-01"
+      ],
+      "id": "07-cicd-seguro-us-01-test-2",
+      "phase": "Revisão",
+      "phase_normalized": "test",
+      "practice_id": "07-cicd-seguro:gestao-segura-de-codigo-fonte",
+      "responsible": "Developers",
+      "responsible_normalized": [
+        "developer"
+      ],
+      "sla": "Antes do *merge*",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-01-gestao-segura-de-codigo-fonte",
+      "trigger": "Conflito ou alteração relevante da superfície de ataque num *merge*",
+      "user_story_id": "07-cicd-seguro-us-01",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-02"
+      ],
+      "id": "07-cicd-seguro-us-02-develop-1",
+      "phase": "Criação/refactor",
+      "phase_normalized": "develop",
+      "practice_id": "07-cicd-seguro:design-seguro-dos-pipelines-versionamento-determinismo-e-revisao",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "No PR",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-02-design-seguro-dos-pipelines-versionamento-determinismo-e-revisao",
+      "trigger": "Alteração da definição do pipeline submetida em PR",
+      "user_story_id": "07-cicd-seguro-us-02",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-02"
+      ],
+      "id": "07-cicd-seguro-us-02-unassigned-2",
+      "phase": "Execução",
+      "phase_normalized": "unassigned",
+      "practice_id": "07-cicd-seguro:design-seguro-dos-pipelines-versionamento-determinismo-e-revisao",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "A cada execução (configuração efetiva registada)",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-02-design-seguro-dos-pipelines-versionamento-determinismo-e-revisao",
+      "trigger": "Execução do pipeline com configuração ou parâmetros",
+      "user_story_id": "07-cicd-seguro-us-02",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-02"
+      ],
+      "id": "07-cicd-seguro-us-02-test-3",
+      "phase": "Revisão",
+      "phase_normalized": "test",
+      "practice_id": "07-cicd-seguro:design-seguro-dos-pipelines-versionamento-determinismo-e-revisao",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "No PR (commit/hash + *changelog*)",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-02-design-seguro-dos-pipelines-versionamento-determinismo-e-revisao",
+      "trigger": "Alteração de ferramentas, etapas ou regras de execução",
+      "user_story_id": "07-cicd-seguro-us-02",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-03"
+      ],
+      "id": "07-cicd-seguro-us-03-build-1",
+      "phase": "CI/CD",
+      "phase_normalized": "build",
+      "practice_id": "07-cicd-seguro:scanners-integrados-validacao-empirica-obrigatoria",
+      "responsible": "Developers",
+      "responsible_normalized": [
+        "developer"
+      ],
+      "sla": "A cada execução do pipeline",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-03-scanners-integrados-validacao-empirica-obrigatoria",
+      "trigger": "Submissão de código e execução do pipeline",
+      "user_story_id": "07-cicd-seguro-us-03",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-03"
+      ],
+      "id": "07-cicd-seguro-us-03-deploy-2",
+      "phase": "Pré-promoção",
+      "phase_normalized": "deploy",
+      "practice_id": "07-cicd-seguro:scanners-integrados-validacao-empirica-obrigatoria",
+      "responsible": "Developers",
+      "responsible_normalized": [
+        "developer"
+      ],
+      "sla": "Bloqueio do *merge*/promoção no *gate*",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-03-scanners-integrados-validacao-empirica-obrigatoria",
+      "trigger": "Avaliação de resultados com falhas críticas",
+      "user_story_id": "07-cicd-seguro-us-03",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-03"
+      ],
+      "id": "07-cicd-seguro-us-03-test-3",
+      "phase": "Revisão",
+      "phase_normalized": "test",
+      "practice_id": "07-cicd-seguro:scanners-integrados-validacao-empirica-obrigatoria",
+      "responsible": "AppSec",
+      "responsible_normalized": [
+        "appsec-engineer"
+      ],
+      "sla": "Na aprovação da regra adicional versionada",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-03-scanners-integrados-validacao-empirica-obrigatoria",
+      "trigger": "Novo tipo de artefacto não coberto pela validação atual",
+      "user_story_id": "07-cicd-seguro-us-03",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-04"
+      ],
+      "id": "07-cicd-seguro-us-04-build-1",
+      "phase": "CI/CD",
+      "phase_normalized": "build",
+      "practice_id": "07-cicd-seguro:gestao-de-segredos",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "*Just-in-time*, no arranque do *job*",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-04-gestao-de-segredos",
+      "trigger": "Arranque do pipeline com necessidade de credenciais",
+      "user_story_id": "07-cicd-seguro-us-04",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-04"
+      ],
+      "id": "07-cicd-seguro-us-04-operate-2",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "07-cicd-seguro:gestao-de-segredos",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "Na expiração, sem reutilização",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-04-gestao-de-segredos",
+      "trigger": "Expiração do token e necessidade de novo acesso",
+      "user_story_id": "07-cicd-seguro-us-04",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-05"
+      ],
+      "id": "07-cicd-seguro-us-05-deploy-1",
+      "phase": "Provisionamento",
+      "phase_normalized": "deploy",
+      "practice_id": "07-cicd-seguro:isolamento-de-runners",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "A cada execução",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-05-isolamento-de-runners",
+      "trigger": "Execução de *pipelines* paralelos",
+      "user_story_id": "07-cicd-seguro-us-05",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-05"
+      ],
+      "id": "07-cicd-seguro-us-05-operate-2",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "07-cicd-seguro:isolamento-de-runners",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "No encerramento do *job*",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-05-isolamento-de-runners",
+      "trigger": "Fim do *job* e encerramento do *runner*",
+      "user_story_id": "07-cicd-seguro-us-05",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-06"
+      ],
+      "id": "07-cicd-seguro-us-06-unassigned-1",
+      "phase": "Build/Promoção",
+      "phase_normalized": "unassigned",
+      "practice_id": "07-cicd-seguro:assinatura-e-proveniencia",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "Verificação antes da promoção",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-06-assinatura-e-proveniencia",
+      "trigger": "Produção de artefacto e pedido de promoção",
+      "user_story_id": "07-cicd-seguro-us-06",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-06"
+      ],
+      "id": "07-cicd-seguro-us-06-deploy-2",
+      "phase": "Promoção",
+      "phase_normalized": "deploy",
+      "practice_id": "07-cicd-seguro:assinatura-e-proveniencia",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "Rejeição e alerta na verificação",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-06-assinatura-e-proveniencia",
+      "trigger": "Assinatura ou proveniência inválida",
+      "user_story_id": "07-cicd-seguro-us-06",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-07"
+      ],
+      "id": "07-cicd-seguro-us-07-deploy-1",
+      "phase": "Pré-promoção",
+      "phase_normalized": "deploy",
+      "practice_id": "07-cicd-seguro:gates-por-risco-separacao-sinal-decisao",
+      "responsible": "AppSec Engineers",
+      "responsible_normalized": [
+        "appsec-engineer"
+      ],
+      "sla": "Bloqueio no *gate*, antes da promoção",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-07-gates-por-risco-separacao-sinal-decisao",
+      "trigger": "Falha High ou Critical em aplicação L3",
+      "user_story_id": "07-cicd-seguro-us-07",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-07"
+      ],
+      "id": "07-cicd-seguro-us-07-deploy-2",
+      "phase": "Pré-promoção",
+      "phase_normalized": "deploy",
+      "practice_id": "07-cicd-seguro:gates-por-risco-separacao-sinal-decisao",
+      "responsible": "AppSec Engineers",
+      "responsible_normalized": [
+        "appsec-engineer"
+      ],
+      "sla": "Alerta no *gate*, sem bloqueio",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-07-gates-por-risco-separacao-sinal-decisao",
+      "trigger": "Falha Medium em aplicação L1",
+      "user_story_id": "07-cicd-seguro-us-07",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-07"
+      ],
+      "id": "07-cicd-seguro-us-07-deploy-3",
+      "phase": "Promoção",
+      "phase_normalized": "deploy",
+      "practice_id": "07-cicd-seguro:gates-por-risco-separacao-sinal-decisao",
+      "responsible": "AppSec Engineers",
+      "responsible_normalized": [
+        "appsec-engineer"
+      ],
+      "sla": "Na decisão de promoção",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-07-gates-por-risco-separacao-sinal-decisao",
+      "trigger": "Apresentação de *score*/recomendação automática",
+      "user_story_id": "07-cicd-seguro-us-07",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-08"
+      ],
+      "id": "07-cicd-seguro-us-08-build-1",
+      "phase": "Build",
+      "phase_normalized": "build",
+      "practice_id": "07-cicd-seguro:cobertura-ampliada-containers-e-sbom",
+      "responsible": "AppSec Engineers",
+      "responsible_normalized": [
+        "appsec-engineer"
+      ],
+      "sla": "A cada *build*, com SBOM anexado ao artefacto",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-08-cobertura-ampliada-containers-e-sbom",
+      "trigger": "Construção de imagem",
+      "user_story_id": "07-cicd-seguro-us-08",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-08"
+      ],
+      "id": "07-cicd-seguro-us-08-operate-2",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "07-cicd-seguro:cobertura-ampliada-containers-e-sbom",
+      "responsible": "AppSec Engineers",
+      "responsible_normalized": [
+        "appsec-engineer"
+      ],
+      "sla": "Na deteção, com rastreio ao *release* afetado",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-08-cobertura-ampliada-containers-e-sbom",
+      "trigger": "Vulnerabilidade detetada em imagem base em uso",
+      "user_story_id": "07-cicd-seguro-us-08",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-09"
+      ],
+      "id": "07-cicd-seguro-us-09-operate-1",
+      "phase": "Incidente",
+      "phase_normalized": "operate",
+      "practice_id": "07-cicd-seguro:rastreabilidade-ponta-a-ponta-commitpipelinerelease",
+      "responsible": "GRC / Compliance",
+      "responsible_normalized": [
+        "grc-compliance"
+      ],
+      "sla": "Dentro da retenção: 30 dias (L1), 90 dias (L2), ≥1 ano (L3)",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-09-rastreabilidade-ponta-a-ponta-commitpipelinerelease",
+      "trigger": "Análise de um *release* na sequência de um incidente",
+      "user_story_id": "07-cicd-seguro-us-09",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-09"
+      ],
+      "id": "07-cicd-seguro-us-09-govern-2",
+      "phase": "Auditoria",
+      "phase_normalized": "govern",
+      "practice_id": "07-cicd-seguro:rastreabilidade-ponta-a-ponta-commitpipelinerelease",
+      "responsible": "GRC / Compliance",
+      "responsible_normalized": [
+        "grc-compliance"
+      ],
+      "sla": "Export correlacionado dentro da retenção do nível",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-09-rastreabilidade-ponta-a-ponta-commitpipelinerelease",
+      "trigger": "Pedido de evidências por auditor",
+      "user_story_id": "07-cicd-seguro-us-09",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-10"
+      ],
+      "id": "07-cicd-seguro-us-10-govern-1",
+      "phase": "Exceção",
+      "phase_normalized": "govern",
+      "practice_id": "07-cicd-seguro:gestao-de-excecoes-bypass-controlado",
+      "responsible": "GRC / Compliance",
+      "responsible_normalized": [
+        "grc-compliance"
+      ],
+      "sla": "Aprovação só com prazo, *owner* e compensações; prazo máximo definido em L2 (ex.: 60 dias)",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-10-gestao-de-excecoes-bypass-controlado",
+      "trigger": "Pedido de exceção submetido a análise",
+      "user_story_id": "07-cicd-seguro-us-10",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-10"
+      ],
+      "id": "07-cicd-seguro-us-10-govern-2",
+      "phase": "Exceção",
+      "phase_normalized": "govern",
+      "practice_id": "07-cicd-seguro:gestao-de-excecoes-bypass-controlado",
+      "responsible": "GRC / Compliance",
+      "responsible_normalized": [
+        "grc-compliance"
+      ],
+      "sla": "Reversão automática no fim do prazo",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-10-gestao-de-excecoes-bypass-controlado",
+      "trigger": "Expiração do prazo sem renovação formal",
+      "user_story_id": "07-cicd-seguro-us-10",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-11"
+      ],
+      "id": "07-cicd-seguro-us-11-test-1",
+      "phase": "Staging",
+      "phase_normalized": "test",
+      "practice_id": "07-cicd-seguro:testes-de-seguranca-dinamicos-dast",
+      "responsible": "AppSec Engineers",
+      "responsible_normalized": [
+        "appsec-engineer"
+      ],
+      "sla": "A cada promoção para *staging*",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-11-testes-de-seguranca-dinamicos-dast",
+      "trigger": "Promoção de *build* para *staging*",
+      "user_story_id": "07-cicd-seguro-us-11",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-11"
+      ],
+      "id": "07-cicd-seguro-us-11-deploy-2",
+      "phase": "Pré-promoção",
+      "phase_normalized": "deploy",
+      "practice_id": "07-cicd-seguro:testes-de-seguranca-dinamicos-dast",
+      "responsible": "AppSec Engineers",
+      "responsible_normalized": [
+        "appsec-engineer"
+      ],
+      "sla": "Bloqueio da promoção a produção até correção validada",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-11-testes-de-seguranca-dinamicos-dast",
+      "trigger": "Falha High reportada pelo DAST",
+      "user_story_id": "07-cicd-seguro-us-11",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-12"
+      ],
+      "id": "07-cicd-seguro-us-12-operate-1",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "07-cicd-seguro:metricas-e-conformidade-organizacional",
+      "responsible": "Gestão Executiva / CISO",
+      "responsible_normalized": [
+        "gestao-executiva"
+      ],
+      "sla": "Registo com *timestamp*, contexto e atores no momento do evento",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-12-metricas-e-conformidade-organizacional",
+      "trigger": "Evento no pipeline (*merge*, bloqueio, exceção, promoção)",
+      "user_story_id": "07-cicd-seguro-us-12",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-12"
+      ],
+      "id": "07-cicd-seguro-us-12-govern-2",
+      "phase": "Auditoria",
+      "phase_normalized": "govern",
+      "practice_id": "07-cicd-seguro:metricas-e-conformidade-organizacional",
+      "responsible": "Gestão Executiva / CISO",
+      "responsible_normalized": [
+        "gestao-executiva"
+      ],
+      "sla": "Atualização diária (L2); quase em tempo real (L3)",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-12-metricas-e-conformidade-organizacional",
+      "trigger": "Consulta ao *dashboard* por projeto, período ou risco",
+      "user_story_id": "07-cicd-seguro-us-12",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-13"
+      ],
+      "id": "07-cicd-seguro-us-13-build-1",
+      "phase": "CI/CD",
+      "phase_normalized": "build",
+      "practice_id": "07-cicd-seguro:validacao-de-integridade-de-imagens-base",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "Validação no *pull*, antes do *build*",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-13-validacao-de-integridade-de-imagens-base",
+      "trigger": "Arranque do pipeline com imagem base",
+      "user_story_id": "07-cicd-seguro-us-13",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-13"
+      ],
+      "id": "07-cicd-seguro-us-13-operate-2",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "07-cicd-seguro:validacao-de-integridade-de-imagens-base",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "Alerta e ação de mitigação na deteção",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-13-validacao-de-integridade-de-imagens-base",
+      "trigger": "Vulnerabilidade relevante que afeta imagens em uso",
+      "user_story_id": "07-cicd-seguro-us-13",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-14"
+      ],
+      "id": "07-cicd-seguro-us-14-unassigned-1",
+      "phase": "Execução",
+      "phase_normalized": "unassigned",
+      "practice_id": "07-cicd-seguro:reprodutibilidade-e-determinismo-do-pipeline",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "Resultado equivalente, ou divergência justificada e registada",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-14-reprodutibilidade-e-determinismo-do-pipeline",
+      "trigger": "Reexecução do mesmo pipeline sobre o mesmo *commit*",
+      "user_story_id": "07-cicd-seguro-us-14",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-14"
+      ],
+      "id": "07-cicd-seguro-us-14-unassigned-2",
+      "phase": "Execução",
+      "phase_normalized": "unassigned",
+      "practice_id": "07-cicd-seguro:reprodutibilidade-e-determinismo-do-pipeline",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "Configuração efetiva registada a cada execução",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-14-reprodutibilidade-e-determinismo-do-pipeline",
+      "trigger": "Execução com parâmetros ou configuração",
+      "user_story_id": "07-cicd-seguro-us-14",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-15"
+      ],
+      "id": "07-cicd-seguro-us-15-deploy-1",
+      "phase": "Promoção",
+      "phase_normalized": "deploy",
+      "practice_id": "07-cicd-seguro:separacao-formal-entre-sinal-automatico-e-decisao-de-promocao",
+      "responsible": "AppSec Engineers",
+      "responsible_normalized": [
+        "appsec-engineer"
+      ],
+      "sla": "Decisão nominal registada antes da promoção",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-15-separacao-formal-entre-sinal-automatico-e-decisao-de-promocao",
+      "trigger": "Promoção considerada a partir de sinais (*scores*, recomendações)",
+      "user_story_id": "07-cicd-seguro-us-15",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-15"
+      ],
+      "id": "07-cicd-seguro-us-15-deploy-2",
+      "phase": "Promoção",
+      "phase_normalized": "deploy",
+      "practice_id": "07-cicd-seguro:separacao-formal-entre-sinal-automatico-e-decisao-de-promocao",
+      "responsible": "AppSec Engineers",
+      "responsible_normalized": [
+        "appsec-engineer"
+      ],
+      "sla": "Bloqueio até registo nominal de aprovação",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-15-separacao-formal-entre-sinal-automatico-e-decisao-de-promocao",
+      "trigger": "Tentativa de promoção sem decisão formal",
+      "user_story_id": "07-cicd-seguro-us-15",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-16"
+      ],
+      "id": "07-cicd-seguro-us-16-govern-1",
+      "phase": "Auditoria",
+      "phase_normalized": "govern",
+      "practice_id": "07-cicd-seguro:evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao",
+      "responsible": "GRC / Compliance",
+      "responsible_normalized": [
+        "grc-compliance"
+      ],
+      "sla": "Referência verificável à execução (*run id*, logs, artefactos) no registo",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-16-evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao",
+      "trigger": "Uso de um relatório de validação como evidência",
+      "user_story_id": "07-cicd-seguro-us-16",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-16"
+      ],
+      "id": "07-cicd-seguro-us-16-govern-2",
+      "phase": "Auditoria",
+      "phase_normalized": "govern",
+      "practice_id": "07-cicd-seguro:evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao",
+      "responsible": "GRC / Compliance",
+      "responsible_normalized": [
+        "grc-compliance"
+      ],
+      "sla": "Rejeição imediata como «não verificável»",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-16-evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao",
+      "trigger": "Registo de resultado sem execução observável",
+      "user_story_id": "07-cicd-seguro-us-16",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-17"
+      ],
+      "id": "07-cicd-seguro-us-17-build-1",
+      "phase": "CI/CD",
+      "phase_normalized": "build",
+      "practice_id": "07-cicd-seguro:contencao-de-contexto-e-higiene-de-logs-outputs",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "*Masking*/redação por defeito, a cada execução",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-17-contencao-de-contexto-e-higiene-de-logs-outputs",
+      "trigger": "Geração de logs pelo pipeline",
+      "user_story_id": "07-cicd-seguro-us-17",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-17"
+      ],
+      "id": "07-cicd-seguro-us-17-operate-2",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "07-cicd-seguro:contencao-de-contexto-e-higiene-de-logs-outputs",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "Aprovação prévia, janela limitada no tempo e evidência de desativação",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-17-contencao-de-contexto-e-higiene-de-logs-outputs",
+      "trigger": "Ativação temporária de *debug*",
+      "user_story_id": "07-cicd-seguro-us-17",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-18"
+      ],
+      "id": "07-cicd-seguro-us-18-operate-1",
+      "phase": "Produção",
+      "phase_normalized": "operate",
+      "practice_id": "07-cicd-seguro:nao-repudio-e-ownership-de-promocoes-acoes-irreversiveis",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "Registo nominal e *timestamp* no momento da promoção",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-18-nao-repudio-e-ownership-de-promocoes-acoes-irreversiveis",
+      "trigger": "Promoção para produção executada",
+      "user_story_id": "07-cicd-seguro-us-18",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-18"
+      ],
+      "id": "07-cicd-seguro-us-18-operate-2",
+      "phase": "Produção",
+      "phase_normalized": "operate",
+      "practice_id": "07-cicd-seguro:nao-repudio-e-ownership-de-promocoes-acoes-irreversiveis",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "Bloqueio imediato da ação",
+      "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-18-nao-repudio-e-ownership-de-promocoes-acoes-irreversiveis",
+      "trigger": "Tentativa de promoção sem *owner* humano",
+      "user_story_id": "07-cicd-seguro-us-18",
       "warnings": []
     },
     {
@@ -2422,6 +3566,995 @@
       "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-23-custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas-us-23",
       "trigger": "Adição/alteração de serviço externo",
       "user_story_id": "07-cicd-seguro-us-23",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-01"
+      ],
+      "id": "08-iac-infraestrutura-us-01-plan-1",
+      "phase": "Início de projeto",
+      "phase_normalized": "plan",
+      "practice_id": "08-iac-infraestrutura:backend-remoto-locking-e-rastreabilidade",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "Backend remoto, locking e encriptação KMS na inicialização",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-01-backend-remoto-locking-e-rastreabilidade",
+      "trigger": "Inicialização de um projeto IaC novo",
+      "user_story_id": "08-iac-infraestrutura-us-01",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-01"
+      ],
+      "id": "08-iac-infraestrutura-us-01-operate-2",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "08-iac-infraestrutura:backend-remoto-locking-e-rastreabilidade",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "Bloqueio até release do lock",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-01-backend-remoto-locking-e-rastreabilidade",
+      "trigger": "Tentativa de execução concorrente durante um `apply`",
+      "user_story_id": "08-iac-infraestrutura-us-01",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-01"
+      ],
+      "id": "08-iac-infraestrutura-us-01-develop-3",
+      "phase": "Desenvolvimento / Revisão",
+      "phase_normalized": "develop",
+      "practice_id": "08-iac-infraestrutura:backend-remoto-locking-e-rastreabilidade",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "Plano versionado com metadados (timestamp, autor, PR/MR ID)",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-01-backend-remoto-locking-e-rastreabilidade",
+      "trigger": "Geração de um plano de execução",
+      "user_story_id": "08-iac-infraestrutura-us-01",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-02"
+      ],
+      "id": "08-iac-infraestrutura-us-02-plan-1",
+      "phase": "Início de projeto",
+      "phase_normalized": "plan",
+      "practice_id": "08-iac-infraestrutura:segregacao-de-ambientes-tagging-e-permissoes-minimas",
+      "responsible": "DevOps / SRE + Arquitetos de Software",
+      "responsible_normalized": [
+        "devops-sre",
+        "arquitetos-software"
+      ],
+      "sla": "Diretórios de ambiente segregados e `variable \"environment\"` obrigatória",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-02-segregacao-de-ambientes-tagging-e-permissoes-minimas",
+      "trigger": "Inicialização de um projeto IaC novo",
+      "user_story_id": "08-iac-infraestrutura-us-02",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-02"
+      ],
+      "id": "08-iac-infraestrutura-us-02-deploy-2",
+      "phase": "Provisionamento",
+      "phase_normalized": "deploy",
+      "practice_id": "08-iac-infraestrutura:segregacao-de-ambientes-tagging-e-permissoes-minimas",
+      "responsible": "DevOps / SRE + Arquitetos de Software",
+      "responsible_normalized": [
+        "devops-sre",
+        "arquitetos-software"
+      ],
+      "sla": "Tags obrigatórias: Environment, Owner, Application, Criticality, ManagedBy",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-02-segregacao-de-ambientes-tagging-e-permissoes-minimas",
+      "trigger": "Provisionamento de um recurso",
+      "user_story_id": "08-iac-infraestrutura-us-02",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-02"
+      ],
+      "id": "08-iac-infraestrutura-us-02-develop-3",
+      "phase": "Desenvolvimento / Revisão",
+      "phase_normalized": "develop",
+      "practice_id": "08-iac-infraestrutura:segregacao-de-ambientes-tagging-e-permissoes-minimas",
+      "responsible": "DevOps / SRE + Arquitetos de Software",
+      "responsible_normalized": [
+        "devops-sre",
+        "arquitetos-software"
+      ],
+      "sla": "Scope mínimo na criação",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-02-segregacao-de-ambientes-tagging-e-permissoes-minimas",
+      "trigger": "Criação de uma role ou permissão",
+      "user_story_id": "08-iac-infraestrutura-us-02",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-03"
+      ],
+      "id": "08-iac-infraestrutura-us-03-build-1",
+      "phase": "CI/CD",
+      "phase_normalized": "build",
+      "practice_id": "08-iac-infraestrutura:validacoes-automaticas-integradas",
+      "responsible": "Developers + AppSec Engineers",
+      "responsible_normalized": [
+        "developer",
+        "appsec-engineer"
+      ],
+      "sla": "Linters e scanners de segurança a cada push",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-03-validacoes-automaticas-integradas",
+      "trigger": "Push de commit com IaC",
+      "user_story_id": "08-iac-infraestrutura-us-03",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-03"
+      ],
+      "id": "08-iac-infraestrutura-us-03-build-2",
+      "phase": "PR/MR",
+      "phase_normalized": "build",
+      "practice_id": "08-iac-infraestrutura:validacoes-automaticas-integradas",
+      "responsible": "Developers + AppSec Engineers",
+      "responsible_normalized": [
+        "developer",
+        "appsec-engineer"
+      ],
+      "sla": "Bloqueio do merge, reportado em PR",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-03-validacoes-automaticas-integradas",
+      "trigger": "Violação de política crítica detetada",
+      "user_story_id": "08-iac-infraestrutura-us-03",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-03"
+      ],
+      "id": "08-iac-infraestrutura-us-03-deploy-3",
+      "phase": "Deploy / Operação",
+      "phase_normalized": "deploy",
+      "practice_id": "08-iac-infraestrutura:validacoes-automaticas-integradas",
+      "responsible": "Developers + AppSec Engineers",
+      "responsible_normalized": [
+        "developer",
+        "appsec-engineer"
+      ],
+      "sla": "`apply` impedido",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-03-validacoes-automaticas-integradas",
+      "trigger": "`plan` que não passa validação mínima",
+      "user_story_id": "08-iac-infraestrutura-us-03",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-04"
+      ],
+      "id": "08-iac-infraestrutura-us-04-govern-1",
+      "phase": "Governação",
+      "phase_normalized": "govern",
+      "practice_id": "08-iac-infraestrutura:governanca-e-origem-confiavel-de-modulos",
+      "responsible": "AppSec Engineers + Arquitetos de Software + DevOps / SRE",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "arquitetos-software",
+        "devops-sre"
+      ],
+      "sla": "Em allowlist e pinned a versão exata, sem `main` nem `latest`",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-04-governanca-e-origem-confiavel-de-modulos",
+      "trigger": "Referência a módulo externo novo",
+      "user_story_id": "08-iac-infraestrutura-us-04",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-04"
+      ],
+      "id": "08-iac-infraestrutura-us-04-govern-2",
+      "phase": "Governação",
+      "phase_normalized": "govern",
+      "practice_id": "08-iac-infraestrutura:governanca-e-origem-confiavel-de-modulos",
+      "responsible": "AppSec Engineers + Arquitetos de Software + DevOps / SRE",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "arquitetos-software",
+        "devops-sre"
+      ],
+      "sla": "Testes automatizados, linting e revisão explícita antes da publicação",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-04-governanca-e-origem-confiavel-de-modulos",
+      "trigger": "Publicação de módulo interno",
+      "user_story_id": "08-iac-infraestrutura-us-04",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-04"
+      ],
+      "id": "08-iac-infraestrutura-us-04-govern-3",
+      "phase": "Governação",
+      "phase_normalized": "govern",
+      "practice_id": "08-iac-infraestrutura:governanca-e-origem-confiavel-de-modulos",
+      "responsible": "AppSec Engineers + Arquitetos de Software + DevOps / SRE",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "arquitetos-software",
+        "devops-sre"
+      ],
+      "sla": "Marcação e revisão de uso obrigatória",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-04-governanca-e-origem-confiavel-de-modulos",
+      "trigger": "Vulnerabilidade reportada numa atualização de módulo",
+      "user_story_id": "08-iac-infraestrutura-us-04",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-04"
+      ],
+      "id": "08-iac-infraestrutura-us-04-build-4",
+      "phase": "CI/CD",
+      "phase_normalized": "build",
+      "practice_id": "08-iac-infraestrutura:governanca-e-origem-confiavel-de-modulos",
+      "responsible": "AppSec Engineers + Arquitetos de Software + DevOps / SRE",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "arquitetos-software",
+        "devops-sre"
+      ],
+      "sla": "Em allowlist, versionado sem ranges e com digest verificado",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-04-governanca-e-origem-confiavel-de-modulos",
+      "trigger": "Referência a módulo novo no repositório",
+      "user_story_id": "08-iac-infraestrutura-us-04",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-04"
+      ],
+      "id": "08-iac-infraestrutura-us-04-build-5",
+      "phase": "CI/CD",
+      "phase_normalized": "build",
+      "practice_id": "08-iac-infraestrutura:governanca-e-origem-confiavel-de-modulos",
+      "responsible": "AppSec Engineers + Arquitetos de Software + DevOps / SRE",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "arquitetos-software",
+        "devops-sre"
+      ],
+      "sla": "Validação de attestation; recusa se a origem não cumprir a política",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-04-governanca-e-origem-confiavel-de-modulos",
+      "trigger": "Execução do pipeline sobre atualização de módulo",
+      "user_story_id": "08-iac-infraestrutura-us-04",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-04"
+      ],
+      "id": "08-iac-infraestrutura-us-04-build-6",
+      "phase": "CI/CD",
+      "phase_normalized": "build",
+      "practice_id": "08-iac-infraestrutura:governanca-e-origem-confiavel-de-modulos",
+      "responsible": "AppSec Engineers + Arquitetos de Software + DevOps / SRE",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "arquitetos-software",
+        "devops-sre"
+      ],
+      "sla": "Assinatura do produtor interno e revisão por AppSec",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-04-governanca-e-origem-confiavel-de-modulos",
+      "trigger": "Consumo de módulo private",
+      "user_story_id": "08-iac-infraestrutura-us-04",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-05"
+      ],
+      "id": "08-iac-infraestrutura-us-05-develop-1",
+      "phase": "Desenvolvimento / Revisão",
+      "phase_normalized": "develop",
+      "practice_id": "08-iac-infraestrutura:rastreabilidade-versionamento-e-naming",
+      "responsible": "DevOps / SRE + GRC / Compliance",
+      "responsible_normalized": [
+        "devops-sre",
+        "grc-compliance"
+      ],
+      "sla": "Padrão de mensagem e ligação a ticket no commit",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-05-rastreabilidade-versionamento-e-naming",
+      "trigger": "Commit de uma alteração de infraestrutura",
+      "user_story_id": "08-iac-infraestrutura-us-05",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-05"
+      ],
+      "id": "08-iac-infraestrutura-us-05-deploy-2",
+      "phase": "Release",
+      "phase_normalized": "deploy",
+      "practice_id": "08-iac-infraestrutura:rastreabilidade-versionamento-e-naming",
+      "responsible": "DevOps / SRE + GRC / Compliance",
+      "responsible_normalized": [
+        "devops-sre",
+        "grc-compliance"
+      ],
+      "sla": "Tag git semântica com hash e timestamp na promoção",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-05-rastreabilidade-versionamento-e-naming",
+      "trigger": "Promoção de uma release para produção",
+      "user_story_id": "08-iac-infraestrutura-us-05",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-05"
+      ],
+      "id": "08-iac-infraestrutura-us-05-build-3",
+      "phase": "CI/CD",
+      "phase_normalized": "build",
+      "practice_id": "08-iac-infraestrutura:rastreabilidade-versionamento-e-naming",
+      "responsible": "DevOps / SRE + GRC / Compliance",
+      "responsible_normalized": [
+        "devops-sre",
+        "grc-compliance"
+      ],
+      "sla": "Rejeição por pre-commit hook ou linter",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-05-rastreabilidade-versionamento-e-naming",
+      "trigger": "Violação de convenção de naming",
+      "user_story_id": "08-iac-infraestrutura-us-05",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-06"
+      ],
+      "id": "08-iac-infraestrutura-us-06-build-1",
+      "phase": "PR/MR",
+      "phase_normalized": "build",
+      "practice_id": "08-iac-infraestrutura:revisao-formal-de-plan-antes-de-apply",
+      "responsible": "DevOps / SRE + AppSec Engineers",
+      "responsible_normalized": [
+        "devops-sre",
+        "appsec-engineer"
+      ],
+      "sla": "`terraform plan` executado e anexado ao PR na submissão",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-06-revisao-formal-de-plan-antes-de-apply",
+      "trigger": "Submissão de PR com mudança de IaC",
+      "user_story_id": "08-iac-infraestrutura-us-06",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-06"
+      ],
+      "id": "08-iac-infraestrutura-us-06-develop-2",
+      "phase": "Desenvolvimento / Revisão",
+      "phase_normalized": "develop",
+      "practice_id": "08-iac-infraestrutura:revisao-formal-de-plan-antes-de-apply",
+      "responsible": "DevOps / SRE + AppSec Engineers",
+      "responsible_normalized": [
+        "devops-sre",
+        "appsec-engineer"
+      ],
+      "sla": "Aprovação explícita com co-sign de pelo menos dois papéis",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-06-revisao-formal-de-plan-antes-de-apply",
+      "trigger": "`plan` revisto sem alterações inesperadas",
+      "user_story_id": "08-iac-infraestrutura-us-06",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-06"
+      ],
+      "id": "08-iac-infraestrutura-us-06-deploy-3",
+      "phase": "Deploy / Operação",
+      "phase_normalized": "deploy",
+      "practice_id": "08-iac-infraestrutura:revisao-formal-de-plan-antes-de-apply",
+      "responsible": "DevOps / SRE + AppSec Engineers",
+      "responsible_normalized": [
+        "devops-sre",
+        "appsec-engineer"
+      ],
+      "sla": "Dupla aprovação e janela de mudança antes do `apply`",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-06-revisao-formal-de-plan-antes-de-apply",
+      "trigger": "`apply` agendado para ambiente crítico (staging/prod)",
+      "user_story_id": "08-iac-infraestrutura-us-06",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-07"
+      ],
+      "id": "08-iac-infraestrutura-us-07-operate-1",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "08-iac-infraestrutura:rastreabilidade-ficheiro-recurso-ambiente",
+      "responsible": "GRC / Compliance + Auditores Internos",
+      "responsible_normalized": [
+        "grc-compliance",
+        "auditores"
+      ],
+      "sla": "Mapeamento ficheiro `.tf` (branch + commit) → recurso → ambiente disponível",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-07-rastreabilidade-ficheiro-recurso-ambiente",
+      "trigger": "Necessidade de identificar a origem de um recurso em produção",
+      "user_story_id": "08-iac-infraestrutura-us-07",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-07"
+      ],
+      "id": "08-iac-infraestrutura-us-07-govern-2",
+      "phase": "Auditoria",
+      "phase_normalized": "govern",
+      "practice_id": "08-iac-infraestrutura:rastreabilidade-ficheiro-recurso-ambiente",
+      "responsible": "GRC / Compliance + Auditores Internos",
+      "responsible_normalized": [
+        "grc-compliance",
+        "auditores"
+      ],
+      "sla": "Relatório de recurso, ambiente, autor, data e código",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-07-rastreabilidade-ficheiro-recurso-ambiente",
+      "trigger": "Execução de auditoria de conformidade",
+      "user_story_id": "08-iac-infraestrutura-us-07",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-07"
+      ],
+      "id": "08-iac-infraestrutura-us-07-develop-3",
+      "phase": "Desenvolvimento / Revisão",
+      "phase_normalized": "develop",
+      "practice_id": "08-iac-infraestrutura:rastreabilidade-ficheiro-recurso-ambiente",
+      "responsible": "GRC / Compliance + Auditores Internos",
+      "responsible_normalized": [
+        "grc-compliance",
+        "auditores"
+      ],
+      "sla": "Metadata em `locals` e tags mantidas na alteração",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-07-rastreabilidade-ficheiro-recurso-ambiente",
+      "trigger": "Preservação de metadata em código",
+      "user_story_id": "08-iac-infraestrutura-us-07",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-08"
+      ],
+      "id": "08-iac-infraestrutura-us-08-build-1",
+      "phase": "CI/CD",
+      "phase_normalized": "build",
+      "practice_id": "08-iac-infraestrutura:enforcement-automatico-de-politicas",
+      "responsible": "AppSec Engineers + DevOps / SRE",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "devops-sre"
+      ],
+      "sla": "Rejeição automática com mensagem clara",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-08-enforcement-automatico-de-politicas",
+      "trigger": "Recurso com permissões amplas validado em OPA ou `conftest`",
+      "user_story_id": "08-iac-infraestrutura-us-08",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-08"
+      ],
+      "id": "08-iac-infraestrutura-us-08-deploy-2",
+      "phase": "Deploy / Operação",
+      "phase_normalized": "deploy",
+      "practice_id": "08-iac-infraestrutura:enforcement-automatico-de-politicas",
+      "responsible": "AppSec Engineers + DevOps / SRE",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "devops-sre"
+      ],
+      "sla": "Bloqueio do `apply` se a política não for cumprida",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-08-enforcement-automatico-de-politicas",
+      "trigger": "Execução de política no pipeline",
+      "user_story_id": "08-iac-infraestrutura-us-08",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-08"
+      ],
+      "id": "08-iac-infraestrutura-us-08-govern-3",
+      "phase": "Governação",
+      "phase_normalized": "govern",
+      "practice_id": "08-iac-infraestrutura:enforcement-automatico-de-politicas",
+      "responsible": "AppSec Engineers + DevOps / SRE",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "devops-sre"
+      ],
+      "sla": "Auditada e contabilizada em métricas; revisão trimestral em L3",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-08-enforcement-automatico-de-politicas",
+      "trigger": "Registo de exceção justificada",
+      "user_story_id": "08-iac-infraestrutura-us-08",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-09"
+      ],
+      "id": "08-iac-infraestrutura-us-09-develop-1",
+      "phase": "Desenvolvimento / Revisão",
+      "phase_normalized": "develop",
+      "practice_id": "08-iac-infraestrutura:assinatura-e-proveniencia-de-artefactos-iac",
+      "responsible": "DevOps / SRE + AppSec Engineers",
+      "responsible_normalized": [
+        "devops-sre",
+        "appsec-engineer"
+      ],
+      "sla": "`plan` assinado e com attestation do pipeline",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-09-assinatura-e-proveniencia-de-artefactos-iac",
+      "trigger": "Submissão de `terraform plan` a revisão",
+      "user_story_id": "08-iac-infraestrutura-us-09",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-09"
+      ],
+      "id": "08-iac-infraestrutura-us-09-deploy-2",
+      "phase": "Deploy / Operação",
+      "phase_normalized": "deploy",
+      "practice_id": "08-iac-infraestrutura:assinatura-e-proveniencia-de-artefactos-iac",
+      "responsible": "DevOps / SRE + AppSec Engineers",
+      "responsible_normalized": [
+        "devops-sre",
+        "appsec-engineer"
+      ],
+      "sla": "Rejeição de `plan`/`apply` sem assinatura válida ou attestation, antes da promoção",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-09-assinatura-e-proveniencia-de-artefactos-iac",
+      "trigger": "Promoção para `prod` avaliada pelo gate",
+      "user_story_id": "08-iac-infraestrutura-us-09",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-10"
+      ],
+      "id": "08-iac-infraestrutura-us-10-build-1",
+      "phase": "CI/CD",
+      "phase_normalized": "build",
+      "practice_id": "08-iac-infraestrutura:gestao-de-segredos-e-identidades-para-iac",
+      "responsible": "DevOps / SRE + AppSec Engineers",
+      "responsible_normalized": [
+        "devops-sre",
+        "appsec-engineer"
+      ],
+      "sla": "Token efémero via OIDC com scope mínimo e TTL ≤ 1h",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-10-gestao-de-segredos-e-identidades-para-iac",
+      "trigger": "Pipeline de IaC que necessita aceder ao provider",
+      "user_story_id": "08-iac-infraestrutura-us-10",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-10"
+      ],
+      "id": "08-iac-infraestrutura-us-10-operate-2",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "08-iac-infraestrutura:gestao-de-segredos-e-identidades-para-iac",
+      "responsible": "DevOps / SRE + AppSec Engineers",
+      "responsible_normalized": [
+        "devops-sre",
+        "appsec-engineer"
+      ],
+      "sla": "Sem reutilização nem escalada após a expiração",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-10-gestao-de-segredos-e-identidades-para-iac",
+      "trigger": "Expiração do token",
+      "user_story_id": "08-iac-infraestrutura-us-10",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-11"
+      ],
+      "id": "08-iac-infraestrutura-us-11-govern-1",
+      "phase": "Governação",
+      "phase_normalized": "govern",
+      "practice_id": "08-iac-infraestrutura:detecao-e-correcao-de-drift",
+      "responsible": "AppSec Engineers + DevOps / SRE",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "devops-sre"
+      ],
+      "sla": "Mensal (L1), quinzenal (L2), semanal (L3)",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-11-detecao-e-correcao-de-drift",
+      "trigger": "Ciclo agendado de `terraform plan -refresh-only`",
+      "user_story_id": "08-iac-infraestrutura-us-11",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-11"
+      ],
+      "id": "08-iac-infraestrutura-us-11-operate-2",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "08-iac-infraestrutura:detecao-e-correcao-de-drift",
+      "responsible": "AppSec Engineers + DevOps / SRE",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "devops-sre"
+      ],
+      "sla": "Tarefa de correção com aprovação antes do `apply`",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-11-detecao-e-correcao-de-drift",
+      "trigger": "Drift crítico confirmado em `prod`",
+      "user_story_id": "08-iac-infraestrutura-us-11",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-12"
+      ],
+      "id": "08-iac-infraestrutura-us-12-operate-1",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "08-iac-infraestrutura:rollback-e-salvaguarda-de-destroy",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "Recursos críticos repostos no estado anterior",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-12-rollback-e-salvaguarda-de-destroy",
+      "trigger": "Rollback acionado após um `apply` falhado",
+      "user_story_id": "08-iac-infraestrutura-us-12",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-12"
+      ],
+      "id": "08-iac-infraestrutura-us-12-deploy-2",
+      "phase": "Deploy / Operação",
+      "phase_normalized": "deploy",
+      "practice_id": "08-iac-infraestrutura:rollback-e-salvaguarda-de-destroy",
+      "responsible": "DevOps / SRE",
+      "responsible_normalized": [
+        "devops-sre"
+      ],
+      "sla": "Dupla confirmação e janela de mudança antes da execução",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-12-rollback-e-salvaguarda-de-destroy",
+      "trigger": "Operação `destroy` em `prod`",
+      "user_story_id": "08-iac-infraestrutura-us-12",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-13"
+      ],
+      "id": "08-iac-infraestrutura-us-13-deploy-1",
+      "phase": "Deploy / Operação",
+      "phase_normalized": "deploy",
+      "practice_id": "08-iac-infraestrutura:janela-de-mudanca-e-aprovacoes-por-papel",
+      "responsible": "GRC / Compliance + AppSec Engineers + Auditores Internos",
+      "responsible_normalized": [
+        "grc-compliance",
+        "appsec-engineer",
+        "auditores"
+      ],
+      "sla": "`apply` só na janela autorizada, com aprovações PO/AppSec/GRC",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-13-janela-de-mudanca-e-aprovacoes-por-papel",
+      "trigger": "`plan` aprovado para uma alteração em `prod`",
+      "user_story_id": "08-iac-infraestrutura-us-13",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-14"
+      ],
+      "id": "08-iac-infraestrutura-us-14-govern-1",
+      "phase": "Governação",
+      "phase_normalized": "govern",
+      "practice_id": "08-iac-infraestrutura:excecoes-formais-em-iac",
+      "responsible": "GRC / Compliance + AppSec Engineers",
+      "responsible_normalized": [
+        "grc-compliance",
+        "appsec-engineer"
+      ],
+      "sla": "Aprovação só com prazo e compensações; review por sprint em L3",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-14-excecoes-formais-em-iac",
+      "trigger": "Pedido de exceção submetido a análise",
+      "user_story_id": "08-iac-infraestrutura-us-14",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-14"
+      ],
+      "id": "08-iac-infraestrutura-us-14-govern-2",
+      "phase": "Exceção",
+      "phase_normalized": "govern",
+      "practice_id": "08-iac-infraestrutura:excecoes-formais-em-iac",
+      "responsible": "GRC / Compliance + AppSec Engineers",
+      "responsible_normalized": [
+        "grc-compliance",
+        "appsec-engineer"
+      ],
+      "sla": "Revogação e restauro da política na expiração",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-normalizadas--us-14-excecoes-formais-em-iac",
+      "trigger": "Exceção expirada",
+      "user_story_id": "08-iac-infraestrutura-us-14",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-15"
+      ],
+      "id": "08-iac-infraestrutura-us-15-deploy-1",
+      "phase": "Deploy / Operação",
+      "phase_normalized": "deploy",
+      "practice_id": "08-iac-infraestrutura:separacao-de-funcoes-sod-e-controlo-de-execucao-de-apply",
+      "responsible": "GRC / Compliance + DevOps / SRE",
+      "responsible_normalized": [
+        "grc-compliance",
+        "devops-sre"
+      ],
+      "sla": "Aprovação de pelo menos dois papéis e execução em janela de mudança",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-15-separacao-de-funcoes-sod-e-controlo-de-execucao-de-apply",
+      "trigger": "`apply` solicitado para ambiente `prod`",
+      "user_story_id": "08-iac-infraestrutura-us-15",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-15"
+      ],
+      "id": "08-iac-infraestrutura-us-15-deploy-2",
+      "phase": "Deploy / Operação",
+      "phase_normalized": "deploy",
+      "practice_id": "08-iac-infraestrutura:separacao-de-funcoes-sod-e-controlo-de-execucao-de-apply",
+      "responsible": "GRC / Compliance + DevOps / SRE",
+      "responsible_normalized": [
+        "grc-compliance",
+        "devops-sre"
+      ],
+      "sla": "Aprovação de um segundo revisor independente",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-15-separacao-de-funcoes-sod-e-controlo-de-execucao-de-apply",
+      "trigger": "`apply` solicitado para ambiente `staging`",
+      "user_story_id": "08-iac-infraestrutura-us-15",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-15"
+      ],
+      "id": "08-iac-infraestrutura-us-15-operate-3",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "08-iac-infraestrutura:separacao-de-funcoes-sod-e-controlo-de-execucao-de-apply",
+      "responsible": "GRC / Compliance + DevOps / SRE",
+      "responsible_normalized": [
+        "grc-compliance",
+        "devops-sre"
+      ],
+      "sla": "Bloqueio pelo pipeline (RBAC / environment protection)",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-15-separacao-de-funcoes-sod-e-controlo-de-execucao-de-apply",
+      "trigger": "Tentativa de `apply` por utilizador sem permissão",
+      "user_story_id": "08-iac-infraestrutura-us-15",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-16"
+      ],
+      "id": "08-iac-infraestrutura-us-16-build-1",
+      "phase": "CI/CD",
+      "phase_normalized": "build",
+      "practice_id": "08-iac-infraestrutura:minimizacao-de-contexto-e-protecao-de-informacao-sensivel-em-iac",
+      "responsible": "AppSec Engineers + DevOps / SRE",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "devops-sre"
+      ],
+      "sla": "Redaction de segredos e campos sensíveis na publicação",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-16-minimizacao-de-contexto-e-protecao-de-informacao-sensivel-em-iac",
+      "trigger": "Publicação de `plan` e logs em PR, storage ou observabilidade",
+      "user_story_id": "08-iac-infraestrutura-us-16",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-16"
+      ],
+      "id": "08-iac-infraestrutura-us-16-build-2",
+      "phase": "PR/MR",
+      "phase_normalized": "build",
+      "practice_id": "08-iac-infraestrutura:minimizacao-de-contexto-e-protecao-de-informacao-sensivel-em-iac",
+      "responsible": "AppSec Engineers + DevOps / SRE",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "devops-sre"
+      ],
+      "sla": "Bloqueio por secret scanning e política de exposição mínima",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-16-minimizacao-de-contexto-e-protecao-de-informacao-sensivel-em-iac",
+      "trigger": "PR com outputs sensíveis analisado pelo pipeline",
+      "user_story_id": "08-iac-infraestrutura-us-16",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-16"
+      ],
+      "id": "08-iac-infraestrutura-us-16-operate-3",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "08-iac-infraestrutura:minimizacao-de-contexto-e-protecao-de-informacao-sensivel-em-iac",
+      "responsible": "AppSec Engineers + DevOps / SRE",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "devops-sre"
+      ],
+      "sla": "Apenas o mínimo necessário, sem topologia detalhada nem segredos",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-16-minimizacao-de-contexto-e-protecao-de-informacao-sensivel-em-iac",
+      "trigger": "Exportação de logs ou `plan` para sistemas externos",
+      "user_story_id": "08-iac-infraestrutura-us-16",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-17"
+      ],
+      "id": "08-iac-infraestrutura-us-17-build-1",
+      "phase": "CI/CD",
+      "phase_normalized": "build",
+      "practice_id": "08-iac-infraestrutura:determinismo-e-reprodutibilidade-do-plan",
+      "responsible": "DevOps / SRE + AppSec Engineers",
+      "responsible_normalized": [
+        "devops-sre",
+        "appsec-engineer"
+      ],
+      "sla": "Providers e módulos pinados; ambiente de execução conhecido e versionado",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-17-determinismo-e-reprodutibilidade-do-plan",
+      "trigger": "Execução de `plan` em CI",
+      "user_story_id": "08-iac-infraestrutura-us-17",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-17"
+      ],
+      "id": "08-iac-infraestrutura-us-17-develop-2",
+      "phase": "Desenvolvimento / Revisão",
+      "phase_normalized": "develop",
+      "practice_id": "08-iac-infraestrutura:determinismo-e-reprodutibilidade-do-plan",
+      "responsible": "DevOps / SRE + AppSec Engineers",
+      "responsible_normalized": [
+        "devops-sre",
+        "appsec-engineer"
+      ],
+      "sla": "Resultado funcionalmente equivalente, ou diferenças justificadas e registadas",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-17-determinismo-e-reprodutibilidade-do-plan",
+      "trigger": "Reexecução de um `plan` aprovado para validação",
+      "user_story_id": "08-iac-infraestrutura-us-17",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-17"
+      ],
+      "id": "08-iac-infraestrutura-us-17-build-3",
+      "phase": "PR/MR",
+      "phase_normalized": "build",
+      "practice_id": "08-iac-infraestrutura:determinismo-e-reprodutibilidade-do-plan",
+      "responsible": "DevOps / SRE + AppSec Engineers",
+      "responsible_normalized": [
+        "devops-sre",
+        "appsec-engineer"
+      ],
+      "sla": "Tratada como mudança de risco: revisão reforçada e evidência adicional",
+      "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-17-determinismo-e-reprodutibilidade-do-plan",
+      "trigger": "Proposta de alteração de versão de provider ou módulo",
+      "user_story_id": "08-iac-infraestrutura-us-17",
       "warnings": []
     },
     {
@@ -2773,9 +4906,9 @@
       "evidence": [
         "sdlc integration extracted for US-10"
       ],
-      "id": "09-containers-imagens-us-10-unassigned-4",
+      "id": "09-containers-imagens-us-10-govern-4",
       "phase": "GRC",
-      "phase_normalized": "unassigned",
+      "phase_normalized": "govern",
       "practice_id": "09-containers-imagens:segmentacao-de-rede-e-networkpolicy",
       "responsible": "GRC / Compliance",
       "responsible_normalized": [
@@ -2813,9 +4946,9 @@
       "evidence": [
         "sdlc integration extracted for US-11"
       ],
-      "id": "09-containers-imagens-us-11-unassigned-2",
+      "id": "09-containers-imagens-us-11-operate-2",
       "phase": "Patching",
-      "phase_normalized": "unassigned",
+      "phase_normalized": "operate",
       "practice_id": "09-containers-imagens:golden-base-images-com-patching-automatico",
       "responsible": "DevOps / SRE (automático se via Dependabot)",
       "responsible_normalized": [
@@ -2834,9 +4967,9 @@
       "evidence": [
         "sdlc integration extracted for US-11"
       ],
-      "id": "09-containers-imagens-us-11-unassigned-3",
+      "id": "09-containers-imagens-us-11-test-3",
       "phase": "Validação",
-      "phase_normalized": "unassigned",
+      "phase_normalized": "test",
       "practice_id": "09-containers-imagens:golden-base-images-com-patching-automatico",
       "responsible": "Pipeline CI/CD",
       "responsible_normalized": [
@@ -3264,9 +5397,9 @@
       "evidence": [
         "sdlc integration extracted for US-22"
       ],
-      "id": "09-containers-imagens-us-22-unassigned-2",
+      "id": "09-containers-imagens-us-22-govern-2",
       "phase": "GRC",
-      "phase_normalized": "unassigned",
+      "phase_normalized": "govern",
       "practice_id": "09-containers-imagens:retencao-e-limpeza-de-imagens-com-renovacao-periodica-por-sla",
       "responsible": "GRC / Compliance",
       "responsible_normalized": [
@@ -3711,6 +5844,46 @@
       "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--checklist-de-release-v-version--us-16-separacao-formal-entre-sinal-automatico-e-decisao-de-bloqueio-override",
       "trigger": "Gate falhou ou exceção proposta",
       "user_story_id": "10-testes-seguranca-us-16",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-17"
+      ],
+      "id": "10-testes-seguranca-us-17-test-1",
+      "phase": "Pré-release",
+      "phase_normalized": "test",
+      "practice_id": "10-testes-seguranca:avaliacao-critica-de-cobertura-real-e-limitacoes",
+      "responsible": "AppSec Engineer",
+      "responsible_normalized": [
+        "appsec-engineer"
+      ],
+      "sla": "Métricas interpretadas por humano e limitações registadas no sumário",
+      "source_document_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--checklist-de-release-v-version--us-17-avaliacao-critica-de-cobertura-real-e-limitacoes",
+      "trigger": "Produção do sumário de validação de uma release",
+      "user_story_id": "10-testes-seguranca-us-17",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-17"
+      ],
+      "id": "10-testes-seguranca-us-17-test-2",
+      "phase": "Pré-release",
+      "phase_normalized": "test",
+      "practice_id": "10-testes-seguranca:avaliacao-critica-de-cobertura-real-e-limitacoes",
+      "responsible": "AppSec Engineer",
+      "responsible_normalized": [
+        "appsec-engineer"
+      ],
+      "sla": "Plano de mitigação por lacuna, com owner e prazo, antes da aprovação",
+      "source_document_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--checklist-de-release-v-version--us-17-avaliacao-critica-de-cobertura-real-e-limitacoes",
+      "trigger": "Aprovação de release com áreas fora de cobertura",
+      "user_story_id": "10-testes-seguranca-us-17",
       "warnings": []
     },
     {
@@ -4165,6 +6338,109 @@
       "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-12-rollback-estruturado-por-tipo-binario-configuracao-bd-infra",
       "trigger": "Falha em produção",
       "user_story_id": "11-deploy-seguro-us-12",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-13"
+      ],
+      "id": "11-deploy-seguro-us-13-operate-1",
+      "phase": "Produção",
+      "phase_normalized": "operate",
+      "practice_id": "11-deploy-seguro:validacao-humana-obrigatoria-apos-deploy-automatizado",
+      "responsible": "Ops/AppSec",
+      "responsible_normalized": [
+        "operacoes",
+        "appsec-engineer"
+      ],
+      "sla": "`<`24h",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-13-validacao-humana-obrigatoria-apos-deploy-automatizado",
+      "trigger": "Pós-deploy",
+      "user_story_id": "11-deploy-seguro-us-13",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-14"
+      ],
+      "id": "11-deploy-seguro-us-14-operate-1",
+      "phase": "Operação contínua",
+      "phase_normalized": "operate",
+      "practice_id": "11-deploy-seguro:controlo-e-validacao-de-drift-operacional",
+      "responsible": "Ops",
+      "responsible_normalized": [
+        "operacoes"
+      ],
+      "sla": "`<48h`",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-14-controlo-e-validacao-de-drift-operacional",
+      "trigger": "Deteção de drift",
+      "user_story_id": "11-deploy-seguro-us-14",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-15"
+      ],
+      "id": "11-deploy-seguro-us-15-operate-1",
+      "phase": "Produção",
+      "phase_normalized": "operate",
+      "practice_id": "11-deploy-seguro:reprodutibilidade-de-incidentes-em-runtime",
+      "responsible": "Ops/AppSec",
+      "responsible_normalized": [
+        "operacoes",
+        "appsec-engineer"
+      ],
+      "sla": "SLA definido",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-15-reprodutibilidade-de-incidentes-em-runtime",
+      "trigger": "Incidente",
+      "user_story_id": "11-deploy-seguro-us-15",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-16"
+      ],
+      "id": "11-deploy-seguro-us-16-operate-1",
+      "phase": "Produção",
+      "phase_normalized": "operate",
+      "practice_id": "11-deploy-seguro:separacao-entre-acao-automatica-e-autorizacao-irreversivel",
+      "responsible": "Ops",
+      "responsible_normalized": [
+        "operacoes"
+      ],
+      "sla": "Antes da execução",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-16-separacao-entre-acao-automatica-e-autorizacao-irreversivel",
+      "trigger": "Ação crítica",
+      "user_story_id": "11-deploy-seguro-us-16",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-17"
+      ],
+      "id": "11-deploy-seguro-us-17-operate-1",
+      "phase": "Operação contínua",
+      "phase_normalized": "operate",
+      "practice_id": "11-deploy-seguro:evidencia-operacional-auditavel",
+      "responsible": "Ops/GRC",
+      "responsible_normalized": [
+        "operacoes",
+        "grc-compliance"
+      ],
+      "sla": "Imediato",
+      "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-17-evidencia-operacional-auditavel",
+      "trigger": "Evento",
+      "user_story_id": "11-deploy-seguro-us-17",
       "warnings": []
     },
     {
@@ -4796,6 +7072,47 @@
     {
       "confidence": 0.91,
       "evidence": [
+        "sdlc integration extracted for US-04"
+      ],
+      "id": "13-formacao-onboarding-us-04-govern-1",
+      "phase": "Ciclo de formação",
+      "phase_normalized": "govern",
+      "practice_id": "13-formacao-onboarding:exercicios-praticos-e-simulacoes",
+      "responsible": "QA + AppSec Engineer",
+      "responsible_normalized": [
+        "qa",
+        "appsec-engineer"
+      ],
+      "sla": "Resultado e métricas de desempenho registados na execução",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-04-exercicios-praticos-e-simulacoes",
+      "trigger": "Execução de um exercício previsto no plano de formação",
+      "user_story_id": "13-formacao-onboarding-us-04",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-05"
+      ],
+      "id": "13-formacao-onboarding-us-05-govern-1",
+      "phase": "Auditoria",
+      "phase_normalized": "govern",
+      "practice_id": "13-formacao-onboarding:medicao-de-eficacia-da-formacao",
+      "responsible": "GRC / Compliance",
+      "responsible_normalized": [
+        "grc-compliance"
+      ],
+      "sla": "KPIs anuais (L2); KPIs trimestrais com metas (L3)",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-05-medicao-de-eficacia-da-formacao",
+      "trigger": "Recolha de métricas no ciclo de formação",
+      "user_story_id": "13-formacao-onboarding-us-05",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
         "sdlc integration extracted for US-06"
       ],
       "id": "13-formacao-onboarding-us-06-develop-1",
@@ -4987,6 +7304,26 @@
     {
       "confidence": 0.91,
       "evidence": [
+        "sdlc integration extracted for US-15"
+      ],
+      "id": "13-formacao-onboarding-us-15-plan-1",
+      "phase": "Planeamento",
+      "phase_normalized": "plan",
+      "practice_id": "13-formacao-onboarding:formatos-de-entrega-e-dod-por-formato",
+      "responsible": "AppSec Engineer / RH",
+      "responsible_normalized": [
+        "appsec-engineer"
+      ],
+      "sla": "DoD mínimo e artefactos associados definidos no planeamento",
+      "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-15-formatos-de-entrega-e-dod-por-formato",
+      "trigger": "Planeamento de uma sessão num formato escolhido",
+      "user_story_id": "13-formacao-onboarding-us-15",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
         "sdlc integration extracted for US-16"
       ],
       "id": "13-formacao-onboarding-us-16-govern-1",
@@ -5089,6 +7426,743 @@
       "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-20-sandbox-isolado-para-pratica-de-contractors",
       "trigger": "Onboarding técnico de contractor",
       "user_story_id": "13-formacao-onboarding-us-20",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-01"
+      ],
+      "id": "14-governanca-contratacao-us-01-unassigned-1",
+      "phase": "Execução",
+      "phase_normalized": "unassigned",
+      "practice_id": "14-governanca-contratacao:processo-formal-de-excecoes-com-alcadas-por-nivel-de-risco",
+      "responsible": "Developer (submissão) + AppSec Engineer (validação) + Gestão Executiva / CISO (aprovação conforme nível)",
+      "responsible_normalized": [
+        "developer",
+        "submissao",
+        "appsec-engineer",
+        "validacao",
+        "gestao-executiva",
+        "aprovacao-conforme-nivel"
+      ],
+      "sla": "Aprovação em 5 dias (L1–L2), 3 dias (L3); Notificação de revalidação 30 dias antes do vencimento",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--user-stories-normalizadas--us-01-processo-formal-de-excecoes-com-alcadas-por-nivel-de-risco",
+      "trigger": "Sempre que há desvio",
+      "user_story_id": "14-governanca-contratacao-us-01",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-02"
+      ],
+      "id": "14-governanca-contratacao-us-02-plan-1",
+      "phase": "Planeamento",
+      "phase_normalized": "plan",
+      "practice_id": "14-governanca-contratacao:clausulas-contratuais-de-seguranca",
+      "responsible": "GRC / Compliance (Jurídico + Procurement)",
+      "responsible_normalized": [
+        "grc-compliance"
+      ],
+      "sla": "Conforme ciclo da US",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--user-stories-normalizadas--us-02-clausulas-contratuais-de-seguranca",
+      "trigger": "Contrato novo",
+      "user_story_id": "14-governanca-contratacao-us-02",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-03"
+      ],
+      "id": "14-governanca-contratacao-us-03-test-1",
+      "phase": "Validação",
+      "phase_normalized": "test",
+      "practice_id": "14-governanca-contratacao:validacao-continua-de-fornecedores",
+      "responsible": "GRC / Compliance",
+      "responsible_normalized": [
+        "grc-compliance"
+      ],
+      "sla": "Auditoria anual",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--user-stories-normalizadas--us-03-validacao-continua-de-fornecedores",
+      "trigger": "Auditoria de fornecedor ativo",
+      "user_story_id": "14-governanca-contratacao-us-03",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-04"
+      ],
+      "id": "14-governanca-contratacao-us-04-operate-1",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "14-governanca-contratacao:rastreabilidade-organizacional",
+      "responsible": "AppSec Engineer + GRC / Compliance",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "grc-compliance"
+      ],
+      "sla": "Conforme ciclo da US",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--user-stories-normalizadas--us-04-rastreabilidade-organizacional",
+      "trigger": "Recolha de métricas de projetos ativos",
+      "user_story_id": "14-governanca-contratacao-us-04",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-05"
+      ],
+      "id": "14-governanca-contratacao-us-05-govern-1",
+      "phase": "Auditoria",
+      "phase_normalized": "govern",
+      "practice_id": "14-governanca-contratacao:kpis-de-governacao",
+      "responsible": "Gestão Executiva + GRC / Compliance",
+      "responsible_normalized": [
+        "gestao-executiva",
+        "grc-compliance"
+      ],
+      "sla": "Conforme ciclo da US",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-05-kpis-de-governacao",
+      "trigger": "Ciclo trimestral de medição de KPIs",
+      "user_story_id": "14-governanca-contratacao-us-05",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-06"
+      ],
+      "id": "14-governanca-contratacao-us-06-plan-1",
+      "phase": "Planeamento",
+      "phase_normalized": "plan",
+      "practice_id": "14-governanca-contratacao:execucao-de-fluxo-formal-de-validacao-de-fornecedores",
+      "responsible": "AppSec Engineer + GRC / Compliance (Procurement Officer)",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "grc-compliance"
+      ],
+      "sla": "2 semanas (L2), 1 semana (L3)",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-06-execucao-de-fluxo-formal-de-validacao-de-fornecedores",
+      "trigger": "Novo fornecedor L2/L3; início do fluxo de validação",
+      "user_story_id": "14-governanca-contratacao-us-06",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-07"
+      ],
+      "id": "14-governanca-contratacao-us-07-operate-1",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "14-governanca-contratacao:ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
+      "responsible": "AppSec Engineer + GRC / Compliance",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "grc-compliance"
+      ],
+      "sla": "Reavaliação em 5 dias úteis",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-07-ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
+      "trigger": "Calendário (trimestral/semestral), Incidente crítico, Mudança arquitetura",
+      "user_story_id": "14-governanca-contratacao-us-07",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-07"
+      ],
+      "id": "14-governanca-contratacao-us-07-test-2",
+      "phase": "Validação",
+      "phase_normalized": "test",
+      "practice_id": "14-governanca-contratacao:ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
+      "responsible": "AppSec Engineer + GRC / Compliance",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "grc-compliance"
+      ],
+      "sla": "Reavaliação em 5 dias úteis",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-07-ciclo-continuo-de-revisao-e-reavaliacao-de-excecoes",
+      "trigger": "Calendário (trimestral/semestral), Incidente crítico, Mudança arquitetura",
+      "user_story_id": "14-governanca-contratacao-us-07",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-08"
+      ],
+      "id": "14-governanca-contratacao-us-08-plan-1",
+      "phase": "Planeamento",
+      "phase_normalized": "plan",
+      "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "responsible": "AppSec Engineer + Scrum Master / Team Lead + GRC / Compliance",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "scrum-master",
+        "grc-compliance"
+      ],
+      "sla": "Atualização por release ou 5 dias após evento crítico",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-08-repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "trigger": "Criação ou atualização do repositório; release relevante ou evento crítico",
+      "user_story_id": "14-governanca-contratacao-us-08",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-08"
+      ],
+      "id": "14-governanca-contratacao-us-08-unassigned-2",
+      "phase": "Execução",
+      "phase_normalized": "unassigned",
+      "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "responsible": "AppSec Engineer + Scrum Master / Team Lead + GRC / Compliance",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "scrum-master",
+        "grc-compliance"
+      ],
+      "sla": "Atualização por release ou 5 dias após evento crítico",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-08-repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "trigger": "Criação ou atualização do repositório; release relevante ou evento crítico",
+      "user_story_id": "14-governanca-contratacao-us-08",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-08"
+      ],
+      "id": "14-governanca-contratacao-us-08-test-3",
+      "phase": "Validação",
+      "phase_normalized": "test",
+      "practice_id": "14-governanca-contratacao:repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "responsible": "AppSec Engineer + Scrum Master / Team Lead + GRC / Compliance",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "scrum-master",
+        "grc-compliance"
+      ],
+      "sla": "Atualização por release ou 5 dias após evento crítico",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-08-repositorio-de-conformidade-por-aplicacao-controlo-sistematico",
+      "trigger": "Criação ou atualização do repositório; release relevante ou evento crítico",
+      "user_story_id": "14-governanca-contratacao-us-08",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-09"
+      ],
+      "id": "14-governanca-contratacao-us-09-plan-1",
+      "phase": "Planeamento",
+      "phase_normalized": "plan",
+      "practice_id": "14-governanca-contratacao:designacao-formal-de-owners-de-seguranca-por-aplicacao",
+      "responsible": "Gestão Executiva + Security Champion + AppSec Engineer",
+      "responsible_normalized": [
+        "gestao-executiva",
+        "security-champion",
+        "appsec-engineer"
+      ],
+      "sla": "Designação no arranque do projeto ou mudança de owner",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-09-designacao-formal-de-owners-de-seguranca-por-aplicacao",
+      "trigger": "Aplicação L2/L3; arranque do projeto ou rotação de owner",
+      "user_story_id": "14-governanca-contratacao-us-09",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-10"
+      ],
+      "id": "14-governanca-contratacao-us-10-test-1",
+      "phase": "Validação",
+      "phase_normalized": "test",
+      "practice_id": "14-governanca-contratacao:validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "responsible": "AppSec Engineer + GRC / Compliance + Scrum Master / Team Lead",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "grc-compliance",
+        "scrum-master"
+      ],
+      "sla": "Ciclo completado em 2 semanas desde trigger",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-10-validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "trigger": "Calendário cíclico, Release relevante, Incidente crítico",
+      "user_story_id": "14-governanca-contratacao-us-10",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-10"
+      ],
+      "id": "14-governanca-contratacao-us-10-govern-2",
+      "phase": "Auditoria",
+      "phase_normalized": "govern",
+      "practice_id": "14-governanca-contratacao:validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "responsible": "AppSec Engineer + GRC / Compliance + Scrum Master / Team Lead",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "grc-compliance",
+        "scrum-master"
+      ],
+      "sla": "Ciclo completado em 2 semanas desde trigger",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-10-validacao-periodica-de-aplicacoes-ciclo-de-conformidade",
+      "trigger": "Calendário cíclico, Release relevante, Incidente crítico",
+      "user_story_id": "14-governanca-contratacao-us-10",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-11"
+      ],
+      "id": "14-governanca-contratacao-us-11-govern-1",
+      "phase": "Auditoria",
+      "phase_normalized": "govern",
+      "practice_id": "14-governanca-contratacao:consolidacao-de-kpis-de-governacao-e-maturidade",
+      "responsible": "GRC / Compliance + AppSec Engineer + CISO",
+      "responsible_normalized": [
+        "grc-compliance",
+        "appsec-engineer",
+        "gestao-executiva"
+      ],
+      "sla": "Relatório publicado 5 dias após fim do período",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-11-consolidacao-de-kpis-de-governacao-e-maturidade",
+      "trigger": "Trimestral (mínimo), Semestral (recomendado)",
+      "user_story_id": "14-governanca-contratacao-us-11",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-11"
+      ],
+      "id": "14-governanca-contratacao-us-11-operate-2",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "14-governanca-contratacao:consolidacao-de-kpis-de-governacao-e-maturidade",
+      "responsible": "GRC / Compliance + AppSec Engineer + CISO",
+      "responsible_normalized": [
+        "grc-compliance",
+        "appsec-engineer",
+        "gestao-executiva"
+      ],
+      "sla": "Relatório publicado 5 dias após fim do período",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-11-consolidacao-de-kpis-de-governacao-e-maturidade",
+      "trigger": "Trimestral (mínimo), Semestral (recomendado)",
+      "user_story_id": "14-governanca-contratacao-us-11",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-12"
+      ],
+      "id": "14-governanca-contratacao-us-12-plan-1",
+      "phase": "Planeamento",
+      "phase_normalized": "plan",
+      "practice_id": "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "responsible": "CISO + AppSec Engineer + GRC / Compliance (Jurídico)",
+      "responsible_normalized": [
+        "gestao-executiva",
+        "appsec-engineer",
+        "grc-compliance"
+      ],
+      "sla": "Publicação em 2 semanas",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-12-formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "trigger": "Arranque SbD-ToE, revisão anual, mudança organizacional",
+      "user_story_id": "14-governanca-contratacao-us-12",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-12"
+      ],
+      "id": "14-governanca-contratacao-us-12-unassigned-2",
+      "phase": "Execução",
+      "phase_normalized": "unassigned",
+      "practice_id": "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "responsible": "CISO + AppSec Engineer + GRC / Compliance (Jurídico)",
+      "responsible_normalized": [
+        "gestao-executiva",
+        "appsec-engineer",
+        "grc-compliance"
+      ],
+      "sla": "Publicação em 2 semanas",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-12-formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
+      "trigger": "Arranque SbD-ToE, revisão anual, mudança organizacional",
+      "user_story_id": "14-governanca-contratacao-us-12",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-13"
+      ],
+      "id": "14-governanca-contratacao-us-13-plan-1",
+      "phase": "Planeamento",
+      "phase_normalized": "plan",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "responsible": "AppSec Engineer (validação) + Scrum Master / Team Lead (preenchimento) + GRC / Compliance (consolidação)",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "validacao",
+        "scrum-master",
+        "preenchimento",
+        "grc-compliance",
+        "consolidacao"
+      ],
+      "sla": "Atualização em 5 dias úteis após trigger",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "trigger": "Release relevante, evento crítico, ciclo programado (trimestral/semestral/anual)",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-13"
+      ],
+      "id": "14-governanca-contratacao-us-13-unassigned-2",
+      "phase": "Execução",
+      "phase_normalized": "unassigned",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "responsible": "AppSec Engineer (validação) + Scrum Master / Team Lead (preenchimento) + GRC / Compliance (consolidação)",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "validacao",
+        "scrum-master",
+        "preenchimento",
+        "grc-compliance",
+        "consolidacao"
+      ],
+      "sla": "Atualização em 5 dias úteis após trigger",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "trigger": "Release relevante, evento crítico, ciclo programado (trimestral/semestral/anual)",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-13"
+      ],
+      "id": "14-governanca-contratacao-us-13-test-3",
+      "phase": "Validação",
+      "phase_normalized": "test",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "responsible": "AppSec Engineer (validação) + Scrum Master / Team Lead (preenchimento) + GRC / Compliance (consolidação)",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "validacao",
+        "scrum-master",
+        "preenchimento",
+        "grc-compliance",
+        "consolidacao"
+      ],
+      "sla": "Atualização em 5 dias úteis após trigger",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "trigger": "Release relevante, evento crítico, ciclo programado (trimestral/semestral/anual)",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-13"
+      ],
+      "id": "14-governanca-contratacao-us-13-govern-4",
+      "phase": "Auditoria",
+      "phase_normalized": "govern",
+      "practice_id": "14-governanca-contratacao:controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "responsible": "AppSec Engineer (validação) + Scrum Master / Team Lead (preenchimento) + GRC / Compliance (consolidação)",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "validacao",
+        "scrum-master",
+        "preenchimento",
+        "grc-compliance",
+        "consolidacao"
+      ],
+      "sla": "Atualização em 5 dias úteis após trigger",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-13-controlo-sistematico-e-periodico-por-capitulo-sbd-toe",
+      "trigger": "Release relevante, evento crítico, ciclo programado (trimestral/semestral/anual)",
+      "user_story_id": "14-governanca-contratacao-us-13",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-14"
+      ],
+      "id": "14-governanca-contratacao-us-14-test-1",
+      "phase": "Validação",
+      "phase_normalized": "test",
+      "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "responsible": "AppSec Engineer (análise técnica) + GRC / Compliance (Procurement Officer — coordenação; decisão e registo)",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "analise-tecnica",
+        "grc-compliance",
+        "procurement-officer-coordenacao",
+        "decisao",
+        "registo"
+      ],
+      "sla": "Reavaliação completada em 2 semanas desde trigger",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-14-reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "trigger": "Calendário programado (anual/semestral), Incidente crítico, CVE crítico não mitigado, Mudança de contrato/propriedade/SLA",
+      "user_story_id": "14-governanca-contratacao-us-14",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-14"
+      ],
+      "id": "14-governanca-contratacao-us-14-operate-2",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "responsible": "AppSec Engineer (análise técnica) + GRC / Compliance (Procurement Officer — coordenação; decisão e registo)",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "analise-tecnica",
+        "grc-compliance",
+        "procurement-officer-coordenacao",
+        "decisao",
+        "registo"
+      ],
+      "sla": "Reavaliação completada em 2 semanas desde trigger",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-14-reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
+      "trigger": "Calendário programado (anual/semestral), Incidente crítico, CVE crítico não mitigado, Mudança de contrato/propriedade/SLA",
+      "user_story_id": "14-governanca-contratacao-us-14",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-15"
+      ],
+      "id": "14-governanca-contratacao-us-15-plan-1",
+      "phase": "Planeamento",
+      "phase_normalized": "plan",
+      "practice_id": "14-governanca-contratacao:preparacao-tecnica-e-validacao-de-contractors-pre-acesso",
+      "responsible": "Security Champion (coordenação HR) + AppSec Engineer (validação) + Scrum Master / Team Lead (sandbox setup)",
+      "responsible_normalized": [
+        "security-champion",
+        "coordenacao-hr",
+        "appsec-engineer",
+        "validacao",
+        "scrum-master",
+        "sandbox-setup"
+      ],
+      "sla": "Conclusão em 2–3 dias úteis antes de data de início; Notificação: Contractor informado via email sobre trilho",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-15-preparacao-tecnica-e-validacao-de-contractors-pre-acesso",
+      "trigger": "Contrato assinado, data de início do projeto",
+      "user_story_id": "14-governanca-contratacao-us-15",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-16"
+      ],
+      "id": "14-governanca-contratacao-us-16-plan-1",
+      "phase": "Planeamento",
+      "phase_normalized": "plan",
+      "practice_id": "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "responsible": "AppSec Engineer (validação de conclusão) + Security Champion (Training Manager — coordenação trilho; rastreabilidade HR)",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "validacao-de-conclusao",
+        "security-champion",
+        "training-manager-coordenacao-trilho",
+        "rastreabilidade-hr"
+      ],
+      "sla": "Formação completa antes de acesso real; Notificação: Semanais se em risco, daily se `<`3 dias",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-16-trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "trigger": "Contractor aprovado (fim US-06/US-15)",
+      "user_story_id": "14-governanca-contratacao-us-16",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-16"
+      ],
+      "id": "14-governanca-contratacao-us-16-unassigned-2",
+      "phase": "Execução",
+      "phase_normalized": "unassigned",
+      "practice_id": "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "responsible": "AppSec Engineer (validação de conclusão) + Security Champion (Training Manager — coordenação trilho; rastreabilidade HR)",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "validacao-de-conclusao",
+        "security-champion",
+        "training-manager-coordenacao-trilho",
+        "rastreabilidade-hr"
+      ],
+      "sla": "Formação completa antes de acesso real; Notificação: Semanais se em risco, daily se `<`3 dias",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-16-trilho-de-formacao-obrigatoria-pre-acesso-contractors",
+      "trigger": "Contractor aprovado (fim US-06/US-15)",
+      "user_story_id": "14-governanca-contratacao-us-16",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-17"
+      ],
+      "id": "14-governanca-contratacao-us-17-operate-1",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "responsible": "DevOps / SRE (acesso técnico) + AppSec Engineer (validação) + Security Champion (coordenação timeline HR; checkpoints)",
+      "responsible_normalized": [
+        "devops-sre",
+        "acesso-tecnico",
+        "appsec-engineer",
+        "validacao",
+        "security-champion",
+        "coordenacao-timeline-hr",
+        "checkpoints"
+      ],
+      "sla": "Offboarding completo em **`<`24h** da data de termo; Notificação: HR envia aviso 2 semanas antes",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-17-offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "trigger": "Data de término conhecida (programado), Rescisão imediata (unscheduled)",
+      "user_story_id": "14-governanca-contratacao-us-17",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-17"
+      ],
+      "id": "14-governanca-contratacao-us-17-test-2",
+      "phase": "Validação",
+      "phase_normalized": "test",
+      "practice_id": "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "responsible": "DevOps / SRE (acesso técnico) + AppSec Engineer (validação) + Security Champion (coordenação timeline HR; checkpoints)",
+      "responsible_normalized": [
+        "devops-sre",
+        "acesso-tecnico",
+        "appsec-engineer",
+        "validacao",
+        "security-champion",
+        "coordenacao-timeline-hr",
+        "checkpoints"
+      ],
+      "sla": "Offboarding completo em **`<`24h** da data de termo; Notificação: HR envia aviso 2 semanas antes",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-17-offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
+      "trigger": "Data de término conhecida (programado), Rescisão imediata (unscheduled)",
+      "user_story_id": "14-governanca-contratacao-us-17",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-18"
+      ],
+      "id": "14-governanca-contratacao-us-18-operate-1",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "14-governanca-contratacao:monitorizacao-continua-de-conformidade-de-fornecedores-alertas-e-escalacao",
+      "responsible": "AppSec Engineer (setup inicial) + Operações (Ops) (operação 24x7)",
+      "responsible_normalized": [
+        "appsec-engineer",
+        "setup-inicial",
+        "operacoes",
+        "operacao-24x7"
+      ],
+      "sla": "Alerta em **`<`1h** de deteção, escalonamento em `<`15 min",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-18-monitorizacao-continua-de-conformidade-de-fornecedores-alertas-e-escalacao",
+      "trigger": "Incidente, CVE crítico, SLA breach, mudança contratual",
+      "user_story_id": "14-governanca-contratacao-us-18",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-19"
+      ],
+      "id": "14-governanca-contratacao-us-19-test-1",
+      "phase": "Validação",
+      "phase_normalized": "test",
+      "practice_id": "14-governanca-contratacao:revisao-trimestral-de-acesso-de-contractors-least-privilege",
+      "responsible": "Security Champion (coordenação) + Scrum Master / Team Lead (validação de necessidade) + DevOps / SRE (mudanças técnicas)",
+      "responsible_normalized": [
+        "security-champion",
+        "coordenacao",
+        "scrum-master",
+        "validacao-de-necessidade",
+        "devops-sre",
+        "mudancas-tecnicas"
+      ],
+      "sla": "Revisão iniciada e completada em **1 semana**",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-19-revisao-trimestral-de-acesso-de-contractors-least-privilege",
+      "trigger": "Calendário (trimestral), Mudança de projeto, Incidente",
+      "user_story_id": "14-governanca-contratacao-us-19",
+      "warnings": []
+    },
+    {
+      "confidence": 0.91,
+      "evidence": [
+        "sdlc integration extracted for US-20"
+      ],
+      "id": "14-governanca-contratacao-us-20-operate-1",
+      "phase": "Operação",
+      "phase_normalized": "operate",
+      "practice_id": "14-governanca-contratacao:feedback-pos-projeto-e-rating-de-contractors",
+      "responsible": "Security Champion (coordenação) + Scrum Master / Team Lead + AppSec Engineer (preenchimento)",
+      "responsible_normalized": [
+        "security-champion",
+        "coordenacao",
+        "scrum-master",
+        "appsec-engineer",
+        "preenchimento"
+      ],
+      "sla": "Feedback completado em **3 dias úteis** após fim do contrato",
+      "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-20-feedback-pos-projeto-e-rating-de-contractors",
+      "trigger": "Offboarding iniciado (US-17)",
+      "user_story_id": "14-governanca-contratacao-us-20",
       "warnings": []
     },
     {
@@ -5217,10 +8291,10 @@
       "warnings": []
     }
   ],
-  "run_id": "20260903T170502Z",
+  "run_id": "20260909T230038Z",
   "source": {
     "branch": "HEAD",
-    "commit_sha": "f78dfe734a83b01fa9283c2df5a3eb0ba9528001",
+    "commit_sha": "0576e914d4c933ddc1af25cb2c5570dd2afcf60f",
     "corpus_root": "manuals_src/docs/sbd-toe",
     "repo_url": "git@github.com:SbD-ToE/sbd-toe-manual.git"
   },
@@ -5232,7 +8306,7 @@
     "warnings": 53
   },
   "summary": {
-    "sdlc_integration_rows": 251
+    "sdlc_integration_rows": 396
   },
   "version": "0.1.0",
   "warnings": [

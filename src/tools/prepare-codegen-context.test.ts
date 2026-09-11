@@ -1,3 +1,9 @@
+/**
+ * 0.20.0-beta.21: os casos abaixo exercitam a activação a partir da PROSA (o que o
+ * prepare fazia por omissão até à beta.20). Passam a correr explicitamente em
+ * `selection_mode: "discover"` — o comportamento mantém-se guardado, mas já não é o
+ * default do contrato (v1.18-beta: sem declarações, needs_input).
+ */
 import { afterAll, beforeEach, describe, expect, it } from "vitest";
 import { mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -35,7 +41,7 @@ describe("handlePrepareCodegenContext — needs_clarification", () => {
   });
 
   it("returns needs_clarification when task is empty", () => {
-    const result = handlePrepareCodegenContext({ task: "" });
+    const result = handlePrepareCodegenContext({ selection_mode: "discover", task: "" });
     expectBlocked(result);
     expect(result.status).toBe("needs_clarification");
     expect(result.reasons.join(" ")).toMatch(/vazio/i);
@@ -43,14 +49,14 @@ describe("handlePrepareCodegenContext — needs_clarification", () => {
   });
 
   it("returns needs_clarification when task is too short", () => {
-    const result = handlePrepareCodegenContext({ task: "fix bug" });
+    const result = handlePrepareCodegenContext({ selection_mode: "discover", task: "fix bug" });
     expectBlocked(result);
     expect(result.status).toBe("needs_clarification");
     expect(result.reasons.some((reason) => /palavras/i.test(reason))).toBe(true);
   });
 
   it("returns needs_clarification when task is abstract and no concerns can be inferred", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "do something nice for the team please"
     });
     expectBlocked(result);
@@ -70,7 +76,7 @@ describe("handlePrepareCodegenContext — needs_decomposition", () => {
   });
 
   it("decomposes 'make this application secure'-style asks", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "make this application secure across the whole repo"
     });
     expectBlocked(result);
@@ -79,7 +85,7 @@ describe("handlePrepareCodegenContext — needs_decomposition", () => {
   });
 
   it("decomposes regulatory 'across the API'-style asks", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "implement CRA compliance across the whole API"
     });
     expectBlocked(result);
@@ -87,7 +93,7 @@ describe("handlePrepareCodegenContext — needs_decomposition", () => {
   });
 
   it("decomposes when many slice families are activated", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task:
         "Refactor authentication, validation, logging, secrets, CI/CD pipeline and release rollback for the payments service",
       risk_level: "L2"
@@ -110,7 +116,7 @@ describe("handlePrepareCodegenContext — ready_for_codegen (API validation)", (
   });
 
   it("returns ready_for_codegen for a bite-size payload validation task", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Add payload validation to the endpoint PATCH /users/:id/email",
       risk_level: "L2",
       mode: "codegen",
@@ -176,7 +182,7 @@ describe("handlePrepareCodegenContext — ready_for_codegen (API validation)", (
   });
 
   it("g2_context only carries v1 entities for activated slice families", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Add input validation to the public API endpoint",
       risk_level: "L1",
       concerns: ["api", "validation"]
@@ -198,7 +204,7 @@ describe("handlePrepareCodegenContext — ready_for_codegen (API validation)", (
   });
 
   it("resolves at least one DIRECT control via requirement_control_links (link_type=maps_to_control)", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Add payload validation to the endpoint PATCH /users/:id/email",
       risk_level: "L2",
       concerns: ["api", "validation"]
@@ -218,7 +224,7 @@ describe("handlePrepareCodegenContext — ready_for_codegen (API validation)", (
   });
 
   it("projects evidence_patterns using the real runtime schema (id + maps_to_*)", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Add payload validation to the endpoint PATCH /users/:id/email",
       risk_level: "L2",
       concerns: ["api", "validation"]
@@ -265,7 +271,7 @@ describe("handlePrepareCodegenContext — ready_for_codegen (API validation)", (
   });
 
   it("manual_grounding only surfaces names that the rastreabilidade publishes", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Add request input validation to /payments endpoint",
       risk_level: "L1",
       concerns: ["validation", "api"]
@@ -304,7 +310,7 @@ describe("handlePrepareCodegenContext — regulatory overlay activation", () => 
   });
 
   it("includes regulatory overlay when a known framework is requested", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Add SBOM generation step to the CI build pipeline",
       risk_level: "L2",
       concerns: ["supply_chain"],
@@ -343,7 +349,7 @@ describe("handlePrepareCodegenContext — regulatory overlay activation", () => 
   });
 
   it("returns unsupported_scope when the requested framework is unknown", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Add payload validation to PATCH /users/:id/email",
       risk_level: "L2",
       concerns: ["validation"],
@@ -367,7 +373,7 @@ describe("handlePrepareCodegenContext — output shape contracts", () => {
   });
 
   it("output carries provenance, citation_map and completeness_report on ready", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Add input validation to the public REST endpoint /orders",
       risk_level: "L2",
       concerns: ["api", "validation"]
@@ -380,7 +386,7 @@ describe("handlePrepareCodegenContext — output shape contracts", () => {
   });
 
   it("blocked outputs still carry partial_activation_trace + suggestions", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Make the whole app secure across all surfaces"
     });
     expectBlocked(result);
@@ -389,7 +395,7 @@ describe("handlePrepareCodegenContext — output shape contracts", () => {
   });
 
   it("debug: true exposes rejected candidates and notes", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Add validation to PATCH /users/:id/email",
       risk_level: "L1",
       concerns: ["api", "validation", "nonexistent_concern_xyz"],
@@ -405,7 +411,7 @@ describe("handlePrepareCodegenContext — output shape contracts", () => {
   });
 
   it("review mode adds review-specific guidance to llm_codegen_instructions", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Review changes to PATCH /users/:id/email validation",
       mode: "review",
       risk_level: "L2",
@@ -419,7 +425,7 @@ describe("handlePrepareCodegenContext — output shape contracts", () => {
   });
 
   it("test-plan mode adds test-plan-specific guidance", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Plan tests for the validation logic at PATCH /users/:id/email",
       mode: "test-plan",
       risk_level: "L2",
@@ -447,7 +453,7 @@ describe("WP6 semantic disambiguation — gate cases", () => {
     // the four expected concerns explainably. It is independent of whether
     // the scope gate then ships the ask to codegen — a four-concern ask
     // legitimately decomposes when the requirement set is large.
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Garantir que este endpoint seguro está bem implementado",
       risk_level: "L2",
       debug: true
@@ -488,7 +494,7 @@ describe("WP6 semantic disambiguation — gate cases", () => {
   });
 
   it("'segredo hardcoded' activates config + secrets (PT alias expansion)", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Remover o segredo hardcoded do ficheiro src/config.ts",
       risk_level: "L2",
       debug: true
@@ -512,7 +518,7 @@ describe("WP6 semantic disambiguation — gate cases", () => {
   });
 
   it("'pipeline release' activates build + release but does NOT activate the whole app", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Add an approval gate to the release pipeline before promotion",
       risk_level: "L2",
       debug: true
@@ -545,7 +551,7 @@ describe("WP6 semantic disambiguation — gate cases", () => {
   });
 
   it("intent_keyword 'sbom' activates supply_chain via the semantic gateway", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Update the SBOM generation step in our package workflow",
       risk_level: "L2",
       debug: true
@@ -560,7 +566,7 @@ describe("WP6 semantic disambiguation — gate cases", () => {
   });
 
   it("debug shows rejected candidates for unknown concerns and capped evidence patterns", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Add payload validation to PATCH /users/:id/email",
       risk_level: "L2",
       concerns: ["api", "validation", "definitely_not_a_concern_zzz"],
@@ -595,7 +601,7 @@ describe("WP9 hardening — TASK_TERM whole-word matching", () => {
   });
 
   it("does not activate 'testing' from the substring 'test' inside 'latest'", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Use the latest patch for the database driver",
       risk_level: "L1",
       debug: true
@@ -615,7 +621,7 @@ describe("WP9 hardening — TASK_TERM whole-word matching", () => {
   });
 
   it("does not activate 'logging' from 'logical' substring", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Refactor logical conditions in the user filter helper",
       risk_level: "L1",
       debug: true
@@ -635,7 +641,7 @@ describe("WP9 hardening — TASK_TERM whole-word matching", () => {
   });
 
   it("still activates the term when it appears as a whole word", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Add unit test coverage for payment input validation",
       risk_level: "L2",
       debug: true
@@ -663,7 +669,7 @@ describe("WP6 semantic disambiguation — evidence pattern capping", () => {
   });
 
   it("caps evidence_patterns to <= EVIDENCE_PATTERN_CAP and exposes counts in completeness_report", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Add payload validation to PATCH /users/:id/email",
       risk_level: "L2",
       concerns: ["api", "validation"]
@@ -681,7 +687,7 @@ describe("WP6 semantic disambiguation — evidence pattern capping", () => {
   });
 
   it("ranks evidence_patterns by relevance_score in descending order", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Add payload validation to PATCH /users/:id/email",
       risk_level: "L2",
       concerns: ["api", "validation"]
@@ -722,7 +728,7 @@ describe("handlePrepareCodegenContext — runtime v1 missing", () => {
   });
 
   it("returns unsupported_scope when runtime/v1 is absent", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Add payload validation to PATCH /users/:id/email",
       risk_level: "L2",
       concerns: ["validation", "api"]
@@ -742,7 +748,7 @@ describe("handlePrepareCodegenContext — scope gate", () => {
       "aplica o manual inteiro, dá-me tudo",
       "apply the whole manual, give me everything"
     ]) {
-      const result = handlePrepareCodegenContext({ task, risk_level: "L2" });
+      const result = handlePrepareCodegenContext({ selection_mode: "discover", task, risk_level: "L2" });
       expect(result.status).toBe("needs_decomposition");
     }
   });
@@ -753,13 +759,13 @@ describe("handlePrepareCodegenContext — scope gate", () => {
       "add quantum-resistant key exchange to the gateway",
       "store audit events on a blockchain ledger"
     ]) {
-      const result = handlePrepareCodegenContext({ task, risk_level: "L2" });
+      const result = handlePrepareCodegenContext({ selection_mode: "discover", task, risk_level: "L2" });
       expect(result.status).toBe("unsupported_scope");
     }
   });
 
   it("does not flag in-scope encryption work as unsupported", () => {
-    const result = handlePrepareCodegenContext({
+    const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Add field-level encryption to the user profile endpoint",
       risk_level: "L2",
       concerns: ["encryption"]
