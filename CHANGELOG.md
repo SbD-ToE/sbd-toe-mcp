@@ -9,7 +9,9 @@ review_status: pending-human-review
 
 # Changelog
 
-## 0.21.0 — RASCUNHO das release notes (preparado 2026-09-25; a release é acto do lead: merge squash → tag → `next` → `latest`)
+## 0.21.0 — 2026-09-25
+
+Tag anotado `v0.21.0` → `b54951a8` (squash do PR #79; objecto de tag `88796c84`); npm `@shiftleftpt/sbd-toe-mcp@0.21.0` publicado em **`next`** (gitHead = tag commit; run 36180579666); **`latest` continua 0.19.4** até o lead o mover. Pino **KG v1.12.0** inalterado — o re-pino v1.27 é a 0.21.1.
 
 **A linha 0.21 — «a forma da resposta».** Sete fases, cada uma com prova, todas aceites pelo Orchestrator; tectos
 decididos pelo lead (a). Pino **KG v1.12.0** (sha256 `c21d35cb…bece2f`, Manual v1.14.0) inalterado — esta release
@@ -80,7 +82,7 @@ contagem vs tokens — variância por caso real).
 
 ### Fases e commits (ramo `0.21`)
 §5 `cb36422` (proposta) → §1 `28cc817` → §3 `de17d55` → §2 `282831c` → pausa `be75297` → (a)+§6-a `6ea4789` →
-§6 `27226a9` → §7 + este rascunho (ver `git log`). Registo: `agentic/briefs/2026-09-25-pontifex-0.21-*.md`.
+§6 `27226a9` → §7 `265a9f6` → squash em `master` `b54951a` (#79). Registo: `agentic/briefs/2026-09-25-pontifex-0.21-*.md`.
 
 ## 0.21 (em curso, ramo `0.21`) — §7 «o eixo é um só»: `lista`/`standard`/`full` também em select e threat — 2026-09-25
 

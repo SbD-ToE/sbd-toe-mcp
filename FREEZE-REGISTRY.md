@@ -62,6 +62,18 @@ TODO — confirm with programme lead.
 - v0.12.0 → `b475900e87a3035d36a16201dd80d5e5b36c396d` (2026-08-31; formal lote — KG
   v1.9.0 pinned, sha256 `11153c85…`, contract v1.15; npm `@shiftleftpt/sbd-toe-mcp@0.12.0`
   = published, gitHead same commit; GitHub Release `v0.12.0`)
+- v0.21.0 → `b54951a88892b95db5c98ec2ecfe91fc8dfd4eab` (2026-09-25; linha 0.21 «a forma da resposta» —
+  requisito fundido, níveis lista/standard/full, citations e adjacência em todos os níveis, tectos
+  52/55 por decisão do lead (a), lotes que somam o todo, notas por referência, descrições ≤600;
+  bundle pin unchanged KG v1.12.0 `c21d35cb…bece2f`; squash of #79; annotated tag object
+  `88796c848f3d5725857f43d16511b52176963c8b`; npm `@shiftleftpt/sbd-toe-mcp@0.21.0` = published on `next`
+  (shasum `b52beac4056a30423d6a4ab8bb0ffe6d98359c41`, gitHead same commit; run 36180579666); `latest` = 0.19.4
+  until the lead moves it; GitHub Release `v0.21.0`)
+- v0.20.0 → `4f5a6363fc7b1f12145812fad839741925adae21` (2026-09-11; promoção da linha declarativa a estável —
+  «publicar ≠ apontar»; bundle pin KG v1.12.0; annotated tag object `3eebe9d0179376251ba2a5a17d15b2287c9c8227`; npm
+  `@shiftleftpt/sbd-toe-mcp@0.20.0` = published on `next`, gitHead same commit; GitHub Release
+  `v0.20.0`. REGISTO TARDIO 2026-09-25: o tag foi cortado pelo lead a 2026-09-11 e a linha do
+  registo não foi escrita nessa altura — apanhado ao registar a 0.21.0; history append-only.)
 - v0.19.4 *(«a promessa do minimal» — tecto por-id por detail (78/81/86) c/
   needs_decomposition declarado e divisão executável ensinada; full sem tecto; custo
   projectado no next do select; bundle pin unchanged KG v1.11.0; annotated tag on the
@@ -774,3 +786,6 @@ prohibits tag deletion without explicit authorisation):
 | 2026-09-05 | v0.20.0-beta.23 registered (CONSERVAÇÃO: invariante de conservação sobre o vocabulário completo — 12 violações apanhadas em 4 famílias; motor cede à promessa por categoria com traço `declared_category`; `unsupported_concerns` no threat landscape + agent-guide corrigido; guarda anti-zero cobre `technologies`; `provenance.server` em 20 sítios; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Fable 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-05 | v0.20.0-beta.22 registered («caminho para 9»: P1-A..E + P2-A; invariante anti-zero com 192 combinações; enum gerado do vocabulário nas 3 tools; bundle pin unchanged KG v1.11.0). Tag on the commit introducing this row. No frozen state touched; stable line unaffected. | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
 | 2026-09-05 | v0.20.0-beta.22 tag commit recorded (`6a695af9`); npm `beta` publish + GitHub pre-release confirmed (run 33980538378). | Claude Opus 5 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-25 | v0.21.0 registered (linha 0.21 «a forma da resposta»: requisito fundido {id, name, type, description, verify, evidence}; níveis lista/standard/full (ultrathin retirado, minimal→lista em prepare/select/threat); `citations` em todos os níveis; relations por ref/summary; adjacência em todos os níveis; instruções inline; grounding por ref nos dieted; tectos 52/55 por decisão do lead (a) com lotes que somam o todo; forma B no prepare; notas por referência `sbd://toe/notes`; descrições ≤600 em inglês com histórico em `sbd://toe/version`; `size_estimate` em todas as tools; `task` opcional em declarativo; bundle pin unchanged KG v1.12.0). Tag on the squash of #79. 0.20.0 e 0.19.4 intocadas e alcançáveis. | Claude Fable 5.1 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-25 | v0.21.0 tag commit recorded (`b54951a8`, squash of #79; annotated tag object `88796c84`); npm `next` publish + GitHub Release confirmed (run 36180579666); gitHead = tag commit; shasum `b52beac4056a…`. `latest` = 0.19.4 until the lead moves it. | Claude Fable 5.1 (Pontifex), authorised by Pedro Farinha |
+| 2026-09-25 | v0.20.0 registered LATE (tag cut by the lead 2026-09-11 → `4f5a6363`, annotated tag object `3eebe9d0`; npm `@shiftleftpt/sbd-toe-mcp@0.20.0` published on `next`, gitHead same commit; bundle pin KG v1.12.0). The registry row was not written at tag time — discovered while registering 0.21.0; recorded now, history append-only. No frozen state touched. | Claude Fable 5.1 (Pontifex), authorised by Pedro Farinha |
