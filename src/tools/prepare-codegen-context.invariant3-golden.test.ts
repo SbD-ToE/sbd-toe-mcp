@@ -35,7 +35,7 @@ function citableIds(payload: unknown): string[] {
   const at = (path: string): string[] => {
     const keys = /^keys\(g2_context\.([a-z_]+)\[slice\]\)$/.exec(path);
     if (keys) return Object.values((root.g2_context?.[keys[1]!] ?? {}) as Record<string, Record<string, unknown>>).flatMap((e) => Object.keys(e));
-    const list = /^([a-z_]+)\.([a-z_]+)\[\]\.([a-z_]+)$/.exec(path);
+    const list = /^([a-z0-9_]+)\.([a-z0-9_]+)\[\]\.([a-z0-9_]+)$/.exec(path);
     if (!list) throw new Error(`ids_from desconhecido: ${path}`);
     return ((root[list[1]!]?.[list[2]!] ?? []) as Array<Record<string, string>>).map((item) => item[list[3]!]!);
   };

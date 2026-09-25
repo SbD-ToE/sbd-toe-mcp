@@ -43,8 +43,10 @@ function mergedRequirements(payload) {
   });
 }
 
-/** §3: ids legais viram legenda + lista (a função é «estes ids são legais»). */
+/** §3: ids legais viram legenda + lista (a função é «estes ids são legais»). Desde a §3 servida, o full
+ * já traz `citations` invertido — a projecção usa-o tal e qual quando existe. */
 function citationsCompact(payload) {
+  if (payload.citations) return payload.citations;
   const map = payload.citation_map ?? {};
   const bySource = new Map();
   for (const [id, entry] of Object.entries(map)) {
@@ -92,7 +94,7 @@ export function projectLevel(level, payload, args) {
   } else {
     out.adjacency_detail = adjacencyDetail(args);
     out.manual_grounding = payload.manual_grounding;
-    out.relations_ref = "resolve_entities(record_type=\"appsec_relation\", filters)";
+    out.relations_ref = payload.g2_context?.relations_ref ?? "resolve_entities(record_type=\"appsec_relation\", filters)";
   }
   return out;
 }
@@ -133,7 +135,7 @@ for (const [name, args] of CASES) {
   served.push(row);
 }
 Object.assign(ceilings.REQUIREMENT_CEILING_BY_DETAIL, savedCeilings);
-console.log("\n=== FORMA SERVIDA (0.21 §1: requisito fundido; §3/§2 ainda não aterraram) ===");
+console.log("\n=== FORMA SERVIDA (0.21 §1 requisito fundido + §3 cortes; §2 adjacência ainda não aterrou) ===");
 console.log("caso".padEnd(38), "reqs", "   lista standard    full");
 for (const r of served) console.log(r.name.padEnd(38), String(r.n).padStart(4), String(r.lista).padStart(8), String(r.standard).padStart(8), String(r.full).padStart(8));
 const sd = {};

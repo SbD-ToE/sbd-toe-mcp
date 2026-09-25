@@ -3,11 +3,68 @@ ai_assisted: true
 model: Claude Fable 5.1
 date: 2026-09-25
 purpose: documentation
-reasoning: 0.21 §1 (o requisito fundido) por cima da entrada v0.20.0 — a descrição nunca sai, o bloco evidence_patterns morre, ultrathin reforma-se, tectos ratificados 83/88 ligados com o ajuste DECLARADO (achado: a projecção do §5 subestimou o custo por requisito). Entrada anterior: v0.20.0 (promoção da beta.49, linha estável) — a maturidade do contrato de selecção passa a FACTO DECLARADO (`serving_contract.identity` + `.maturity`, com a maturidade do pacote derivada da versão e nunca escrita à mão) em vez de sufixo numa string; o contrato mantém-se beta deliberadamente, por decisão do lead, e o identificador NÃO se renomeia. Sete declarações servidas que a promoção tornava falsas — cinco a dizer que a linha era beta, uma a dizer que a linha estável era outra — reescritas na forma durável: a prosa nomeia a linha, o campo declarado carrega a maturidade. Zero alteração de comportamento: o oráculo do Eixo H veio byte-idêntico à corrida da beta.49. E publicar deixa de ser o mesmo acto que apontar: o caminho estável do release.yml passa a publicar em `--tag next` — a capacidade que o caminho de prerelease já tinha, aplicada ao que a não tinha — para que a estável possa ser verificada antes de ser o que toda a gente instala; o `latest` move-o o lead, num acto próprio.
+reasoning: 0.21 §3 (os cortes — relations saem, citations invertido em todos os níveis) e §1 (o requisito fundido) por cima da entrada v0.20.0 — a descrição nunca sai, o bloco evidence_patterns morre, ultrathin reforma-se, tectos ratificados 83/88 ligados com o ajuste DECLARADO (achado: a projecção do §5 subestimou o custo por requisito). Entrada anterior: v0.20.0 (promoção da beta.49, linha estável) — a maturidade do contrato de selecção passa a FACTO DECLARADO (`serving_contract.identity` + `.maturity`, com a maturidade do pacote derivada da versão e nunca escrita à mão) em vez de sufixo numa string; o contrato mantém-se beta deliberadamente, por decisão do lead, e o identificador NÃO se renomeia. Sete declarações servidas que a promoção tornava falsas — cinco a dizer que a linha era beta, uma a dizer que a linha estável era outra — reescritas na forma durável: a prosa nomeia a linha, o campo declarado carrega a maturidade. Zero alteração de comportamento: o oráculo do Eixo H veio byte-idêntico à corrida da beta.49. E publicar deixa de ser o mesmo acto que apontar: o caminho estável do release.yml passa a publicar em `--tag next` — a capacidade que o caminho de prerelease já tinha, aplicada ao que a não tinha — para que a estável possa ser verificada antes de ser o que toda a gente instala; o `latest` move-o o lead, num acto próprio.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.21 (em curso, ramo `0.21`) — §3 «os cortes» — 2026-09-25
+
+Ordem do Orchestrator (2026-09-25, após aceitação da §1): §3 é independente do tecto e baixa a base.
+Pino **inalterado** (KG v1.12.0); **0.20.0 e `latest` intocados**; sem tag, sem merge. Uma fase por
+relatório: a §2 (adjacência) fica para a seguir; o `minimal` residual de `select`/`threat` fica para §6/§7.
+
+### `citations` em todos os níveis — o `citation_map` já não existe
+
+A função do `citation_map` era «estes ids são legais»; a forma repetia `{source, source_data}` uma vez
+por id (56× no caso base, 1.369 tk). O `full` passa a servir o mesmo **`citations` invertido** que os
+dieted já serviam (legenda por fonte + ids referenciados por caminho do payload — no full os caminhos
+são de lista, `g2_context.<lista>[].entity_id`). Lossless, provado pela reconstrução. `citableIds(payload)`
+é exportado: consumidores e testes lêem os ids pela **mesma regra publicada**. As instruções, o template,
+o guia, a skill, o README e as descrições servidas dizem `citations`; a condição de slot passa a
+`citations_empty`.
+
+### As relations saem
+
+Medido: as arestas activadas ligam nós que o payload já carrega (`belongsToSlice` ≡ `slice_id` da
+entidade; `objective→mechanism/practice` recuperável por `trace_sbd_toe_graph`). O «0 de 49» do despacho
+era de um caso; no caso L3 de 3 concerns **6 de 151** apontam para slices não activadas — todas
+recuperáveis do próprio payload (a entidade traz o `slice_id`) e **2 residuais** (lacuna do bundle) que
+ficam **inline**, declaradas. `full`: `relations_ref` (as chamadas executáveis + contabilidade exacta) em
+vez das relations inline; `include_relations=true` repõe-nas com `source`. `lista`/`standard`:
+`relations_summary` com a **mesma contabilidade** (`total_relations`, `via_lenses`,
+`implicit_in_entities`, `residual_inline`) e `residual_relations` inline quando existem; `include_relations`
+continua a inliná-las sem `source`.
+
+### Medição (tokens ≈ chars/4)
+
+| caso | nível | 0.20.0 | §1 | **§3** |
+|---|---|---:|---:|---:|
+| `auth`/L2, 27 reqs | lista (era minimal) | 3.879 | 4.918 | **4.893** |
+| | standard | 4.403 | 4.919 | **4.894** |
+| | full | 11.148 | 10.297 | **7.202** (−35%) |
+| `auth+integrity+deployment`/L3, **83 reqs** (caso real no tecto) | lista | — | — | **15.239** (envelope 8.450 — declarado fora) |
+| | standard | — | — | 15.239 (9.200 — declarado fora) |
+| | full | — | — | 23.419 (sem tecto, preço declarado) |
+| fixture 1 (41) | full / lista | 18.903 / — | 18.896 / 7.104 | **12.276 / 7.066** |
+| fixture 2 (69) | full / lista | ≈24.7k / — | 29.588 / 12.745 | **20.067 / 12.695** (lista fora do envelope, declarado) |
+
+Regressão 27→89 da forma servida: declive **133 tk/req**, base **1.302** (§1: 1.327). A §3 baixa a
+base dos dieted em ~25 tk e o full em ~30%; **não muda o declive** — é o requisito fundido que decide o
+tamanho, como declarado na §1. Pela fórmula, os envelopes herdados suportam **53 / 59**; no tecto
+ratificado o custo é **≈12.341 (lista) / ≈13.007 (standard)**. Os tectos 83/88 continuam ligados e o
+desajuste declarado (`CEILING_FIT`, `size_estimate.within_envelope`, `KNOWN_TOTAL_DEVIATIONS`);
+a decisão do lead está pendente e a §3 não a dispensa.
+
+### Prova
+
+Invariante 3 contra o oráculo da 0.20.0 (9 casos × 3 níveis) ✅ — o `full` lê-se agora pelos caminhos
+de lista; Eixo H **10/10**; `relations_ref` do full executado (superset por execução real das lenses);
+`relations_summary` dos dieted bate na contabilidade com o `relations_ref` do full; vitest **815/815**;
+`check`; smoke; `eval:acceptance` **141 PASS / 16 PART / 0 FAIL / 23 SKIP**, gate **PASS** (TC-A-01/02
+reescritos para `citations`). Gate do reuse-hint refixado pelo medido: a re-chamada `lista` custa <70% do
+full (era <50% quando o full era 3× maior).
 
 ## 0.21 (em curso, ramo `0.21`) — §1 «o requisito fundido» — 2026-09-25
 

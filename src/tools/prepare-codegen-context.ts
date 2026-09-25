@@ -13,7 +13,7 @@
  *   3. Resolution: pull deterministic data from the three published sources
  *      (runtime v0, runtime v1, overlay).
  *   4. Output: produce `activated_scope`, `g2_context`, `manual_grounding`,
- *      `regulatory_overlay`, `citation_map`, `completeness_report`,
+ *      `regulatory_overlay`, `citations` (0.21 §3: invertido em todos os níveis), `completeness_report`,
  *      `llm_codegen_instructions` and `security_rationale_template`.
  *
  * Strict rules:
@@ -417,7 +417,7 @@ export interface SecurityRationaleTemplate {
   task: string;
   decisions: Array<{
     decision: "<fill: what design choice was made>";
-    rationale: "<fill: why, citing IDs from citation_map>";
+    rationale: "<fill: why, citing IDs from citations>";
     cited_ids: ["<requirement_id|control_id|slice_id|obligation_id>"];
   }>;
   validations: Array<{
@@ -756,9 +756,45 @@ export interface DietedG2Context {
   artifacts: SliceGroupedEntityNames;
   /** Inline only with `include_relations: true` (s2); otherwise see relations_ref. */
   relations?: Array<WithoutSource<G2ContextRelation>>;
-  /** Present when relations are elided (s2 default at lista/standard). */
-  relations_ref?: RelationsRef;
+  /** 0.21 §3: relations LEAVE the dieted levels — this never-silent summary replaces relations_ref
+   * (0 of the relations point outside what the payload already carries in the measured cases;
+   * any that cannot be recovered from the payload or a lens stays inline in residual_relations). */
+  relations_summary?: RelationsSummary;
+  /** Only present when a relation is neither lens-recoverable nor implicit (expected 0). */
+  residual_relations?: Array<WithoutSource<G2ContextRelation>>;
 }
+
+/**
+ * 0.21 §3 — «relations saem» dos níveis dieted: medido, as relações activadas
+ * ligam nós que o payload JÁ recebeu (belongsToSlice ≡ slice_id da entidade;
+ * objective→mechanism/practice recuperável por trace_sbd_toe_graph). Fica a
+ * contabilidade exacta (a mesma do relations_ref do full) e o caminho de volta.
+ */
+export interface RelationsSummary {
+  total_relations: number;
+  via_lenses: number;
+  implicit_in_entities: number;
+  residual_inline: number;
+  note: string;
+}
+
+/**
+ * 0.21 §3 — o `full` SERVIDO: o classic com duas mudanças de forma, sem mudança
+ * de conjunto (invariante 3): `citations` invertido (legenda por fonte + ids
+ * referenciados por caminho do payload — a função de `citation_map` era «estes
+ * ids são legais», e a forma repetia {source, source_data} uma vez por id) e
+ * `relations_ref` em vez das relations inline (`include_relations: true`
+ * repõe-nas). O core continua a construir citation_map/relations internamente.
+ */
+export type PrepareCodegenContextResultReadyFull = Omit<PrepareCodegenContextResultReady, "citation_map" | "g2_context"> & {
+  citations: CitationsBySource;
+  g2_context: Omit<G2Context, "relations"> & {
+    /** Inline only with `include_relations: true`. */
+    relations?: G2ContextRelation[];
+    /** Default at full: executable trace_sbd_toe_graph calls + exact coverage accounting. */
+    relations_ref?: RelationsRef;
+  };
+};
 
 export interface DietedRegulatoryOverlayContext {
   frameworks: Array<WithoutSource<RegulatoryOverlayContext["frameworks"][number]>>;
@@ -882,7 +918,7 @@ export interface PrepareCodegenContextResultReadyDieted {
 }
 
 export type PrepareCodegenContextResult =
-  | PrepareCodegenContextResultReady
+  | PrepareCodegenContextResultReadyFull
   | PrepareCodegenContextResultReadyDieted
   | PrepareCodegenContextResultBlocked;
 
@@ -2282,7 +2318,7 @@ export type InstructionCondition =
   | "risk_level:L1"
   | "risk_level:L2"
   | "risk_level:L3"
-  | "citation_map_empty";
+  | "citations_empty";
 
 export interface InstructionSlot {
   when: InstructionCondition;
@@ -2298,11 +2334,11 @@ export function instructionSlotsForMode(mode: CodegenMode): InstructionSlot[] {
   const slots: InstructionSlot[] = [
     {
       when: "always",
-      text: "Generate code or review changes ONLY against the deterministic IDs provided in `citation_map`. Do NOT invent SbD-ToE requirement, control, slice, mechanism or obligation IDs."
+      text: "Generate code or review changes ONLY against the deterministic IDs provided in `citations` (the closed world of legal ids for this task). Do NOT invent SbD-ToE requirement, control, slice, mechanism or obligation IDs."
     },
     {
       when: "always",
-      text: "For each non-trivial design decision, populate the `security_rationale_template.decisions[].cited_ids` with IDs from `citation_map`. If no ID applies, say so explicitly."
+      text: "For each non-trivial design decision, populate the `security_rationale_template.decisions[].cited_ids` with IDs from `citations`. If no ID applies, say so explicitly."
     },
     {
       when: "always",
@@ -2324,7 +2360,7 @@ export function instructionSlotsForMode(mode: CodegenMode): InstructionSlot[] {
   if (mode === "review") {
     slots.push({
       when: "always",
-      text: "Review mode: enumerate findings per changed_file, mapped to the activated_scope. Each finding must reference at least one citation_map ID or say 'no normative ID covers this'."
+      text: "Review mode: enumerate findings per changed_file, mapped to the activated_scope. Each finding must reference at least one id from `citations` or say 'no normative ID covers this'."
     });
   }
   if (mode === "test-plan") {
@@ -2340,8 +2376,8 @@ export function instructionSlotsForMode(mode: CodegenMode): InstructionSlot[] {
     });
   }
   slots.push({
-    when: "citation_map_empty",
-    text: "Citation_map is empty. This is a strong signal the activated scope did not yield deterministic anchors — request clarification before generating code."
+    when: "citations_empty",
+    text: "`citations` is empty. This is a strong signal the activated scope did not yield deterministic anchors — request clarification before generating code."
   });
   return slots;
 }
@@ -2355,7 +2391,7 @@ function activeInstructionConditions(args: {
   const active: InstructionCondition[] = [];
   if (args.hasOverlay) active.push("regulatory_overlay");
   if (args.riskLevel) active.push(`risk_level:${args.riskLevel}`);
-  if (args.citationMapEmpty) active.push("citation_map_empty");
+  if (args.citationMapEmpty) active.push("citations_empty");
   return active;
 }
 
@@ -2382,7 +2418,7 @@ const SECURITY_RATIONALE_TEMPLATE_SKELETON: Omit<SecurityRationaleTemplate, "tas
   decisions: [
     {
       decision: "<fill: what design choice was made>",
-      rationale: "<fill: why, citing IDs from citation_map>",
+      rationale: "<fill: why, citing IDs from citations>",
       cited_ids: ["<requirement_id|control_id|slice_id|obligation_id>"]
     }
   ],
@@ -2441,10 +2477,12 @@ const DETAIL_ENCODING_LEGEND = {
   levels:
     "lista — every activated requirement complete and verbatim (id, name, type, description, verify, " +
     "evidence) + citable ids + the instructions that forbid inventing ids; manual grounding by " +
-    "reference (manual_grounding.entries_ref → detail='full'). standard — what lista promises " +
+    "reference (manual_grounding.entries_ref → detail='full'); relations OUT (g2_context.relations_summary " +
+    "keeps the exact accounting; include_relations=true restores them). standard — what lista promises " +
     "(the inline adjacency detail arrives with 0.21 §2; until then it differs from lista only in " +
     "the echoed level). full — what standard promises plus manual_grounding verbatim inline, " +
-    "g2_context.relations inline and activation_trace inline; no requirement ceiling. " +
+    "g2_context.relations_ref (executable trace calls; include_relations=true inlines them) and " +
+    "activation_trace inline; no requirement ceiling. " +
     "'ultrathin' was retired in 0.21 (its documented purpose was to cut the description, which " +
     "is no longer negotiable); 'minimal' became 'lista' (same 8,450 tk envelope).",
   sources: {
@@ -2457,13 +2495,14 @@ const DETAIL_ENCODING_LEGEND = {
     map: PROVENANCE_SOURCES
   },
   citations:
+    "0.21 §3: `citations` is the closed world of legal ids at EVERY level (citation_map is gone). " +
     "citations.<source>.source_data is an ordered run-length map file -> count. " +
     "The citable ids are NOT repeated: citations.<source>.ids_from is aligned 1:1 " +
     "with the source_data files, and names the payload path whose ids (in payload " +
-    "order) form that file's run. Paths of the form " +
-    "keys(g2_context.<list>[slice]) iterate the slice groups in order, then the " +
-    "entity-id keys in order. If a file ever has no path mapping, the group " +
-    "carries explicit `ids` instead (lossless fallback).",
+    "order) form that file's run. Paths of the form section.list[].field iterate a list; " +
+    "keys(g2_context.<list>[slice]) (lista/standard) iterate the slice groups in order, then the " +
+    "entity-id keys in order; at full the g2 sections are lists (g2_context.<list>[].entity_id). " +
+    "If a file ever has no path mapping, the group carries explicit `ids` instead (lossless fallback).",
   activated_scope_requirements:
     "ONE object per requirement (0.21 §1): {id, name, type, description, verify, evidence}. " +
     "`description` is the verbatim published field (data/publish/runtime/requirements.json) and " +
@@ -2503,8 +2542,10 @@ const DETAIL_ENCODING_LEGEND = {
     "activation_trace_ref.entries keeps the exact count. Re-call with debug=true " +
     "to include the full trace (it is always inline at detail=full).",
   relations_ref:
-    "Inline g2_context.relations are elided at detail=lista/standard (re-call " +
-    "with include_relations=true to restore them). Recover the elided graph edges " +
+    "0.21 §3: inline g2_context.relations are elided at EVERY level (re-call with " +
+    "include_relations=true to restore them). At full, g2_context.relations_ref lists the " +
+    "executable trace calls; at lista/standard only g2_context.relations_summary (the same exact " +
+    "accounting) stays — the edges link nodes this payload already carries. Recover the elided graph edges " +
     "by executing trace_sbd_toe_graph with each {lens, anchor} pair listed " +
     "(anchors are activated slice/entity ids from the same payload); the " +
     "belongsToSlice edges counted as coverage.implicit_in_entities are already " +
@@ -2557,7 +2598,7 @@ export function buildCodegenInstructionsResourceContent(
       assembly:
         "Include each slot whose `when` is 'always' or whose condition holds for the call " +
         "(regulatory_overlay: activated_scope.regulatory_obligations non-empty; " +
-        "risk_level:<L>: input_echo.risk_level; citation_map_empty: no citable id), in the " +
+        "risk_level:<L>: input_echo.risk_level; citations_empty: no citable id), in the " +
         "listed order — the result is byte-identical to the inline llm_codegen_instructions.",
       slots: instructionSlotsForMode(mode)
     },
@@ -2840,6 +2881,38 @@ const CITATION_FILE_TO_PAYLOAD_PATH: Readonly<Record<string, string>> = {
     "activated_scope.regulatory_obligations[].obligation_id"
 };
 
+/** 0.21 §3: at `full` the g2 entity sections are LISTS (classic), so the ids_from paths differ
+ * only for those four files; every other path is shared with the dieted levels. */
+const CITATION_FILE_TO_PAYLOAD_PATH_FULL: Readonly<Record<string, string>> = {
+  ...CITATION_FILE_TO_PAYLOAD_PATH,
+  "data/publish/runtime/v1/control_objectives.json": "g2_context.control_objectives[].entity_id",
+  "data/publish/runtime/v1/mechanisms.json": "g2_context.mechanisms[].entity_id",
+  "data/publish/runtime/v1/practices.json": "g2_context.practices[].entity_id",
+  "data/publish/runtime/v1/artifacts.json": "g2_context.artifacts[].entity_id"
+};
+
+/**
+ * 0.21 §3 — resolve the ids of a `citations` block over the payload that carries it
+ * (any level): `section.list[].field` iterates a list; `keys(g2_context.<list>[slice])`
+ * iterates the slice groups then the entity-id keys. Explicit `ids` is the lossless
+ * fallback. Exported so consumers and tests read ids by the SAME published rule.
+ */
+export function citableIds(payload: unknown): string[] {
+  const root = payload as { citations?: CitationsBySource } & Record<string, Record<string, unknown>>;
+  const at = (path: string): string[] => {
+    const keys = /^keys\(g2_context\.([a-z_]+)\[slice\]\)$/.exec(path);
+    if (keys) {
+      const grouped = (root["g2_context"]?.[keys[1]!] ?? {}) as Record<string, Record<string, unknown>>;
+      return Object.values(grouped).flatMap((entities) => Object.keys(entities));
+    }
+    const list = /^([a-z0-9_]+)\.([a-z0-9_]+)\[\]\.([a-z0-9_]+)$/.exec(path);
+    if (!list) throw new Error(`ids_from path desconhecido: ${path}`);
+    const items = (root[list[1]!]?.[list[2]!] ?? []) as Array<Record<string, string>>;
+    return items.map((item) => item[list[3]!]!);
+  };
+  return Object.values(root.citations ?? {}).flatMap((group) => group?.ids ?? (group?.ids_from ?? []).flatMap(at));
+}
+
 /**
  * Invert the classic `citation_map` (id → {source, source_data}) into
  * source-grouped `citations` (see {@link CitationsGroup}). Pure re-encoding:
@@ -2850,8 +2923,10 @@ const CITATION_FILE_TO_PAYLOAD_PATH: Readonly<Record<string, string>> = {
  * payload-path mapping (never expected for the published bundle).
  */
 function invertCitationMap(
-  citationMap: Record<string, CitationMapEntry>
+  citationMap: Record<string, CitationMapEntry>,
+  layout: "grouped" | "list" = "grouped"
 ): CitationsBySource {
+  const pathTable = layout === "list" ? CITATION_FILE_TO_PAYLOAD_PATH_FULL : CITATION_FILE_TO_PAYLOAD_PATH;
   const bySource = new Map<CitationMapEntry["source"], Map<string, string[]>>();
   for (const [id, entry] of Object.entries(citationMap)) {
     let files = bySource.get(entry.source);
@@ -2875,7 +2950,7 @@ function invertCitationMap(
     for (const [file, fileIds] of files) {
       source_data[file] = fileIds.length;
       ids.push(...fileIds);
-      const path = CITATION_FILE_TO_PAYLOAD_PATH[file];
+      const path = pathTable[file];
       if (path === undefined) allFilesMapped = false;
       else idsFrom.push(path);
     }
@@ -3067,7 +3142,7 @@ function dietControls(controls: ActivatedScope["controls"]): DietedControl[] {
 export const LEVEL_FORM: Readonly<
   Record<Exclude<CodegenDetailLevel, "full">, { manual_grounding: "ref"; relations: "ref" }>
 > = {
-  lista: { manual_grounding: "ref", relations: "ref" },
+  lista: { manual_grounding: "ref", relations: "ref" }, // relations "ref" = 0.21 §3 summary (accounting + way back)
   standard: { manual_grounding: "ref", relations: "ref" }
 };
 
@@ -3083,12 +3158,40 @@ export const LEVEL_FORM: Readonly<
  *     `source`; instructions + template INLINE; manual_grounding in the
  *     counts form with `entries_ref` → detail="full"; trace only with debug.
  */
+const RELATIONS_SUMMARY_NOTE =
+  "relations elided (0.21 §3): every edge links nodes already in this payload; include_relations=true " +
+  "inlines them, detail='full' carries the executable relations_ref (trace_sbd_toe_graph).";
+
+/**
+ * 0.21 §3 — the SERVED full: classic content, two form changes, same citable set.
+ * `citations` (inverted; ids via list paths) replaces `citation_map`; `relations_ref`
+ * replaces the inline relations unless `include_relations: true`.
+ */
+function shapeFull(
+  result: PrepareCodegenContextResultReady,
+  includeRelations: boolean
+): PrepareCodegenContextResultReadyFull {
+  const { citation_map, g2_context, ...rest } = result;
+  const { relations, ...g2 } = g2_context;
+  return {
+    ...rest,
+    ...(includeRelations ? { input_echo: { ...result.input_echo, include_relations: true } } : {}),
+    g2_context: {
+      ...g2,
+      ...(includeRelations ? { relations } : { relations_ref: buildRelationsRef(result) })
+    },
+    citations: invertCitationMap(citation_map, "list")
+  };
+}
+
 function applyStructuralDiet(
   result: PrepareCodegenContextResultReady,
   detail: Exclude<CodegenDetailLevel, "full">,
   includeRelations: boolean
 ): PrepareCodegenContextResultReadyDieted {
   const form = LEVEL_FORM[detail];
+  // 0.21 §3: the exact accounting comes from the same builder the full uses for relations_ref.
+  const relationsRef = includeRelations || form.relations !== "ref" ? undefined : buildRelationsRef(result);
   const dieted: PrepareCodegenContextResultReadyDieted = {
     status: result.status,
     mode: result.mode,
@@ -3122,9 +3225,18 @@ function applyStructuralDiet(
       mechanisms: groupEntitiesBySlice(result.g2_context.mechanisms),
       practices: groupEntitiesBySlice(result.g2_context.practices),
       artifacts: groupEntitiesBySlice(result.g2_context.artifacts),
-      ...(includeRelations || form.relations !== "ref"
+      ...(relationsRef === undefined
         ? { relations: stripSource(result.g2_context.relations) }
-        : { relations_ref: buildRelationsRef(result) })
+        : {
+            relations_summary: {
+              total_relations: relationsRef.total_relations,
+              via_lenses: relationsRef.coverage.via_lenses,
+              implicit_in_entities: relationsRef.coverage.implicit_in_entities,
+              residual_inline: relationsRef.coverage.residual_inline,
+              note: RELATIONS_SUMMARY_NOTE
+            } satisfies RelationsSummary,
+            ...(relationsRef.residual_relations ? { residual_relations: relationsRef.residual_relations } : {})
+          })
     },
     manual_grounding: buildMinimalGrounding(groupManualGrounding(result)),
     regulatory_overlay: {
@@ -3182,9 +3294,11 @@ export function handlePrepareCodegenContext(
   const includeRelations = parseIncludeRelations(raw);
   const result = prepareCodegenContextCore(raw);
   const shaped =
-    detail !== "full" && result.status === "ready_for_codegen"
-      ? applyStructuralDiet(result, detail, includeRelations)
-      : result;
+    result.status !== "ready_for_codegen"
+      ? result
+      : detail === "full"
+        ? shapeFull(result, includeRelations)
+        : applyStructuralDiet(result, detail, includeRelations);
   // RF-H: append the advisory band (status-aware, pure) around the deterministic result.
   const withNext = { ...shaped, next: prepareCodegenAffordances(result.status, "citation_map" in result ? Object.keys(result.citation_map).filter((id) => /^[A-Z]{3}-\d{3}$/.test(id)) : []) };
   // 0.21 §5: every ready payload declares its price (full has no ceiling — it declares instead).

@@ -102,7 +102,7 @@ export const RESOURCE_CATALOG = [
           description:
             "Agent-facing guide for using prepare_sbd_toe_codegen_context. " +
             "Covers workflow, branching by status (ready_for_codegen / needs_clarification / " +
-            "needs_decomposition / unsupported_scope), output discipline (cite citation_map, fill " +
+            "needs_decomposition / unsupported_scope), output discipline (cite `citations` ids, fill " +
             "security_rationale, distinguish code/tests/evidence), and explicit prohibitions " +
             "(no invented IDs, no compliance claims, no rastreabilidade-noise inside source files).",
           mimeType: "text/markdown"
@@ -154,7 +154,7 @@ export const PROMPT_CATALOG: ReadonlyArray<Record<string, unknown>> = [
           description:
             "MCP prompt that bundles the grounded-codegen guide with a user task and instructs the " +
             "agent to call prepare_sbd_toe_codegen_context before producing code. Forces citation of " +
-            "citation_map IDs, fills security_rationale_template, distinguishes code/tests/evidence, " +
+            "ids from `citations`, fills security_rationale_template, distinguishes code/tests/evidence, " +
             "blocks compliance claims, and routes needs_clarification / needs_decomposition / " +
             "unsupported_scope to user dialog instead of silent guessing.",
           arguments: [

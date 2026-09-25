@@ -105,14 +105,14 @@ All data is bundled locally. No Algolia, no internet connection required at runt
 - **Does** assemble deterministic context: activation trace, activated scope (requirements / controls / slices / regulatory obligations), AppSec Core v1 entities and relations, evidence patterns ranked by relevance, manual rastreabilidade entries, regulatory overlay entries, citation map, completeness report, LLM codegen instructions, and a `security_rationale_template` for the agent to fill.
 - **Does** apply an auditable scope gate before returning ready context (see below).
 - **Does NOT** generate code, edit files, or call an LLM. The tool returns context only.
-- **Does NOT** invent identifiers, slices, requirements, controls, obligations or evidence. Anything not in the `citation_map` did not surface in the deterministic resolvers.
+- **Does NOT** invent identifiers, slices, requirements, controls, obligations or evidence. Anything not in `citations` (the inverted legal-id list, 0.21 §3) did not surface in the deterministic resolvers.
 - **Does NOT** declare regulatory compliance. Regulatory overlay is published as an external cross-check, never as a SbD-ToE conformance signal.
 
 ### Scope gate — four output states
 
 | Status | When | What the agent should do |
 |---|---|---|
-| `ready_for_codegen` | Task is bite-size (one technical surface, one phase, 1–3 concerns, ≤3 slice families) | Fill `security_rationale_template`, cite IDs from `citation_map`, produce code + tests + expected evidence |
+| `ready_for_codegen` | Task is bite-size (one technical surface, one phase, 1–3 concerns, ≤3 slice families) | Fill `security_rationale_template`, cite IDs from `citations`, produce code + tests + expected evidence |
 | `needs_clarification` | Task missing/too short, no concerns activatable, ambiguous | STOP. Echo `reasons[]` and `suggestions[]` to the user; ask for the missing input before re-calling |
 | `needs_decomposition` | Vague pattern matched (e.g. "make secure"), >3 slice families, or >50 estimated v0 requirements | STOP. Propose 2–4 sub-tasks; let the user pick one; re-call for that sub-task |
 | `unsupported_scope` | Runtime v1 missing locally, overlay requested but absent, regulatory framework unknown | STOP. Report the missing capability verbatim. Do NOT fabricate IDs to keep working |

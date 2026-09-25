@@ -32,7 +32,8 @@ import {
   handlePrepareCodegenContext,
   type PrepareCodegenContextInput,
   type PrepareCodegenContextResult,
-  type PrepareCodegenContextResultReady,
+  citableIds,
+  type PrepareCodegenContextResultReadyFull as PrepareCodegenContextResultReady,
   type PrepareCodegenContextResultReadyDieted
 } from "./prepare-codegen-context.js";
 import { handleGetVerificationMatrix } from "./get-verification-matrix.js";
@@ -73,7 +74,8 @@ function loadBundleItems(relPath: string): Array<Record<string, unknown>> {
 
 function expectReadyFull(result: PrepareCodegenContextResult): asserts result is PrepareCodegenContextResultReady {
   expect(result.status).toBe("ready_for_codegen");
-  expect(result).toHaveProperty("citation_map");
+  expect(result).toHaveProperty("citations");
+  expect(result).not.toHaveProperty("citation_map");
 }
 function expectReadyDieted(result: PrepareCodegenContextResult): asserts result is PrepareCodegenContextResultReadyDieted {
   expect(result.status).toBe("ready_for_codegen");
@@ -231,7 +233,7 @@ describe("prepare_sbd_toe_codegen_context — perfil lista (0.21 §1)", () => {
     it("invariante 3 local: o SET de ids do grounding é reconstruível do PRÓPRIO payload lista (sem chamadas)", () => {
       const full = runFull(fixture);
       const lista = runLista(fixture);
-      const citable = new Set(Object.keys(full.citation_map));
+      const citable = new Set(citableIds(full));
       const inPayload = g2EntityIds(lista);
       for (const entry of full.manual_grounding) {
         expect(inPayload.has(entry.v1_entity_id!), `grounding id ${entry.v1_entity_id} fora do payload lista`).toBe(true);

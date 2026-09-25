@@ -210,7 +210,10 @@ describe("s4 — repeat_call_hint no servidor (aditivo, lista/standard)", () => 
       // removido pela ADENDA s3b; ver EPIC §s3b/§s4).
       const minimalTokens = estimateSize(first).approx_tokens;
       const fullTokens = estimateSize(handlePrepareCodegenContextDiscover(fixture.input)).approx_tokens;
-      expect(minimalTokens).toBeLessThan(fullTokens / 2);
+      // 0.21 §3: o full ficou ~35% mais leve (citations invertido + relations_ref), pelo que o
+      // rácio lista/full subiu de <0,5 para ~0,58–0,63 (medido f1 7.066/12.276, f2 12.695/20.067).
+      // O gate diz o que é verdade: a re-chamada lista custa menos de 70% do full.
+      expect(minimalTokens).toBeLessThan(fullTokens * 0.7);
     });
   });
 

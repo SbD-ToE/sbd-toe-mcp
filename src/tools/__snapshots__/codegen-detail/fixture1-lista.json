@@ -516,25 +516,12 @@
         "ACA-IVF-006": null
       }
     },
-    "relations_ref": {
-      "tool": "trace_sbd_toe_graph",
-      "lenses": [
-        {
-          "lens": "slice_implementation",
-          "anchor": "ASC-02"
-        },
-        {
-          "lens": "slice_implementation",
-          "anchor": "ASC-07"
-        }
-      ],
+    "relations_summary": {
       "total_relations": 106,
-      "coverage": {
-        "via_lenses": 70,
-        "implicit_in_entities": 36,
-        "residual_inline": 0
-      },
-      "note": "Inline g2_context.relations elided; execute each listed trace_sbd_toe_graph {lens, anchor} call to recover them, or re-call with include_relations=true. Encoding details: MCP resource codegen-instructions, detail_encoding.relations_ref."
+      "via_lenses": 70,
+      "implicit_in_entities": 36,
+      "residual_inline": 0,
+      "note": "relations elided (0.21 §3): every edge links nodes already in this payload; include_relations=true inlines them, detail='full' carries the executable relations_ref (trace_sbd_toe_graph)."
     }
   },
   "manual_grounding": {
@@ -662,8 +649,8 @@
     }
   },
   "llm_codegen_instructions": [
-    "Generate code or review changes ONLY against the deterministic IDs provided in `citation_map`. Do NOT invent SbD-ToE requirement, control, slice, mechanism or obligation IDs.",
-    "For each non-trivial design decision, populate the `security_rationale_template.decisions[].cited_ids` with IDs from `citation_map`. If no ID applies, say so explicitly.",
+    "Generate code or review changes ONLY against the deterministic IDs provided in `citations` (the closed world of legal ids for this task). Do NOT invent SbD-ToE requirement, control, slice, mechanism or obligation IDs.",
+    "For each non-trivial design decision, populate the `security_rationale_template.decisions[].cited_ids` with IDs from `citations`. If no ID applies, say so explicitly.",
     "List concrete validations in `security_rationale_template.validations` (surface, rule, rejection behaviour). Do NOT claim conformity without naming the validation.",
     "List expected evidence in `security_rationale_template.expected_evidence` (test paths, log shapes, SBOM, attestation, scan reports). Code on its own is NOT evidence of compliance.",
     "If the requested task does not match the activated scope, REPLY with `status: needs_clarification` and request specifics — do not fabricate IDs.",
@@ -674,7 +661,7 @@
     "decisions": [
       {
         "decision": "<fill: what design choice was made>",
-        "rationale": "<fill: why, citing IDs from citation_map>",
+        "rationale": "<fill: why, citing IDs from citations>",
         "cited_ids": [
           "<requirement_id|control_id|slice_id|obligation_id>"
         ]
@@ -706,7 +693,7 @@
   },
   "next": [
     {
-      "intent": "cita o citation_map",
+      "intent": "cita as citations (ids legais)",
       "tool": "resolve_entities",
       "with": "record_type=\"requirement\", filters={\"requirement_id\":{\"in\":[\"ACC-001\"]}}",
       "kind": "structural"
@@ -719,8 +706,8 @@
     }
   ],
   "size_estimate": {
-    "chars": 28414,
-    "approx_tokens": 7104,
+    "chars": 28263,
+    "approx_tokens": 7066,
     "envelope_tk": 8450,
     "within_envelope": true
   }

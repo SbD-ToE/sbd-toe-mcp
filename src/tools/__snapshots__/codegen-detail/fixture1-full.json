@@ -559,1262 +559,6 @@
     ],
     "regulatory_obligations": []
   },
-  "g2_context": {
-    "control_objectives": [
-      {
-        "entity_id": "ACO-IAT-001",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1",
-        "name": "Authentication Strength And Identity Assurance"
-      },
-      {
-        "entity_id": "ACO-IAT-002",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1",
-        "name": "Authorization Policy Integrity And Least Privilege"
-      },
-      {
-        "entity_id": "ACO-IAT-003",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1",
-        "name": "Access Revocation And Privilege Lifecycle Integrity"
-      },
-      {
-        "entity_id": "ACO-IAT-004",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1",
-        "name": "Session And Token Trust Boundaries"
-      },
-      {
-        "entity_id": "ACO-IAT-005",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1",
-        "name": "API Caller Trust And Service Boundary Enforcement"
-      },
-      {
-        "entity_id": "ACO-IAT-006",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1",
-        "name": "Access Abuse Detection And Auditability"
-      },
-      {
-        "entity_id": "ACO-IAT-007",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1",
-        "name": "Identity And Access Control Integrity"
-      },
-      {
-        "entity_id": "ACO-IVF-001",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1",
-        "name": "External Input Contract Validation"
-      },
-      {
-        "entity_id": "ACO-IVF-002",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1",
-        "name": "Schema, Type And Allowlist Discipline"
-      },
-      {
-        "entity_id": "ACO-IVF-003",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1",
-        "name": "Injection-Resistant Input Handling And Dangerous Pattern Exclusion"
-      },
-      {
-        "entity_id": "ACO-IVF-004",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1",
-        "name": "Validation Before Internal Use And Trust Crossing"
-      },
-      {
-        "entity_id": "ACO-IVF-005",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1",
-        "name": "Controlled Failure And Non-Revealing Client Error Surface"
-      },
-      {
-        "entity_id": "ACO-IVF-006",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1",
-        "name": "Centralized Error Handling And Sensitive Error Logging Hygiene"
-      },
-      {
-        "entity_id": "ACO-IVF-008",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1",
-        "name": "Context-Aware Output Encoding And Rendering Safety"
-      },
-      {
-        "entity_id": "ACO-IVF-007",
-        "entity_type": "ControlObjective",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1",
-        "name": "Input Validation And Safe Failure Integrity"
-      }
-    ],
-    "mechanisms": [
-      {
-        "entity_id": "ACM-IAT-001",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1",
-        "name": "Authentication And Federation Protocols"
-      },
-      {
-        "entity_id": "ACM-IAT-002",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1",
-        "name": "Access Policy Enforcement"
-      },
-      {
-        "entity_id": "ACM-IAT-003",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1",
-        "name": "Periodic Review And Access Audit"
-      },
-      {
-        "entity_id": "ACM-IAT-004",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1",
-        "name": "Short-Lived Token Controls"
-      },
-      {
-        "entity_id": "ACM-IAT-005",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1",
-        "name": "API Gateway Mutual Authentication"
-      },
-      {
-        "entity_id": "ACM-IAT-006",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1",
-        "name": "Structured Logging And Effective Configuration Recording"
-      },
-      {
-        "entity_id": "ACM-IVF-001",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1",
-        "name": "Code Review For Input And Error Discipline"
-      },
-      {
-        "entity_id": "ACM-IVF-002",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1",
-        "name": "Static Rulepacks And Security Linters"
-      },
-      {
-        "entity_id": "ACM-IVF-003",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1",
-        "name": "Schema And Contract Validators"
-      },
-      {
-        "entity_id": "ACM-IVF-004",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1",
-        "name": "Centralized Error Translation And Redaction"
-      },
-      {
-        "entity_id": "ACM-IVF-005",
-        "entity_type": "Mechanism",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1",
-        "name": "Context-Aware Encoder Selection And Application"
-      }
-    ],
-    "practices": [
-      {
-        "entity_id": "ACP-IAT-001",
-        "entity_type": "Practice",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1",
-        "name": "Strong Authentication And Step-Up Enforcement"
-      },
-      {
-        "entity_id": "ACP-IAT-002",
-        "entity_type": "Practice",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1",
-        "name": "Least-Privilege Authorization Governance"
-      },
-      {
-        "entity_id": "ACP-IAT-003",
-        "entity_type": "Practice",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1",
-        "name": "Access Review And Timely Revocation"
-      },
-      {
-        "entity_id": "ACP-IAT-004",
-        "entity_type": "Practice",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1",
-        "name": "Bounded Session And Token Management"
-      },
-      {
-        "entity_id": "ACP-IAT-005",
-        "entity_type": "Practice",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1",
-        "name": "Authenticated API Boundary Enforcement"
-      },
-      {
-        "entity_id": "ACP-IAT-006",
-        "entity_type": "Practice",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1",
-        "name": "Access Abuse Monitoring And Audit Trail"
-      },
-      {
-        "entity_id": "ACP-IVF-001",
-        "entity_type": "Practice",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1",
-        "name": "Boundary Input Validation"
-      },
-      {
-        "entity_id": "ACP-IVF-002",
-        "entity_type": "Practice",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1",
-        "name": "Schema And Allowlist Enforcement"
-      },
-      {
-        "entity_id": "ACP-IVF-003",
-        "entity_type": "Practice",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1",
-        "name": "Dangerous Pattern Exclusion"
-      },
-      {
-        "entity_id": "ACP-IVF-004",
-        "entity_type": "Practice",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1",
-        "name": "Pre-Use Data Validation Discipline"
-      },
-      {
-        "entity_id": "ACP-IVF-005",
-        "entity_type": "Practice",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1",
-        "name": "Non-Revealing Error Surface Control"
-      },
-      {
-        "entity_id": "ACP-IVF-006",
-        "entity_type": "Practice",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1",
-        "name": "Centralized Error Governance"
-      },
-      {
-        "entity_id": "ACP-IVF-007",
-        "entity_type": "Practice",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1",
-        "name": "Context-Aware Output Encoding At Rendering Boundaries"
-      }
-    ],
-    "artifacts": [
-      {
-        "entity_id": "ACA-IAT-001",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1"
-      },
-      {
-        "entity_id": "ACA-IAT-002",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1"
-      },
-      {
-        "entity_id": "ACA-IAT-003",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1"
-      },
-      {
-        "entity_id": "ACA-IAT-004",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1"
-      },
-      {
-        "entity_id": "ACA-IAT-005",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1"
-      },
-      {
-        "entity_id": "ACA-IAT-006",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-02",
-        "slice_family": "ACO-IAT",
-        "source": "runtime_v1"
-      },
-      {
-        "entity_id": "ACA-IVF-001",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1"
-      },
-      {
-        "entity_id": "ACA-IVF-002",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1"
-      },
-      {
-        "entity_id": "ACA-IVF-003",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1"
-      },
-      {
-        "entity_id": "ACA-IVF-004",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1"
-      },
-      {
-        "entity_id": "ACA-IVF-005",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1"
-      },
-      {
-        "entity_id": "ACA-IVF-006",
-        "entity_type": "Artifact",
-        "slice_id": "ASC-07",
-        "slice_family": "ACO-IVF",
-        "source": "runtime_v1"
-      }
-    ],
-    "relations": [
-      {
-        "subject_id": "ACA-IAT-001",
-        "subject_type": "Artifact",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACA-IAT-002",
-        "subject_type": "Artifact",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACA-IAT-003",
-        "subject_type": "Artifact",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACA-IAT-004",
-        "subject_type": "Artifact",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACA-IAT-005",
-        "subject_type": "Artifact",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACA-IAT-006",
-        "subject_type": "Artifact",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACA-IVF-001",
-        "subject_type": "Artifact",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACA-IVF-002",
-        "subject_type": "Artifact",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACA-IVF-003",
-        "subject_type": "Artifact",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACA-IVF-004",
-        "subject_type": "Artifact",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACA-IVF-005",
-        "subject_type": "Artifact",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACA-IVF-006",
-        "subject_type": "Artifact",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACM-IAT-001",
-        "subject_type": "Mechanism",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACM-IAT-002",
-        "subject_type": "Mechanism",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACM-IAT-003",
-        "subject_type": "Mechanism",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACM-IAT-004",
-        "subject_type": "Mechanism",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACM-IAT-005",
-        "subject_type": "Mechanism",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACM-IAT-006",
-        "subject_type": "Mechanism",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACM-IVF-001",
-        "subject_type": "Mechanism",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACM-IVF-002",
-        "subject_type": "Mechanism",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACM-IVF-003",
-        "subject_type": "Mechanism",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACM-IVF-004",
-        "subject_type": "Mechanism",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACM-IVF-005",
-        "subject_type": "Mechanism",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-001",
-        "subject_type": "ControlObjective",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-002",
-        "subject_type": "ControlObjective",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-003",
-        "subject_type": "ControlObjective",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-004",
-        "subject_type": "ControlObjective",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-005",
-        "subject_type": "ControlObjective",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-006",
-        "subject_type": "ControlObjective",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-007",
-        "subject_type": "ControlObjective",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-001",
-        "subject_type": "ControlObjective",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-002",
-        "subject_type": "ControlObjective",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-003",
-        "subject_type": "ControlObjective",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-004",
-        "subject_type": "ControlObjective",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-005",
-        "subject_type": "ControlObjective",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-006",
-        "subject_type": "ControlObjective",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-007",
-        "subject_type": "ControlObjective",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-008",
-        "subject_type": "ControlObjective",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACP-IAT-001",
-        "subject_type": "Practice",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACP-IAT-002",
-        "subject_type": "Practice",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACP-IAT-003",
-        "subject_type": "Practice",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACP-IAT-004",
-        "subject_type": "Practice",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACP-IAT-005",
-        "subject_type": "Practice",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACP-IAT-006",
-        "subject_type": "Practice",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-02",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACP-IVF-001",
-        "subject_type": "Practice",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACP-IVF-002",
-        "subject_type": "Practice",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACP-IVF-003",
-        "subject_type": "Practice",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACP-IVF-004",
-        "subject_type": "Practice",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACP-IVF-005",
-        "subject_type": "Practice",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACP-IVF-006",
-        "subject_type": "Practice",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACP-IVF-007",
-        "subject_type": "Practice",
-        "predicate": "belongsToSlice",
-        "object_id": "ASC-07",
-        "object_type": "Slice",
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-001",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IAT-001",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-002",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IAT-002",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-003",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IAT-003",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-004",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IAT-004",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-005",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IAT-001",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-005",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IAT-002",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-005",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IAT-005",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-006",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IAT-003",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-006",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IAT-006",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IAT-001",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IAT-002",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IAT-003",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IAT-005",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IAT-006",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-001",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IVF-003",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-002",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IVF-002",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-002",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IVF-003",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-003",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IVF-001",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-003",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IVF-002",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-004",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IVF-001",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-004",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IVF-003",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-005",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IVF-001",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-005",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IVF-004",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-006",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IVF-001",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-006",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IVF-004",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IVF-001",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IVF-002",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IVF-003",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IVF-004",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IVF-005",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-008",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_implemented_by_mechanism",
-        "object_id": "ACM-IVF-005",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-001",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IAT-001",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-002",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IAT-002",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-003",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IAT-003",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-004",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IAT-004",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-005",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IAT-005",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-006",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IAT-006",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IAT-002",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IAT-003",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IAT-005",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IAT-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IAT-006",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-001",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IVF-001",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-002",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IVF-002",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-003",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IVF-003",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-004",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IVF-004",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-005",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IVF-005",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-006",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IVF-006",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IVF-001",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IVF-002",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IVF-003",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IVF-004",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IVF-005",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IVF-006",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-007",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IVF-007",
-        "object_type": null,
-        "source": "runtime_v1"
-      },
-      {
-        "subject_id": "ACO-IVF-008",
-        "subject_type": "ControlObjective",
-        "predicate": "objective_realized_by_practice",
-        "object_id": "ACP-IVF-007",
-        "object_type": null,
-        "source": "runtime_v1"
-      }
-    ]
-  },
   "manual_grounding": [
     {
       "rastreabilidade_role": "substrate_landing",
@@ -2270,424 +1014,6 @@
     "mappings": [],
     "playbooks": []
   },
-  "citation_map": {
-    "ACC-001": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "ACC-002": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "ACC-003": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "ACC-004": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "ACC-005": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "ACC-006": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "ACC-007": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "ACC-008": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "ACC-010": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "API-001": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "API-002": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "API-003": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "API-004": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "API-005": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "API-006": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "API-007": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "AUT-001": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "AUT-002": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "AUT-003": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "AUT-004": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "AUT-005": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "AUT-006": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "AUT-007": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "AUT-008": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "AUT-009": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "AUT-010": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "ERR-001": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "ERR-002": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "ERR-003": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "ERR-004": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "ERR-005": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "ERR-006": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "ERR-007": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "VAL-001": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "VAL-002": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "VAL-003": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "VAL-004": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "VAL-005": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "VAL-006": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "VAL-007": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "VAL-008": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/requirements.json"
-    },
-    "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/controls.json"
-    },
-    "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/controls.json"
-    },
-    "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/controls.json"
-    },
-    "CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/controls.json"
-    },
-    "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/controls.json"
-    },
-    "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/controls.json"
-    },
-    "CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/controls.json"
-    },
-    "CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/controls.json"
-    },
-    "CTRL-identity-gestao-de-identidades-acessos-e-ownership-d0919c69af": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/controls.json"
-    },
-    "CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d": {
-      "source": "runtime_v0",
-      "source_data": "data/publish/runtime/controls.json"
-    },
-    "ASC-02": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/slices.json"
-    },
-    "ASC-07": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/slices.json"
-    },
-    "ACO-IAT-001": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/control_objectives.json"
-    },
-    "ACO-IAT-002": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/control_objectives.json"
-    },
-    "ACO-IAT-003": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/control_objectives.json"
-    },
-    "ACO-IAT-004": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/control_objectives.json"
-    },
-    "ACO-IAT-005": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/control_objectives.json"
-    },
-    "ACO-IAT-006": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/control_objectives.json"
-    },
-    "ACO-IAT-007": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/control_objectives.json"
-    },
-    "ACO-IVF-001": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/control_objectives.json"
-    },
-    "ACO-IVF-002": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/control_objectives.json"
-    },
-    "ACO-IVF-003": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/control_objectives.json"
-    },
-    "ACO-IVF-004": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/control_objectives.json"
-    },
-    "ACO-IVF-005": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/control_objectives.json"
-    },
-    "ACO-IVF-006": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/control_objectives.json"
-    },
-    "ACO-IVF-008": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/control_objectives.json"
-    },
-    "ACO-IVF-007": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/control_objectives.json"
-    },
-    "ACM-IAT-001": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/mechanisms.json"
-    },
-    "ACM-IAT-002": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/mechanisms.json"
-    },
-    "ACM-IAT-003": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/mechanisms.json"
-    },
-    "ACM-IAT-004": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/mechanisms.json"
-    },
-    "ACM-IAT-005": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/mechanisms.json"
-    },
-    "ACM-IAT-006": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/mechanisms.json"
-    },
-    "ACM-IVF-001": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/mechanisms.json"
-    },
-    "ACM-IVF-002": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/mechanisms.json"
-    },
-    "ACM-IVF-003": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/mechanisms.json"
-    },
-    "ACM-IVF-004": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/mechanisms.json"
-    },
-    "ACM-IVF-005": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/mechanisms.json"
-    },
-    "ACP-IAT-001": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/practices.json"
-    },
-    "ACP-IAT-002": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/practices.json"
-    },
-    "ACP-IAT-003": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/practices.json"
-    },
-    "ACP-IAT-004": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/practices.json"
-    },
-    "ACP-IAT-005": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/practices.json"
-    },
-    "ACP-IAT-006": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/practices.json"
-    },
-    "ACP-IVF-001": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/practices.json"
-    },
-    "ACP-IVF-002": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/practices.json"
-    },
-    "ACP-IVF-003": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/practices.json"
-    },
-    "ACP-IVF-004": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/practices.json"
-    },
-    "ACP-IVF-005": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/practices.json"
-    },
-    "ACP-IVF-006": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/practices.json"
-    },
-    "ACP-IVF-007": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/practices.json"
-    },
-    "ACA-IAT-001": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/artifacts.json"
-    },
-    "ACA-IAT-002": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/artifacts.json"
-    },
-    "ACA-IAT-003": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/artifacts.json"
-    },
-    "ACA-IAT-004": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/artifacts.json"
-    },
-    "ACA-IAT-005": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/artifacts.json"
-    },
-    "ACA-IAT-006": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/artifacts.json"
-    },
-    "ACA-IVF-001": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/artifacts.json"
-    },
-    "ACA-IVF-002": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/artifacts.json"
-    },
-    "ACA-IVF-003": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/artifacts.json"
-    },
-    "ACA-IVF-004": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/artifacts.json"
-    },
-    "ACA-IVF-005": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/artifacts.json"
-    },
-    "ACA-IVF-006": {
-      "source": "runtime_v1",
-      "source_data": "data/publish/runtime/v1/artifacts.json"
-    }
-  },
   "completeness_report": {
     "expected_objectives": 15,
     "returned_objectives": 15,
@@ -2748,8 +1074,8 @@
     }
   },
   "llm_codegen_instructions": [
-    "Generate code or review changes ONLY against the deterministic IDs provided in `citation_map`. Do NOT invent SbD-ToE requirement, control, slice, mechanism or obligation IDs.",
-    "For each non-trivial design decision, populate the `security_rationale_template.decisions[].cited_ids` with IDs from `citation_map`. If no ID applies, say so explicitly.",
+    "Generate code or review changes ONLY against the deterministic IDs provided in `citations` (the closed world of legal ids for this task). Do NOT invent SbD-ToE requirement, control, slice, mechanism or obligation IDs.",
+    "For each non-trivial design decision, populate the `security_rationale_template.decisions[].cited_ids` with IDs from `citations`. If no ID applies, say so explicitly.",
     "List concrete validations in `security_rationale_template.validations` (surface, rule, rejection behaviour). Do NOT claim conformity without naming the validation.",
     "List expected evidence in `security_rationale_template.expected_evidence` (test paths, log shapes, SBOM, attestation, scan reports). Code on its own is NOT evidence of compliance.",
     "If the requested task does not match the activated scope, REPLY with `status: needs_clarification` and request specifics — do not fabricate IDs.",
@@ -2760,7 +1086,7 @@
     "decisions": [
       {
         "decision": "<fill: what design choice was made>",
-        "rationale": "<fill: why, citing IDs from citation_map>",
+        "rationale": "<fill: why, citing IDs from citations>",
         "cited_ids": [
           "<requirement_id|control_id|slice_id|obligation_id>"
         ]
@@ -2789,9 +1115,463 @@
     "runtime_v1": "data/publish/runtime/v1/*",
     "overlay": "absent"
   },
+  "g2_context": {
+    "control_objectives": [
+      {
+        "entity_id": "ACO-IAT-001",
+        "entity_type": "ControlObjective",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1",
+        "name": "Authentication Strength And Identity Assurance"
+      },
+      {
+        "entity_id": "ACO-IAT-002",
+        "entity_type": "ControlObjective",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1",
+        "name": "Authorization Policy Integrity And Least Privilege"
+      },
+      {
+        "entity_id": "ACO-IAT-003",
+        "entity_type": "ControlObjective",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1",
+        "name": "Access Revocation And Privilege Lifecycle Integrity"
+      },
+      {
+        "entity_id": "ACO-IAT-004",
+        "entity_type": "ControlObjective",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1",
+        "name": "Session And Token Trust Boundaries"
+      },
+      {
+        "entity_id": "ACO-IAT-005",
+        "entity_type": "ControlObjective",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1",
+        "name": "API Caller Trust And Service Boundary Enforcement"
+      },
+      {
+        "entity_id": "ACO-IAT-006",
+        "entity_type": "ControlObjective",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1",
+        "name": "Access Abuse Detection And Auditability"
+      },
+      {
+        "entity_id": "ACO-IAT-007",
+        "entity_type": "ControlObjective",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1",
+        "name": "Identity And Access Control Integrity"
+      },
+      {
+        "entity_id": "ACO-IVF-001",
+        "entity_type": "ControlObjective",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1",
+        "name": "External Input Contract Validation"
+      },
+      {
+        "entity_id": "ACO-IVF-002",
+        "entity_type": "ControlObjective",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1",
+        "name": "Schema, Type And Allowlist Discipline"
+      },
+      {
+        "entity_id": "ACO-IVF-003",
+        "entity_type": "ControlObjective",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1",
+        "name": "Injection-Resistant Input Handling And Dangerous Pattern Exclusion"
+      },
+      {
+        "entity_id": "ACO-IVF-004",
+        "entity_type": "ControlObjective",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1",
+        "name": "Validation Before Internal Use And Trust Crossing"
+      },
+      {
+        "entity_id": "ACO-IVF-005",
+        "entity_type": "ControlObjective",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1",
+        "name": "Controlled Failure And Non-Revealing Client Error Surface"
+      },
+      {
+        "entity_id": "ACO-IVF-006",
+        "entity_type": "ControlObjective",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1",
+        "name": "Centralized Error Handling And Sensitive Error Logging Hygiene"
+      },
+      {
+        "entity_id": "ACO-IVF-008",
+        "entity_type": "ControlObjective",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1",
+        "name": "Context-Aware Output Encoding And Rendering Safety"
+      },
+      {
+        "entity_id": "ACO-IVF-007",
+        "entity_type": "ControlObjective",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1",
+        "name": "Input Validation And Safe Failure Integrity"
+      }
+    ],
+    "mechanisms": [
+      {
+        "entity_id": "ACM-IAT-001",
+        "entity_type": "Mechanism",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1",
+        "name": "Authentication And Federation Protocols"
+      },
+      {
+        "entity_id": "ACM-IAT-002",
+        "entity_type": "Mechanism",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1",
+        "name": "Access Policy Enforcement"
+      },
+      {
+        "entity_id": "ACM-IAT-003",
+        "entity_type": "Mechanism",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1",
+        "name": "Periodic Review And Access Audit"
+      },
+      {
+        "entity_id": "ACM-IAT-004",
+        "entity_type": "Mechanism",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1",
+        "name": "Short-Lived Token Controls"
+      },
+      {
+        "entity_id": "ACM-IAT-005",
+        "entity_type": "Mechanism",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1",
+        "name": "API Gateway Mutual Authentication"
+      },
+      {
+        "entity_id": "ACM-IAT-006",
+        "entity_type": "Mechanism",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1",
+        "name": "Structured Logging And Effective Configuration Recording"
+      },
+      {
+        "entity_id": "ACM-IVF-001",
+        "entity_type": "Mechanism",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1",
+        "name": "Code Review For Input And Error Discipline"
+      },
+      {
+        "entity_id": "ACM-IVF-002",
+        "entity_type": "Mechanism",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1",
+        "name": "Static Rulepacks And Security Linters"
+      },
+      {
+        "entity_id": "ACM-IVF-003",
+        "entity_type": "Mechanism",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1",
+        "name": "Schema And Contract Validators"
+      },
+      {
+        "entity_id": "ACM-IVF-004",
+        "entity_type": "Mechanism",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1",
+        "name": "Centralized Error Translation And Redaction"
+      },
+      {
+        "entity_id": "ACM-IVF-005",
+        "entity_type": "Mechanism",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1",
+        "name": "Context-Aware Encoder Selection And Application"
+      }
+    ],
+    "practices": [
+      {
+        "entity_id": "ACP-IAT-001",
+        "entity_type": "Practice",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1",
+        "name": "Strong Authentication And Step-Up Enforcement"
+      },
+      {
+        "entity_id": "ACP-IAT-002",
+        "entity_type": "Practice",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1",
+        "name": "Least-Privilege Authorization Governance"
+      },
+      {
+        "entity_id": "ACP-IAT-003",
+        "entity_type": "Practice",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1",
+        "name": "Access Review And Timely Revocation"
+      },
+      {
+        "entity_id": "ACP-IAT-004",
+        "entity_type": "Practice",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1",
+        "name": "Bounded Session And Token Management"
+      },
+      {
+        "entity_id": "ACP-IAT-005",
+        "entity_type": "Practice",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1",
+        "name": "Authenticated API Boundary Enforcement"
+      },
+      {
+        "entity_id": "ACP-IAT-006",
+        "entity_type": "Practice",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1",
+        "name": "Access Abuse Monitoring And Audit Trail"
+      },
+      {
+        "entity_id": "ACP-IVF-001",
+        "entity_type": "Practice",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1",
+        "name": "Boundary Input Validation"
+      },
+      {
+        "entity_id": "ACP-IVF-002",
+        "entity_type": "Practice",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1",
+        "name": "Schema And Allowlist Enforcement"
+      },
+      {
+        "entity_id": "ACP-IVF-003",
+        "entity_type": "Practice",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1",
+        "name": "Dangerous Pattern Exclusion"
+      },
+      {
+        "entity_id": "ACP-IVF-004",
+        "entity_type": "Practice",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1",
+        "name": "Pre-Use Data Validation Discipline"
+      },
+      {
+        "entity_id": "ACP-IVF-005",
+        "entity_type": "Practice",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1",
+        "name": "Non-Revealing Error Surface Control"
+      },
+      {
+        "entity_id": "ACP-IVF-006",
+        "entity_type": "Practice",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1",
+        "name": "Centralized Error Governance"
+      },
+      {
+        "entity_id": "ACP-IVF-007",
+        "entity_type": "Practice",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1",
+        "name": "Context-Aware Output Encoding At Rendering Boundaries"
+      }
+    ],
+    "artifacts": [
+      {
+        "entity_id": "ACA-IAT-001",
+        "entity_type": "Artifact",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1"
+      },
+      {
+        "entity_id": "ACA-IAT-002",
+        "entity_type": "Artifact",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1"
+      },
+      {
+        "entity_id": "ACA-IAT-003",
+        "entity_type": "Artifact",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1"
+      },
+      {
+        "entity_id": "ACA-IAT-004",
+        "entity_type": "Artifact",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1"
+      },
+      {
+        "entity_id": "ACA-IAT-005",
+        "entity_type": "Artifact",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1"
+      },
+      {
+        "entity_id": "ACA-IAT-006",
+        "entity_type": "Artifact",
+        "slice_id": "ASC-02",
+        "slice_family": "ACO-IAT",
+        "source": "runtime_v1"
+      },
+      {
+        "entity_id": "ACA-IVF-001",
+        "entity_type": "Artifact",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1"
+      },
+      {
+        "entity_id": "ACA-IVF-002",
+        "entity_type": "Artifact",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1"
+      },
+      {
+        "entity_id": "ACA-IVF-003",
+        "entity_type": "Artifact",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1"
+      },
+      {
+        "entity_id": "ACA-IVF-004",
+        "entity_type": "Artifact",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1"
+      },
+      {
+        "entity_id": "ACA-IVF-005",
+        "entity_type": "Artifact",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1"
+      },
+      {
+        "entity_id": "ACA-IVF-006",
+        "entity_type": "Artifact",
+        "slice_id": "ASC-07",
+        "slice_family": "ACO-IVF",
+        "source": "runtime_v1"
+      }
+    ],
+    "relations_ref": {
+      "tool": "trace_sbd_toe_graph",
+      "lenses": [
+        {
+          "lens": "slice_implementation",
+          "anchor": "ASC-02"
+        },
+        {
+          "lens": "slice_implementation",
+          "anchor": "ASC-07"
+        }
+      ],
+      "total_relations": 106,
+      "coverage": {
+        "via_lenses": 70,
+        "implicit_in_entities": 36,
+        "residual_inline": 0
+      },
+      "note": "Inline g2_context.relations elided; execute each listed trace_sbd_toe_graph {lens, anchor} call to recover them, or re-call with include_relations=true. Encoding details: MCP resource codegen-instructions, detail_encoding.relations_ref."
+    }
+  },
+  "citations": {
+    "runtime_v0": {
+      "source_data": {
+        "data/publish/runtime/requirements.json": 41,
+        "data/publish/runtime/controls.json": 10
+      },
+      "ids_from": [
+        "activated_scope.requirements[].id",
+        "activated_scope.controls[].control_id"
+      ]
+    },
+    "runtime_v1": {
+      "source_data": {
+        "data/publish/runtime/v1/slices.json": 2,
+        "data/publish/runtime/v1/control_objectives.json": 15,
+        "data/publish/runtime/v1/mechanisms.json": 11,
+        "data/publish/runtime/v1/practices.json": 13,
+        "data/publish/runtime/v1/artifacts.json": 12
+      },
+      "ids_from": [
+        "activated_scope.slices[].slice_id",
+        "g2_context.control_objectives[].entity_id",
+        "g2_context.mechanisms[].entity_id",
+        "g2_context.practices[].entity_id",
+        "g2_context.artifacts[].entity_id"
+      ]
+    }
+  },
   "next": [
     {
-      "intent": "cita o citation_map",
+      "intent": "cita as citations (ids legais)",
       "tool": "resolve_entities",
       "with": "record_type=\"requirement\", filters={\"requirement_id\":{\"in\":[\"ACC-001\"]}}",
       "kind": "structural"
@@ -2804,7 +1584,7 @@
     }
   ],
   "size_estimate": {
-    "chars": 75582,
-    "approx_tokens": 18896
+    "chars": 49103,
+    "approx_tokens": 12276
   }
 }

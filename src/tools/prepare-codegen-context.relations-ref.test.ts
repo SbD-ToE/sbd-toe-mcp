@@ -7,7 +7,8 @@
  */
 /**
  * s2 — Relations on-demand (epic v2-token-diet): `relations_ref` no lugar do
- * array inline `g2_context.relations` em `detail: "lista" | "standard"` (0.21: minimal→lista).
+ * array inline `g2_context.relations` — 0.21 §3: vive no FULL (por omissão); nos dieted fica o
+ * relations_summary com a mesma contabilidade, e include_relations=true inlina em qualquer nível.
  *
  * Gates do slice (EPIC §s2):
  *   - SUPERSET (gate central, provado por EXECUÇÃO, sem mocks): para cada
@@ -34,7 +35,7 @@ import {
   handlePrepareCodegenContext,
   type PrepareCodegenContextInput,
   type PrepareCodegenContextResult,
-  type PrepareCodegenContextResultReady,
+  type PrepareCodegenContextResultReadyFull as PrepareCodegenContextResultReady,
   type PrepareCodegenContextResultReadyDieted,
   type RelationsRef
 } from "./prepare-codegen-context.js";
@@ -108,7 +109,8 @@ function expectReadyFull(
   result: PrepareCodegenContextResult
 ): asserts result is PrepareCodegenContextResultReady {
   expect(result.status).toBe("ready_for_codegen");
-  expect(result).toHaveProperty("citation_map");
+  expect(result).toHaveProperty("citations");
+  expect(result).not.toHaveProperty("citation_map");
 }
 
 function expectReadyDieted(
@@ -118,10 +120,19 @@ function expectReadyDieted(
   expect(result).toHaveProperty("citations");
 }
 
-function relationsRefOf(result: PrepareCodegenContextResultReadyDieted): RelationsRef {
+/** 0.21 §3: o relations_ref vive no FULL (nos dieted fica só o relations_summary). */
+function relationsRefOf(result: PrepareCodegenContextResultReady): RelationsRef {
   const ref = result.g2_context.relations_ref;
-  expect(ref, "relations_ref ausente no payload dieted").toBeDefined();
+  expect(ref, "relations_ref ausente no payload full").toBeDefined();
   return ref!;
+}
+
+/** As relations clássicas inline (com `source`) — só com include_relations=true desde a §3. */
+function fullInlineOf(input: PrepareCodegenContextInput): PrepareCodegenContextResultReady {
+  const result = handlePrepareCodegenContextDiscover({ ...input, include_relations: true });
+  expectReadyFull(result);
+  expect(Array.isArray(result.g2_context.relations)).toBe(true);
+  return result;
 }
 
 const relationKey = (subject: string, predicate: string, object: string): string =>
@@ -255,21 +266,40 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
 
   describe.each(FIXTURES)("$label", (fixture) => {
     it.each([...DIET_LEVELS])(
-      "%s: relations_ref substitui o array inline, com formato executável e auditoria exata",
+      "%s (0.21 §3): as relations SAEM — fica relations_summary com a MESMA contabilidade do relations_ref do full; sem relations nem relations_ref",
       (detail) => {
         const full = handlePrepareCodegenContextDiscover(fixture.input);
         expectReadyFull(full);
         const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail });
         expectReadyDieted(dieted);
-
-        // O array inline saiu…
         expect("relations" in dieted.g2_context).toBe(false);
-        // …e a sentinela do budget.test (s2RelationsRefLanded) aciona:
-        expect(Array.isArray((dieted.g2_context as { relations?: unknown }).relations)).toBe(
-          false
-        );
+        expect(dieted.g2_context).not.toHaveProperty("relations_ref");
+        const ref = relationsRefOf(full);
+        const summary = dieted.g2_context.relations_summary!;
+        expect(summary.total_relations).toBe(ref.total_relations);
+        expect(summary.via_lenses).toBe(ref.coverage.via_lenses);
+        expect(summary.implicit_in_entities).toBe(ref.coverage.implicit_in_entities);
+        expect(summary.residual_inline).toBe(ref.coverage.residual_inline);
+        expect(summary.note).toMatch(/include_relations=true/);
+        expect(summary.note).toMatch(/relations_ref/);
+        // resíduo (nunca-silencioso): se existe no full, existe inline no dieted, verbatim sem source
+        if (ref.coverage.residual_inline === 0) expect(dieted.g2_context.residual_relations).toBeUndefined();
+        else expect(JSON.stringify(dieted.g2_context.residual_relations)).toBe(JSON.stringify(ref.residual_relations));
+      }
+    );
 
-        const ref = relationsRefOf(dieted);
+    it("full (0.21 §3): relations_ref substitui o array inline, com formato executável e auditoria exata", () => {
+        const full = handlePrepareCodegenContextDiscover(fixture.input);
+        expectReadyFull(full);
+        const inline = fullInlineOf(fixture.input);
+        const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
+        expectReadyDieted(dieted);
+
+        // O array inline saiu do full por omissão…
+        expect("relations" in full.g2_context).toBe(false);
+        expect(Array.isArray((full.g2_context as { relations?: unknown }).relations)).toBe(false);
+
+        const ref = relationsRefOf(full);
         expect(ref.tool).toBe("trace_sbd_toe_graph");
         expect(ref.lenses.length).toBeGreaterThan(0);
         for (const call of ref.lenses) {
@@ -277,8 +307,8 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
           expect(typeof call.anchor).toBe("string");
           expect(call.anchor.length).toBeGreaterThan(0);
         }
-        // total_relations = nº EXATO de relations que iam inline em full.
-        expect(ref.total_relations).toBe(full.g2_context.relations.length);
+        // total_relations = nº EXATO de relations que vão inline com include_relations=true.
+        expect(ref.total_relations).toBe(inline.g2_context.relations!.length);
         // Auditoria nunca-silenciosa: a decomposição soma ao total.
         expect(
           ref.coverage.via_lenses +
@@ -299,7 +329,7 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
         } else {
           expect(ref.residual_relations).toHaveLength(fixture.expectedCoverage.residual);
           const inlineKeys = new Set(
-            full.g2_context.relations.map((relation) =>
+            inline.g2_context.relations!.map((relation) =>
               relationKey(relation.subject_id, relation.predicate, relation.object_id)
             )
           );
@@ -316,13 +346,14 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
             expect(typeById.has(relation.subject_id)).toBe(false);
           }
         }
-      }
-    );
+    });
 
     it("anchors do relations_ref são ids ATIVADOS neste payload (executáveis)", () => {
+      const full = handlePrepareCodegenContextDiscover(fixture.input);
+      expectReadyFull(full);
       const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
       expectReadyDieted(dieted);
-      const ref = relationsRefOf(dieted);
+      const ref = relationsRefOf(full);
       const activatedSliceIds = new Set(
         dieted.activated_scope.slices.map((slice) => slice.slice_id)
       );
@@ -342,17 +373,18 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
       }
     });
 
-    it("SUPERSET por execução real: união das lenses ∪ slice_id das entidades ⊇ relations inline de full", () => {
+    it("SUPERSET por execução real: união das lenses ∪ slice_id das entidades ⊇ relations inline (include_relations=true)", () => {
       const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
+      const fullInline = fullInlineOf(fixture.input);
       const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
       expectReadyDieted(dieted);
-      const ref = relationsRefOf(dieted);
+      const ref = relationsRefOf(full);
       const { typeById, sliceById } = entityIndex(dieted.g2_context);
 
-      // 1. Conjunto exato que ia inline em full (chave canónica).
+      // 1. Conjunto exato que vai inline com include_relations=true (chave canónica).
       const inline = new Map<string, { predicate: string }>();
-      for (const relation of full.g2_context.relations) {
+      for (const relation of fullInline.g2_context.relations!) {
         inline.set(relationKey(relation.subject_id, relation.predicate, relation.object_id), {
           predicate: relation.predicate
         });
@@ -420,9 +452,9 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
     });
 
     it("NO-LEAK: nenhum valor em relations_ref contém IRIs internos (esquema real do grafo)", () => {
-      const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
-      expectReadyDieted(dieted);
-      const ref = relationsRefOf(dieted);
+      const full = handlePrepareCodegenContextDiscover(fixture.input);
+      expectReadyFull(full);
+      const ref = relationsRefOf(full);
       const serialized = JSON.stringify(ref);
       // Esquema REAL de IRIs do grafo (src/serving/rdf/projection.ts).
       expect(BASE).toBe("https://sbd-toe.dev/v2/"); // guarda: o teste segue o esquema real
@@ -436,9 +468,8 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
       }
     });
 
-    it("`include_relations: true` devolve as relations inline dieted (sem `source`), sem relations_ref", () => {
-      const full = handlePrepareCodegenContextDiscover(fixture.input);
-      expectReadyFull(full);
+    it("`include_relations: true` devolve as relations inline dieted (sem `source`), sem relations_ref nem relations_summary", () => {
+      const full = fullInlineOf(fixture.input);
       for (const detail of DIET_LEVELS) {
         const dieted = handlePrepareCodegenContextDiscover({
           ...fixture.input,
@@ -446,11 +477,12 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
           include_relations: true
         });
         expectReadyDieted(dieted);
-        expect(dieted.g2_context.relations_ref).toBeUndefined();
+        expect(dieted.g2_context).not.toHaveProperty("relations_ref");
+        expect(dieted.g2_context).not.toHaveProperty("relations_summary");
         const relations = dieted.g2_context.relations;
         expect(Array.isArray(relations)).toBe(true);
         // Mesmíssimas relations de full, por ordem, sem o `source` por item.
-        const expected = full.g2_context.relations.map(
+        const expected = full.g2_context.relations!.map(
           ({ source: _source, ...rest }) => rest
         );
         expect(JSON.stringify(relations)).toBe(JSON.stringify(expected));
@@ -469,23 +501,26 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
       expect(JSON.stringify(explicitFalse)).toBe(JSON.stringify(byDefault));
     });
 
-    it("`full` continua byte-idêntico, com ou sem include_relations (nada muda em full)", () => {
+    it("full (0.21 §3): relations_ref por omissão (explícito ≡ omitido; include_relations=false idem); include_relations=true inlina as clássicas com `source` e ecoa o escape hatch", () => {
       const byDefault = handlePrepareCodegenContextDiscover(fixture.input);
-      for (const extra of [
-        { detail: "full" as const, include_relations: true },
-        { include_relations: true },
-        { include_relations: false }
-      ]) {
+      expectReadyFull(byDefault);
+      for (const extra of [{ detail: "full" as const }, { include_relations: false }]) {
         const result = handlePrepareCodegenContextDiscover({ ...fixture.input, ...extra });
         expect(JSON.stringify(result)).toBe(JSON.stringify(byDefault));
       }
+      const inline = fullInlineOf(fixture.input);
+      expect(inline.g2_context).not.toHaveProperty("relations_ref");
+      expect(inline.input_echo.include_relations).toBe(true);
+      for (const relation of inline.g2_context.relations!) expect(relation.source).toBe("runtime_v1");
+      // o conjunto citável não muda com a forma das relations
+      expect(JSON.stringify(inline.citations)).toBe(JSON.stringify(byDefault.citations));
     });
 
-    it("determinismo: relations_ref byte-igual em 2 chamadas idênticas", () => {
+    it("determinismo: relations_ref (full) byte-igual em 2 chamadas idênticas", () => {
       clearG2RuntimeCacheForTests();
       clearRegulatoryOverlayCacheForTests();
-      const first = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
-      const second = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
+      const first = handlePrepareCodegenContextDiscover(fixture.input);
+      const second = handlePrepareCodegenContextDiscover(fixture.input);
       expect(JSON.stringify(second)).toBe(JSON.stringify(first));
     });
   });

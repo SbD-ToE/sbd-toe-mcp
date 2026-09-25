@@ -22,13 +22,14 @@
 import { beforeAll, describe, expect, it } from "vitest";
 
 import {
+  citableIds,
   handlePrepareCodegenContext,
   type CitationMapEntry,
   type G2ContextEntity,
   type ManualGroundingEntry,
   type PrepareCodegenContextInput,
   type PrepareCodegenContextResult,
-  type PrepareCodegenContextResultReady,
+  type PrepareCodegenContextResultReadyFull as PrepareCodegenContextResultReady,
   type PrepareCodegenContextResultReadyDieted,
   type SliceGroupedEntityNames,
   type WithoutSource
@@ -93,7 +94,8 @@ function expectReadyFull(
   result: PrepareCodegenContextResult
 ): asserts result is PrepareCodegenContextResultReady {
   expect(result.status).toBe("ready_for_codegen");
-  expect(result).toHaveProperty("citation_map");
+  expect(result).toHaveProperty("citations");
+  expect(result).not.toHaveProperty("citation_map");
 }
 
 function expectReadyDieted(
@@ -260,7 +262,7 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
     it("conjunto de IDs citáveis idêntico em todos os níveis (invariante 3)", () => {
       const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
-      const fullIds = Object.keys(full.citation_map).sort();
+      const fullIds = [...new Set(citableIds(full))].sort();
       for (const detail of DIET_LEVELS) {
         const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail });
         expectReadyDieted(dieted);
@@ -270,14 +272,21 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
       }
     });
 
-    it("`citations` invertido (ids_from) reconstrói o citation_map clássico byte-igual (dedup sem perda)", () => {
+    it("`citations` invertido (ids_from) reconstrói o mesmo id→{source, source_data} em todos os níveis (0.21 §3: full também invertido, ids por caminhos de lista)", () => {
       const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
       const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
       expectReadyDieted(dieted);
       const rebuilt = rebuildCitationMap(dieted);
-      // byte-igual: mesmos ids, mesma ordem de inserção, mesmo {source, source_data}
-      expect(JSON.stringify(rebuilt)).toBe(JSON.stringify(full.citation_map));
+      // o full reconstrói-se pela MESMA regra publicada (citableIds), com caminhos de lista
+      const fullIds = citableIds(full);
+      expect(new Set(fullIds).size).toBe(fullIds.length);
+      expect([...fullIds].sort()).toEqual(Object.keys(rebuilt).sort());
+      for (const [source, group] of Object.entries(full.citations)) {
+        expect(group.ids_from, `${source}: ids_from ausente no full`).toBeDefined();
+        expect(JSON.stringify(group.source_data)).toBe(JSON.stringify(dieted.citations[source as CitationMapEntry["source"]]!.source_data));
+        for (const path of group.ids_from!) expect(path).not.toMatch(/^keys\(/);
+      }
     });
 
     it("`manual_grounding` na forma de contagens preserva os totais (Σ entries == planas do full; contagens por grupo iguais; entries_ref → full)", () => {
@@ -317,6 +326,13 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
         include_relations: true
       });
       expectReadyDieted(dietedWithRelations);
+      // 0.21 §3: o full serve relations_ref; as relations clássicas inline só com include_relations.
+      const fullInline = handlePrepareCodegenContextDiscover({ ...fixture.input, include_relations: true });
+      expectReadyFull(fullInline);
+      expect(Array.isArray(full.g2_context.relations)).toBe(false);
+      expect(full.g2_context.relations_ref?.tool).toBe("trace_sbd_toe_graph");
+      expect(dieted.g2_context.relations_summary?.total_relations).toBe(full.g2_context.relations_ref?.total_relations);
+      expect(dieted.g2_context).not.toHaveProperty("relations_ref");
 
       const stripSource = <T extends { source: unknown }>(items: readonly T[]) =>
         items.map(({ source: _source, ...rest }) => rest);
@@ -382,7 +398,7 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
 
       // -- relations (caminho inline): dedup s1 puro, item a item.
       expect(JSON.stringify(dietedWithRelations.g2_context.relations)).toBe(
-        JSON.stringify(stripSource(full.g2_context.relations))
+        JSON.stringify(stripSource(fullInline.g2_context.relations!))
       );
 
       // -- evidence_patterns (0.21 §1): o bloco NÃO existe em nível nenhum.

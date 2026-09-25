@@ -13,10 +13,11 @@ import {
   handlePrepareCodegenContext,
   type PrepareCodegenContextResult,
   type PrepareCodegenContextResultBlocked,
-  type PrepareCodegenContextResultReady
+  type PrepareCodegenContextResultReadyFull as PrepareCodegenContextResultReady
 } from "./prepare-codegen-context.js";
 import { clearG2RuntimeCacheForTests } from "./g2-runtime-loader.js";
 import { getOntologyData } from "./ontology-loader.js";
+import { citableIds } from "./prepare-codegen-context.js";
 import { clearRegulatoryOverlayCacheForTests } from "./regulatory-overlay-loader.js";
 
 function expectBlocked(
@@ -158,12 +159,13 @@ describe("handlePrepareCodegenContext — ready_for_codegen (API validation)", (
     expect(result.regulatory_overlay.frameworks).toEqual([]);
     expect(result.provenance.overlay).toBe("absent");
 
-    // citation_map must not be empty for a ready ask and entries must self-report sources.
-    expect(Object.keys(result.citation_map).length).toBeGreaterThan(0);
-    for (const entry of Object.values(result.citation_map)) {
-      expect(["runtime_v0", "runtime_v1", "overlay"]).toContain(entry.source);
-      expect(typeof entry.source_data).toBe("string");
-      expect(entry.source_data.length).toBeGreaterThan(0);
+    // citations (0.21 §3, inverted at every level) must not be empty for a ready ask; each group self-reports its files.
+    expect(citableIds(result).length).toBeGreaterThan(0);
+    expect(result).not.toHaveProperty("citation_map");
+    for (const [source, group] of Object.entries(result.citations)) {
+      expect(["runtime_v0", "runtime_v1", "overlay"]).toContain(source);
+      expect(Object.keys(group.source_data).length).toBeGreaterThan(0);
+      expect(group.ids_from ?? group.ids).toBeDefined();
     }
 
     // completeness_report must be present with numbers and m_recall in [0,1].
@@ -174,7 +176,7 @@ describe("handlePrepareCodegenContext — ready_for_codegen (API validation)", (
 
     // llm_codegen_instructions must enforce grounding rules.
     const joined = result.llm_codegen_instructions.join("\n");
-    expect(joined).toMatch(/citation_map/i);
+    expect(joined).toMatch(/`citations`/);
     expect(joined).toMatch(/invent/i);
 
     // security_rationale_template must be present as a template (with placeholders).
@@ -219,8 +221,9 @@ describe("handlePrepareCodegenContext — ready_for_codegen (API validation)", (
     for (const control of directControls) {
       expect(typeof control.control_id).toBe("string");
       expect(control.control_id.length).toBeGreaterThan(0);
-      // Direct controls must be cited in citation_map with runtime_v0 source.
-      expect(result.citation_map[control.control_id]?.source).toBe("runtime_v0");
+      // Direct controls must be citable (0.21 §3: citations.runtime_v0 → activated_scope.controls[].control_id).
+      expect(citableIds(result)).toContain(control.control_id);
+      expect(result.citations.runtime_v0?.ids_from).toContain("activated_scope.controls[].control_id");
     }
   });
 
@@ -313,11 +316,9 @@ describe("handlePrepareCodegenContext — regulatory overlay activation", () => 
       )
     ).toBe(true);
 
-    // citation_map carries overlay-sourced entries.
-    const overlayCitations = Object.values(result.citation_map).filter(
-      (entry) => entry.source === "overlay"
-    );
-    expect(overlayCitations.length).toBeGreaterThan(0);
+    // citations carries the overlay-sourced group with at least one id.
+    expect(result.citations.overlay).toBeDefined();
+    expect(Object.values(result.citations.overlay!.source_data).reduce((a, b) => a + b, 0)).toBeGreaterThan(0);
 
     // Provenance must surface the overlay source.
     expect(result.provenance.overlay).toMatch(/overlay/);
@@ -345,7 +346,7 @@ describe("handlePrepareCodegenContext — regulatory overlay activation", () => 
 });
 
 // ---------------------------------------------------------------------------
-// Provenance & citation_map shape
+// Provenance & citations shape
 // ---------------------------------------------------------------------------
 
 describe("handlePrepareCodegenContext — output shape contracts", () => {
@@ -354,7 +355,7 @@ describe("handlePrepareCodegenContext — output shape contracts", () => {
     clearRegulatoryOverlayCacheForTests();
   });
 
-  it("output carries provenance, citation_map and completeness_report on ready", () => {
+  it("output carries provenance, citations and completeness_report on ready", () => {
     const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Add input validation to the public REST endpoint /orders",
       risk_level: "L2",
@@ -363,7 +364,8 @@ describe("handlePrepareCodegenContext — output shape contracts", () => {
     expectReady(result);
     expect(result.provenance.runtime_v0).toMatch(/runtime/);
     expect(result.provenance.runtime_v1).toMatch(/runtime\/v1/);
-    expect(result.citation_map).toBeDefined();
+    expect(result.citations).toBeDefined();
+    expect(result).not.toHaveProperty("citation_map");
     expect(result.completeness_report.v1_consistency_mismatches).toEqual([]);
   });
 

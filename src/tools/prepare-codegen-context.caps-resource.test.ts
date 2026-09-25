@@ -36,7 +36,8 @@ import {
   type InstructionCondition,
   type PrepareCodegenContextInput,
   type PrepareCodegenContextResult,
-  type PrepareCodegenContextResultReady,
+  citableIds,
+  type PrepareCodegenContextResultReadyFull as PrepareCodegenContextResultReady,
   type PrepareCodegenContextResultReadyDieted
 } from "./prepare-codegen-context.js";
 import { getOntologyData } from "./ontology-loader.js";
@@ -90,7 +91,8 @@ function expectReadyFull(
   result: PrepareCodegenContextResult
 ): asserts result is PrepareCodegenContextResultReady {
   expect(result.status).toBe("ready_for_codegen");
-  expect(result).toHaveProperty("citation_map");
+  expect(result).toHaveProperty("citations");
+  expect(result).not.toHaveProperty("citation_map");
 }
 
 function expectReadyDieted(
@@ -116,11 +118,7 @@ function conditionsFor(result: Ready): InstructionCondition[] {
   if (result.activated_scope.regulatory_obligations.length > 0) active.push("regulatory_overlay");
   const risk = result.input_echo.risk_level;
   if (risk === "L1" || risk === "L2" || risk === "L3") active.push(`risk_level:${risk}`);
-  const citable =
-    "citation_map" in result
-      ? Object.keys(result.citation_map).length
-      : result.activated_scope.requirements.length + result.activated_scope.controls.length;
-  if (citable === 0) active.push("citation_map_empty");
+  if (citableIds(result).length === 0) active.push("citations_empty");
   return active;
 }
 

@@ -174,7 +174,7 @@ export function buildGroundedCodegenPrompt(args: {
     regulatoryLine,
     "",
     "Then branch on `status` exactly as described in the guide above:",
-    "- `ready_for_codegen` → fill `security_rationale_template`, cite `citation_map` IDs, produce code + tests + evidence.",
+    "- `ready_for_codegen` → fill `security_rationale_template`, cite ids from `citations`, produce code + tests + evidence.",
     "- `needs_clarification` → STOP, ask the user the specific missing inputs.",
     "- `needs_decomposition` → STOP, propose 2–4 bite-size sub-tasks; ask the user to pick one before re-calling the tool.",
     "- `unsupported_scope` → STOP, report the missing capability verbatim. Do NOT fabricate IDs.",

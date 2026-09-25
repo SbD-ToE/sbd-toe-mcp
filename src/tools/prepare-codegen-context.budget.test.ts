@@ -12,8 +12,8 @@
  * contra as 2 fixtures baseline do EPIC (agentic/planeado/v2-token-diet/EPIC.md,
  * §Fixtures baseline, medidas 2026-07-05 na 0.20.0-beta.1):
  *
- *   fixture 1 ⇒ ≈18.903 tokens / 111 ids no citation_map
- *   fixture 2 ⇒ ≈24.731 tokens / 150 ids no citation_map
+ *   fixture 1 ⇒ ≈18.903 tokens / 111 ids citáveis (citation_map; 0.21 §3: `citations` em todos os níveis)
+ *   fixture 2 ⇒ ≈24.731 tokens / 150 ids citáveis
  *
  * A decomposição por secção espelha scripts/measure-codegen-payload.mjs (o
  * instrumento baseline, que corre sobre dist/); este teste corre sobre src/ e
@@ -38,7 +38,8 @@ import {
   handlePrepareCodegenContext,
   type PrepareCodegenContextInput,
   type PrepareCodegenContextResult,
-  type PrepareCodegenContextResultReady,
+  citableIds,
+  type PrepareCodegenContextResultReadyFull as PrepareCodegenContextResultReady,
   type PrepareCodegenContextResultReadyDieted
 } from "./prepare-codegen-context.js";
 import { estimateSize } from "../serving/response-shaping.js";
@@ -60,7 +61,7 @@ interface BaselineFixture {
   name: "fixture1" | "fixture2";
   label: string;
   input: PrepareCodegenContextInput;
-  /** Baseline: nº exato de ids no citation_map (invariante do EPIC). */
+  /** Baseline: nº exato de ids citáveis (invariante do EPIC; 0.21 §3: lidos de `citations` por citableIds). */
   citationIds: number;
 }
 
@@ -110,7 +111,7 @@ const FIXTURES: readonly BaselineFixture[] = [
 type SectionName =
   | "g2_context.relations"
   | "manual_grounding"
-  | "citation_map"
+  | "citations"
   | "activated_scope"
   | "g2_entities"
   | "rest";
@@ -129,8 +130,10 @@ function sectionTokens(
   const g2 = result.g2_context as {
     relations?: unknown;
     relations_ref?: unknown;
+    relations_summary?: unknown;
   };
-  const relations = tok(g2.relations ?? g2.relations_ref);
+  // 0.21 §3: full → relations_ref; lista/standard → relations_summary (a contabilidade).
+  const relations = tok(g2.relations ?? g2.relations_ref ?? g2.relations_summary);
   const manualGrounding = tok(result.manual_grounding);
   const citationMap = tok(
     (result as { citation_map?: unknown }).citation_map ??
@@ -155,7 +158,7 @@ function sectionTokens(
   return {
     "g2_context.relations": relations,
     manual_grounding: manualGrounding,
-    citation_map: citationMap,
+    citations: citationMap,
     activated_scope: activatedScope,
     g2_entities: g2Entities,
     rest,
@@ -171,84 +174,85 @@ type DetailLevel = "full" | "standard" | "lista";
 type SectionBudgets = Record<SectionName, number> & { total: number };
 
 /**
- * 0.21 §1 (2026-09-25) — a forma mudou de propósito, os budgets re-fixam-se
+ * 0.21 §1+§3 (2026-09-25) — a forma mudou de propósito, os budgets re-fixam-se
  * por MEDIÇÃO da forma servida (+~5–8% de margem), e os TOTAIS dos níveis com
  * envelope são os ENVELOPES HERDADOS ratificados (lista 8.450 / standard
  * 9.200 — por nível, não por fixture). Onde a forma fundida não cabe no
  * envelope, a diferença é DECLARADA em KNOWN_TOTAL_DEVIATIONS — nunca um
  * levantamento silencioso do gate.
  *
- * Medição 2026-09-25 (dist, forma fundida; secções relations / grounding /
+ * Medição 2026-09-25 pós-§3 (dist; secções relations(ref|summary) / grounding /
  * citations / scope / entidades / resto):
- *   full     f1 4.370 / 3.572 / 2.549 / 4.754 / 2.058 / 1.593 = 18.896
- *            f2 6.239 / 4.913 / 3.664 / 10.119 / 2.822 / 1.831 = 29.588
- *   standard f1 121 / 237 / 167 / 4.462 / 642 / 1.476 = 7.105
- *            f2 204 / 274 / 167 / 9.662 / 899 / 1.540 = 12.746
+ *   full     f1 121 / 3.572 / 166 / 4.754 / 2.058 / 1.605 = 12.276   (§1: 18.896; 0.20.0: 18.903)
+ *            f2 204 / 4.913 / 166 / 10.119 / 2.822 / 1.843 = 20.067  (§1: 29.588)
+ *   standard f1 ~85 / 237 / 167 / 4.462 / 642 / ~1.475 = 7.067      (§1: 7.105)
+ *            f2 ~85 / 274 / 167 / 9.662 / 899 / ~1.610 = 12.696     (§1: 12.746)
  *   lista    idem standard −1 (só o eco do nível difere até à §2)
  *
- * `full`: o requisito fundido substitui o bloco de 25 padrões (2.846) por
- * verify/evidence em TODOS os requisitos + descriptions → o total do full
- * quase não muda na f1 (18.903 → 18.896) e cresce na f2 (69 reqs).
+ * §3 no full: citation_map (2.549/3.664) → citations invertido (166) e relations
+ * inline (4.370/6.239) → relations_ref (121/204): −35% / −32%. Nos dieted a §3
+ * troca relations_ref por relations_summary (−~40 tk): a base quase não mexe —
+ * é o requisito fundido (~133 tk/req) que decide o tamanho.
  */
 const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudgets>> = {
   full: {
     fixture1: {
-      "g2_context.relations": 4700,
+      "g2_context.relations": 150, // 0.21 §3: relations_ref no full (medido 121)
       manual_grounding: 3850,
-      citation_map: 2900,
+      citations: 200, // 0.21 §3: invertido no full (medido 166; era citation_map 2.549)
       activated_scope: 5100, // 0.21 §1: requisito fundido (description+verify+evidence) + description dos controlos directos — medido 4.754
       g2_entities: 2200,
-      rest: 1720, // medido 1.593 (inclui size_estimate declarado)
-      total: 20400
+      rest: 1730, // medido 1.605 (inclui size_estimate declarado)
+      total: 13300 // medido 12.276 + ~8% (0.20.0: 20.400)
     },
     fixture2: {
-      "g2_context.relations": 6700,
+      "g2_context.relations": 250, // relations_ref (medido 204)
       manual_grounding: 5300,
-      citation_map: 3900,
+      citations: 200, // medido 166 (era 3.664)
       activated_scope: 10900, // medido 10.119 (69 requisitos fundidos)
       g2_entities: 3050,
-      rest: 1980, // medido 1.831
-      total: 32000 // medido 29.588 + ~8% (era 26.700 na forma antiga)
+      rest: 1990, // medido 1.843
+      total: 21700 // medido 20.067 + ~8%
     }
   },
   standard: {
     fixture1: {
-      "g2_context.relations": 150,
+      "g2_context.relations": 100, // 0.21 §3: relations_summary (contabilidade; medido ~85)
       manual_grounding: 260, // 0.21: forma de contagens + entries_ref (era agrupada: 333)
-      citation_map: 200,
+      citations: 200,
       activated_scope: 4700, // medido 4.462 (fundido)
       g2_entities: 720,
-      rest: 1560, // medido 1.476 (instruções + template INLINE, verification, size_estimate)
+      rest: 1560, // medido ~1.475 (instruções + template INLINE, verification, size_estimate)
       total: 9200 // 🔴 envelope herdado (ratificado 2026-08-31, mantido 2026-09-25)
     },
     fixture2: {
-      "g2_context.relations": 240,
+      "g2_context.relations": 100,
       manual_grounding: 300,
-      citation_map: 200,
+      citations: 200,
       activated_scope: 10200, // medido 9.662 (69 requisitos fundidos)
       g2_entities: 1000,
-      rest: 1620, // medido 1.540
-      total: 9200 // 🔴 envelope herdado — NÃO CABE (medido 12.746): desvio declarado abaixo
+      rest: 1700, // medido ~1.610
+      total: 9200 // 🔴 envelope herdado — NÃO CABE (medido 12.696): desvio declarado abaixo
     }
   },
   lista: {
     fixture1: {
-      "g2_context.relations": 150,
+      "g2_context.relations": 100,
       manual_grounding: 260,
-      citation_map: 200,
+      citations: 200,
       activated_scope: 4700,
       g2_entities: 720,
       rest: 1560,
       total: 8450 // 🔴 envelope herdado do minimal (ratificado 2026-08-31, herdado 2026-09-25)
     },
     fixture2: {
-      "g2_context.relations": 240,
+      "g2_context.relations": 100,
       manual_grounding: 300,
-      citation_map: 200,
+      citations: 200,
       activated_scope: 10200,
       g2_entities: 1000,
-      rest: 1620,
-      total: 8450 // 🔴 envelope herdado — NÃO CABE (medido 12.745): desvio declarado abaixo
+      rest: 1700,
+      total: 8450 // 🔴 envelope herdado — NÃO CABE (medido 12.695): desvio declarado abaixo
     }
   }
 };
@@ -316,7 +320,7 @@ function idsAtPath(payload: unknown, path: string): string[] {
     >;
     return Object.values(grouped).flatMap((entities) => Object.keys(entities));
   }
-  const listMatch = /^([a-z_]+)\.([a-z_]+)\[\]\.([a-z_]+)$/.exec(path);
+  const listMatch = /^([a-z0-9_]+)\.([a-z0-9_]+)\[\]\.([a-z0-9_]+)$/.exec(path);
   if (!listMatch) throw new Error(`ids_from path desconhecido: ${path}`);
   const list = (root[listMatch[1]!]?.[listMatch[2]!] ?? []) as Array<
     Record<string, string>
@@ -347,8 +351,8 @@ function idsAtPath(payload: unknown, path: string): string[] {
 const KNOWN_TOTAL_DEVIATIONS: Readonly<
   Record<string, { measured: number; tolerated: number; since: string; reason: string }>
 > = {
-  "standard:fixture2": { measured: 12746, tolerated: 13400, since: "2026-09-25", reason: "0.21 §1 forma fundida: 69 reqs × ~88 tk/req (description+verify+evidence) > envelope 9.200 — achado para o lead" },
-  "lista:fixture2": { measured: 12745, tolerated: 13400, since: "2026-09-25", reason: "0.21 §1 forma fundida: 69 reqs × ~88 tk/req > envelope herdado 8.450 — achado para o lead" }
+  "standard:fixture2": { measured: 12696, tolerated: 13400, since: "2026-09-25", reason: "0.21 §1+§3 forma fundida: 69 reqs × ~88 tk/req (description+verify+evidence) > envelope 9.200 — achado para o lead (a §3 só baixou ~50 tk)" },
+  "lista:fixture2": { measured: 12695, tolerated: 13400, since: "2026-09-25", reason: "0.21 §1+§3 forma fundida: 69 reqs × ~88 tk/req > envelope herdado 8.450 — achado para o lead (a §3 só baixou ~50 tk)" }
 }
 
 function withKnownDeviation(
@@ -392,9 +396,10 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
       assertSectionBudgets(measured, BUDGETS.full[fixture.name]);
     });
 
-    it("citation_map cobre exatamente o nº baseline de ids (invariante do EPIC)", () => {
+    it("citations cobre exatamente o nº baseline de ids (invariante do EPIC; 0.21 §3: invertido também no full)", () => {
       const result = results.get(fixture.name)!;
-      expect(Object.keys(result.citation_map).length).toBe(fixture.citationIds);
+      expect(result).not.toHaveProperty("citation_map");
+      expect(new Set(citableIds(result)).size).toBe(fixture.citationIds);
     });
 
     it("é determinístico: 2 chamadas idênticas ⇒ payload byte-igual", () => {
@@ -436,7 +441,7 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
       // citations.<source>.ids_from referencia-os (run-length source_data
       // alinhado 1:1) — extração via a mesma regra documentada no resource
       // (detail_encoding.citations), com fallback para ids explícitos.
-      const fullIds = Object.keys(results.get(fixture.name)!.citation_map).sort();
+      const fullIds = [...new Set(citableIds(results.get(fixture.name)!))].sort();
       const levels: ReadonlyArray<"standard" | "lista"> = ["standard", "lista"];
       for (const detail of levels) {
         const result = handlePrepareCodegenContextDiscover(withDetail(fixture.input, detail));

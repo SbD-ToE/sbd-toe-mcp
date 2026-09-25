@@ -11,6 +11,18 @@
  */
 
 const ok = (note = "") => ({ status: "PASS", note });
+/** 0.21 §3: os ids citáveis vêm de `citations` (invertido, ids referenciados por caminho do payload) em todos os níveis. */
+const citableIdsOf = (d) => {
+  const root = d ?? {};
+  const at = (path) => {
+    const keys = /^keys\(g2_context\.([a-z_]+)\[slice\]\)$/.exec(path);
+    if (keys) return Object.values(root.g2_context?.[keys[1]] ?? {}).flatMap((e) => Object.keys(e));
+    const list = /^([a-z0-9_]+)\.([a-z0-9_]+)\[\]\.([a-z0-9_]+)$/.exec(path);
+    if (!list) throw new Error(`ids_from desconhecido: ${path}`);
+    return (root[list[1]]?.[list[2]] ?? []).map((item) => item[list[3]]);
+  };
+  return Object.values(root.citations ?? {}).flatMap((g) => g.ids ?? (g.ids_from ?? []).flatMap(at));
+};
 const part = (note, owner = "mcp") => ({ status: "PART", note, owner });
 const fail = (note, owner = "mcp") => ({ status: "FAIL", note, owner });
 const skip = (note) => ({ status: "SKIP", note });
@@ -26,14 +38,15 @@ const ctxLinksTargeting = (ctx, controlId) => ctx ? [...ctx.knownIds].filter((ri
 
 export const scenarios = [
   // ───────────────────────── Axis A — Tool coverage ─────────────────────────
-  { id: "TC-A-01", axis: "A", title: "codegen ready_for_codegen with real citation_map", tool: "prepare_sbd_toe_codegen_context",
+  { id: "TC-A-01", axis: "A", title: "codegen ready_for_codegen with real citations (0.21 §3: invertido em todos os níveis)", tool: "prepare_sbd_toe_codegen_context",
     // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c, ctx) => {
       const r = await c.tool("prepare_sbd_toe_codegen_context", { selection_mode: "discover", task: "Validação de payload no PATCH /users/:id/email, Node/Express", risk_level: "L2" });
       if (!r.ok) return fail(r.error);
       const d = r.data; if (d.status !== "ready_for_codegen") return fail(`status=${d.status}`);
-      const keys = Object.keys(d.citation_map ?? {}); const unknown = keys.filter((k) => !ctx.knownIds.has(k));
-      if (keys.length === 0) return fail("empty citation_map");
+      const keys = citableIdsOf(d); const unknown = keys.filter((k) => !ctx.knownIds.has(k));
+      if (keys.length === 0) return fail("empty citations");
+      if (d.citation_map) return fail("citation_map ressuscitou (0.21 §3: só citations)");
       if (unknown.length) return fail(`citation ids not in bundle: ${unknown.slice(0, 5).join(",")}`, "mixed");
       if (!Array.isArray(d.activation_trace) || d.activation_trace.length === 0) return fail("no activation_trace");
       return ok(`ready; ${keys.length} citations all resolve; trace ${d.activation_trace.length}; provenance ${d.provenance ? "yes" : "no"}`);
@@ -42,7 +55,7 @@ export const scenarios = [
     // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c) => { const r = await c.tool("prepare_sbd_toe_codegen_context", { selection_mode: "discover", task: "Melhora a segurança da aplicação toda", risk_level: "L2" }); if (!r.ok) return fail(r.error);
       const s = r.data.status; if (!["needs_clarification", "needs_decomposition"].includes(s)) return fail(`status=${s}`);
-      if (r.data.citation_map) return fail("citation_map present on non-ready status"); return ok(`status=${s}; no citation_map`); } },
+      if (r.data.citation_map || r.data.citations) return fail("citations present on non-ready status"); return ok(`status=${s}; no citations`); } },
   { id: "TC-A-03", axis: "A", title: "codegen with regulatory overlay (EXT-DORA) — honest degradation", tool: "prepare_sbd_toe_codegen_context",
     run: async (c) => { const r = await c.tool("prepare_sbd_toe_codegen_context", { task: "Validação de input e auditoria de transacções no módulo de pagamentos", risk_level: "L2", regulatory_frameworks: ["EXT-DORA"], include_regulatory_overlay: true }); if (!r.ok) return fail(r.error);
       const d = r.data; if (d.status === "unsupported_scope") return ok("overlay absent → unsupported_scope (honest)");
