@@ -38,7 +38,7 @@ send({ jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "trace_sbd_t
 // tools/call must reference it.
 send({ jsonrpc: "2.0", id: 4, method: "resources/list", params: {} });
 send({ jsonrpc: "2.0", id: 5, method: "resources/read", params: { uri: "sbd://toe/codegen-instructions/codegen" } });
-send({ jsonrpc: "2.0", id: 6, method: "tools/call", params: { name: "prepare_sbd_toe_codegen_context", arguments: { task: "Adicionar validação de payload e autenticação ao endpoint POST /users/:id/email", risk_level: "L2", mode: "codegen", detail: "standard", concerns: ["auth", "validation"], exposure: "public" } } });
+send({ jsonrpc: "2.0", id: 6, method: "tools/call", params: { name: "prepare_sbd_toe_codegen_context", arguments: { task: "Adicionar validação de payload e autenticação ao endpoint POST /users/:id/email", risk_level: "L2", mode: "codegen", detail: "standard", concerns: ["auth", "validation"] } } }); // 0.21 (a): sem exposure=public — com ele a selecção excede o tecto 55 e bloqueia (declarado); o smoke mede a forma servida
 
 setTimeout(async () => {
   child.kill();

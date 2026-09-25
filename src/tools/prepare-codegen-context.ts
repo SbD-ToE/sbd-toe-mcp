@@ -123,6 +123,14 @@ export interface PrepareCodegenContextInput {
    * Substituem o casamento de substring sobre o texto livre de `stack`.
    */
   technologies?: string[];
+  /**
+   * 0.21 §6 — FORMA B no prepare (como no select): declarações ESTRUTURAIS, verdadeiras e
+   * verificáveis contra o catálogo. É o que torna um lote de decomposição EXECUTÁVEL: cada
+   * lote é a partição das categorias que a tua declaração activou, e a união dos lotes é o
+   * conjunto inteiro (m_recall = 1, testado). Só no caminho declarativo.
+   */
+  chapters?: string[];
+  categories?: string[];
   regulatory_frameworks?: string[];
   include_regulatory_overlay?: boolean;
   detail?: CodegenDetailLevel;
@@ -514,6 +522,19 @@ export type DeclaredSize = SizeEstimate & {
   note?: string;
 };
 
+export interface DecompositionBatch {
+  /** A receita EXECUTÁVEL: re-chama o prepare com estes campos (mais task, risk_level e detail). */
+  with: {
+    categories: string[];
+    technologies?: string[];
+    changed_files?: string[];
+  };
+  /** Contagem REAL do lote (selecção corrida), ≤ tecto por construção. */
+  requirements: number;
+  /** De onde vieram estas categorias na tua declaração: concerns e activadores largos (efeito preservado). */
+  derived_from: { concerns: string[]; exposure?: string; data_sensitivity?: string };
+}
+
 export interface PrepareCodegenContextResultBlocked {
   status: "needs_clarification" | "needs_decomposition" | "unsupported_scope" | "needs_input";
   /**
@@ -533,7 +554,18 @@ export interface PrepareCodegenContextResultBlocked {
     cost_per_req_tk: number;
     projected_tk: number;
     promise_tk: number;
-    batches: Array<{ concerns: string[]; estimated_requirements: number }>;
+    /**
+     * 0.21 §6 (condição da decisão (a), lead 2026-09-25): os lotes SOMAM O TODO. Cada lote é
+     * uma declaração ESTRUTURAL (`categories` — a partição exacta das categorias que a tua
+     * declaração activou), com `technologies` e `changed_files` preservados literalmente;
+     * `exposure`/`data_sensitivity` estão preservados pelo seu EFEITO (as categorias que
+     * produziram entram na partição) e não re-declarados — re-declará-los somaria as suas
+     * categorias a todos os lotes e nenhum caberia. `requirements` é a contagem REAL do lote
+     * (a selecção corre-se), não uma estimativa; a união dos lotes ⊇ a selecção inteira.
+     */
+    batches: DecompositionBatch[];
+    /** Denominador da prova: união dos lotes vs selecção inteira (m_recall = 1 por construção; verificado nos testes). */
+    union: { requirements: number; recall: number };
   };
   /** RF-H advisory band — adjacent tools the caller likely needs next. */
   next?: Affordance[];
@@ -3392,12 +3424,20 @@ function prepareCodegenContextCore(
     input.stack
   );
   const declarativeSelection = selectionMode !== "discover";
+  // 0.21 §6 — forma B no prepare: chapters/categories declarados passam ao motor tal e qual,
+  // e CONTAM como declaração (o lote de decomposição é uma chamada só com `categories`).
+  const structural = {
+    chapters: Array.isArray(raw.chapters) ? raw.chapters.filter((x): x is string => typeof x === "string" && x.length > 0) : [],
+    categories: Array.isArray(raw.categories) ? raw.categories.filter((x): x is string => typeof x === "string" && x.length > 0) : []
+  };
   const hasDeclaredActivator =
     input.concerns.length > 0 ||
     input.exposure !== undefined ||
     input.data_sensitivity !== undefined ||
     input.changed_files.length > 0 ||
-    declaredTechnologies.length > 0;
+    declaredTechnologies.length > 0 ||
+    structural.chapters.length > 0 ||
+    structural.categories.length > 0;
   // P1-A (0.20.0-beta.22): a decisão de needs_input é UMA e vive no motor — indexada
   // à activação produzida, não à presença de campos. O prepare reage ao veredicto
   // (abaixo, depois de correr a selecção), em vez de ter a sua própria regra.
@@ -3430,7 +3470,8 @@ function prepareCodegenContextCore(
     input,
     activation,
     selectionMode === "discover" ? (raw.technologies ?? []) : declaredTechnologies,
-    selectionMode
+    selectionMode,
+    structural
   );
   if (selection.needs_input) {
     const ni = selection.needs_input;
@@ -3464,23 +3505,72 @@ function prepareCodegenContextCore(
   const ceilingDetail = parseDetail(raw);
   const requirementCeiling = REQUIREMENT_CEILING_BY_DETAIL[ceilingDetail];
   if (requirementCeiling !== undefined && selection.selected.length > requirementCeiling) {
+    // 0.21 §6 (condição da decisão (a)): lotes que SOMAM O TODO. Partição das categorias
+    // activadas em lotes ≤ tecto (guloso por tamanho decrescente), cada lote uma declaração
+    // ESTRUTURAL executável; technologies/changed_files preservados literalmente; a contagem
+    // de cada lote é REAL (a selecção corre-se para o lote).
     const byCategory = new Map<string, number>();
     for (const r of selection.selected) byCategory.set(r.category, (byCategory.get(r.category) ?? 0) + 1);
-    const remaining = new Set(byCategory.keys());
-    const batches: Array<{ concerns: string[]; estimated_requirements: number }> = [];
-    while (remaining.size > 0 && batches.length < 3) {
-      let best: Concern | null = null;
-      let bestCats: string[] = [];
-      let bestWeight = 0;
-      for (const concern of VALID_CONCERNS) {
-        const cats = [...categoriesForConcerns([concern as Concern])].filter((c) => remaining.has(c));
-        const weight = cats.reduce((n, c) => n + (byCategory.get(c) ?? 0), 0);
-        if (weight > bestWeight) { best = concern as Concern; bestCats = cats; bestWeight = weight; }
+    const categoriesDesc = [...byCategory.entries()].sort((a, b2) => b2[1] - a[1] || a[0].localeCompare(b2[0]));
+    // As tecnologias preservadas em cada lote podem acrescentar requisitos por regra NOMEADA
+    // (ex.: SES-008 por `jwt`) fora das categorias do lote — reserva-se essa margem na
+    // capacidade de cada lote, para que a contagem REAL (abaixo) nunca exceda o tecto.
+    const technologyExtras =
+      declaredTechnologies.length > 0
+        ? runSelectionWithActivation(
+            { ...input, concerns: [], exposure: undefined, data_sensitivity: undefined, changed_files: [] },
+            { ...activation, concerns: [], sliceFamilies: [], trace: [], rejected: [], notes: [] },
+            declaredTechnologies,
+            "declarative",
+            { chapters: [], categories: [] }
+          ).selected.length
+        : 0;
+    const capacity = Math.max(1, requirementCeiling - technologyExtras);
+    const bins: string[][] = [];
+    const binLoad: number[] = [];
+    for (const [category, count] of categoriesDesc) {
+      let placed = false;
+      for (let i = 0; i < bins.length; i += 1) {
+        if (binLoad[i]! + count <= capacity) { bins[i]!.push(category); binLoad[i]! += count; placed = true; break; }
       }
-      if (!best) break;
-      batches.push({ concerns: [best], estimated_requirements: bestWeight });
-      for (const c of bestCats) remaining.delete(c);
+      if (!placed) { bins.push([category]); binLoad.push(count); }
     }
+    const activatorConcerns = new Set<string>([
+      ...(input.exposure ? EXPOSURE_CONCERNS[input.exposure] ?? [] : []),
+      ...(input.data_sensitivity ? SENSITIVITY_CONCERNS[input.data_sensitivity] ?? [] : [])
+    ]);
+    const concernsForCategory = (category: string): string[] =>
+      [...new Set([...input.concerns, ...activation.concerns])].filter((c) => categoriesForConcerns([c as Concern]).has(category)).sort();
+    const batchWith = (categories: string[]) => ({
+      categories,
+      ...(declaredTechnologies.length > 0 ? { technologies: [...declaredTechnologies] } : {}),
+      ...(input.changed_files.length > 0 ? { changed_files: [...input.changed_files] } : {})
+    });
+    const union = new Set<string>();
+    const batches: DecompositionBatch[] = bins.map((categories) => {
+      const w = batchWith(categories);
+      const run = runSelectionWithActivation(
+        { ...input, concerns: [] },
+        { ...activation, concerns: [], sliceFamilies: [], trace: [], rejected: [], notes: [] },
+        w.technologies ?? [],
+        "declarative",
+        { chapters: [], categories }
+      );
+      for (const r of run.selected) union.add(r.requirement_id);
+      const concerns = [...new Set(categories.flatMap(concernsForCategory))].filter((c) => !activatorConcerns.has(c) || input.concerns.includes(c as Concern)).sort();
+      return {
+        with: w,
+        requirements: run.selected.length,
+        derived_from: {
+          concerns,
+          ...(input.exposure && categories.some((cat) => [...activatorConcerns].some((c) => (EXPOSURE_CONCERNS[input.exposure!] ?? []).includes(c as Concern) && categoriesForConcerns([c as Concern]).has(cat))) ? { exposure: input.exposure } : {}),
+          ...(input.data_sensitivity && categories.some((cat) => [...activatorConcerns].some((c) => (SENSITIVITY_CONCERNS[input.data_sensitivity!] ?? []).includes(c as Concern) && categoriesForConcerns([c as Concern]).has(cat))) ? { data_sensitivity: input.data_sensitivity } : {})
+        }
+      };
+    });
+    const selectedIds = selection.selected.map((r) => r.requirement_id);
+    const covered = selectedIds.filter((id) => union.has(id)).length;
+    const recall = selectedIds.length === 0 ? 1 : covered / selectedIds.length;
     const projected = projectedCostTk(ceilingDetail, selection.selected.length) ?? 0;
     const b = blocked(
       input,
@@ -3489,13 +3579,16 @@ function prepareCodegenContextCore(
       [
         `Selecção de ${selection.selected.length} requisitos excede o tecto de ${requirementCeiling} para detail="${ceilingDetail}" ` +
           `(medição: ~${COST_PER_REQ_TK[ceilingDetail] ?? 0} tk/req sobre base ~${BASE_TK[ceilingDetail] ?? 0} tk ⇒ ~${projected} tk, ` +
-          `acima da promessa de ${PAYLOAD_PROMISE_TK[ceilingDetail] ?? 0} tk deste nível).`
+          `acima do envelope de ${PAYLOAD_PROMISE_TK[ceilingDetail] ?? 0} tk deste nível).`
       ],
       [
-        "Divide por área — repete SÓ com task + risk_level + concerns do lote; os activadores largos (exposure/data_sensitivity/stack) ficam FORA da chamada do lote, porque concerns SOMAM activação, não restringem. Lotes (estimativas por área do pedido original): " +
-          batches.map((bt, i) => `${i + 1}) concerns=[${bt.concerns.map((c) => `"${c}"`).join(", ")}] (~${bt.estimated_requirements} reqs)`).join("; ") +
-          ". Categorias sem lote entram na chamada mais próxima.",
-        `Em alternativa usa detail="full" (sem tecto — payload completo, custo alto) ou reduz o âmbito da task.`
+        `Divide em ${batches.length} lotes que SOMAM O TODO (união = ${union.size} ids, m_recall ${recall.toFixed(2)} face à selecção inteira): ` +
+          "repete com task + risk_level + detail + `categories` do lote" +
+          (declaredTechnologies.length > 0 || input.changed_files.length > 0 ? " (technologies/changed_files preservados em cada lote)" : "") +
+          ". Cada lote é a partição EXACTA das categorias que a tua declaração activou — exposure/data_sensitivity estão lá pelo seu efeito (re-declará-los somaria as suas categorias a todos os lotes). Lotes: " +
+          batches.map((bt, i) => `${i + 1}) categories=[${bt.with.categories.map((c) => `"${c}"`).join(", ")}] (${bt.requirements} reqs; de ${bt.derived_from.concerns.map((c) => `"${c}"`).join(", ") || "activadores"}${bt.derived_from.exposure ? `, exposure=${bt.derived_from.exposure}` : ""}${bt.derived_from.data_sensitivity ? `, data_sensitivity=${bt.derived_from.data_sensitivity}` : ""})`).join("; ") +
+          ".",
+        `Em alternativa usa detail="full" (sem tecto — preço declarado em size_estimate) ou reduz o âmbito da task.`
       ],
       activation.trace,
       input.debug ? { rejected: activation.rejected, notes: activation.notes } : undefined
@@ -3507,7 +3600,8 @@ function prepareCodegenContextCore(
       cost_per_req_tk: COST_PER_REQ_TK[ceilingDetail] ?? 0,
       projected_tk: projected,
       promise_tk: PAYLOAD_PROMISE_TK[ceilingDetail] ?? 0,
-      batches
+      batches,
+      union: { requirements: union.size, recall: Number(recall.toFixed(4)) }
     };
     return b;
   }

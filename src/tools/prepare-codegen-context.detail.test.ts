@@ -61,6 +61,18 @@ interface BaselineFixture {
   name: "fixture1" | "fixture2";
   label: string;
   input: PrepareCodegenContextInput;
+  /** 0.21 (a): 69 reqs > tecto 52/55 — os níveis dieted respondem needs_decomposition declarado. */
+  dietedBlockedByCeiling?: boolean;
+}
+
+/** Guarda dos dieted: na fixture bloqueada por tecto, prova o bloqueio declarado e sai. */
+function dietedBlocked(fixture: BaselineFixture, detail: "lista" | "standard"): boolean {
+  if (!fixture.dietedBlockedByCeiling) return false;
+  const r = handlePrepareCodegenContextDiscover({ ...fixture.input, detail }) as { status: string; requirement_ceiling?: { limit: number; selected: number; union: { recall: number } } };
+  expect(r.status).toBe("needs_decomposition");
+  expect(r.requirement_ceiling!.selected).toBeGreaterThan(r.requirement_ceiling!.limit);
+  expect(r.requirement_ceiling!.union.recall).toBe(1);
+  return true;
 }
 
 const FIXTURES: readonly BaselineFixture[] = [
@@ -80,7 +92,10 @@ const FIXTURES: readonly BaselineFixture[] = [
       task: "Implement a secure endpoint for uploading documents with logging",
       risk_level: "L2",
       mode: "codegen"
-    }
+    },
+    // 0.21 — decisão do lead (a): tecto lista 52 / standard 55. A fixture 2 (69 requisitos)
+    // BLOQUEIA por tecto nos níveis dieted (needs_decomposition declarado); só o full a serve.
+    dietedBlockedByCeiling: true
   }
 ];
 
@@ -253,13 +268,15 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
 
     it.each([...DIET_LEVELS])("golden snapshot — %s", async (detail) => {
       const result = handlePrepareCodegenContextDiscover({ ...fixture.input, detail });
-      expectReadyDieted(result);
+      if (fixture.dietedBlockedByCeiling) expect(result.status).toBe("needs_decomposition"); // o snapshot guarda o bloqueio declarado
+      else expectReadyDieted(result);
       await expect(snapshotJson(result)).toMatchFileSnapshot(
         `__snapshots__/codegen-detail/${fixture.name}-${detail}.json`
       );
     });
 
     it("conjunto de IDs citáveis idêntico em todos os níveis (invariante 3)", () => {
+      if (dietedBlocked(fixture, "lista")) return;
       const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
       const fullIds = [...new Set(citableIds(full))].sort();
@@ -273,6 +290,7 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
     });
 
     it("`citations` invertido (ids_from) reconstrói o mesmo id→{source, source_data} em todos os níveis (0.21 §3: full também invertido, ids por caminhos de lista)", () => {
+      if (dietedBlocked(fixture, "standard")) return;
       const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
       const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
@@ -290,6 +308,7 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
     });
 
     it("`manual_grounding` na forma de contagens preserva os totais (Σ entries == planas do full; contagens por grupo iguais; entries_ref → full)", () => {
+      if (dietedBlocked(fixture, "lista")) return;
       const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
       for (const detail of DIET_LEVELS) {
@@ -314,6 +333,7 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
     });
 
     it("reconstrução sem perda: listas dieted + regras do detail_encoding ⇒ full-menos-source byte-igual", () => {
+      if (dietedBlocked(fixture, "standard")) return;
       const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
       const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
@@ -420,6 +440,7 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
     });
 
     it("0.21 §2: `lista` e `standard` diferem EXACTAMENTE na adjacência detalhada (inline vs detail_ref) — fora disso, do eco e do size_estimate são byte-iguais", () => {
+      if (dietedBlocked(fixture, "lista")) return;
       const standard = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
       const lista = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "lista" });
       expectReadyDieted(standard);

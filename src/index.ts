@@ -1785,6 +1785,18 @@ class McpRuntime {
                 description:
                   "When true (and overlay is published), enriches the response with regulatory_overlay context."
               },
+              chapters: {
+                type: "array",
+                items: { type: "string" },
+                description:
+                  "0.21 §6 — FORMA B (como no select): capítulos declarados (source_bundle, p.ex. \"11-deploy-seguro\"), verificados contra o catálogo. Só no caminho declarativo."
+              },
+              categories: {
+                type: "array",
+                items: { type: "string" },
+                description:
+                  "0.21 §6 — FORMA B: categorias declaradas (p.ex. \"AUT\", \"SES\"). É a receita dos lotes de needs_decomposition: cada lote é a partição exacta das categorias que a tua declaração activou (technologies/changed_files preservados), e a união dos lotes é o conjunto inteiro (m_recall 1). Só no caminho declarativo."
+              },
               technologies: {
                 type: "array",
                 items: { type: "string" },

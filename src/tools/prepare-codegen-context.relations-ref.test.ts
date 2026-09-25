@@ -264,7 +264,11 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
     }
   });
 
-  describe.each(FIXTURES)("$label", (fixture) => {
+  // 0.21 (a): a fixture 2 (69 reqs) bloqueia por tecto nos dieted; os testes que precisam de um payload
+  // dieted correm só na fixture 1. Os testes só-full correm nas duas (ver describe abaixo).
+  const DIETED_FIXTURES = FIXTURES.filter((f) => f.name === "fixture1");
+
+  describe.each(DIETED_FIXTURES)("$label", (fixture) => {
     it.each([...DIET_LEVELS])(
       "%s (0.21 §3): as relations SAEM — fica relations_summary com a MESMA contabilidade do relations_ref do full; sem relations nem relations_ref",
       (detail) => {

@@ -3,11 +3,57 @@ ai_assisted: true
 model: Claude Fable 5.1
 date: 2026-09-25
 purpose: documentation
-reasoning: 0.21 §2 (adjacência declarada ligada ao prepare, em todos os níveis; tectos-proposta 52/55 não ligados), §3 (os cortes) e §1 (o requisito fundido) por cima da entrada v0.20.0 — a descrição nunca sai, o bloco evidence_patterns morre, ultrathin reforma-se, tectos ratificados 83/88 ligados com o ajuste DECLARADO (achado: a projecção do §5 subestimou o custo por requisito). Entrada anterior: v0.20.0 (promoção da beta.49, linha estável) — a maturidade do contrato de selecção passa a FACTO DECLARADO (`serving_contract.identity` + `.maturity`, com a maturidade do pacote derivada da versão e nunca escrita à mão) em vez de sufixo numa string; o contrato mantém-se beta deliberadamente, por decisão do lead, e o identificador NÃO se renomeia. Sete declarações servidas que a promoção tornava falsas — cinco a dizer que a linha era beta, uma a dizer que a linha estável era outra — reescritas na forma durável: a prosa nomeia a linha, o campo declarado carrega a maturidade. Zero alteração de comportamento: o oráculo do Eixo H veio byte-idêntico à corrida da beta.49. E publicar deixa de ser o mesmo acto que apontar: o caminho estável do release.yml passa a publicar em `--tag next` — a capacidade que o caminho de prerelease já tinha, aplicada ao que a não tinha — para que a estável possa ser verificada antes de ser o que toda a gente instala; o `latest` move-o o lead, num acto próprio.
+reasoning: 0.21 decisão do lead (a) — tectos 52/55 ligados — e §6-a (decomposição que soma o todo, forma B no prepare); antes §2 (adjacência), §3 (os cortes) e §1 (o requisito fundido) por cima da entrada v0.20.0 — a descrição nunca sai, o bloco evidence_patterns morre, ultrathin reforma-se, tectos ratificados 83/88 ligados com o ajuste DECLARADO (achado: a projecção do §5 subestimou o custo por requisito). Entrada anterior: v0.20.0 (promoção da beta.49, linha estável) — a maturidade do contrato de selecção passa a FACTO DECLARADO (`serving_contract.identity` + `.maturity`, com a maturidade do pacote derivada da versão e nunca escrita à mão) em vez de sufixo numa string; o contrato mantém-se beta deliberadamente, por decisão do lead, e o identificador NÃO se renomeia. Sete declarações servidas que a promoção tornava falsas — cinco a dizer que a linha era beta, uma a dizer que a linha estável era outra — reescritas na forma durável: a prosa nomeia a linha, o campo declarado carrega a maturidade. Zero alteração de comportamento: o oráculo do Eixo H veio byte-idêntico à corrida da beta.49. E publicar deixa de ser o mesmo acto que apontar: o caminho estável do release.yml passa a publicar em `--tag next` — a capacidade que o caminho de prerelease já tinha, aplicada ao que a não tinha — para que a estável possa ser verificada antes de ser o que toda a gente instala; o `latest` move-o o lead, num acto próprio.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.21 (em curso, ramo `0.21`) — decisão (a): tectos 52/55 ligados · §6-a «os lotes somam o todo» — 2026-09-25
+
+**Decisão do lead (a)** (adenda «DECISÃO DO LEAD — tectos» ao despacho da §1, 2026-09-25): **`lista` 52 ·
+`standard` 55 · `full` sem tecto**, sobre os envelopes herdados 8.450/9.200 (inalterados — são do consumidor).
+«Os 83/88 assentavam num custo projectado que não se reproduziu; esta é a mesma decisão com o número certo.»
+Ligado: `REQUIREMENT_CEILING_BY_DETAIL` = `PROPOSED_CEILING_BY_DETAIL` por construção (o teste guarda-o:
+se a medição mudar, a divergência é o sinal de decisão a pedir); `CEILING_FIT.fits = true`; o desajuste
+declarado (§1–§2) e as `KNOWN_TOTAL_DEVIATIONS` deixaram de existir. Decisão local 0003 emendada. Registado
+também: 2-vs-3 níveis fechado em **três** (separador = detalhe da adjacência); (c) fica no Mensor.
+Consequência visível: a **fixture 2 do EPIC (69 reqs) bloqueia por tecto** em `lista`/`standard` —
+`needs_decomposition` declarado, lotes que somam o todo; o `full` continua a servi-la. Pino **inalterado**
+(KG v1.12.0); **0.20.0 e `latest` intocados**; sem tag, sem merge.
+
+### §6-a — a decomposição PRESERVA os activadores e os lotes SOMAM O TODO (condição da decisão)
+
+Achado T2 da avaliação externa: os lotes por *concern* deixavam cair `exposure`/`data_sensitivity`/
+`technologies` e o conjunto mudava. Agora cada lote é uma **declaração ESTRUTURAL** — `categories`, a
+partição exacta das categorias que a declaração activou (guloso por tamanho decrescente, ≤ tecto) —
+com `technologies` e `changed_files` **preservados literalmente**; `exposure`/`data_sensitivity` são
+preservados pelo seu **efeito** (as categorias que produziram entram na partição, e cada lote di-lo em
+`derived_from`): re-declará-los somaria as suas categorias a todos os lotes e nenhum caberia (`public`
+sozinho activa cinco concerns). As tecnologias preservadas podem acrescentar requisitos por regra nomeada
+(SES-008 por `jwt`) fora das categorias do lote — a capacidade de cada lote reserva essa margem. A
+contagem de cada lote é **REAL** (a selecção corre-se para o lote), não estimativa; o servidor declara a
+**união** dos lotes e o **recall** face à selecção inteira. Para o lote ser executável, o `prepare` aceita
+**forma B** (`chapters`/`categories`, como o `select`), e uma declaração estrutural conta como declaração.
+Prova — os lotes **executam-se** nos testes e no TC-F-34, não se confia na contagem:
+
+| caso | lotes (`categories`) | união / recall |
+|---|---|---|
+| **83** real (`auth+integrity+deployment`/L3) | [IAC, CNT, INT, DPL] 48 · [ACC, AUT, SES, DST] 35 | 83 / **1** |
+| **avaliação** (`auth+api+validation`, public, personal/L3; 89) | [ARC, ACC, AUT, LOG, API] 52 · [ENC, SES, VAL, ERR, PRI] 37 | 89 / **1** |
+| avaliação + `jwt` | idem, capacidade 51 (SES-008 reservado) | 90 / **1** |
+| avaliador original (`api`, public, personal, FastAPI/L3; 89) | [52] · [37] | 89 / **1** |
+| fixture 2 (discover, 69) | [OPS, AUT, ACC, LOG, FIL] 47 · [VAL, API, ERR] 22 | 69 / **1** |
+
+Nota declarada (não escondida): o tecto é **por-id** e a variância por caso é real — o primeiro lote do caso
+dos 83 (48 reqs de IAC/CNT/DPL, requisitos longos) custa 10.146 tk em `lista`, acima do envelope; o payload
+di-lo (`size_estimate.within_envelope:false`). O dos 52 do caso da avaliação cabe (8.135).
+
+### Prova
+
+vitest **804/804** (67 ficheiros; novo `decomposition.test` executa 3 casos × 2 níveis); `check`; smoke;
+`eval:acceptance` **141 PASS / 16 PART / 0 FAIL / 23 SKIP**, gate **PASS** (TC-F-34: 89@lista → 2 lotes
+executados [52, 37], m_recall 89/89); Eixo H **10/10**; invariante 3 vs oráculo 0.20.0 ✅.
 
 ## 0.21 (em curso, ramo `0.21`) — §2 «a adjacência liga-se ao prepare» — 2026-09-25
 

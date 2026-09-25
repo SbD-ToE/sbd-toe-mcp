@@ -723,38 +723,38 @@ export const scenarios = [
       const bmeta = bd.meta ?? bd;
       if (bmeta.unknown_record_type !== "ctrl_acore_alignment" || !(bmeta.valid_record_types?.length > 10)) return fail("total:0 silencioso ainda vivo (sem unknown_record_type/valid_record_types)");
       return ok(`3 next à letra: resolve ${rt}+[${ids.join(",")}] → ${nRecs} recs; matrix [${pids.join(",")}] ok (${stabilized ? "via estabilização" : "directo"}); uri ${uri} lido; 63 ids rejeitados c/ tecto 50; record_type desconhecido DECLARADO c/ ${bmeta.valid_record_types.length} válidos`); } },
-  { id: "TC-F-34", axis: "F", title: "0.19.4/0.21: tecto por-id no prepare (caso 89-reqs @ lista, tecto ratificado 83) + round-trip da divisão ensinada", tool: "prepare_sbd_toe_codegen_context",
+  { id: "TC-F-34", axis: "F", title: "0.21 (a): tecto por-id no prepare (89 reqs @ lista, tecto 52) + lotes que SOMAM O TODO (recall 1 executado) — condição da decisão do lead", tool: "prepare_sbd_toe_codegen_context",
     run: async (c) => {
       const args = { task: "Expor API pública de consulta com chaves de cliente e rate limiting", risk_level: "L3", exposure: "public", data_sensitivity: "personal", stack: "Python/FastAPI", detail: "lista" };
       const p = await c.tool("prepare_sbd_toe_codegen_context", args); if (!p.ok) return fail(p.error);
       const pd = p.data.data ?? p.data;
       if (pd.status !== "needs_decomposition") return fail(`89 reqs @ lista devia bloquear declarado; status=${pd.status}`);
       const rc = pd.requirement_ceiling;
-      if (!rc || rc.limit === undefined || rc.selected <= rc.limit) return fail("sem requirement_ceiling estruturado");
+      if (!rc || rc.limit !== 52 || rc.selected <= rc.limit) return fail(`requirement_ceiling errado: ${JSON.stringify(rc && { limit: rc.limit, selected: rc.selected })}`);
       if (!(rc.projected_tk > rc.promise_tk)) return fail("projecção não justifica o bloqueio");
-      if (!rc.batches?.length) return fail("sem lotes de divisão ensinados");
-      if (!(pd.suggestions ?? []).some((x) => /Divide por área/.test(x))) return fail("suggestions não ensinam a divisão");
-      // round-trip: seguir a divisão sugerida → chamadas DENTRO do tecto, prontas
-      const results = [];
-      for (const batch of rc.batches.slice(0, 2)) {
-        // a receita ensinada: SÓ task + risk_level + detail + concerns do lote (activadores largos fora)
-        const r = await c.tool("prepare_sbd_toe_codegen_context", { task: args.task, risk_level: args.risk_level, detail: args.detail, concerns: batch.concerns });
-        if (!r.ok) return fail(`lote [${batch.concerns}] rejeitado: ${r.error}`);
+      if (!rc.batches?.length || !rc.union || rc.union.recall !== 1) return fail(`lotes sem união declarada com recall 1: ${JSON.stringify(rc.union)}`);
+      if (!(pd.suggestions ?? []).some((x) => /SOMAM O TODO/.test(x) && /categories=\[/.test(x))) return fail("suggestions não ensinam a receita por categorias");
+      // EXECUTA todos os lotes e mede a união contra a selecção inteira (full, sem tecto)
+      const pf = await c.tool("prepare_sbd_toe_codegen_context", { ...args, detail: "full" }); if (!pf.ok) return fail(pf.error);
+      const pfd = pf.data.data ?? pf.data; if (pfd.status !== "ready_for_codegen") return fail(`full ganhou tecto indevido: ${pfd.status}`);
+      const fullIds = new Set((pfd.activated_scope?.requirements ?? []).map((q) => q.id));
+      const union = new Set(); const sizes = [];
+      for (const batch of rc.batches) {
+        const r = await c.tool("prepare_sbd_toe_codegen_context", { task: args.task, risk_level: args.risk_level, detail: args.detail, ...batch.with });
+        if (!r.ok) return fail(`lote ${JSON.stringify(batch.with.categories)} rejeitado: ${r.error}`);
         const rdd = r.data.data ?? r.data;
-        if (rdd.status !== "ready_for_codegen") return fail(`lote [${batch.concerns}] não ficou pronto: ${rdd.status}`);
-        const n = (rdd.activated_scope?.requirements ?? []).length || (rdd.activated_scope?.requirements_total ?? 0);
-        if (n > rc.limit) return fail(`lote [${batch.concerns}] excede o tecto: ${n} > ${rc.limit}`);
-        results.push(`[${batch.concerns}]→${n} reqs`);
+        if (rdd.status !== "ready_for_codegen") return fail(`lote ${JSON.stringify(batch.with.categories)} não ficou pronto: ${rdd.status}`);
+        const n = (rdd.activated_scope?.requirements ?? []).length;
+        if (n > rc.limit) return fail(`lote excede o tecto: ${n} > ${rc.limit}`);
+        if (n !== batch.requirements) return fail(`contagem declarada ${batch.requirements} ≠ real ${n}`);
+        for (const q of rdd.activated_scope.requirements) union.add(q.id);
+        sizes.push(n);
       }
-      // full continua SEM tecto (promessa = completude; nível do oráculo)
-      const pf = await c.tool("prepare_sbd_toe_codegen_context", { ...args, detail: "full" });
-      if (!pf.ok) return fail(pf.error);
-      const pfd = pf.data.data ?? pf.data;
-      if (pfd.status !== "ready_for_codegen") return fail(`full ganhou tecto indevido: ${pfd.status}`);
+      const covered = [...fullIds].filter((id) => union.has(id)).length;
+      if (covered !== fullIds.size) return fail(`m_recall da união ${covered}/${fullIds.size} < 1`);
       if (!pfd.size_estimate || !(pfd.size_estimate.approx_tokens > 0) || pfd.size_estimate.envelope_tk !== undefined) return fail("full não declara o preço (size_estimate sem envelope)");
-      return ok(`89@lista → needs_decomposition declarado (tecto ${rc.limit}, ~${rc.cost_per_req_tk} tk/req, proj ${rc.projected_tk}>${rc.promise_tk}); divisão seguida: ${results.join(", ")}; full sem tecto, preço declarado ${pfd.size_estimate.approx_tokens} tk ✓`); } },
+      return ok(`89@lista → needs_decomposition declarado (tecto ${rc.limit}, ~${rc.cost_per_req_tk} tk/req, proj ${rc.projected_tk}>${rc.promise_tk}); ${rc.batches.length} lotes executados [${sizes.join(", ")}] → união ${union.size}, m_recall ${covered}/${fullIds.size} = 1; full sem tecto, ${pfd.size_estimate.approx_tokens} tk ✓`); } },
 
-  // ─────────── beta.21: o contrato DECLARATIVO (o que substitui o default inferencial) ───────────
   { id: "TC-F-35", axis: "F", title: "0.20.0-beta.21: declarativo primeiro — needs_input ensina, declaração selecciona, redacção não decide", tool: "select_sbd_toe_requirements",
     run: async (c) => {
       // 1) sem declarações: needs_input (nunca zero em silêncio, nunca adivinhado)

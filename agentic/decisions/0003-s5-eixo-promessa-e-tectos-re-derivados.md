@@ -2,7 +2,7 @@
 
 **Linha:** 0.21 (épico da forma da resposta) · **Data:** 2026-09-11 · **Autor:** Pontifex
 **Despacho:** `sbd-ai-runtime/handover/em-curso/2026-09-11-orchestrator-pontifex-despacho-forma-da-resposta.md`
-**Estado:** PROPOSTA — **gate do programme lead antes da §1**. Nada foi ligado ao servidor.
+**Estado:** RATIFICADA 2026-09-25 (eixo, promessa, herança dos envelopes) — **tectos EMENDADOS pela decisão do lead (a), 2026-09-25: lista 52 · standard 55** (ver adenda no fim).
 **Medição:** `scripts/measure/s5-form-projection.mjs` (reprodutível: `npm run build && node scripts/measure/s5-form-projection.mjs`)
 
 ---
@@ -129,3 +129,25 @@ porque uma constante que descreva uma forma que o servidor não tem é a mentira
 comete. Com a ratificação do lead, a §1 entra e traz consigo:
 `ultrathin` retirado do schema · os três níveis · `lista` 83 e `standard` 88 nas constantes ·
 `full` a declarar `size_estimate` · re-medição pelo mesmo script, anexada ao commit da §1.
+
+
+---
+
+## ADENDA (2026-09-25) — decisão do lead (a): os tectos são 52 / 55
+
+A medição da §1 (a forma servida) mostrou que a projecção do §4 fazia o join verify/evidence a partir do
+bloco `evidence_patterns` **capado a 25**: só 25 requisitos levavam verify/evidence na projecção e o custo
+por requisito ficou subestimado (81,0 tk/req projectados vs **133 medidos**). Os tectos 83/88 do §5
+assentavam nesse número. Re-medidos sobre a forma servida completa (§1+§3+§2, adjacência dentro da base):
+`lista` base 1.476 / 133,0 tk/req; `standard` base 1.987 / 130,2 tk/req. A mesma fórmula sobre os
+envelopes herdados (8.450 / 9.200, inalterados — são do consumidor) dá **lista 52 · standard 55**.
+
+**Decisão do lead (a), 2026-09-25** (adenda «DECISÃO DO LEAD — tectos» em
+`sbd-ai-runtime/handover/em-curso/2026-09-25-orchestrator-pontifex-despacho-s1-fusao.md`): ligar 52/55;
+«é a mesma decisão com o número certo, não uma nova». Condição que acompanha: a decomposição preserva os
+activadores largos em cada lote, com prova `m_recall` da união = 1 (§6, primeira coisa). Registado também:
+2-vs-3 níveis fechado em **três** (separador = detalhe da adjacência); (c) verify/evidence por referência
+fica no Mensor.
+
+Ligado em `payload-ceilings.ts` (REQUIREMENT_CEILING_BY_DETAIL = PROPOSED_CEILING_BY_DETAIL por construção;
+CEILING_FIT.fits = true). O desajuste declarado (§1–§2) deixou de existir.

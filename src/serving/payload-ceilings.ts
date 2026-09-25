@@ -1,6 +1,12 @@
 /**
- * payload-ceilings — 0.21 §5 (ratificado pelo lead 2026-09-25; decisão local
- * agentic/decisions/0003-s5-eixo-promessa-e-tectos-re-derivados.md).
+ * payload-ceilings — 0.21 §5 + DECISÃO DO LEAD (a) 2026-09-25 (adenda ao despacho
+ * 2026-09-25-orchestrator-pontifex-despacho-s1-fusao.md; decisão local
+ * agentic/decisions/0003-s5-eixo-promessa-e-tectos-re-derivados.md, adenda).
+ *
+ * TECTOS LIGADOS: lista 52 · standard 55 · full sem tecto — «tectos honestos sobre os
+ * envelopes herdados»: os 83/88 ratificados a 2026-09-11 assentavam num custo
+ * projectado (81 tk/req) que não se reproduziu (133 medidos); esta é a mesma decisão
+ * com o número certo. Envelopes 8.450/9.200 inalterados — são do consumidor.
  *
  * O envelope de tokens NÃO é propriedade do nosso conteúdo — é propriedade do
  * CONSUMIDOR (quanto pode custar uma volta ao agente que gera código ao lado).
@@ -58,12 +64,10 @@ export const BASE_TK: Readonly<Record<string, number>> = {
 };
 
 /**
- * 0.21 §2 — PROPOSTA (NÃO LIGADA): os tectos que a fórmula dá sobre a forma servida
- * completa (§1+§3+§2) e os envelopes herdados. Ordem do Orchestrator 2026-09-25:
- * «apresenta como PROPOSTA com os números; não os ligues — o lead ainda não decidiu».
- * Derivação: floor((envelope − base) / custo) com as constantes medidas acima ⇒
- * lista 52, standard 55 (54 se se fixar o declive único de 133 tk/req nos dois).
- * O tecto LIGADO continua o ratificado (83/88), com o desajuste declarado em CEILING_FIT.
+ * 0.21 §2 — a DERIVAÇÃO: os tectos que a fórmula dá sobre a forma servida completa e os
+ * envelopes herdados. Foi PROPOSTA (não ligada) até 2026-09-25; o lead decidiu (a) e
+ * REQUIREMENT_CEILING_BY_DETAIL passou a ser exactamente isto. Fica como derivação
+ * viva: se a medição mudar, a divergência com o ligado é o sinal de que há decisão a pedir.
  */
 export const PROPOSED_CEILING_BY_DETAIL: Readonly<Record<string, number>> = Object.fromEntries(
   Object.entries(PAYLOAD_PROMISE_TK).map(([detail, envelope]) => [
@@ -71,10 +75,15 @@ export const PROPOSED_CEILING_BY_DETAIL: Readonly<Record<string, number>> = Obje
     Math.floor((envelope - (BASE_TK[detail] ?? 0)) / (COST_PER_REQ_TK[detail] ?? 1))
   ])
 );
-/** Tectos RATIFICADOS (§5, lead 2026-09-25): floor((8450−1713)/81,0)=83, floor((9200−2259)/78,7)=88. */
+/**
+ * Tectos LIGADOS — decisão do lead (a), 2026-09-25: a fórmula sobre as constantes medidas
+ * da forma servida completa (§1+§3+§2): floor((8450−1476)/133)=52, floor((9200−1987)/130,2)=55.
+ * Igual a PROPOSED_CEILING_BY_DETAIL por construção (o teste guarda-o): quando a medição
+ * mudar, os dois divergem e o teste diz que há decisão a pedir.
+ */
 export const REQUIREMENT_CEILING_BY_DETAIL: Readonly<Record<string, number>> = {
-  lista: 83,
-  standard: 88
+  lista: 52,
+  standard: 55
 };
 /** Custo projectado de um prepare para `n` requisitos seleccionados, por detail. */
 export function projectedCostTk(detail: string, n: number): number | null {
@@ -84,10 +93,10 @@ export function projectedCostTk(detail: string, n: number): number | null {
 }
 
 /**
- * O AJUSTE DECLARADO: para cada nível com tecto, o custo projectado NO tecto
- * ratificado contra o envelope herdado, e o tecto que a medição desta fase
- * derivaria pela mesma fórmula. `fits=false` não é um erro escondido — é a
- * verdade servida enquanto o lead não decide (envelope, forma, ou ambos).
+ * O AJUSTE DECLARADO: para cada nível com tecto, o custo projectado NO tecto ligado
+ * contra o envelope herdado, e o tecto que a medição derivaria pela mesma fórmula.
+ * Desde a decisão (a) `fits` é true e `measured_ceiling_for_envelope` == `ceiling`;
+ * se um dia divergirem, é a verdade servida enquanto o lead não decide de novo.
  */
 export interface CeilingFit {
   ceiling: number;

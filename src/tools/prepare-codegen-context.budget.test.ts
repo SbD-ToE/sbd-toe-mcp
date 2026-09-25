@@ -353,10 +353,7 @@ function idsAtPath(payload: unknown, path: string): string[] {
  */
 const KNOWN_TOTAL_DEVIATIONS: Readonly<
   Record<string, { measured: number; tolerated: number; since: string; reason: string }>
-> = {
-  "standard:fixture2": { measured: 13333, tolerated: 14000, since: "2026-09-25", reason: "0.21 §1+§3+§2 forma fundida (+ adjacência detalhada): 69 reqs × ~88 tk/req > envelope 9.200 — achado para o lead; proposta 55 (payload-ceilings PROPOSED_CEILING_BY_DETAIL)" },
-  "lista:fixture2": { measured: 12869, tolerated: 13500, since: "2026-09-25", reason: "0.21 §1+§3+§2 forma fundida (+ resumo da adjacência): 69 reqs × ~88 tk/req > envelope herdado 8.450 — achado para o lead; proposta 52" }
-}
+> = {} // 0.21 decisão (a) 2026-09-25: tectos 52/55 ligados — a fixture 2 deixa de caber nos dieded e passa a bloquear DECLARADO; o desajuste deixou de existir.
 
 function withKnownDeviation(
   budgets: SectionBudgets,
@@ -417,9 +414,20 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
 
     // -- lista/standard: TOTAL = envelope herdado; desvios declarados --
 
-    it.each(["standard", "lista"] as const)("respeita os budgets do nível `%s` (0.21 §1: envelope herdado como total; desvios declarados)", (detail) => {
+    it.each(["standard", "lista"] as const)("respeita os budgets do nível `%s` (0.21 (a): tecto 52/55 — a fixture 2 bloqueia DECLARADO, lotes que somam o todo)", (detail) => {
       expect(detailSupported).toBe(true);
       const result = handlePrepareCodegenContextDiscover(withDetail(fixture.input, detail));
+      if (fixture.name === "fixture2") {
+        // 69 requisitos > tecto (52 lista / 55 standard): o servidor não engole nem degrada — diz o
+        // limite e ensina a dividir em lotes cuja união é o conjunto inteiro.
+        const blocked = result as { status: string; requirement_ceiling?: { limit: number; selected: number; union: { recall: number }; batches: Array<{ requirements: number }> } };
+        expect(blocked.status).toBe("needs_decomposition");
+        expect(blocked.requirement_ceiling!.selected).toBe(69);
+        expect(blocked.requirement_ceiling!.limit).toBe(detail === "lista" ? 52 : 55);
+        expect(blocked.requirement_ceiling!.union.recall).toBe(1);
+        for (const b of blocked.requirement_ceiling!.batches) expect(b.requirements).toBeLessThanOrEqual(blocked.requirement_ceiling!.limit);
+        return;
+      }
       expectReady(result);
       // sentinelas: relations por referência + requisito fundido (ambas aterradas)
       expect(s2RelationsRefLanded(result)).toBe(true);
@@ -439,6 +447,7 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
         ctx.skip(); // parâmetro `detail` ainda não existe (pré-s1)
         return;
       }
+      if (fixture.name === "fixture2") return; // bloqueada por tecto nos dieted (provado acima); o oráculo golden cobre o conjunto
       // Invariante 3 do EPIC: muda a codificação, não o conjunto. Desde o s3
       // os ids citáveis vivem nas secções do payload e
       // citations.<source>.ids_from referencia-os (run-length source_data

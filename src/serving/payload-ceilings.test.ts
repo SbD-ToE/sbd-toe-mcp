@@ -1,11 +1,10 @@
 /**
- * 0.21 §5 — tectos RATIFICADOS (lead 2026-09-25) + o ajuste DECLARADO.
+ * 0.21 §5 + decisão do lead (a) 2026-09-25 — tectos HONESTOS sobre os envelopes herdados.
  *
- * O tecto por-id de cada nível com envelope é o ratificado (lista 83, standard
- * 88; full sem tecto). A base e o custo por requisito são a MEDIÇÃO da forma
- * servida nesta fase. Quando tecto×custo+base não cabe no envelope, isso não se
- * esconde: CEILING_FIT declara-o e cada payload di-lo em size_estimate. Este
- * teste prova a COERÊNCIA entre as três coisas — nunca «arranja» o número.
+ * lista 52 · standard 55 · full sem tecto = a fórmula sobre as constantes MEDIDAS da forma
+ * servida completa. CEILING_FIT declara a coerência (fits=true); se a medição mudar e o
+ * ligado deixar de coincidir com a derivação, este teste diz que há decisão a pedir —
+ * nunca «arranja» o número.
  */
 import { describe, it, expect } from "vitest";
 import { REQUIREMENT_CEILING_BY_DETAIL, COST_PER_REQ_TK, BASE_TK, PAYLOAD_PROMISE_TK, CEILING_FIT, PROPOSED_CEILING_BY_DETAIL, projectedCostTk } from "./payload-ceilings.js";
@@ -14,8 +13,8 @@ import { handlePrepareCodegenContext } from "../tools/prepare-codegen-context.js
 const EVALUATOR_CASE = { task: "Expor API pública de consulta com chaves de cliente e rate limiting", risk_level: "L3", exposure: "public", data_sensitivity: "personal", stack: "Python/FastAPI" };
 
 describe("payload-ceilings — tectos ratificados e ajuste declarado (0.21 §5)", () => {
-  it("os tectos são os ratificados: lista 83 · standard 88 · full sem tecto; envelopes herdados 8.450/9.200", () => {
-    expect(REQUIREMENT_CEILING_BY_DETAIL).toEqual({ lista: 83, standard: 88 });
+  it("os tectos são os decididos (a): lista 52 · standard 55 · full sem tecto; envelopes herdados 8.450/9.200", () => {
+    expect(REQUIREMENT_CEILING_BY_DETAIL).toEqual({ lista: 52, standard: 55 });
     expect(PAYLOAD_PROMISE_TK).toEqual({ lista: 8450, standard: 9200 });
     expect(REQUIREMENT_CEILING_BY_DETAIL["full"]).toBeUndefined();
     expect(PAYLOAD_PROMISE_TK["full"]).toBeUndefined();
@@ -38,22 +37,25 @@ describe("payload-ceilings — tectos ratificados e ajuste declarado (0.21 §5)"
     }
   });
 
-  it("0.21 §2 — a PROPOSTA é a fórmula sobre as constantes medidas (lista 52 · standard 55) e NÃO está ligada", () => {
+  it("decisão (a): o ligado É a derivação (fórmula sobre as constantes medidas) e cabe no envelope — fits=true", () => {
     expect(PROPOSED_CEILING_BY_DETAIL).toEqual({ lista: 52, standard: 55 });
     for (const detail of Object.keys(PROPOSED_CEILING_BY_DETAIL)) {
-      expect(PROPOSED_CEILING_BY_DETAIL[detail]).toBe(CEILING_FIT[detail]!.measured_ceiling_for_envelope);
-      expect(REQUIREMENT_CEILING_BY_DETAIL[detail]).not.toBe(PROPOSED_CEILING_BY_DETAIL[detail]); // ligado = ratificado, até decisão do lead
+      expect(REQUIREMENT_CEILING_BY_DETAIL[detail]).toBe(PROPOSED_CEILING_BY_DETAIL[detail]);
+      expect(CEILING_FIT[detail]!.fits).toBe(true);
+      expect(CEILING_FIT[detail]!.measured_ceiling_for_envelope).toBe(REQUIREMENT_CEILING_BY_DETAIL[detail]);
+      expect(CEILING_FIT[detail]!.projected_tk_at_ceiling).toBeLessThanOrEqual(PAYLOAD_PROMISE_TK[detail]!);
     }
   });
 
   it("a forma servida é a medida: o custo real por requisito da forma fundida está dentro de ±15% do declive declarado", () => {
     const a = handlePrepareCodegenContext({ task: "Implementar autenticação de utilizadores", risk_level: "L2", concerns: ["auth"], detail: "lista" } as never) as { activated_scope: { requirements: unknown[] }; size_estimate: { approx_tokens: number } };
-    const b = handlePrepareCodegenContext({ task: "Rever a segurança da plataforma", risk_level: "L3", concerns: ["auth", "validation", "logging"], detail: "lista" } as never) as { activated_scope: { requirements: unknown[] }; size_estimate: { approx_tokens: number } };
+    // 0.21 (a): o caso de 53 bloqueia (tecto 52) — o ponto alto passa a ser o de 42 (auth+validation/L2).
+    const b = handlePrepareCodegenContext({ task: "Adicionar validação de payload e autenticação ao endpoint POST /users/:id/email", risk_level: "L2", concerns: ["auth", "validation"], detail: "lista" } as never) as { activated_scope: { requirements: unknown[] }; size_estimate: { approx_tokens: number } };
     const slope = (b.size_estimate.approx_tokens - a.size_estimate.approx_tokens) / (b.activated_scope.requirements.length - a.activated_scope.requirements.length);
     expect(Math.abs(slope - COST_PER_REQ_TK["lista"]!) / COST_PER_REQ_TK["lista"]!).toBeLessThan(0.15);
   });
 
-  it("caso do avaliador (89 reqs) bloqueia DECLARADO em lista e standard (tecto ratificado), com lotes; full fica pronto e declara o preço", () => {
+  it("caso do avaliador (89 reqs) bloqueia DECLARADO em lista e standard (tecto decidido), com lotes que somam o todo; full fica pronto e declara o preço", () => {
     for (const detail of ["lista", "standard"]) {
       const r = handlePrepareCodegenContext({ ...EVALUATOR_CASE, detail } as never) as { status: string; requirement_ceiling?: { limit: number; selected: number; projected_tk: number; promise_tk: number; batches: { concerns: string[]; estimated_requirements: number }[] }; suggestions?: string[] };
       expect(r.status, detail).toBe("needs_decomposition");
@@ -62,7 +64,8 @@ describe("payload-ceilings — tectos ratificados e ajuste declarado (0.21 §5)"
       expect(rc.selected).toBeGreaterThan(rc.limit);
       expect(rc.projected_tk).toBeGreaterThan(rc.promise_tk);
       expect(rc.batches.length).toBeGreaterThan(0);
-      expect(r.suggestions?.some((s) => s.includes("Divide por área"))).toBe(true);
+      expect(r.suggestions?.some((s) => /SOMAM O TODO/.test(s))).toBe(true);
+      expect((r.requirement_ceiling as unknown as { union: { recall: number } }).union.recall).toBe(1);
     }
     const full = handlePrepareCodegenContext({ ...EVALUATOR_CASE, detail: "full" } as never) as { status: string; size_estimate?: { approx_tokens: number; envelope_tk?: number } };
     expect(full.status).toBe("ready_for_codegen");
@@ -70,8 +73,11 @@ describe("payload-ceilings — tectos ratificados e ajuste declarado (0.21 §5)"
     expect(full.size_estimate?.envelope_tk).toBeUndefined(); // full não tem envelope: declara, não recusa
   });
 
-  it("dentro do tecto o payload sai pronto e DIZ se coube no envelope (nunca em silêncio)", () => {
-    const r = handlePrepareCodegenContext({ task: "Rever a segurança da plataforma", risk_level: "L3", concerns: ["auth", "validation", "logging"], detail: "lista" } as never) as { status: string; size_estimate: { approx_tokens: number; envelope_tk?: number; within_envelope?: boolean; note?: string } };
+  it("dentro do tecto (42 @ lista) o payload sai pronto e DIZ se coube no envelope (nunca em silêncio); 53 @ lista bloqueia declarado (tecto 52)", () => {
+    const blocked = handlePrepareCodegenContext({ task: "Rever a segurança da plataforma", risk_level: "L3", concerns: ["auth", "validation", "logging"], detail: "lista" } as never) as { status: string; requirement_ceiling?: { limit: number; selected: number } };
+    expect(blocked.status).toBe("needs_decomposition");
+    expect(blocked.requirement_ceiling).toMatchObject({ limit: 52, selected: 53 });
+    const r = handlePrepareCodegenContext({ task: "Adicionar validação de payload e autenticação ao endpoint POST /users/:id/email", risk_level: "L2", concerns: ["auth", "validation"], detail: "lista" } as never) as { status: string; size_estimate: { approx_tokens: number; envelope_tk?: number; within_envelope?: boolean; note?: string } };
     expect(r.status).toBe("ready_for_codegen");
     const se = r.size_estimate;
     expect(se.envelope_tk).toBe(PAYLOAD_PROMISE_TK["lista"]);

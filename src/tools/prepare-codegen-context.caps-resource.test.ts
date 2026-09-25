@@ -54,6 +54,8 @@ interface BaselineFixture {
   name: "fixture1" | "fixture2";
   label: string;
   input: PrepareCodegenContextInput;
+  /** 0.21 (a): 69 reqs > tecto 52/55 — os dieted respondem needs_decomposition declarado; só o full a serve. */
+  dietedBlockedByCeiling?: boolean;
 }
 
 const FIXTURES: readonly BaselineFixture[] = [
@@ -73,12 +75,17 @@ const FIXTURES: readonly BaselineFixture[] = [
       task: "Implement a secure endpoint for uploading documents with logging",
       risk_level: "L2",
       mode: "codegen"
-    }
+    },
+    dietedBlockedByCeiling: true
   }
 ];
+/** Fixtures que os níveis dieted SERVEM (a bloqueada por tecto prova-se no lista.test). */
+const SERVED_FIXTURES = FIXTURES.filter((f) => !f.dietedBlockedByCeiling);
 
 const DIET_LEVELS = ["lista", "standard"] as const;
 const ALL_LEVELS = ["lista", "standard", "full"] as const;
+/** Níveis que uma fixture serve: a bloqueada só o full. */
+const levelsFor = (fixture: BaselineFixture) => (fixture.dietedBlockedByCeiling ? (["full"] as const) : ALL_LEVELS);
 
 function loadBundleItems(relPath: string): Array<Record<string, unknown>> {
   const parsed = JSON.parse(readFileSync(resolveAppPath(relPath), "utf-8")) as
@@ -147,7 +154,7 @@ describe("prepare_sbd_toe_codegen_context — requisito fundido + resource + des
 
   describe("resource codegen-instructions", () => {
     it("lista/standard trazem instructions/template INLINE, byte-iguais ao full, e sem codegen_instructions_ref", () => {
-      for (const fixture of FIXTURES) {
+      for (const fixture of SERVED_FIXTURES) {
         const full = run(fixture.input, "full");
         for (const detail of DIET_LEVELS) {
           const dieted = run(fixture.input, detail);
@@ -163,7 +170,7 @@ describe("prepare_sbd_toe_codegen_context — requisito fundido + resource + des
       "mode %s: os slots do resource filtrados pelas condições derivadas do payload reconstroem o inline BYTE-IGUAL (full e lista)",
       (mode) => {
         for (const fixture of FIXTURES) {
-          for (const detail of ["full", "lista"] as const) {
+          for (const detail of fixture.dietedBlockedByCeiling ? (["full"] as const) : (["full", "lista"] as const)) {
             const result = run({ ...fixture.input, mode }, detail);
             const instructions = assembleInstructions(mode, conditionsFor(result));
             expect(JSON.stringify(instructions)).toBe(JSON.stringify(result.llm_codegen_instructions));
@@ -226,7 +233,7 @@ describe("prepare_sbd_toe_codegen_context — requisito fundido + resource + des
   // activation_trace só com debug (contador exacto)
   // -------------------------------------------------------------------------
 
-  describe.each(FIXTURES)("$label — activation_trace", (fixture) => {
+  describe.each(SERVED_FIXTURES)("$label — activation_trace", (fixture) => {
     it.each([...DIET_LEVELS])("%s: elidido por omissão, contador exacto", (detail) => {
       const full = run(fixture.input, "full") as PrepareCodegenContextResultReady;
       const dieted = run(fixture.input, detail) as PrepareCodegenContextResultReadyDieted;
@@ -260,6 +267,7 @@ describe("prepare_sbd_toe_codegen_context — requisito fundido + resource + des
     it.each([...ALL_LEVELS])(
       "%s: description byte-igual a requirements.json; verify/evidence byte-iguais a evidence_patterns.json (1:1)",
       (detail) => {
+        if (!levelsFor(fixture).includes(detail)) return; // fixture bloqueada por tecto neste nível (provado no lista.test)
         const requirements = loadBundleItems("data/publish/runtime/requirements.json");
         const descriptionById = new Map(requirements.map((item) => [item.requirement_id as string, item.description as string]));
         const typeById = new Map(requirements.map((item) => [item.requirement_id as string, item.type as string]));
@@ -287,6 +295,7 @@ describe("prepare_sbd_toe_codegen_context — requisito fundido + resource + des
     it.each([...ALL_LEVELS])(
       "%s: controls direct com description byte-igual a controls.json; derived sem description",
       (detail) => {
+        if (!levelsFor(fixture).includes(detail)) return;
         const descriptionById = new Map(
           loadBundleItems("data/publish/runtime/controls.json").map((item) => [item.control_id as string, item.description as string])
         );
@@ -303,6 +312,7 @@ describe("prepare_sbd_toe_codegen_context — requisito fundido + resource + des
     it.each([...ALL_LEVELS])(
       "%s: sem bloco evidence_patterns; verification com denominadores que fecham; by_ref ≤50 ids por chamada",
       (detail) => {
+        if (!levelsFor(fixture).includes(detail)) return;
         const result = run(fixture.input, detail);
         expect(result.g2_context).not.toHaveProperty("evidence_patterns");
         expect(result.completeness_report).not.toHaveProperty("evidence_patterns_total");
@@ -335,7 +345,7 @@ describe("prepare_sbd_toe_codegen_context — requisito fundido + resource + des
 
   it("category (derivável) não viaja em nível nenhum; `id` substitui `requirement_id` em todos", () => {
     for (const fixture of FIXTURES) {
-      for (const detail of ALL_LEVELS) {
+      for (const detail of levelsFor(fixture)) {
         const result = run(fixture.input, detail);
         for (const requirement of result.activated_scope.requirements) {
           expect(requirement).not.toHaveProperty("category");

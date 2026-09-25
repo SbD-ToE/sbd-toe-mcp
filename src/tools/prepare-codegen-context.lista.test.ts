@@ -50,6 +50,8 @@ interface BaselineFixture {
   name: "fixture1" | "fixture2";
   label: string;
   input: PrepareCodegenContextInput;
+  /** 0.21 (a): 69 reqs > tecto 52 — a lista responde needs_decomposition declarado (lotes que somam o todo). */
+  dietedBlockedByCeiling?: boolean;
 }
 
 const FIXTURES: readonly BaselineFixture[] = [
@@ -61,9 +63,12 @@ const FIXTURES: readonly BaselineFixture[] = [
   {
     name: "fixture2",
     label: "baseline 2 — secure upload endpoint (3 famílias)",
-    input: { task: "Implement a secure endpoint for uploading documents with logging", risk_level: "L2", mode: "codegen" }
+    input: { task: "Implement a secure endpoint for uploading documents with logging", risk_level: "L2", mode: "codegen" },
+    dietedBlockedByCeiling: true
   }
 ];
+/** Só as fixtures que a lista SERVE; a bloqueada prova-se no seu próprio teste, abaixo. */
+const SERVED_FIXTURES = FIXTURES.filter((f) => !f.dietedBlockedByCeiling);
 
 function loadBundleItems(relPath: string): Array<Record<string, unknown>> {
   const parsed = JSON.parse(readFileSync(resolveAppPath(relPath), "utf-8")) as
@@ -111,7 +116,17 @@ describe("prepare_sbd_toe_codegen_context — perfil lista (0.21 §1)", () => {
     clearRegulatoryOverlayCacheForTests();
   });
 
-  describe.each(FIXTURES)("$label", (fixture) => {
+  it("fixture 2 (69 reqs) @ lista: needs_decomposition DECLARADO (tecto 52), lotes que somam o todo (recall 1); o full serve-a", () => {
+    const blockedFixture = FIXTURES.find((f) => f.dietedBlockedByCeiling)!;
+    const r = handlePrepareCodegenContextDiscover({ ...blockedFixture.input, detail: "lista" }) as { status: string; requirement_ceiling?: { limit: number; selected: number; union: { recall: number }; batches: Array<{ requirements: number }> } };
+    expect(r.status).toBe("needs_decomposition");
+    expect(r.requirement_ceiling).toMatchObject({ limit: 52, selected: 69 });
+    expect(r.requirement_ceiling!.union.recall).toBe(1);
+    for (const b of r.requirement_ceiling!.batches) expect(b.requirements).toBeLessThanOrEqual(52);
+    expect(runFull(blockedFixture).activated_scope.requirements.length).toBe(69);
+  });
+
+  describe.each(SERVED_FIXTURES)("$label", (fixture) => {
     it("requisitos COMPLETOS (mesmos ids e ordem do full), cada um id+name+type+description+verify+evidence VERBATIM — nada só-id", () => {
       const full = runFull(fixture);
       const lista = runLista(fixture);
@@ -251,7 +266,7 @@ describe("prepare_sbd_toe_codegen_context — perfil lista (0.21 §1)", () => {
   });
 
   it("lista ≡ standard fora do eco, do envelope declarado e da adjacência detalhada (0.21 §2: o separador é o detalhe inline vs detail_ref)", () => {
-    for (const fixture of FIXTURES) {
+    for (const fixture of SERVED_FIXTURES) {
       const lista = runLista(fixture);
       const standard = runStandard(fixture);
       const normalize = (r: PrepareCodegenContextResultReadyDieted) => JSON.stringify({ ...r, input_echo: null, size_estimate: null, adjacency: null });
