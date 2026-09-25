@@ -84,290 +84,372 @@
   "activated_scope": {
     "requirements": [
       {
-        "requirement_id": "ACC-001",
+        "id": "ACC-001",
         "name": "Controlo de acesso RBAC",
-        "category": "ACC",
         "type": "base",
+        "description": "Perfis e permissões mapeados; role com privilégio reduzido não acede a recursos restritos.",
+        "verify": "Testar acesso com role de privilégio reduzido a recurso restrito. Confirmar rejeição.",
+        "evidence": "Log de rejeição. Mapeamento de roles documentado.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "ACC-002",
+        "id": "ACC-002",
         "name": "Princípio do menor privilégio",
-        "category": "ACC",
         "type": "base",
+        "description": "Contas sem permissões desnecessárias; auditoria evidencia restrição efectiva.",
+        "verify": "Auditar permissões de contas de utilizador e serviço. Confirmar ausência de privilégios desnecessários.",
+        "evidence": "Relatório de auditoria de permissões.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "ACC-003",
+        "id": "ACC-003",
         "name": "Bloqueio e auditoria de acessos ilegítimos",
-        "category": "ACC",
         "type": "base",
+        "description": "Tentativas de acesso não autorizado são bloqueadas e registadas com contexto suficiente.",
+        "verify": "Tentar acesso não autorizado. Confirmar bloqueio e registo com contexto suficiente.",
+        "evidence": "Log de rejeição com dados de contexto.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "ACC-004",
+        "id": "ACC-004",
         "name": "Separação de perfis",
-        "category": "ACC",
         "type": "base",
+        "description": "Perfis de utilizador, administrador e serviço são distintos; acções de cada perfil são rastreáveis.",
+        "verify": "Verificar separação efectiva de perfis. Confirmar que acções de cada perfil são rastreáveis.",
+        "evidence": "Logs com perfil identificado. Teste cruzado de perfis.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "ACC-005",
+        "id": "ACC-005",
         "name": "Controlo de acesso a APIs e serviços",
-        "category": "ACC",
         "type": "base",
+        "description": "Endpoints rejeitam chamadas não autenticadas ou não autorizadas; logs registam rejeições.",
+        "verify": "Testar endpoints sem autenticação/autorização. Confirmar rejeição com código adequado.",
+        "evidence": "Log de rejeição. Testes automatizados de endpoints.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "ACC-006",
+        "id": "ACC-006",
         "name": "Protecção de recursos sensíveis",
-        "category": "ACC",
         "type": "base",
+        "description": "Acesso não autorizado a dados críticos é impedido e registado; teste de bypasse falha.",
+        "verify": "Tentar acesso a dados críticos com role não autorizado. Confirmar bloqueio e log.",
+        "evidence": "Evidência de controlo efectivo. Log do evento.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "ACC-007",
+        "id": "ACC-007",
         "name": "Validação do modelo de acesso",
-        "category": "ACC",
         "type": "base",
+        "description": "Modelo de permissões revisto e documentado; ameaças de controlo de acesso mapeadas.",
+        "verify": "Verificar existência de modelo de permissões revisto e documentado.",
+        "evidence": "Documentação do modelo. Registo de revisão datada.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "ACC-008",
+        "id": "ACC-008",
         "name": "Revogação em tempo real",
-        "category": "ACC",
         "type": "base",
+        "description": "Remoção de acesso reflecte-se imediatamente; teste de permissão falha após revogação.",
+        "verify": "Revogar acesso. Testar imediatamente após revogação. Confirmar falha.",
+        "evidence": "Log de tentativa falhada após revogação. Timestamp de revogação.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "ACC-010",
+        "id": "ACC-010",
         "name": "Revisão periódica de permissões",
-        "category": "ACC",
         "type": "base",
+        "description": "Auditorias periódicas removem permissões obsoletas; registos de revisão mantidos e datados.",
+        "verify": "Verificar existência de processo de revisão periódica. Confirmar remoção de permissões obsoletas.",
+        "evidence": "Registos de revisão datados. Evidência de limpeza de permissões.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "API-001",
+        "id": "API-001",
         "name": "Autenticação e autorização de chamadas API",
-        "category": "API",
         "type": "base",
+        "description": "Endpoints rejeitam chamadas sem autenticação/autorização válida; chamadas anónimas falham.",
+        "verify": "Testar endpoints sem credenciais. Confirmar rejeição 401/403.",
+        "evidence": "Logs de rejeição. Testes automatizados de endpoints.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "API-002",
+        "id": "API-002",
         "name": "Endpoints desnecessários removidos ou ocultos",
-        "category": "API",
         "type": "base",
+        "description": "Endpoints de debug ou legacy não expostos em produção; apenas em ambientes de teste controlados.",
+        "verify": "Inventariar endpoints expostos em produção. Confirmar ausência de debug ou legacy.",
+        "evidence": "Inventário de endpoints activos. Ausência de endpoints não intencionais.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "API-003",
+        "id": "API-003",
         "name": "Validação de input em APIs",
-        "category": "API",
         "type": "base",
+        "description": "Inputs malformados são rejeitados; logs registam tentativa com contexto mínimo.",
+        "verify": "Enviar payloads inválidos. Confirmar rejeição com código adequado.",
+        "evidence": "Logs de rejeição. Testes com payloads malformados.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "API-004",
+        "id": "API-004",
         "name": "Rate limiting e detecção de abusos",
-        "category": "API",
         "type": "base",
+        "description": "Limite configurado e activo; chamadas excessivas resultam em 429 ou bloqueio temporário.",
+        "verify": "Executar burst de chamadas. Confirmar resposta 429 ou bloqueio temporário.",
+        "evidence": "Evidência de rate limiting em runtime ou logs.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "API-005",
+        "id": "API-005",
         "name": "Protecção por TLS e certificados actualizados",
-        "category": "API",
         "type": "base",
+        "description": "Canal TLS obrigatório; certificados válidos; cabeçalhos de segurança (HSTS, etc.) activos.",
+        "verify": "Verificar certificados e versão TLS. Confirmar cabeçalhos de segurança activos.",
+        "evidence": "Scanner TLS. Headers de resposta.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "API-006",
+        "id": "API-006",
         "name": "Verificação de SDKs e wrappers utilizados",
-        "category": "API",
         "type": "base",
+        "description": "Dependências e versões documentadas em SBOM; auditoria de licenças e vulnerabilidades conhecidas.",
+        "verify": "Verificar SBOM e dependências documentadas. Confirmar auditoria de vulnerabilidades conhecidas.",
+        "evidence": "SBOM. Relatório de auditoria de dependências.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "API-007",
+        "id": "API-007",
         "name": "Logging e auditoria de chamadas externas",
-        "category": "API",
         "type": "base",
+        "description": "Chamadas externas registadas com dados essenciais (origem, destino, resultado, timestamp).",
+        "verify": "Verificar logs de chamadas externas. Confirmar presença de dados essenciais.",
+        "evidence": "Logs com origem, destino, resultado e timestamp.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "AUT-001",
+        "id": "AUT-001",
         "name": "MFA obrigatório",
-        "category": "AUT",
         "type": "base",
+        "description": "Login sem segundo factor é rejeitado; evidência de bloqueio em logs.",
+        "verify": "Tentar login sem segundo factor. Confirmar rejeição e logs de falha.",
+        "evidence": "Log de autenticação falhada sem MFA. Captura do bloqueio.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "AUT-002",
+        "id": "AUT-002",
         "name": "Política de passwords",
-        "category": "AUT",
         "type": "base",
+        "description": "Sistema rejeita passwords que não cumpram a política; bloqueio evidenciado em teste.",
+        "verify": "Rever política activa. Tentar definir password inválida. Confirmar rejeição.",
+        "evidence": "Política documentada. Log de erro ou rejeição.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "AUT-003",
+        "id": "AUT-003",
         "name": "Protecção contra brute force",
-        "category": "AUT",
         "type": "base",
+        "description": "Conta bloqueada ou acesso atrasado após N tentativas falhadas; logs evidenciam o evento.",
+        "verify": "Simular tentativas repetidas falhadas. Confirmar bloqueio, CAPTCHA ou atraso progressivo.",
+        "evidence": "Log com contagem de falhas. Evidência de bloqueio ou atraso.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "AUT-004",
+        "id": "AUT-004",
         "name": "Revogação activa de sessões",
-        "category": "AUT",
         "type": "base",
+        "description": "Logout invalida token/sessão imediatamente; reutilização resulta em erro autenticado.",
+        "verify": "Efectuar logout. Tentar reutilizar sessão ou token. Confirmar rejeição.",
+        "evidence": "Log de sessão revogada. Erro de autenticação na reutilização.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "AUT-005",
+        "id": "AUT-005",
         "name": "Expiração automática de sessão",
-        "category": "AUT",
         "type": "base",
+        "description": "Sessão termina após período de inactividade configurado; redirect para autenticação.",
+        "verify": "Simular inactividade pelo período configurado. Confirmar expiração e redirect.",
+        "evidence": "Log de timeout. Captura de expiração automática.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "AUT-006",
+        "id": "AUT-006",
         "name": "Proibição de credenciais em claro",
-        "category": "AUT",
         "type": "base",
+        "description": "Auditoria confirma hashing com salt; ausência de credenciais em claro em armazenamento e transmissão.",
+        "verify": "Validar hashing com salt. Verificar ausência de credenciais em claro em armazenamento e transmissão.",
+        "evidence": "Output de configuração. Resultado de scan. Ausência em repositório.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "AUT-007",
+        "id": "AUT-007",
         "name": "Suporte a autenticação federada",
-        "category": "AUT",
         "type": "base",
+        "description": "Fluxo SAML/OIDC funcional e testado; log de autenticação via IdP externo disponível.",
+        "verify": "Simular login federado via SAML/OIDC. Confirmar fluxo completo e logging.",
+        "evidence": "Log de autenticação via IdP externo. Captura de login bem-sucedido.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "AUT-008",
+        "id": "AUT-008",
         "name": "Step-up para acções sensíveis",
-        "category": "AUT",
         "type": "base",
+        "description": "Operações críticas requerem factor adicional; teste evidencia bloqueio sem step-up.",
+        "verify": "Simular acção sensível. Confirmar exigência de factor adicional.",
+        "evidence": "Captura de step-up. Log associado à acção crítica.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "AUT-009",
+        "id": "AUT-009",
         "name": "Reautenticação para alterações críticas",
-        "category": "AUT",
         "type": "base",
+        "description": "Alterações de credenciais ou dados sensíveis exigem confirmação da identidade activa.",
+        "verify": "Tentar alterar credenciais sem reautenticação. Confirmar bloqueio.",
+        "evidence": "Log da tentativa bloqueada. Evidência de verificação da sessão activa.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "AUT-010",
+        "id": "AUT-010",
         "name": "Alerta de acessos suspeitos",
-        "category": "AUT",
         "type": "base",
+        "description": "Acessos anómalos geram alerta ou notificação ao utilizador; log do evento disponível.",
+        "verify": "Simular login anómalo. Confirmar notificação ao utilizador e registo.",
+        "evidence": "Exemplo de notificação enviada. Log do evento crítico detectado.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "ERR-001",
+        "id": "ERR-001",
         "name": "Erros não expõem dados sensíveis",
-        "category": "ERR",
         "type": "base",
+        "description": "Mensagens ao cliente são abstractas; logs internos detalhados nunca expostos externamente.",
+        "verify": "Provocar erros intencionais. Confirmar que cliente recebe mensagem abstrata sem dados internos.",
+        "evidence": "Resposta genérica ao cliente. Log interno detalhado separado.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "ERR-002",
+        "id": "ERR-002",
         "name": "Mensagens genéricas no cliente",
-        "category": "ERR",
         "type": "base",
+        "description": "Cliente recebe sempre mensagem genérica; stack traces e detalhes internos não transmitidos.",
+        "verify": "Verificar todas as superfícies de erro. Confirmar ausência de stack trace ou informação técnica.",
+        "evidence": "Captura de mensagens de erro em diferentes cenários.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "ERR-003",
+        "id": "ERR-003",
         "name": "Não revelar existência de recursos",
-        "category": "ERR",
         "type": "base",
+        "description": "Respostas de erro são idênticas para recursos existentes e inexistentes (sem enumeração).",
+        "verify": "Testar recursos existentes e inexistentes. Confirmar respostas de erro idênticas (sem enumeração).",
+        "evidence": "Respostas iguais para recursos existentes e inexistentes.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "ERR-004",
+        "id": "ERR-004",
         "name": "Mensagens localizadas e seguras",
-        "category": "ERR",
         "type": "base",
+        "description": "Mensagens traduzidas sem conteúdo executável ou referências a lógica interna.",
+        "verify": "Verificar mensagens em diferentes locales. Confirmar ausência de conteúdo executável.",
+        "evidence": "Mensagens traduzidas sem referências técnicas ou executáveis.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "ERR-005",
+        "id": "ERR-005",
         "name": "Gestão padronizada e centralizada",
-        "category": "ERR",
         "type": "base",
+        "description": "Framework de erros centraliza tratamento e logging; ausência de tratamento ad-hoc disperso.",
+        "verify": "Rever arquitectura de tratamento de erros. Confirmar centralização.",
+        "evidence": "Código com handler centralizado. Ausência de tratamento ad-hoc disperso.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "ERR-006",
+        "id": "ERR-006",
         "name": "Testes automáticos para erros excessivos",
-        "category": "ERR",
         "type": "base",
+        "description": "Testes garantem que erros são tratados e não há fuga de informação; cobertura de casos limite.",
+        "verify": "Executar testes automáticos de cenários de erro. Confirmar que erros são tratados sem fuga.",
+        "evidence": "Cobertura de testes de erro. Relatório de execução.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "ERR-007",
+        "id": "ERR-007",
         "name": "Logs de erro com contexto pseudonimizado",
-        "category": "ERR",
         "type": "base",
+        "description": "Logs incluem IDs contextuais; dados pessoais ou credenciais nunca registados em logs de erro.",
+        "verify": "Rever logs de erro. Confirmar ausência de dados pessoais, tokens ou credenciais.",
+        "evidence": "Logs sem dados sensíveis. IDs contextuais pseudonimizados.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "VAL-001",
+        "id": "VAL-001",
         "name": "Validação geral de entradas externas",
-        "category": "VAL",
         "type": "base",
+        "description": "Inputs inválidos são rejeitados com código de erro adequado; logs evidenciam bloqueio.",
+        "verify": "Rever código de validação. Enviar inputs inválidos (tipo, tamanho, formato). Confirmar rejeição.",
+        "evidence": "Testes de input inválido. Código com validações. Logs de rejeição.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "VAL-002",
+        "id": "VAL-002",
         "name": "Uso de whitelists em vez de blacklists",
-        "category": "VAL",
         "type": "base",
+        "description": "Apenas valores explicitamente aceites são permitidos; valores não previstos são rejeitados.",
+        "verify": "Tentar enviar valores fora da lista permitida. Confirmar rejeição e ausência de tratamento implícito.",
+        "evidence": "Código com whitelist explícita. Testes com valores não previstos.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "VAL-003",
+        "id": "VAL-003",
         "name": "Validadores de esquema (JSON/XML schema)",
-        "category": "VAL",
         "type": "base",
+        "description": "Payloads malformados são rejeitados automaticamente; logs de parsing disponíveis.",
+        "verify": "Enviar payloads malformados ou com campos em falta. Confirmar rejeição automática.",
+        "evidence": "Rejeições consistentes. Testes de contrato.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "VAL-004",
+        "id": "VAL-004",
         "name": "Sanitização contra injecções",
-        "category": "VAL",
         "type": "base",
+        "description": "Inputs potencialmente perigosos são neutralizados; ataques de injecção resultam em falha controlada.",
+        "verify": "Rever uso de prepared statements. Executar SAST e testes de injecção SQL.",
+        "evidence": "Relatórios de scanner. Ausência de concatenação em queries.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "VAL-005",
+        "id": "VAL-005",
         "name": "Validação antes do uso interno",
-        "category": "VAL",
         "type": "base",
+        "description": "Dados são validados antes de uso em lógica de negócio ou persistência; não há caminhos não validados.",
+        "verify": "Rastrear caminhos entre input layer e lógica de negócio/persistência. Confirmar que validação precede uso interno; identificar caminhos não validados.",
+        "evidence": "Análise de fluxo de dados com pontos de validação evidenciados. Code review confirma ausência de caminhos não validados.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "VAL-006",
+        "id": "VAL-006",
         "name": "Mensagens de erro seguras na validação",
-        "category": "VAL",
         "type": "base",
+        "description": "Erros de validação não expõem lógica interna nem dados sensíveis ao cliente.",
+        "verify": "Forçar erro de validação. Confirmar que mensagem ao cliente não expõe lógica interna.",
+        "evidence": "Mensagens de erro genéricas. Ausência de detalhe técnico no cliente.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "VAL-007",
+        "id": "VAL-007",
         "name": "Testes automáticos contra entradas maliciosas",
-        "category": "VAL",
         "type": "base",
+        "description": "Testes automatizados cobrem XSS, SQLi e outras injecções relevantes; resultados registados.",
+        "verify": "Executar testes automatizados com payloads maliciosos (XSS, SQLi, path traversal).",
+        "evidence": "Relatórios de execução. Cobertura de casos documentada.",
         "source": "runtime_v0"
       },
       {
-        "requirement_id": "VAL-008",
+        "id": "VAL-008",
         "name": "Codificação/escaping de output em renderização (anti-XSS)",
-        "category": "VAL",
         "type": "base",
+        "description": "Output é codificado de forma contextual ao destino de renderização (HTML/atributo/JavaScript, queries via prepared statements, comandos shell, logs anti-injection); ausência de concatenação directa em superfícies sensíveis.",
+        "verify": "Testar output em superfícies renderizadas (HTML, atributo, JS, SQL via prepared statements, shell, logs). Confirmar encoding contextual correcto.",
+        "evidence": "Testes com payloads XSS/SQLi/log injection. Encoding observável conforme contexto de renderização.",
         "source": "runtime_v0"
       }
     ],
@@ -378,7 +460,8 @@
         "domain": "code_integrity",
         "control_type": "preventive",
         "source": "runtime_v0",
-        "confidence": "direct"
+        "confidence": "direct",
+        "description": "Aplica guidelines, validações automáticas e gates de código para preservar integridade e qualidade do software."
       },
       {
         "control_id": "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
@@ -386,7 +469,8 @@
         "domain": "data_protection",
         "control_type": "preventive",
         "source": "runtime_v0",
-        "confidence": "direct"
+        "confidence": "direct",
+        "description": "Protege dados sensíveis em trânsito e em repouso com primitivas aprovadas, hashing adaptativo, integridade verificável e prevenção de exposição acidental em logs, caches e respostas."
       },
       {
         "control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
@@ -394,7 +478,8 @@
         "domain": "identity",
         "control_type": "preventive",
         "source": "runtime_v0",
-        "confidence": "direct"
+        "confidence": "direct",
+        "description": "Garante que só principals legítimos — humanos ou não-humanos — acedem à aplicação, com autenticação proporcional à sensibilidade, autorização por privilégio mínimo e ciclo de vida de sessões e tokens controlado."
       },
       {
         "control_id": "CTRL-infrastructure-segmentacao-e-controlo-arquitetural-dceb3c1f0b",
@@ -402,7 +487,8 @@
         "domain": "infrastructure",
         "control_type": "preventive",
         "source": "runtime_v0",
-        "confidence": "direct"
+        "confidence": "direct",
+        "description": "Protege fronteiras de confiança, fluxos e segmentação técnica da arquitetura com desenho verificável e controlo entre zonas sensíveis."
       },
       {
         "control_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
@@ -410,7 +496,8 @@
         "domain": "monitoring",
         "control_type": "detective",
         "source": "runtime_v0",
-        "confidence": "direct"
+        "confidence": "direct",
+        "description": "Define logs, alertas, correlação e integração com resposta a incidentes para deteção operacional sustentada."
       },
       {
         "control_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
@@ -418,7 +505,8 @@
         "domain": "supply_chain",
         "control_type": "detective",
         "source": "runtime_v0",
-        "confidence": "direct"
+        "confidence": "direct",
+        "description": "Garante inventário de componentes, análise de vulnerabilidades e rastreabilidade de dependências terceiras."
       },
       {
         "control_id": "CTRL-code-integrity-ambiente-e-tooling-de-desenvolvimento-governados-77015fa38a",
@@ -1725,326 +1813,6 @@
         "object_type": null,
         "source": "runtime_v1"
       }
-    ],
-    "evidence_patterns": [
-      {
-        "id": "EP-ACC-001",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "ACC-001",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Log de rejeição. Mapeamento de roles documentado.",
-        "verification_logic": "Testar acesso com role de privilégio reduzido a recurso restrito. Confirmar rejeição.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e",
-          "ART-identity-binding-f96a2a528c"
-        ]
-      },
-      {
-        "id": "EP-ACC-002",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "ACC-002",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Relatório de auditoria de permissões.",
-        "verification_logic": "Auditar permissões de contas de utilizador e serviço. Confirmar ausência de privilégios desnecessários.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e",
-          "ART-policy-report-7e52280504"
-        ]
-      },
-      {
-        "id": "EP-ACC-003",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "ACC-003",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Log de rejeição com dados de contexto.",
-        "verification_logic": "Tentar acesso não autorizado. Confirmar bloqueio e registo com contexto suficiente.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e",
-          "ART-approval-record-6fe32eb803"
-        ]
-      },
-      {
-        "id": "EP-ACC-004",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "ACC-004",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Logs com perfil identificado. Teste cruzado de perfis.",
-        "verification_logic": "Verificar separação efectiva de perfis. Confirmar que acções de cada perfil são rastreáveis.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e",
-          "ART-test-report-b11c5dfb8a"
-        ]
-      },
-      {
-        "id": "EP-ACC-005",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "ACC-005",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Log de rejeição. Testes automatizados de endpoints.",
-        "verification_logic": "Testar endpoints sem autenticação/autorização. Confirmar rejeição com código adequado.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e",
-          "ART-test-report-b11c5dfb8a"
-        ]
-      },
-      {
-        "id": "EP-ACC-006",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "ACC-006",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Evidência de controlo efectivo. Log do evento.",
-        "verification_logic": "Tentar acesso a dados críticos com role não autorizado. Confirmar bloqueio e log.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e",
-          "ART-operational-evidence-f5e852756f"
-        ]
-      },
-      {
-        "id": "EP-ACC-007",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "ACC-007",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Documentação do modelo. Registo de revisão datada.",
-        "verification_logic": "Verificar existência de modelo de permissões revisto e documentado.",
-        "expected_artifact_type_ids": [
-          "ART-approval-record-6fe32eb803",
-          "ART-finding-register-b39d52b4e7"
-        ]
-      },
-      {
-        "id": "EP-ACC-008",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "ACC-008",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Log de tentativa falhada após revogação. Timestamp de revogação.",
-        "verification_logic": "Revogar acesso. Testar imediatamente após revogação. Confirmar falha.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e"
-        ]
-      },
-      {
-        "id": "EP-ACC-010",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "ACC-010",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Registos de revisão datados. Evidência de limpeza de permissões.",
-        "verification_logic": "Verificar existência de processo de revisão periódica. Confirmar remoção de permissões obsoletas.",
-        "expected_artifact_type_ids": [
-          "ART-approval-record-6fe32eb803",
-          "ART-finding-register-b39d52b4e7"
-        ]
-      },
-      {
-        "id": "EP-API-001",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "API-001",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Logs de rejeição. Testes automatizados de endpoints.",
-        "verification_logic": "Testar endpoints sem credenciais. Confirmar rejeição 401/403.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e",
-          "ART-test-report-b11c5dfb8a"
-        ]
-      },
-      {
-        "id": "EP-API-002",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "API-002",
-        "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
-        "evidence_expectation": "Inventário de endpoints activos. Ausência de endpoints não intencionais.",
-        "verification_logic": "Inventariar endpoints expostos em produção. Confirmar ausência de debug ou legacy.",
-        "expected_artifact_type_ids": [
-          "ART-dependency-inventory-4ddd43ae4f"
-        ]
-      },
-      {
-        "id": "EP-API-003",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "API-003",
-        "maps_to_control_id": "CTRL-code-integrity-desenvolvimento-seguro-e-validacao-de-codigo-63dedd7460",
-        "evidence_expectation": "Logs de rejeição. Testes com payloads malformados.",
-        "verification_logic": "Enviar payloads inválidos. Confirmar rejeição com código adequado.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e",
-          "ART-test-report-b11c5dfb8a"
-        ]
-      },
-      {
-        "id": "EP-API-004",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "API-004",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Evidência de rate limiting em runtime ou logs.",
-        "verification_logic": "Executar burst de chamadas. Confirmar resposta 429 ou bloqueio temporário.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e",
-          "ART-operational-evidence-f5e852756f"
-        ]
-      },
-      {
-        "id": "EP-API-005",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "API-005",
-        "maps_to_control_id": "CTRL-data-protection-criptografia-aplicacional-e-proteccao-de-dados-a4afa5b411",
-        "evidence_expectation": "Scanner TLS. Headers de resposta.",
-        "verification_logic": "Verificar certificados e versão TLS. Confirmar cabeçalhos de segurança activos.",
-        "expected_artifact_type_ids": [
-          "ART-sca-report-da2c6d2413",
-          "ART-test-report-b11c5dfb8a"
-        ]
-      },
-      {
-        "id": "EP-API-006",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "API-006",
-        "maps_to_control_id": "CTRL-supply-chain-inventario-e-analise-de-dependencias-6b0fd9f7fb",
-        "evidence_expectation": "SBOM. Relatório de auditoria de dependências.",
-        "verification_logic": "Verificar SBOM e dependências documentadas. Confirmar auditoria de vulnerabilidades conhecidas.",
-        "expected_artifact_type_ids": [
-          "ART-sbom-ec0b691fce",
-          "ART-sca-report-da2c6d2413"
-        ]
-      },
-      {
-        "id": "EP-API-007",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "API-007",
-        "maps_to_control_id": "CTRL-monitoring-monitorizacao-e-resposta-operacional-1797f0af70",
-        "evidence_expectation": "Logs com origem, destino, resultado e timestamp.",
-        "verification_logic": "Verificar logs de chamadas externas. Confirmar presença de dados essenciais.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e",
-          "ART-quiz-result-f93b4a0252"
-        ]
-      },
-      {
-        "id": "EP-AUT-001",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "AUT-001",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Log de autenticação falhada sem MFA. Captura do bloqueio.",
-        "verification_logic": "Tentar login sem segundo factor. Confirmar rejeição e logs de falha.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e"
-        ]
-      },
-      {
-        "id": "EP-AUT-002",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "AUT-002",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Política documentada. Log de erro ou rejeição.",
-        "verification_logic": "Rever política activa. Tentar definir password inválida. Confirmar rejeição.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e",
-          "ART-policy-report-7e52280504"
-        ]
-      },
-      {
-        "id": "EP-AUT-003",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "AUT-003",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Log com contagem de falhas. Evidência de bloqueio ou atraso.",
-        "verification_logic": "Simular tentativas repetidas falhadas. Confirmar bloqueio, CAPTCHA ou atraso progressivo.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e",
-          "ART-operational-evidence-f5e852756f"
-        ]
-      },
-      {
-        "id": "EP-AUT-004",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "AUT-004",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Log de sessão revogada. Erro de autenticação na reutilização.",
-        "verification_logic": "Efectuar logout. Tentar reutilizar sessão ou token. Confirmar rejeição.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e"
-        ]
-      },
-      {
-        "id": "EP-AUT-005",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "AUT-005",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Log de timeout. Captura de expiração automática.",
-        "verification_logic": "Simular inactividade pelo período configurado. Confirmar expiração e redirect.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e"
-        ]
-      },
-      {
-        "id": "EP-AUT-006",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "AUT-006",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Output de configuração. Resultado de scan. Ausência em repositório.",
-        "verification_logic": "Validar hashing com salt. Verificar ausência de credenciais em claro em armazenamento e transmissão.",
-        "expected_artifact_type_ids": [
-          "ART-sca-report-da2c6d2413",
-          "ART-test-report-b11c5dfb8a"
-        ]
-      },
-      {
-        "id": "EP-AUT-007",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "AUT-007",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Log de autenticação via IdP externo. Captura de login bem-sucedido.",
-        "verification_logic": "Simular login federado via SAML/OIDC. Confirmar fluxo completo e logging.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e"
-        ]
-      },
-      {
-        "id": "EP-AUT-008",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "AUT-008",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Captura de step-up. Log associado à acção crítica.",
-        "verification_logic": "Simular acção sensível. Confirmar exigência de factor adicional.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e"
-        ]
-      },
-      {
-        "id": "EP-AUT-009",
-        "relevance_score": 1,
-        "source": "runtime_v0",
-        "maps_to_requirement_id": "AUT-009",
-        "maps_to_control_id": "CTRL-identity-identidade-autenticacao-e-sessoes-aplicacionais-c9d3f51e82",
-        "evidence_expectation": "Log da tentativa bloqueada. Evidência de verificação da sessão activa.",
-        "verification_logic": "Tentar alterar credenciais sem reautenticação. Confirmar bloqueio.",
-        "expected_artifact_type_ids": [
-          "ART-log-stream-b67ee06f7e",
-          "ART-operational-evidence-f5e852756f"
-        ]
-      }
     ]
   },
   "manual_grounding": [
@@ -2953,10 +2721,31 @@
       "ASC-09 artifacts: declared=12 actual=8 (slice contract status=working_contract)",
       "ASC-10 mechanisms: declared=6 actual=4 (slice contract status=working_contract)"
     ],
-    "evidence_patterns_total": 171,
-    "evidence_patterns_returned": 25,
-    "evidence_patterns_capped": 146,
-    "evidence_pattern_cap": 25
+    "verification": {
+      "requirements": 41,
+      "with_verify_and_evidence": 41,
+      "partial": 0,
+      "without_pattern": 0,
+      "by_ref": {
+        "tool": "get_sbd_toe_verification_matrix",
+        "with": "risk_level=\"L2\", requirement_ids=[activated_scope.requirements[].id] (≤50 por chamada)",
+        "calls": 1,
+        "fields": [
+          "evidence_pattern_id",
+          "control_id",
+          "expected_artifact_type_ids"
+        ],
+        "note": "verify/evidence are inline per requirement (0.21 §1); the pattern's id, control and expected artifact types come from the verification matrix, one row per requirement (~190 tk/id measured)."
+      },
+      "related_by_control_outside_scope": {
+        "count": 130,
+        "ref": {
+          "tool": "resolve_entities",
+          "with": "record_type=\"evidence_pattern\", filters={\"maps_to_control_id\":{\"in\":[activated_scope.controls[].control_id]}}",
+          "note": "Patterns of requirements OUTSIDE the activated set that share an activated control — not inlined (they verify other requirements). The ref returns every pattern of those controls; the ones whose maps_to_requirement_id is in activated_scope are the inlined ones."
+        }
+      }
+    }
   },
   "llm_codegen_instructions": [
     "Generate code or review changes ONLY against the deterministic IDs provided in `citation_map`. Do NOT invent SbD-ToE requirement, control, slice, mechanism or obligation IDs.",
@@ -3013,5 +2802,9 @@
       "with": "risk_level + concerns",
       "kind": "semantic"
     }
-  ]
+  ],
+  "size_estimate": {
+    "chars": 75582,
+    "approx_tokens": 18896
+  }
 }

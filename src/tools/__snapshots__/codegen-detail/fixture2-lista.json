@@ -6,7 +6,7 @@
     "task_role": "recorded_context",
     "risk_level": "L2",
     "mode": "codegen",
-    "detail": "standard"
+    "detail": "lista"
   },
   "activation_trace_ref": {
     "entries": 15,
@@ -1001,9 +1001,9 @@
     }
   ],
   "size_estimate": {
-    "chars": 50982,
-    "approx_tokens": 12746,
-    "envelope_tk": 9200,
+    "chars": 50979,
+    "approx_tokens": 12745,
+    "envelope_tk": 8450,
     "within_envelope": false,
     "note": "Acima do envelope herdado deste nível. O tecto por-id é o ratificado (§5) e o custo por requisito da forma fundida é o medido; quando não fecham, este payload di-lo em vez de o esconder. Divide por área (concerns do lote) ou usa detail='full' (sem envelope, preço declarado)."
   }

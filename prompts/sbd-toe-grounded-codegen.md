@@ -22,7 +22,7 @@ Required output discipline:
 - Fill `security_rationale.validations[]` with the concrete code-level validations you implemented (surface, rule, rejection behaviour).
 - Fill `security_rationale.expected_evidence[]` with the artefacts a reviewer should look for (test path, log shape, SBOM entry, attestation, scan report). Code on its own is NEVER evidence.
 - Fill `security_rationale.residual_risk` with anything NOT addressed by this change.
-- Preserve relevance ranking: the response's `g2_context.evidence_patterns` is already ordered and capped. Prefer the highest-scored patterns; if you skip a high-score one, justify it.
+- Use each requirement's own `verify` (validation method) and `evidence` (expected proof): since 0.21 every activated requirement carries them inline, verbatim from the published pattern — there is no separate `evidence_patterns` block and nothing is capped. If you skip a requirement's verification, justify it.
 - Mention `completeness_report.m_recall` when below `1.0` — that signals partial coverage and the agent must flag it.
 
 ### status: needs_clarification
@@ -62,7 +62,7 @@ Do NOT fabricate IDs, slices, or obligations to keep working.
 The tool is deterministic: an identical call returns an identical payload. Re-calling it with the same task only re-buys context you already hold.
 
 - The payload already in context is the source for the whole write-test-edit loop: test and fix against the citations and requirements you already received — do NOT re-call the tool with the same task.
-- Legitimate re-consultations (refining `concerns`, deepening one requirement) use `detail: "minimal"` or a targeted `consult_security_requirements` call — never re-request the full payload.
+- Legitimate re-consultations (refining `concerns`, deepening one requirement) use `detail: "lista"` or a targeted `consult_security_requirements` call — never re-request the full payload.
 - Use `mode: "review"` for the review step only if it runs in a new session; in the same session, review against the context already received.
 
 ---
@@ -88,7 +88,7 @@ The tool is deterministic: an identical call returns an identical payload. Re-ca
 
 - **codegen**: produce code + tests + security_rationale; keep diffs focused on the activated surface; respect `risk_level` (do not propose L3 controls inside an L1 ask).
 - **review**: enumerate findings per `changed_files`, each mapped to one or more `citation_map` IDs. If a finding has no ID coverage, mark it `"no normative ID covers this — flag for human review"`.
-- **test-plan**: produce a checklist grouped by validated_id (requirement_id or control_id). Each test must state input → expected outcome → which `evidence_patterns[].id` it satisfies. Reuse `expected_artifact_type_ids` to name the artefact a reviewer inspects.
+- **test-plan**: produce a checklist grouped by validated_id (requirement id or control_id). Each test must state input → expected outcome → which requirement's `verify`/`evidence` it satisfies (use them verbatim as the expectation). For the pattern id, control and `expected_artifact_type_ids`, follow `completeness_report.verification.by_ref` (the verification matrix, ≤50 ids per call).
 
 ## Reading the response
 
@@ -98,7 +98,7 @@ The tool is deterministic: an identical call returns an identical payload. Re-ca
 - `manual_grounding[]`: pointers into the SbD-ToE manual (chapter, file, commit). Cite these in `security_rationale` when the change directly references a manual section.
 - `regulatory_overlay`: optional. Use only as a cross-check, never as a conformance claim.
 - `citation_map`: closed world of valid IDs for this task.
-- `completeness_report`: includes `m_recall` and `evidence_patterns_capped`. Flag low recall to the user.
+- `completeness_report`: includes `m_recall` and `verification` (requirements / with_verify_and_evidence / partial / without_pattern — denominators that close). Flag low recall, and any `partial` or `without_pattern` > 0, to the user.
 - `llm_codegen_instructions`: the deterministic instructions the tool already validated for this task. Honour them verbatim.
 - `security_rationale_template`: structure you must fill before declaring the change ready.
 

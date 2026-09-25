@@ -1,13 +1,113 @@
 ---
 ai_assisted: true
-model: Claude Opus 5
-date: 2026-09-10
+model: Claude Fable 5.1
+date: 2026-09-25
 purpose: documentation
-reasoning: v0.20.0 (promoção da beta.49, linha estável) — a maturidade do contrato de selecção passa a FACTO DECLARADO (`serving_contract.identity` + `.maturity`, com a maturidade do pacote derivada da versão e nunca escrita à mão) em vez de sufixo numa string; o contrato mantém-se beta deliberadamente, por decisão do lead, e o identificador NÃO se renomeia. Sete declarações servidas que a promoção tornava falsas — cinco a dizer que a linha era beta, uma a dizer que a linha estável era outra — reescritas na forma durável: a prosa nomeia a linha, o campo declarado carrega a maturidade. Zero alteração de comportamento: o oráculo do Eixo H veio byte-idêntico à corrida da beta.49. E publicar deixa de ser o mesmo acto que apontar: o caminho estável do release.yml passa a publicar em `--tag next` — a capacidade que o caminho de prerelease já tinha, aplicada ao que a não tinha — para que a estável possa ser verificada antes de ser o que toda a gente instala; o `latest` move-o o lead, num acto próprio.
+reasoning: 0.21 §1 (o requisito fundido) por cima da entrada v0.20.0 — a descrição nunca sai, o bloco evidence_patterns morre, ultrathin reforma-se, tectos ratificados 83/88 ligados com o ajuste DECLARADO (achado: a projecção do §5 subestimou o custo por requisito). Entrada anterior: v0.20.0 (promoção da beta.49, linha estável) — a maturidade do contrato de selecção passa a FACTO DECLARADO (`serving_contract.identity` + `.maturity`, com a maturidade do pacote derivada da versão e nunca escrita à mão) em vez de sufixo numa string; o contrato mantém-se beta deliberadamente, por decisão do lead, e o identificador NÃO se renomeia. Sete declarações servidas que a promoção tornava falsas — cinco a dizer que a linha era beta, uma a dizer que a linha estável era outra — reescritas na forma durável: a prosa nomeia a linha, o campo declarado carrega a maturidade. Zero alteração de comportamento: o oráculo do Eixo H veio byte-idêntico à corrida da beta.49. E publicar deixa de ser o mesmo acto que apontar: o caminho estável do release.yml passa a publicar em `--tag next` — a capacidade que o caminho de prerelease já tinha, aplicada ao que a não tinha — para que a estável possa ser verificada antes de ser o que toda a gente instala; o `latest` move-o o lead, num acto próprio.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.21 (em curso, ramo `0.21`) — §1 «o requisito fundido» — 2026-09-25
+
+**Linha 0.21 (épico da forma da resposta).** Despacho de origem
+`2026-09-11-orchestrator-pontifex-despacho-forma-da-resposta.md`; §5 ratificada pelo lead
+a 2026-09-25 (tectos **lista 83 · standard 88 · full sem tecto**, herança dos envelopes,
+`ultrathin` reforma-se); ordem de avançar em
+`2026-09-25-orchestrator-pontifex-despacho-s1-fusao.md`. Pino **inalterado** (KG v1.12.0 ·
+sha256 `c21d35cb…bece2f`); **0.20.0 e `latest` intocados**; sem tag, sem merge.
+
+### O requisito é UMA coisa, em todos os níveis
+
+`activated_scope.requirements[]` passa a **um objecto por requisito**:
+`{id, name, type, description, verify, evidence}` — verbatim do bundle (`requirements.json` +
+`evidence_patterns.json`, 1:1 por requisito no KG v1.12.0). **A descrição nunca sai, em nenhum
+nível.** `verify` = `verification_logic`, `evidence` = `evidence_expectation` do padrão do próprio
+requisito. O bloco `g2_context.evidence_patterns` (capado a 25/10/5/0 por nível, com o join deixado
+ao modelo) **deixa de existir**. Os campos do padrão que não vão inline (`evidence_pattern_id`,
+`control_id`, `expected_artifact_type_ids`) **mudam de sítio e passam a referenciados**:
+`completeness_report.verification.by_ref` → `get_sbd_toe_verification_matrix` (≤50 ids/chamada,
+`calls` = ⌈n/50⌉). Os padrões que só tocavam o âmbito por um controlo activado (requisito fora do
+conjunto) não são inlinados — contam-se e referenciam-se em
+`verification.related_by_control_outside_scope` (`resolve_entities`, `record_type="evidence_pattern"`).
+Denominadores que fecham: `requirements = with_verify_and_evidence + partial + without_pattern`
+(o bundle publica padrões com `verification_logic` vazio — EP-ENC-* — que contam como `partial`,
+declarados, nunca omitidos). Os controlos `direct` levam a descrição publicada em todos os níveis,
+**full incluído** («não promete caber, promete não faltar»).
+
+### Três níveis: `lista` · `standard` · `full`
+
+O eixo passa a «o que está inline e o que está por referência». `ultrathin` **retirou-se** (a sua
+razão documentada era cortar a descrição) e `minimal` **passou a `lista`** (herda-lhe o envelope
+de 8.450 tk). Ambos devolvem `-32602` com um erro que **diz para onde foram**. `lista`/`standard`:
+instruções e template **INLINE** (2,2% do payload e é o que impede a invenção de ids — o resource
+`sbd://toe/codegen-instructions/{mode}` fica como cópia de referência), `manual_grounding` na forma
+de contagens com `entries_ref` executável → `full`, relations por referência, trace só com `debug`.
+`full`: tudo inline, sem tecto. **Até à §2 (adjacência), `lista` ≡ `standard` fora do eco do nível**
+— o separador fica declarado, não decidido (2 ou 3 níveis: `LEVEL_FORM` é uma tabela,
+parametrizável). `size_estimate` em todos os níveis: `{chars, approx_tokens}` e, nos níveis com
+envelope, `envelope_tk` + `within_envelope` (+ nota quando não coube — **nunca em silêncio**).
+
+### Tectos ligados como ratificados — e o ACHADO, declarado
+
+`payload-ceilings.ts`: **lista 83 / standard 88**, envelopes 8.450 / 9.200 herdados; `full` sem tecto.
+A base e o declive passam a ser a **medição da forma servida** (regressão 27→89 sobre os 5 casos do
+§5): **~132 tk/req, base ~1.350**. **Achado (para o lead):** a projecção do §5 media 81 tk/req porque
+fazia o join verify/evidence a partir do bloco `evidence_patterns` **capado a 25** — só 25 requisitos
+levavam verify/evidence; a partir daí o custo por requisito estava subestimado. Corrigida
+(`scripts/measure/s5-form-projection.mjs`, join 1:1), a própria projecção da forma-alvo dá ~135 tk/req
+e **4.341 tk** no caso base (não 3.900). Consequência: no tecto ratificado o custo projectado
+(`CEILING_FIT`) é **12.287 tk em lista (envelope 8.450)** e **12.946 em standard (9.200)**; pela mesma
+fórmula os envelopes herdados suportariam **53 / 59** requisitos. Não se re-derivou nada: os tectos
+ficam os ratificados, o ajuste é **declarado** em `CEILING_FIT`, em cada payload
+(`size_estimate.within_envelope`) e no `budget.test` (`KNOWN_TOTAL_DEVIATIONS`, fixture 2). A decisão
+— envelope, forma, ou ambos — é do lead.
+
+### Medição (tokens ≈ chars/4; `auth`/L2, 27 requisitos)
+
+| nível | 0.20.0 | 0.21 §1 | descrição? | verify/evidence? |
+|---|---:|---:|---|---|
+| lista (era minimal) | 3.879 | **4.918** | **sim** | **sim** |
+| standard | 4.403 | 4.919 | sim | sim |
+| full | 11.148 | **10.297** (−8%) | **sim** | **sim** |
+
+Fixture 1 do EPIC (41 reqs): lista 7.104 (cabe); fixture 2 (69 reqs): 12.745 — **declarado fora do
+envelope** no payload e no teste.
+
+### Prova
+
+- **Invariante 3 contra o oráculo da 0.20.0**: `src/tools/__snapshots__/citable-ids-0.20.0.json`
+  (gerado ANTES da §1 a partir do dist/ de `cb36422`, 9 casos) + `prepare-codegen-context.invariant3-golden.test.ts`
+  — conjunto de ids citáveis idêntico em `lista`/`standard`/`full` (o Eixo H byte-idêntico não se
+  aplica; este é o substituto exigido). Eixo H (oráculo de selecção) **10/10**.
+- **Cada ref é alcançável, executada**: `entries_ref` → full (contagens por grupo batem);
+  `verification.by_ref` → matriz devolve uma linha por requisito com `validation_method == verify`
+  inline e os campos por referência exactamente como o bundle os publica;
+  `related_by_control_outside_scope.ref` → `resolve_entities` (count bate).
+- Bateria completa: vitest **813/813** (65 ficheiros); `npm run check` verde; smoke MCP verde;
+  `eval:acceptance` **141 PASS / 16 PART / 0 FAIL / 23 SKIP**, gate **PASS**
+  (`acceptance-reports/2026-09-25-v0.20.0-acceptance.md`); TC-F-34 e TC-F-47 reescritos para a
+  forma nova (89@lista bloqueia declarado com tecto 83; by_ref executado ponta a ponta).
+
+### Colaterais (serving, Pontifex)
+
+- `resolve_entities`: o esquema para `unknown_filter_fields` derivava-se dos 100 primeiros itens da
+  cache v0 **inteira** (requirements/controls), pelo que um filtro válido de `evidence_pattern`
+  (`maps_to_control_id`) era **aplicado e ao mesmo tempo anunciado como desconhecido**. Corrigido:
+  deriva-se dos registos do `record_type` pedido.
+- `scripts/acceptance/axis-h.mjs` lia `requirement_id` do prepare — lê `id ?? requirement_id`
+  (o oráculo mede o conjunto, não a forma).
+- Guia grounded-codegen (`prompts/sbd-toe-grounded-codegen.md`) e skill do plugin: deixam de ensinar
+  o bloco morto; ensinam `verify`/`evidence` inline e `verification.by_ref`. Instrução de `test-plan`
+  idem.
+
+### Fica em aberto (declarado)
+
+2 ou 3 níveis (separador = adjacência §2 / `manual_grounding` §4 — `LEVEL_FORM`); a decisão do lead
+sobre envelope × forma (achado acima); §3 (relations saem; citation_map inverte-se no full) e §2
+(adjacência ligada ao prepare) são fases próprias; `select`/`threat` mantêm o seu `detail: minimal`
+(nome de outro eixo — não tocado).
 
 ## 0.20.0 — 2026-09-10
 

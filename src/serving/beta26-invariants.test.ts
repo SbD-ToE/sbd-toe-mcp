@@ -5,6 +5,11 @@
  * conservação e da next-verbatim): a ordenação dos evidence_patterns por PERTENÇA ao
  * âmbito, o traço multi-activador, e os denominadores nomeados. Junta-se a reconstrução
  * da dieta do `select`, que é a promessa que a torna aceitável.
+ *
+ * 0.21 §1: a invariante da ORDENAÇÃO dos evidence_patterns deixou de ter objecto — o
+ * bloco morreu e o padrão de cada requisito vai fundido no próprio requisito. A
+ * propriedade que a substitui é mais forte: em TODOS os níveis, TODO o requisito
+ * activado leva o SEU verify/evidence, e nenhum padrão de fora do âmbito é inlinado.
  */
 import { describe, it, expect } from "vitest";
 import { runSelection } from "./selection.js";
@@ -16,8 +21,9 @@ import { getOntologyData } from "../tools/ontology-loader.js";
 const LEVELS = ["L1", "L2", "L3"] as const;
 const ontology = getOntologyData();
 
-describe("beta.26 — evidence_patterns por PERTENÇA ao âmbito", () => {
-  it("nenhum EP fora do âmbito aparece enquanto houver EPs do âmbito por mostrar", () => {
+describe("0.21 §1 — o padrão de evidência vive no requisito (substitui a pertença do bloco)", () => {
+  it("em todos os níveis, todo o requisito activado leva o SEU verify/evidence; nenhum padrão de fora é inlinado", () => {
+    const epByReq = new Map((ontology.evidencePatterns ?? []).map((e) => [e.maps_to_requirement_id, e]));
     const offenders: string[] = [];
     const cases: Array<{ task: string; concerns: string[] }> = [
       { task: "Validar payload de entrada no endpoint", concerns: ["validation"] },
@@ -26,26 +32,22 @@ describe("beta.26 — evidence_patterns por PERTENÇA ao âmbito", () => {
       { task: "Endurecer a configuração de infraestrutura como código", concerns: ["iac"] }
     ];
     for (const { task, concerns } of cases) {
-      for (const detail of ["minimal", "standard", "full"] as const) {
+      for (const detail of ["lista", "standard", "full"] as const) {
         const r = handlePrepareCodegenContext({ task, risk_level: "L2", concerns, detail });
         if (r.status !== "ready_for_codegen") continue;
-        const scope = new Set(
-          ((r as { activated_scope?: { requirements?: Array<{ requirement_id?: string }> } }).activated_scope?.requirements ?? [])
-            .map((x) => x.requirement_id)
-            .filter((x): x is string => typeof x === "string")
-        );
-        const eps = ((r as { g2_context?: { evidence_patterns?: Array<{ id?: string; maps_to_requirement_id?: string }> } }).g2_context
-          ?.evidence_patterns ?? []);
-        if (eps.length === 0) continue;
-        const inScope = (e: { maps_to_requirement_id?: string }) =>
-          typeof e.maps_to_requirement_id === "string" && scope.has(e.maps_to_requirement_id);
-        // pertença é MONÓTONA: nenhum de fora antes de um de dentro
-        const firstOut = eps.findIndex((e) => !inScope(e));
-        const lastIn = eps.map(inScope).lastIndexOf(true);
-        if (firstOut >= 0 && lastIn > firstOut)
-          offenders.push(
-            `${concerns.join("+")}@${detail}: EP fora do âmbito (${eps[firstOut]?.id}) antes de um do âmbito (${eps[lastIn]?.id})`
-          );
+        if ("evidence_patterns" in (r.g2_context as object)) offenders.push(`${concerns.join("+")}@${detail}: bloco evidence_patterns ressuscitou`);
+        const reqs = r.activated_scope.requirements as Array<{ id: string; description?: string; verify?: string; evidence?: string }>;
+        for (const q of reqs) {
+          const ep = epByReq.get(q.id);
+          if (!q.description) offenders.push(`${concerns.join("+")}@${detail}: ${q.id} sem description`);
+          if (ep && (q.verify !== ep.verification_logic || q.evidence !== ep.evidence_expectation))
+            offenders.push(`${concerns.join("+")}@${detail}: ${q.id} verify/evidence ≠ padrão publicado ${ep.id}`);
+          if (!ep && (q.verify !== undefined || q.evidence !== undefined))
+            offenders.push(`${concerns.join("+")}@${detail}: ${q.id} tem verify/evidence sem padrão publicado`);
+        }
+        const v = r.completeness_report.verification;
+        if (v.requirements !== reqs.length || v.with_verify_and_evidence + v.partial + v.without_pattern !== v.requirements)
+          offenders.push(`${concerns.join("+")}@${detail}: denominadores da verificação não fecham (${JSON.stringify(v)})`);
       }
     }
     expect(offenders, `\n${offenders.join("\n")}`).toEqual([]);

@@ -316,8 +316,15 @@ export function _resolveEntities(
   let validFieldsForType: string[] = [];
   if (filters && typeof filters === "object" && Object.keys(filters as object).length > 0) {
     const fieldSet = new Set<string>();
-    for (const it of (items as Array<Record<string, unknown>>).slice(0, 100)) {
-      if (it && typeof it === "object") for (const k of Object.keys(it)) fieldSet.add(k);
+    // 0.21 (achado colateral da §1): o esquema deriva-se dos registos DESTE record_type —
+    // a cache v0 junta todos os tipos e os 100 primeiros itens eram requirements/controls,
+    // pelo que um filtro válido de evidence_pattern (maps_to_control_id) era anunciado como
+    // desconhecido ao mesmo tempo que era APLICADO (o total dizia uma coisa, o aviso outra).
+    const ofType = (items as Array<Record<string, unknown>>).filter(
+      (it) => it && typeof it === "object" && (!("record_type" in it) || it["record_type"] === recordType)
+    );
+    for (const it of ofType.slice(0, 100)) {
+      for (const k of Object.keys(it)) fieldSet.add(k);
     }
     validFieldsForType = [...fieldSet].sort();
     unknownFilterFields = Object.keys(filters as Record<string, unknown>).filter(

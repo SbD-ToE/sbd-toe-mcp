@@ -41,7 +41,7 @@ Pick the entry point that matches the task:
   context is the source for the write-test-edit loop: test and fix against the
   citations you already received, do NOT re-call the tool with the same task.
   Legitimate re-consultations (refining `concerns`, deepening one requirement)
-  use `detail: "minimal"` or a targeted `consult_security_requirements` —
+  use `detail: "lista"` or a targeted `consult_security_requirements` —
   never re-request the full payload. Use `mode: "review"` only if the review
   runs in a new session.
 - **"Which requirements apply to this task / this change?"** →

@@ -56,11 +56,10 @@ export function selectRequirementsAffordances(riskLevel: string, selectedIds: re
   // 0.19.4: custo anunciado ANTES de pagar (padrão da matrix/0.19.3) — projecção
   // da contagem seleccionada × custo/req por detail, com o tecto novo declarado.
   const t = totalSelected ?? 0;
-  const ceilMin = REQUIREMENT_CEILING_BY_DETAIL["minimal"] ?? 0;
+  const ceilLista = REQUIREMENT_CEILING_BY_DETAIL["lista"] ?? 0;
   const ceilStd = REQUIREMENT_CEILING_BY_DETAIL["standard"] ?? 0;
-  const ceilUltra = REQUIREMENT_CEILING_BY_DETAIL["ultrathin"] ?? 0;
   const costNote = t > 0
-    ? ` (${t} seleccionados: minimal ≈${projectedCostTk("minimal", t) ?? "?"} tk${t > ceilMin ? ` — ACIMA do tecto ${ceilMin}: divide por área` : ""}; tectos min/std/ultra ${ceilMin}/${ceilStd}/${ceilUltra}; full sem tecto)`
+    ? ` (${t} seleccionados: lista ≈${projectedCostTk("lista", t) ?? "?"} tk${t > ceilLista ? ` — ACIMA do tecto ${ceilLista}: divide por área` : ""}; tectos lista/standard ${ceilLista}/${ceilStd}; full sem tecto, preço declarado em size_estimate)`
     : "";
   const prepareRow: Affordance = { intent: `prepare grounded codegen context for one concrete task${costNote}`, tool: "prepare_sbd_toe_codegen_context", with: "task + risk_level (+ changed_files)", kind: "semantic" };
   // 0.19.0: com dominância lexical, a 1ª sugestão é ESTABILIZAR — sai a matrix,

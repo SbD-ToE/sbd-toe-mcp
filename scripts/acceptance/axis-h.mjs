@@ -236,7 +236,8 @@ export async function runGoldenCase(client, gc, catalogue, arm = "discover") {
     arm === "declarative" ? declarativeArgs() : { ...gc.prepare, selection_mode: "discover" };
   const p = await client.tool("prepare_sbd_toe_codegen_context", prepareArgs);
   const pd = p.ok ? p.data : undefined;
-  const pSelected = pd?.status === "ready_for_codegen" ? (pd.activated_scope?.requirements ?? []).map((r) => r.requirement_id) : [];
+  // 0.21 §1: o requisito fundido chama-se `id` (era `requirement_id`); o oráculo mede o CONJUNTO, não a forma.
+  const pSelected = pd?.status === "ready_for_codegen" ? (pd.activated_scope?.requirements ?? []).map((r) => r.id ?? r.requirement_id) : [];
   const pM = metrics(pSelected, mustHave, mustNot, debatable);
   const overlayObligations = pd?.regulatory_overlay?.obligations?.length ?? 0;
 

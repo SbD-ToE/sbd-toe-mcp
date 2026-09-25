@@ -21,27 +21,16 @@
  * estimativas diferem no arredondamento (ceil vs round ⇒ ±1 token) — os
  * budgets absorvem essa diferença.
  *
- * Estrutura por nível de `detail` (futuro parâmetro, slices s1–s3b):
- *   - `full`     = comportamento ATUAL (default). Budgets = baseline medido
- *                  + ~8% de margem, para apanhar regressões de tamanho.
- *   - `standard` = gates hard do EPIC (total ≤6.500 típico / ≤8.500
- *                  3-famílias). SKIPPED até o parâmetro `detail` existir.
- *   - `minimal`  = s3b REVISTO (⟳ ADENDA 2026-07-05: sem top-N; o alvo
- *                  original ≤2.000 caiu com o desenho top-N — totais fixados
- *                  por medição, ver BUDGETS.minimal).
- *   - `ultrathin`= s3c (ADENDA 2026-07-05, reativado pelo operador: id+name
- *                  sem descriptions, evidence 0 inline, grounding agregado —
- *                  totais fixados por medição +~5%, ver BUDGETS.ultrathin;
- *                  ratificação do operador na validação).
+ * Estrutura por nível de `detail` (0.21 §5 — três níveis):
+ *   - `full`     = default. Budgets = medição da forma fundida + ~8% de margem,
+ *                  para apanhar regressões de tamanho. Sem envelope (declara o preço).
+ *   - `standard` = TOTAL = envelope herdado 9.200 (ratificado 2026-08-31).
+ *   - `lista`    = TOTAL = envelope herdado do minimal 8.450 (ratificado 2026-08-31).
  *
- * O skip é condicional em runtime, em dois estágios (s1 aterrou 2026-07-05):
- *   1. probe `detailParamSupported` — o parâmetro `detail` existe (s1);
- *   2. sentinelas por slice (`s2RelationsRefLanded`/`s3CapsLanded`/
- *      `s3bMinimalLanded`) — os TOTAIS hard standard/minimal só vinculam
- *      quando os slices que cortam as secções pesadas aterrarem (s2+s3 para
- *      standard; s3b para minimal). Quando aterrarem, os testes ativam-se
- *      sozinhos (só recalibrar os budgets POR SECÇÃO provisórios, ver nota
- *      no BUDGETS — nunca baixar os TOTAIS).
+ * Sentinelas: `s2RelationsRefLanded` (relations por referência) e `s1FusionLanded`
+ * (requisito fundido, sem bloco evidence_patterns). Onde a forma fundida não cabe no
+ * envelope, o desvio é DECLARADO em KNOWN_TOTAL_DEVIATIONS (nunca se baixa o gate em
+ * silêncio) e o próprio payload di-lo em size_estimate.within_envelope.
  */
 import { beforeAll, describe, expect, it } from "vitest";
 
@@ -121,7 +110,6 @@ const FIXTURES: readonly BaselineFixture[] = [
 type SectionName =
   | "g2_context.relations"
   | "manual_grounding"
-  | "g2_context.evidence_patterns"
   | "citation_map"
   | "activated_scope"
   | "g2_entities"
@@ -144,7 +132,6 @@ function sectionTokens(
   };
   const relations = tok(g2.relations ?? g2.relations_ref);
   const manualGrounding = tok(result.manual_grounding);
-  const evidencePatterns = tok(result.g2_context.evidence_patterns);
   const citationMap = tok(
     (result as { citation_map?: unknown }).citation_map ??
       (result as { citations?: unknown }).citations
@@ -160,13 +147,14 @@ function sectionTokens(
   // llm_codegen_instructions, completeness_report, security_rationale_template,
   // next, provenance, input_echo, regulatory_overlay, status, mode) + overhead
   // estrutural do JSON — mesma convenção do quadro baseline (~1.240 na fixture 1).
+  // 0.21 §1: o bloco evidence_patterns morreu — o padrão vai fundido no requisito
+  // (dentro de activated_scope); a secção deixa de existir no quadro.
   const rest =
     total -
-    (relations + manualGrounding + evidencePatterns + citationMap + activatedScope + g2Entities);
+    (relations + manualGrounding + citationMap + activatedScope + g2Entities);
   return {
     "g2_context.relations": relations,
     manual_grounding: manualGrounding,
-    "g2_context.evidence_patterns": evidencePatterns,
     citation_map: citationMap,
     activated_scope: activatedScope,
     g2_entities: g2Entities,
@@ -179,164 +167,88 @@ function sectionTokens(
 // Budgets declarados (tokens ≈ chars/4) por nível de `detail` e por fixture
 // ---------------------------------------------------------------------------
 
-type DetailLevel = "full" | "standard" | "minimal" | "ultrathin";
+type DetailLevel = "full" | "standard" | "lista";
 type SectionBudgets = Record<SectionName, number> & { total: number };
 
 /**
- * `full`: baseline medido (2026-07-05, 0.20.0-beta.1) + ~8% de margem — a
- * margem justa pedida pelo s0 para apanhar regressões sem falsos positivos.
+ * 0.21 §1 (2026-09-25) — a forma mudou de propósito, os budgets re-fixam-se
+ * por MEDIÇÃO da forma servida (+~5–8% de margem), e os TOTAIS dos níveis com
+ * envelope são os ENVELOPES HERDADOS ratificados (lista 8.450 / standard
+ * 9.200 — por nível, não por fixture). Onde a forma fundida não cabe no
+ * envelope, a diferença é DECLARADA em KNOWN_TOTAL_DEVIATIONS — nunca um
+ * levantamento silencioso do gate.
  *
- * `standard`: os TOTAIS são os gates hard do EPIC (§Orçamento: ≤6.500 típico /
- * ≤8.500 3-famílias); budgets por secção recalibrados no s3 (medição real).
+ * Medição 2026-09-25 (dist, forma fundida; secções relations / grounding /
+ * citations / scope / entidades / resto):
+ *   full     f1 4.370 / 3.572 / 2.549 / 4.754 / 2.058 / 1.593 = 18.896
+ *            f2 6.239 / 4.913 / 3.664 / 10.119 / 2.822 / 1.831 = 29.588
+ *   standard f1 121 / 237 / 167 / 4.462 / 642 / 1.476 = 7.105
+ *            f2 204 / 274 / 167 / 9.662 / 899 / 1.540 = 12.746
+ *   lista    idem standard −1 (só o eco do nível difere até à §2)
  *
- * `minimal`: totais e budgets por secção FIXADOS POR MEDIÇÃO no s3b REVISTO
- * (⟳ ADENDA 2026-07-05 — sem top-N, o total ≤2.000 do desenho original era
- * inviável e foi substituído pela medição + ~5%; ratificação do operador na
- * validação — ver nota no BUDGETS.minimal).
+ * `full`: o requisito fundido substitui o bloco de 25 padrões (2.846) por
+ * verify/evidence em TODOS os requisitos + descriptions → o total do full
+ * quase não muda na f1 (18.903 → 18.896) e cresce na f2 (69 reqs).
  */
 const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudgets>> = {
   full: {
-    // Baseline fixture 1: relations 4.370 / grounding 3.572 / evidence 2.846 /
-    // citation_map 2.677 / activated_scope 2.145 / entidades 2.057 / resto ≈1.236.
     fixture1: {
       "g2_context.relations": 4700,
       manual_grounding: 3850,
-      "g2_context.evidence_patterns": 3050,
       citation_map: 2900,
-      activated_scope: 2300,
+      activated_scope: 5100, // 0.21 §1: requisito fundido (description+verify+evidence) + description dos controlos directos — medido 4.754
       g2_entities: 2200,
-      rest: 1372, // beta.42: +6 medidos — `input_echo.task_role` declara que o `task` é contexto REGISTADO (a superfície irmã `select` já o dizia; provado por variação na matriz banda × superfície). Guarda do `full` = retrato do comportamento actual, não gate do EPIC: os gates duros (standard/minimal/ultrathin) passam sem mexer. Medido 1366
+      rest: 1720, // medido 1.593 (inclui size_estimate declarado)
       total: 20400
     },
-    // Baseline fixture 2: relations 6.238 / grounding 4.913 / evidence 2.846 /
-    // citation_map 3.591 / activated_scope 2.923 / entidades 2.820 / resto ≈1.400.
     fixture2: {
       "g2_context.relations": 6700,
       manual_grounding: 5300,
-      "g2_context.evidence_patterns": 3050,
       citation_map: 3900,
-      activated_scope: 3150,
+      activated_scope: 10900, // medido 10.119 (69 requisitos fundidos)
       g2_entities: 3050,
-      rest: 1612, // beta.42: +6 medidos (`input_echo.task_role`, ver acima); medido 1606. v1.8.0: FIL na fixture
-      total: 26700
+      rest: 1980, // medido 1.831
+      total: 32000 // medido 29.588 + ~8% (era 26.700 na forma antiga)
     }
   },
-  // standard: budgets POR SECÇÃO recalibrados no s3 para os valores REAIS
-  // medidos (2026-07-05, pós-s3: f1 = relations_ref 121 / grounding 333 /
-  // evidence 1.054 / citations 169 / scope-com-description 3.076 / entidades
-  // 642 / resto 762, total 6.157; f2 = 204 / 450 / 1.054 / 170 / 4.824 / 899 /
-  // 757, total 8.358) + ~10% de margem justa. Os TOTAIS são os gates hard do
-  // EPIC — intocados. s4 (repeat_call_hint, 2026-07-05): +53 tokens medidos na
-  // secção "rest" (f1 762→815, f2 757→810) — absorvidos pelo budget 850.
   standard: {
     fixture1: {
-      "g2_context.relations": 150, // s2: relations_ref (lenses trace_sbd_toe_graph)
-      manual_grounding: 380, // s1: agrupado por (chapter,file,sha)
-      "g2_context.evidence_patterns": 1150, // s3: cap 25→10, sem relevance_score
-      citation_map: 200, // s1+s3: citations invertido, ids via ids_from
-      activated_scope: 3350, // núcleo mantém + `description` publicada (s3)
-      g2_entities: 720, // núcleo — agrupado por slice (s3)
-      rest: 980, // MP1 (beta.6): completeness_report.selection vive em `rest` (medidos 918/914; = estável) // s3: instructions→resource, trace só com debug
-      total: 6500 // 🔴 gate hard do EPIC (payload típico)
+      "g2_context.relations": 150,
+      manual_grounding: 260, // 0.21: forma de contagens + entries_ref (era agrupada: 333)
+      citation_map: 200,
+      activated_scope: 4700, // medido 4.462 (fundido)
+      g2_entities: 720,
+      rest: 1560, // medido 1.476 (instruções + template INLINE, verification, size_estimate)
+      total: 9200 // 🔴 envelope herdado (ratificado 2026-08-31, mantido 2026-09-25)
     },
     fixture2: {
       "g2_context.relations": 240,
-      manual_grounding: 510,
-      "g2_context.evidence_patterns": 1150,
+      manual_grounding: 300,
       citation_map: 200,
-      activated_scope: 5500, // v1.8.0 FIL (medido 5.396; = estável)
+      activated_scope: 10200, // medido 9.662 (69 requisitos fundidos)
       g2_entities: 1000,
-      rest: 980, // MP1 (beta.6): completeness_report.selection vive em `rest` (medidos 918/914; = estável)
-      // Gate original do EPIC: 8.500. Re-fixado em **8.800** pelo programme lead
-      // (ratificação 2026-08-31, 0.20.0-beta.5): OPS-015 (pin v1.7.0 dev-build,
-      // +223) + camada de ligações curada v3/v1.7.0 formal (controlos directos da
-      // fixture com ids/descriptions mais longos, +129). Medido 8.746 (v1.7.0 formal).
-      // 8.500 (EPIC) → 8.700 → 8.800 → **9.200**: gate RATIFICADO e HARMONIZADO com a
-      // estável pelo programme lead a 2026-08-31 («3 sims»; handover manual-wave v1.8.0,
-      // Decisões finais §1). Causa: a fixture de upload ganha o catálogo FIL de facto
-      // (medido 9.102, idêntico nas duas linhas).
-      total: 9200 // 🔴 gate hard ratificado + harmonizado 2026-08-31
+      rest: 1620, // medido 1.540
+      total: 9200 // 🔴 envelope herdado — NÃO CABE (medido 12.746): desvio declarado abaixo
     }
   },
-  // minimal: ⟳ ADENDA s3b (2026-07-05, decisão do operador — EPIC §s3b): sem
-  // top-N, o conjunto ativado (scope com description, entidades, citations)
-  // vai COMPLETO — o alvo ≤2.000 do desenho top-N era inviável e foi REVISTO
-  // pela adenda ("o número hard é fixado pela medição real do slice e
-  // ratificado pelo operador na validação"). Budgets FIXADOS POR MEDIÇÃO do
-  // s3b revisto (2026-07-05, dist: f1 = relations_ref 121 / grounding-mínimo
-  // 223 / evidence-cap-5 527 / citations 169 / scope-com-description 3.076 /
-  // entidades 642 / resto 760, total 5.518; f2 = 204 / 260 / 527 / 170 /
-  // 4.824 / 899 / 755, total 7.639) + ~5% de margem justa — ratificação do
-  // operador na validação. O minimal corta face ao standard SÓ serialização
-  // de traceability (evidence 10→5, grounding mínimo): −639 (f1) / −719 (f2).
-  // s4 (repeat_call_hint, 2026-07-05): o hint (~53 tokens medidos: rest f1
-  // 760→813, f2 755→808) cai na secção "rest" — rest recalibrado +delta
-  // medido (800→853), TOTAIS intocados (medido pós-s4: 5.571 / 7.692).
-  minimal: {
+  lista: {
     fixture1: {
-      "g2_context.relations": 130, // s2: relations_ref (igual a standard)
-      manual_grounding: 240, // s3b: forma mínima (contagens + sha + groups_ref)
-      "g2_context.evidence_patterns": 560, // s3b: cap 5
-      citation_map: 180, // citations invertido (byte-igual a standard)
-      // 3.230 até v1.6.1; 3.290 desde o dev-build v2.2 (a camada de ligações v3
-      // muda os controlos directos da fixture — medido 3.243, 2026-08-30).
-      activated_scope: 3290, // COMPLETO com description (byte-igual a standard)
-      g2_entities: 680, // COMPLETO (byte-igual a standard)
-      rest: 985, // MP1 selection em `rest` (medidos 917/913; = estável) // s4: +53 medidos (repeat_call_hint)
-      total: 5800 // 🔴 hard s3b revisto (medido 5.518 + ~5%)
+      "g2_context.relations": 150,
+      manual_grounding: 260,
+      citation_map: 200,
+      activated_scope: 4700,
+      g2_entities: 720,
+      rest: 1560,
+      total: 8450 // 🔴 envelope herdado do minimal (ratificado 2026-08-31, herdado 2026-09-25)
     },
     fixture2: {
-      "g2_context.relations": 215,
-      manual_grounding: 275,
-      "g2_context.evidence_patterns": 560,
-      citation_map: 180,
-      // 5.070 até v1.6.1; 5.180 desde o dev-build v2.2 (medido 5.127, 2026-08-30).
-      activated_scope: 5500, // v1.8.0 FIL (medido 5.396; = estável)
-      g2_entities: 950,
-      rest: 985, // MP1 selection em `rest` (medidos 917/913; = estável) // s4: +53 medidos (repeat_call_hint)
-      // Hard s3b original: 8.000 (medido 7.639 + ~5%). Re-fixado em **8.100** pelo
-      // programme lead (ratificação 2026-08-31): camada curada v3/v1.7.0 formal muda
-      // os controlos directos da fixture. Medido 8.019 (v1.7.0 formal).
-      // 8.000 (s3b) → 8.100 → **8.450**: gate RATIFICADO e HARMONIZADO com a estável
-      // (programme lead 2026-08-31, «3 sims»; medido 8.375, idêntico nas duas linhas).
-      total: 8450 // 🔴 gate hard ratificado + harmonizado 2026-08-31
-    }
-  },
-  // ultrathin: s3c (ADENDA 2026-07-05 do operador, REATIVADO no mesmo dia —
-  // EPIC §s3c): abaixo do minimal, MESMAS regras (conjunto ativado COMPLETO,
-  // sem top-k, nada só-id, nunca-silencioso), mas sem `description` nos
-  // requirements/controls (descriptions_ref executável → detail="minimal"),
-  // evidence_patterns 0 inline (contagens + rest-ref → detail="minimal"),
-  // manual_grounding só {total_entries, manual_commit_sha, groups_ref} e
-  // completeness_report com os arrays de diagnóstico → contagens exatas
-  // (+ v1_diagnostics_ref). Budgets FIXADOS POR MEDIÇÃO do s3c (2026-07-05,
-  // dist: f1 = relations_ref 121 / grounding-ultrathin 156 / evidence-0 1 /
-  // citations 169 / scope-sem-description 1.712 / entidades 642 / resto 887,
-  // total 3.688; f2 = 204 / 156 / 1 / 169 / 2.293 / 897 / 886, total 4.606)
-  // + ~5% de margem justa — ratificação do operador na validação (a
-  // estimativa do EPIC ~3,0–3,2K/3,9–4,1K era projeção; o número hard é o
-  // medido, como no s3b). O corte face ao minimal é só serialização:
-  // −1.883 (f1) / −3.086 (f2) — nenhum id/name sai do payload.
-  ultrathin: {
-    fixture1: {
-      "g2_context.relations": 130, // s2: relations_ref (byte-igual a standard/minimal)
-      manual_grounding: 165, // s3c: forma agregada (total + sha + groups_ref)
-      "g2_context.evidence_patterns": 5, // s3c: 0 inline ([] serializado)
-      citation_map: 180, // citations invertido (byte-igual aos outros dieted)
-      activated_scope: 1800, // COMPLETO, sem description (+descriptions_ref)
-      g2_entities: 680, // COMPLETO (byte-igual a standard/minimal)
-      rest: 1055, // MP1 selection em `rest` (medidos 981/977; = estável) // completeness com contagens + refs executáveis
-      total: 3870 // 🔴 hard s3c (medido 3.688 + ~5%)
-    },
-    fixture2: {
-      "g2_context.relations": 215,
-      manual_grounding: 165,
-      "g2_context.evidence_patterns": 5,
-      citation_map: 180,
-      activated_scope: 2500, // v1.8.0 FIL (medido 2.423; = estável)
-      g2_entities: 950,
-      rest: 1055, // MP1 selection em `rest` (medidos 981/977; = estável)
-      total: 4840 // 🔴 hard s3c (medido 4.606 + ~5%)
+      "g2_context.relations": 240,
+      manual_grounding: 300,
+      citation_map: 200,
+      activated_scope: 10200,
+      g2_entities: 1000,
+      rest: 1620,
+      total: 8450 // 🔴 envelope herdado — NÃO CABE (medido 12.745): desvio declarado abaixo
     }
   }
 };
@@ -357,94 +269,38 @@ function runFixture(fixture: BaselineFixture): PrepareCodegenContextResultReady 
   return result;
 }
 
-/**
- * Deteção em runtime do futuro parâmetro `detail` (s1–s3b): hoje o handler
- * ignora propriedades desconhecidas, logo `detail: "<nível>"` devolve payload
- * byte-igual ao default. Quando o parâmetro existir, o output diverge e os
- * testes standard/minimal ativam-se automaticamente.
- */
 function withDetail(
   input: PrepareCodegenContextInput,
   detail: Exclude<DetailLevel, "full">
 ): PrepareCodegenContextInput {
-  return { ...input, detail } as unknown as PrepareCodegenContextInput;
+  return { ...input, detail };
 }
 
+/** O parâmetro `detail` existe desde o s1; a sonda fica pela disciplina (activação automática). */
 function detailParamSupported(fixture: BaselineFixture): boolean {
   const withoutDetail = handlePrepareCodegenContextDiscover(fixture.input);
-  const probe = handlePrepareCodegenContextDiscover(withDetail(fixture.input, "minimal"));
+  const probe = handlePrepareCodegenContextDiscover(withDetail(fixture.input, "lista"));
   return JSON.stringify(probe) !== JSON.stringify(withoutDetail);
 }
 
-/**
- * Sentinelas por slice (s1 aterrou; ver EPIC §Slices). O parâmetro `detail`
- * existe desde o s1 (dedup estrutural), mas os TOTAIS hard standard/minimal
- * só são alcançáveis com os slices que cortam as secções pesadas. Os budgets
- * NÃO são baixados nem os testes removidos — ficam skip até a sentinela do
- * slice correspondente aterrar, e ativam-se sozinhos nesse momento:
- *
- *  - s2 (relations on-demand): `g2_context.relations` deixa de vir inline em
- *    `standard` (passa a `relations_ref`). Sentinela: deixa de ser um array.
- *  - s3 (caps/boilerplate): cap de evidence_patterns desce 25→10 em
- *    `standard`. Sentinela: `completeness_report.evidence_pattern_cap <= 10`.
- *  - s3b REVISTO (⟳ ADENDA 2026-07-05 do operador, EPIC §s3b — SUBSTITUI o
- *    desenho top-N): SEM ranking/subsetting; `minimal` mantém o conjunto
- *    ativado COMPLETO (requirements/controls com description, byte-igual a
- *    `standard`) e corta só serialização de traceability — evidence cap 10→5
- *    e `manual_grounding` na forma mínima (contagens + sha agregado +
- *    groups_ref executável). A sentinela top-N original ("requirements deixa
- *    de ser array plano") NUNCA acionaria neste desenho; a sentinela real é
- *    `completeness_report.evidence_pattern_cap <= 5` em `minimal`.
- *
- * Se a forma final de um slice divergir da sentinela aqui prevista, o
- * executor desse slice ajusta a sentinela NESTE ficheiro (nunca os budgets;
- * exceção: os TOTAIS `minimal` do desenho top-N foram revistos pela ADENDA
- * s3b — ver nota no BUDGETS.minimal).
- */
+/** s2 (relations on-demand): `g2_context.relations` deixa de vir inline nos dieted. */
 function s2RelationsRefLanded(result: PrepareCodegenContextResultReady): boolean {
   return !Array.isArray(result.g2_context.relations);
 }
 
-function s3CapsLanded(result: PrepareCodegenContextResultReady): boolean {
-  return result.completeness_report.evidence_pattern_cap <= 10;
-}
-
-function s3bMinimalLanded(result: PrepareCodegenContextResultReady): boolean {
-  // ⟳ ADENDA s3b (2026-07-05, EPIC §s3b): sem top-N — `requirements` continua
-  // um array plano COMPLETO em todos os níveis, pelo que a sentinela original
-  // (deixar de ser array) nunca acionaria. O marcador real do s3b revisto é o
-  // cap de evidence 10→5 em `minimal` (a par da forma mínima do grounding).
-  return result.completeness_report.evidence_pattern_cap <= 5;
-}
-
-/**
- * s3c (ultrathin — ADENDA 2026-07-05, reativado pelo operador no mesmo dia):
- * marcador real do slice — os requirements continuam um array COMPLETO (sem
- * top-k) mas SEM o campo `description`, e evidence_patterns vai a 0 inline
- * (returned == 0, capped == total). Sentinela nova; as sentinelas s2/s3/s3b
- * e os budgets/totais standard/minimal ficam intocados.
- */
-function s3cUltrathinLanded(result: PrepareCodegenContextResultReady): boolean {
-  const requirements = result.activated_scope.requirements as ReadonlyArray<
-    Record<string, unknown>
-  >;
+/** 0.21 §1 (o requisito fundido): a descrição nunca sai, o bloco morreu, e a verificação
+ * é declarada com denominadores que fecham (um padrão publicado pode vir sem
+ * verification_logic — «partial», declarado, nunca omitido). */
+function s1FusionLanded(result: PrepareCodegenContextResultReady): boolean {
+  const requirements = result.activated_scope.requirements as ReadonlyArray<Record<string, unknown>>;
+  const v = (result.completeness_report as { verification?: { requirements: number; with_verify_and_evidence: number; partial: number; without_pattern: number } }).verification;
   return (
     requirements.length > 0 &&
-    requirements.every((item) => !("description" in item)) &&
-    result.completeness_report.evidence_patterns_returned === 0
+    requirements.every((item) => "description" in item) &&
+    !("evidence_patterns" in (result.g2_context as object)) &&
+    v !== undefined &&
+    v.with_verify_and_evidence + v.partial + v.without_pattern === v.requirements
   );
-}
-
-/** Probe s3c: pré-s3c, detail="ultrathin" falha na validação (-32602). */
-function ultrathinParamSupported(fixture: BaselineFixture): boolean {
-  try {
-    return (
-      handlePrepareCodegenContextDiscover(withDetail(fixture.input, "ultrathin")).status ===
-      "ready_for_codegen"
-    );
-  } catch {
-    return false;
-  }
 }
 
 /** Resolve um path `ids_from` sobre o próprio payload dieted (mini-sintaxe
@@ -476,19 +332,24 @@ function idsAtPath(payload: unknown, path: string): string[] {
  */
 /**
  * Known, REPORTED deviations from a hard gate — never a silent raise of the gate
- * itself. Empty since 2026-08-31: the programme lead ratified the fixture-2
- * ceilings (standard 8,800 / minimal 8,100) into BUDGETS directly. The mechanism
- * stays for the next data-driven drift.
+ * itself.
  */
 /**
  * Known, REPORTED deviations from a hard gate — never a silent raise of the gate
- * itself. Empty since 2026-08-31 ("3 sims"): the programme lead ratified and
- * HARMONISED the fixture-2 ceilings across both lines (standard 9,200 / minimal
- * 8,450) into BUDGETS directly. The mechanism stays for the next drift.
+ * itself. 2026-09-25 (0.21 §1): a fixture 2 (69 requisitos) na forma fundida
+ * custa ~12.75k em lista/standard — acima dos envelopes herdados. Não é o gate
+ * que se levanta: é o ACHADO que se declara (a projecção do §5 fazia o join
+ * verify/evidence sobre o bloco capado a 25 e subestimou o custo por requisito;
+ * ver payload-ceilings.ts). O servidor di-lo também no payload
+ * (size_estimate.within_envelope=false). Decisão do lead pendente: envelope,
+ * forma, ou ambos.
  */
 const KNOWN_TOTAL_DEVIATIONS: Readonly<
   Record<string, { measured: number; tolerated: number; since: string; reason: string }>
-> = {}
+> = {
+  "standard:fixture2": { measured: 12746, tolerated: 13400, since: "2026-09-25", reason: "0.21 §1 forma fundida: 69 reqs × ~88 tk/req (description+verify+evidence) > envelope 9.200 — achado para o lead" },
+  "lista:fixture2": { measured: 12745, tolerated: 13400, since: "2026-09-25", reason: "0.21 §1 forma fundida: 69 reqs × ~88 tk/req > envelope herdado 8.450 — achado para o lead" }
+}
 
 function withKnownDeviation(
   budgets: SectionBudgets,
@@ -515,7 +376,6 @@ function assertSectionBudgets(measured: SectionTokens, budgets: SectionBudgets):
 describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-diet s0)", () => {
   const results = new Map<BaselineFixture["name"], PrepareCodegenContextResultReady>();
   let detailSupported = false;
-  let ultrathinSupported = false;
 
   beforeAll(() => {
     clearG2RuntimeCacheForTests();
@@ -524,7 +384,6 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
       results.set(fixture.name, runFixture(fixture));
     }
     detailSupported = detailParamSupported(FIXTURES[0]!);
-    ultrathinSupported = ultrathinParamSupported(FIXTURES[0]!);
   });
 
   describe.each(FIXTURES)("$label", (fixture) => {
@@ -548,68 +407,26 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
       expect(JSON.stringify(first)).toBe(JSON.stringify(results.get(fixture.name)!));
     });
 
-    // -- standard/minimal: declarados JÁ, ativos só quando `detail` existir --
-    // (skip condicional em runtime — ver detailParamSupported. Não usar
-    // test.todo aqui para que a ativação seja automática quando s1–s3b
-    // aterrarem, sem edição deste ficheiro.)
+    // -- lista/standard: TOTAL = envelope herdado; desvios declarados --
 
-    it("respeita os budgets do nível `standard` (gates hard do EPIC) [pendente s1–s3]", (ctx) => {
-      if (!detailSupported) {
-        ctx.skip(); // parâmetro `detail` ainda não existe (pré-s1)
-        return;
-      }
-      const result = handlePrepareCodegenContextDiscover(withDetail(fixture.input, "standard"));
+    it.each(["standard", "lista"] as const)("respeita os budgets do nível `%s` (0.21 §1: envelope herdado como total; desvios declarados)", (detail) => {
+      expect(detailSupported).toBe(true);
+      const result = handlePrepareCodegenContextDiscover(withDetail(fixture.input, detail));
       expectReady(result);
-      if (!s2RelationsRefLanded(result) || !s3CapsLanded(result)) {
-        // s1 (dedup estrutural) aterrou, mas o total ≤6.5K/8.5K só é
-        // alcançável com s2 (relations→ref, −4.3K) + s3 (caps/boilerplate)
-        // — ver EPIC §Slices. Sentinelas acima; budgets intactos.
-        ctx.skip();
-        return;
-      }
+      // sentinelas: relations por referência + requisito fundido (ambas aterradas)
+      expect(s2RelationsRefLanded(result)).toBe(true);
+      expect(s1FusionLanded(result)).toBe(true);
       assertSectionBudgets(
         sectionTokens(result),
-        withKnownDeviation(BUDGETS.standard[fixture.name], "standard", fixture.name)
+        withKnownDeviation(BUDGETS[detail][fixture.name], detail, fixture.name)
       );
+      // O payload DIZ se coube no envelope — e diz a verdade que este teste mede.
+      const declared = (result as { size_estimate?: { approx_tokens: number; envelope_tk?: number; within_envelope?: boolean } }).size_estimate;
+      expect(declared?.envelope_tk).toBe(BUDGETS[detail][fixture.name].total);
+      expect(declared?.within_envelope).toBe(sectionTokens(result).total <= BUDGETS[detail][fixture.name].total);
     });
 
-    it("respeita os budgets do nível `minimal` (s3b revisto — fixados por medição, ADENDA 2026-07-05)", (ctx) => {
-      if (!detailSupported) {
-        ctx.skip(); // parâmetro `detail` ainda não existe (pré-s1)
-        return;
-      }
-      const result = handlePrepareCodegenContextDiscover(withDetail(fixture.input, "minimal"));
-      expectReady(result);
-      if (!s3bMinimalLanded(result)) {
-        // Pré-s3b `minimal` partilhava a codificação de `standard`; os budgets
-        // minimal (fixados por medição do s3b revisto) só vinculam com a
-        // sentinela acima (evidence cap ≤ 5).
-        ctx.skip();
-        return;
-      }
-      assertSectionBudgets(
-        sectionTokens(result),
-        withKnownDeviation(BUDGETS.minimal[fixture.name], "minimal", fixture.name)
-      );
-    });
-
-    it("respeita os budgets do nível `ultrathin` (s3c — fixados por medição +~5%; ratificação do operador na validação)", (ctx) => {
-      if (!detailSupported || !ultrathinSupported) {
-        ctx.skip(); // parâmetro `detail`/nível `ultrathin` ainda não existe (pré-s1/pré-s3c)
-        return;
-      }
-      const result = handlePrepareCodegenContextDiscover(withDetail(fixture.input, "ultrathin"));
-      expectReady(result);
-      if (!s3cUltrathinLanded(result)) {
-        // Sentinela s3c (requirements sem `description` + evidence 0 inline);
-        // budgets ultrathin só vinculam quando o slice aterrar.
-        ctx.skip();
-        return;
-      }
-      assertSectionBudgets(sectionTokens(result), BUDGETS.ultrathin[fixture.name]);
-    });
-
-    it("conjunto de ids citáveis idêntico em todos os níveis de `detail` [pendente s1]", (ctx) => {
+    it("conjunto de ids citáveis idêntico em todos os níveis de `detail` (invariante 3)", (ctx) => {
       if (!detailSupported) {
         ctx.skip(); // parâmetro `detail` ainda não existe (pré-s1)
         return;
@@ -619,13 +436,8 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
       // citations.<source>.ids_from referencia-os (run-length source_data
       // alinhado 1:1) — extração via a mesma regra documentada no resource
       // (detail_encoding.citations), com fallback para ids explícitos.
-      // s3c: o loop inclui `ultrathin` (mesma regra, sem enfraquecimento —
-      // os ids continuam a vir das secções COMPLETAS do próprio payload).
       const fullIds = Object.keys(results.get(fixture.name)!.citation_map).sort();
-      const levels: ReadonlyArray<"standard" | "minimal" | "ultrathin"> =
-        ultrathinSupported
-          ? ["standard", "minimal", "ultrathin"]
-          : ["standard", "minimal"];
+      const levels: ReadonlyArray<"standard" | "lista"> = ["standard", "lista"];
       for (const detail of levels) {
         const result = handlePrepareCodegenContextDiscover(withDetail(fixture.input, detail));
         expectReady(result);

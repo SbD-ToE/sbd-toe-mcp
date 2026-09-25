@@ -1,14 +1,21 @@
 /**
- * §5 — projecção da forma nova (linha 0.21), para DERIVAR os tectos da promessa escrita.
+ * §5 — projecção da forma nova (linha 0.21) e, desde a §1, a MEDIÇÃO DA FORMA SERVIDA.
  *
- * Não altera o servidor: reconstrói, a partir dos MESMOS dados publicados que o prepare
- * serve hoje, o payload que a forma nova terá (fusão §1 + cortes §3 + adjacência §2) e
- * mede-o. Os números que saem daqui são a base e o declive usados em
- * `floor((promessa − base) / custo)`. Reprodutível: `node scripts/measure/s5-form-projection.mjs`
+ * Reprodutível: `npm run build && node scripts/measure/s5-form-projection.mjs`
+ *
+ * CORRECÇÃO 2026-09-25 (achado da §1): a versão de 2026-09-11 desta projecção fazia
+ * o join verify/evidence a partir de `g2_context.evidence_patterns` do payload full —
+ * um bloco CAPADO a 25. Só 25 requisitos levavam verify/evidence na projecção; a
+ * partir dos 25 o custo por requisito ficava subestimado (81,0 tk/req medidos vs
+ * ~132 tk/req reais na forma servida). Os tectos 83/88 ratificados no §5 foram
+ * derivados dessa projecção. Esta versão faz o join sobre o catálogo publicado
+ * COMPLETO (1:1 por requisito) e imprime, lado a lado, a projecção corrigida e a
+ * forma servida (com o tecto levantado SÓ para medir o caso de 89).
  */
 import { handlePrepareCodegenContext } from "../../dist/tools/prepare-codegen-context.js";
 import { getOntologyData } from "../../dist/tools/ontology-loader.js";
 import { buildDeclaredAdjacency } from "../../dist/serving/adjacency.js";
+import * as ceilings from "../../dist/serving/payload-ceilings.js";
 
 const tk = (x) => Math.round(JSON.stringify(x).length / 4);
 
@@ -22,17 +29,14 @@ const CASES = [
 ];
 
 const ont = getOntologyData();
-const reqById = new Map(ont.requirements.map((r) => [r.requirement_id, r]));
+const epByReq = new Map((ont.evidencePatterns ?? []).map((e) => [e.maps_to_requirement_id, e]));
 
-/** O objecto da §1: um requisito é uma coisa só, e a descrição nunca sai. */
+/** O objecto da §1 (projecção corrigida): join sobre o catálogo completo, 1:1. */
 function mergedRequirements(payload) {
-  const eps = payload.g2_context?.evidence_patterns ?? [];
-  const epByReq = new Map();
-  for (const ep of eps) if (ep.maps_to_requirement_id && !epByReq.has(ep.maps_to_requirement_id)) epByReq.set(ep.maps_to_requirement_id, ep);
   return (payload.activated_scope?.requirements ?? []).map((r) => {
-    const src = reqById.get(r.requirement_id) ?? {};
-    const ep = epByReq.get(r.requirement_id);
-    const out = { id: r.requirement_id, name: r.name, description: src.description ?? "" };
+    const id = r.id ?? r.requirement_id;
+    const ep = epByReq.get(id);
+    const out = { id, name: r.name, description: r.description ?? "" };
     if (ep?.verification_logic) out.verify = ep.verification_logic;
     if (ep?.evidence_expectation) out.evidence = ep.evidence_expectation;
     return out;
@@ -54,18 +58,14 @@ function citationsCompact(payload) {
   };
 }
 
-/** §2: resumo sempre presente — o módulo real (a32ca44), topo por impacto + denominador. */
-function adjacencySummary(args) {
-  return buildDeclaredAdjacency(args);
-}
-/** §2 detalhe: a lista completa dos sinais que mudariam o conjunto (mesma forma). */
+function adjacencySummary(args) { return buildDeclaredAdjacency(args); }
 function adjacencyDetail(args) {
   const a = buildDeclaredAdjacency(args);
   const one = a.undeclared_that_would_change_the_set[0] ?? { signal: "x", kind: "concern", would_add: 1 };
   return { scanned: a.scanned, entries: Array.from({ length: a.would_change_the_set }, () => one) };
 }
 
-/** Constrói o payload projectado de um dos TRÊS níveis da forma nova. */
+/** Constrói o payload projectado de um dos TRÊS níveis da forma-alvo do épico. */
 export function projectLevel(level, payload, args) {
   const out = {
     status: payload.status,
@@ -97,32 +97,49 @@ export function projectLevel(level, payload, args) {
   return out;
 }
 
-const rows = [];
+const regression = (rows, key, a, b) => {
+  const slope = (rows[b][key] - rows[a][key]) / (rows[b].n - rows[a].n);
+  const base = Math.round(rows[a][key] - slope * rows[a].n);
+  return { slope: Number(slope.toFixed(1)), base };
+};
+
+// ---- Projecção corrigida (forma-alvo do épico: §1 + §3 + §2) --------------
+const proj = [];
 for (const [name, args] of CASES) {
   const p = handlePrepareCodegenContext({ ...args, detail: "full" });
   if (p.status !== "ready_for_codegen") { console.log(`(saltado: ${name} → ${p.status})`); continue; }
   const n = (p.activated_scope?.requirements ?? []).length;
-  const row = { name, n, now: { ultrathin: 0, minimal: 0, standard: 0, full: tk(p) }, next: {} };
-  for (const d of ["ultrathin", "minimal", "standard"]) row.now[d] = tk(handlePrepareCodegenContext({ ...args, detail: d }));
-  for (const lvl of ["lista", "standard", "full"]) row.next[lvl] = tk(projectLevel(lvl, p, args));
-  rows.push(row);
+  const row = { name, n, full_served: tk(p) };
+  for (const lvl of ["lista", "standard", "full"]) row[lvl] = tk(projectLevel(lvl, p, args));
+  proj.push(row);
 }
+console.log("\n=== PROJECÇÃO CORRIGIDA da forma-alvo (§1+§3+§2; join 1:1 sobre o catálogo) — tokens ≈chars/4 ===");
+console.log("caso".padEnd(38), "reqs", "   lista standard    full");
+for (const r of proj) console.log(r.name.padEnd(38), String(r.n).padStart(4), String(r.lista).padStart(8), String(r.standard).padStart(8), String(r.full).padStart(8));
+const pd = {};
+for (const lvl of ["lista", "standard", "full"]) { pd[lvl] = regression(proj, lvl, 0, proj.length - 1); console.log(`   ${lvl.padEnd(9)} declive ≈ ${pd[lvl].slope} tk/req | base ≈ ${pd[lvl].base} tk`); }
 
-console.log("\n=== FORMA ACTUAL (0.20.0) vs FORMA NOVA (projectada) — tokens ≈chars/4 ===");
-console.log("caso".padEnd(38), "reqs", " ultrathin minimal standard   full  ||   lista standard    full  (nova)");
-for (const r of rows) {
-  console.log(r.name.padEnd(38), String(r.n).padStart(4),
-    String(r.now.ultrathin).padStart(9), String(r.now.minimal).padStart(7), String(r.now.standard).padStart(8), String(r.now.full).padStart(6),
-    " ||", String(r.next.lista).padStart(7), String(r.next.standard).padStart(8), String(r.next.full).padStart(7));
+// ---- Forma SERVIDA (§1 aterrada) — tecto levantado SÓ para medir o caso de 89 ---
+const savedCeilings = { ...ceilings.REQUIREMENT_CEILING_BY_DETAIL };
+for (const k of Object.keys(ceilings.REQUIREMENT_CEILING_BY_DETAIL)) delete ceilings.REQUIREMENT_CEILING_BY_DETAIL[k];
+const served = [];
+for (const [name, args] of CASES) {
+  const row = { name, n: 0 };
+  for (const lvl of ["lista", "standard", "full"]) {
+    const p = handlePrepareCodegenContext({ ...args, detail: lvl });
+    if (p.status !== "ready_for_codegen") { row[lvl] = p.status; continue; }
+    row.n = p.activated_scope.requirements.length; row[lvl] = tk(p);
+  }
+  served.push(row);
 }
-
-console.log("\n=== REGRESSÃO da forma nova (dois extremos) → base e declive ===");
-const a = rows[0], b = rows[rows.length - 1];
-const derived = {};
-for (const lvl of ["lista", "standard", "full"]) {
-  const slope = (b.next[lvl] - a.next[lvl]) / (b.n - a.n);
-  const base = Math.round(a.next[lvl] - slope * a.n);
-  derived[lvl] = { slope: Number(slope.toFixed(1)), base };
-  console.log(`   ${lvl.padEnd(9)} declive ≈ ${slope.toFixed(1)} tk/req | base ≈ ${base} tk   (${a.n}→${a.next[lvl]} tk, ${b.n}→${b.next[lvl]} tk)`);
+Object.assign(ceilings.REQUIREMENT_CEILING_BY_DETAIL, savedCeilings);
+console.log("\n=== FORMA SERVIDA (0.21 §1: requisito fundido; §3/§2 ainda não aterraram) ===");
+console.log("caso".padEnd(38), "reqs", "   lista standard    full");
+for (const r of served) console.log(r.name.padEnd(38), String(r.n).padStart(4), String(r.lista).padStart(8), String(r.standard).padStart(8), String(r.full).padStart(8));
+const sd = {};
+for (const lvl of ["lista", "standard"]) {
+  sd[lvl] = regression(served, lvl, 0, served.length - 1);
+  const env = ceilings.PAYLOAD_PROMISE_TK[lvl]; const ceil = ceilings.REQUIREMENT_CEILING_BY_DETAIL[lvl];
+  console.log(`   ${lvl.padEnd(9)} declive ≈ ${sd[lvl].slope} tk/req | base ≈ ${sd[lvl].base} tk | envelope ${env} ⇒ tecto pela fórmula = ${Math.floor((env - sd[lvl].base) / sd[lvl].slope)} (ratificado: ${ceil}; custo em ${ceil} ≈ ${Math.round(sd[lvl].base + sd[lvl].slope * ceil)} tk)`);
 }
-console.log("\nDERIVED_JSON " + JSON.stringify(derived));
+console.log("\nDERIVED_JSON " + JSON.stringify({ projection_corrected: pd, served: sd, ceiling_fit: ceilings.CEILING_FIT }));

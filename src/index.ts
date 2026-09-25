@@ -1342,8 +1342,8 @@ class McpRuntime {
           description:
             "Mirror of resources/read for clients without MCP resource support (e.g. Claude Desktop): " +
             "returns the content of any server resource by URI — including templated ones with the value " +
-            "in the URI (e.g. sbd://toe/codegen-instructions/codegen). Makes the codegen_instructions_ref " +
-            "of dieted prepare payloads resolvable on ANY client, and sbd://toe/version readable as a tool. " +
+            "in the URI (e.g. sbd://toe/codegen-instructions/codegen). Makes the codegen-instructions " +
+            "reference copy (slots + detail_encoding legend) resolvable on ANY client, and sbd://toe/version readable as a tool. " +
             `Valid URIs: ${validResourceUris()}. ` +
             "Unknown URI returns a declared error listing the valid set (never silent).",
           inputSchema: {
@@ -1720,15 +1720,14 @@ class McpRuntime {
             "Returns one of four statuses: ready_for_codegen, needs_clarification, needs_decomposition, " +
             "unsupported_scope. On ready_for_codegen the output carries activation_trace (with score, " +
             "source and reason), activated_scope, g2_context, manual_grounding, regulatory_overlay, " +
-            "citation_map, completeness_report (incl. as métricas do cap de evidence_patterns — o cap é por PERTENÇA ao âmbito, não por relevância), " +
+            "citation_map, completeness_report (incl. `verification`: denominadores da verificação fundida), " +
             "llm_codegen_instructions and security_rationale_template — with provenance for each section. " +
-            "Evidence patterns are ordered by MEMBERSHIP of the activated scope — first those whose "
-            + "`maps_to_requirement_id` is a requirement of the activated scope, then those of a direct "
-            + "control, then of a derived control; WITHIN each tier the order is by id, which is NOT a "
-            + "ranking: two patterns of the same tier are equally in scope and the id only makes the cut "
-            + "deterministic. Capped (default 25) so " +
-            "the LLM context stays manageable; the dropped patterns are listed in debug.rejected_candidates " +
-            "when debug=true. No canonical IDs are ever invented; names are surfaced only when " +
+            "0.21 §1 — O REQUISITO FUNDIDO: cada requisito activado é UM objecto {id, name, type, description, " +
+            "verify, evidence}, verbatim do bundle, em TODOS os níveis — a descrição nunca sai; `verify`/`evidence` " +
+            "são o padrão de evidência do próprio requisito (1:1). Já não há bloco g2_context.evidence_patterns " +
+            "nem cap: o que não vai inline (evidence_pattern_id, control_id, expected_artifact_type_ids) vem por " +
+            "referência executável (completeness_report.verification.by_ref → get_sbd_toe_verification_matrix). " +
+            "No canonical IDs are ever invented; names are surfaced only when " +
             "manual_rastreabilidade publishes them.",
           inputSchema: {
             type: "object",
@@ -1798,44 +1797,29 @@ class McpRuntime {
               },
               detail: {
                 type: "string",
-                enum: ["ultrathin", "minimal", "standard", "full"],
+                enum: ["lista", "standard", "full"],
                 description:
-                  "Response encoding level (v2 token diet). 'full' (default) returns the classic payload, " +
-                  "Níveis dieted têm TECTO de requisitos por chamada — minimal 78, standard 81, " +
-                  "ultrathin 86 (derivados da medição ~68/~68/~29 tk/req vs promessas " +
-                  "8450/9200/4840 tk); acima ⇒ needs_decomposition c/ requirement_ceiling e divisão " +
-                  "ensinada; 'full' sem tecto (promessa = completude). " +
-                  "byte-identical to previous releases. 'standard'/'minimal' return the SAME citable ID set " +
-                  "with a deduplicated encoding: inverted `citations` (run-length source_data + ids_from " +
-                  "payload paths) replaces `citation_map`, `manual_grounding` is grouped, per-item `source` " +
-                  "and other derivable fields (requirement category, entity_type/slice_family, " +
-                  "relevance_score) are elided per the `provenance_legend`/resource legend, and " +
-                  "`g2_context.relations` is replaced by `g2_context.relations_ref` — executable " +
-                  "trace_sbd_toe_graph {lens, anchor} calls (set include_relations=true to keep relations " +
-                  "inline instead). Additionally at 'standard'/'minimal': evidence_patterns are capped " +
-                  "(deterministic prefix; counts + rest-reference in completeness_report), " +
-                  "llm_codegen_instructions + security_rationale_template move to the MCP resource " +
-                  "sbd://toe/codegen-instructions/{mode} (see codegen_instructions_ref), activation_trace is " +
-                  "included only with debug=true (activation_trace_ref keeps the count), and requirements + " +
-                  "direct controls carry the verbatim published `description`. Nothing is silently dropped. " +
-                  "'minimal' keeps the SAME complete activated scope as 'standard' (no ranking/subsetting) " +
-                  "and trims only traceability serialization: evidence_patterns cap 5 (vs 10) and " +
-                  "manual_grounding as counts + shared manual_commit_sha + executable groups_ref " +
-                  "(same input, detail='standard'). 'ultrathin' goes one level below 'minimal' with the same " +
-                  "rules (complete activated set, nothing id-only, never silent): requirements/controls keep " +
-                  "id+name(+type/domain/control_type/confidence) but drop the published description " +
-                  "(executable activated_scope.descriptions_ref, detail='minimal'), evidence_patterns are 0 " +
-                  "inline (counts + rest-ref to detail='minimal'), manual_grounding is " +
-                  "{total_entries, manual_commit_sha, groups_ref} and completeness_report diagnostics become " +
-                  "exact counts (+ executable ref)."
+                  "Nível da resposta (0.21 §5): o eixo é «o que está INLINE e o que está POR REFERÊNCIA» — " +
+                  "a descrição de cada requisito nunca sai, em nenhum nível, e o conjunto de ids citáveis é " +
+                  "o mesmo em todos (invariante 3). 'lista': todo o requisito activado completo e verbatim " +
+                  "(id, name, type, description, verify, evidence) + ids citáveis (`citations` invertido) + " +
+                  "instruções e template inline; manual_grounding por referência (counts + entries_ref → " +
+                  "'full'); relations por referência (relations_ref, ou include_relations=true); trace só " +
+                  "com debug=true. 'standard': o que a lista promete (a adjacência detalhada inline chega na " +
+                  "§2; até lá só difere no eco do nível). 'full' (default): o que o standard promete E " +
+                  "manual_grounding verbatim inline, relations inline, activation_trace inline, citation_map " +
+                  "clássico — sem tecto, preço declarado em size_estimate. TECTO de requisitos por chamada " +
+                  "(ratificado 2026-09-25): lista 83, standard 88 (envelopes herdados 8.450/9.200 tk); acima ⇒ " +
+                  "needs_decomposition com requirement_ceiling e divisão ensinada. 'ultrathin' retirou-se " +
+                  "(cortava a descrição); 'minimal' passou a 'lista' — ambos devolvem erro que diz para onde foram."
               },
               include_relations: {
                 type: "boolean",
                 description:
-                  "Escape hatch for clients that cannot make a second call (v2 token diet). When true at " +
-                  "detail='standard'/'minimal', keeps g2_context.relations inline (dieted: no per-item source) " +
-                  "instead of the relations_ref reference. Default false. Ignored at detail='full' (full always " +
-                  "carries relations inline, byte-identical to previous releases)."
+                  "Escape hatch for clients that cannot make a second call. When true at " +
+                  "detail='lista'/'standard', keeps g2_context.relations inline (dieted: no per-item source) " +
+                  "instead of the relations_ref reference. Default false. Ignored at detail='full' (relations " +
+                  "always inline there)."
               },
               debug: {
                 type: "boolean",

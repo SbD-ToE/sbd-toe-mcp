@@ -7,7 +7,7 @@
  */
 /**
  * s2 — Relations on-demand (epic v2-token-diet): `relations_ref` no lugar do
- * array inline `g2_context.relations` em `detail: "standard" | "minimal"`.
+ * array inline `g2_context.relations` em `detail: "lista" | "standard"` (0.21: minimal→lista).
  *
  * Gates do slice (EPIC §s2):
  *   - SUPERSET (gate central, provado por EXECUÇÃO, sem mocks): para cada
@@ -88,7 +88,7 @@ const FIXTURES: readonly BaselineFixture[] = [
   }
 ];
 
-const DIET_LEVELS = ["standard", "minimal"] as const;
+const DIET_LEVELS = ["lista", "standard"] as const;
 
 const VALID_LENSES: ReadonlySet<string> = new Set([
   "slice_implementation",

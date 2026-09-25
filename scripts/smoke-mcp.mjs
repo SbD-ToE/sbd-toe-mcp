@@ -34,7 +34,7 @@ send({ jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "trace_sbd_t
 // 0.20.0-beta.23: o smoke DECLARA activadores. Desde o default declarativo
 // (beta.21) uma chamada só com `task` responde needs_input — correcto pelo
 // contrato, e este smoke não é do contrato de declaração: é do transporte + dieta.
-// over stdio and be byte-identical to the builder's content; a detail=standard
+// over stdio and be byte-identical to the builder's content; a detail=standard (0.21: instructions inline)
 // tools/call must reference it.
 send({ jsonrpc: "2.0", id: 4, method: "resources/list", params: {} });
 send({ jsonrpc: "2.0", id: 5, method: "resources/read", params: { uri: "sbd://toe/codegen-instructions/codegen" } });
@@ -102,13 +102,18 @@ setTimeout(async () => {
   let dieted;
   try { dieted = JSON.parse(dietedText); } catch { return fail("detail=standard tool result is not JSON"); }
   if (dieted.status !== "ready_for_codegen") fail(`detail=standard status: ${dieted.status}`);
-  if (dieted.codegen_instructions_ref?.resource !== "sbd://toe/codegen-instructions/codegen") {
-    fail(`codegen_instructions_ref does not point at the resource: ${JSON.stringify(dieted.codegen_instructions_ref)}`);
+  // 0.21 §1: instruções INLINE (byte-iguais aos slots do resource activos para L2) e requisito fundido.
+  const expectedInstructions = resourceJson.llm_codegen_instructions.slots.filter((s) => s.when === "always" || s.when === "risk_level:L2").map((s) => s.text);
+  if (JSON.stringify(dieted.llm_codegen_instructions) !== JSON.stringify(expectedInstructions)) {
+    fail("detail=standard llm_codegen_instructions are not inline/byte-identical to the resource slots");
   }
-  if (dieted.completeness_report?.evidence_pattern_cap !== 10) {
-    fail(`expected evidence_pattern_cap 10, got ${dieted.completeness_report?.evidence_pattern_cap}`);
+  const req0 = dieted.activated_scope?.requirements?.[0];
+  if (!req0 || !req0.id || !req0.description || !req0.verify || !req0.evidence) {
+    fail(`fused requirement missing fields: ${JSON.stringify(req0)}`);
   }
+  if (dieted.g2_context && "evidence_patterns" in dieted.g2_context) fail("evidence_patterns block must not exist (0.21 §1)");
+  if (!(dieted.size_estimate?.approx_tokens > 0)) fail("size_estimate missing");
 
-  console.log(`✓ MCP e2e OK — tools/list has trace_sbd_toe_graph; call total=${payload.total}, cursor=${payload.cursor}, rows[0]=${JSON.stringify(r0)} (no IRI leak); codegen-instructions resource listed + resolves byte-identical; detail=standard references it (cap=10)`);
+  console.log(`✓ MCP e2e OK — tools/list has trace_sbd_toe_graph; call total=${payload.total}, cursor=${payload.cursor}, rows[0]=${JSON.stringify(r0)} (no IRI leak); codegen-instructions resource listed + resolves byte-identical; detail=standard inlines it; fused requirement ${req0?.id} (${dieted.size_estimate?.approx_tokens} tk)`);
   process.exit(0);
 }, 6000);

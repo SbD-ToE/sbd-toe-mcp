@@ -59,6 +59,8 @@ import { expandQueryWithAliases } from "../backend/semantic-index-gateway.js";
 import type { Affordance } from "../serving/protocol-envelope.js";
 import { requirementCategoryOf } from "../serving/requirement-id.js";
 import { prepareCodegenAffordances } from "../serving/affordances.js";
+import { estimateSize, type SizeEstimate } from "../serving/response-shaping.js";
+import { PAYLOAD_PROMISE_TK as LEVEL_ENVELOPE_TK } from "../serving/payload-ceilings.js";
 import {
   runSelectionWithActivation,
   normalizeDeclaredTechnologies,
@@ -75,31 +77,28 @@ export type CodegenMode = "codegen" | "review" | "test-plan";
 export type RiskLevel = "L1" | "L2" | "L3";
 
 /**
- * Response ENCODING level (v2 token diet, epic v2-token-diet slice s1).
+ * Nível da resposta — linha 0.21 (§5, ratificada pelo lead 2026-09-25).
  *
- * - `full` (default): classic payload, byte-identical to previous releases —
- *   whether `detail` is omitted or explicitly "full".
- * - `standard` / `minimal`: same citable ID set, deduplicated encoding
- *   (inverted `citations`, grouped `manual_grounding`, top-level
- *   `provenance_legend` instead of per-item `source`). No information is
- *   lost — only the serialization changes. Since s3b (revised ADENDA
- *   2026-07-05 — no top-N/subsetting) `minimal` differs from `standard`
- *   ONLY in traceability serialization: evidence cap 10→5 and the minimal
- *   `manual_grounding` form; the activated scope stays complete and
- *   byte-identical to `standard`.
- * - `ultrathin` (s3c, reactivated by the operator 2026-07-05): one level below
- *   `minimal`, same rules (COMPLETE activated set, no top-k, nothing id-only,
- *   never silent) but requirements/controls WITHOUT the published
- *   `description` (executable `descriptions_ref` → detail="minimal"),
- *   evidence_patterns 0 inline (counts + rest-ref → detail="minimal"),
- *   `manual_grounding` reduced to {total_entries, manual_commit_sha,
- *   groups_ref} and `completeness_report` diagnostics trimmed to exact counts
- *   (+ executable ref). Citable ID set unchanged (invariant 3).
+ * O eixo deixou de ser «quanto detalhe» e passou a «o que está INLINE e o que
+ * está POR REFERÊNCIA». Uma coisa saiu do eixo: a descrição publicada de cada
+ * requisito NUNCA sai, em nenhum nível (§1 — o requisito fundido).
  *
- * The default flips to `standard` only at graduation to the next stable
- * release (documented as breaking) — never on the beta line.
+ * - `lista`    — todo o requisito activado vem completo e verbatim (id, nome,
+ *                descrição, como se verifica, que prova se espera), com os ids
+ *                citáveis e as instruções que proíbem inventar ids. O
+ *                ancoramento no manual vem por referência.
+ * - `standard` — o que a `lista` promete (a adjacência detalhada inline chega
+ *                na §2; até lá difere da `lista` só no eco do nível).
+ * - `full`     — o que o `standard` promete, e mais: o ancoramento no manual
+ *                verbatim inline, as relações do grafo inline e o traço de
+ *                activação. É o nível da completude: não promete caber,
+ *                promete não faltar — e declara o preço em `size_estimate`.
+ *
+ * `ultrathin` reformou-se (a sua razão documentada era cortar a descrição) e
+ * `minimal` passou a chamar-se `lista` (herda-lhe o envelope de 8.450 tk).
+ * O default continua a ser `full` (omissão ≡ "full").
  */
-export type CodegenDetailLevel = "ultrathin" | "minimal" | "standard" | "full";
+export type CodegenDetailLevel = "lista" | "standard" | "full";
 
 export interface PrepareCodegenContextInput {
   task: string;
@@ -128,10 +127,9 @@ export interface PrepareCodegenContextInput {
   detail?: CodegenDetailLevel;
   /**
    * v2 token diet, s2 — escape hatch for clients that cannot make a second
-   * call: when true, `detail: "standard" | "minimal"` keeps `g2_context.relations`
+   * call: when true, `detail: "lista" | "standard"` keeps `g2_context.relations`
    * inline (dieted: no per-item `source`) instead of `relations_ref`.
-   * Ignored at `detail: "full"` (full is always byte-identical to the classic
-   * payload, relations inline).
+   * Ignored at `detail: "full"` (relations always inline there).
    */
   include_relations?: boolean;
   debug?: boolean;
@@ -186,13 +184,39 @@ export interface ActivationTraceEntry {
   reason: string;
 }
 
+/**
+ * 0.21 §1 — O REQUISITO FUNDIDO: um objecto por requisito, inline em TODOS os
+ * níveis. Antes, `activated_scope.requirements` trazia {requirement_id, name,
+ * category, type} e o «como verifico» vivia num bloco à parte
+ * (`g2_context.evidence_patterns`, chaveado por `maps_to_requirement_id`,
+ * capado a 25/10/5/0 por nível) — o modelo tinha de fazer o join, e um modelo
+ * apressado pegava no nome de três palavras e preenchia o resto de cabeça.
+ * Agora o requisito é UMA coisa: id, nome, descrição publicada (nunca sai),
+ * verificação e prova esperada — verbatim do bundle (requirements.json +
+ * evidence_patterns.json, 1:1 por requisito no KG v1.12.0). Os campos do
+ * padrão que NÃO vêm inline (evidence_pattern_id, control_id,
+ * expected_artifact_type_ids) mudam de sítio e passam a referenciados —
+ * `completeness_report.verification.by_ref` é a chamada executável.
+ */
+export interface FusedRequirement {
+  id: string;
+  name: string;
+  /** Published `type` (base | domain-specific) — not derivable, kept inline. */
+  type?: string;
+  /** Lossless guard: present ONLY when not derivable from the id's category segment (expected never). */
+  category?: string;
+  /** Verbatim published description — NEVER elided, at any level (0.21 §1). */
+  description?: string;
+  /** Verbatim `verification_logic` of the requirement's published evidence pattern. */
+  verify?: string;
+  /** Verbatim `evidence_expectation` of the same pattern. */
+  evidence?: string;
+  /** Present at detail="full" only (the dieted levels carry it once, in `provenance_legend`). */
+  source?: "runtime_v0";
+}
+
 export interface ActivatedScope {
-  requirements: Array<{
-    requirement_id: string;
-    name: string;
-    category: string;
-    source: "runtime_v0";
-  }>;
+  requirements: FusedRequirement[];
   controls: Array<{
     control_id: string;
     name: string;
@@ -200,6 +224,8 @@ export interface ActivatedScope {
     control_type: string;
     source: "runtime_v0";
     confidence: "direct" | "derived";
+    /** 0.21 §1: verbatim published description, `direct` controls only, at every level. */
+    description?: string;
   }>;
   slices: Array<{
     slice_id: string;
@@ -235,52 +261,15 @@ export interface G2ContextRelation {
   source: "runtime_v1";
 }
 
-export interface G2ContextEvidencePattern {
-  id: string;
-  maps_to_requirement_id?: string;
-  maps_to_control_id?: string;
-  evidence_expectation?: string;
-  verification_logic?: string;
-  expected_artifact_type_ids?: string[];
-  /** Score in [0,1] driving cap order. 1.0 = direct control match, 0.7 = active requirement, 0.5 = derived control match. */
-  relevance_score: number;
-  source: "runtime_v0";
-}
-
-const EVIDENCE_PATTERN_CAP = 25;
-
 /**
- * v2 token diet, s3 — evidence-pattern cap applied at `detail: "standard" |
- * "minimal"` ON TOP of the classic cap: the dieted list is the deterministic
- * PREFIX (relevance_score desc, id asc — the exact order the core already
- * emits) of the classic top-{@link EVIDENCE_PATTERN_CAP} list. Never silent:
- * `completeness_report` reports total/returned/capped and, when anything was
- * cut, `evidence_patterns_rest` says how to retrieve the rest (same tool,
- * `detail: "full"`).
+ * 0.21 §1 — `g2_context.evidence_patterns` DEIXOU DE SER BLOCO. O «como
+ * verifico» de cada requisito activado vai inline no próprio requisito
+ * ({@link FusedRequirement}.verify/.evidence); os caps 25/10/5/0 por nível
+ * morreram com ele. Os padrões que só tocavam o âmbito por um CONTROLO
+ * activado (requisito fora do conjunto) não são inlinados — pertencem a
+ * outros requisitos — e ficam contados + referenciados em
+ * `completeness_report.verification` (nunca silencioso).
  */
-const STANDARD_EVIDENCE_PATTERN_CAP = 10;
-
-/**
- * v2 token diet, s3b (revised per the 2026-07-05 operator ADENDA in
- * agentic/planeado/v2-token-diet/EPIC.md — no top-N, no subsetting of the
- * activated set): at `detail: "minimal"` the evidence cap tightens 10→5 with
- * the SAME s3 mechanism (deterministic prefix, never-silent counts +
- * executable rest-reference). This cap — together with the minimal
- * `manual_grounding` form — is the ONLY divergence from `standard`; the
- * activated scope (requirements/controls/slices/entities, with the verbatim
- * published descriptions) stays COMPLETE and byte-identical to `standard`.
- */
-const MINIMAL_EVIDENCE_PATTERN_CAP = 5;
-
-/**
- * v2 token diet, s3c (operator ADENDA 2026-07-05, reactivated same day): at
- * `detail: "ultrathin"` NO evidence pattern goes inline (cap 0) — the SAME s3
- * never-silent mechanism still applies in full: `completeness_report` reports
- * total/returned(=0)/capped(=total) and `evidence_patterns_rest` is the
- * executable reference to the CHEAPEST level that returns them inline
- * (detail="minimal" ⇒ top-5; "standard" ⇒ 10; "full" ⇒ classic 25).
- */
-const ULTRATHIN_EVIDENCE_PATTERN_CAP = 0;
 
 export interface G2Context {
   control_objectives: G2ContextEntity[];
@@ -288,7 +277,6 @@ export interface G2Context {
   practices: G2ContextEntity[];
   artifacts: G2ContextEntity[];
   relations: G2ContextRelation[];
-  evidence_patterns: G2ContextEvidencePattern[];
 }
 
 export interface ManualGroundingEntry {
@@ -362,14 +350,8 @@ export interface CompletenessReport {
   unnamed_v1_entities: number;
   v1_consistency_mismatches: string[];
   v1_manifest_warnings: string[];
-  /** Total evidence patterns matched before the relevance cap was applied. */
-  evidence_patterns_total: number;
-  /** Patterns retained in `g2_context.evidence_patterns` after the cap. */
-  evidence_patterns_returned: number;
-  /** Patterns dropped because of the cap (visible in debug.rejected_candidates). */
-  evidence_patterns_capped: number;
-  /** Cap value applied during this resolution. */
-  evidence_pattern_cap: number;
+  /** 0.21 §1 — never-silent summary of the fused verification (see {@link VerificationSummary}). */
+  verification: VerificationSummary;
   /**
    * MP1 selection summary (G-mp1a O2, 2026-08-31): the requirement set comes from
    * the selection engine (baseline ∪ context-activated chapters, narrowed by the
@@ -382,13 +364,52 @@ export interface CompletenessReport {
     narrowed_out_categories: number;
     narrowed_out_requirements: number;
     /** Opcionais no perfil ultrathin (dieta s3c): a banda continua declarada no
-     * select e nos perfis standard/minimal/full; recuperação via narrowed_out_ref. */
+     * select e em todos os níveis (0.21: lista/standard/full); recuperação via narrowed_out_ref. */
     excluded_by_level_categories?: number;
     excluded_by_level_requirements?: number;
     /** 0.19.0 (dieta por forma — tectos vigiam): fracção só-lexical da selecção; o
      * sumário completo + aviso + candidatos vivem no select_sbd_toe_requirements. */
     lexical_share?: number;
     narrowed_out_ref: { tool: "select_sbd_toe_requirements"; note: string };
+  };
+}
+
+/**
+ * 0.21 §1 — sumário NUNCA-SILENCIOSO da verificação fundida. Substitui os
+ * contadores do cap (total/returned/capped/cap) que morreram com o bloco.
+ * Cada número tem denominador nomeado; cada coisa que não vem inline tem a
+ * chamada executável que a devolve.
+ */
+export interface VerificationSummary {
+  /** Denominator: activated requirements (= activated_scope.requirements.length). */
+  requirements: number;
+  /** Requirements carrying BOTH `verify` and `evidence` inline. */
+  with_verify_and_evidence: number;
+  /** Requirements whose published pattern lacks `verify` and/or `evidence` (expected 0 on KG v1.12.0). */
+  partial: number;
+  /** Requirements with NO published evidence pattern at all (expected 0 on KG v1.12.0). */
+  without_pattern: number;
+  /**
+   * Pattern fields NOT inlined in the fused requirement (evidence_pattern_id,
+   * control_id, expected_artifact_type_ids) — moved by reference: the
+   * verification matrix serves the full row per requirement (≤50 ids/call).
+   */
+  by_ref: {
+    tool: "get_sbd_toe_verification_matrix";
+    with: string;
+    /** Number of calls needed to cover every activated requirement (⌈requirements/50⌉). */
+    calls: number;
+    fields: ["evidence_pattern_id", "control_id", "expected_artifact_type_ids"];
+    note: string;
+  };
+  /**
+   * Published patterns linked to an ACTIVATED control whose requirement is NOT
+   * in the activated set. Never inlined (they belong to other requirements);
+   * counted here and reachable by the executable ref.
+   */
+  related_by_control_outside_scope: {
+    count: number;
+    ref: { tool: "resolve_entities"; with: string; note: string };
   };
 }
 
@@ -437,11 +458,31 @@ export interface PrepareCodegenContextResultReady {
     runtime_v1: string;
     overlay: string | "absent";
   };
+  /**
+   * 0.21 §5 — o preço DECLARADO desta resposta (chars e ≈tokens = chars/4, a
+   * mesma régua da medição). `full` não tem tecto: não promete caber, promete
+   * não faltar — e diz quanto custou. Presente em todos os níveis.
+   */
+  size_estimate?: DeclaredSize;
   debug?: {
     rejected_candidates: ActivationTraceEntry[];
     notes: string[];
   };
 }
+
+/**
+ * 0.21 §5 — o preço declarado, e o envelope contra o qual se lê. `full` não
+ * tem envelope (promessa = completude). Nos níveis com envelope herdado
+ * (lista 8.450, standard 9.200) o payload diz se coube: `within_envelope`.
+ * Quando não coube, DIZ-O — nunca em silêncio (é a regra da casa desde a
+ * 0.19.4): o tecto por-id é o ratificado, mas o custo por requisito da forma
+ * fundida é o medido, e quando os dois não fecham o consumidor lê-o aqui.
+ */
+export type DeclaredSize = SizeEstimate & {
+  envelope_tk?: number;
+  within_envelope?: boolean;
+  note?: string;
+};
 
 export interface PrepareCodegenContextResultBlocked {
   status: "needs_clarification" | "needs_decomposition" | "unsupported_scope" | "needs_input";
@@ -487,7 +528,7 @@ export interface PrepareCodegenContextResultBlocked {
 export type WithoutSource<T> = Omit<T, "source">;
 
 /**
- * Inverted citation encoding (replaces `citation_map` in `standard`/`minimal`).
+ * Inverted citation encoding (replaces `citation_map` in `lista`/`standard`).
  * Grouped by source; `source_data` is an ORDERED run-length map
  * `file → count`: the first N₁ citable ids come from the first file, the
  * next N₂ from the second, and so on. This preserves the exact per-id
@@ -567,16 +608,16 @@ export interface ManualGroundingMinimalGroup {
   v1_entity_names?: Record<string, string>;
 }
 
-/** Executable reference to the full per-group grounding ids (s3b). */
-export interface GroundingGroupsRef {
+/** Executable reference to the flat, verbatim grounding entries (detail="full"). */
+export interface GroundingEntriesRef {
   tool: "prepare_sbd_toe_codegen_context";
-  /** Merge over this call's input_echo: same input, detail="standard". */
-  with: { detail: "standard" };
+  /** Merge over this call's input_echo: same input, detail="full". */
+  with: { detail: "full" };
   note: string;
 }
 
 /**
- * `manual_grounding` at `detail: "minimal"` (s3b revised): aggregated
+ * `manual_grounding` at `detail: "lista" | "standard"` (0.21; born as the s3b minimal form): aggregated
  * provenance — total count, the manual_commit_sha shared by every group
  * (hoisted), and the (role, chapter, file) group list with per-group entry
  * COUNTS instead of per-group id lists — plus the executable `groups_ref`.
@@ -592,14 +633,14 @@ export interface ManualGroundingMinimal {
    * its own `manual_commit_sha` inline (lossless guard). */
   manual_commit_sha?: string;
   groups: ManualGroundingMinimalGroup[];
-  /** How to obtain the full per-group v1_entity_ids (detail="standard"). */
-  groups_ref: GroundingGroupsRef;
+  /** 0.21: how to obtain the verbatim flat entries (detail="full" — the only level that inlines the grounding). */
+  entries_ref: GroundingEntriesRef;
   /** Lossless guard: entries without a v1_entity_id (expected empty). */
   ungrouped?: Array<WithoutSource<ManualGroundingEntry>>;
 }
 
 /**
- * `manual_grounding` at `detail: "ultrathin"` (s3c): aggregate provenance ONLY
+ * RETIRADO na 0.21 (era `manual_grounding` at `detail: "ultrathin"`): aggregate provenance ONLY
  * — `{total_entries, manual_commit_sha, groups_ref}` — derived from the s3b
  * minimal form with the (role, chapter, file) group list elided too. Never
  * silent: `total_entries` is the exact flat detail="full" entry count and
@@ -612,64 +653,24 @@ export interface ManualGroundingMinimal {
  * `citations`/`ids_from`, and the grounding id SET stays reconstructible from
  * this same payload's g2_context entity maps without any extra call.
  */
-export interface ManualGroundingUltrathin {
-  /** Number of flat detail="full" entries the elided groups encode. */
-  total_entries: number;
-  /** Hoisted provenance (expected always: one published manual commit). */
-  manual_commit_sha?: string;
-  /** Lossless guard: present ONLY when hoisting failed or a group carried
-   * v1_entity_names (never expected) — the s3b minimal groups, verbatim. */
-  groups?: ManualGroundingMinimalGroup[];
-  /** How to obtain the full per-group v1_entity_ids (detail="standard"). */
-  groups_ref: GroundingGroupsRef;
-  /** Lossless guard: entries without a v1_entity_id (expected empty). */
-  ungrouped?: Array<WithoutSource<ManualGroundingEntry>>;
-}
+// (ManualGroundingUltrathin removido — o nível reformou-se.)
 
 /**
- * v2 token diet, s3 — dieted requirement projection. `category` is elided when
- * (and only when) it equals the category segment of the `requirement_id` —
- * the segment immediately before the number (`AUT-003` → `AUT`,
- * `REQ-AGN-001` → `AGN`; consumer contract v1.10 §1.18, single source
- * `src/serving/requirement-id.ts`). True for all 255 published requirements;
- * the field survives verbatim on any future mismatch — lossless guard. `description` is the PUBLISHED bundle
- * field (data/publish/runtime/requirements.json), verbatim, never paraphrased
- * — the "how" the full projection historically dropped.
+ * 0.21 §1 — dieted requirement = the fused requirement without the per-item
+ * `source` (carried once in `provenance_legend`). `category` is elided when
+ * (and only when) it equals the id's category segment (`AUT-003` → `AUT`,
+ * `REQ-AGN-001` → `AGN`; consumer contract v1.10 §1.18) — lossless guard.
  */
-export interface DietedRequirement {
-  requirement_id: string;
-  name: string;
-  type?: string;
-  /** Present only on the (never expected) category ≠ id-category-segment mismatch. */
-  category?: string;
-  /** Verbatim `description` from the published bundle. */
-  description?: string;
-}
+export type DietedRequirement = WithoutSource<FusedRequirement>;
 
 /**
  * v2 token diet, s3 — dieted control projection: classic fields minus `source`
  * plus, for `confidence: "direct"` controls only, the verbatim published
  * `description` (data/publish/runtime/controls.json).
  */
-export type DietedControl = WithoutSource<ActivatedScope["controls"][number]> & {
-  description?: string;
-};
+export type DietedControl = WithoutSource<ActivatedScope["controls"][number]>;
 
-/**
- * v2 token diet, s3c — executable reference left in `activated_scope` at
- * `detail: "ultrathin"`, where the verbatim published `description` fields
- * (the "how", s3) are elided from requirements and direct controls. Never
- * silent: the lists themselves stay COMPLETE (same ids, same order, name
- * always present — nothing id-only); only the description field moves behind
- * this reference. detail="minimal" is the cheapest level that returns the
- * same complete scope WITH the descriptions (verbatim, never paraphrased).
- */
-export interface ActivatedScopeDescriptionsRef {
-  tool: "prepare_sbd_toe_codegen_context";
-  /** Merge over this call's input_echo: same input, detail="minimal". */
-  with: { detail: "minimal" };
-  note: string;
-}
+// (ActivatedScopeDescriptionsRef removido na 0.21 — a descrição nunca sai.)
 
 export interface DietedActivatedScope {
   requirements: DietedRequirement[];
@@ -678,13 +679,10 @@ export interface DietedActivatedScope {
   regulatory_obligations: Array<
     WithoutSource<ActivatedScope["regulatory_obligations"][number]>
   >;
-  /** Present ONLY at detail="ultrathin" (s3c): how to obtain the verbatim
-   * published descriptions elided from requirements + direct controls. */
-  descriptions_ref?: ActivatedScopeDescriptionsRef;
 }
 
 /**
- * v2 token diet, s2 — Relations on-demand. In `standard`/`minimal` the inline
+ * v2 token diet, s2 — Relations on-demand. In `lista`/`standard` the inline
  * `g2_context.relations` array (~4.3K tokens) is replaced by a REFERENCE to
  * executable calls of the `trace_sbd_toe_graph` tool whose union returns a
  * superset of the elided relations. Anchors are activated slice_ids/entity_ids
@@ -739,7 +737,7 @@ export interface RelationsRef {
 }
 
 /**
- * v2 token diet, s3 — slice-grouped entity encoding for `standard`/`minimal`:
+ * v2 token diet, s3 — slice-grouped entity encoding for `lista`/`standard`:
  * `{ slice_id: { entity_id: name | null } }`. Lossless re-encoding of the
  * classic entity list: `entity_type` is the list the map lives in,
  * `slice_id` is the group key, `slice_family` is
@@ -749,16 +747,7 @@ export interface RelationsRef {
  */
 export type SliceGroupedEntityNames = Record<string, Record<string, string | null>>;
 
-/**
- * v2 token diet, s3 — dieted evidence pattern: classic projection minus
- * `source` (s1 legend) and minus the tool-computed `relevance_score` (the
- * DETERMINISTIC list order — relevance_score desc, then id asc — already
- * carries the ranking; documented in the codegen-instructions resource).
- */
-export type DietedEvidencePattern = Omit<
-  G2ContextEvidencePattern,
-  "source" | "relevance_score"
->;
+// (DietedEvidencePattern removido na 0.21 §1 — o padrão vive no requisito fundido.)
 
 export interface DietedG2Context {
   control_objectives: SliceGroupedEntityNames;
@@ -767,11 +756,8 @@ export interface DietedG2Context {
   artifacts: SliceGroupedEntityNames;
   /** Inline only with `include_relations: true` (s2); otherwise see relations_ref. */
   relations?: Array<WithoutSource<G2ContextRelation>>;
-  /** Present when relations are elided (s2 default at standard/minimal). */
+  /** Present when relations are elided (s2 default at lista/standard). */
   relations_ref?: RelationsRef;
-  /** s3: deterministic top-{@link STANDARD_EVIDENCE_PATTERN_CAP} prefix of the
-   * classic list (see completeness_report for the never-silent counts). */
-  evidence_patterns: DietedEvidencePattern[];
 }
 
 export interface DietedRegulatoryOverlayContext {
@@ -800,7 +786,6 @@ const PROVENANCE_SOURCES = {
   "g2_context.practices": "runtime_v1",
   "g2_context.artifacts": "runtime_v1",
   "g2_context.relations": "runtime_v1",
-  "g2_context.evidence_patterns": "runtime_v0",
   "manual_grounding.groups": "runtime_v1",
   "regulatory_overlay.frameworks": "overlay",
   "regulatory_overlay.obligations": "overlay",
@@ -809,74 +794,36 @@ const PROVENANCE_SOURCES = {
 } as const;
 
 /**
- * Inline legend for `standard`/`minimal` (s3: slim pointer — the full legend,
- * including the section→source table and every derivation rule of the dieted
- * encoding, lives in the `sbd://toe/codegen-instructions/{mode}` resource,
- * section `detail_encoding`).
+ * Inline legend for `lista`/`standard` (0.21): slim pointer — the full legend
+ * (section→source table + every derivation rule of the dieted encoding) lives
+ * in the `sbd://toe/codegen-instructions/{mode}` resource, `detail_encoding`.
  */
 const PROVENANCE_LEGEND = {
   note:
-    "Deduplicated encoding (detail=standard/minimal): per-item `source` fields " +
+    "Deduplicated encoding (detail=lista/standard): per-item `source` fields " +
     "are elided (every list is source-homogeneous), requirement `category` = " +
-    "requirement_id category segment (the one before the number: AUT-003→AUT, " +
-    "REQ-AGN-001→AGN), g2_context entity lists are grouped as " +
-    "{slice_id: {entity_id: name|null}}, and citations ids are referenced via " +
-    "ids_from payload paths. Full legend: read_sbd_toe_resource(" +
-    "sbd://toe/codegen-instructions/{mode}), section detail_encoding."
+    "id category segment (AUT-003→AUT, REQ-AGN-001→AGN), g2_context entity " +
+    "lists are grouped as {slice_id: {entity_id: name|null}}, citations ids " +
+    "are referenced via ids_from payload paths, and each requirement carries " +
+    "its verbatim description + verify + evidence inline (0.21 §1). Full " +
+    "legend: read_sbd_toe_resource(sbd://toe/codegen-instructions/{mode}), " +
+    "section detail_encoding."
 } as const;
 
 export type ProvenanceLegend = typeof PROVENANCE_LEGEND;
 
 /**
- * Inline legend for `ultrathin` (s3c) — the standard/minimal legend text is
- * frozen within a bundle pin (snapshots are byte-frozen; the only edit so far is
- * the v1.10 category-segment wording, beta.3, bundle re-pin); ultrathin carries
- * its own note with the extra cut rules. Full legend: same MCP resource, section
- * `detail_encoding` (incl. the `ultrathin` entry).
- */
-const PROVENANCE_LEGEND_ULTRATHIN: ProvenanceLegend = {
-  note:
-    "Deduplicated encoding (detail=ultrathin): same rules as detail=standard/" +
-    "minimal — per-item `source` elided, requirement `category` = " +
-    "requirement_id category segment (before the number), g2_context entity lists grouped as " +
-    "{slice_id: {entity_id: name|null}}, citations ids via ids_from payload " +
-    "paths — PLUS: published `description` fields elided (executable " +
-    "activated_scope.descriptions_ref, detail='minimal'), evidence_patterns 0 " +
-    "inline (counts + rest-ref in completeness_report), manual_grounding " +
-    "aggregate-only (total + sha + groups_ref) and completeness diagnostics " +
-    "as exact counts (+ ref). Nothing silently dropped. Full legend: MCP " +
-    "read_sbd_toe_resource(sbd://toe/codegen-instructions/{mode}), detail_encoding."
-} as const;
-
-/**
- * v2 token diet, s4 — cheap turns, not fewer turns: short note (≈50 tokens)
- * appended to every `standard`/`minimal` ready payload. The production
- * write-test-edit loop is legitimate; what must not repeat is the cost of
- * re-requesting THIS payload — an identical call returns a byte-identical
- * result (deterministic, tested), so the context already in the session is
- * the source for the loop. Follow-ups that genuinely need more go through
- * `detail: "minimal"` or a targeted `consult_security_requirements` call —
- * never a repeat of the full payload. `full` carries NO hint (byte-identical
- * to the classic payload, EPIC invariant 1).
+ * v2 token diet, s4 — cheap turns, not fewer turns: short note appended to
+ * every `lista`/`standard` ready payload. An identical call returns a
+ * byte-identical result (deterministic, tested), so the context already in the
+ * session is the source for the write-test-edit loop. Follow-ups that need the
+ * inline grounding/relations/trace go through `detail: "full"` (declared
+ * price in size_estimate) or a targeted `consult_security_requirements` call.
  */
 export const REPEAT_CALL_HINT =
-  "Identical input returns this exact payload (deterministic) — reuse the context already received; deepen via detail:'minimal' or a targeted consult_security_requirements.";
+  "Identical input returns this exact payload (deterministic) — reuse the context already received; deepen via detail:'full' (grounding, relations and trace inline; price declared in size_estimate) or a targeted consult_security_requirements.";
 
-/**
- * v2 token diet, s3 — reference that replaces the inline
- * `llm_codegen_instructions` + `security_rationale_template` boilerplate at
- * `detail: "standard" | "minimal"` (both stay inline at `full`). The MCP
- * resource carries, per mode, the exact instruction slots and the template
- * skeleton; `active_conditions` lists which conditional slots apply to THIS
- * call, so the inline full content is reconstructible byte-identically.
- */
-export interface CodegenInstructionsRef {
-  resource: string;
-  /** Conditional instruction slots active for this call (see the resource's
-   * `llm_codegen_instructions.slots[].when`). */
-  active_conditions: InstructionCondition[];
-  note: string;
-}
+// (CodegenInstructionsRef removido na 0.21 — as instruções e o template vão INLINE em todos os níveis: 2,2% do payload e é o que impede a invenção de ids.)
 
 /**
  * v2 token diet, s3 — never-silent counter left in place of the elided
@@ -888,103 +835,22 @@ export interface ActivationTraceRef {
   note: string;
 }
 
-/**
- * v2 token diet, s3 — executable reference for retrieving the evidence
- * patterns omitted by the standard cap (boundList discipline: the counts live
- * in the same completeness_report; this says HOW to get the rest).
- */
-export interface EvidencePatternsRest {
-  tool: "prepare_sbd_toe_codegen_context";
-  /** Merge over this call's input_echo: same input, detail="full" (the
-   * classic top-25) at standard/minimal; detail="minimal" (the CHEAPEST level
-   * that returns patterns inline) at ultrathin (s3c). */
-  with: { detail: "full" } | { detail: "minimal" };
-  note: string;
-}
-
-/** Completeness report at `standard`/`minimal`: classic counters (with the
- * s3 cap values) plus, when patterns were cut, the executable rest-reference. */
-export type DietedCompletenessReport = CompletenessReport & {
-  evidence_patterns_rest?: EvidencePatternsRest;
-};
+// (EvidencePatternsRest, DietedCompletenessReport, V1DiagnosticsRef e UltrathinCompletenessReport removidos na 0.21 — sem cap de padrões e sem nível que apare diagnósticos.)
 
 /**
- * v2 token diet, s3c — executable reference for the completeness diagnostics
- * elided at `detail: "ultrathin"` (never silent: exact counts stay inline;
- * detail="minimal" is the cheapest level whose completeness_report carries
- * the full text arrays inline).
- */
-export interface V1DiagnosticsRef {
-  tool: "prepare_sbd_toe_codegen_context";
-  /** Merge over this call's input_echo: same input, detail="minimal". */
-  with: { detail: "minimal" };
-  note: string;
-}
-
-/**
- * Completeness report at `detail: "ultrathin"` (s3c) — trimmed to the
- * essentials that support the never-silent discipline. KEPT verbatim: every
- * expected/returned count and m_recall (recall audit), named/unnamed entity
- * counts, and the evidence counts (total / returned=0 / capped=total / cap=0)
- * with the executable `evidence_patterns_rest`. CUT (serialization only, each
- * replaced by its exact count + the executable `v1_diagnostics_ref` when any
- * count > 0): the `v1_consistency_mismatches` and `v1_manifest_warnings` TEXT
- * arrays (the verbose per-slice contract-warning strings, ~100 tokens/call).
- */
-export type UltrathinCompletenessReport = Omit<
-  DietedCompletenessReport,
-  "v1_consistency_mismatches" | "v1_manifest_warnings"
-> & {
-  /** Exact length of the elided v1_consistency_mismatches array (expected 0). */
-  v1_consistency_mismatches_count: number;
-  /** Exact length of the elided v1_manifest_warnings array. */
-  v1_manifest_warnings_count: number;
-  /** Present iff either count above is > 0: how to obtain the full texts. */
-  v1_diagnostics_ref?: V1DiagnosticsRef;
-};
-
-/**
- * `ready_for_codegen` result at `detail: "standard" | "minimal"`. Same citable
- * ID set as the full result (invariant 3) — the encoding is deduplicated (s1),
- * relations are served on-demand (s2) and, since s3:
- *   - `g2_context.evidence_patterns` is capped 25→10 (deterministic prefix;
- *     never-silent counts + rest-reference in `completeness_report`);
- *   - `llm_codegen_instructions` + `security_rationale_template` move to the
- *     `sbd://toe/codegen-instructions/{mode}` MCP resource
- *     (`codegen_instructions_ref` carries the URI + active conditions);
+ * `ready_for_codegen` result at `detail: "lista" | "standard"` (0.21). Same
+ * citable ID set as the full result (invariant 3) — the encoding is
+ * deduplicated (s1), relations are served on-demand (s2), and since 0.21 §1:
+ *   - every requirement is the FUSED object (id, name, type, description,
+ *     verify, evidence) — the description never leaves;
+ *   - `llm_codegen_instructions` + `security_rationale_template` are INLINE
+ *     (they are what stops id invention);
+ *   - `manual_grounding` is the counts+sha form with an executable
+ *     `entries_ref` → detail="full" (the only level that inlines it);
  *   - `activation_trace` is included only with `debug: true`
- *     (`activation_trace_ref` keeps the never-silent count otherwise);
- *   - requirements and `direct` controls carry the verbatim published
- *     `description` (the "how"), and derivable fields (`category`,
- *     `entity_type`, `slice_family`, `relevance_score`, repeated citation ids)
- *     are elided per the resource's `detail_encoding` legend.
- *
- * s3b (revised per the 2026-07-05 operator ADENDA — NO top-N/subsetting):
- * `minimal` diverges from `standard` ONLY in serialization of traceability,
- * never in execution context. The activated scope (requirements + controls
- * with descriptions, slices, obligations, g2 entities, citations,
- * relations_ref) is byte-identical to `standard`; `minimal` additionally
- *   - caps `g2_context.evidence_patterns` 10→5 (same s3 mechanism: prefix,
- *     counts, rest-ref);
- *   - serves `manual_grounding` in the minimal form ({@link
- *     ManualGroundingMinimal}: counts + hoisted sha + executable groups_ref).
- *
- * s3c (`detail: "ultrathin"`, operator ADENDA 2026-07-05): one level below
- * `minimal`, same rules (activated set COMPLETE, no top-k, nothing id-only,
- * never silent). Diverges from `minimal` ONLY in:
- *   - requirements/controls WITHOUT the published `description` (fields kept:
- *     requirement {requirement_id, name, type}; control {control_id, name,
- *     domain, control_type, confidence}; the `category` lossless guard is
- *     unchanged) + executable `activated_scope.descriptions_ref`;
- *   - `g2_context.evidence_patterns` cap 5→0 (counts + rest-ref to the
- *     cheapest level that returns them: detail="minimal");
- *   - `manual_grounding` in the ultrathin form ({@link ManualGroundingUltrathin}:
- *     total + hoisted sha + executable groups_ref, group list elided);
- *   - `completeness_report` diagnostics trimmed ({@link
- *     UltrathinCompletenessReport}: text arrays → exact counts + executable ref).
- * Everything else — g2 entity maps (id→name|null), relations_ref, citations,
- * codegen_instructions_ref, repeat_call_hint, provenance, next — is
- * byte-identical to the other dieted levels.
+ *     (`activation_trace_ref` keeps the never-silent count otherwise).
+ * `lista` and `standard` differ only in the echoed level until the §2
+ * adjacency detail lands (declared, not decided: see decisions/0003 §6.2).
  */
 export interface PrepareCodegenContextResultReadyDieted {
   status: "ready_for_codegen";
@@ -999,19 +865,19 @@ export interface PrepareCodegenContextResultReadyDieted {
   provenance_legend: ProvenanceLegend;
   activated_scope: DietedActivatedScope;
   g2_context: DietedG2Context;
-  /** Grouped (standard), minimal (s3b) or ultrathin form (s3c). */
-  manual_grounding:
-    | ManualGroundingGrouped
-    | ManualGroundingMinimal
-    | ManualGroundingUltrathin;
+  /** Counts + hoisted sha + executable entries_ref (detail="full"). */
+  manual_grounding: ManualGroundingMinimal;
   regulatory_overlay: DietedRegulatoryOverlayContext;
   citations: CitationsBySource;
-  completeness_report: DietedCompletenessReport | UltrathinCompletenessReport;
-  codegen_instructions_ref: CodegenInstructionsRef;
+  completeness_report: CompletenessReport;
+  llm_codegen_instructions: string[];
+  security_rationale_template: SecurityRationaleTemplate;
   /** s4 — reuse note ({@link REPEAT_CALL_HINT}): identical re-call is
    * deterministic; the context already received is the loop's source. */
   repeat_call_hint: string;
   provenance: PrepareCodegenContextResultReady["provenance"];
+  /** 0.21 §5 — declared price of this response (chars, ≈tokens, envelope). */
+  size_estimate?: DeclaredSize;
   debug?: PrepareCodegenContextResultReady["debug"];
 }
 
@@ -2464,7 +2330,7 @@ export function instructionSlotsForMode(mode: CodegenMode): InstructionSlot[] {
   if (mode === "test-plan") {
     slots.push({
       when: "always",
-      text: "Test-plan mode: produce a checklist of tests grouped by validated_id, with input/expectation, and reference evidence_patterns when available."
+      text: "Test-plan mode: produce a checklist of tests grouped by validated_id, with input/expectation. Each activated requirement carries its own `verify` (validation method) and `evidence` (expected proof) inline — use them verbatim as the test's expectation; for evidence_pattern_id/control_id/expected_artifact_type_ids follow completeness_report.verification.by_ref."
     });
   }
   for (const level of ["L1", "L2", "L3"] as const) {
@@ -2559,17 +2425,28 @@ export function codegenInstructionsResourceUri(mode: CodegenMode): string {
 }
 
 /**
- * Full legend of the dieted (`standard`/`minimal`) encoding, published in the
+ * Full legend of the dieted (`lista`/`standard`) encoding, published in the
  * codegen-instructions resource. Every rule here is a lossless, deterministic
  * derivation over the SAME payload (or an executable reference) — nothing is
  * silently dropped (EPIC invariant 2) and no data changes, only serialization
- * (EPIC invariant 4).
+ * (EPIC invariant 4). 0.21 §1: the requirement is fused (description never
+ * leaves) and the evidence_patterns block is gone at every level.
  */
 const DETAIL_ENCODING_LEGEND = {
   note:
-    "How to read a detail=standard/minimal payload of prepare_sbd_toe_codegen_context. " +
+    "How to read a detail=lista/standard payload of prepare_sbd_toe_codegen_context (0.21). " +
     "Every rule below is a deterministic re-encoding of the same published data: " +
-    "nothing is silently dropped, and detail=full always returns the classic inline payload.",
+    "nothing is silently dropped. detail=full inlines everything (grounding, relations, trace) " +
+    "and declares its price in size_estimate; the fused requirement is identical at every level.",
+  levels:
+    "lista — every activated requirement complete and verbatim (id, name, type, description, verify, " +
+    "evidence) + citable ids + the instructions that forbid inventing ids; manual grounding by " +
+    "reference (manual_grounding.entries_ref → detail='full'). standard — what lista promises " +
+    "(the inline adjacency detail arrives with 0.21 §2; until then it differs from lista only in " +
+    "the echoed level). full — what standard promises plus manual_grounding verbatim inline, " +
+    "g2_context.relations inline and activation_trace inline; no requirement ceiling. " +
+    "'ultrathin' was retired in 0.21 (its documented purpose was to cut the description, which " +
+    "is no longer negotiable); 'minimal' became 'lista' (same 8,450 tk envelope).",
   sources: {
     note:
       "Per-item `source` fields are elided. Every list below is source-homogeneous " +
@@ -2588,11 +2465,15 @@ const DETAIL_ENCODING_LEGEND = {
     "entity-id keys in order. If a file ever has no path mapping, the group " +
     "carries explicit `ids` instead (lossless fallback).",
   activated_scope_requirements:
-    "requirement `category` is elided because it equals the requirement_id " +
-    "category segment — the one immediately before the number (AUT-003→AUT, " +
-    "REQ-AGN-001→AGN; consumer contract v1.10 §1.18). Verbatim bundle invariant; " +
-    "the field survives inline on any future mismatch. `description` is the verbatim published field from " +
-    "data/publish/runtime/requirements.json — never paraphrased.",
+    "ONE object per requirement (0.21 §1): {id, name, type, description, verify, evidence}. " +
+    "`description` is the verbatim published field (data/publish/runtime/requirements.json) and " +
+    "NEVER leaves, at any level. `verify` = verification_logic and `evidence` = " +
+    "evidence_expectation of the requirement's published evidence pattern " +
+    "(data/publish/runtime/evidence_patterns.json, 1:1 per requirement), verbatim. The pattern's " +
+    "other fields (evidence_pattern_id, control_id, expected_artifact_type_ids) are served by " +
+    "reference: completeness_report.verification.by_ref (get_sbd_toe_verification_matrix, ≤50 " +
+    "ids per call). `category` is elided because it equals the id category segment (AUT-003→AUT, " +
+    "REQ-AGN-001→AGN; consumer contract v1.10 §1.18) — the field survives inline on any mismatch.",
   activated_scope_controls:
     "controls with confidence='direct' carry the verbatim published `description` " +
     "from data/publish/runtime/controls.json.",
@@ -2603,54 +2484,32 @@ const DETAIL_ENCODING_LEGEND = {
     "slice_family is activated_scope.slices[].objective_family for that slice_id, " +
     "and a null name means the entity is unnamed in the published rastreabilidade " +
     "(the full projection omits `name` for it).",
-  evidence_patterns:
-    "g2_context.evidence_patterns is the deterministic prefix (relevance desc, " +
-    "then id asc; the tool-computed relevance_score is elided — the order carries " +
-    "the ranking) of the classic detail=full list, capped per " +
-    "completeness_report.evidence_pattern_cap. completeness_report reports " +
-    "total/returned/capped and, when anything was cut, evidence_patterns_rest " +
-    "says how to retrieve the rest (same input, detail='full'; with debug=true " +
-    "the ids beyond the classic cap are listed in debug.rejected_candidates).",
-  manual_grounding_minimal:
-    "At detail=minimal, manual_grounding is the aggregated-provenance form " +
-    "(s3b): total_entries, the manual_commit_sha shared by every group " +
-    "(hoisted; a group keeps its own sha inline only if hoisting was not " +
-    "possible), and the (rastreabilidade_role, manual_chapter, manual_file) " +
-    "groups with the exact per-group `entries` COUNT instead of the " +
-    "v1_entity_ids list (counts sum to total_entries — never silent). The " +
-    "grounding id set is already in the same payload (g2_context entity-map " +
-    "keys); manual_grounding.groups_ref is the executable reference (same " +
-    "input, detail='standard') for the per-group id lists — groups align " +
-    "1:1, same order. detail=standard keeps the full grouping inline.",
+  verification:
+    "There is no g2_context.evidence_patterns block any more (0.21 §1). " +
+    "completeness_report.verification declares the denominators: requirements, " +
+    "with_verify_and_evidence, partial, without_pattern, and " +
+    "related_by_control_outside_scope (patterns linked to an activated control whose " +
+    "requirement is not in the activated set — never inlined, reachable via the ref).",
+  manual_grounding:
+    "At detail=lista/standard, manual_grounding is the counts form: total_entries, the " +
+    "manual_commit_sha shared by every group (hoisted; a group keeps its own sha inline " +
+    "only if hoisting was not possible), and the (rastreabilidade_role, manual_chapter, " +
+    "manual_file) groups with the exact per-group `entries` COUNT (counts sum to " +
+    "total_entries — never silent). The grounding id set is already in the same payload " +
+    "(g2_context entity-map keys); manual_grounding.entries_ref is the executable " +
+    "reference (same input, detail='full') for the verbatim flat entries.",
   activation_trace:
-    "activation_trace is elided at detail=standard/minimal; " +
+    "activation_trace is elided at detail=lista/standard; " +
     "activation_trace_ref.entries keeps the exact count. Re-call with debug=true " +
     "to include the full trace (it is always inline at detail=full).",
   relations_ref:
-    "Inline g2_context.relations are elided at detail=standard/minimal (re-call " +
+    "Inline g2_context.relations are elided at detail=lista/standard (re-call " +
     "with include_relations=true to restore them). Recover the elided graph edges " +
     "by executing trace_sbd_toe_graph with each {lens, anchor} pair listed " +
     "(anchors are activated slice/entity ids from the same payload); the " +
     "belongsToSlice edges counted as coverage.implicit_in_entities are already " +
     "encoded by the slice grouping key of every g2_context entity; any relation " +
-    "covered by neither stays inline in residual_relations (never silent).",
-  ultrathin:
-    "detail=ultrathin (s3c) applies every rule above PLUS: (1) requirements " +
-    "{requirement_id, name, type} and controls {control_id, name, domain, " +
-    "control_type, confidence} keep the COMPLETE activated set (same ids, " +
-    "same order, name always present) but elide the published `description` " +
-    "— activated_scope.descriptions_ref is the executable reference (same " +
-    "input, detail='minimal') for the verbatim descriptions; (2) " +
-    "g2_context.evidence_patterns is empty (cap 0) — completeness_report " +
-    "keeps total/returned=0/capped=total and evidence_patterns_rest points " +
-    "to detail='minimal' (cheapest level returning patterns inline; " +
-    "'standard' returns 10, 'full' the classic 25); (3) manual_grounding is " +
-    "{total_entries, manual_commit_sha, groups_ref} — the group list is " +
-    "elided (detail='standard' returns the full 1:1 grouping); (4) " +
-    "v1_consistency_mismatches/v1_manifest_warnings text arrays are replaced " +
-    "by exact *_count fields (+ v1_diagnostics_ref when any count > 0, " +
-    "detail='minimal' returns the texts). The citable id set and the " +
-    "citations/ids_from encoding are IDENTICAL to the other dieted levels."
+    "covered by neither stays inline in residual_relations (never silent)."
 } as const;
 
 export interface CodegenInstructionsResourceContent {
@@ -2686,9 +2545,9 @@ export function buildCodegenInstructionsResourceContent(
     resource: codegenInstructionsResourceUri(mode),
     mode,
     note:
-      "Static per-mode boilerplate for prepare_sbd_toe_codegen_context at " +
-      "detail=standard/minimal (kept inline at detail=full). Also carries the " +
-      "detail_encoding legend for the dieted payload.",
+      "Static per-mode boilerplate of prepare_sbd_toe_codegen_context (0.21: the " +
+      "instructions and the template are INLINE at every level; this resource is the " +
+      "reference copy, slot by slot). Also carries the detail_encoding legend.",
     // 0.15.0 item 8, invertido para esta linha (0.20): aqui o trace EXISTE.
     line_note:
       "Nesta linha 0.20 o trace_sbd_toe_graph existe: execute os " +
@@ -2696,9 +2555,10 @@ export function buildCodegenInstructionsResourceContent(
       "prepare continua disponível como atalho para relações inline.",
     llm_codegen_instructions: {
       assembly:
-        "Include each slot whose `when` is 'always' or appears in this call's " +
-        "codegen_instructions_ref.active_conditions, in the listed order — the " +
-        "result is byte-identical to the detail=full inline llm_codegen_instructions.",
+        "Include each slot whose `when` is 'always' or whose condition holds for the call " +
+        "(regulatory_overlay: activated_scope.regulatory_obligations non-empty; " +
+        "risk_level:<L>: input_echo.risk_level; citation_map_empty: no citable id), in the " +
+        "listed order — the result is byte-identical to the inline llm_codegen_instructions.",
       slots: instructionSlotsForMode(mode)
     },
     security_rationale_template: {
@@ -2747,12 +2607,15 @@ function blocked(
   return result;
 }
 
-const DETAIL_LEVELS: ReadonlySet<string> = new Set([
-  "ultrathin",
-  "minimal",
-  "standard",
-  "full"
-]);
+const DETAIL_LEVELS: ReadonlySet<string> = new Set(["lista", "standard", "full"]);
+
+/** 0.21: níveis retirados/renomeados — o erro diz para onde foram, nunca só «inválido». */
+const RETIRED_DETAIL_LEVELS: Readonly<Record<string, string>> = {
+  ultrathin:
+    "'ultrathin' retirou-se na 0.21: a sua razão de existir era cortar a descrição publicada, e a descrição deixou de ser negociável (nunca sai, em nenhum nível). Usa detail='lista'.",
+  minimal:
+    "'minimal' passou a chamar-se 'lista' na 0.21 (herda-lhe o envelope de 8.450 tk; traz a descrição, verify e evidence de cada requisito inline). Usa detail='lista'."
+};
 
 /**
  * Validate the `detail` input (v2 token diet, s1). Invalid values fail fast
@@ -2768,17 +2631,11 @@ function parseDetail(raw: unknown): CodegenDetailLevel {
   if (typeof value === "string" && DETAIL_LEVELS.has(value)) {
     return value as CodegenDetailLevel;
   }
-  throw Object.assign(
-    new Error(
-      `Invalid "detail": ${JSON.stringify(value)}. Use one of: ultrathin, minimal, standard, full.`
-    ),
-    {
-      rpcError: {
-        code: -32602,
-        message: 'Invalid "detail". Use one of: ultrathin, minimal, standard, full.'
-      }
-    }
-  );
+  const retired = typeof value === "string" ? RETIRED_DETAIL_LEVELS[value] : undefined;
+  const message = retired
+    ? `Invalid "detail": ${JSON.stringify(value)}. ${retired}`
+    : `Invalid "detail": ${JSON.stringify(value)}. Use one of: lista, standard, full.`;
+  throw Object.assign(new Error(message), { rpcError: { code: -32602, message } });
 }
 
 /**
@@ -2969,8 +2826,7 @@ function stripSource<T extends { source: unknown }>(
  * if one ever appears, the group falls back to explicit `ids` (lossless).
  */
 const CITATION_FILE_TO_PAYLOAD_PATH: Readonly<Record<string, string>> = {
-  "data/publish/runtime/requirements.json":
-    "activated_scope.requirements[].requirement_id",
+  "data/publish/runtime/requirements.json": "activated_scope.requirements[].id",
   "data/publish/runtime/controls.json": "activated_scope.controls[].control_id",
   "data/publish/runtime/v1/slices.json": "activated_scope.slices[].slice_id",
   "data/publish/runtime/v1/control_objectives.json":
@@ -3103,12 +2959,12 @@ function groupManualGrounding(
 }
 
 // s3b: kept URI-free on purpose (no-leak discipline, same as RELATIONS_REF_NOTE).
-const GROUNDING_GROUPS_REF_NOTE =
-  "Per-group v1_entity_ids elided at detail=minimal (each group carries its " +
+const GROUNDING_ENTRIES_REF_NOTE =
+  "Per-group v1_entity_ids elided at detail=lista/standard (each group carries its " +
   "exact `entries` count). The grounding id set is already in this payload — " +
   "every grounding id is an entity-id key of the g2_context maps. Re-call " +
-  "with the same input at detail='standard' for the per-group id lists " +
-  "(groups align 1:1, same order).";
+  "with the same input at detail='full' for the verbatim flat entries " +
+  "(role, chapter, file, sha, v1_entity_id, name) — price declared in its size_estimate.";
 
 /**
  * v2 token diet, s3b (revised ADENDA 2026-07-05) — minimal-form
@@ -3148,119 +3004,19 @@ function buildMinimalGrounding(grouped: ManualGroundingGrouped): ManualGrounding
       entries: group.v1_entity_ids.length,
       ...(group.v1_entity_names ? { v1_entity_names: group.v1_entity_names } : {})
     })),
-    groups_ref: {
+    entries_ref: {
       tool: "prepare_sbd_toe_codegen_context",
-      with: { detail: "standard" },
-      note: GROUNDING_GROUPS_REF_NOTE
+      with: { detail: "full" },
+      note: GROUNDING_ENTRIES_REF_NOTE
     }
   };
   if (grouped.ungrouped) minimal.ungrouped = grouped.ungrouped;
   return minimal;
 }
 
-// s3c notes — all NEW constants (the s1–s4 note texts are byte-frozen by the
-// standard/minimal golden snapshots and are never edited). Kept URI-free
-// (no-leak discipline, same as RELATIONS_REF_NOTE).
-const GROUNDING_GROUPS_REF_NOTE_ULTRATHIN =
-  "Grounding group list elided at detail=ultrathin (total_entries is the " +
-  "exact flat entry count; manual_commit_sha is the shared published manual " +
-  "commit). The grounding id set is already in this payload — every " +
-  "grounding id is an entity-id key of the g2_context maps. Re-call with the " +
-  "same input at detail='standard' for the full (role, chapter, file) groups " +
-  "with per-group v1_entity_ids; detail='minimal' returns the groups with " +
-  "per-group counts.";
+// (notas s3c removidas na 0.21 — o nível ultrathin reformou-se.)
 
-const DESCRIPTIONS_REF_NOTE =
-  "Published `description` fields (the 'how') elided at detail=ultrathin — " +
-  "the requirement/control lists themselves are COMPLETE (same ids, same " +
-  "order, name always present). Re-call with the same input at " +
-  "detail='minimal' for the same complete scope WITH the verbatim published " +
-  "descriptions (requirements + direct controls).";
 
-const EVIDENCE_PATTERNS_REST_NOTE_ULTRATHIN =
-  "No evidence pattern goes inline at detail=ultrathin (returned=0; " +
-  "capped=total). Re-call with the same input at detail='minimal' for the " +
-  "deterministic top-5 (cheapest level that returns patterns inline); " +
-  "detail='standard' returns the top-10 and detail='full' the classic " +
-  "top-25 (each list is a deterministic prefix of the next).";
-
-const ACTIVATION_TRACE_REF_NOTE_ULTRATHIN =
-  "activation_trace elided at detail=ultrathin — re-call with debug=true to " +
-  "include it (always inline at detail=full).";
-
-const V1_DIAGNOSTICS_REF_NOTE =
-  "v1_consistency_mismatches/v1_manifest_warnings texts elided at " +
-  "detail=ultrathin (exact counts inline). Re-call with the same input at " +
-  "detail='minimal' for the full text arrays in completeness_report.";
-
-/**
- * v2 token diet, s3c — ultrathin-form `manual_grounding`, derived from the
- * s3b minimal form (so `total_entries`, the hoisted sha and the ungrouped
- * guard are byte-identical by construction). Serialization-only cut, never
- * silent: the (role, chapter, file) group list with per-group counts is
- * elided; `total_entries` keeps the exact flat count and `groups_ref` is the
- * executable reference to the full grouping (same input, detail="standard").
- * Lossless guards (expected never): if the sha was not hoistable or any group
- * carries `v1_entity_names`, the minimal `groups` list survives inline.
- */
-function buildUltrathinGrounding(
-  minimal: ManualGroundingMinimal
-): ManualGroundingUltrathin {
-  const mustKeepGroups =
-    minimal.manual_commit_sha === undefined ||
-    minimal.groups.some(
-      (group) =>
-        group.v1_entity_names !== undefined || group.manual_commit_sha !== undefined
-    );
-  const ultrathin: ManualGroundingUltrathin = {
-    total_entries: minimal.total_entries,
-    ...(minimal.manual_commit_sha !== undefined
-      ? { manual_commit_sha: minimal.manual_commit_sha }
-      : {}),
-    ...(mustKeepGroups && minimal.groups.length > 0 ? { groups: minimal.groups } : {}),
-    groups_ref: {
-      tool: "prepare_sbd_toe_codegen_context",
-      with: { detail: "standard" },
-      note: GROUNDING_GROUPS_REF_NOTE_ULTRATHIN
-    }
-  };
-  if (minimal.ungrouped) ultrathin.ungrouped = minimal.ungrouped;
-  return ultrathin;
-}
-
-/**
- * v2 token diet, s3c — trim the completeness report for `detail: "ultrathin"`.
- * Every COUNT survives verbatim (never-silent backbone: expected/returned per
- * entity kind, m_recall, named/unnamed, evidence total/returned/capped/cap and
- * the rest-ref); only the two diagnostic TEXT arrays are re-encoded as exact
- * counts + the executable `v1_diagnostics_ref` (see
- * {@link UltrathinCompletenessReport} for what is cut and why).
- */
-function trimCompletenessForUltrathin(
-  report: DietedCompletenessReport
-): UltrathinCompletenessReport {
-  const { v1_consistency_mismatches, v1_manifest_warnings, ...kept } = report;
-  // 0.15.0: ultrathin OMITE os counts excluded_by_level (dieta; tecto 4.840 vigia) —
-  // a banda fica declarada no select e nos perfis standard/minimal/full.
-  if (kept.selection) {
-    const { excluded_by_level_categories: _c, excluded_by_level_requirements: _r, lexical_share: _lx, ...selRest } = kept.selection;
-    kept.selection = selRest as typeof kept.selection;
-  }
-  return {
-    ...kept,
-    v1_consistency_mismatches_count: v1_consistency_mismatches.length,
-    v1_manifest_warnings_count: v1_manifest_warnings.length,
-    ...(v1_consistency_mismatches.length + v1_manifest_warnings.length > 0
-      ? {
-          v1_diagnostics_ref: {
-            tool: "prepare_sbd_toe_codegen_context",
-            with: { detail: "minimal" },
-            note: V1_DIAGNOSTICS_REF_NOTE
-          } satisfies V1DiagnosticsRef
-        }
-      : {})
-  };
-}
 
 /** Slice-grouped, name-only entity encoding (see {@link SliceGroupedEntityNames}). */
 function groupEntitiesBySlice(
@@ -3281,152 +3037,58 @@ function categoryIsDerivable(requirementId: string, category: string): boolean {
   return derived !== undefined && derived === category;
 }
 
-/** Dieted requirements: `source`/derivable `category` elided, verbatim
- * published `description` appended (s3 — the "how"). s3c: at
- * `detail: "ultrathin"` (`includeDescriptions: false`) the description is
- * elided too — each item is exactly {requirement_id, name, type} (plus the
- * unchanged `category` lossless guard) with the executable
- * `activated_scope.descriptions_ref` pointing at detail="minimal". */
-function dietRequirements(
-  requirements: ActivatedScope["requirements"],
-  includeDescriptions: boolean
-): DietedRequirement[] {
-  const descriptionById = new Map<string, string>();
-  if (includeDescriptions) {
-    for (const requirement of getOntologyData().requirements) {
-      if (requirement.description) {
-        descriptionById.set(requirement.requirement_id, requirement.description);
-      }
-    }
-  }
+/** Dieted requirements (0.21 §1): the fused object minus per-item `source`;
+ * `category` elided iff derivable from the id (lossless guard otherwise). The
+ * description/verify/evidence come from the core — they are the SAME at every
+ * level; nothing is added or removed here. */
+function dietRequirements(requirements: ActivatedScope["requirements"]): DietedRequirement[] {
   return requirements.map((item) => {
-    const { source: _source, category, ...rest } = item as (typeof requirements)[number] & {
-      type?: string;
-    };
-    const description = descriptionById.get(item.requirement_id);
+    const { source: _source, category, ...rest } = item;
     return {
       ...rest,
-      ...(categoryIsDerivable(item.requirement_id, category) ? {} : { category }),
-      ...(description ? { description } : {})
+      ...(category !== undefined && !categoryIsDerivable(item.id, category) ? { category } : {})
     };
   });
 }
 
-/** Dieted controls: `source` elided; `direct` controls carry the verbatim
- * published `description` (s3 — the "how"). s3c: at `detail: "ultrathin"`
- * (`includeDescriptions: false`) the description is elided — each item is
- * exactly {control_id, name, domain, control_type, confidence} (every
- * non-description published field: small, useful, and required to keep the
- * item more than id-only). */
-function dietControls(
-  controls: ActivatedScope["controls"],
-  includeDescriptions: boolean
-): DietedControl[] {
-  const descriptionById = new Map<string, string>();
-  if (includeDescriptions) {
-    for (const control of getOntologyData().controls) {
-      if (control.description) descriptionById.set(control.control_id, control.description);
-    }
-  }
-  return controls.map((item) => {
-    const { source: _source, ...rest } = item;
-    const description =
-      item.confidence === "direct" ? descriptionById.get(item.control_id) : undefined;
-    return { ...rest, ...(description ? { description } : {}) };
-  });
+/** Dieted controls: `source` elided; the `direct` controls' verbatim published
+ * `description` comes from the core (0.21: at every level, full included). */
+function dietControls(controls: ActivatedScope["controls"]): DietedControl[] {
+  return stripSource(controls);
 }
 
 /**
- * v2 token diet, s1+s2+s3 — dieted encoding for `detail: "standard" |
- * "minimal"`. Pure post-processing over the byte-identical full result. The
- * citable ID set is EXACTLY the full one (invariant 3; the omitted evidence
- * patterns carry no citation_map ids — verified by tests). Every cut is
- * either a lossless derivable-field re-encoding documented in the
- * codegen-instructions resource legend, or an explicit bound with
- * total/returned/omitted counts plus an executable reference to the rest
- * (invariant 2 — never silent):
- *   - s1: inverted citations, grouped grounding, per-item `source` legend;
+ * 0.21 — a forma por nível é uma TABELA, não ramos: o que cada nível põe
+ * inline e o que põe por referência. Parametrizável de propósito — a §4 do
+ * despacho (o Mensor mede se o `manual_grounding` vai inline ou por
+ * referência) e o «2 ou 3 níveis» ficam em aberto e decidem-se aqui, numa
+ * linha, sem reescrever o servidor.
+ */
+export const LEVEL_FORM: Readonly<
+  Record<Exclude<CodegenDetailLevel, "full">, { manual_grounding: "ref"; relations: "ref" }>
+> = {
+  lista: { manual_grounding: "ref", relations: "ref" },
+  standard: { manual_grounding: "ref", relations: "ref" }
+};
+
+/**
+ * Dieted encoding for `detail: "lista" | "standard"` (0.21). Pure
+ * post-processing over the full result. The citable ID set is EXACTLY the
+ * full one (invariant 3). Every cut is either a lossless derivable-field
+ * re-encoding documented in the codegen-instructions resource legend, or an
+ * explicit bound with counts plus an executable reference (never silent):
+ *   - s1: inverted citations, per-item `source` legend;
  *   - s2: relations on-demand via `relations_ref` (include_relations restores);
- *   - s3: evidence cap 25→10 (deterministic prefix; counts + rest-ref in
- *     completeness_report), instructions/template → MCP resource, trace only
- *     with debug, verbatim published `description` on requirements + direct
- *     controls, and derivable-field dedup (category, entity_type/slice_family
- *     via slice-grouped entity maps, relevance_score, citation id repeats);
- *   - s3b (revised ADENDA 2026-07-05 — no top-N): `minimal` keeps the
- *     activated scope byte-identical to `standard` and diverges ONLY on
- *     traceability serialization — evidence cap 10→5 (same mechanism) and
- *     `manual_grounding` in the minimal form (counts + hoisted sha +
- *     executable groups_ref);
- *   - s3c (`ultrathin`, operator reactivation 2026-07-05): same complete
- *     activated set, but descriptions elided (descriptions_ref →
- *     detail="minimal"), evidence cap 5→0 (rest-ref → detail="minimal"),
- *     grounding aggregate-only and completeness diagnostics as counts + ref.
+ *   - 0.21 §1: the fused requirement is byte-identical to full's minus
+ *     `source`; instructions + template INLINE; manual_grounding in the
+ *     counts form with `entries_ref` → detail="full"; trace only with debug.
  */
 function applyStructuralDiet(
   result: PrepareCodegenContextResultReady,
   detail: Exclude<CodegenDetailLevel, "full">,
   includeRelations: boolean
 ): PrepareCodegenContextResultReadyDieted {
-  // s3/s3b/s3c evidence cap (standard 10, minimal 5, ultrathin 0):
-  // deterministic prefix of the classic (already sorted: relevance_score desc,
-  // id asc) list; each dieted list is by construction a prefix of the next
-  // level's. Never-silent counts below; the rest-ref points to detail="full"
-  // (classic top-25) at standard/minimal and to detail="minimal" (the
-  // CHEAPEST level that returns patterns inline) at ultrathin.
-  const ultrathin = detail === "ultrathin";
-  const evidenceCap = ultrathin
-    ? ULTRATHIN_EVIDENCE_PATTERN_CAP
-    : detail === "minimal"
-      ? MINIMAL_EVIDENCE_PATTERN_CAP
-      : STANDARD_EVIDENCE_PATTERN_CAP;
-  const evidenceKept = result.g2_context.evidence_patterns.slice(0, evidenceCap);
-  const evidenceTotal = result.completeness_report.evidence_patterns_total;
-  const evidenceCapped = evidenceTotal - evidenceKept.length;
-  const completeness: DietedCompletenessReport = {
-    ...result.completeness_report,
-    evidence_patterns_returned: evidenceKept.length,
-    evidence_patterns_capped: evidenceCapped,
-    evidence_pattern_cap: evidenceCap,
-    ...(evidenceCapped > 0
-      ? {
-          evidence_patterns_rest: (ultrathin
-            ? {
-                tool: "prepare_sbd_toe_codegen_context",
-                with: { detail: "minimal" },
-                note: EVIDENCE_PATTERNS_REST_NOTE_ULTRATHIN
-              }
-            : {
-                tool: "prepare_sbd_toe_codegen_context",
-                with: { detail: "full" },
-                note:
-                  "Re-call with the same input at detail='full' for the classic inline " +
-                  `top-${EVIDENCE_PATTERN_CAP} evidence_patterns (this list is its ` +
-                  "deterministic prefix); with debug=true, ids beyond the classic cap " +
-                  "are listed in debug.rejected_candidates."
-              }) satisfies EvidencePatternsRest
-        }
-      : {})
-  };
-
-  // s3 instructions → resource: conditions computed from the SAME resolved
-  // inputs the core used, so resource + active_conditions reconstruct the
-  // inline full content byte-identically.
-  const echoedRisk = result.input_echo.risk_level;
-  const riskLevel: RiskLevel | undefined =
-    echoedRisk === "L1" || echoedRisk === "L2" || echoedRisk === "L3"
-      ? echoedRisk
-      : undefined;
-  const instructionsRef: CodegenInstructionsRef = {
-    resource: codegenInstructionsResourceUri(result.mode),
-    active_conditions: activeInstructionConditions({
-      hasOverlay: result.activated_scope.regulatory_obligations.length > 0,
-      riskLevel,
-      citationMapEmpty: Object.keys(result.citation_map).length === 0
-    }),
-    note:
-      "Slots por índice: read_sbd_toe_resource(uri, slot=\"<n>\"); active_conditions filtram; byte-identical ao detail=full."
-  };
-
+  const form = LEVEL_FORM[detail];
   const dieted: PrepareCodegenContextResultReadyDieted = {
     status: result.status,
     mode: result.mode,
@@ -3438,58 +3100,33 @@ function applyStructuralDiet(
       detail,
       ...(includeRelations ? { include_relations: true } : {})
     },
-    // s3: activation_trace only with debug=true; never-silent counter otherwise
-    // (s3c: ultrathin carries its own note — the standard/minimal text is
-    // byte-frozen by the golden snapshots).
     ...(result.debug
       ? { activation_trace: result.activation_trace }
       : {
           activation_trace_ref: {
             entries: result.activation_trace.length,
-            note: ultrathin
-              ? ACTIVATION_TRACE_REF_NOTE_ULTRATHIN
-              : "activation_trace elided at detail=standard/minimal — re-call with " +
-                "debug=true to include it (always inline at detail=full)."
+            note:
+              "activation_trace elided at detail=lista/standard — re-call with " +
+              "debug=true to include it (always inline at detail=full)."
           } satisfies ActivationTraceRef
         }),
-    provenance_legend: ultrathin ? PROVENANCE_LEGEND_ULTRATHIN : PROVENANCE_LEGEND,
-    // s3c: ultrathin elides the published descriptions (executable
-    // descriptions_ref → detail="minimal"); the lists stay COMPLETE.
+    provenance_legend: PROVENANCE_LEGEND,
     activated_scope: {
-      requirements: dietRequirements(result.activated_scope.requirements, !ultrathin),
-      controls: dietControls(result.activated_scope.controls, !ultrathin),
+      requirements: dietRequirements(result.activated_scope.requirements),
+      controls: dietControls(result.activated_scope.controls),
       slices: stripSource(result.activated_scope.slices),
-      regulatory_obligations: stripSource(result.activated_scope.regulatory_obligations),
-      ...(ultrathin
-        ? {
-            descriptions_ref: {
-              tool: "prepare_sbd_toe_codegen_context",
-              with: { detail: "minimal" },
-              note: DESCRIPTIONS_REF_NOTE
-            } satisfies ActivatedScopeDescriptionsRef
-          }
-        : {})
+      regulatory_obligations: stripSource(result.activated_scope.regulatory_obligations)
     },
     g2_context: {
       control_objectives: groupEntitiesBySlice(result.g2_context.control_objectives),
       mechanisms: groupEntitiesBySlice(result.g2_context.mechanisms),
       practices: groupEntitiesBySlice(result.g2_context.practices),
       artifacts: groupEntitiesBySlice(result.g2_context.artifacts),
-      ...(includeRelations
+      ...(includeRelations || form.relations !== "ref"
         ? { relations: stripSource(result.g2_context.relations) }
-        : { relations_ref: buildRelationsRef(result) }),
-      evidence_patterns: evidenceKept.map(
-        ({ source: _source, relevance_score: _score, ...rest }) => rest
-      )
+        : { relations_ref: buildRelationsRef(result) })
     },
-    // s3b: minimal serves the count+provenance form (executable groups_ref);
-    // standard keeps the full grouping; s3c: ultrathin serves the aggregate
-    // form only (total + hoisted sha + groups_ref, group list elided).
-    manual_grounding: ultrathin
-      ? buildUltrathinGrounding(buildMinimalGrounding(groupManualGrounding(result)))
-      : detail === "minimal"
-        ? buildMinimalGrounding(groupManualGrounding(result))
-        : groupManualGrounding(result),
+    manual_grounding: buildMinimalGrounding(groupManualGrounding(result)),
     regulatory_overlay: {
       frameworks: stripSource(result.regulatory_overlay.frameworks),
       obligations: stripSource(result.regulatory_overlay.obligations),
@@ -3497,38 +3134,50 @@ function applyStructuralDiet(
       playbooks: stripSource(result.regulatory_overlay.playbooks)
     },
     citations: invertCitationMap(result.citation_map),
-    // s3c: ultrathin trims the diagnostic text arrays to exact counts + ref.
-    completeness_report: ultrathin
-      ? trimCompletenessForUltrathin(completeness)
-      : completeness,
-    codegen_instructions_ref: instructionsRef,
+    completeness_report: result.completeness_report,
+    llm_codegen_instructions: result.llm_codegen_instructions,
+    security_rationale_template: result.security_rationale_template,
     // s4: identical re-call is deterministic — point the client back at the
-    // context it already holds (full stays byte-identical: no hint there).
+    // context it already holds.
     repeat_call_hint: REPEAT_CALL_HINT,
     provenance: result.provenance
   };
-  if (result.debug) {
-    // 0.20.0-beta.26 (§17-A, menor): a nota contava o cap CLÁSSICO (returned=25) mesmo
-    // quando o nível dietado devolvia 5 — o número que o consumidor lia não era o que
-    // recebeu. Passa a contar o efectivo, dizendo qual é o cap deste `detail`.
-    dieted.debug = {
-      ...result.debug,
-      notes: result.debug.notes.map((note) =>
-        note.startsWith("evidence_patterns: total=")
-          ? `evidence_patterns: total=${evidenceTotal} returned=${evidenceKept.length} capped=${evidenceCapped} (cap efectivo do detail="${detail}": ${evidenceCap}; cap clássico: ${EVIDENCE_PATTERN_CAP})`
-          : note
-      )
-    };
-  }
+  if (result.debug) dieted.debug = result.debug;
   return dieted;
+}
+
+/**
+ * 0.21 §5 — o preço declarado. Duas passagens: a primeira mede com o campo a
+ * zero, a segunda re-mede com os dígitos reais lá dentro, para que o número
+ * anunciado seja o do payload QUE O CONSUMIDOR RECEBE (±1 token de
+ * arredondamento, nunca mais). Régua = chars/4, a mesma da medição do §5.
+ */
+const ENVELOPE_EXCEEDED_NOTE =
+  "Acima do envelope herdado deste nível. O tecto por-id é o ratificado (§5) e o custo por " +
+  "requisito da forma fundida é o medido; quando não fecham, este payload di-lo em vez de o " +
+  "esconder. Divide por área (concerns do lote) ou usa detail='full' (sem envelope, preço declarado).";
+
+function withSizeEstimate<T extends object>(payload: T, detail: CodegenDetailLevel): T & { size_estimate: DeclaredSize } {
+  const envelope = LEVEL_ENVELOPE_TK[detail];
+  const declare = (est: SizeEstimate): DeclaredSize =>
+    envelope === undefined
+      ? est
+      : {
+          ...est,
+          envelope_tk: envelope,
+          within_envelope: est.approx_tokens <= envelope,
+          ...(est.approx_tokens <= envelope ? {} : { note: ENVELOPE_EXCEEDED_NOTE })
+        };
+  const first = estimateSize({ ...payload, size_estimate: declare({ chars: 0, approx_tokens: 0 }) });
+  const second = estimateSize({ ...payload, size_estimate: declare(first) });
+  return { ...payload, size_estimate: declare(second) };
 }
 
 export function handlePrepareCodegenContext(
   raw: PrepareCodegenContextInput
 ): PrepareCodegenContextResult {
-  // v2 token diet (s1/s2): `detail` and `include_relations` select the
-  // response ENCODING only — they are validated up-front and never influence
-  // activation/resolution.
+  // `detail` and `include_relations` select the response ENCODING only —
+  // they are validated up-front and never influence activation/resolution.
   const detail = parseDetail(raw);
   const includeRelations = parseIncludeRelations(raw);
   const result = prepareCodegenContextCore(raw);
@@ -3537,7 +3186,9 @@ export function handlePrepareCodegenContext(
       ? applyStructuralDiet(result, detail, includeRelations)
       : result;
   // RF-H: append the advisory band (status-aware, pure) around the deterministic result.
-  return { ...shaped, next: prepareCodegenAffordances(result.status, "citation_map" in result ? Object.keys(result.citation_map).filter((id) => /^[A-Z]{3}-\d{3}$/.test(id)) : []) };
+  const withNext = { ...shaped, next: prepareCodegenAffordances(result.status, "citation_map" in result ? Object.keys(result.citation_map).filter((id) => /^[A-Z]{3}-\d{3}$/.test(id)) : []) };
+  // 0.21 §5: every ready payload declares its price (full has no ceiling — it declares instead).
+  return withNext.status === "ready_for_codegen" ? withSizeEstimate(withNext, detail) : withNext;
 }
 
 function prepareCodegenContextCore(
@@ -3792,83 +3443,79 @@ function prepareCodegenContextCore(
       (control) => control.control_id
     )
   );
-  const activeRequirementIdsForEvidence = new Set(
-    v0.requirements.map((requirement) => requirement.requirement_id)
-  );
-
-  function projectEvidencePattern(
-    pattern: EvidencePattern,
-    relevanceScore: number
-  ): G2ContextEvidencePattern {
-    const projection: G2ContextEvidencePattern = {
-      id: pattern.id,
-      relevance_score: relevanceScore,
-      source: "runtime_v0"
-    };
-    if (pattern.maps_to_requirement_id)
-      projection.maps_to_requirement_id = pattern.maps_to_requirement_id;
-    if (pattern.maps_to_control_id)
-      projection.maps_to_control_id = pattern.maps_to_control_id;
-    if (pattern.evidence_expectation)
-      projection.evidence_expectation = pattern.evidence_expectation;
-    if (pattern.verification_logic)
-      projection.verification_logic = pattern.verification_logic;
-    if (pattern.expected_artifact_type_ids && pattern.expected_artifact_type_ids.length > 0) {
-      projection.expected_artifact_type_ids = pattern.expected_artifact_type_ids;
+  // ----- 0.21 §1: the fused requirement ---------------------------------
+  // One object per requirement: the published description NEVER leaves, and the
+  // requirement's own evidence pattern (1:1 in the bundle) is inlined as
+  // verify/evidence. No cap, no join left to the model. Patterns that touched
+  // the scope only through an activated CONTROL (their requirement is outside
+  // the activated set) are NOT inlined — they belong to other requirements —
+  // and are counted + referenced below (never silent).
+  const activeRequirementIds = new Set(v0.requirements.map((r) => r.requirement_id));
+  const patternByRequirement = new Map<string, EvidencePattern>();
+  for (const pattern of ontologyForSelection.evidencePatterns ?? []) {
+    if (pattern.maps_to_requirement_id && !patternByRequirement.has(pattern.maps_to_requirement_id)) {
+      patternByRequirement.set(pattern.maps_to_requirement_id, pattern);
     }
-    return projection;
   }
-
-  /**
-   * 0.20.0-beta.26 (§17-A) — ORDENAÇÃO POR PERTENÇA AO ÂMBITO.
-   *
-   * A ordenação anterior dava 1.0 a qualquer EP ligado a um CONTROLO directo e só 0.7 ao
-   * EP ligado a um REQUISITO do âmbito activado: a pertença ao controlo ganhava à pertença
-   * ao requisito, e o desempate por id fazia o resto. Efeito medido: numa tarefa de
-   * validação (âmbito ERR/VAL) vinham 5 em 5 EPs de fora — EP-API-002/003/007, EP-AUT-010,
-   * EP-CFG-005 — e nem um EP-VAL/EP-ERR; em `auth` funcionava por SORTE ALFABÉTICA
-   * (ACC < API < AUT < CFG < ERR < VAL). Pior: em «exigir reautenticação» o `minimal`
-   * omitia EP-AUT-009, o padrão do requisito que a tarefa NOMEIA.
-   *
-   * Isto não é um modelo de relevância — é uma comparação de PERTENÇA, e é por isso que
-   * pode ser uma invariante testável: o requisito do âmbito activado vem primeiro, depois
-   * o controlo directo, depois o derivado, e o id só desempata dentro do mesmo escalão.
-   */
-  const scoredEvidencePatterns = v0.evidencePatterns.map((pattern) => {
-    let score = 0;
-    if (
-      pattern.maps_to_requirement_id &&
-      activeRequirementIdsForEvidence.has(pattern.maps_to_requirement_id)
-    ) {
-      score = Math.max(score, 1.0);
-    }
-    if (
-      pattern.maps_to_control_id &&
-      directControlIds.has(pattern.maps_to_control_id)
-    ) {
-      score = Math.max(score, 0.7);
-    }
-    if (
-      pattern.maps_to_control_id &&
-      derivedControlIds.has(pattern.maps_to_control_id)
-    ) {
-      score = Math.max(score, 0.5);
-    }
-    return { pattern, score };
+  let withVerifyAndEvidence = 0;
+  let partialPatterns = 0;
+  let withoutPattern = 0;
+  const fusedRequirements: FusedRequirement[] = v0.requirements.map((requirement) => {
+    const pattern = patternByRequirement.get(requirement.requirement_id);
+    const verify = pattern?.verification_logic;
+    const evidence = pattern?.evidence_expectation;
+    if (!pattern) withoutPattern += 1;
+    else if (verify && evidence) withVerifyAndEvidence += 1;
+    else partialPatterns += 1;
+    return {
+      id: requirement.requirement_id,
+      name: requirement.name,
+      ...(requirement.type ? { type: requirement.type } : {}),
+      ...(categoryIsDerivable(requirement.requirement_id, requirement.category) ? {} : { category: requirement.category }),
+      ...(requirement.description ? { description: requirement.description } : {}),
+      ...(verify ? { verify } : {}),
+      ...(evidence ? { evidence } : {}),
+      source: "runtime_v0" as const
+    };
   });
-  scoredEvidencePatterns.sort((a, b) => b.score - a.score || a.pattern.id.localeCompare(b.pattern.id));
-  const keptEvidencePatterns = scoredEvidencePatterns.slice(0, EVIDENCE_PATTERN_CAP);
-  const cappedEvidencePatterns = scoredEvidencePatterns.slice(EVIDENCE_PATTERN_CAP);
+  const relatedByControlOutsideScope = v0.evidencePatterns.filter(
+    (pattern) => !(pattern.maps_to_requirement_id && activeRequirementIds.has(pattern.maps_to_requirement_id))
+  ).length;
+  const verificationCalls = Math.ceil(v0.requirements.length / 50);
+  const riskForRef = input.risk_level ? `"${input.risk_level}"` : "<declara o risk_level>";
+  const verification: VerificationSummary = {
+    requirements: v0.requirements.length,
+    with_verify_and_evidence: withVerifyAndEvidence,
+    partial: partialPatterns,
+    without_pattern: withoutPattern,
+    by_ref: {
+      tool: "get_sbd_toe_verification_matrix",
+      with: `risk_level=${riskForRef}, requirement_ids=[activated_scope.requirements[].id] (≤50 por chamada)`,
+      calls: verificationCalls,
+      fields: ["evidence_pattern_id", "control_id", "expected_artifact_type_ids"],
+      note:
+        "verify/evidence are inline per requirement (0.21 §1); the pattern's id, control and expected " +
+        "artifact types come from the verification matrix, one row per requirement (~190 tk/id measured)."
+    },
+    related_by_control_outside_scope: {
+      count: relatedByControlOutsideScope,
+      ref: {
+        tool: "resolve_entities",
+        with: 'record_type="evidence_pattern", filters={"maps_to_control_id":{"in":[activated_scope.controls[].control_id]}}',
+        note:
+          "Patterns of requirements OUTSIDE the activated set that share an activated control — not inlined " +
+          "(they verify other requirements). The ref returns every pattern of those controls; the ones whose " +
+          "maps_to_requirement_id is in activated_scope are the inlined ones."
+      }
+    }
+  };
 
   const g2Context: G2Context = {
     control_objectives: activatedCOs.map((entity) => projectV1Entity(entity, g2Data)),
     mechanisms: activatedMechanisms.map((entity) => projectV1Entity(entity, g2Data)),
     practices: activatedPractices.map((entity) => projectV1Entity(entity, g2Data)),
     artifacts: activatedArtifacts.map((entity) => projectV1Entity(entity, g2Data)),
-    relations: activatedRelations.map(projectRelation),
-    evidence_patterns: keptEvidencePatterns.map(({ pattern, score }) =>
-      projectEvidencePattern(pattern, score)
-    )
+    relations: activatedRelations.map(projectRelation)
   };
 
   // ----- Manual grounding ----------------------------------------------
@@ -3893,20 +3540,17 @@ function prepareCodegenContextCore(
 
   // ----- Activated scope projection ------------------------------------
   const activatedScope: ActivatedScope = {
-    requirements: v0.requirements.map((requirement) => ({
-      requirement_id: requirement.requirement_id,
-      name: requirement.name,
-      category: requirement.category,
-      type: requirement.type,
-      source: "runtime_v0" as const
-    })) as ActivatedScope["requirements"],
+    requirements: fusedRequirements,
+    // 0.21 §1: a description publicada dos controlos DIRECTOS vai em todos os
+    // níveis, o full incluído («não promete caber, promete não faltar»).
     controls: v0.controls.map((control) => ({
       control_id: control.control_id,
       name: control.name,
       domain: control.domain,
       control_type: control.control_type,
       source: "runtime_v0" as const,
-      confidence: control.confidence
+      confidence: control.confidence,
+      ...(control.confidence === "direct" && control.description ? { description: control.description } : {})
     })),
     slices: activatedSlices.map((slice) => ({
       slice_id: slice.slice_id,
@@ -4025,10 +3669,7 @@ function prepareCodegenContextCore(
     },
     v1_consistency_mismatches: g2Data.consistency.mismatches,
     v1_manifest_warnings: g2Data.consistency.warnings,
-    evidence_patterns_total: scoredEvidencePatterns.length,
-    evidence_patterns_returned: keptEvidencePatterns.length,
-    evidence_patterns_capped: cappedEvidencePatterns.length,
-    evidence_pattern_cap: EVIDENCE_PATTERN_CAP
+    verification
   };
 
   // ----- Build LLM instructions + rationale template -------------------
@@ -4069,25 +3710,15 @@ function prepareCodegenContextCore(
     }
   };
   if (input.debug) {
-    const cappedEntries: ActivationTraceEntry[] = cappedEvidencePatterns.map(
-      ({ pattern, score }) => ({
-        source: "scope_gate",
-        produced: pattern.id,
-        trigger: pattern.maps_to_control_id ?? pattern.maps_to_requirement_id ?? "<no anchor>",
-        score,
-        confidence: "deterministic",
-        reason: `Evidence pattern dropped by the scope-membership cap (cap=${EVIDENCE_PATTERN_CAP}); within a membership tier the order is by id, not by relevance.`
-      })
-    );
     result.debug = {
-      rejected_candidates: [...activation.rejected, ...cappedEntries],
+      rejected_candidates: activation.rejected,
       notes: [
         ...activation.notes,
         `concerns: ${activation.concerns.join(", ") || "(none)"}`,
         `slice_families: ${activation.sliceFamilies.join(", ") || "(none)"}`,
         `overlay_status: ${overlayResolution.status}`,
         `estimated_v0_requirements: ${estimatedRequirements}`,
-        `evidence_patterns: total=${scoredEvidencePatterns.length} returned=${keptEvidencePatterns.length} capped=${cappedEvidencePatterns.length}`
+        `verification: requirements=${verification.requirements} with_verify_and_evidence=${verification.with_verify_and_evidence} partial=${verification.partial} without_pattern=${verification.without_pattern} related_by_control_outside_scope=${verification.related_by_control_outside_scope.count}`
       ]
     };
   }

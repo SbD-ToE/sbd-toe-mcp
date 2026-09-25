@@ -3,9 +3,10 @@
  *
  * A invariante 0.19.3 (`next-invariant.test.ts`, absorvida verbatim da estável)
  * percorre os arrays `next`. Esta linha serve ADEMAIS *referências executáveis*
- * que a estável não tem — o preço da dieta v2: `relations_ref`, `descriptions_ref`,
- * `groups_ref`, `evidence_patterns_rest`, `v1_diagnostics_ref`, `narrowed_out_ref`,
- * `activation_trace_ref`, `codegen_instructions_ref` — e a tool só-beta
+ * que a estável não tem — o preço da dieta v2: `relations_ref`, `entries_ref`,
+ * `verification.by_ref`, `narrowed_out_ref`, `activation_trace_ref` (0.21: os
+ * `descriptions_ref`/`groups_ref`/`evidence_patterns_rest`/`v1_diagnostics_ref`/
+ * `codegen_instructions_ref` morreram com o ultrathin e com a fusão do requisito) — e a tool só-beta
  * `trace_sbd_toe_graph`. A ronda 6 testou ESTA linha; o princípio fecha aqui.
  *
  * Cada referência é validada contra o schema REAL do destino (tools/list do próprio
@@ -142,7 +143,7 @@ describe("invariante beta — referências executáveis da dieta v2 e da tool SP
   it("nenhum URI dos payloads só-beta é servido sem a tool que o executa", () => {
     const task = "Implement a secure endpoint for uploading documents with logging";
     const all: string[] = [];
-    for (const detail of ["full", "standard", "minimal", "ultrathin"] as const)
+    for (const detail of ["full", "standard", "lista"] as const)
       uriViolations(handlePrepareCodegenContext({ task, risk_level: "L2", mode: "codegen", detail }), `prepare(${detail})`, all);
     expect(all, all.join("\n")).toEqual([]);
   });
@@ -150,10 +151,10 @@ describe("invariante beta — referências executáveis da dieta v2 e da tool SP
   it("todas as referências dos payloads só-beta são executáveis verbatim", () => {
     const task = "Implement a secure endpoint for uploading documents with logging";
     const payloads: [string, unknown][] = [
-      ...(["full", "standard", "minimal", "ultrathin"] as const).map(
+      ...(["full", "standard", "lista"] as const).map(
         (detail) => [`prepare(${detail})`, handlePrepareCodegenContext({ task, risk_level: "L2", mode: "codegen", detail })] as [string, unknown]
       ),
-      ["prepare(minimal,include_relations)", handlePrepareCodegenContext({ task, risk_level: "L2", mode: "codegen", detail: "minimal", include_relations: true })],
+      ["prepare(lista,include_relations)", handlePrepareCodegenContext({ task, risk_level: "L2", mode: "codegen", detail: "lista", include_relations: true })],
       ["prepare(standard,debug)", handlePrepareCodegenContext({ task, risk_level: "L2", mode: "codegen", detail: "standard", debug: true })],
       ["trace(slice)", handleTraceGraph({ lens: "slice_implementation", pageSize: 5 })],
       ["trace(objective)", handleTraceGraph({ lens: "objective_realization", pageSize: 5 })],

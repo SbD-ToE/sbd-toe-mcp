@@ -16,6 +16,7 @@ import {
   type PrepareCodegenContextResultReady
 } from "./prepare-codegen-context.js";
 import { clearG2RuntimeCacheForTests } from "./g2-runtime-loader.js";
+import { getOntologyData } from "./ontology-loader.js";
 import { clearRegulatoryOverlayCacheForTests } from "./regulatory-overlay-loader.js";
 
 function expectBlocked(
@@ -223,51 +224,32 @@ describe("handlePrepareCodegenContext — ready_for_codegen (API validation)", (
     }
   });
 
-  it("projects evidence_patterns using the real runtime schema (id + maps_to_*)", () => {
+  it("0.21 §1: fuses every activated requirement with its published evidence pattern (verify/evidence verbatim, 1:1) — no evidence_patterns block", () => {
     const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Add payload validation to the endpoint PATCH /users/:id/email",
       risk_level: "L2",
       concerns: ["api", "validation"]
     });
     expectReady(result);
-
-    expect(result.g2_context.evidence_patterns.length).toBeGreaterThan(0);
-
-    const activeRequirementIds = new Set(
-      result.activated_scope.requirements.map((requirement) => requirement.requirement_id)
-    );
-    const activeControlIds = new Set(
-      result.activated_scope.controls.map((control) => control.control_id)
-    );
-
-    for (const pattern of result.g2_context.evidence_patterns) {
-      // Real schema: id is mandatory, plus singular maps_to_* fields.
-      expect(typeof pattern.id).toBe("string");
-      expect(pattern.id.length).toBeGreaterThan(0);
-      expect(pattern.source).toBe("runtime_v0");
-
-      // Every projected pattern must touch the activated scope (otherwise the
-      // matcher leaked unrelated patterns into the response).
-      const touchesRequirement =
-        pattern.maps_to_requirement_id !== undefined &&
-        activeRequirementIds.has(pattern.maps_to_requirement_id);
-      const touchesControl =
-        pattern.maps_to_control_id !== undefined &&
-        activeControlIds.has(pattern.maps_to_control_id);
-      expect(touchesRequirement || touchesControl).toBe(true);
-
-      // Real shape carries narrative + artifact expectations — at least one
-      // must be present so the LLM has something to ground "expected
-      // evidence" on.
-      const hasNarrative =
-        Boolean(pattern.evidence_expectation) ||
-        Boolean(pattern.verification_logic) ||
-        (pattern.expected_artifact_type_ids?.length ?? 0) > 0;
-      expect(hasNarrative).toBe(true);
-
-      // The defunct projection field `pattern_id` must NOT be present.
-      expect((pattern as unknown as Record<string, unknown>)["pattern_id"]).toBeUndefined();
+    expect(result.g2_context).not.toHaveProperty("evidence_patterns");
+    const epByReq = new Map((getOntologyData().evidencePatterns ?? []).map((e) => [e.maps_to_requirement_id, e]));
+    expect(result.activated_scope.requirements.length).toBeGreaterThan(0);
+    for (const requirement of result.activated_scope.requirements) {
+      expect(typeof requirement.id).toBe("string");
+      expect(requirement.name.length).toBeGreaterThan(0);
+      expect(requirement.description, `${requirement.id} sem description`).toBeTruthy();
+      expect(requirement.source).toBe("runtime_v0");
+      const ep = epByReq.get(requirement.id);
+      expect(ep, `${requirement.id} sem padrão publicado (KG v1.12.0 publica 1:1)`).toBeDefined();
+      expect(requirement.verify).toBe(ep!.verification_logic);
+      expect(requirement.evidence).toBe(ep!.evidence_expectation);
     }
+    const v = result.completeness_report.verification;
+    expect(v.requirements).toBe(result.activated_scope.requirements.length);
+    expect(v.with_verify_and_evidence + v.partial + v.without_pattern).toBe(v.requirements);
+    expect(v.by_ref.tool).toBe("get_sbd_toe_verification_matrix");
+    expect(v.by_ref.calls).toBe(Math.ceil(v.requirements / 50));
+    expect(v.related_by_control_outside_scope.count).toBeGreaterThanOrEqual(0);
   });
 
   it("manual_grounding only surfaces names that the rastreabilidade publishes", () => {
@@ -581,16 +563,14 @@ describe("WP6 semantic disambiguation — gate cases", () => {
           entry.trigger.includes("definitely_not_a_concern_zzz") && entry.score === 0
       )
     ).toBe(true);
-    // Capped evidence patterns appear with source=scope_gate when there are
-    // more than the cap. We assert structurally: the cap is honoured and any
-    // capped entries are tagged so the LLM can audit the omission.
+    // 0.21 §1: já não há cap de evidence patterns — nenhuma entrada scope_gate de
+    // padrões cortados; a verificação fundida é declarada em debug.notes.
     const capped =
       result.debug?.rejected_candidates.filter(
         (entry) => entry.source === "scope_gate"
       ) ?? [];
-    expect(
-      result.completeness_report.evidence_patterns_capped
-    ).toBe(capped.length);
+    expect(capped.length).toBe(0);
+    expect(result.debug?.notes.some((n) => n.startsWith("verification: requirements="))).toBe(true);
   });
 });
 
@@ -662,45 +642,46 @@ describe("WP9 hardening — TASK_TERM whole-word matching", () => {
   });
 });
 
-describe("WP6 semantic disambiguation — evidence pattern capping", () => {
+describe("0.21 §1 — verification summary replaces the evidence-pattern cap", () => {
   beforeEach(() => {
     clearG2RuntimeCacheForTests();
     clearRegulatoryOverlayCacheForTests();
   });
 
-  it("caps evidence_patterns to <= EVIDENCE_PATTERN_CAP and exposes counts in completeness_report", () => {
+  it("declares denominators that close and counts the patterns reachable only through an activated control", () => {
     const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Add payload validation to PATCH /users/:id/email",
       risk_level: "L2",
       concerns: ["api", "validation"]
     });
     expectReady(result);
-    expect(result.g2_context.evidence_patterns.length).toBeLessThanOrEqual(
-      result.completeness_report.evidence_pattern_cap
+    const v = result.completeness_report.verification;
+    expect(v.requirements).toBe(result.activated_scope.requirements.length);
+    expect(v.with_verify_and_evidence).toBe(
+      result.activated_scope.requirements.filter((r) => r.verify && r.evidence).length
     );
-    expect(result.completeness_report.evidence_patterns_returned).toBe(
-      result.g2_context.evidence_patterns.length
-    );
-    expect(
-      result.completeness_report.evidence_patterns_total
-    ).toBeGreaterThanOrEqual(result.completeness_report.evidence_patterns_returned);
+    expect(v.partial).toBe(0);
+    expect(v.without_pattern).toBe(0);
+    // padrões de requisitos FORA do conjunto ligados a controlos activados: contados, nunca inlinados
+    const active = new Set(result.activated_scope.requirements.map((r) => r.id));
+    const controls = new Set(result.activated_scope.controls.map((c) => c.control_id));
+    const outside = (getOntologyData().evidencePatterns ?? []).filter(
+      (e) => e.maps_to_control_id && controls.has(e.maps_to_control_id) && !(e.maps_to_requirement_id && active.has(e.maps_to_requirement_id))
+    ).length;
+    expect(v.related_by_control_outside_scope.count).toBe(outside);
+    expect(v.related_by_control_outside_scope.ref.tool).toBe("resolve_entities");
+    expect(v.by_ref.fields).toEqual(["evidence_pattern_id", "control_id", "expected_artifact_type_ids"]);
   });
 
-  it("ranks evidence_patterns by relevance_score in descending order", () => {
+  it("the full payload declares its price (size_estimate) and has no envelope", () => {
     const result = handlePrepareCodegenContext({ selection_mode: "discover",
       task: "Add payload validation to PATCH /users/:id/email",
       risk_level: "L2",
       concerns: ["api", "validation"]
     });
     expectReady(result);
-    const scores = result.g2_context.evidence_patterns.map((pattern) => pattern.relevance_score);
-    expect(scores.length).toBeGreaterThan(0);
-    for (let index = 1; index < scores.length; index += 1) {
-      const prev = scores[index - 1] ?? 0;
-      const current = scores[index] ?? 0;
-      expect(prev).toBeGreaterThanOrEqual(current);
-    }
-    expect(scores[0]).toBeGreaterThan(0);
+    expect(result.size_estimate?.chars).toBe(JSON.stringify(result).length);
+    expect(result.size_estimate?.envelope_tk).toBeUndefined();
   });
 });
 

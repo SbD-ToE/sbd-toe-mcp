@@ -84,7 +84,7 @@ const FIXTURES: ReadonlyArray<{ name: string; input: PrepareCodegenContextInput 
   }
 ];
 
-const DIET_LEVELS = ["standard", "minimal"] as const;
+const DIET_LEVELS = ["lista", "standard"] as const;
 
 function expectReadyDieted(
   result: PrepareCodegenContextResult
@@ -100,7 +100,7 @@ function expectReadyDieted(
  */
 const INSTRUCTION_A =
   "do NOT re-call the tool with the same task";
-const INSTRUCTION_B_DETAIL = 'detail: "minimal"';
+const INSTRUCTION_B_DETAIL = 'detail: "lista"';
 const INSTRUCTION_B_CONSULT = "consult_security_requirements";
 const INSTRUCTION_B_NEVER = "never re-request the full payload";
 const INSTRUCTION_C = 'mode: "review"';
@@ -168,7 +168,7 @@ describe("s4 — templates codegen instruem reutilização de contexto (a)-(c)",
   });
 });
 
-describe("s4 — repeat_call_hint no servidor (aditivo, standard/minimal)", () => {
+describe("s4 — repeat_call_hint no servidor (aditivo, lista/standard)", () => {
   beforeAll(() => {
     clearG2RuntimeCacheForTests();
     clearRegulatoryOverlayCacheForTests();
@@ -184,13 +184,13 @@ describe("s4 — repeat_call_hint no servidor (aditivo, standard/minimal)", () =
         // Conteúdo: determinismo + reutilização + caminhos de re-consulta.
         expect(result.repeat_call_hint).toContain("deterministic");
         expect(result.repeat_call_hint).toContain("reuse");
-        expect(result.repeat_call_hint).toContain("detail:'minimal'");
+        expect(result.repeat_call_hint).toContain("detail:'full'");
         expect(result.repeat_call_hint).toContain("consult_security_requirements");
         // Campo pequeno (~50 tokens): chave + valor, medido como no budget.test.
         const hintTokens = estimateSize({
           repeat_call_hint: result.repeat_call_hint
         }).approx_tokens;
-        expect(hintTokens).toBeLessThanOrEqual(60);
+        expect(hintTokens).toBeLessThanOrEqual(75); // 0.21: a nota nomeia o preço declarado do full
       }
     );
 
@@ -201,9 +201,9 @@ describe("s4 — repeat_call_hint no servidor (aditivo, standard/minimal)", () =
       expect(explicit).not.toHaveProperty("repeat_call_hint");
     });
 
-    it("gate revisto: re-chamada idêntica em minimal é determinística (byte-igual) e barata face a full", () => {
-      const first = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "minimal" });
-      const second = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "minimal" });
+    it("gate revisto: re-chamada idêntica em lista é determinística (byte-igual) e barata face a full", () => {
+      const first = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "lista" });
+      const second = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "lista" });
       expect(JSON.stringify(second)).toBe(JSON.stringify(first));
       // O custo real da re-chamada minimal é o payload minimal — muito menor
       // que re-pedir o payload full (o gate ≤2K original assumia o top-N
@@ -214,7 +214,7 @@ describe("s4 — repeat_call_hint no servidor (aditivo, standard/minimal)", () =
     });
   });
 
-  it("re-consulta pontual (consult_security_requirements) custa uma fração do payload minimal", () => {
+  it("re-consulta pontual (consult_security_requirements) custa uma fração do payload lista", () => {
     // Exemplo real do EPIC §s4(b): aprofundar o concern "auth" da fixture 1
     // sem re-pedir o payload completo.
     const targeted = handleConsultSecurityRequirements({
@@ -224,7 +224,7 @@ describe("s4 — repeat_call_hint no servidor (aditivo, standard/minimal)", () =
     const targetedTokens = estimateSize(targeted).approx_tokens;
     const minimal = handlePrepareCodegenContextDiscover({
       ...FIXTURES[0]!.input,
-      detail: "minimal"
+      detail: "lista"
     });
     expectReadyDieted(minimal);
     const minimalTokens = estimateSize(minimal).approx_tokens;
