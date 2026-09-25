@@ -135,7 +135,7 @@ for (const [name, args] of CASES) {
   served.push(row);
 }
 Object.assign(ceilings.REQUIREMENT_CEILING_BY_DETAIL, savedCeilings);
-console.log("\n=== FORMA SERVIDA (0.21 §1 requisito fundido + §3 cortes; §2 adjacência ainda não aterrou) ===");
+console.log("\n=== FORMA SERVIDA (0.21 §1 requisito fundido + §3 cortes + §2 adjacência inline) ===");
 console.log("caso".padEnd(38), "reqs", "   lista standard    full");
 for (const r of served) console.log(r.name.padEnd(38), String(r.n).padStart(4), String(r.lista).padStart(8), String(r.standard).padStart(8), String(r.full).padStart(8));
 const sd = {};

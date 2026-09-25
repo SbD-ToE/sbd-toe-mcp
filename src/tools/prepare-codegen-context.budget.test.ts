@@ -193,6 +193,9 @@ type SectionBudgets = Record<SectionName, number> & { total: number };
  * inline (4.370/6.239) → relations_ref (121/204): −35% / −32%. Nos dieted a §3
  * troca relations_ref por relations_summary (−~40 tk): a base quase não mexe —
  * é o requisito fundido (~133 tk/req) que decide o tamanho.
+ * §2 (adjacência inline, em `rest`): lista +~170 (resumo), standard/full +~600
+ * (detalhe). Medido pós-§2: full f1 12.913 / f2 20.704; standard 7.704 / 13.333;
+ * lista 7.240 / 12.869.
  */
 const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudgets>> = {
   full: {
@@ -202,8 +205,8 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       citations: 200, // 0.21 §3: invertido no full (medido 166; era citation_map 2.549)
       activated_scope: 5100, // 0.21 §1: requisito fundido (description+verify+evidence) + description dos controlos directos — medido 4.754
       g2_entities: 2200,
-      rest: 1730, // medido 1.605 (inclui size_estimate declarado)
-      total: 13300 // medido 12.276 + ~8% (0.20.0: 20.400)
+      rest: 2400, // medido 2.242 pós-§2 (adjacência detalhada inline + size_estimate)
+      total: 13950 // medido 12.913 + ~8% (0.20.0: 20.400)
     },
     fixture2: {
       "g2_context.relations": 250, // relations_ref (medido 204)
@@ -211,8 +214,8 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       citations: 200, // medido 166 (era 3.664)
       activated_scope: 10900, // medido 10.119 (69 requisitos fundidos)
       g2_entities: 3050,
-      rest: 1990, // medido 1.843
-      total: 21700 // medido 20.067 + ~8%
+      rest: 2650, // medido 2.480 pós-§2
+      total: 22400 // medido 20.704 + ~8%
     }
   },
   standard: {
@@ -222,7 +225,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       citations: 200,
       activated_scope: 4700, // medido 4.462 (fundido)
       g2_entities: 720,
-      rest: 1560, // medido ~1.475 (instruções + template INLINE, verification, size_estimate)
+      rest: 2250, // medido ~2.110 pós-§2 (instruções + template INLINE, verification, adjacência detalhada, size_estimate)
       total: 9200 // 🔴 envelope herdado (ratificado 2026-08-31, mantido 2026-09-25)
     },
     fixture2: {
@@ -231,8 +234,8 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       citations: 200,
       activated_scope: 10200, // medido 9.662 (69 requisitos fundidos)
       g2_entities: 1000,
-      rest: 1700, // medido ~1.610
-      total: 9200 // 🔴 envelope herdado — NÃO CABE (medido 12.696): desvio declarado abaixo
+      rest: 2400, // medido ~2.245 pós-§2
+      total: 9200 // 🔴 envelope herdado — NÃO CABE (medido 13.333): desvio declarado abaixo
     }
   },
   lista: {
@@ -242,7 +245,7 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       citations: 200,
       activated_scope: 4700,
       g2_entities: 720,
-      rest: 1560,
+      rest: 1780, // medido ~1.645 pós-§2 (resumo da adjacência)
       total: 8450 // 🔴 envelope herdado do minimal (ratificado 2026-08-31, herdado 2026-09-25)
     },
     fixture2: {
@@ -251,8 +254,8 @@ const BUDGETS: Record<DetailLevel, Record<BaselineFixture["name"], SectionBudget
       citations: 200,
       activated_scope: 10200,
       g2_entities: 1000,
-      rest: 1700,
-      total: 8450 // 🔴 envelope herdado — NÃO CABE (medido 12.695): desvio declarado abaixo
+      rest: 1900, // medido ~1.780 pós-§2
+      total: 8450 // 🔴 envelope herdado — NÃO CABE (medido 12.869): desvio declarado abaixo
     }
   }
 };
@@ -351,8 +354,8 @@ function idsAtPath(payload: unknown, path: string): string[] {
 const KNOWN_TOTAL_DEVIATIONS: Readonly<
   Record<string, { measured: number; tolerated: number; since: string; reason: string }>
 > = {
-  "standard:fixture2": { measured: 12696, tolerated: 13400, since: "2026-09-25", reason: "0.21 §1+§3 forma fundida: 69 reqs × ~88 tk/req (description+verify+evidence) > envelope 9.200 — achado para o lead (a §3 só baixou ~50 tk)" },
-  "lista:fixture2": { measured: 12695, tolerated: 13400, since: "2026-09-25", reason: "0.21 §1+§3 forma fundida: 69 reqs × ~88 tk/req > envelope herdado 8.450 — achado para o lead (a §3 só baixou ~50 tk)" }
+  "standard:fixture2": { measured: 13333, tolerated: 14000, since: "2026-09-25", reason: "0.21 §1+§3+§2 forma fundida (+ adjacência detalhada): 69 reqs × ~88 tk/req > envelope 9.200 — achado para o lead; proposta 55 (payload-ceilings PROPOSED_CEILING_BY_DETAIL)" },
+  "lista:fixture2": { measured: 12869, tolerated: 13500, since: "2026-09-25", reason: "0.21 §1+§3+§2 forma fundida (+ resumo da adjacência): 69 reqs × ~88 tk/req > envelope herdado 8.450 — achado para o lead; proposta 52" }
 }
 
 function withKnownDeviation(

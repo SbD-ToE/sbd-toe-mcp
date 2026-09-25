@@ -3,11 +3,66 @@ ai_assisted: true
 model: Claude Fable 5.1
 date: 2026-09-25
 purpose: documentation
-reasoning: 0.21 §3 (os cortes — relations saem, citations invertido em todos os níveis) e §1 (o requisito fundido) por cima da entrada v0.20.0 — a descrição nunca sai, o bloco evidence_patterns morre, ultrathin reforma-se, tectos ratificados 83/88 ligados com o ajuste DECLARADO (achado: a projecção do §5 subestimou o custo por requisito). Entrada anterior: v0.20.0 (promoção da beta.49, linha estável) — a maturidade do contrato de selecção passa a FACTO DECLARADO (`serving_contract.identity` + `.maturity`, com a maturidade do pacote derivada da versão e nunca escrita à mão) em vez de sufixo numa string; o contrato mantém-se beta deliberadamente, por decisão do lead, e o identificador NÃO se renomeia. Sete declarações servidas que a promoção tornava falsas — cinco a dizer que a linha era beta, uma a dizer que a linha estável era outra — reescritas na forma durável: a prosa nomeia a linha, o campo declarado carrega a maturidade. Zero alteração de comportamento: o oráculo do Eixo H veio byte-idêntico à corrida da beta.49. E publicar deixa de ser o mesmo acto que apontar: o caminho estável do release.yml passa a publicar em `--tag next` — a capacidade que o caminho de prerelease já tinha, aplicada ao que a não tinha — para que a estável possa ser verificada antes de ser o que toda a gente instala; o `latest` move-o o lead, num acto próprio.
+reasoning: 0.21 §2 (adjacência declarada ligada ao prepare, em todos os níveis; tectos-proposta 52/55 não ligados), §3 (os cortes) e §1 (o requisito fundido) por cima da entrada v0.20.0 — a descrição nunca sai, o bloco evidence_patterns morre, ultrathin reforma-se, tectos ratificados 83/88 ligados com o ajuste DECLARADO (achado: a projecção do §5 subestimou o custo por requisito). Entrada anterior: v0.20.0 (promoção da beta.49, linha estável) — a maturidade do contrato de selecção passa a FACTO DECLARADO (`serving_contract.identity` + `.maturity`, com a maturidade do pacote derivada da versão e nunca escrita à mão) em vez de sufixo numa string; o contrato mantém-se beta deliberadamente, por decisão do lead, e o identificador NÃO se renomeia. Sete declarações servidas que a promoção tornava falsas — cinco a dizer que a linha era beta, uma a dizer que a linha estável era outra — reescritas na forma durável: a prosa nomeia a linha, o campo declarado carrega a maturidade. Zero alteração de comportamento: o oráculo do Eixo H veio byte-idêntico à corrida da beta.49. E publicar deixa de ser o mesmo acto que apontar: o caminho estável do release.yml passa a publicar em `--tag next` — a capacidade que o caminho de prerelease já tinha, aplicada ao que a não tinha — para que a estável possa ser verificada antes de ser o que toda a gente instala; o `latest` move-o o lead, num acto próprio.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.21 (em curso, ramo `0.21`) — §2 «a adjacência liga-se ao prepare» — 2026-09-25
+
+Ordem do Orchestrator (2026-09-25, após aceitação da §3): ligar a adjacência de forma a caber **por
+desenho** — resumo dentro da base em todos os níveis, re-medir, derivar os tectos com a fórmula sobre o
+declive real e **apresentá-los como proposta, sem os ligar**. Pino **inalterado** (KG v1.12.0);
+**0.20.0 e `latest` intocados**; sem tag, sem merge.
+
+### `adjacency` em TODOS os níveis — o mais magro incluído
+
+O bloco que só o servidor sabe dar a um modelo a gerar código: «declaraste `auth`, mas `public`
+acrescentaria 43 requisitos, `personal` 37, e não os pediste». É o módulo provado em `a32ca44`
+(aritmética sobre o vocabulário fechado: a mesma selecção determinística re-corrida com cada valor
+não declarado; nunca leitura da tarefa), agora ligado ao `prepare` a seguir ao `activated_scope`:
+`undeclared_that_would_change_the_set` (top-5 por `would_add`, desempate estável), `scanned`,
+`would_change_the_set` (o denominador — nunca se trunca em silêncio) e `shown`. **Resumo inline
+sempre (~170 tk).** O **detalhe** (a lista completa, de que o resumo é o prefixo) vai inline em
+`standard`/`full` (~440–610 tk) e por **referência executável** em `lista` (`detail_ref` →
+`detail='standard'`; os ids de cada sinal: `select_sbd_toe_requirements(declaração + sinal)`). É
+finalmente o **separador `lista`↔`standard`**, decidido pela tabela `LEVEL_FORM`. A prosa que
+explica o bloco não viaja no payload: vive na legenda `detail_encoding.adjacency` e na descrição da
+tool. Em `selection_mode="discover"` a adjacência é relativa à declaração feita, não ao conjunto
+inferido — declarado na legenda.
+
+### A tabela final (tokens ≈ chars/4; §1+§3+§2)
+
+| caso | lista | standard | full |
+|---|---:|---:|---:|
+| `auth`/L2, **27** reqs — 0.20.0 | 3.879 (minimal) | 4.403 | 11.148 |
+| … 0.21 §1+§3+§2 | **5.066** (adj 170) | **5.504** (adj 608) | **7.813** (adj 608; −30% vs 0.20.0) |
+| `auth+integrity+deployment`/L3, **83** reqs (caso real) | **15.412** (>8.450, declarado) | **15.755** (>9.200, declarado) | **23.935** (sem tecto) |
+| 53 reqs | 8.532 | 8.845 | 15.867 |
+| 89 reqs (tecto levantado só para medir) | 13.310 | 13.579 | 16.696 |
+| fixture 1 (41) | 7.240 | 7.704 | 12.913 |
+| fixture 2 (69) | 12.869 (fora do envelope, declarado) | 13.333 (idem) | 20.704 |
+
+Regressão 27→89 da forma servida completa: **lista** declive 133,0 / base 1.476; **standard**
+declive 130,2 / base 1.987 (o detalhe da adjacência encolhe à medida que mais se declara). Constantes
+re-medidas em `payload-ceilings.ts`.
+
+### Os tectos — PROPOSTA, não ligados
+
+`PROPOSED_CEILING_BY_DETAIL` = floor((envelope − base) / custo) sobre as constantes medidas:
+**lista 52 · standard 55** (54 se se fixar o declive único de 133 nos dois níveis). São ≈53/59 menos a
+parte da adjacência, como o Orchestrator antecipou. **Não estão ligados** (teste guarda-o): o tecto
+servido continua o ratificado (83/88) com o desajuste declarado em `CEILING_FIT`,
+`size_estimate.within_envelope` e `KNOWN_TOTAL_DEVIATIONS`. A decisão do lead chega com este número.
+
+### Prova
+
+Invariante 3 contra o oráculo da 0.20.0 ✅ (a adjacência não acrescenta ids citáveis — os sinais são
+vocabulário); Eixo H **10/10**; `detail_ref` executado (o `standard` traz a lista completa com o mesmo
+denominador); bloco byte-igual ao do módulo para a mesma declaração; vitest **825/825**; `check`;
+smoke; `eval:acceptance` **141 PASS / 16 PART / 0 FAIL / 23 SKIP**, gate **PASS** (TC-F-47 verifica
+a adjacência em lista e o detalhe em standard).
 
 ## 0.21 (em curso, ramo `0.21`) — §3 «os cortes» — 2026-09-25
 

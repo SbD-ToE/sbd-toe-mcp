@@ -419,7 +419,7 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
       expect(dieted.provenance_legend.note).toContain("sbd://toe/codegen-instructions/");
     });
 
-    it("0.21 §1: `lista` e `standard` são byte-iguais fora do eco do nível e do size_estimate (o separador — adjacência detalhada — chega na §2; declarado, não decidido)", () => {
+    it("0.21 §2: `lista` e `standard` diferem EXACTAMENTE na adjacência detalhada (inline vs detail_ref) — fora disso, do eco e do size_estimate são byte-iguais", () => {
       const standard = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
       const lista = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "lista" });
       expectReadyDieted(standard);
@@ -427,8 +427,14 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
       expect(standard.input_echo.detail).toBe("standard");
       expect(lista.input_echo.detail).toBe("lista");
       const normalize = (result: PrepareCodegenContextResultReadyDieted): string =>
-        JSON.stringify({ ...result, input_echo: null, size_estimate: null });
+        JSON.stringify({ ...result, input_echo: null, size_estimate: null, adjacency: null });
       expect(normalize(lista)).toBe(normalize(standard));
+      expect(standard.adjacency.detail).toBeDefined();
+      expect(lista.adjacency.detail).toBeUndefined();
+      expect(lista.adjacency.detail_ref?.with).toEqual({ detail: "standard" });
+      const { detail: _d, ...standardSummary } = standard.adjacency;
+      const { detail_ref: _r, ...listaSummary } = lista.adjacency;
+      expect(JSON.stringify(listaSummary)).toBe(JSON.stringify(standardSummary));
       // o envelope declarado é o de cada nível
       expect(lista.size_estimate?.envelope_tk).toBe(8450);
       expect(standard.size_estimate?.envelope_tk).toBe(9200);

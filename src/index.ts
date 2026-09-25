@@ -1720,7 +1720,9 @@ class McpRuntime {
             "Returns one of four statuses: ready_for_codegen, needs_clarification, needs_decomposition, " +
             "unsupported_scope. On ready_for_codegen the output carries activation_trace (with score, " +
             "source and reason), activated_scope, g2_context, manual_grounding, regulatory_overlay, " +
-            "citations (0.21 §3: invertido em todos os níveis — legenda por fonte + ids referenciados por caminho; citation_map já não existe), completeness_report (incl. `verification`: denominadores da verificação fundida), " +
+            "citations (0.21 §3: invertido em todos os níveis — legenda por fonte + ids referenciados por caminho; citation_map já não existe), " +
+            "adjacency (0.21 §2, em TODOS os níveis: os sinais do vocabulário que NÃO declaraste e que mudariam o conjunto, com quantos ids cada um acrescentaria — aritmética sobre a declaração, nunca leitura da tarefa; resumo top-5 + denominadores; detalhe inline em standard/full, por referência em lista), " +
+            "completeness_report (incl. `verification`: denominadores da verificação fundida), " +
             "llm_codegen_instructions and security_rationale_template — with provenance for each section. " +
             "0.21 §1 — O REQUISITO FUNDIDO: cada requisito activado é UM objecto {id, name, type, description, " +
             "verify, evidence}, verbatim do bundle, em TODOS os níveis — a descrição nunca sai; `verify`/`evidence` " +
@@ -1805,8 +1807,9 @@ class McpRuntime {
                   "(id, name, type, description, verify, evidence) + ids citáveis (`citations` invertido) + " +
                   "instruções e template inline; manual_grounding por referência (counts + entries_ref → " +
                   "'full'); relations por referência (relations_ref, ou include_relations=true); trace só " +
-                  "com debug=true. 'standard': o que a lista promete (a adjacência detalhada inline chega na " +
-                  "§2; até lá só difere no eco do nível). 'full' (default): o que o standard promete E " +
+                  "com debug=true; adjacência em RESUMO (top-5 do que NÃO declaraste e mudaria o conjunto + " +
+                  "denominadores) com detail_ref. 'standard': o que a lista promete E a adjacência DETALHADA inline " +
+                  "(todos os sinais). 'full' (default): o que o standard promete E " +
                   "manual_grounding verbatim inline, relations_ref executável (include_relations=true inlina-as), activation_trace inline, " +
                   "citations invertido — sem tecto, preço declarado em size_estimate. Em lista/standard as relations SAEM " +
                   "(relations_summary com a contabilidade exacta; 0.21 §3). TECTO de requisitos por chamada " +

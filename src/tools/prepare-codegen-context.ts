@@ -61,6 +61,7 @@ import { requirementCategoryOf } from "../serving/requirement-id.js";
 import { prepareCodegenAffordances } from "../serving/affordances.js";
 import { estimateSize, type SizeEstimate } from "../serving/response-shaping.js";
 import { PAYLOAD_PROMISE_TK as LEVEL_ENVELOPE_TK } from "../serving/payload-ceilings.js";
+import { buildDeclaredAdjacency, declaredAdjacencyDetail, type AdjacencySignal } from "../serving/adjacency.js";
 import {
   runSelectionWithActivation,
   normalizeDeclaredTechnologies,
@@ -213,6 +214,33 @@ export interface FusedRequirement {
   evidence?: string;
   /** Present at detail="full" only (the dieted levels carry it once, in `provenance_legend`). */
   source?: "runtime_v0";
+}
+
+/**
+ * 0.21 §2 — A ADJACÊNCIA DECLARADA, ligada ao prepare. EM TODOS OS NÍVEIS, o mais magro
+ * incluído: não é nível de detalhe, é correcção — quem pede o modo barato é quem mais
+ * provavelmente sub-declarou, e um modo barato que cale «faltou-te privacidade» é pior do
+ * que não existir. Aritmética sobre o vocabulário fechado (src/serving/adjacency.ts): para
+ * cada valor NÃO declarado, a mesma selecção determinística com esse valor acrescentado,
+ * contando os ids que entrariam. Nunca leitura da tarefa. O resumo (top-N por impacto +
+ * denominadores) vai inline sempre; o detalhe (todos os sinais) vai inline em
+ * standard/full e por referência executável em lista — é o separador dos dois níveis.
+ * Em `selection_mode: "discover"` a adjacência é relativa à DECLARAÇÃO feita (a aritmética
+ * não lê o conjunto inferido): com declaração vazia, todo o vocabulário é adjacente.
+ */
+export interface PrepareAdjacency {
+  /** Top-N por would_add (desempate estável: kind, depois nome). O nome do campo é a frase. */
+  undeclared_that_would_change_the_set: AdjacencySignal[];
+  /** Valores do vocabulário sondados (todos os não declarados). */
+  scanned: number;
+  /** Quantos mudariam o conjunto — o DENOMINADOR do resumo. */
+  would_change_the_set: number;
+  /** Quantos vão nomeados no resumo. */
+  shown: number;
+  /** standard/full: a lista COMPLETA (o resumo é o seu prefixo). */
+  detail?: AdjacencySignal[];
+  /** lista: onde está a lista completa — executável verbatim. */
+  detail_ref?: { tool: "prepare_sbd_toe_codegen_context"; with: { detail: "standard" }; note: string };
 }
 
 export interface ActivatedScope {
@@ -442,6 +470,8 @@ export interface PrepareCodegenContextResultReady {
     Omit<PrepareCodegenContextInput, "task"> & { task_role?: string };
   activation_trace: ActivationTraceEntry[];
   activated_scope: ActivatedScope;
+  /** 0.21 §2 — resumo + detalhe inline (full). */
+  adjacency: PrepareAdjacency;
   g2_context: G2Context;
   manual_grounding: ManualGroundingEntry[];
   regulatory_overlay: RegulatoryOverlayContext;
@@ -900,6 +930,8 @@ export interface PrepareCodegenContextResultReadyDieted {
   activation_trace_ref?: ActivationTraceRef;
   provenance_legend: ProvenanceLegend;
   activated_scope: DietedActivatedScope;
+  /** 0.21 §2 — resumo inline sempre; detalhe inline (standard) ou por referência (lista). */
+  adjacency: PrepareAdjacency;
   g2_context: DietedG2Context;
   /** Counts + hoisted sha + executable entries_ref (detail="full"). */
   manual_grounding: ManualGroundingMinimal;
@@ -2478,9 +2510,9 @@ const DETAIL_ENCODING_LEGEND = {
     "lista — every activated requirement complete and verbatim (id, name, type, description, verify, " +
     "evidence) + citable ids + the instructions that forbid inventing ids; manual grounding by " +
     "reference (manual_grounding.entries_ref → detail='full'); relations OUT (g2_context.relations_summary " +
-    "keeps the exact accounting; include_relations=true restores them). standard — what lista promises " +
-    "(the inline adjacency detail arrives with 0.21 §2; until then it differs from lista only in " +
-    "the echoed level). full — what standard promises plus manual_grounding verbatim inline, " +
+    "keeps the exact accounting; include_relations=true restores them); adjacency SUMMARY inline (top-N + " +
+    "denominators), detail by reference. standard — what lista promises plus the adjacency DETAIL inline " +
+    "(every undeclared signal that would change the set). full — what standard promises plus manual_grounding verbatim inline, " +
     "g2_context.relations_ref (executable trace calls; include_relations=true inlines them) and " +
     "activation_trace inline; no requirement ceiling. " +
     "'ultrathin' was retired in 0.21 (its documented purpose was to cut the description, which " +
@@ -2516,6 +2548,15 @@ const DETAIL_ENCODING_LEGEND = {
   activated_scope_controls:
     "controls with confidence='direct' carry the verbatim published `description` " +
     "from data/publish/runtime/controls.json.",
+  adjacency:
+    "0.21 §2 — `adjacency` at EVERY level: the closed-vocabulary signals you did NOT declare that would " +
+    "change the requirement set, with what each would add (arithmetic over the declaration: the same " +
+    "deterministic selection re-run with the signal added — never a reading of the task). " +
+    "undeclared_that_would_change_the_set is the top-N by would_add; would_change_the_set is the " +
+    "denominator (never truncated in silence); scanned is how many vocabulary values were probed. " +
+    "`detail` (the full list; the summary is its prefix) is inline at standard/full and reachable via " +
+    "detail_ref at lista. In selection_mode='discover' the adjacency is relative to the declaration made, " +
+    "not to the inferred set.",
   g2_entities:
     "g2_context.control_objectives/mechanisms/practices/artifacts are grouped as " +
     "{slice_id: {entity_id: name|null}}. entity_type is the list the map lives in " +
@@ -3140,11 +3181,18 @@ function dietControls(controls: ActivatedScope["controls"]): DietedControl[] {
  * linha, sem reescrever o servidor.
  */
 export const LEVEL_FORM: Readonly<
-  Record<Exclude<CodegenDetailLevel, "full">, { manual_grounding: "ref"; relations: "ref" }>
+  Record<
+    Exclude<CodegenDetailLevel, "full">,
+    { manual_grounding: "ref"; relations: "ref"; adjacency_detail: "ref" | "inline" }
+  >
 > = {
-  lista: { manual_grounding: "ref", relations: "ref" }, // relations "ref" = 0.21 §3 summary (accounting + way back)
-  standard: { manual_grounding: "ref", relations: "ref" }
+  lista: { manual_grounding: "ref", relations: "ref", adjacency_detail: "ref" }, // relations "ref" = 0.21 §3 summary (accounting + way back)
+  standard: { manual_grounding: "ref", relations: "ref", adjacency_detail: "inline" } // 0.21 §2: o separador lista↔standard
 };
+
+const ADJACENCY_DETAIL_REF_NOTE =
+  "Full list of undeclared signals that would change the set (the summary is its prefix) at detail='standard'; " +
+  "for the ids a signal would add: select_sbd_toe_requirements(<your declaration> + the signal).";
 
 /**
  * Dieted encoding for `detail: "lista" | "standard"` (0.21). Pure
@@ -3220,6 +3268,17 @@ function applyStructuralDiet(
       slices: stripSource(result.activated_scope.slices),
       regulatory_obligations: stripSource(result.activated_scope.regulatory_obligations)
     },
+    // 0.21 §2: resumo sempre; detalhe inline (standard) ou por referência executável (lista).
+    adjacency:
+      form.adjacency_detail === "inline"
+        ? result.adjacency
+        : {
+            undeclared_that_would_change_the_set: result.adjacency.undeclared_that_would_change_the_set,
+            scanned: result.adjacency.scanned,
+            would_change_the_set: result.adjacency.would_change_the_set,
+            shown: result.adjacency.shown,
+            detail_ref: { tool: "prepare_sbd_toe_codegen_context", with: { detail: "standard" }, note: ADJACENCY_DETAIL_REF_NOTE }
+          },
     g2_context: {
       control_objectives: groupEntitiesBySlice(result.g2_context.control_objectives),
       mechanisms: groupEntitiesBySlice(result.g2_context.mechanisms),
@@ -3799,12 +3858,33 @@ function prepareCodegenContextCore(
     input.taskTrimmed
   );
 
+  // ----- 0.21 §2: adjacência declarada -----------------------------------
+  // Relativa à DECLARAÇÃO tal como o chamador a fez (aritmética sobre o vocabulário, nunca
+  // leitura da tarefa); o módulo aplica risk_level L2 quando omitido.
+  const adjacencyBase = {
+    risk_level: input.risk_level ?? "L2",
+    ...(input.concerns.length > 0 ? { concerns: [...input.concerns] } : {}),
+    ...(input.exposure !== undefined ? { exposure: input.exposure } : {}),
+    ...(input.data_sensitivity !== undefined ? { data_sensitivity: input.data_sensitivity } : {}),
+    ...(declaredTechnologies.length > 0 ? { technologies: [...declaredTechnologies] } : {}),
+    ...(input.changed_files.length > 0 ? { changed_files: [...input.changed_files] } : {})
+  };
+  const adjacencySummary = buildDeclaredAdjacency(adjacencyBase);
+  const adjacency: PrepareAdjacency = {
+    undeclared_that_would_change_the_set: adjacencySummary.undeclared_that_would_change_the_set,
+    scanned: adjacencySummary.scanned,
+    would_change_the_set: adjacencySummary.would_change_the_set,
+    shown: adjacencySummary.shown,
+    detail: declaredAdjacencyDetail(adjacencyBase)
+  };
+
   const result: PrepareCodegenContextResultReady = {
     status: "ready_for_codegen",
     mode: input.mode,
     input_echo: inputEcho(raw),
     activation_trace: activation.trace,
     activated_scope: activatedScope,
+    adjacency,
     g2_context: g2Context,
     manual_grounding: manualGrounding,
     regulatory_overlay: overlayResolution.context,

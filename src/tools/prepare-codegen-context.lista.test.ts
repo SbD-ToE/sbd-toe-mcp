@@ -250,12 +250,14 @@ describe("prepare_sbd_toe_codegen_context — perfil lista (0.21 §1)", () => {
     });
   });
 
-  it("lista ≡ standard fora do eco do nível e do envelope declarado (o separador — adjacência detalhada — chega na §2; declarado, não decidido)", () => {
+  it("lista ≡ standard fora do eco, do envelope declarado e da adjacência detalhada (0.21 §2: o separador é o detalhe inline vs detail_ref)", () => {
     for (const fixture of FIXTURES) {
       const lista = runLista(fixture);
       const standard = runStandard(fixture);
-      const normalize = (r: PrepareCodegenContextResultReadyDieted) => JSON.stringify({ ...r, input_echo: null, size_estimate: null });
+      const normalize = (r: PrepareCodegenContextResultReadyDieted) => JSON.stringify({ ...r, input_echo: null, size_estimate: null, adjacency: null });
       expect(normalize(lista)).toBe(normalize(standard));
+      expect(lista.adjacency.detail_ref?.with).toEqual({ detail: "standard" });
+      expect(standard.adjacency.detail?.length).toBe(standard.adjacency.would_change_the_set);
       expect(lista.size_estimate?.envelope_tk).toBe(8450);
       expect(standard.size_estimate?.envelope_tk).toBe(9200);
     }

@@ -440,6 +440,45 @@
     ],
     "regulatory_obligations": []
   },
+  "adjacency": {
+    "undeclared_that_would_change_the_set": [
+      {
+        "signal": "public",
+        "kind": "exposure",
+        "would_add": 70
+      },
+      {
+        "signal": "deployment",
+        "kind": "concern",
+        "would_add": 38
+      },
+      {
+        "signal": "personal",
+        "kind": "data_sensitivity",
+        "would_add": 37
+      },
+      {
+        "signal": "regulated",
+        "kind": "data_sensitivity",
+        "would_add": 37
+      },
+      {
+        "signal": "authenticated",
+        "kind": "exposure",
+        "would_add": 36
+      }
+    ],
+    "scanned": 41,
+    "would_change_the_set": 39,
+    "shown": 5,
+    "detail_ref": {
+      "tool": "prepare_sbd_toe_codegen_context",
+      "with": {
+        "detail": "standard"
+      },
+      "note": "Full list of undeclared signals that would change the set (the summary is its prefix) at detail='standard'; for the ids a signal would add: select_sbd_toe_requirements(<your declaration> + the signal)."
+    }
+  },
   "g2_context": {
     "control_objectives": {
       "ASC-02": {
@@ -706,8 +745,8 @@
     }
   ],
   "size_estimate": {
-    "chars": 28263,
-    "approx_tokens": 7066,
+    "chars": 28959,
+    "approx_tokens": 7240,
     "envelope_tk": 8450,
     "within_envelope": true
   }

@@ -8,7 +8,7 @@
  * teste prova a COERÊNCIA entre as três coisas — nunca «arranja» o número.
  */
 import { describe, it, expect } from "vitest";
-import { REQUIREMENT_CEILING_BY_DETAIL, COST_PER_REQ_TK, BASE_TK, PAYLOAD_PROMISE_TK, CEILING_FIT, projectedCostTk } from "./payload-ceilings.js";
+import { REQUIREMENT_CEILING_BY_DETAIL, COST_PER_REQ_TK, BASE_TK, PAYLOAD_PROMISE_TK, CEILING_FIT, PROPOSED_CEILING_BY_DETAIL, projectedCostTk } from "./payload-ceilings.js";
 import { handlePrepareCodegenContext } from "../tools/prepare-codegen-context.js";
 
 const EVALUATOR_CASE = { task: "Expor API pública de consulta com chaves de cliente e rate limiting", risk_level: "L3", exposure: "public", data_sensitivity: "personal", stack: "Python/FastAPI" };
@@ -35,6 +35,14 @@ describe("payload-ceilings — tectos ratificados e ajuste declarado (0.21 §5)"
       expect(projectedCostTk(detail, limit)).toBe(projected);
       expect(fit.fits).toBe(projected <= PAYLOAD_PROMISE_TK[detail]!);
       expect(fit.measured_ceiling_for_envelope).toBe(Math.floor((PAYLOAD_PROMISE_TK[detail]! - BASE_TK[detail]!) / COST_PER_REQ_TK[detail]!));
+    }
+  });
+
+  it("0.21 §2 — a PROPOSTA é a fórmula sobre as constantes medidas (lista 52 · standard 55) e NÃO está ligada", () => {
+    expect(PROPOSED_CEILING_BY_DETAIL).toEqual({ lista: 52, standard: 55 });
+    for (const detail of Object.keys(PROPOSED_CEILING_BY_DETAIL)) {
+      expect(PROPOSED_CEILING_BY_DETAIL[detail]).toBe(CEILING_FIT[detail]!.measured_ceiling_for_envelope);
+      expect(REQUIREMENT_CEILING_BY_DETAIL[detail]).not.toBe(PROPOSED_CEILING_BY_DETAIL[detail]); // ligado = ratificado, até decisão do lead
     }
   });
 

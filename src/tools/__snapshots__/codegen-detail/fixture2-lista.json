@@ -670,6 +670,45 @@
     ],
     "regulatory_obligations": []
   },
+  "adjacency": {
+    "undeclared_that_would_change_the_set": [
+      {
+        "signal": "public",
+        "kind": "exposure",
+        "would_add": 70
+      },
+      {
+        "signal": "deployment",
+        "kind": "concern",
+        "would_add": 38
+      },
+      {
+        "signal": "personal",
+        "kind": "data_sensitivity",
+        "would_add": 37
+      },
+      {
+        "signal": "regulated",
+        "kind": "data_sensitivity",
+        "would_add": 37
+      },
+      {
+        "signal": "authenticated",
+        "kind": "exposure",
+        "would_add": 36
+      }
+    ],
+    "scanned": 41,
+    "would_change_the_set": 39,
+    "shown": 5,
+    "detail_ref": {
+      "tool": "prepare_sbd_toe_codegen_context",
+      "with": {
+        "detail": "standard"
+      },
+      "note": "Full list of undeclared signals that would change the set (the summary is its prefix) at detail='standard'; for the ids a signal would add: select_sbd_toe_requirements(<your declaration> + the signal)."
+    }
+  },
   "g2_context": {
     "control_objectives": {
       "ASC-02": {
@@ -984,8 +1023,8 @@
     }
   ],
   "size_estimate": {
-    "chars": 50778,
-    "approx_tokens": 12695,
+    "chars": 51474,
+    "approx_tokens": 12869,
     "envelope_tk": 8450,
     "within_envelope": false,
     "note": "Acima do envelope herdado deste nível. O tecto por-id é o ratificado (§5) e o custo por requisito da forma fundida é o medido; quando não fecham, este payload di-lo em vez de o esconder. Divide por área (concerns do lote) ou usa detail='full' (sem envelope, preço declarado)."

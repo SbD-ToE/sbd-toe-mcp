@@ -1160,7 +1160,14 @@ export const scenarios = [
       if (divergentes.length > 0) return fail(`verify inline ≠ validation_method da matriz em ${divergentes.length} ids`);
       const note = (a.data.debug?.notes ?? []).find((n) => n.startsWith("verification: requirements="));
       if (!note) return fail("sem nota de verification em debug");
-      return ok(`${reqs.length}/${reqs.length} requisitos fundidos (description+verify+evidence) em lista/standard/full; sem bloco EP; by_ref alcançável (${rows.length} linhas, verify == validation_method); size_estimate ${a.data.size_estimate?.approx_tokens} tk (envelope ${a.data.size_estimate?.envelope_tk}, within=${a.data.size_estimate?.within_envelope})`); } },
+      // 0.21 §2: adjacência em todos os níveis — resumo com denominadores em lista, detalhe alcançável em standard
+      const adj = a.data.adjacency;
+      if (!adj || !Array.isArray(adj.undeclared_that_would_change_the_set) || typeof adj.would_change_the_set !== "number") return fail("lista sem bloco adjacency com denominadores");
+      if (adj.detail_ref?.with?.detail !== "standard") return fail("lista sem detail_ref executável para standard");
+      const st = await c.tool("prepare_sbd_toe_codegen_context", { ...base, detail: "standard" });
+      if (!st.ok) return fail(st.error);
+      if ((st.data.adjacency?.detail ?? []).length !== adj.would_change_the_set) return fail(`detail_ref não executável: standard traz ${st.data.adjacency?.detail?.length} sinais, denominador ${adj.would_change_the_set}`);
+      return ok(`${reqs.length}/${reqs.length} requisitos fundidos (description+verify+evidence) em lista/standard/full; sem bloco EP; by_ref alcançável (${rows.length} linhas, verify == validation_method); adjacência ${adj.shown}/${adj.would_change_the_set} em lista, detalhe ${st.data.adjacency.detail.length} em standard; size_estimate ${a.data.size_estimate?.approx_tokens} tk (envelope ${a.data.size_estimate?.envelope_tk}, within=${a.data.size_estimate?.within_envelope})`); } },
 
   { id: "TC-F-48", axis: "F", title: "0.20.0-beta.26 (itens 2,3,5,6): threat needs_input, traço multi-activador, denominadores, obligation_ids", tool: "select_sbd_toe_requirements",
     run: async (c) => {

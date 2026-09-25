@@ -559,6 +559,235 @@
     ],
     "regulatory_obligations": []
   },
+  "adjacency": {
+    "undeclared_that_would_change_the_set": [
+      {
+        "signal": "public",
+        "kind": "exposure",
+        "would_add": 70
+      },
+      {
+        "signal": "deployment",
+        "kind": "concern",
+        "would_add": 38
+      },
+      {
+        "signal": "personal",
+        "kind": "data_sensitivity",
+        "would_add": 37
+      },
+      {
+        "signal": "regulated",
+        "kind": "data_sensitivity",
+        "would_add": 37
+      },
+      {
+        "signal": "authenticated",
+        "kind": "exposure",
+        "would_add": 36
+      }
+    ],
+    "scanned": 41,
+    "would_change_the_set": 39,
+    "shown": 5,
+    "detail": [
+      {
+        "signal": "public",
+        "kind": "exposure",
+        "would_add": 70
+      },
+      {
+        "signal": "deployment",
+        "kind": "concern",
+        "would_add": 38
+      },
+      {
+        "signal": "personal",
+        "kind": "data_sensitivity",
+        "would_add": 37
+      },
+      {
+        "signal": "regulated",
+        "kind": "data_sensitivity",
+        "would_add": 37
+      },
+      {
+        "signal": "authenticated",
+        "kind": "exposure",
+        "would_add": 36
+      },
+      {
+        "signal": "internal",
+        "kind": "exposure",
+        "would_add": 36
+      },
+      {
+        "signal": "supply_chain",
+        "kind": "concern",
+        "would_add": 32
+      },
+      {
+        "signal": "auth",
+        "kind": "concern",
+        "would_add": 27
+      },
+      {
+        "signal": "containers",
+        "kind": "technology",
+        "would_add": 22
+      },
+      {
+        "signal": "kubernetes",
+        "kind": "technology",
+        "would_add": 22
+      },
+      {
+        "signal": "monitoring",
+        "kind": "concern",
+        "would_add": 20
+      },
+      {
+        "signal": "release",
+        "kind": "concern",
+        "would_add": 20
+      },
+      {
+        "signal": "agents",
+        "kind": "concern",
+        "would_add": 18
+      },
+      {
+        "signal": "build",
+        "kind": "concern",
+        "would_add": 18
+      },
+      {
+        "signal": "integration",
+        "kind": "concern",
+        "would_add": 16
+      },
+      {
+        "signal": "validation",
+        "kind": "concern",
+        "would_add": 15
+      },
+      {
+        "signal": "secrets",
+        "kind": "data_sensitivity",
+        "would_add": 14
+      },
+      {
+        "signal": "secrets",
+        "kind": "concern",
+        "would_add": 14
+      },
+      {
+        "signal": "sca-sbom",
+        "kind": "technology",
+        "would_add": 13
+      },
+      {
+        "signal": "architecture",
+        "kind": "concern",
+        "would_add": 12
+      },
+      {
+        "signal": "iac",
+        "kind": "concern",
+        "would_add": 11
+      },
+      {
+        "signal": "iac",
+        "kind": "technology",
+        "would_add": 11
+      },
+      {
+        "signal": "monitoring",
+        "kind": "technology",
+        "would_add": 11
+      },
+      {
+        "signal": "ci-cd",
+        "kind": "technology",
+        "would_add": 10
+      },
+      {
+        "signal": "integrity",
+        "kind": "concern",
+        "would_add": 9
+      },
+      {
+        "signal": "logging",
+        "kind": "concern",
+        "would_add": 9
+      },
+      {
+        "signal": "encryption",
+        "kind": "concern",
+        "would_add": 8
+      },
+      {
+        "signal": "files",
+        "kind": "concern",
+        "would_add": 8
+      },
+      {
+        "signal": "testing",
+        "kind": "concern",
+        "would_add": 8
+      },
+      {
+        "signal": "threat_modeling",
+        "kind": "concern",
+        "would_add": 8
+      },
+      {
+        "signal": "dast",
+        "kind": "technology",
+        "would_add": 8
+      },
+      {
+        "signal": "sast",
+        "kind": "technology",
+        "would_add": 8
+      },
+      {
+        "signal": "api",
+        "kind": "concern",
+        "would_add": 7
+      },
+      {
+        "signal": "distribution",
+        "kind": "concern",
+        "would_add": 7
+      },
+      {
+        "signal": "requirements",
+        "kind": "concern",
+        "would_add": 7
+      },
+      {
+        "signal": "config",
+        "kind": "concern",
+        "would_add": 6
+      },
+      {
+        "signal": "ide",
+        "kind": "concern",
+        "would_add": 6
+      },
+      {
+        "signal": "privacy",
+        "kind": "concern",
+        "would_add": 5
+      },
+      {
+        "signal": "jwt",
+        "kind": "technology",
+        "would_add": 1
+      }
+    ]
+  },
   "manual_grounding": [
     {
       "rastreabilidade_role": "substrate_landing",
@@ -1584,7 +1813,7 @@
     }
   ],
   "size_estimate": {
-    "chars": 49103,
-    "approx_tokens": 12276
+    "chars": 51651,
+    "approx_tokens": 12913
   }
 }

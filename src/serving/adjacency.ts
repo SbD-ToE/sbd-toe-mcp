@@ -83,7 +83,7 @@ function selectedIds(input: SelectionContextInput): Set<string> {
  * `prepare` pode pedi-lo mais do que uma vez na mesma resposta. Determinístico por construção:
  * a chave é a declaração inteira, normalizada e ordenada.
  */
-const cache = new Map<string, DeclaredAdjacency>();
+const cache = new Map<string, { summary: DeclaredAdjacency; hits: AdjacencySignal[] }>();
 
 function signatureOf(base: SelectionContextInput): string {
   return JSON.stringify({
@@ -101,6 +101,18 @@ function signatureOf(base: SelectionContextInput): string {
  * fez — o cálculo nunca a altera, só a estende hipoteticamente, um sinal de cada vez.
  */
 export function buildDeclaredAdjacency(base: SelectionContextInput): DeclaredAdjacency {
+  return compute(base).summary;
+}
+
+/**
+ * 0.21 §2 — o DETALHE: todos os sinais que mudariam o conjunto, na mesma ordem do resumo (o
+ * resumo é o prefixo). Vai inline em `standard`/`full` e por referência em `lista`.
+ */
+export function declaredAdjacencyDetail(base: SelectionContextInput): AdjacencySignal[] {
+  return compute(base).hits;
+}
+
+function compute(base: SelectionContextInput): { summary: DeclaredAdjacency; hits: AdjacencySignal[] } {
   const key = signatureOf(base);
   const hit = cache.get(key);
   if (hit !== undefined) return hit;
@@ -150,6 +162,7 @@ export function buildDeclaredAdjacency(base: SelectionContextInput): DeclaredAdj
       `Nomeados ${top.length} de ${hits.length}.`,
     reading: "Aritmética sobre o vocabulário, não leitura da tarefa: diz o que CADA sinal acrescentaria, não qual se aplica."
   };
-  cache.set(key, out);
-  return out;
+  const entry = { summary: out, hits };
+  cache.set(key, entry);
+  return entry;
 }

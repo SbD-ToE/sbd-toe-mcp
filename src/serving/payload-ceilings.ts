@@ -33,11 +33,11 @@ export const PAYLOAD_PROMISE_TK: Readonly<Record<string, number>> = {
   standard: 9200 //  ratificado e harmonizado
 };
 /**
- * Declive e base MEDIDOS na forma servida — §1 + §3 (2026-09-25, regressão 27→89
- * sobre os mesmos 5 casos do §5; scripts/measure/s5-form-projection.mjs). A §3
- * (relations saem; citation_map inverte-se) baixou a base dos dieted em ~25 tk
- * (1.327 → 1.302) e o full em ~30%; o declive (~133 tk/req) não muda — é o
- * requisito fundido que o faz, e esse é o conteúdo que a promessa manda servir.
+ * Declive e base MEDIDOS na forma servida — §1 + §3 + §2 (2026-09-25, regressão
+ * 27→89 sobre os mesmos casos do §5; scripts/measure/s5-form-projection.mjs). A §3
+ * baixou a base dos dieted ~25 tk e o full ~30%; a §2 pôs a adjacência DENTRO da
+ * base (resumo ~170 tk em lista; detalhe ~440–610 tk em standard/full). O declive
+ * (~133 tk/req) não muda — é o requisito fundido que o faz.
  *
  * ACHADO (para o lead): a projecção do §5 media 81,0 tk/req porque fazia o join
  * verify/evidence a partir do bloco evidence_patterns CAPADO a 25 — só 25
@@ -50,12 +50,27 @@ export const PAYLOAD_PROMISE_TK: Readonly<Record<string, number>> = {
  */
 export const COST_PER_REQ_TK: Readonly<Record<string, number>> = {
   lista: 133,
-  standard: 133
+  standard: 130.2 // o detalhe da adjacência ENCOLHE à medida que mais se declara (608 → 437 tk): declive ligeiramente menor
 };
 export const BASE_TK: Readonly<Record<string, number>> = {
-  lista: 1302,
-  standard: 1303
+  lista: 1476,
+  standard: 1987
 };
+
+/**
+ * 0.21 §2 — PROPOSTA (NÃO LIGADA): os tectos que a fórmula dá sobre a forma servida
+ * completa (§1+§3+§2) e os envelopes herdados. Ordem do Orchestrator 2026-09-25:
+ * «apresenta como PROPOSTA com os números; não os ligues — o lead ainda não decidiu».
+ * Derivação: floor((envelope − base) / custo) com as constantes medidas acima ⇒
+ * lista 52, standard 55 (54 se se fixar o declive único de 133 tk/req nos dois).
+ * O tecto LIGADO continua o ratificado (83/88), com o desajuste declarado em CEILING_FIT.
+ */
+export const PROPOSED_CEILING_BY_DETAIL: Readonly<Record<string, number>> = Object.fromEntries(
+  Object.entries(PAYLOAD_PROMISE_TK).map(([detail, envelope]) => [
+    detail,
+    Math.floor((envelope - (BASE_TK[detail] ?? 0)) / (COST_PER_REQ_TK[detail] ?? 1))
+  ])
+);
 /** Tectos RATIFICADOS (§5, lead 2026-09-25): floor((8450−1713)/81,0)=83, floor((9200−2259)/78,7)=88. */
 export const REQUIREMENT_CEILING_BY_DETAIL: Readonly<Record<string, number>> = {
   lista: 83,

@@ -36,7 +36,7 @@ A mesma chamada em cada um; payloads comparados **byte a byte**. Repetir no mesm
 | `get_guide_by_role` | byte-idêntico | 69383 | — |
 | `resolve_entities` | byte-idêntico | 10214 | — |
 | `trace_sbd_toe_graph` | byte-idêntico | 5143 | — |
-| `prepare_sbd_toe_codegen_context` | byte-idêntico | 28814 | — |
+| `prepare_sbd_toe_codegen_context` | byte-idêntico | 31257 | — |
 
 ## Campos voláteis declarados
 
