@@ -3,11 +3,95 @@ ai_assisted: true
 model: Claude Fable 5.1
 date: 2026-09-25
 purpose: documentation
-reasoning: 0.21 §6 (notas por referência, changelog fora das descrições, next do contexto, size_estimate em todas as tools, task vs contrato), decisão do lead (a) — tectos 52/55 — e §6-a (decomposição que soma o todo); antes §2 (adjacência), §3 (os cortes) e §1 (o requisito fundido) por cima da entrada v0.20.0 — a descrição nunca sai, o bloco evidence_patterns morre, ultrathin reforma-se, tectos ratificados 83/88 ligados com o ajuste DECLARADO (achado: a projecção do §5 subestimou o custo por requisito). Entrada anterior: v0.20.0 (promoção da beta.49, linha estável) — a maturidade do contrato de selecção passa a FACTO DECLARADO (`serving_contract.identity` + `.maturity`, com a maturidade do pacote derivada da versão e nunca escrita à mão) em vez de sufixo numa string; o contrato mantém-se beta deliberadamente, por decisão do lead, e o identificador NÃO se renomeia. Sete declarações servidas que a promoção tornava falsas — cinco a dizer que a linha era beta, uma a dizer que a linha estável era outra — reescritas na forma durável: a prosa nomeia a linha, o campo declarado carrega a maturidade. Zero alteração de comportamento: o oráculo do Eixo H veio byte-idêntico à corrida da beta.49. E publicar deixa de ser o mesmo acto que apontar: o caminho estável do release.yml passa a publicar em `--tag next` — a capacidade que o caminho de prerelease já tinha, aplicada ao que a não tinha — para que a estável possa ser verificada antes de ser o que toda a gente instala; o `latest` move-o o lead, num acto próprio.
+reasoning: 0.21 §7 (eixo lista/standard/full harmonizado em select e threat) + rascunho das release notes 0.21.0 (tabela final da linha e diferenças de superfície face à 0.20.0, para o lead e para o Mensor); §6 (notas por referência, changelog fora das descrições, next do contexto, size_estimate em todas as tools, task vs contrato), decisão do lead (a) — tectos 52/55 — e §6-a (decomposição que soma o todo); antes §2 (adjacência), §3 (os cortes) e §1 (o requisito fundido) por cima da entrada v0.20.0 — a descrição nunca sai, o bloco evidence_patterns morre, ultrathin reforma-se, tectos ratificados 83/88 ligados com o ajuste DECLARADO (achado: a projecção do §5 subestimou o custo por requisito). Entrada anterior: v0.20.0 (promoção da beta.49, linha estável) — a maturidade do contrato de selecção passa a FACTO DECLARADO (`serving_contract.identity` + `.maturity`, com a maturidade do pacote derivada da versão e nunca escrita à mão) em vez de sufixo numa string; o contrato mantém-se beta deliberadamente, por decisão do lead, e o identificador NÃO se renomeia. Sete declarações servidas que a promoção tornava falsas — cinco a dizer que a linha era beta, uma a dizer que a linha estável era outra — reescritas na forma durável: a prosa nomeia a linha, o campo declarado carrega a maturidade. Zero alteração de comportamento: o oráculo do Eixo H veio byte-idêntico à corrida da beta.49. E publicar deixa de ser o mesmo acto que apontar: o caminho estável do release.yml passa a publicar em `--tag next` — a capacidade que o caminho de prerelease já tinha, aplicada ao que a não tinha — para que a estável possa ser verificada antes de ser o que toda a gente instala; o `latest` move-o o lead, num acto próprio.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.21.0 — RASCUNHO das release notes (preparado 2026-09-25; a release é acto do lead: merge squash → tag → `next` → `latest`)
+
+**A linha 0.21 — «a forma da resposta».** Sete fases, cada uma com prova, todas aceites pelo Orchestrator; tectos
+decididos pelo lead (a). Pino **KG v1.12.0** (sha256 `c21d35cb…bece2f`, Manual v1.14.0) inalterado — esta release
+muda a FORMA do que se serve, não o conhecimento. Selecção inalterada: **invariante 3** (conjunto de ids citáveis
+idêntico à 0.20.0, oráculo gerado antes da vaga, 9 casos × 3 níveis) e **Eixo H 10/10**.
+
+### A tabela final da linha (tokens ≈ chars/4)
+
+| caso | nível | 0.20.0 | **0.21.0** |
+|---|---|---:|---:|
+| `auth`/L2, **27** reqs | lista (era `minimal`, sem descrição) | 3.879 | **4.601** — com descrição, verify e evidence |
+| | standard | 4.403 | **5.082** — + adjacência detalhada inline |
+| | full | 11.148 | **7.659** (−31%) |
+| `auth+integrity+deployment`/L3, **83** reqs | lista | — | 14.889 (acima do envelope 8.450 — **bloqueia** por tecto 52, `needs_decomposition` com 2 lotes 48+35 que somam o todo) |
+| | standard | — | 15.274 (idem, tecto 55) |
+| | full | — | **23.781** (sem tecto; preço declarado) |
+| fixture 1 do EPIC (41) | lista / standard / full | ≈18.903 (full) | 6.775 / 7.281 / 12.759 |
+| fixture 2 do EPIC (69) | lista / standard / full | ≈24.731 (full) | bloqueia (52/55) / bloqueia / 20.549 |
+| **tools/list** (o schema pago em TODAS as voltas) | | **13.809** | **11.410** (−17,4%) |
+
+Regressão da forma servida (27→89): **~133 tk/req**; base lista 1.476 / standard 1.987 (antes da §6-c; as notas
+por referência baixaram-na ~465). Tectos por contagem: **lista 52 · standard 55 · full sem tecto**; envelopes
+herdados 8.450/9.200; `size_estimate.within_envelope` diz sempre se coube (achado de CONTRATO com o lead:
+contagem vs tokens — variância por caso real).
+
+### O que muda na superfície servida face à 0.20.0 (para o Mensor e para quem consome)
+
+**`prepare_sbd_toe_codegen_context`**
+1. `activated_scope.requirements[]` = **um objecto por requisito** `{id, name, type, description, verify, evidence}`
+   (era `{requirement_id, name, category, type}` sem descrição). A descrição nunca sai, em nenhum nível.
+2. **`g2_context.evidence_patterns` deixou de existir** (era um bloco capado 25/10/5/0 com join a cargo do modelo);
+   `completeness_report.verification` traz os denominadores e `by_ref` (matriz, ≤50 ids/chamada) para
+   `evidence_pattern_id`/`control_id`/`expected_artifact_type_ids`; `related_by_control_outside_scope` conta + ref.
+3. **Níveis `lista` / `standard` / `full`** (eram ultrathin/minimal/standard/full). `ultrathin` retirado, `minimal` →
+   `lista`; nomes retirados devolvem `-32602` a dizer para onde foram. `LEVEL_FORM` (tabela) decide o que vai inline.
+4. **`citations` em todos os níveis** — `citation_map` deixou de existir (invertido: legenda por fonte + ids por
+   caminho do payload; no full os caminhos são de lista). `citableIds()` exportado.
+5. **Relations saem**: `full` → `relations_ref` (chamadas executáveis + contabilidade); `lista`/`standard` →
+   `relations_summary` (mesma contabilidade) + residuais inline; `include_relations=true` repõe-nas.
+6. **`adjacency` em todos os níveis**: top-5 do que NÃO declaraste e mudaria o conjunto + denominadores; detalhe
+   inline em standard/full, `detail_ref` em lista (o separador lista↔standard).
+7. **Instruções e template inline em todos os níveis** (eram por referência nos dieted); `codegen_instructions_ref`
+   deixou de existir; condição de slot `citations_empty` (era `citation_map_empty`).
+8. **`manual_grounding`** por referência em lista/standard (forma de contagens + `entries_ref` → full); a forma
+   agrupada deixou de existir; `groups_ref` → `entries_ref`.
+9. **Descrição dos controlos `direct` em todos os níveis**, full incluído.
+10. **`size_estimate`** `{chars, approx_tokens, envelope_tk?, within_envelope?, note_id?}` em todos os níveis.
+11. **Tectos por contagem: lista 52 · standard 55** (eram minimal 78 / standard 81 / ultrathin 86); acima,
+    `needs_decomposition` com **lotes que somam o todo** (`requirement_ceiling.batches[].with.categories` +
+    technologies/changed_files, `requirements` reais, `derived_from`, `union.recall`).
+12. **Forma B no prepare**: `chapters` / `categories` aceites e contam como declaração.
+13. **Notas por referência**: `note_id` + cabeçalho `notes` (11 notas em `sbd://toe/notes/{id}`); `provenance_legend`
+    e `repeat_call_hint` passam a `{note_id}`.
+14. **`task` opcional em declarativo** (contexto registado; nenhum gate de texto); em `discover` o gate mantém-se.
+    Declaração inerte ⇒ `needs_input` com `valid_values`.
+
+**`select_sbd_toe_requirements` / `get_threat_landscape`**
+15. `detail`: **`lista` / `standard` / `full`** (era full/standard/minimal) — o mesmo eixo; `minimal` → `-32602`
+    a dizer para onde foi. No threat, `lista` ≡ `standard` (declarado no schema).
+
+**Todas as tools**
+16. **`size_estimate`** em todos os resultados JSON (26/29; 3 de prosa: n/a), medido sobre o payload entregue.
+17. **Descrições ≤600 chars, em inglês, sem changelog**; anteriores verbatim em `sbd://toe/version.surface_history`.
+18. **`next` gerado do contexto** em `assess_sbd_toe_implementation` e `get_sbd_toe_macro_processes`.
+19. **Recursos novos**: `sbd://toe/notes`, `sbd://toe/notes/{id}`; `sbd://toe/version` ganha `surface_history`.
+20. Colaterais corrigidos: `resolve_entities` derivava o esquema de filtros da cache v0 inteira (filtro válido
+    anunciado como desconhecido); guia mede tamanhos com a régua do servidor; runner do Eixo H lia `requirement_id`.
+
+### Fases e commits (ramo `0.21`)
+§5 `cb36422` (proposta) → §1 `28cc817` → §3 `de17d55` → §2 `282831c` → pausa `be75297` → (a)+§6-a `6ea4789` →
+§6 `27226a9` → §7 + este rascunho (ver `git log`). Registo: `agentic/briefs/2026-09-25-pontifex-0.21-*.md`.
+
+## 0.21 (em curso, ramo `0.21`) — §7 «o eixo é um só»: `lista`/`standard`/`full` também em select e threat — 2026-09-25
+
+Ordem do Orchestrator (última fase): «harmoniza com o eixo lista/standard/full ou declara porque é outro eixo,
+mas não fica com o nome a mentir». É o mesmo eixo — inline vs por referência: no select, `standard` põe as
+justificações do trace numa legenda por referência e o antigo `minimal` tira ainda os deriváveis `type` e
+`source_chapter`; no threat, `standard`/`minimal` referenciam os controlos pela `associated_control_legend`.
+Harmonizado: `minimal` → **`lista`** nos dois; `minimal`/`ultrathin` devolvem `-32602` com a indicação (→ lista);
+no threat **`lista` ≡ `standard`** (não há bloco por referência que os separe) — declarado no schema e provado.
+Descrições dos dois `detail` em inglês, ≤600. Guarda: `detail-axis.test.ts` (as três tools, o mesmo eixo, os
+mesmos nomes retirados). Prova: vitest 816/816 · check · smoke · acceptance 141/16/0/23 gate PASS · Eixo H 10/10.
 
 ## 0.21 (em curso, ramo `0.21`) — §6 «também nesta vaga»: notas por referência, changelog fora das descrições, `next` do contexto, `size_estimate` em todo o lado, o `task` vs o contrato — 2026-09-25
 

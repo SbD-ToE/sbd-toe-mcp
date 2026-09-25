@@ -121,7 +121,7 @@ describe("beta.26 — a dieta do select não perde nada", () => {
   it("legenda + refs reconstroem o selection_trace clássico, byte a byte", () => {
     const args = { risk_level: "L3", concerns: ["auth", "iac", "build", "deployment", "logging", "validation"], limit: 500 };
     const full = handleSelectRequirements(args);
-    for (const detail of ["standard", "minimal"] as const) {
+    for (const detail of ["standard", "lista"] as const) { // 0.21 §7: minimal → lista
       const dieted = handleSelectRequirements({ ...args, detail });
       const legend = new Map((dieted.selection_trace_legend ?? []).map((e) => [e.ref, e]));
       expect(legend.size, `${detail}: sem legenda`).toBeGreaterThan(0);

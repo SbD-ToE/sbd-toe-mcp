@@ -1382,9 +1382,9 @@ class McpRuntime {
               },
               detail: {
                 type: "string",
-                enum: ["full", "standard", "minimal"],
+                enum: ["lista", "standard", "full"],
                 description:
-                  "Nível de SERIALIZAÇÃO da resposta (0.20.0-beta.26; default `full` = comportamento anterior, byte-idêntico). `standard` e `minimal` movem as justificações DISTINTAS do `selection_trace` para `selection_trace_legend` e deixam cada item a referi-las em `trace` — medido: −40% e −48% de payload numa selecção de 115 requisitos (12 justificações distintas para 115 entradas), com o MESMO conjunto de ids. Dieta de serialização, nunca de conteúdo: nenhum id e nenhuma justificação se perdem. `minimal` elide ainda `type` e `source_chapter` (deriváveis)."
+                  "Serialization level — the same axis as prepare (inline vs by reference). full (default): each item carries its full selection_trace. standard: the DISTINCT justifications move to selection_trace_legend and each item references them in `trace` (measured −40%). lista: standard minus the derivable `type` and `source_chapter` (recoverable via trace_sbd_toe_requirement_sources; −48%). Same id set at every level — a serialization diet, never a content one. 'minimal' was renamed 'lista'; the error says so."
               },
               task_context: { type: "string", description: "CONTEXTO REGISTADO (auditoria): o enunciado da tarefa. NOME CANÓNICO desde 0.20.0-beta.24 — um campo chamado `task` convidava a ser o motor, e não é: NÃO influencia a selecção no modo declarativo. Alias `task` continua aceite (aditivo, nunca renomeámos nada); em mode='discover' o texto é motor e `task` é o nome a usar." },
               task: { type: "string", description: "ALIAS de `task_context` (compatibilidade). Em mode='discover' é o MOTOR (casamento lexical, exploratório); no modo declarativo é apenas contexto registado." },
@@ -1467,9 +1467,9 @@ class McpRuntime {
             properties: {
               detail: {
                 type: "string",
-                enum: ["full", "standard", "minimal"],
+                enum: ["lista", "standard", "full"],
                 description:
-                  "Nível de SERIALIZAÇÃO (0.20.0-beta.28; default `full` = byte-idêntico ao anterior, mantém `associated_control_ids`/`associated_control_names` como o contrato v1.14 §1.21 os publica). `standard`/`minimal` trocam-nos por referências + `associated_control_legend` — medido −50% do payload (os mesmos 13 nomes vinham repetidos verbatim em cada ameaça). Dedup de serialização: nada se perde."
+                  "Serialization level — the same axis as prepare and select (inline vs by reference). full (default): associated_control_ids / associated_control_names inline on every threat, as the contract publishes them. standard and lista: the controls are referenced through associated_control_legend (measured −50%: the same names were repeated verbatim per threat); for this tool the two are identical — nothing else is served by reference. Same threat set at every level. 'minimal' was renamed 'lista'; the error says so."
               },
               risk_level: {
                 type: "string",

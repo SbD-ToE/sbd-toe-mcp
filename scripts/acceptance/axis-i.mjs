@@ -106,7 +106,7 @@ export const readingCases = [
       const gov = await client.tool("select_sbd_toe_requirements", {
         risk_level: "L2",
         chapters: ["14-governanca-contratacao"],
-        detail: "minimal",
+        detail: "lista",
         limit: 200,
       });
       used.push("select_sbd_toe_requirements");
@@ -240,14 +240,14 @@ export const readingCases = [
       const cla = await client.tool("select_sbd_toe_requirements", {
         risk_level: "L1",
         chapters: ["01-classificacao-aplicacoes"],
-        detail: "minimal",
+        detail: "lista",
         limit: 50,
       });
       used.push("select_sbd_toe_requirements");
       const gov = await client.tool("select_sbd_toe_requirements", {
         risk_level: "L2",
         chapters: ["14-governanca-contratacao"],
-        detail: "minimal",
+        detail: "lista",
         limit: 200,
       });
       // travessia longitudinal: há MP que atravessa o cap. 14 E outros capítulos?

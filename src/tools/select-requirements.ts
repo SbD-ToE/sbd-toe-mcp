@@ -32,7 +32,12 @@ const DEFAULT_LIMIT = 100;
  * As entradas distintas passam para uma legenda (`selection_trace_legend`) e cada item
  * refere-a. É a mesma regra do epic v2-token-diet: muda a codificação, não o conjunto.
  */
-export type SelectDetail = "full" | "standard" | "minimal";
+/** 0.21 §7 — o MESMO eixo do prepare (inline vs por referência): lista / standard / full. `minimal` → `lista`. */
+export type SelectDetail = "full" | "standard" | "lista";
+const RETIRED_DETAIL: Readonly<Record<string, string>> = {
+  minimal: "'minimal' passou a chamar-se 'lista' na 0.21 — o mesmo eixo (inline vs por referência) em select, get_threat_landscape e prepare. Usa detail='lista'.",
+  ultrathin: "'ultrathin' nunca existiu nesta tool e retirou-se do prepare na 0.21. Usa detail='lista'."
+};
 
 interface TraceLegendEntry {
   ref: string;
@@ -82,8 +87,8 @@ function dietSelected(
       "`selection_trace_legend` e cada item refere-as em `trace` — nenhum id e nenhuma justificação se " +
       "perdem, muda só a codificação. Reconstrói o `selection_trace` clássico substituindo cada ref pela " +
       "entrada da legenda com o mesmo `ref`." +
-      (detail === "minimal"
-        ? " Em `minimal` saem também `type` e `source_chapter` (deriváveis: `trace_sbd_toe_requirement_sources(requirement_ids)`); pede `detail=\"standard\"` para os ter inline."
+      (detail === "lista"
+        ? " Em `lista` saem também `type` e `source_chapter` (deriváveis: `trace_sbd_toe_requirement_sources(requirement_ids)`); pede `detail=\"standard\"` para os ter inline."
         : "")
   };
 }
@@ -329,9 +334,10 @@ export function handleSelectRequirements(args: Record<string, unknown>): SelectR
   }
 
   const detailArg = str("detail");
-  if (detailArg !== undefined && !["full", "standard", "minimal"].includes(detailArg)) {
-    throw Object.assign(new Error(`Invalid detail: "${detailArg}". Allowed: full, standard, minimal.`), {
-      rpcError: { code: -32602, message: `Invalid detail: "${detailArg}". Allowed: full, standard, minimal.` }
+  if (detailArg !== undefined && !["full", "standard", "lista"].includes(detailArg)) {
+    const msg = RETIRED_DETAIL[detailArg] !== undefined ? `Invalid detail: "${detailArg}". ${RETIRED_DETAIL[detailArg]}` : `Invalid detail: "${detailArg}". Allowed: lista, standard, full.`;
+    throw Object.assign(new Error(msg), {
+      rpcError: { code: -32602, message: msg }
     });
   }
   const detail = (detailArg ?? "full") as SelectDetail;
