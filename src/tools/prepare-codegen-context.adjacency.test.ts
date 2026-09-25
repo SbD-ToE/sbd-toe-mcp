@@ -18,6 +18,7 @@ import {
   type PrepareCodegenContextResultReadyFull
 } from "./prepare-codegen-context.js";
 import { ADJACENCY_TOP_N, buildDeclaredAdjacency, declaredAdjacencyDetail } from "../serving/adjacency.js";
+import { NOTES } from "../serving/notes.js";
 
 const CASES: Array<[string, PrepareCodegenContextInput]> = [
   ["auth/L2", { task: "Implementar autenticação de utilizadores", risk_level: "L2", concerns: ["auth"] }],
@@ -75,7 +76,7 @@ describe("0.21 §2 — adjacência declarada no prepare", () => {
     expect(lista.detail).toBeUndefined();
     expect(lista.detail_ref?.tool).toBe("prepare_sbd_toe_codegen_context");
     expect(lista.detail_ref?.with).toEqual({ detail: "standard" });
-    expect(lista.detail_ref?.note).toMatch(/select_sbd_toe_requirements/);
+    expect(NOTES[lista.detail_ref!.note_id]).toMatch(/select_sbd_toe_requirements/); // 0.21 §6-c: a prosa vive em sbd://toe/notes
     // EXECUTA a referência: o standard traz a lista completa, com o mesmo denominador
     const followUp = ready({ ...input, detail: lista.detail_ref!.with.detail }, "standard").adjacency;
     expect(followUp.detail!.length).toBe(lista.would_change_the_set);

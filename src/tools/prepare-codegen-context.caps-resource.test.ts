@@ -41,6 +41,7 @@ import {
   type PrepareCodegenContextResultReadyDieted
 } from "./prepare-codegen-context.js";
 import { getOntologyData } from "./ontology-loader.js";
+import { NOTES } from "../serving/notes.js";
 import { requirementCategoryOf } from "../serving/requirement-id.js";
 import { resolveAppPath } from "../config.js";
 import { clearG2RuntimeCacheForTests } from "./g2-runtime-loader.js";
@@ -239,7 +240,7 @@ describe("prepare_sbd_toe_codegen_context — requisito fundido + resource + des
       const dieted = run(fixture.input, detail) as PrepareCodegenContextResultReadyDieted;
       expect(dieted.activation_trace).toBeUndefined();
       expect(dieted.activation_trace_ref?.entries).toBe(full.activation_trace.length);
-      expect(dieted.activation_trace_ref?.note).toMatch(/lista\/standard/);
+      expect(NOTES[dieted.activation_trace_ref!.note_id]).toMatch(/lista\/standard/); // 0.21 §6-c
     });
 
     it("debug=true repõe o trace completo (byte-igual ao de full) e remove o contador", () => {

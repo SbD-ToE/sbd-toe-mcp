@@ -41,6 +41,7 @@ import {
 } from "./prepare-codegen-context.js";
 import { handleTraceGraph, type GraphLens } from "./trace-graph.js";
 import { BASE, REL } from "../serving/rdf/projection.js";
+import { NOTES } from "../serving/notes.js";
 import { clearG2RuntimeCacheForTests } from "./g2-runtime-loader.js";
 import { clearRegulatoryOverlayCacheForTests } from "./regulatory-overlay-loader.js";
 
@@ -284,8 +285,8 @@ describe("prepare_sbd_toe_codegen_context — relations_ref (v2-token-diet s2)",
         expect(summary.via_lenses).toBe(ref.coverage.via_lenses);
         expect(summary.implicit_in_entities).toBe(ref.coverage.implicit_in_entities);
         expect(summary.residual_inline).toBe(ref.coverage.residual_inline);
-        expect(summary.note).toMatch(/include_relations=true/);
-        expect(summary.note).toMatch(/relations_ref/);
+        expect(NOTES[summary.note_id]).toMatch(/include_relations=true/); // 0.21 §6-c: nota por referência
+        expect(NOTES[summary.note_id]).toMatch(/relations_ref/);
         // resíduo (nunca-silencioso): se existe no full, existe inline no dieted, verbatim sem source
         if (ref.coverage.residual_inline === 0) expect(dieted.g2_context.residual_relations).toBeUndefined();
         else expect(JSON.stringify(dieted.g2_context.residual_relations)).toBe(JSON.stringify(ref.residual_relations));

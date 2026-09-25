@@ -89,6 +89,6 @@ describe("beta.31 — notas de comportamento: uma fonte, dois consumidores", () 
     };
     const genericFirst = /^0?[12]-/.test(String(r.threats[0]?.chapter_id ?? ""));
     expect(genericFirst, "a nota promete domínio na página 1 e a resposta abre com governação").toBe(false);
-    expect(r.meta.note).toContain("a página 1 É a parte relevante");
+    expect(r.meta.note).toContain("page 1 IS the relevant part"); // 0.21 §6-d: fonte única, em inglês
   });
 });

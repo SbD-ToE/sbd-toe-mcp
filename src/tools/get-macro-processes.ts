@@ -225,14 +225,23 @@ export function handleGetMacroProcesses(args: Record<string, unknown>): MacroPro
       },
       three_segmentations: str(edgeHeader, "model_note") ?? str(header, "model_note")
     },
+    // 0.21 §6 — `next` GERADO do publicado, nunca constante: o primeiro passo é o primeiro MP da
+    // ORDEM DE ADOPÇÃO publicada, e o capítulo é o primeiro que esse MP atravessa.
     next: [
-      {
-        intent: "O primeiro passo real: o método de classificação (cap. 01)",
-        tool: "select_sbd_toe_requirements",
-        with: 'risk_level="L1", chapters=["01-classificacao-aplicacoes"]',
-        kind: "structural" as const
-      },
-      { intent: "Um macro-processo em detalhe", tool: "get_sbd_toe_macro_processes", with: 'mp_id="MP-01"', kind: "structural" as const },
+      ...(() => {
+        const firstStep = (levels ?? [])[0]?.[0];
+        const firstMp = items.find((m) => str(m, "mp_id") === firstStep);
+        const firstChapter = (firstMp?.["traverses_bundles"] as string[] | undefined)?.[0];
+        return firstChapter !== undefined
+          ? [{
+              intent: `O primeiro passo real: o primeiro capítulo que ${firstStep} atravessa`,
+              tool: "select_sbd_toe_requirements",
+              with: `risk_level="L1", chapters=["${firstChapter}"]`,
+              kind: "structural" as const
+            }]
+          : [];
+      })(),
+      { intent: "Um macro-processo em detalhe", tool: "get_sbd_toe_macro_processes", with: `mp_id="${(levels ?? [])[0]?.[0] ?? "MP-01"}"`, kind: "structural" as const },
       { intent: "O que cada papel faz", tool: "get_guide_by_role", with: 'risk_level="L2", role="appsec-engineer"', kind: "structural" as const }
     ]
   };

@@ -7,6 +7,7 @@
  * 13 concerns rotulados «ontology-controlled vocabulary» que eram, carácter a carácter,
  * o `supported_values` do mapa de ameaças — a lista errada com o nome errado.
  */
+import { withDeclaredSize } from "./response-shaping.js";
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { spawn, type ChildProcess } from "node:child_process";
 import { existsSync } from "node:fs";
@@ -148,7 +149,8 @@ describe("invariante beta.24 — agent-guide derivado", () => {
 
   it("os tamanhos de resposta anunciados são MEDIDOS, não recordados", () => {
     for (const level of ["L1", "L2", "L3"] as const) {
-      const measured = Math.round(JSON.stringify(handleConsultSecurityRequirements({ risk_level: level })).length / 1000);
+      // 0.21 §6: o guia anuncia o que o SERVIDOR entrega — com o size_estimate que acrescenta (mesma régua: withDeclaredSize)
+      const measured = Math.round(JSON.stringify(withDeclaredSize(handleConsultSecurityRequirements({ risk_level: level }))).length / 1000);
       const row = guide.split("\n").find((l) => l.startsWith(`| \`${level}\` | ≈ `));
       expect(row, `sem linha de tamanho para ${level}`).toBeDefined();
       expect(row, `tamanho anunciado para ${level} diverge do medido (${measured}k)`).toContain(`≈ ${measured}k chars`);

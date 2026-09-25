@@ -11,32 +11,32 @@ A mesma chamada em cada um; payloads comparados **byte a byte**. Repetir no mesm
 | `search_sbd_toe_manual` | byte-idêntico | 4522 | — |
 | `answer_sbd_toe_manual` | byte-idêntico | 4680 | — |
 | `inspect_sbd_toe_retrieval` | byte-idêntico | 15844 | — |
-| `list_sbd_toe_chapters` | byte-idêntico | 4251 | — |
-| `query_sbd_toe_entities` | byte-idêntico | 1184 | — |
-| `get_sbd_toe_chapter_brief` | byte-idêntico | 4572 | — |
+| `list_sbd_toe_chapters` | byte-idêntico | 4303 | — |
+| `query_sbd_toe_entities` | byte-idêntico | 1235 | — |
+| `get_sbd_toe_chapter_brief` | byte-idêntico | 4624 | — |
 | `plan_sbd_toe_repo_governance` | byte-idêntico | 21664 | — |
-| `generate_sbd_toe_skill` | idêntico após neutralizar voláteis | 9517 | artifact_generated_at, generated_at |
-| `map_sbd_toe_review_scope` | byte-idêntico | 3337 | — |
-| `get_sbd_toe_chapter_implementation_checklist` | byte-idêntico | 3834 | — |
-| `get_sbd_toe_operating_model` | byte-idêntico | 12490 | — |
-| `get_sbd_toe_verification_matrix` | byte-idêntico | 223326 | — |
-| `assess_sbd_toe_implementation` | byte-idêntico | 12857 | — |
-| `plan_sbd_toe_rollout` | byte-idêntico | 7274 | — |
-| `get_sbd_toe_macro_processes` | byte-idêntico | 11376 | — |
-| `explain_sbd_toe_topic` | byte-idêntico | 10109 | — |
-| `get_sbd_toe_chapter_capability` | byte-idêntico | 20462 | — |
-| `get_sbd_toe_playbook` | byte-idêntico | 9095 | — |
-| `map_sbd_toe_regulatory_activation` | byte-idêntico | 7712 | — |
-| `map_sbd_toe_applicability` | byte-idêntico | 10446 | — |
+| `generate_sbd_toe_skill` | idêntico após neutralizar voláteis | 9569 | artifact_generated_at, generated_at |
+| `map_sbd_toe_review_scope` | byte-idêntico | 3388 | — |
+| `get_sbd_toe_chapter_implementation_checklist` | byte-idêntico | 3885 | — |
+| `get_sbd_toe_operating_model` | byte-idêntico | 12543 | — |
+| `get_sbd_toe_verification_matrix` | byte-idêntico | 223381 | — |
+| `assess_sbd_toe_implementation` | byte-idêntico | 12927 | — |
+| `plan_sbd_toe_rollout` | byte-idêntico | 7326 | — |
+| `get_sbd_toe_macro_processes` | byte-idêntico | 11420 | — |
+| `explain_sbd_toe_topic` | byte-idêntico | 10162 | — |
+| `get_sbd_toe_chapter_capability` | byte-idêntico | 20515 | — |
+| `get_sbd_toe_playbook` | byte-idêntico | 9147 | — |
+| `map_sbd_toe_regulatory_activation` | byte-idêntico | 7764 | — |
+| `map_sbd_toe_applicability` | byte-idêntico | 10499 | — |
 | `read_sbd_toe_resource` | byte-idêntico | 3269 | — |
 | `trace_sbd_toe_requirement_sources` | byte-idêntico | 11458 | — |
-| `select_sbd_toe_requirements` | byte-idêntico | 28687 | — |
-| `consult_security_requirements` | byte-idêntico | 8079 | — |
-| `get_threat_landscape` | byte-idêntico | 25172 | — |
-| `get_guide_by_role` | byte-idêntico | 69383 | — |
-| `resolve_entities` | byte-idêntico | 10214 | — |
-| `trace_sbd_toe_graph` | byte-idêntico | 5143 | — |
-| `prepare_sbd_toe_codegen_context` | byte-idêntico | 31257 | — |
+| `select_sbd_toe_requirements` | byte-idêntico | 28574 | — |
+| `consult_security_requirements` | byte-idêntico | 8131 | — |
+| `get_threat_landscape` | byte-idêntico | 25000 | — |
+| `get_guide_by_role` | byte-idêntico | 69437 | — |
+| `resolve_entities` | byte-idêntico | 10267 | — |
+| `trace_sbd_toe_graph` | byte-idêntico | 5195 | — |
+| `prepare_sbd_toe_codegen_context` | byte-idêntico | 30641 | — |
 
 ## Campos voláteis declarados
 

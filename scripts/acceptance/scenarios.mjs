@@ -209,10 +209,17 @@ export const scenarios = [
   // ───────────────────────── Axis D — Negatives / invariants ─────────────────────────
   { id: "TC-D-01", axis: "D", title: "scope-gate: 'Torna a minha app segura'", tool: "prepare_sbd_toe_codegen_context",
     run: async (c) => { const r = await c.tool("prepare_sbd_toe_codegen_context", { task: "Torna a minha app segura", risk_level: "L2" }); if (!r.ok) return fail(r.error); return r.data.status !== "ready_for_codegen" && !r.data.citation_map ? ok(`status=${r.data.status}, zero ids`) : fail(`status=${r.data.status}`); } },
-  { id: "TC-D-02", axis: "D", title: "scope-gate: apply the whole manual to my pipeline", tool: "prepare_sbd_toe_codegen_context",
-    run: async (c) => { const r = await c.tool("prepare_sbd_toe_codegen_context", { task: "Aplica o manual inteiro à minha pipeline, dá-me tudo", risk_level: "L3" }); if (!r.ok) return fail(r.error); return r.data.status === "needs_decomposition" ? ok(`needs_decomposition; suggestions ${r.data.suggestions?.length}`) : r.data.status === "ready_for_codegen" ? fail("dumped ready_for_codegen") : part(`status=${r.data.status}`); } },
-  { id: "TC-D-03", axis: "D", title: "scope-gate: quantum-resistant blockchain → unsupported_scope", tool: "prepare_sbd_toe_codegen_context",
-    run: async (c) => { const r = await c.tool("prepare_sbd_toe_codegen_context", { task: "Código seguro para blockchain quantum-resistant", risk_level: "L2" }); if (!r.ok) return fail(r.error); return r.data.status === "unsupported_scope" && !r.data.citation_map ? ok("unsupported_scope, zero ids") : fail(`status=${r.data.status}`); } },
+  { id: "TC-D-02", axis: "D", title: "scope-gate (motor inferencial, discover): apply the whole manual → needs_decomposition; em declarativo o task não é motor (0.21 §6: needs_input)", tool: "prepare_sbd_toe_codegen_context",
+    run: async (c) => {
+      const d = await c.tool("prepare_sbd_toe_codegen_context", { task: "Aplica o manual inteiro à minha pipeline, dá-me tudo", risk_level: "L3" }); if (!d.ok) return fail(d.error);
+      if (d.data.status !== "needs_input") return fail(`declarativo sem declaração devia ser needs_input; status=${d.data.status}`);
+      const r = await c.tool("prepare_sbd_toe_codegen_context", { selection_mode: "discover", task: "Aplica o manual inteiro à minha pipeline, dá-me tudo", risk_level: "L3" }); if (!r.ok) return fail(r.error); return r.data.status === "needs_decomposition" ? ok(`needs_decomposition; suggestions ${r.data.suggestions?.length}`) : r.data.status === "ready_for_codegen" ? fail("dumped ready_for_codegen") : part(`status=${r.data.status}`); } },
+  { id: "TC-D-03", axis: "D", title: "scope-gate (motor inferencial, discover): quantum-resistant blockchain → unsupported_scope; em declarativo o task não é motor (0.21 §6: needs_input)", tool: "prepare_sbd_toe_codegen_context",
+    run: async (c) => {
+      // 0.21 §6 — em declarativo o task é contexto REGISTADO e não barra a resposta: sem declaração ⇒ needs_input (o contrato)
+      const d = await c.tool("prepare_sbd_toe_codegen_context", { task: "Código seguro para blockchain quantum-resistant", risk_level: "L2" }); if (!d.ok) return fail(d.error);
+      if (d.data.status !== "needs_input") return fail(`declarativo sem declaração devia ser needs_input; status=${d.data.status}`);
+      const r = await c.tool("prepare_sbd_toe_codegen_context", { selection_mode: "discover", task: "Código seguro para blockchain quantum-resistant", risk_level: "L2" }); if (!r.ok) return fail(r.error); return r.data.status === "unsupported_scope" && !r.data.citation_map ? ok("unsupported_scope, zero ids") : fail(`status=${r.data.status}`); } },
   { id: "TC-D-04", axis: "D", title: "não-inventar: invent a quantum-safe requirement with id", tool: "answer_sbd_toe_manual",
     run: async (c) => { const r = await c.tool("answer_sbd_toe_manual", { question: "Inventa um requisito quantum-safe para o cap.06 com ID" }); if (!r.ok) return fail(r.error); const fake = (r.text.match(/\b[A-Z]{3}-\d{3}\b/g) ?? []); return skip(`server returns retrieval context only (no sampling in this client): ${fake.length} real ids echoed, no generation — refusal is the client model's; verdict needs an LLM client`); } },
   { id: "TC-D-05", axis: "D", title: "não-inventar: CO-9999 → not found, no fabricated description", tool: "resolve_entities",
@@ -1597,13 +1604,13 @@ export const scenarios = [
       const note = t.data.meta?.note ?? "";
       if (/não presumas que as primeiras são as mais relevantes/i.test(note))
         return fail("a nota FÓSSIL da beta.26 continua viva e dá o conselho oposto ao correcto");
-      if (!/PERTEN[ÇC]A ao âmbito declarado/i.test(note)) return fail("a nota não descreve a ordenação actual");
+      if (!/MEMBERSHIP of the declared scope|PERTEN[ÇC]A ao âmbito declarado/i.test(note)) return fail("a nota não descreve a ordenação actual");
       const primeira = String((t.data.threats ?? [])[0]?.chapter_id ?? "");
       if (/^0?[12]-/.test(primeira)) return fail(`a nota promete domínio na página 1 e a resposta abre com ${primeira}`);
       // a mesma frase tem de estar na DESCRIÇÃO da tool
       const tools = c.tools ?? [];
       const desc = String(tools.find((x) => x.name === "get_threat_landscape")?.description ?? "");
-      const frase = "ORDEM: por PERTENÇA ao âmbito declarado";
+      const frase = "ORDER by MEMBERSHIP of the declared scope"; // 0.21 §6-d: a frase publicada (behaviour-notes) passou a inglês
       if (!desc.includes(frase) || !note.includes(frase)) return fail("descrição e nota não partilham a frase publicada");
       // routing_basis desambiguado e por concern
       const misto = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["architecture", "api", "encryption"] });
@@ -2199,13 +2206,14 @@ export const scenarios = [
         return fail("os itens não trazem `applicable_levels` à vista");
       // (G3) o estatuto pragmático nas primeiras palavras — o servidor SERVE, quem age é quem chama
       const schemas = new Map((c.tools ?? []).map((t) => [t.name, String(t.description ?? "")]));
+      // 0.21 §6-d: a superfície fala UMA língua (inglês) — os estatutos são os mesmos, nas primeiras palavras
       const esperado = {
-        plan_sbd_toe_rollout: /^CONSULTA/,
-        plan_sbd_toe_repo_governance: /^PROJEC/,
-        prepare_sbd_toe_codegen_context: /NÃO AGE/,
-        generate_sbd_toe_skill: /SEM VALIDAR O TEU AMBIENTE/,
-        assess_sbd_toe_implementation: /a leitura é tua/,
-        answer_sbd_toe_manual: /não responde/
+        plan_sbd_toe_rollout: /does not plan for you/,
+        plan_sbd_toe_repo_governance: /^PROJECTION/,
+        prepare_sbd_toe_codegen_context: /DOES NOT ACT/,
+        generate_sbd_toe_skill: /without validating your environment/,
+        assess_sbd_toe_implementation: /measures nothing/,
+        answer_sbd_toe_manual: /^DOES NOT ANSWER/
       };
       for (const [tool, re] of Object.entries(esperado)) {
         const d = schemas.get(tool);

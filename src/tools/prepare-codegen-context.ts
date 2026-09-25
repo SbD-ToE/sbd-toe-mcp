@@ -62,6 +62,8 @@ import { prepareCodegenAffordances } from "../serving/affordances.js";
 import { estimateSize, type SizeEstimate } from "../serving/response-shaping.js";
 import { PAYLOAD_PROMISE_TK as LEVEL_ENVELOPE_TK } from "../serving/payload-ceilings.js";
 import { buildDeclaredAdjacency, declaredAdjacencyDetail, type AdjacencySignal } from "../serving/adjacency.js";
+import { NOTES, NOTES_HEADER, type NoteId } from "../serving/notes.js";
+import { buildActivationVocabulary } from "../serving/activation-vocabulary.js";
 import {
   runSelectionWithActivation,
   normalizeDeclaredTechnologies,
@@ -248,7 +250,7 @@ export interface PrepareAdjacency {
   /** standard/full: a lista COMPLETA (o resumo é o seu prefixo). */
   detail?: AdjacencySignal[];
   /** lista: onde está a lista completa — executável verbatim. */
-  detail_ref?: { tool: "prepare_sbd_toe_codegen_context"; with: { detail: "standard" }; note: string };
+  detail_ref?: { tool: "prepare_sbd_toe_codegen_context"; with: { detail: "standard" }; note_id: NoteId };
 }
 
 export interface ActivatedScope {
@@ -406,7 +408,7 @@ export interface CompletenessReport {
     /** 0.19.0 (dieta por forma — tectos vigiam): fracção só-lexical da selecção; o
      * sumário completo + aviso + candidatos vivem no select_sbd_toe_requirements. */
     lexical_share?: number;
-    narrowed_out_ref: { tool: "select_sbd_toe_requirements"; note: string };
+    narrowed_out_ref: { tool: "select_sbd_toe_requirements"; note_id: NoteId };
   };
 }
 
@@ -436,7 +438,7 @@ export interface VerificationSummary {
     /** Number of calls needed to cover every activated requirement (⌈requirements/50⌉). */
     calls: number;
     fields: ["evidence_pattern_id", "control_id", "expected_artifact_type_ids"];
-    note: string;
+    note_id: NoteId;
   };
   /**
    * Published patterns linked to an ACTIVATED control whose requirement is NOT
@@ -445,7 +447,7 @@ export interface VerificationSummary {
    */
   related_by_control_outside_scope: {
     count: number;
-    ref: { tool: "resolve_entities"; with: string; note: string };
+    ref: { tool: "resolve_entities"; with: string; note_id: NoteId };
   };
 }
 
@@ -471,6 +473,8 @@ export interface SecurityRationaleTemplate {
 
 export interface PrepareCodegenContextResultReady {
   status: "ready_for_codegen";
+  /** 0.21 §6-c — como resolver qualquer `note_id` deste payload (um cabeçalho, não N notas). */
+  notes: typeof NOTES_HEADER;
   /** RF-H advisory band — adjacent tools the caller likely needs next. */
   next?: Affordance[];
   mode: CodegenMode;
@@ -519,7 +523,7 @@ export interface PrepareCodegenContextResultReady {
 export type DeclaredSize = SizeEstimate & {
   envelope_tk?: number;
   within_envelope?: boolean;
-  note?: string;
+  note_id?: NoteId;
 };
 
 export interface DecompositionBatch {
@@ -569,6 +573,13 @@ export interface PrepareCodegenContextResultBlocked {
   };
   /** RF-H advisory band — adjacent tools the caller likely needs next. */
   next?: Affordance[];
+  /**
+   * 0.21 §6 — em `needs_input`, o objecto do motor (razão, recurso do vocabulário, exemplo,
+   * candidatos a confirmar, declarações inertes) mais `valid_values`: para cada eixo que ficou
+   * inerte (stack/technologies, exposure, data_sensitivity), a LISTA dos valores válidos — o
+   * erro nomeia o vocabulário, não só o aponta.
+   */
+  needs_input?: Record<string, unknown> & { valid_values?: Record<string, string[]> };
   mode: CodegenMode;
   input_echo: Required<Pick<PrepareCodegenContextInput, "task">> &
     Omit<PrepareCodegenContextInput, "task"> & { task_role?: string };
@@ -675,7 +686,7 @@ export interface GroundingEntriesRef {
   tool: "prepare_sbd_toe_codegen_context";
   /** Merge over this call's input_echo: same input, detail="full". */
   with: { detail: "full" };
-  note: string;
+  note_id: NoteId;
 }
 
 /**
@@ -795,7 +806,7 @@ export interface RelationsRef {
   };
   /** Only present when a relation is neither lens-recoverable nor implicit. */
   residual_relations?: Array<WithoutSource<G2ContextRelation>>;
-  note: string;
+  note_id: NoteId;
 }
 
 /**
@@ -837,7 +848,7 @@ export interface RelationsSummary {
   via_lenses: number;
   implicit_in_entities: number;
   residual_inline: number;
-  note: string;
+  note_id: NoteId;
 }
 
 /**
@@ -896,17 +907,7 @@ const PROVENANCE_SOURCES = {
  * (section→source table + every derivation rule of the dieted encoding) lives
  * in the `sbd://toe/codegen-instructions/{mode}` resource, `detail_encoding`.
  */
-const PROVENANCE_LEGEND = {
-  note:
-    "Deduplicated encoding (detail=lista/standard): per-item `source` fields " +
-    "are elided (every list is source-homogeneous), requirement `category` = " +
-    "id category segment (AUT-003→AUT, REQ-AGN-001→AGN), g2_context entity " +
-    "lists are grouped as {slice_id: {entity_id: name|null}}, citations ids " +
-    "are referenced via ids_from payload paths, and each requirement carries " +
-    "its verbatim description + verify + evidence inline (0.21 §1). Full " +
-    "legend: read_sbd_toe_resource(sbd://toe/codegen-instructions/{mode}), " +
-    "section detail_encoding."
-} as const;
+const PROVENANCE_LEGEND = { note_id: "prepare.provenance_legend" as NoteId } as const; // 0.21 §6-c: texto em sbd://toe/notes
 
 export type ProvenanceLegend = typeof PROVENANCE_LEGEND;
 
@@ -918,8 +919,8 @@ export type ProvenanceLegend = typeof PROVENANCE_LEGEND;
  * inline grounding/relations/trace go through `detail: "full"` (declared
  * price in size_estimate) or a targeted `consult_security_requirements` call.
  */
-export const REPEAT_CALL_HINT =
-  "Identical input returns this exact payload (deterministic) — reuse the context already received; deepen via detail:'full' (grounding, relations and trace inline; price declared in size_estimate) or a targeted consult_security_requirements.";
+export const REPEAT_CALL_HINT: string = NOTES["prepare.repeat_call_hint"]; // 0.21 §6-c: servido por referência (note_id)
+const REPEAT_CALL_HINT_ID: NoteId = "prepare.repeat_call_hint";
 
 // (CodegenInstructionsRef removido na 0.21 — as instruções e o template vão INLINE em todos os níveis: 2,2% do payload e é o que impede a invenção de ids.)
 
@@ -930,7 +931,7 @@ export const REPEAT_CALL_HINT =
  */
 export interface ActivationTraceRef {
   entries: number;
-  note: string;
+  note_id: NoteId;
 }
 
 // (EvidencePatternsRest, DietedCompletenessReport, V1DiagnosticsRef e UltrathinCompletenessReport removidos na 0.21 — sem cap de padrões e sem nível que apare diagnósticos.)
@@ -952,6 +953,8 @@ export interface ActivationTraceRef {
  */
 export interface PrepareCodegenContextResultReadyDieted {
   status: "ready_for_codegen";
+  /** 0.21 §6-c — como resolver qualquer `note_id` deste payload. */
+  notes: typeof NOTES_HEADER;
   /** RF-H advisory band — adjacent tools the caller likely needs next. */
   next?: Affordance[];
   mode: CodegenMode;
@@ -972,9 +975,9 @@ export interface PrepareCodegenContextResultReadyDieted {
   completeness_report: CompletenessReport;
   llm_codegen_instructions: string[];
   security_rationale_template: SecurityRationaleTemplate;
-  /** s4 — reuse note ({@link REPEAT_CALL_HINT}): identical re-call is
+  /** s4 — reuse note (texto em sbd://toe/notes/prepare.repeat_call_hint): identical re-call is
    * deterministic; the context already received is the loop's source. */
-  repeat_call_hint: string;
+  repeat_call_hint: { note_id: NoteId };
   provenance: PrepareCodegenContextResultReady["provenance"];
   /** 0.21 §5 — declared price of this response (chars, ≈tokens, envelope). */
   size_estimate?: DeclaredSize;
@@ -2785,10 +2788,7 @@ const PRED_REALIZED_BY_PRACTICE = "objective_realized_by_practice";
 // s3: slimmed — the full explanation lives in the codegen-instructions MCP
 // resource (detail_encoding.relations_ref). Kept URI-free on purpose: the
 // no-leak gate scans relations_ref for any scheme://.
-const RELATIONS_REF_NOTE =
-  "Inline g2_context.relations elided; execute each listed trace_sbd_toe_graph " +
-  "{lens, anchor} call to recover them, or re-call with include_relations=true. " +
-  "Encoding details: MCP resource codegen-instructions, detail_encoding.relations_ref.";
+const RELATIONS_REF_NOTE_ID: NoteId = "prepare.relations_ref"; // 0.21 §6-c: texto em src/serving/notes.ts → sbd://toe/notes/prepare.relations_ref
 
 /**
  * v2 token diet, s2 — build the `relations_ref` for `detail: "standard" |
@@ -2919,7 +2919,7 @@ function buildRelationsRef(result: PrepareCodegenContextResultReady): RelationsR
       implicit_in_entities: implicitInEntities,
       residual_inline: residual.length
     },
-    note: RELATIONS_REF_NOTE
+    note_id: RELATIONS_REF_NOTE_ID
   };
   if (residual.length > 0) relationsRef.residual_relations = residual;
   return relationsRef;
@@ -3107,12 +3107,7 @@ function groupManualGrounding(
 }
 
 // s3b: kept URI-free on purpose (no-leak discipline, same as RELATIONS_REF_NOTE).
-const GROUNDING_ENTRIES_REF_NOTE =
-  "Per-group v1_entity_ids elided at detail=lista/standard (each group carries its " +
-  "exact `entries` count). The grounding id set is already in this payload — " +
-  "every grounding id is an entity-id key of the g2_context maps. Re-call " +
-  "with the same input at detail='full' for the verbatim flat entries " +
-  "(role, chapter, file, sha, v1_entity_id, name) — price declared in its size_estimate.";
+const GROUNDING_ENTRIES_REF_NOTE_ID: NoteId = "prepare.grounding.entries_ref"; // 0.21 §6-c: texto em src/serving/notes.ts → sbd://toe/notes/prepare.grounding.entries_ref
 
 /**
  * v2 token diet, s3b (revised ADENDA 2026-07-05) — minimal-form
@@ -3155,7 +3150,7 @@ function buildMinimalGrounding(grouped: ManualGroundingGrouped): ManualGrounding
     entries_ref: {
       tool: "prepare_sbd_toe_codegen_context",
       with: { detail: "full" },
-      note: GROUNDING_ENTRIES_REF_NOTE
+      note_id: GROUNDING_ENTRIES_REF_NOTE_ID
     }
   };
   if (grouped.ungrouped) minimal.ungrouped = grouped.ungrouped;
@@ -3222,9 +3217,7 @@ export const LEVEL_FORM: Readonly<
   standard: { manual_grounding: "ref", relations: "ref", adjacency_detail: "inline" } // 0.21 §2: o separador lista↔standard
 };
 
-const ADJACENCY_DETAIL_REF_NOTE =
-  "Full list of undeclared signals that would change the set (the summary is its prefix) at detail='standard'; " +
-  "for the ids a signal would add: select_sbd_toe_requirements(<your declaration> + the signal).";
+const ADJACENCY_DETAIL_REF_NOTE_ID: NoteId = "prepare.adjacency.detail_ref"; // 0.21 §6-c: texto em src/serving/notes.ts → sbd://toe/notes/prepare.adjacency.detail_ref
 
 /**
  * Dieted encoding for `detail: "lista" | "standard"` (0.21). Pure
@@ -3238,9 +3231,7 @@ const ADJACENCY_DETAIL_REF_NOTE =
  *     `source`; instructions + template INLINE; manual_grounding in the
  *     counts form with `entries_ref` → detail="full"; trace only with debug.
  */
-const RELATIONS_SUMMARY_NOTE =
-  "relations elided (0.21 §3): every edge links nodes already in this payload; include_relations=true " +
-  "inlines them, detail='full' carries the executable relations_ref (trace_sbd_toe_graph).";
+const RELATIONS_SUMMARY_NOTE_ID: NoteId = "prepare.relations_summary"; // 0.21 §6-c: texto em src/serving/notes.ts → sbd://toe/notes/prepare.relations_summary
 
 /**
  * 0.21 §3 — the SERVED full: classic content, two form changes, same citable set.
@@ -3274,6 +3265,7 @@ function applyStructuralDiet(
   const relationsRef = includeRelations || form.relations !== "ref" ? undefined : buildRelationsRef(result);
   const dieted: PrepareCodegenContextResultReadyDieted = {
     status: result.status,
+    notes: NOTES_HEADER,
     mode: result.mode,
     // Echo the requested detail (and the include_relations escape hatch, when
     // active) for audit; the FULL result never echoes either (explicit "full"
@@ -3288,9 +3280,7 @@ function applyStructuralDiet(
       : {
           activation_trace_ref: {
             entries: result.activation_trace.length,
-            note:
-              "activation_trace elided at detail=lista/standard — re-call with " +
-              "debug=true to include it (always inline at detail=full)."
+            note_id: "prepare.activation_trace_ref"
           } satisfies ActivationTraceRef
         }),
     provenance_legend: PROVENANCE_LEGEND,
@@ -3309,7 +3299,7 @@ function applyStructuralDiet(
             scanned: result.adjacency.scanned,
             would_change_the_set: result.adjacency.would_change_the_set,
             shown: result.adjacency.shown,
-            detail_ref: { tool: "prepare_sbd_toe_codegen_context", with: { detail: "standard" }, note: ADJACENCY_DETAIL_REF_NOTE }
+            detail_ref: { tool: "prepare_sbd_toe_codegen_context", with: { detail: "standard" }, note_id: ADJACENCY_DETAIL_REF_NOTE_ID }
           },
     g2_context: {
       control_objectives: groupEntitiesBySlice(result.g2_context.control_objectives),
@@ -3324,7 +3314,7 @@ function applyStructuralDiet(
               via_lenses: relationsRef.coverage.via_lenses,
               implicit_in_entities: relationsRef.coverage.implicit_in_entities,
               residual_inline: relationsRef.coverage.residual_inline,
-              note: RELATIONS_SUMMARY_NOTE
+              note_id: RELATIONS_SUMMARY_NOTE_ID
             } satisfies RelationsSummary,
             ...(relationsRef.residual_relations ? { residual_relations: relationsRef.residual_relations } : {})
           })
@@ -3342,7 +3332,7 @@ function applyStructuralDiet(
     security_rationale_template: result.security_rationale_template,
     // s4: identical re-call is deterministic — point the client back at the
     // context it already holds.
-    repeat_call_hint: REPEAT_CALL_HINT,
+    repeat_call_hint: { note_id: REPEAT_CALL_HINT_ID },
     provenance: result.provenance
   };
   if (result.debug) dieted.debug = result.debug;
@@ -3355,10 +3345,7 @@ function applyStructuralDiet(
  * anunciado seja o do payload QUE O CONSUMIDOR RECEBE (±1 token de
  * arredondamento, nunca mais). Régua = chars/4, a mesma da medição do §5.
  */
-const ENVELOPE_EXCEEDED_NOTE =
-  "Acima do envelope herdado deste nível. O tecto por-id é o ratificado (§5) e o custo por " +
-  "requisito da forma fundida é o medido; quando não fecham, este payload di-lo em vez de o " +
-  "esconder. Divide por área (concerns do lote) ou usa detail='full' (sem envelope, preço declarado).";
+const ENVELOPE_EXCEEDED_NOTE_ID: NoteId = "prepare.size_estimate.envelope_exceeded"; // 0.21 §6-c: texto em src/serving/notes.ts → sbd://toe/notes/prepare.size_estimate.envelope_exceeded
 
 function withSizeEstimate<T extends object>(payload: T, detail: CodegenDetailLevel): T & { size_estimate: DeclaredSize } {
   const envelope = LEVEL_ENVELOPE_TK[detail];
@@ -3369,7 +3356,7 @@ function withSizeEstimate<T extends object>(payload: T, detail: CodegenDetailLev
           ...est,
           envelope_tk: envelope,
           within_envelope: est.approx_tokens <= envelope,
-          ...(est.approx_tokens <= envelope ? {} : { note: ENVELOPE_EXCEEDED_NOTE })
+          ...(est.approx_tokens <= envelope ? {} : { note_id: ENVELOPE_EXCEEDED_NOTE_ID })
         };
   const first = estimateSize({ ...payload, size_estimate: declare({ chars: 0, approx_tokens: 0 }) });
   const second = estimateSize({ ...payload, size_estimate: declare(first) });
@@ -3401,7 +3388,23 @@ function prepareCodegenContextCore(
 ): PrepareCodegenContextResultReady | PrepareCodegenContextResultBlocked {
   const input = normalizeInput(raw);
 
-  const preGate = gateBeforeActivation(input);
+  // 0.21 §6 — o `task` vs o contrato: em modo DECLARATIVO com declaração, o task é contexto
+  // REGISTADO (task_role: recorded_context) e NÃO influencia o resultado — logo não pode
+  // barrar a resposta (contagem de palavras, padrões de vagueza, tecnologia fora do âmbito).
+  // O gate mantém-se onde o task é MOTOR: em `discover`, e em declarativo sem declaração
+  // (onde a selecção responde needs_input de qualquer forma).
+  const selectionModeEarly = raw.selection_mode === "discover" ? "discover" : "declarative";
+  const structuralEarly = {
+    chapters: Array.isArray(raw.chapters) ? raw.chapters.filter((x): x is string => typeof x === "string" && x.length > 0) : [],
+    categories: Array.isArray(raw.categories) ? raw.categories.filter((x): x is string => typeof x === "string" && x.length > 0) : []
+  };
+  // Em declarativo o gate NUNCA corre: sem declaração a selecção responde needs_input a nomear
+  // o vocabulário (o contrato), e uma declaração inerte (stack fora do vocabulário) é declarada
+  // com os valores válidos — nunca um needs_clarification sobre o task, que não é motor aqui.
+  void structuralEarly;
+  const taskIsRecordedContext = selectionModeEarly === "declarative";
+
+  const preGate = taskIsRecordedContext ? null : gateBeforeActivation(input);
   if (preGate && preGate.status !== "ready_for_codegen") {
     return blocked(
       input,
@@ -3475,7 +3478,14 @@ function prepareCodegenContextCore(
   );
   if (selection.needs_input) {
     const ni = selection.needs_input;
-    return blocked(
+    const inert = (ni.inert_declarations ?? []).join(" ");
+    const vocab = buildActivationVocabulary();
+    const validValues: Record<string, string[]> = {
+      ...(/\bstack=|\btechnologies=/.test(inert) ? { technologies: vocab.technologies.values.map((t) => String(t.value)) } : {}),
+      ...(/\bexposure=/.test(inert) ? { exposure: vocab.exposure.values.map((e) => String(e.value)) } : {}),
+      ...(/\bdata_sensitivity=/.test(inert) ? { data_sensitivity: vocab.data_sensitivity.values.map((d) => String(d.value)) } : {})
+    };
+    const blockedNeedsInput = blocked(
       input,
       raw,
       "needs_input",
@@ -3494,6 +3504,8 @@ function prepareCodegenContextCore(
       ],
       activation.trace
     );
+    blockedNeedsInput.needs_input = { ...ni, ...(Object.keys(validValues).length > 0 ? { valid_values: validValues } : {}) };
+    return blockedNeedsInput;
   }
   const estimatedRequirements = selection.selected.length;
 
@@ -3760,19 +3772,14 @@ function prepareCodegenContextCore(
       with: `risk_level=${riskForRef}, requirement_ids=[activated_scope.requirements[].id] (≤50 por chamada)`,
       calls: verificationCalls,
       fields: ["evidence_pattern_id", "control_id", "expected_artifact_type_ids"],
-      note:
-        "verify/evidence are inline per requirement (0.21 §1); the pattern's id, control and expected " +
-        "artifact types come from the verification matrix, one row per requirement (~190 tk/id measured)."
+      note_id: "prepare.verification.by_ref"
     },
     related_by_control_outside_scope: {
       count: relatedByControlOutsideScope,
       ref: {
         tool: "resolve_entities",
         with: 'record_type="evidence_pattern", filters={"maps_to_control_id":{"in":[activated_scope.controls[].control_id]}}',
-        note:
-          "Patterns of requirements OUTSIDE the activated set that share an activated control — not inlined " +
-          "(they verify other requirements). The ref returns every pattern of those controls; the ones whose " +
-          "maps_to_requirement_id is in activated_scope are the inlined ones."
+        note_id: "prepare.verification.related_by_control_outside_scope"
       }
     }
   };
@@ -3929,9 +3936,7 @@ function prepareCodegenContextCore(
       lexical_share: selection.basis_summary.lexical_share,
       narrowed_out_ref: {
         tool: "select_sbd_toe_requirements",
-        note:
-          "Categorias elegíveis sem sinal na tarefa foram excluídas pelo narrowing MP1 — " +
-          "a lista completa (por categoria, com razão) vem de select_sbd_toe_requirements com o mesmo contexto."
+        note_id: "prepare.selection.narrowed_out_ref"
       }
     },
     v1_consistency_mismatches: g2Data.consistency.mismatches,
@@ -3974,6 +3979,7 @@ function prepareCodegenContextCore(
 
   const result: PrepareCodegenContextResultReady = {
     status: "ready_for_codegen",
+    notes: NOTES_HEADER,
     mode: input.mode,
     input_echo: inputEcho(raw),
     activation_trace: activation.trace,

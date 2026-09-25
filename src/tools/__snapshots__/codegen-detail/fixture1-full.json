@@ -1,5 +1,10 @@
 {
   "status": "ready_for_codegen",
+  "notes": {
+    "read_with": "read_sbd_toe_resource",
+    "uri": "sbd://toe/notes/{id}",
+    "index": "sbd://toe/notes"
+  },
   "mode": "codegen",
   "input_echo": {
     "task": "Adicionar validação de payload e autenticação ao endpoint POST /users/:id/email",
@@ -1265,7 +1270,7 @@
       "lexical_share": 1,
       "narrowed_out_ref": {
         "tool": "select_sbd_toe_requirements",
-        "note": "Categorias elegíveis sem sinal na tarefa foram excluídas pelo narrowing MP1 — a lista completa (por categoria, com razão) vem de select_sbd_toe_requirements com o mesmo contexto."
+        "note_id": "prepare.selection.narrowed_out_ref"
       }
     },
     "v1_consistency_mismatches": [],
@@ -1290,14 +1295,14 @@
           "control_id",
           "expected_artifact_type_ids"
         ],
-        "note": "verify/evidence are inline per requirement (0.21 §1); the pattern's id, control and expected artifact types come from the verification matrix, one row per requirement (~190 tk/id measured)."
+        "note_id": "prepare.verification.by_ref"
       },
       "related_by_control_outside_scope": {
         "count": 130,
         "ref": {
           "tool": "resolve_entities",
           "with": "record_type=\"evidence_pattern\", filters={\"maps_to_control_id\":{\"in\":[activated_scope.controls[].control_id]}}",
-          "note": "Patterns of requirements OUTSIDE the activated set that share an activated control — not inlined (they verify other requirements). The ref returns every pattern of those controls; the ones whose maps_to_requirement_id is in activated_scope are the inlined ones."
+          "note_id": "prepare.verification.related_by_control_outside_scope"
         }
       }
     }
@@ -1767,7 +1772,7 @@
         "implicit_in_entities": 36,
         "residual_inline": 0
       },
-      "note": "Inline g2_context.relations elided; execute each listed trace_sbd_toe_graph {lens, anchor} call to recover them, or re-call with include_relations=true. Encoding details: MCP resource codegen-instructions, detail_encoding.relations_ref."
+      "note_id": "prepare.relations_ref"
     }
   },
   "citations": {
@@ -1813,7 +1818,7 @@
     }
   ],
   "size_estimate": {
-    "chars": 51651,
-    "approx_tokens": 12913
+    "chars": 51035,
+    "approx_tokens": 12759
   }
 }

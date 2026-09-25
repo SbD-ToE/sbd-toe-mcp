@@ -35,6 +35,7 @@ import {
   type WithoutSource
 } from "./prepare-codegen-context.js";
 import { clearG2RuntimeCacheForTests } from "./g2-runtime-loader.js";
+import { NOTES } from "../serving/notes.js";
 import { clearRegulatoryOverlayCacheForTests } from "./regulatory-overlay-loader.js";
 
 /**
@@ -436,7 +437,9 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
       expect(dieted.activation_trace_ref?.entries).toBe(full.activation_trace.length);
 
       // -- legend inline: aponta para o resource com a legenda completa.
-      expect(dieted.provenance_legend.note).toContain("sbd://toe/codegen-instructions/");
+      // 0.21 §6-c: a legenda é uma nota por referência; o texto continua a apontar para o resource
+      expect(NOTES[dieted.provenance_legend.note_id]).toContain("sbd://toe/codegen-instructions/");
+      expect(dieted.notes.read_with).toBe("read_sbd_toe_resource");
     });
 
     it("0.21 §2: `lista` e `standard` diferem EXACTAMENTE na adjacência detalhada (inline vs detail_ref) — fora disso, do eco e do size_estimate são byte-iguais", () => {

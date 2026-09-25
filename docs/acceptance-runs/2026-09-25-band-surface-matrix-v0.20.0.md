@@ -4,7 +4,7 @@
 
 Estados: `tem` · `n/a` (com motivo) · **`FALTA`** · `?` (não exercitável por esta chamada — também é achado).
 
-**107 tem · 48 n/a · 0 FALTA · 77 ?**
+**108 tem · 47 n/a · 0 FALTA · 77 ?**
 
 | Banda | answer_sbd_toe_manual | assess_sbd_toe_implementation | consult_security_requirements | explain_sbd_toe_topic | generate_sbd_toe_skill | get_guide_by_role | chapter_brief | chapter_capability | chapter_implementation_checklist | macro_processes | operating_model | playbook | verification_matrix | get_threat_landscape | inspect_sbd_toe_retrieval | chapters | applicability | regulatory_activation | review_scope | repo_governance | rollout | prepare_sbd_toe_codegen_context | query_sbd_toe_entities | read_sbd_toe_resource | resolve_entities | manual | select_sbd_toe_requirements | trace_sbd_toe_graph | trace_sbd_toe_requirement_sources |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -15,7 +15,7 @@ Estados: `tem` · `n/a` (com motivo) · **`FALTA`** · `?` (não exercitável po
 | **`next` reconciliado com as bandas** | ? | tem | ? | ? | ? | ? | ? | tem | ? | tem | ? | ? | ? | ? | ? | ? | ? | ? | ? | ? | ? | ? | ? | ? | ? | ? | tem | tem | tem |
 | **Paginação/cobertura declarada** | n/a | tem | n/a | tem | n/a | n/a | n/a | tem | tem | n/a | tem | n/a | tem | tem | n/a | n/a | n/a | tem | n/a | tem | tem | n/a | n/a | n/a | tem | n/a | tem | n/a | tem |
 | **Eco de input com o seu PAPEL declarado** | n/a | tem | tem | tem | ? | tem | tem | tem | ? | n/a | n/a | tem | tem | tem | n/a | tem | tem | ? | n/a | tem | n/a | tem | tem | tem | tem | n/a | tem | tem | n/a |
-| **Erro NOMEIA o vocabulário válido** | n/a | tem | n/a | ? | ? | tem | ? | tem | tem | tem | n/a | tem | n/a | n/a | n/a | n/a | n/a | tem | ? | n/a | n/a | tem | ? | ? | n/a | n/a | tem | ? | n/a |
+| **Erro NOMEIA o vocabulário válido** | n/a | tem | n/a | ? | ? | tem | ? | tem | tem | tem | n/a | tem | n/a | n/a | n/a | n/a | n/a | tem | ? | n/a | n/a | tem | ? | ? | tem | n/a | tem | ? | n/a |
 
 ## Células `FALTA` (achados desta corrida — não trabalho desta vaga)
 
@@ -48,5 +48,5 @@ _Nenhuma: as 29 superfícies responderam a argumentos derivados do próprio sche
 - nenhum argumento ecoado nesta chamada — 8 superfície(s): answer_sbd_toe_manual, get_sbd_toe_macro_processes, get_sbd_toe_operating_model, inspect_sbd_toe_retrieval, map_sbd_toe_review_scope, plan_sbd_toe_rollout, search_sbd_toe_manual, trace_sbd_toe_requirement_sources
 
 **Erro NOMEIA o vocabulário válido**
-- sem parâmetro de vocabulário aberto (enum no schema já nomeia os válidos) — 13 superfície(s): answer_sbd_toe_manual, consult_security_requirements, get_sbd_toe_operating_model, get_sbd_toe_verification_matrix, get_threat_landscape, inspect_sbd_toe_retrieval, list_sbd_toe_chapters, map_sbd_toe_applicability, plan_sbd_toe_repo_governance, plan_sbd_toe_rollout, resolve_entities, search_sbd_toe_manual, trace_sbd_toe_requirement_sources
+- sem parâmetro de vocabulário aberto (enum no schema já nomeia os válidos) — 12 superfície(s): answer_sbd_toe_manual, consult_security_requirements, get_sbd_toe_operating_model, get_sbd_toe_verification_matrix, get_threat_landscape, inspect_sbd_toe_retrieval, list_sbd_toe_chapters, map_sbd_toe_applicability, plan_sbd_toe_repo_governance, plan_sbd_toe_rollout, search_sbd_toe_manual, trace_sbd_toe_requirement_sources
 

@@ -314,7 +314,9 @@ export function handleAssessImplementation(args: Record<string, unknown>): Proto
         // os thresholds por nível; esta tool avalia os valores que ele medir.
         intent: "os KPIs que o MANUAL define para o capítulo, com os thresholds por nível (traz-os para cá)",
         tool: "get_sbd_toe_chapter_capability",
-        with: 'chapter="07-cicd-seguro", risk_level="L2"',
+        // 0.21 §6 — `next` GERADO do contexto, nunca constante: o capítulo é o avaliado (ou o do
+        // KPI em falta), o nível é o pedido.
+        with: chapterScope !== undefined ? `chapter="${chapterScope}", risk_level="${riskLevel}"` : `chapter=<per_kpi[].chapter do KPI em falta>, risk_level="${riskLevel}"`,
         kind: "structural"
       },
       {

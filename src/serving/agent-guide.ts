@@ -15,6 +15,7 @@
  * que o guia servido não diverge das fontes de que deriva — a mesma família da
  * invariante next-verbatim.
  */
+import { withDeclaredSize } from "./response-shaping.js";
 import { readFileSync } from "node:fs";
 import { resolveAppPath } from "../config.js";
 import { buildActivationVocabulary } from "./activation-vocabulary.js";
@@ -211,8 +212,9 @@ export function generateRiskLevelsBlock(): string {
  */
 export function generateOutputSizesBlock(): string {
   const rows = (["L1", "L2", "L3"] as const).map((level) => {
-    const full = JSON.stringify(handleConsultSecurityRequirements({ risk_level: level })).length;
-    const scoped = JSON.stringify(handleConsultSecurityRequirements({ risk_level: level, concerns: ["auth"] })).length;
+    // 0.21 §6: mede-se o que o SERVIDOR entrega (com o size_estimate que acrescenta), não o objecto em processo.
+    const full = JSON.stringify(withDeclaredSize(handleConsultSecurityRequirements({ risk_level: level }))).length;
+    const scoped = JSON.stringify(withDeclaredSize(handleConsultSecurityRequirements({ risk_level: level, concerns: ["auth"] }))).length;
     return `| \`${level}\` | ≈ ${(full / 1000).toFixed(0)}k chars | ≈ ${(scoped / 1000).toFixed(0)}k chars |`;
   });
   return [

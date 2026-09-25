@@ -1,5 +1,10 @@
 {
   "status": "ready_for_codegen",
+  "notes": {
+    "read_with": "read_sbd_toe_resource",
+    "uri": "sbd://toe/notes/{id}",
+    "index": "sbd://toe/notes"
+  },
   "mode": "codegen",
   "input_echo": {
     "task": "Adicionar validação de payload e autenticação ao endpoint POST /users/:id/email",
@@ -10,10 +15,10 @@
   },
   "activation_trace_ref": {
     "entries": 9,
-    "note": "activation_trace elided at detail=lista/standard — re-call with debug=true to include it (always inline at detail=full)."
+    "note_id": "prepare.activation_trace_ref"
   },
   "provenance_legend": {
-    "note": "Deduplicated encoding (detail=lista/standard): per-item `source` fields are elided (every list is source-homogeneous), requirement `category` = id category segment (AUT-003→AUT, REQ-AGN-001→AGN), g2_context entity lists are grouped as {slice_id: {entity_id: name|null}}, citations ids are referenced via ids_from payload paths, and each requirement carries its verbatim description + verify + evidence inline (0.21 §1). Full legend: read_sbd_toe_resource(sbd://toe/codegen-instructions/{mode}), section detail_encoding."
+    "note_id": "prepare.provenance_legend"
   },
   "activated_scope": {
     "requirements": [
@@ -750,7 +755,7 @@
       "via_lenses": 70,
       "implicit_in_entities": 36,
       "residual_inline": 0,
-      "note": "relations elided (0.21 §3): every edge links nodes already in this payload; include_relations=true inlines them, detail='full' carries the executable relations_ref (trace_sbd_toe_graph)."
+      "note_id": "prepare.relations_summary"
     }
   },
   "manual_grounding": {
@@ -781,7 +786,7 @@
       "with": {
         "detail": "full"
       },
-      "note": "Per-group v1_entity_ids elided at detail=lista/standard (each group carries its exact `entries` count). The grounding id set is already in this payload — every grounding id is an entity-id key of the g2_context maps. Re-call with the same input at detail='full' for the verbatim flat entries (role, chapter, file, sha, v1_entity_id, name) — price declared in its size_estimate."
+      "note_id": "prepare.grounding.entries_ref"
     }
   },
   "regulatory_overlay": {
@@ -840,7 +845,7 @@
       "lexical_share": 1,
       "narrowed_out_ref": {
         "tool": "select_sbd_toe_requirements",
-        "note": "Categorias elegíveis sem sinal na tarefa foram excluídas pelo narrowing MP1 — a lista completa (por categoria, com razão) vem de select_sbd_toe_requirements com o mesmo contexto."
+        "note_id": "prepare.selection.narrowed_out_ref"
       }
     },
     "v1_consistency_mismatches": [],
@@ -865,14 +870,14 @@
           "control_id",
           "expected_artifact_type_ids"
         ],
-        "note": "verify/evidence are inline per requirement (0.21 §1); the pattern's id, control and expected artifact types come from the verification matrix, one row per requirement (~190 tk/id measured)."
+        "note_id": "prepare.verification.by_ref"
       },
       "related_by_control_outside_scope": {
         "count": 130,
         "ref": {
           "tool": "resolve_entities",
           "with": "record_type=\"evidence_pattern\", filters={\"maps_to_control_id\":{\"in\":[activated_scope.controls[].control_id]}}",
-          "note": "Patterns of requirements OUTSIDE the activated set that share an activated control — not inlined (they verify other requirements). The ref returns every pattern of those controls; the ones whose maps_to_requirement_id is in activated_scope are the inlined ones."
+          "note_id": "prepare.verification.related_by_control_outside_scope"
         }
       }
     }
@@ -912,7 +917,9 @@
     ],
     "residual_risk": "<fill: anything NOT addressed by this change>"
   },
-  "repeat_call_hint": "Identical input returns this exact payload (deterministic) — reuse the context already received; deepen via detail:'full' (grounding, relations and trace inline; price declared in size_estimate) or a targeted consult_security_requirements.",
+  "repeat_call_hint": {
+    "note_id": "prepare.repeat_call_hint"
+  },
   "provenance": {
     "kg": "v1.12.0",
     "server": "<pkg>",
@@ -935,8 +942,8 @@
     }
   ],
   "size_estimate": {
-    "chars": 30814,
-    "approx_tokens": 7704,
+    "chars": 29124,
+    "approx_tokens": 7281,
     "envelope_tk": 9200,
     "within_envelope": true
   }

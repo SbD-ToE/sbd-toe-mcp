@@ -25,17 +25,17 @@
     {
       "tool": "list_sbd_toe_chapters",
       "status": "byte-idêntico",
-      "bytes": 4251
+      "bytes": 4303
     },
     {
       "tool": "query_sbd_toe_entities",
       "status": "byte-idêntico",
-      "bytes": 1184
+      "bytes": 1235
     },
     {
       "tool": "get_sbd_toe_chapter_brief",
       "status": "byte-idêntico",
-      "bytes": 4572
+      "bytes": 4624
     },
     {
       "tool": "plan_sbd_toe_repo_governance",
@@ -45,76 +45,76 @@
     {
       "tool": "generate_sbd_toe_skill",
       "status": "idêntico após neutralizar voláteis",
-      "bytes": 9517,
+      "bytes": 9569,
       "volatile_fields_present": [
         "artifact_generated_at",
         "generated_at"
       ],
       "divergence": {
-        "offset": 9491,
-        "a": "item exists in the published bundle. Coverage is declared; nothing silently truncated.\"}}}",
-        "b": "item exists in the published bundle. Coverage is declared; nothing silently truncated.\"}}}"
+        "offset": 9543,
+        "a": "lared; nothing silently truncated.\"}},\"size_estimate\":{\"chars\":9569,\"approx_tokens\":2393}}",
+        "b": "lared; nothing silently truncated.\"}},\"size_estimate\":{\"chars\":9569,\"approx_tokens\":2393}}"
       }
     },
     {
       "tool": "map_sbd_toe_review_scope",
       "status": "byte-idêntico",
-      "bytes": 3337
+      "bytes": 3388
     },
     {
       "tool": "get_sbd_toe_chapter_implementation_checklist",
       "status": "byte-idêntico",
-      "bytes": 3834
+      "bytes": 3885
     },
     {
       "tool": "get_sbd_toe_operating_model",
       "status": "byte-idêntico",
-      "bytes": 12490
+      "bytes": 12543
     },
     {
       "tool": "get_sbd_toe_verification_matrix",
       "status": "byte-idêntico",
-      "bytes": 223326
+      "bytes": 223381
     },
     {
       "tool": "assess_sbd_toe_implementation",
       "status": "byte-idêntico",
-      "bytes": 12857
+      "bytes": 12927
     },
     {
       "tool": "plan_sbd_toe_rollout",
       "status": "byte-idêntico",
-      "bytes": 7274
+      "bytes": 7326
     },
     {
       "tool": "get_sbd_toe_macro_processes",
       "status": "byte-idêntico",
-      "bytes": 11376
+      "bytes": 11420
     },
     {
       "tool": "explain_sbd_toe_topic",
       "status": "byte-idêntico",
-      "bytes": 10109
+      "bytes": 10162
     },
     {
       "tool": "get_sbd_toe_chapter_capability",
       "status": "byte-idêntico",
-      "bytes": 20462
+      "bytes": 20515
     },
     {
       "tool": "get_sbd_toe_playbook",
       "status": "byte-idêntico",
-      "bytes": 9095
+      "bytes": 9147
     },
     {
       "tool": "map_sbd_toe_regulatory_activation",
       "status": "byte-idêntico",
-      "bytes": 7712
+      "bytes": 7764
     },
     {
       "tool": "map_sbd_toe_applicability",
       "status": "byte-idêntico",
-      "bytes": 10446
+      "bytes": 10499
     },
     {
       "tool": "read_sbd_toe_resource",
@@ -129,37 +129,37 @@
     {
       "tool": "select_sbd_toe_requirements",
       "status": "byte-idêntico",
-      "bytes": 28687
+      "bytes": 28574
     },
     {
       "tool": "consult_security_requirements",
       "status": "byte-idêntico",
-      "bytes": 8079
+      "bytes": 8131
     },
     {
       "tool": "get_threat_landscape",
       "status": "byte-idêntico",
-      "bytes": 25172
+      "bytes": 25000
     },
     {
       "tool": "get_guide_by_role",
       "status": "byte-idêntico",
-      "bytes": 69383
+      "bytes": 69437
     },
     {
       "tool": "resolve_entities",
       "status": "byte-idêntico",
-      "bytes": 10214
+      "bytes": 10267
     },
     {
       "tool": "trace_sbd_toe_graph",
       "status": "byte-idêntico",
-      "bytes": 5143
+      "bytes": 5195
     },
     {
       "tool": "prepare_sbd_toe_codegen_context",
       "status": "byte-idêntico",
-      "bytes": 31257
+      "bytes": 30641
     }
   ]
 }

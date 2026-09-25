@@ -3,11 +3,69 @@ ai_assisted: true
 model: Claude Fable 5.1
 date: 2026-09-25
 purpose: documentation
-reasoning: 0.21 decisão do lead (a) — tectos 52/55 ligados — e §6-a (decomposição que soma o todo, forma B no prepare); antes §2 (adjacência), §3 (os cortes) e §1 (o requisito fundido) por cima da entrada v0.20.0 — a descrição nunca sai, o bloco evidence_patterns morre, ultrathin reforma-se, tectos ratificados 83/88 ligados com o ajuste DECLARADO (achado: a projecção do §5 subestimou o custo por requisito). Entrada anterior: v0.20.0 (promoção da beta.49, linha estável) — a maturidade do contrato de selecção passa a FACTO DECLARADO (`serving_contract.identity` + `.maturity`, com a maturidade do pacote derivada da versão e nunca escrita à mão) em vez de sufixo numa string; o contrato mantém-se beta deliberadamente, por decisão do lead, e o identificador NÃO se renomeia. Sete declarações servidas que a promoção tornava falsas — cinco a dizer que a linha era beta, uma a dizer que a linha estável era outra — reescritas na forma durável: a prosa nomeia a linha, o campo declarado carrega a maturidade. Zero alteração de comportamento: o oráculo do Eixo H veio byte-idêntico à corrida da beta.49. E publicar deixa de ser o mesmo acto que apontar: o caminho estável do release.yml passa a publicar em `--tag next` — a capacidade que o caminho de prerelease já tinha, aplicada ao que a não tinha — para que a estável possa ser verificada antes de ser o que toda a gente instala; o `latest` move-o o lead, num acto próprio.
+reasoning: 0.21 §6 (notas por referência, changelog fora das descrições, next do contexto, size_estimate em todas as tools, task vs contrato), decisão do lead (a) — tectos 52/55 — e §6-a (decomposição que soma o todo); antes §2 (adjacência), §3 (os cortes) e §1 (o requisito fundido) por cima da entrada v0.20.0 — a descrição nunca sai, o bloco evidence_patterns morre, ultrathin reforma-se, tectos ratificados 83/88 ligados com o ajuste DECLARADO (achado: a projecção do §5 subestimou o custo por requisito). Entrada anterior: v0.20.0 (promoção da beta.49, linha estável) — a maturidade do contrato de selecção passa a FACTO DECLARADO (`serving_contract.identity` + `.maturity`, com a maturidade do pacote derivada da versão e nunca escrita à mão) em vez de sufixo numa string; o contrato mantém-se beta deliberadamente, por decisão do lead, e o identificador NÃO se renomeia. Sete declarações servidas que a promoção tornava falsas — cinco a dizer que a linha era beta, uma a dizer que a linha estável era outra — reescritas na forma durável: a prosa nomeia a linha, o campo declarado carrega a maturidade. Zero alteração de comportamento: o oráculo do Eixo H veio byte-idêntico à corrida da beta.49. E publicar deixa de ser o mesmo acto que apontar: o caminho estável do release.yml passa a publicar em `--tag next` — a capacidade que o caminho de prerelease já tinha, aplicada ao que a não tinha — para que a estável possa ser verificada antes de ser o que toda a gente instala; o `latest` move-o o lead, num acto próprio.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.21 (em curso, ramo `0.21`) — §6 «também nesta vaga»: notas por referência, changelog fora das descrições, `next` do contexto, `size_estimate` em todo o lado, o `task` vs o contrato — 2026-09-25
+
+Ordem do Orchestrator (2026-09-25, após aceitação da decisão (a) e da §6-a): o resto da §6 pela ordem do
+despacho de 11/09. Pino **inalterado** (KG v1.12.0); **0.20.0 e `latest` intocados**; sem tag, sem merge.
+O `minimal` residual de `select`/`threat` (§7) fica para o relatório seguinte.
+
+### (c) Notas por referência — `sbd://toe/notes/{id}`
+
+A prosa que explica um bloco é a mesma em todas as chamadas; pagá-la a cada volta era o defeito que esta
+linha existe para corrigir. Registo `src/serving/notes.ts` (11 notas, id estável), servido em
+`sbd://toe/notes` (índice) e `sbd://toe/notes/{id}` (uma nota; id desconhecido é erro declarado a listar os
+válidos). O payload do prepare leva `note_id` onde levava prosa e **um** cabeçalho `notes` (como ler). Nada se
+remove: muda de sítio. Denominadores e avisos POR RESPOSTA ficam inline (não são estáticos).
+**`lista` 5.066 → 4.601 tk (−465)**; `standard` 5.504 → 5.082; `full` 7.813 → 7.659.
+
+### (d) O changelog sai das descrições — ≤600 caracteres, uma língua
+
+As 29 descrições carregavam história de versões (0.19.4, beta.26, s3c…) e misturavam duas línguas —
+7–10k tokens de schema pagos em TODAS as voltas. Passam a **≤600 caracteres, em inglês, só o que a tool faz**;
+os dois parâmetros longos (`detail` 1.364 → 580; `record_type` 606 → 434) idem. O que lá estava vive
+**verbatim** em `sbd://toe/version.surface_history` (29 tools, `previous_description` + parâmetros longos) —
+nada se apaga. As duas **frases de comportamento** (ordenação das ameaças, paginação do select) continuam a
+ser fonte única para descrição E nota — traduzidas e encurtadas para caberem nos 600; os estatutos pragmáticos
+(«DOES NOT ACT», «PROJECTION», «does not plan for you», «measures nothing», «DOES NOT ANSWER») ficam nas
+primeiras palavras. **tools/list: 13.809 → 11.390 tk** (−17,5%; o resto é `inputSchema`, não descrições).
+Guarda: `surface-descriptions.test.ts` (≤600, sem versões, sem português, histórico completo, notas resolvem).
+
+### `next` gerado do contexto, nunca constante
+
+`assess_sbd_toe_implementation` sugeria literalmente `chapter="07-cicd-seguro"` numa avaliação de outro
+capítulo — passa a ser o capítulo avaliado (ou o do KPI em falta). `get_sbd_toe_macro_processes` sugeria
+`chapters=["01-…"]` à mão — passa a derivar do primeiro MP da ordem de adopção publicada e do primeiro
+capítulo que ele atravessa.
+
+### `size_estimate` em todas as tools
+
+Uma régua só — `withDeclaredSize` (response-shaping) — usada pelo servidor em **todas** as 26 tools de
+resultado JSON (as 3 de prosa não têm onde o carregar; declarado) e pelo guia quando anuncia tamanhos.
+Re-mede sempre sobre o payload **entregue** (o `get_threat_landscape` media o seu 53 chars antes da banda
+`next`); as chaves próprias (`envelope_tk`, `within_envelope`, `note_id`) mantêm-se e o `within_envelope`
+re-avalia-se contra o número entregue.
+
+### O `task` vs o contrato — o gate sai onde o task não é motor
+
+Contrato v1.18-beta: em declarativo o `task` é `recorded_context` e não influencia o resultado. Logo não pode
+barrar a resposta: o gate de contagem de palavras, os padrões de vagueza e a tecnologia fora do âmbito **só
+correm em `discover`**, onde o task é o motor. `task` passa a **opcional** no schema (em `discover` a
+ausência responde needs_clarification, como antes). Consequência honesta apanhada pela matriz banda ×
+superfície: com o gate fora, uma declaração **inerte** (`stack` sem token do vocabulário) recebia
+`needs_clarification` sobre o task — passa a `needs_input` com **`valid_values`** (a lista das tecnologias /
+exposures / sensibilidades válidas): o erro nomeia o vocabulário, não só o aponta. TC-D-02/03 (portão de
+âmbito) passam a correr em `discover` e verificam o `needs_input` declarativo.
+
+### Prova
+
+vitest **813/813** (68 ficheiros); `check`; smoke; `eval:acceptance` **141 PASS / 16 PART / 0 FAIL / 23 SKIP**,
+gate **PASS**; Eixo H **10/10**; matriz banda × superfície sem células FALTA novas; invariante 3 ✅.
 
 ## 0.21 (em curso, ramo `0.21`) — decisão (a): tectos 52/55 ligados · §6-a «os lotes somam o todo» — 2026-09-25
 

@@ -91,6 +91,19 @@ export const RESOURCE_CATALOG = [
           mimeType: "application/json"
         },
         {
+          uri: "sbd://toe/notes",
+          name: "SbD-ToE Notes (index)",
+          description:
+            "Notes by reference: the static prose that explains payload blocks (prepare) lives here with stable ids; payloads carry `note_id` and one `notes` header. Index of every id and text.",
+          mimeType: "application/json"
+        },
+        {
+          uri: "sbd://toe/notes/{id}",
+          name: "SbD-ToE Note",
+          description: "One note by id (e.g. sbd://toe/notes/prepare.repeat_call_hint). Unknown id returns a declared error listing the valid ids.",
+          mimeType: "application/json"
+        },
+        {
           uri: "sbd://toe/version",
           name: "SbD-ToE MCP Version",
           description: "Version of the running SbD-ToE MCP server (name, version, description) plus the provenance of the served knowledge: manual {version, commit}, kg {release_tag, substrate_version, consumer_contract_version} and ontology {tag, commit}, read from the consumed-bundle pin.",

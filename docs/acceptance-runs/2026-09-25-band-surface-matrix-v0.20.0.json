@@ -33,8 +33,8 @@
     "trace_sbd_toe_requirement_sources"
   ],
   "counts": {
-    "tem": 107,
-    "n/a": 48,
+    "tem": 108,
+    "n/a": 47,
     "FALTA": 0,
     "?": 77
   },
@@ -875,7 +875,7 @@
         },
         "resolve_entities": {
           "state": "tem",
-          "why": "`record_type` é filtro de facto — provado por variação (`requirement` vs `control`)"
+          "why": "`record_type` é filtro de facto — provado por variação (`requirement` vs `requirement-variante`)"
         },
         "search_sbd_toe_manual": {
           "state": "n/a",
@@ -996,8 +996,8 @@
           "why": "erro não é sobre `slot` — não exercitou a banda"
         },
         "resolve_entities": {
-          "state": "n/a",
-          "why": "sem parâmetro de vocabulário aberto (enum no schema já nomeia os válidos)"
+          "state": "tem",
+          "why": "rejeita `record_type` e nomeia os válidos"
         },
         "search_sbd_toe_manual": {
           "state": "n/a",

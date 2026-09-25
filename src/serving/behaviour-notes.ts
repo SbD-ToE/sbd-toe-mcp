@@ -16,17 +16,11 @@
 
 /** Ordenação das ameaças (beta.29: por PERTENÇA ao âmbito declarado). */
 export const THREAT_ORDERING =
-  "ORDEM: por PERTENÇA ao âmbito declarado — capítulo de domínio dos concerns primeiro, " +
-  "depois os restantes capítulos activados, e os caps. 01/02 (classificação e meta-ameaças de " +
-  "PROCESSO) por último; dentro de cada escalão, mitigation_confidence, capítulo e id. " +
-  "A paginação segue esta ordem, por isso a página 1 É a parte relevante.";
+  "ORDER by MEMBERSHIP of the declared scope (domain chapters first, chapters 01/02 last; then mitigation_confidence, chapter, id) — page 1 IS the relevant part."; // 0.21 §6-d: uma língua, e curta o bastante para viver verbatim numa descrição ≤600
 
 /** Paginação da selecção (por id, nunca relevância). */
 export const SELECT_PAGINATION =
-  "coverage pagina `selected` por ORDEM DE ID (alfabética por categoria: ACC primeiro, VAL por " +
-  "último) — NÃO é ordem de relevância, e com uma selecção grande as últimas categorias ficam " +
-  "nas páginas finais (ex.: VAL em offset=200). Se procuras uma categoria específica, declara o " +
-  "concern que a activa, ou pede-a por estrutura (`categories=[…]`), em vez de paginar até lá.";
+  "`selected` is paginated by ID ORDER (ACC first, VAL last), NOT by relevance: to reach one category, declare the concern that activates it or ask by structure (`categories=[…]`) instead of paging to it.";
 
 /** Todas as frases de comportamento publicadas, para a guarda as varrer. */
 export const BEHAVIOUR_NOTES: ReadonlyArray<{ id: string; text: string; tool: string }> = [

@@ -51,6 +51,7 @@ import {
   readGroundedCodegenGuide
 } from "../resources/sbd-toe-resources.js";
 import { estimateSize } from "../serving/response-shaping.js";
+import { NOTES } from "../serving/notes.js";
 import { resolveAppPath } from "../config.js";
 import { clearG2RuntimeCacheForTests } from "./g2-runtime-loader.js";
 import { clearRegulatoryOverlayCacheForTests } from "./regulatory-overlay-loader.js";
@@ -181,17 +182,17 @@ describe("s4 — repeat_call_hint no servidor (aditivo, lista/standard)", () => 
       (detail) => {
         const result = handlePrepareCodegenContextDiscover({ ...fixture.input, detail });
         expectReadyDieted(result);
-        expect(result.repeat_call_hint).toBe(REPEAT_CALL_HINT);
-        // Conteúdo: determinismo + reutilização + caminhos de re-consulta.
-        expect(result.repeat_call_hint).toContain("deterministic");
-        expect(result.repeat_call_hint).toContain("reuse");
-        expect(result.repeat_call_hint).toContain("detail:'full'");
-        expect(result.repeat_call_hint).toContain("consult_security_requirements");
-        // Campo pequeno (~50 tokens): chave + valor, medido como no budget.test.
-        const hintTokens = estimateSize({
-          repeat_call_hint: result.repeat_call_hint
-        }).approx_tokens;
-        expect(hintTokens).toBeLessThanOrEqual(75); // 0.21: a nota nomeia o preço declarado do full
+        // 0.21 §6-c: o hint vai por REFERÊNCIA (note_id); o texto vive em sbd://toe/notes e é o exportado.
+        expect(result.repeat_call_hint).toEqual({ note_id: "prepare.repeat_call_hint" });
+        const text = NOTES[result.repeat_call_hint.note_id];
+        expect(text).toBe(REPEAT_CALL_HINT);
+        expect(text).toContain("deterministic");
+        expect(text).toContain("reuse");
+        expect(text).toContain("detail:'full'");
+        expect(text).toContain("consult_security_requirements");
+        // No payload fica só a referência: ~15 tokens.
+        const hintTokens = estimateSize({ repeat_call_hint: result.repeat_call_hint }).approx_tokens;
+        expect(hintTokens).toBeLessThanOrEqual(20);
       }
     );
 
