@@ -74,6 +74,6 @@ for (const { label, input } of TASKS) {
     for (const [k, v] of Object.entries(r.g2_context)) {
       console.log(`  ${k}: ${Array.isArray(v) ? v.length : "?"} items ≈ ${tok(v)} tokens`);
     }
-    console.log(`citation_map ids: ${Object.keys(r.citation_map).length}`);
+    console.log(`citations (0.21 §3, invertido): ${JSON.stringify(Object.fromEntries(Object.entries(r.citations ?? {}).map(([k, v]) => [k, v.source_data])))}`);
   }
 }

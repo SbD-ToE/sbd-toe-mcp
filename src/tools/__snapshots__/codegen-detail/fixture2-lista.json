@@ -1,0 +1,207 @@
+{
+  "status": "needs_decomposition",
+  "provenance": {
+    "kg": "v1.12.0",
+    "server": "<pkg>"
+  },
+  "mode": "codegen",
+  "input_echo": {
+    "task": "Implement a secure endpoint for uploading documents with logging",
+    "task_role": "recorded_context",
+    "risk_level": "L2",
+    "mode": "codegen"
+  },
+  "reasons": [
+    "Selecção de 69 requisitos excede o tecto de 52 para detail=\"lista\" (medição: ~133 tk/req sobre base ~1476 tk ⇒ ~10653 tk, acima do envelope de 8450 tk deste nível)."
+  ],
+  "suggestions": [
+    "Divide em 2 lotes que SOMAM O TODO (união = 69 ids, m_recall 1.00 face à selecção inteira): repete com task + risk_level + detail + `categories` do lote. Cada lote é a partição EXACTA das categorias que a tua declaração activou — exposure/data_sensitivity estão lá pelo seu efeito (re-declará-los somaria as suas categorias a todos os lotes). Lotes: 1) categories=[\"OPS\", \"AUT\", \"ACC\", \"LOG\", \"FIL\"] (47 reqs; de \"auth\", \"files\", \"logging\", \"monitoring\"); 2) categories=[\"VAL\", \"API\", \"ERR\"] (22 reqs; de \"api\", \"validation\").",
+    "Em alternativa usa detail=\"full\" (sem tecto — preço declarado em size_estimate) ou reduz o âmbito da task."
+  ],
+  "partial_activation_trace": [
+    {
+      "source": "compound_term",
+      "produced": "api",
+      "trigger": "secure endpoint",
+      "score": 0.7,
+      "confidence": "semantic",
+      "reason": "Compound phrase 'secure endpoint' activates api."
+    },
+    {
+      "source": "compound_term",
+      "produced": "auth",
+      "trigger": "secure endpoint",
+      "score": 0.7,
+      "confidence": "semantic",
+      "reason": "Compound phrase 'secure endpoint' activates auth."
+    },
+    {
+      "source": "compound_term",
+      "produced": "validation",
+      "trigger": "secure endpoint",
+      "score": 0.7,
+      "confidence": "semantic",
+      "reason": "Compound phrase 'secure endpoint' activates validation."
+    },
+    {
+      "source": "compound_term",
+      "produced": "logging",
+      "trigger": "secure endpoint",
+      "score": 0.7,
+      "confidence": "semantic",
+      "reason": "Compound phrase 'secure endpoint' activates logging."
+    },
+    {
+      "source": "task_term",
+      "produced": "api",
+      "trigger": "endpoint",
+      "score": 0.8,
+      "confidence": "deterministic",
+      "reason": "Task text contains 'endpoint'."
+    },
+    {
+      "source": "task_term",
+      "produced": "logging",
+      "trigger": "logging",
+      "score": 0.8,
+      "confidence": "deterministic",
+      "reason": "Task text contains 'logging'."
+    },
+    {
+      "source": "task_term",
+      "produced": "monitoring",
+      "trigger": "logging",
+      "score": 0.8,
+      "confidence": "deterministic",
+      "reason": "Task text contains 'logging'."
+    },
+    {
+      "source": "task_term",
+      "produced": "files",
+      "trigger": "uploading",
+      "score": 0.8,
+      "confidence": "deterministic",
+      "reason": "Task text contains 'uploading'."
+    },
+    {
+      "source": "task_term",
+      "produced": "validation",
+      "trigger": "uploading",
+      "score": 0.8,
+      "confidence": "deterministic",
+      "reason": "Task text contains 'uploading'."
+    },
+    {
+      "source": "task_term",
+      "produced": "ACO-IVF",
+      "trigger": "api",
+      "score": 0.8,
+      "confidence": "deterministic",
+      "reason": "Concern 'api' maps to AppSec Core slice family 'ACO-IVF'."
+    },
+    {
+      "source": "task_term",
+      "produced": "ACO-IAT",
+      "trigger": "auth",
+      "score": 0.7,
+      "confidence": "deterministic",
+      "reason": "Concern 'auth' maps to AppSec Core slice family 'ACO-IAT'."
+    },
+    {
+      "source": "task_term",
+      "produced": "ACO-IVF",
+      "trigger": "validation",
+      "score": 0.8,
+      "confidence": "deterministic",
+      "reason": "Concern 'validation' maps to AppSec Core slice family 'ACO-IVF'."
+    },
+    {
+      "source": "task_term",
+      "produced": "ACO-SLG",
+      "trigger": "logging",
+      "score": 0.8,
+      "confidence": "deterministic",
+      "reason": "Concern 'logging' maps to AppSec Core slice family 'ACO-SLG'."
+    },
+    {
+      "source": "task_term",
+      "produced": "ACO-SLG",
+      "trigger": "monitoring",
+      "score": 0.8,
+      "confidence": "deterministic",
+      "reason": "Concern 'monitoring' maps to AppSec Core slice family 'ACO-SLG'."
+    },
+    {
+      "source": "risk_level",
+      "produced": "L2",
+      "trigger": "L2",
+      "score": 1,
+      "confidence": "deterministic",
+      "reason": "Risk level L2 filters runtime v0 requirements."
+    }
+  ],
+  "requirement_ceiling": {
+    "detail": "lista",
+    "limit": 52,
+    "selected": 69,
+    "cost_per_req_tk": 133,
+    "projected_tk": 10653,
+    "promise_tk": 8450,
+    "batches": [
+      {
+        "with": {
+          "categories": [
+            "OPS",
+            "AUT",
+            "ACC",
+            "LOG",
+            "FIL"
+          ]
+        },
+        "requirements": 47,
+        "derived_from": {
+          "concerns": [
+            "auth",
+            "files",
+            "logging",
+            "monitoring"
+          ]
+        }
+      },
+      {
+        "with": {
+          "categories": [
+            "VAL",
+            "API",
+            "ERR"
+          ]
+        },
+        "requirements": 22,
+        "derived_from": {
+          "concerns": [
+            "api",
+            "validation"
+          ]
+        }
+      }
+    ],
+    "union": {
+      "requirements": 69,
+      "recall": 1
+    }
+  },
+  "next": [
+    {
+      "intent": "split into 2-4 subtasks and call again per subtask",
+      "tool": "prepare_sbd_toe_codegen_context",
+      "with": "one subtask scope",
+      "kind": "structural"
+    },
+    {
+      "intent": "threats for this task",
+      "tool": "get_threat_landscape",
+      "with": "risk_level + concerns",
+      "kind": "semantic"
+    }
+  ]
+}

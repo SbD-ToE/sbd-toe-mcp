@@ -15,6 +15,7 @@
  * que o guia servido não diverge das fontes de que deriva — a mesma família da
  * invariante next-verbatim.
  */
+import { withDeclaredSize } from "./response-shaping.js";
 import { readFileSync } from "node:fs";
 import { resolveAppPath } from "../config.js";
 import { buildActivationVocabulary } from "./activation-vocabulary.js";
@@ -211,8 +212,9 @@ export function generateRiskLevelsBlock(): string {
  */
 export function generateOutputSizesBlock(): string {
   const rows = (["L1", "L2", "L3"] as const).map((level) => {
-    const full = JSON.stringify(handleConsultSecurityRequirements({ risk_level: level })).length;
-    const scoped = JSON.stringify(handleConsultSecurityRequirements({ risk_level: level, concerns: ["auth"] })).length;
+    // 0.21 §6: mede-se o que o SERVIDOR entrega (com o size_estimate que acrescenta), não o objecto em processo.
+    const full = JSON.stringify(withDeclaredSize(handleConsultSecurityRequirements({ risk_level: level }))).length;
+    const scoped = JSON.stringify(withDeclaredSize(handleConsultSecurityRequirements({ risk_level: level, concerns: ["auth"] }))).length;
     return `| \`${level}\` | ≈ ${(full / 1000).toFixed(0)}k chars | ≈ ${(scoped / 1000).toFixed(0)}k chars |`;
   });
   return [
@@ -324,7 +326,7 @@ export function generateReadingsBlock(): string {
     "| **IMPL** | «que capacidade a ORGANIZAÇÃO precisa de ter, e COMO MEDE que a tem?» | `get_sbd_toe_chapter_capability` (KPIs com thresholds por nível + artefactos) · `get_sbd_toe_chapter_implementation_checklist` · `assess_sbd_toe_implementation` |",
     "| **CONSULT** | «o que o Manual diz sobre X?» (sem tarefa) | **`explain_sbd_toe_topic`** — atravessa requisitos, orientação, provas, ameaças e **ANTIPADRÕES**, e **não exige `risk_level`**: aqui o nível ANOTA, não filtra · `consult_security_requirements` · `get_threat_landscape` |",
     "| **CROSS-CHECK** | «somos sujeitos à norma N — como é que o Manual serve?» | `get_sbd_toe_playbook` · `map_sbd_toe_regulatory_activation` |",
-    "| **PROGRAMA** | «por onde COMEÇAMOS, e com que SEQUÊNCIA?» | **`get_sbd_toe_macro_processes`** — os cinco macro-processos MP-01..05 e a **ordem de adopção publicada**. A ordem deriva SÓ das arestas `dependency`; as `feedback` são realimentação e ficam FORA dela (se entrassem, os cinco ciclariam). Não confundir com GUIDE: devolver os 273 requisitos a quem pergunta «por onde começamos» é responder a outra pergunta. |",
+    `| **PROGRAMA** | «por onde COMEÇAMOS, e com que SEQUÊNCIA?» | **\`get_sbd_toe_macro_processes\`** — os cinco macro-processos MP-01..05 e a **ordem de adopção publicada**. A ordem deriva SÓ das arestas \`dependency\`; as \`feedback\` são realimentação e ficam FORA dela (se entrassem, os cinco ciclariam). Não confundir com GUIDE: devolver os ${getOntologyData().requirements.length} requisitos a quem pergunta «por onde começamos» é responder a outra pergunta. |`,
     "| **PAPEL/MOMENTO** | «o que faço EU, agora?» | `get_guide_by_role` |",
     "| **SETUP** | «como me configuro?» | `sbd://toe/quick-start` · `generate_sbd_toe_skill` |",
     "",

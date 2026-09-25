@@ -83,7 +83,7 @@ describe("identidade de versão — `sbd://toe/version` é a autoridade", () => 
     const probes: [string, Record<string, unknown>][] = [
       ["get_sbd_toe_macro_processes", {}],
       ["get_sbd_toe_chapter_capability", { chapter: "07-cicd-seguro" }],
-      ["select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], detail: "minimal" }],
+      ["select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], detail: "lista" }],
       ["get_guide_by_role", { risk_level: "L2", role: "developer" }],
       ["plan_sbd_toe_rollout", {}]
     ];

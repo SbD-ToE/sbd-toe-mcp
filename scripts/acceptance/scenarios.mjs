@@ -11,6 +11,18 @@
  */
 
 const ok = (note = "") => ({ status: "PASS", note });
+/** 0.21 §3: os ids citáveis vêm de `citations` (invertido, ids referenciados por caminho do payload) em todos os níveis. */
+const citableIdsOf = (d) => {
+  const root = d ?? {};
+  const at = (path) => {
+    const keys = /^keys\(g2_context\.([a-z_]+)\[slice\]\)$/.exec(path);
+    if (keys) return Object.values(root.g2_context?.[keys[1]] ?? {}).flatMap((e) => Object.keys(e));
+    const list = /^([a-z0-9_]+)\.([a-z0-9_]+)\[\]\.([a-z0-9_]+)$/.exec(path);
+    if (!list) throw new Error(`ids_from desconhecido: ${path}`);
+    return (root[list[1]]?.[list[2]] ?? []).map((item) => item[list[3]]);
+  };
+  return Object.values(root.citations ?? {}).flatMap((g) => g.ids ?? (g.ids_from ?? []).flatMap(at));
+};
 const part = (note, owner = "mcp") => ({ status: "PART", note, owner });
 const fail = (note, owner = "mcp") => ({ status: "FAIL", note, owner });
 const skip = (note) => ({ status: "SKIP", note });
@@ -26,14 +38,15 @@ const ctxLinksTargeting = (ctx, controlId) => ctx ? [...ctx.knownIds].filter((ri
 
 export const scenarios = [
   // ───────────────────────── Axis A — Tool coverage ─────────────────────────
-  { id: "TC-A-01", axis: "A", title: "codegen ready_for_codegen with real citation_map", tool: "prepare_sbd_toe_codegen_context",
+  { id: "TC-A-01", axis: "A", title: "codegen ready_for_codegen with real citations (0.21 §3: invertido em todos os níveis)", tool: "prepare_sbd_toe_codegen_context",
     // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c, ctx) => {
       const r = await c.tool("prepare_sbd_toe_codegen_context", { selection_mode: "discover", task: "Validação de payload no PATCH /users/:id/email, Node/Express", risk_level: "L2" });
       if (!r.ok) return fail(r.error);
       const d = r.data; if (d.status !== "ready_for_codegen") return fail(`status=${d.status}`);
-      const keys = Object.keys(d.citation_map ?? {}); const unknown = keys.filter((k) => !ctx.knownIds.has(k));
-      if (keys.length === 0) return fail("empty citation_map");
+      const keys = citableIdsOf(d); const unknown = keys.filter((k) => !ctx.knownIds.has(k));
+      if (keys.length === 0) return fail("empty citations");
+      if (d.citation_map) return fail("citation_map ressuscitou (0.21 §3: só citations)");
       if (unknown.length) return fail(`citation ids not in bundle: ${unknown.slice(0, 5).join(",")}`, "mixed");
       if (!Array.isArray(d.activation_trace) || d.activation_trace.length === 0) return fail("no activation_trace");
       return ok(`ready; ${keys.length} citations all resolve; trace ${d.activation_trace.length}; provenance ${d.provenance ? "yes" : "no"}`);
@@ -42,7 +55,7 @@ export const scenarios = [
     // beta.21 (declarativo primeiro): DISCOVER-ONLY — este cenário mede o motor inferencial (default até à beta.20); o contrato declarativo é coberto por TC-F-35/36.
     run: async (c) => { const r = await c.tool("prepare_sbd_toe_codegen_context", { selection_mode: "discover", task: "Melhora a segurança da aplicação toda", risk_level: "L2" }); if (!r.ok) return fail(r.error);
       const s = r.data.status; if (!["needs_clarification", "needs_decomposition"].includes(s)) return fail(`status=${s}`);
-      if (r.data.citation_map) return fail("citation_map present on non-ready status"); return ok(`status=${s}; no citation_map`); } },
+      if (r.data.citation_map || r.data.citations) return fail("citations present on non-ready status"); return ok(`status=${s}; no citations`); } },
   { id: "TC-A-03", axis: "A", title: "codegen with regulatory overlay (EXT-DORA) — honest degradation", tool: "prepare_sbd_toe_codegen_context",
     run: async (c) => { const r = await c.tool("prepare_sbd_toe_codegen_context", { task: "Validação de input e auditoria de transacções no módulo de pagamentos", risk_level: "L2", regulatory_frameworks: ["EXT-DORA"], include_regulatory_overlay: true }); if (!r.ok) return fail(r.error);
       const d = r.data; if (d.status === "unsupported_scope") return ok("overlay absent → unsupported_scope (honest)");
@@ -196,10 +209,17 @@ export const scenarios = [
   // ───────────────────────── Axis D — Negatives / invariants ─────────────────────────
   { id: "TC-D-01", axis: "D", title: "scope-gate: 'Torna a minha app segura'", tool: "prepare_sbd_toe_codegen_context",
     run: async (c) => { const r = await c.tool("prepare_sbd_toe_codegen_context", { task: "Torna a minha app segura", risk_level: "L2" }); if (!r.ok) return fail(r.error); return r.data.status !== "ready_for_codegen" && !r.data.citation_map ? ok(`status=${r.data.status}, zero ids`) : fail(`status=${r.data.status}`); } },
-  { id: "TC-D-02", axis: "D", title: "scope-gate: apply the whole manual to my pipeline", tool: "prepare_sbd_toe_codegen_context",
-    run: async (c) => { const r = await c.tool("prepare_sbd_toe_codegen_context", { task: "Aplica o manual inteiro à minha pipeline, dá-me tudo", risk_level: "L3" }); if (!r.ok) return fail(r.error); return r.data.status === "needs_decomposition" ? ok(`needs_decomposition; suggestions ${r.data.suggestions?.length}`) : r.data.status === "ready_for_codegen" ? fail("dumped ready_for_codegen") : part(`status=${r.data.status}`); } },
-  { id: "TC-D-03", axis: "D", title: "scope-gate: quantum-resistant blockchain → unsupported_scope", tool: "prepare_sbd_toe_codegen_context",
-    run: async (c) => { const r = await c.tool("prepare_sbd_toe_codegen_context", { task: "Código seguro para blockchain quantum-resistant", risk_level: "L2" }); if (!r.ok) return fail(r.error); return r.data.status === "unsupported_scope" && !r.data.citation_map ? ok("unsupported_scope, zero ids") : fail(`status=${r.data.status}`); } },
+  { id: "TC-D-02", axis: "D", title: "scope-gate (motor inferencial, discover): apply the whole manual → needs_decomposition; em declarativo o task não é motor (0.21 §6: needs_input)", tool: "prepare_sbd_toe_codegen_context",
+    run: async (c) => {
+      const d = await c.tool("prepare_sbd_toe_codegen_context", { task: "Aplica o manual inteiro à minha pipeline, dá-me tudo", risk_level: "L3" }); if (!d.ok) return fail(d.error);
+      if (d.data.status !== "needs_input") return fail(`declarativo sem declaração devia ser needs_input; status=${d.data.status}`);
+      const r = await c.tool("prepare_sbd_toe_codegen_context", { selection_mode: "discover", task: "Aplica o manual inteiro à minha pipeline, dá-me tudo", risk_level: "L3" }); if (!r.ok) return fail(r.error); return r.data.status === "needs_decomposition" ? ok(`needs_decomposition; suggestions ${r.data.suggestions?.length}`) : r.data.status === "ready_for_codegen" ? fail("dumped ready_for_codegen") : part(`status=${r.data.status}`); } },
+  { id: "TC-D-03", axis: "D", title: "scope-gate (motor inferencial, discover): quantum-resistant blockchain → unsupported_scope; em declarativo o task não é motor (0.21 §6: needs_input)", tool: "prepare_sbd_toe_codegen_context",
+    run: async (c) => {
+      // 0.21 §6 — em declarativo o task é contexto REGISTADO e não barra a resposta: sem declaração ⇒ needs_input (o contrato)
+      const d = await c.tool("prepare_sbd_toe_codegen_context", { task: "Código seguro para blockchain quantum-resistant", risk_level: "L2" }); if (!d.ok) return fail(d.error);
+      if (d.data.status !== "needs_input") return fail(`declarativo sem declaração devia ser needs_input; status=${d.data.status}`);
+      const r = await c.tool("prepare_sbd_toe_codegen_context", { selection_mode: "discover", task: "Código seguro para blockchain quantum-resistant", risk_level: "L2" }); if (!r.ok) return fail(r.error); return r.data.status === "unsupported_scope" && !r.data.citation_map ? ok("unsupported_scope, zero ids") : fail(`status=${r.data.status}`); } },
   { id: "TC-D-04", axis: "D", title: "não-inventar: invent a quantum-safe requirement with id", tool: "answer_sbd_toe_manual",
     run: async (c) => { const r = await c.tool("answer_sbd_toe_manual", { question: "Inventa um requisito quantum-safe para o cap.06 com ID" }); if (!r.ok) return fail(r.error); const fake = (r.text.match(/\b[A-Z]{3}-\d{3}\b/g) ?? []); return skip(`server returns retrieval context only (no sampling in this client): ${fake.length} real ids echoed, no generation — refusal is the client model's; verdict needs an LLM client`); } },
   { id: "TC-D-05", axis: "D", title: "não-inventar: CO-9999 → not found, no fabricated description", tool: "resolve_entities",
@@ -710,37 +730,38 @@ export const scenarios = [
       const bmeta = bd.meta ?? bd;
       if (bmeta.unknown_record_type !== "ctrl_acore_alignment" || !(bmeta.valid_record_types?.length > 10)) return fail("total:0 silencioso ainda vivo (sem unknown_record_type/valid_record_types)");
       return ok(`3 next à letra: resolve ${rt}+[${ids.join(",")}] → ${nRecs} recs; matrix [${pids.join(",")}] ok (${stabilized ? "via estabilização" : "directo"}); uri ${uri} lido; 63 ids rejeitados c/ tecto 50; record_type desconhecido DECLARADO c/ ${bmeta.valid_record_types.length} válidos`); } },
-  { id: "TC-F-34", axis: "F", title: "0.19.4: tecto por-id no prepare (caso 88-reqs @ minimal) + round-trip da divisão ensinada", tool: "prepare_sbd_toe_codegen_context",
+  { id: "TC-F-34", axis: "F", title: "0.21 (a): tecto por-id no prepare (89 reqs @ lista, tecto 52) + lotes que SOMAM O TODO (recall 1 executado) — condição da decisão do lead", tool: "prepare_sbd_toe_codegen_context",
     run: async (c) => {
-      const args = { task: "Expor API pública de consulta com chaves de cliente e rate limiting", risk_level: "L3", exposure: "public", data_sensitivity: "personal", stack: "Python/FastAPI", detail: "minimal" };
+      const args = { task: "Expor API pública de consulta com chaves de cliente e rate limiting", risk_level: "L3", exposure: "public", data_sensitivity: "personal", stack: "Python/FastAPI", detail: "lista" };
       const p = await c.tool("prepare_sbd_toe_codegen_context", args); if (!p.ok) return fail(p.error);
       const pd = p.data.data ?? p.data;
-      if (pd.status !== "needs_decomposition") return fail(`88 reqs @ minimal devia bloquear declarado; status=${pd.status}`);
+      if (pd.status !== "needs_decomposition") return fail(`89 reqs @ lista devia bloquear declarado; status=${pd.status}`);
       const rc = pd.requirement_ceiling;
-      if (!rc || rc.limit === undefined || rc.selected <= rc.limit) return fail("sem requirement_ceiling estruturado");
+      if (!rc || rc.limit !== 52 || rc.selected <= rc.limit) return fail(`requirement_ceiling errado: ${JSON.stringify(rc && { limit: rc.limit, selected: rc.selected })}`);
       if (!(rc.projected_tk > rc.promise_tk)) return fail("projecção não justifica o bloqueio");
-      if (!rc.batches?.length) return fail("sem lotes de divisão ensinados");
-      if (!(pd.suggestions ?? []).some((x) => /Divide por área/.test(x))) return fail("suggestions não ensinam a divisão");
-      // round-trip: seguir a divisão sugerida → chamadas DENTRO do tecto, prontas
-      const results = [];
-      for (const batch of rc.batches.slice(0, 2)) {
-        // a receita ensinada: SÓ task + risk_level + detail + concerns do lote (activadores largos fora)
-        const r = await c.tool("prepare_sbd_toe_codegen_context", { task: args.task, risk_level: args.risk_level, detail: args.detail, concerns: batch.concerns });
-        if (!r.ok) return fail(`lote [${batch.concerns}] rejeitado: ${r.error}`);
+      if (!rc.batches?.length || !rc.union || rc.union.recall !== 1) return fail(`lotes sem união declarada com recall 1: ${JSON.stringify(rc.union)}`);
+      if (!(pd.suggestions ?? []).some((x) => /SOMAM O TODO/.test(x) && /categories=\[/.test(x))) return fail("suggestions não ensinam a receita por categorias");
+      // EXECUTA todos os lotes e mede a união contra a selecção inteira (full, sem tecto)
+      const pf = await c.tool("prepare_sbd_toe_codegen_context", { ...args, detail: "full" }); if (!pf.ok) return fail(pf.error);
+      const pfd = pf.data.data ?? pf.data; if (pfd.status !== "ready_for_codegen") return fail(`full ganhou tecto indevido: ${pfd.status}`);
+      const fullIds = new Set((pfd.activated_scope?.requirements ?? []).map((q) => q.id));
+      const union = new Set(); const sizes = [];
+      for (const batch of rc.batches) {
+        const r = await c.tool("prepare_sbd_toe_codegen_context", { task: args.task, risk_level: args.risk_level, detail: args.detail, ...batch.with });
+        if (!r.ok) return fail(`lote ${JSON.stringify(batch.with.categories)} rejeitado: ${r.error}`);
         const rdd = r.data.data ?? r.data;
-        if (rdd.status !== "ready_for_codegen") return fail(`lote [${batch.concerns}] não ficou pronto: ${rdd.status}`);
-        const n = (rdd.activated_scope?.requirements ?? []).length || (rdd.activated_scope?.requirements_total ?? 0);
-        if (n > rc.limit) return fail(`lote [${batch.concerns}] excede o tecto: ${n} > ${rc.limit}`);
-        results.push(`[${batch.concerns}]→${n} reqs`);
+        if (rdd.status !== "ready_for_codegen") return fail(`lote ${JSON.stringify(batch.with.categories)} não ficou pronto: ${rdd.status}`);
+        const n = (rdd.activated_scope?.requirements ?? []).length;
+        if (n > rc.limit) return fail(`lote excede o tecto: ${n} > ${rc.limit}`);
+        if (n !== batch.requirements) return fail(`contagem declarada ${batch.requirements} ≠ real ${n}`);
+        for (const q of rdd.activated_scope.requirements) union.add(q.id);
+        sizes.push(n);
       }
-      // full continua SEM tecto (promessa = completude; nível do oráculo)
-      const pf = await c.tool("prepare_sbd_toe_codegen_context", { ...args, detail: "full" });
-      if (!pf.ok) return fail(pf.error);
-      const pfd = pf.data.data ?? pf.data;
-      if (pfd.status !== "ready_for_codegen") return fail(`full ganhou tecto indevido: ${pfd.status}`);
-      return ok(`88@minimal → needs_decomposition declarado (tecto ${rc.limit}, ~${rc.cost_per_req_tk} tk/req, proj ${rc.projected_tk}>${rc.promise_tk}); divisão seguida: ${results.join(", ")}; full sem tecto ✓`); } },
+      const covered = [...fullIds].filter((id) => union.has(id)).length;
+      if (covered !== fullIds.size) return fail(`m_recall da união ${covered}/${fullIds.size} < 1`);
+      if (!pfd.size_estimate || !(pfd.size_estimate.approx_tokens > 0) || pfd.size_estimate.envelope_tk !== undefined) return fail("full não declara o preço (size_estimate sem envelope)");
+      return ok(`89@lista → needs_decomposition declarado (tecto ${rc.limit}, ~${rc.cost_per_req_tk} tk/req, proj ${rc.projected_tk}>${rc.promise_tk}); ${rc.batches.length} lotes executados [${sizes.join(", ")}] → união ${union.size}, m_recall ${covered}/${fullIds.size} = 1; full sem tecto, ${pfd.size_estimate.approx_tokens} tk ✓`); } },
 
-  // ─────────── beta.21: o contrato DECLARATIVO (o que substitui o default inferencial) ───────────
   { id: "TC-F-35", axis: "F", title: "0.20.0-beta.21: declarativo primeiro — needs_input ensina, declaração selecciona, redacção não decide", tool: "select_sbd_toe_requirements",
     run: async (c) => {
       // 1) sem declarações: needs_input (nunca zero em silêncio, nunca adivinhado)
@@ -1112,34 +1133,48 @@ export const scenarios = [
         return fail("o guia apresenta search_sbd_toe_manual sem a marca NÃO-NORMATIVO que a tool declara");
       return ok(`minLevel retirada e declarada, ${chapters.length} capítulos presentes em todos os níveis, 4 bandas nomeadas, tamanho L2 medido (${measured}k), search marcado não-normativo`); } },
 
-  { id: "TC-F-47", axis: "F", title: "0.20.0-beta.26 (item 1): evidence_patterns por PERTENÇA ao âmbito, não por prefixo alfabético", tool: "prepare_sbd_toe_codegen_context",
+  { id: "TC-F-47", axis: "F", title: "0.21 §1: o requisito fundido — description/verify/evidence inline em todos os níveis; sem bloco evidence_patterns; cada ref alcançável", tool: "prepare_sbd_toe_codegen_context",
     run: async (c) => {
-      // Sonda A do avaliador: validação (âmbito ERR/VAL) trazia 5 em 5 EPs de fora
-      const a = await c.tool("prepare_sbd_toe_codegen_context", { task: "Validar payload de entrada no endpoint", risk_level: "L2", concerns: ["validation"], detail: "minimal", debug: true });
+      const base = { task: "Validar payload de entrada no endpoint", risk_level: "L2", concerns: ["validation"] };
+      const a = await c.tool("prepare_sbd_toe_codegen_context", { ...base, detail: "lista", debug: true });
       if (!a.ok) return fail(a.error);
       if (a.data.status !== "ready_for_codegen") return fail(`sonda A: status ${a.data.status}`);
-      const scope = new Set((a.data.activated_scope?.requirements ?? []).map((x) => x.requirement_id));
-      const eps = a.data.g2_context?.evidence_patterns ?? [];
-      if (eps.length === 0) return fail("sonda A sem evidence_patterns — fixture mudou");
-      const fora = eps.filter((e) => !(e.maps_to_requirement_id && scope.has(e.maps_to_requirement_id)));
-      if (fora.length > 0) return fail(`sonda A: ${fora.length}/${eps.length} EPs fora do âmbito (${fora.map((e) => e.id).join(", ")})`);
-      // pertença é monótona: nenhum de fora antes de um de dentro, em qualquer detail
+      const reqs = a.data.activated_scope?.requirements ?? [];
+      if (reqs.length === 0) return fail("sonda A sem requisitos — fixture mudou");
+      if (a.data.g2_context && "evidence_patterns" in a.data.g2_context) return fail("o bloco evidence_patterns ressuscitou");
+      const incompletos = reqs.filter((q) => !q.id || !q.description || !q.verify || !q.evidence);
+      if (incompletos.length > 0) return fail(`${incompletos.length}/${reqs.length} requisitos sem description/verify/evidence: ${incompletos.slice(0, 3).map((q) => q.id).join(", ")}`);
+      const v = a.data.completeness_report?.verification;
+      if (!v || v.requirements !== reqs.length || v.with_verify_and_evidence + v.partial + v.without_pattern !== v.requirements) return fail(`verification sem denominadores que fechem: ${JSON.stringify(v)}`);
+      // a mesma forma em todos os níveis (o objecto fundido é idêntico; full acrescenta source)
       for (const detail of ["standard", "full"]) {
-        const r = await c.tool("prepare_sbd_toe_codegen_context", { task: "Validar payload de entrada no endpoint", risk_level: "L2", concerns: ["validation"], detail });
+        const r = await c.tool("prepare_sbd_toe_codegen_context", { ...base, detail });
         if (!r.ok) return fail(r.error);
-        const sc = new Set((r.data.activated_scope?.requirements ?? []).map((x) => x.requirement_id));
-        const list = r.data.g2_context?.evidence_patterns ?? [];
-        const inScope = (e) => e.maps_to_requirement_id && sc.has(e.maps_to_requirement_id);
-        const firstOut = list.findIndex((e) => !inScope(e));
-        const lastIn = list.map(inScope).lastIndexOf(true);
-        if (firstOut >= 0 && lastIn > firstOut) return fail(`detail=${detail}: EP fora do âmbito antes de um de dentro`);
+        const rr = r.data.activated_scope?.requirements ?? [];
+        if (rr.length !== reqs.length) return fail(`detail=${detail}: ${rr.length} reqs ≠ ${reqs.length}`);
+        for (let i = 0; i < rr.length; i++) if (rr[i].id !== reqs[i].id || rr[i].verify !== reqs[i].verify || rr[i].description !== reqs[i].description) return fail(`detail=${detail}: requisito ${rr[i].id} difere da lista`);
+        if (r.data.g2_context && "evidence_patterns" in r.data.g2_context) return fail(`detail=${detail}: bloco evidence_patterns presente`);
       }
-      // menor do mesmo achado: debug.notes contava o cap CLÁSSICO (25) e não o efectivo
-      const note = (a.data.debug?.notes ?? []).find((n) => n.startsWith("evidence_patterns: total="));
-      if (!note) return fail("sem nota de evidence_patterns em debug");
-      if (!new RegExp(`returned=${eps.length}\\b`).test(note)) return fail(`debug.notes conta o cap clássico, não o efectivo: ${note}`);
-      if (!/cap efectivo/.test(note)) return fail("a nota não diz qual é o cap efectivo deste detail");
-      return ok(`sonda A: 0/${eps.length} EPs fora do âmbito (era 5/5); pertença monótona em minimal/standard/full; debug.notes com returned=${eps.length} e cap efectivo`); } },
+      // a referência é ALCANÇÁVEL: a matriz devolve, por requisito, o id do padrão e o método == verify inline
+      const ids = reqs.map((q) => q.id).slice(0, 50);
+      const m = await c.tool("get_sbd_toe_verification_matrix", { risk_level: base.risk_level, requirement_ids: ids });
+      if (!m.ok) return fail(`by_ref não executável: ${m.error}`);
+      const rows = (m.data.data ?? m.data).rows ?? (m.data.data ?? m.data).items ?? [];
+      const byReq = new Map(rows.map((row) => [row.requirement_id, row]));
+      const semLinha = ids.filter((id) => !byReq.has(id));
+      if (semLinha.length > 0) return fail(`matriz sem linha para ${semLinha.length} ids: ${semLinha.slice(0, 3).join(", ")}`);
+      const divergentes = reqs.slice(0, 50).filter((q) => byReq.get(q.id).validation_method !== q.verify || !byReq.get(q.id).evidence_pattern_id);
+      if (divergentes.length > 0) return fail(`verify inline ≠ validation_method da matriz em ${divergentes.length} ids`);
+      const note = (a.data.debug?.notes ?? []).find((n) => n.startsWith("verification: requirements="));
+      if (!note) return fail("sem nota de verification em debug");
+      // 0.21 §2: adjacência em todos os níveis — resumo com denominadores em lista, detalhe alcançável em standard
+      const adj = a.data.adjacency;
+      if (!adj || !Array.isArray(adj.undeclared_that_would_change_the_set) || typeof adj.would_change_the_set !== "number") return fail("lista sem bloco adjacency com denominadores");
+      if (adj.detail_ref?.with?.detail !== "standard") return fail("lista sem detail_ref executável para standard");
+      const st = await c.tool("prepare_sbd_toe_codegen_context", { ...base, detail: "standard" });
+      if (!st.ok) return fail(st.error);
+      if ((st.data.adjacency?.detail ?? []).length !== adj.would_change_the_set) return fail(`detail_ref não executável: standard traz ${st.data.adjacency?.detail?.length} sinais, denominador ${adj.would_change_the_set}`);
+      return ok(`${reqs.length}/${reqs.length} requisitos fundidos (description+verify+evidence) em lista/standard/full; sem bloco EP; by_ref alcançável (${rows.length} linhas, verify == validation_method); adjacência ${adj.shown}/${adj.would_change_the_set} em lista, detalhe ${st.data.adjacency.detail.length} em standard; size_estimate ${a.data.size_estimate?.approx_tokens} tk (envelope ${a.data.size_estimate?.envelope_tk}, within=${a.data.size_estimate?.within_envelope})`); } },
 
   { id: "TC-F-48", axis: "F", title: "0.20.0-beta.26 (itens 2,3,5,6): threat needs_input, traço multi-activador, denominadores, obligation_ids", tool: "select_sbd_toe_requirements",
     run: async (c) => {
@@ -1195,7 +1230,7 @@ export const scenarios = [
       const ids = (x) => x.selection.selected.map((r) => r.requirement_id).join(",");
       const custoFull = JSON.stringify(full.data).length / 4;
       const medidas = [];
-      for (const detail of ["standard", "minimal"]) {
+      for (const detail of ["standard", "lista"]) {
         const r = await c.tool("select_sbd_toe_requirements", { ...args, detail });
         if (!r.ok) return fail(r.error);
         if (ids(r.data) !== ids(full.data)) return fail(`detail=${detail} mudou o CONJUNTO — a dieta é de serialização, não de conteúdo`);
@@ -1287,7 +1322,7 @@ export const scenarios = [
         for (const level of ["L1", "L2", "L3"]) {
           const publicado = entry.requirements_at?.[level] ?? 0;
           const named = entry.also_activates_by_named_rule?.requirements_at?.[level] ?? 0;
-          const sel = await c.tool("select_sbd_toe_requirements", { risk_level: level, concerns: [name], limit: 500, detail: "minimal" });
+          const sel = await c.tool("select_sbd_toe_requirements", { risk_level: level, concerns: [name], limit: 500, detail: "lista" });
           if (!sel.ok) return fail(sel.error);
           const s = sel.data.selection.selected.length;
           if (s !== publicado + named)
@@ -1313,7 +1348,7 @@ export const scenarios = [
       if (!(ign.requirements_at_stake > 0)) return fail("não diz quantos requisitos estão em causa");
       if (!ign.honoured_by) return fail("não diz que superfície os honra");
       // e o número tem de bater com a diferença REAL entre as superfícies
-      const sel = await c.tool("select_sbd_toe_requirements", { ...args, limit: 500, detail: "minimal" });
+      const sel = await c.tool("select_sbd_toe_requirements", { ...args, limit: 500, detail: "lista" });
       if (!sel.ok) return fail(sel.error);
       const perdidos = sel.data.selection.selected.filter(
         (r) => !(con.data.requirements ?? []).some((x) => x.requirement_id === r.requirement_id)
@@ -1360,20 +1395,20 @@ export const scenarios = [
       const iac = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["iac"] });
       if (!iac.ok) return fail(iac.error);
       if (iac.data.routing_basis?.basis !== "domain_chapter") return fail("iac tem capítulo próprio e devia dizê-lo");
-      // dedup opcional: full mantém o contrato, minimal poupa
+      // dedup opcional: full mantém o contrato, lista poupa (0.21 §7: minimal → lista)
       const cheio = JSON.stringify(files.data).length;
-      const min = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["files"], detail: "minimal" });
+      const min = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["files"], detail: "lista" });
       if (!min.ok) return fail(min.error);
       if (!(files.data.threats ?? []).every((t) => Array.isArray(t.associated_control_ids)))
         return fail("detail=full deixou de publicar associated_control_ids (contrato v1.14 §1.21)");
-      if (!min.data.associated_control_legend) return fail("detail=minimal sem legenda");
+      if (!min.data.associated_control_legend) return fail("detail=lista sem legenda");
       const magro = JSON.stringify(min.data).length;
       // A poupança depende de quanta repetição a página traz — e desde a beta.29 a página 1
       // é do DOMÍNIO, logo menos repetitiva. Garante-se que poupa e que não perde nada,
       // não uma percentagem fixa (que media a repetição, não a dedup).
       if (!(magro < cheio)) return fail(`dedup não poupou: ${Math.round(cheio / 4)} → ${Math.round(magro / 4)} tk`);
       const refsOk = (min.data.threats ?? []).every((t) => Array.isArray(t.associated_control_name_refs));
-      if (!refsOk) return fail("detail=minimal sem referências à legenda");
+      if (!refsOk) return fail("detail=lista sem referências à legenda");
       const nomes = min.data.associated_control_legend.names ?? [];
       const todasResolvem = (min.data.threats ?? []).every((t) => (t.associated_control_name_refs ?? []).every((i) => nomes[i] !== undefined));
       if (!todasResolvem) return fail("referências da legenda não resolvem — a dedup perderia informação");
@@ -1428,17 +1463,17 @@ export const scenarios = [
       }
       if (publicado !== reais) return fail(`o guia publica ${publicado} com domínio próprio, o servidor produz ${reais}`);
       // item 3 — o contador da legenda bate com os arrays
-      const min = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["auth"], detail: "minimal" });
+      const min = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["auth"], detail: "lista" });
       if (!min.ok) return fail(min.error);
       const L = min.data.associated_control_legend;
-      if (!L) return fail("sem legenda em detail=minimal");
+      if (!L) return fail("sem legenda em detail=lista");
       const mm = /Os (\d+) nomes e (\d+) ids/.exec(L.note ?? "");
       if (!mm) return fail("nota da legenda sem contagens");
       if (Number(mm[1]) !== L.names.length || Number(mm[2]) !== L.ids.length)
         return fail(`contador da legenda diz ${mm[1]}/${mm[2]} com arrays ${L.names.length}/${L.ids.length}`);
       // item 5 — a nota do extend descreve o comportamento REAL
-      const semOverlay = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], limit: 500, detail: "minimal" });
-      const comOverlay = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], limit: 500, detail: "minimal", include_regulatory_overlay: true, regulatory_frameworks: ["RGPD"] });
+      const semOverlay = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], limit: 500, detail: "lista" });
+      const comOverlay = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], limit: 500, detail: "lista", include_regulatory_overlay: true, regulatory_frameworks: ["RGPD"] });
       if (!semOverlay.ok || !comOverlay.ok) return fail(semOverlay.error ?? comOverlay.error);
       const ids = (x) => x.data.selection.selected.map((r) => r.requirement_id).join(",");
       if (ids(semOverlay) !== ids(comOverlay)) return fail("o overlay mudou a selecção — a nota teria de ser outra");
@@ -1452,7 +1487,7 @@ export const scenarios = [
   { id: "TC-F-56", axis: "F", title: "0.20.0-beta.30 (forma B): pedir por ESTRUTURA — o cap. 14 e o cap. 01 têm porta VERDADEIRA", tool: "select_sbd_toe_requirements",
     run: async (c) => {
       // o caso que motivou o ciclo: 14 concerns correctos não chegavam ao cap. 14
-      const gov = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", chapters: ["14-governanca-contratacao"], limit: 500, detail: "minimal" });
+      const gov = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", chapters: ["14-governanca-contratacao"], limit: 500, detail: "lista" });
       if (!gov.ok) return fail(gov.error);
       const sel = gov.data.selection.selected;
       if (sel.length === 0) return fail("chapters=['14-governanca-contratacao'] não devolve nada — a forma B não existe");
@@ -1461,11 +1496,11 @@ export const scenarios = [
       if (!legend.some((e) => /declared_structure|declared_chapter|forma B/i.test(JSON.stringify(e))))
         return fail("a inclusão por estrutura não deixou traço próprio");
       // por categoria
-      const cat = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", categories: ["GOV"], limit: 500, detail: "minimal" });
+      const cat = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", categories: ["GOV"], limit: 500, detail: "lista" });
       if (!cat.ok) return fail(cat.error);
       if (cat.data.selection.selected.length !== sel.length) return fail("categories=['GOV'] e chapters=[cap.14] discordam");
       // cap. 01 — o método de classificação tem porta; o servidor continua a não emitir nível
-      const cla = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", chapters: ["01-classificacao-aplicacoes"], limit: 500, detail: "minimal" });
+      const cla = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", chapters: ["01-classificacao-aplicacoes"], limit: 500, detail: "lista" });
       if (!cla.ok) return fail(cla.error);
       if (cla.data.selection.selected.length === 0) return fail("o cap. 01 continua sem porta");
       // valor estrutural inválido é DECLARADO, nunca descartado
@@ -1473,8 +1508,8 @@ export const scenarios = [
       if (!bad.ok) return fail(bad.error);
       if (!bad.data.unknown_structural?.values?.length) return fail("valor estrutural inválido descartado em silêncio");
       // a forma A não se mexeu
-      const a1 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], limit: 500, detail: "minimal" });
-      const a2 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], limit: 500, detail: "minimal", chapters: [] });
+      const a1 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], limit: 500, detail: "lista" });
+      const a2 = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], limit: 500, detail: "lista", chapters: [] });
       if (!a1.ok || !a2.ok) return fail(a1.error ?? a2.error);
       if (a1.data.selection.selected.length !== a2.data.selection.selected.length) return fail("a forma A mudou de resultado");
       return ok(`cap. 14 por estrutura: ${sel.length} requisitos GOV (era inalcançável sem inventar changed_files); categories=[GOV] concorda; cap. 01 com ${cla.data.selection.selected.length}; valor inválido declarado; forma A intacta (${a1.data.selection.selected.length})`); } },
@@ -1482,7 +1517,7 @@ export const scenarios = [
   { id: "TC-F-57", axis: "F", title: "0.20.0-beta.30 (alcançabilidade + modelo): nenhum caminho oferecido é falso, e o modelo publica as três formas", tool: "read_sbd_toe_resource",
     run: async (c) => {
       // (b) nenhum activate_with oferece SÓ um ficheiro
-      const s = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], detail: "minimal" });
+      const s = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], detail: "lista" });
       if (!s.ok) return fail(s.error);
       const banda = s.data.out_of_scope_chapters?.chapters ?? [];
       if (banda.length === 0) return fail("sem banda de fora-de-âmbito — fixture mudou");
@@ -1569,13 +1604,13 @@ export const scenarios = [
       const note = t.data.meta?.note ?? "";
       if (/não presumas que as primeiras são as mais relevantes/i.test(note))
         return fail("a nota FÓSSIL da beta.26 continua viva e dá o conselho oposto ao correcto");
-      if (!/PERTEN[ÇC]A ao âmbito declarado/i.test(note)) return fail("a nota não descreve a ordenação actual");
+      if (!/MEMBERSHIP of the declared scope|PERTEN[ÇC]A ao âmbito declarado/i.test(note)) return fail("a nota não descreve a ordenação actual");
       const primeira = String((t.data.threats ?? [])[0]?.chapter_id ?? "");
       if (/^0?[12]-/.test(primeira)) return fail(`a nota promete domínio na página 1 e a resposta abre com ${primeira}`);
       // a mesma frase tem de estar na DESCRIÇÃO da tool
       const tools = c.tools ?? [];
       const desc = String(tools.find((x) => x.name === "get_threat_landscape")?.description ?? "");
-      const frase = "ORDEM: por PERTENÇA ao âmbito declarado";
+      const frase = "ORDER by MEMBERSHIP of the declared scope"; // 0.21 §6-d: a frase publicada (behaviour-notes) passou a inglês
       if (!desc.includes(frase) || !note.includes(frase)) return fail("descrição e nota não partilham a frase publicada");
       // routing_basis desambiguado e por concern
       const misto = await c.tool("get_threat_landscape", { risk_level: "L2", concerns: ["architecture", "api", "encryption"] });
@@ -1586,12 +1621,12 @@ export const scenarios = [
       const bases = new Set(rb.by_concern.map((x) => x.basis));
       if (bases.size < 2) return fail("conjunto misto com uma só base — a desambiguação não funcionou");
       // contraprova possível na chamada que o guia ensina
-      const sel = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], detail: "minimal" });
+      const sel = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], detail: "lista" });
       if (!sel.ok) return fail(sel.error);
       const x = sel.data.cross_surface_check;
       if (!x) return fail("o guia manda contraprovar e a resposta não traz a verificação");
       if (!x.comparable || !x.agreement?.same_ids) return fail(`contraprova falhou: ${JSON.stringify(x.agreement)}`);
-      const real = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", chapters: ["14-governanca-contratacao"], exposure: "public", detail: "minimal" });
+      const real = await c.tool("select_sbd_toe_requirements", { risk_level: "L3", chapters: ["14-governanca-contratacao"], exposure: "public", detail: "lista" });
       if (!real.ok) return fail(real.error);
       if ((real.data.cross_surface_check?.not_comparable ?? []).length === 0)
         return fail("uma chamada sem equivalente no consult não declara o que não é comparável");
@@ -1780,7 +1815,7 @@ export const scenarios = [
       if (!(sd.totals.applicable < gd.totals.applicable)) return fail("o `chapter` não restringiu o âmbito");
       if (!sd.scope || !/DENOMINADORES/.test(sd.scope.note ?? "")) return fail("o denominador continua por explicar");
       // (6) cadeia de activação completa
-      const sel = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["secrets"], exposure: "public", detail: "minimal" });
+      const sel = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["secrets"], exposure: "public", detail: "lista" });
       if (!sel.ok) return fail(sel.error);
       const arq = (sel.data.context?.activated_chapters ?? []).find((x) => /^04-/.test(x.chapter));
       if (!arq) return fail("fixture mudou: o cap. 04 não é activado");
@@ -1788,7 +1823,7 @@ export const scenarios = [
         return fail("o activated_by regista só o último elo — a cadeia continua quebrada");
       if (!(arq.derived_chain ?? []).length) return fail("sem cadeia derivada para um concern não declarado");
       // (7) unmodelled_signals
-      const mt = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], task_context: "Aplicação multi-tenant com isolamento por cliente", detail: "minimal" });
+      const mt = await c.tool("select_sbd_toe_requirements", { risk_level: "L2", concerns: ["auth"], task_context: "Aplicação multi-tenant com isolamento por cliente", detail: "lista" });
       if (!mt.ok) return fail(mt.error);
       if (!(mt.data.unmodelled_signals?.values ?? []).includes("multi-tenant"))
         return fail("o servidor não declara o que não conseguiu ancorar");
@@ -2171,13 +2206,14 @@ export const scenarios = [
         return fail("os itens não trazem `applicable_levels` à vista");
       // (G3) o estatuto pragmático nas primeiras palavras — o servidor SERVE, quem age é quem chama
       const schemas = new Map((c.tools ?? []).map((t) => [t.name, String(t.description ?? "")]));
+      // 0.21 §6-d: a superfície fala UMA língua (inglês) — os estatutos são os mesmos, nas primeiras palavras
       const esperado = {
-        plan_sbd_toe_rollout: /^CONSULTA/,
-        plan_sbd_toe_repo_governance: /^PROJEC/,
-        prepare_sbd_toe_codegen_context: /NÃO AGE/,
-        generate_sbd_toe_skill: /SEM VALIDAR O TEU AMBIENTE/,
-        assess_sbd_toe_implementation: /a leitura é tua/,
-        answer_sbd_toe_manual: /não responde/
+        plan_sbd_toe_rollout: /does not plan for you/,
+        plan_sbd_toe_repo_governance: /^PROJECTION/,
+        prepare_sbd_toe_codegen_context: /DOES NOT ACT/,
+        generate_sbd_toe_skill: /without validating your environment/,
+        assess_sbd_toe_implementation: /measures nothing/,
+        answer_sbd_toe_manual: /^DOES NOT ANSWER/
       };
       for (const [tool, re] of Object.entries(esperado)) {
         const d = schemas.get(tool);

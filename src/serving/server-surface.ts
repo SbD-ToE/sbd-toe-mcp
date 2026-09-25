@@ -91,6 +91,19 @@ export const RESOURCE_CATALOG = [
           mimeType: "application/json"
         },
         {
+          uri: "sbd://toe/notes",
+          name: "SbD-ToE Notes (index)",
+          description:
+            "Notes by reference: the static prose that explains payload blocks (prepare) lives here with stable ids; payloads carry `note_id` and one `notes` header. Index of every id and text.",
+          mimeType: "application/json"
+        },
+        {
+          uri: "sbd://toe/notes/{id}",
+          name: "SbD-ToE Note",
+          description: "One note by id (e.g. sbd://toe/notes/prepare.repeat_call_hint). Unknown id returns a declared error listing the valid ids.",
+          mimeType: "application/json"
+        },
+        {
           uri: "sbd://toe/version",
           name: "SbD-ToE MCP Version",
           description: "Version of the running SbD-ToE MCP server (name, version, description) plus the provenance of the served knowledge: manual {version, commit}, kg {release_tag, substrate_version, consumer_contract_version} and ontology {tag, commit}, read from the consumed-bundle pin.",
@@ -102,7 +115,7 @@ export const RESOURCE_CATALOG = [
           description:
             "Agent-facing guide for using prepare_sbd_toe_codegen_context. " +
             "Covers workflow, branching by status (ready_for_codegen / needs_clarification / " +
-            "needs_decomposition / unsupported_scope), output discipline (cite citation_map, fill " +
+            "needs_decomposition / unsupported_scope), output discipline (cite `citations` ids, fill " +
             "security_rationale, distinguish code/tests/evidence), and explicit prohibitions " +
             "(no invented IDs, no compliance claims, no rastreabilidade-noise inside source files).",
           mimeType: "text/markdown"
@@ -154,7 +167,7 @@ export const PROMPT_CATALOG: ReadonlyArray<Record<string, unknown>> = [
           description:
             "MCP prompt that bundles the grounded-codegen guide with a user task and instructs the " +
             "agent to call prepare_sbd_toe_codegen_context before producing code. Forces citation of " +
-            "citation_map IDs, fills security_rationale_template, distinguishes code/tests/evidence, " +
+            "ids from `citations`, fills security_rationale_template, distinguishes code/tests/evidence, " +
             "blocks compliance claims, and routes needs_clarification / needs_decomposition / " +
             "unsupported_scope to user dialog instead of silent guessing.",
           arguments: [

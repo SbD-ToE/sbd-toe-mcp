@@ -90,3 +90,26 @@ describe("beta.31 — inventário das superfícies que resolvem vocabulário", (
     expect(inventory, `\nINVENTÁRIO (${inventory.length}):\n${inventory.join("\n")}`).toEqual([]);
   });
 });
+
+// 2026-09-11 §1 — a sonda que faltava: o invariante iterava SÓ os 13 canónicos, e a
+// fabricação («secops é CANÓNICO e publicado») vivia fora do seu universo por construção.
+describe("sonda não-canónica (§1, 2026-09-11)", () => {
+  it("um papel inexistente NUNCA sai afirmado como canónico — sai unknown_role com did_you_mean", () => {
+    for (const bogus of ["secopz", "not-a-role", "developr"]) {
+      const out = handleGetGuideByRole({ risk_level: "L2", role: bogus });
+      const raw = JSON.stringify(out);
+      expect(raw).not.toContain("CANÓNICO e publicado (vocabulário e guia)");
+      expect(out.canonicalRole).toBeNull();
+      expect(out.unknown_role?.requested).toBe(bogus);
+      expect(Array.isArray(out.unknown_role?.did_you_mean)).toBe(true);
+      expect(out.assignments).toHaveLength(0);
+    }
+  });
+
+  it("um papel canónico sem atribuições mantém a banda beta.31 (não vira erro)", () => {
+    const out = handleGetGuideByRole({ risk_level: "L2", role: "fornecedores-terceiros" });
+    expect(out.canonicalRole).toBe("fornecedores-terceiros");
+    expect(out.unknown_role).toBeUndefined();
+    expect(out.unsupported_role?.value).toBe("fornecedores-terceiros");
+  });
+});

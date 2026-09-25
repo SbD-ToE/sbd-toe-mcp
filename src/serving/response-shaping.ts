@@ -246,3 +246,30 @@ export function paginate<T>(
     size_estimate: estimateSize(page),
   };
 }
+
+
+/**
+ * 0.21 §6 — O PREÇO DECLARADO, medido sobre o payload que o cliente RECEBE.
+ *
+ * Uma função só, usada pelo servidor (toolText) e por quem anuncia tamanhos (o guia): um
+ * resultado JSON ganha `size_estimate` {chars, approx_tokens} re-medido em duas passagens;
+ * as chaves próprias de uma tool que já o trazia (envelope_tk, within_envelope, note_id)
+ * mantêm-se, e `within_envelope` re-avalia-se contra o número entregue. Tudo o que não seja
+ * um objecto simples volta como está.
+ */
+export function withDeclaredSize<T>(result: T): T {
+  if (typeof result !== "object" || result === null || Array.isArray(result)) return result;
+  const existing = ((result as { size_estimate?: Record<string, unknown> }).size_estimate ?? {}) as Record<string, unknown>;
+  const declare = (est: SizeEstimate): Record<string, unknown> => {
+    const envelope = typeof existing["envelope_tk"] === "number" ? (existing["envelope_tk"] as number) : undefined;
+    return {
+      ...existing,
+      chars: est.chars,
+      approx_tokens: est.approx_tokens,
+      ...(envelope !== undefined ? { within_envelope: est.approx_tokens <= envelope } : {})
+    };
+  };
+  const first = estimateSize({ ...(result as object), size_estimate: declare({ chars: 0, approx_tokens: 0 }) });
+  const second = estimateSize({ ...(result as object), size_estimate: declare(first) });
+  return { ...(result as object), size_estimate: declare(second) } as T;
+}

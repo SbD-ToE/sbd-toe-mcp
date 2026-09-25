@@ -7,46 +7,35 @@
  */
 /**
  * s1 — Dieta estrutural (epic v2-token-diet): golden snapshots por `detail`
- * e invariantes da codificação deduplicada. ATUALIZADO pelo s3 (caps,
- * boilerplate→resource, descriptions) e pelo s3b REVISTO (ADENDA 2026-07-05
- * do operador: sem top-N — `minimal` mantém o conjunto ativado COMPLETO e
- * diverge de `standard` só em serialização de traceability; gates próprios em
- * prepare-codegen-context.minimal.test.ts). Ver
- * prepare-codegen-context.caps-resource.test.ts para os gates específicos do
- * s3; aqui ficam os invariantes s1 adaptados à codificação corrente:
+ * e invariantes da codificação deduplicada. 0.21 §1 (2026-09-25): os níveis
+ * passam a `lista`/`standard`/`full` (ultrathin reformado, minimal→lista), o
+ * requisito vai FUNDIDO (id, name, type, description, verify, evidence) em
+ * todos os níveis, o bloco evidence_patterns morreu, as instruções vão inline
+ * e o grounding dos dieted é a forma de contagens com `entries_ref` → full.
  *
- *   - `full` (default e explícito) byte-idêntico ao comportamento pré-s1;
- *   - golden snapshots por nível (full/standard/minimal) para as 2 fixtures
- *     baseline do EPIC;
- *   - conjunto de IDs citáveis IDÊNTICO em todos os níveis (invariante 3 —
- *     muda a codificação, não o conjunto); desde o s3 os ids vivem nas
- *     secções do payload e `citations.<source>.ids_from` referencia-os
- *     (run-length `source_data` alinhado 1:1) — a reconstrução byte-igual do
- *     `citation_map` clássico prova a codificação;
- *   - dedup sem perda: `manual_grounding` agrupado reconstrói as entradas
- *     planas (como multiset); as listas com campos derivável-elididos
- *     (source, category, entity_type/slice_family, relevance_score)
- *     reconstroem byte-igual a partir do PRÓPRIO payload + regras documentadas
- *     no resource sbd://toe/codegen-instructions/{mode} (detail_encoding).
+ *   - `full` (default e explícito) byte-idêntico entre si (invariante 1);
+ *   - golden snapshots por nível (full/standard/lista) para as 2 fixtures;
+ *   - conjunto de IDs citáveis IDÊNTICO em todos os níveis (invariante 3);
+ *   - dedup sem perda: reconstrução byte-igual a partir do PRÓPRIO payload +
+ *     regras documentadas no resource (detail_encoding).
  */
 import { beforeAll, describe, expect, it } from "vitest";
 
 import {
+  citableIds,
   handlePrepareCodegenContext,
   type CitationMapEntry,
   type G2ContextEntity,
   type ManualGroundingEntry,
-  type ManualGroundingGrouped,
-  type ManualGroundingMinimal,
   type PrepareCodegenContextInput,
   type PrepareCodegenContextResult,
-  type PrepareCodegenContextResultReady,
+  type PrepareCodegenContextResultReadyFull as PrepareCodegenContextResultReady,
   type PrepareCodegenContextResultReadyDieted,
   type SliceGroupedEntityNames,
   type WithoutSource
 } from "./prepare-codegen-context.js";
 import { clearG2RuntimeCacheForTests } from "./g2-runtime-loader.js";
-import { requirementCategoryOf } from "../serving/requirement-id.js";
+import { NOTES } from "../serving/notes.js";
 import { clearRegulatoryOverlayCacheForTests } from "./regulatory-overlay-loader.js";
 
 /**
@@ -73,6 +62,18 @@ interface BaselineFixture {
   name: "fixture1" | "fixture2";
   label: string;
   input: PrepareCodegenContextInput;
+  /** 0.21 (a): 69 reqs > tecto 52/55 — os níveis dieted respondem needs_decomposition declarado. */
+  dietedBlockedByCeiling?: boolean;
+}
+
+/** Guarda dos dieted: na fixture bloqueada por tecto, prova o bloqueio declarado e sai. */
+function dietedBlocked(fixture: BaselineFixture, detail: "lista" | "standard"): boolean {
+  if (!fixture.dietedBlockedByCeiling) return false;
+  const r = handlePrepareCodegenContextDiscover({ ...fixture.input, detail }) as { status: string; requirement_ceiling?: { limit: number; selected: number; union: { recall: number } } };
+  expect(r.status).toBe("needs_decomposition");
+  expect(r.requirement_ceiling!.selected).toBeGreaterThan(r.requirement_ceiling!.limit);
+  expect(r.requirement_ceiling!.union.recall).toBe(1);
+  return true;
 }
 
 const FIXTURES: readonly BaselineFixture[] = [
@@ -92,11 +93,14 @@ const FIXTURES: readonly BaselineFixture[] = [
       task: "Implement a secure endpoint for uploading documents with logging",
       risk_level: "L2",
       mode: "codegen"
-    }
+    },
+    // 0.21 — decisão do lead (a): tecto lista 52 / standard 55. A fixture 2 (69 requisitos)
+    // BLOQUEIA por tecto nos níveis dieted (needs_decomposition declarado); só o full a serve.
+    dietedBlockedByCeiling: true
   }
 ];
 
-const DIET_LEVELS = ["standard", "minimal"] as const;
+const DIET_LEVELS = ["standard", "lista"] as const;
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -106,7 +110,8 @@ function expectReadyFull(
   result: PrepareCodegenContextResult
 ): asserts result is PrepareCodegenContextResultReady {
   expect(result.status).toBe("ready_for_codegen");
-  expect(result).toHaveProperty("citation_map");
+  expect(result).toHaveProperty("citations");
+  expect(result).not.toHaveProperty("citation_map");
 }
 
 function expectReadyDieted(
@@ -117,12 +122,19 @@ function expectReadyDieted(
   expect(result).not.toHaveProperty("citation_map");
 }
 
-/** Narrowing: grounding na forma agrupada de `standard` (s3b: `minimal` usa a
- * forma mínima — ver prepare-codegen-context.minimal.test.ts). */
-function expectGroupedGrounding(
-  grounding: ManualGroundingGrouped | ManualGroundingMinimal
-): asserts grounding is ManualGroundingGrouped {
-  expect(grounding).not.toHaveProperty("groups_ref");
+/** Agrupa as entradas planas do full pela mesma chave (role, chapter, file, sha)
+ * que a forma de contagens usa — para comparar contagens por grupo. */
+function countGroups(flat: readonly ManualGroundingEntry[]): Map<string, number> {
+  const counts = new Map<string, number>();
+  for (const entry of flat) {
+    const key = JSON.stringify([
+      entry.rastreabilidade_role,
+      "manual_chapter" in entry ? entry.manual_chapter ?? null : "<absent>",
+      "manual_file" in entry ? entry.manual_file ?? null : "<absent>"
+    ]);
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+  return counts;
 }
 
 /** Chaves de um mapa de entidades agrupado por slice, na ordem dos grupos e
@@ -138,8 +150,8 @@ function idsAtPath(
   path: string
 ): string[] {
   switch (path) {
-    case "activated_scope.requirements[].requirement_id":
-      return dieted.activated_scope.requirements.map((item) => item.requirement_id);
+    case "activated_scope.requirements[].id":
+      return dieted.activated_scope.requirements.map((item) => item.id);
     case "activated_scope.controls[].control_id":
       return dieted.activated_scope.controls.map((item) => item.control_id);
     case "activated_scope.slices[].slice_id":
@@ -195,60 +207,6 @@ function citationIds(dieted: PrepareCodegenContextResultReadyDieted): string[] {
   return Object.keys(rebuildCitationMap(dieted));
 }
 
-/** Reconstrói as entradas planas de manual_grounding a partir dos grupos +
- * nomes recuperáveis do g2_context do MESMO payload full. */
-function rebuildManualGrounding(
-  grouped: ManualGroundingGrouped,
-  full: PrepareCodegenContextResultReady
-): ManualGroundingEntry[] {
-  const g2Names = new Map<string, string | undefined>();
-  for (const list of [
-    full.g2_context.control_objectives,
-    full.g2_context.mechanisms,
-    full.g2_context.practices,
-    full.g2_context.artifacts
-  ]) {
-    for (const entity of list) g2Names.set(entity.entity_id, entity.name);
-  }
-  const flat: ManualGroundingEntry[] = [];
-  for (const group of grouped.groups) {
-    for (const id of group.v1_entity_ids) {
-      const entry: ManualGroundingEntry = {
-        rastreabilidade_role: group.rastreabilidade_role,
-        ...("manual_chapter" in group ? { manual_chapter: group.manual_chapter } : {}),
-        ...("manual_file" in group ? { manual_file: group.manual_file } : {}),
-        ...(group.manual_commit_sha !== undefined
-          ? { manual_commit_sha: group.manual_commit_sha }
-          : {}),
-        v1_entity_id: id,
-        source: "runtime_v1"
-      };
-      const name = group.v1_entity_names?.[id] ?? g2Names.get(id);
-      if (name) entry.v1_entity_name = name;
-      // reordena para bater com a ordem de chaves da projeção plana original
-      const ordered: ManualGroundingEntry = {
-        rastreabilidade_role: entry.rastreabilidade_role,
-        ...("manual_chapter" in entry ? { manual_chapter: entry.manual_chapter } : {}),
-        ...("manual_file" in entry ? { manual_file: entry.manual_file } : {}),
-        ...(entry.manual_commit_sha !== undefined
-          ? { manual_commit_sha: entry.manual_commit_sha }
-          : {}),
-        ...(entry.v1_entity_id ? { v1_entity_id: entry.v1_entity_id } : {}),
-        ...(entry.v1_entity_name ? { v1_entity_name: entry.v1_entity_name } : {}),
-        source: "runtime_v1"
-      };
-      flat.push(ordered);
-    }
-  }
-  for (const extra of grouped.ungrouped ?? []) {
-    flat.push({ ...extra, source: "runtime_v1" });
-  }
-  return flat;
-}
-
-function canonicalMultiset(entries: readonly unknown[]): string[] {
-  return entries.map((entry) => JSON.stringify(entry)).sort();
-}
 
 // ---------------------------------------------------------------------------
 // Tests
@@ -272,10 +230,25 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
         thrown = error;
       }
       expect(thrown, `detail=${JSON.stringify(bad)} devia falhar`).toBeInstanceOf(Error);
-      expect((thrown as Error).message).toMatch(/minimal, standard, full/);
+      expect((thrown as Error).message).toMatch(/lista, standard, full/);
       expect(
         (thrown as Error & { rpcError?: { code: number } }).rpcError?.code
       ).toBe(-32602);
+    }
+  });
+
+  it("0.21: 'ultrathin' e 'minimal' são recusados com um erro que diz para onde foram (nunca só «inválido»)", () => {
+    for (const [retired, expected] of [["ultrathin", /retirou-se.*lista/], ["minimal", /passou a chamar-se 'lista'/]] as const) {
+      let thrown: unknown;
+      try {
+        handlePrepareCodegenContextDiscover({ ...FIXTURES[0]!.input, detail: retired } as unknown as PrepareCodegenContextInput);
+      } catch (error) {
+        thrown = error;
+      }
+      expect(thrown).toBeInstanceOf(Error);
+      expect((thrown as Error).message).toMatch(expected);
+      expect((thrown as Error & { rpcError?: { code: number; message: string } }).rpcError?.code).toBe(-32602);
+      expect((thrown as Error & { rpcError?: { message: string } }).rpcError?.message).toMatch(expected);
     }
   });
 
@@ -296,16 +269,18 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
 
     it.each([...DIET_LEVELS])("golden snapshot — %s", async (detail) => {
       const result = handlePrepareCodegenContextDiscover({ ...fixture.input, detail });
-      expectReadyDieted(result);
+      if (fixture.dietedBlockedByCeiling) expect(result.status).toBe("needs_decomposition"); // o snapshot guarda o bloqueio declarado
+      else expectReadyDieted(result);
       await expect(snapshotJson(result)).toMatchFileSnapshot(
         `__snapshots__/codegen-detail/${fixture.name}-${detail}.json`
       );
     });
 
     it("conjunto de IDs citáveis idêntico em todos os níveis (invariante 3)", () => {
+      if (dietedBlocked(fixture, "lista")) return;
       const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
-      const fullIds = Object.keys(full.citation_map).sort();
+      const fullIds = [...new Set(citableIds(full))].sort();
       for (const detail of DIET_LEVELS) {
         const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail });
         expectReadyDieted(dieted);
@@ -315,35 +290,51 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
       }
     });
 
-    it("`citations` invertido (ids_from) reconstrói o citation_map clássico byte-igual (dedup sem perda)", () => {
+    it("`citations` invertido (ids_from) reconstrói o mesmo id→{source, source_data} em todos os níveis (0.21 §3: full também invertido, ids por caminhos de lista)", () => {
+      if (dietedBlocked(fixture, "standard")) return;
       const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
       const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
       expectReadyDieted(dieted);
       const rebuilt = rebuildCitationMap(dieted);
-      // byte-igual: mesmos ids, mesma ordem de inserção, mesmo {source, source_data}
-      expect(JSON.stringify(rebuilt)).toBe(JSON.stringify(full.citation_map));
+      // o full reconstrói-se pela MESMA regra publicada (citableIds), com caminhos de lista
+      const fullIds = citableIds(full);
+      expect(new Set(fullIds).size).toBe(fullIds.length);
+      expect([...fullIds].sort()).toEqual(Object.keys(rebuilt).sort());
+      for (const [source, group] of Object.entries(full.citations)) {
+        expect(group.ids_from, `${source}: ids_from ausente no full`).toBeDefined();
+        expect(JSON.stringify(group.source_data)).toBe(JSON.stringify(dieted.citations[source as CitationMapEntry["source"]]!.source_data));
+        for (const path of group.ids_from!) expect(path).not.toMatch(/^keys\(/);
+      }
     });
 
-    it("`manual_grounding` agrupado preserva a informação total (multiset das entradas planas)", () => {
+    it("`manual_grounding` na forma de contagens preserva os totais (Σ entries == planas do full; contagens por grupo iguais; entries_ref → full)", () => {
+      if (dietedBlocked(fixture, "lista")) return;
       const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
-      const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
-      expectReadyDieted(dieted);
-      const grouped = dieted.manual_grounding;
-      expectGroupedGrounding(grouped);
-      // contagem exata — s1 não corta nada (invariante 2)
-      const groupedCount =
-        grouped.groups.reduce((sum, group) => sum + group.v1_entity_ids.length, 0) +
-        (grouped.ungrouped?.length ?? 0);
-      expect(grouped.total_entries).toBe(full.manual_grounding.length);
-      expect(groupedCount).toBe(full.manual_grounding.length);
-      // reconstrução (a ordem plana original intercala grupos ⇒ multiset)
-      const rebuilt = rebuildManualGrounding(grouped, full);
-      expect(canonicalMultiset(rebuilt)).toEqual(canonicalMultiset(full.manual_grounding));
+      for (const detail of DIET_LEVELS) {
+        const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail });
+        expectReadyDieted(dieted);
+        const grounding = dieted.manual_grounding;
+        expect(grounding.total_entries).toBe(full.manual_grounding.length);
+        const summed = grounding.groups.reduce((sum, group) => sum + group.entries, 0) + (grounding.ungrouped?.length ?? 0);
+        expect(summed).toBe(full.manual_grounding.length);
+        const expected = countGroups(full.manual_grounding);
+        for (const group of grounding.groups) {
+          const key = JSON.stringify([
+            group.rastreabilidade_role,
+            "manual_chapter" in group ? group.manual_chapter ?? null : "<absent>",
+            "manual_file" in group ? group.manual_file ?? null : "<absent>"
+          ]);
+          expect(expected.get(key), `grupo ${key} sem correspondência no full`).toBe(group.entries);
+        }
+        expect(grounding.groups.length).toBe(expected.size);
+        expect(grounding.entries_ref.with).toEqual({ detail: "full" });
+      }
     });
 
     it("reconstrução sem perda: listas dieted + regras do detail_encoding ⇒ full-menos-source byte-igual", () => {
+      if (dietedBlocked(fixture, "standard")) return;
       const full = handlePrepareCodegenContextDiscover(fixture.input);
       expectReadyFull(full);
       const dieted = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
@@ -356,32 +347,30 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
         include_relations: true
       });
       expectReadyDieted(dietedWithRelations);
+      // 0.21 §3: o full serve relations_ref; as relations clássicas inline só com include_relations.
+      const fullInline = handlePrepareCodegenContextDiscover({ ...fixture.input, include_relations: true });
+      expectReadyFull(fullInline);
+      expect(Array.isArray(full.g2_context.relations)).toBe(false);
+      expect(full.g2_context.relations_ref?.tool).toBe("trace_sbd_toe_graph");
+      expect(dieted.g2_context.relations_summary?.total_relations).toBe(full.g2_context.relations_ref?.total_relations);
+      expect(dieted.g2_context).not.toHaveProperty("relations_ref");
 
       const stripSource = <T extends { source: unknown }>(items: readonly T[]) =>
         items.map(({ source: _source, ...rest }) => rest);
 
-      // -- requirements: repõe `category` (= segmento de categoria do id, v1.10:
-      //    `REQ-AGN-001` → AGN) e retira a `description` adicionada (s3) ⇒
-      //    byte-igual a full-menos-source.
-      const rebuiltRequirements = dieted.activated_scope.requirements.map((item) => {
-        const { description: _description, ...rest } = item;
-        const category = rest.category ?? requirementCategoryOf(item.requirement_id);
-        return {
-          requirement_id: rest.requirement_id,
-          name: rest.name,
-          category,
-          ...(rest.type !== undefined ? { type: rest.type } : {})
-        };
-      });
-      expect(JSON.stringify(rebuiltRequirements)).toBe(
+      // -- requirements (0.21 §1): o objecto fundido é o MESMO em todos os níveis;
+      //    o dieted só retira `source` (category nunca vai: derivável) ⇒ byte-igual.
+      expect(JSON.stringify(dieted.activated_scope.requirements)).toBe(
         JSON.stringify(stripSource(full.activated_scope.requirements))
       );
+      for (const item of dieted.activated_scope.requirements) {
+        expect(item).not.toHaveProperty("category");
+        expect(item).not.toHaveProperty("requirement_id");
+        expect(item.description).toBeTruthy();
+      }
 
-      // -- controls: retira a `description` (s3, só nos direct) ⇒ byte-igual.
-      const rebuiltControls = dieted.activated_scope.controls.map(
-        ({ description: _description, ...rest }) => rest
-      );
-      expect(JSON.stringify(rebuiltControls)).toBe(
+      // -- controls: dedup s1 puro (só source) — a description dos directos vem do core, em todos os níveis.
+      expect(JSON.stringify(dieted.activated_scope.controls)).toBe(
         JSON.stringify(stripSource(full.activated_scope.controls))
       );
 
@@ -430,18 +419,17 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
 
       // -- relations (caminho inline): dedup s1 puro, item a item.
       expect(JSON.stringify(dietedWithRelations.g2_context.relations)).toBe(
-        JSON.stringify(stripSource(full.g2_context.relations))
+        JSON.stringify(stripSource(fullInline.g2_context.relations!))
       );
 
-      // -- evidence_patterns: prefixo determinístico do top-25 clássico, sem
-      //    relevance_score (a ordem carrega o ranking) — cap nunca-silencioso
-      //    (contagens + rest-ref testadas no caps-resource.test).
-      const expectedEvidence = full.g2_context.evidence_patterns
-        .slice(0, dieted.completeness_report.evidence_pattern_cap)
-        .map(({ source: _source, relevance_score: _score, ...rest }) => rest);
-      expect(JSON.stringify(dieted.g2_context.evidence_patterns)).toBe(
-        JSON.stringify(expectedEvidence)
-      );
+      // -- evidence_patterns (0.21 §1): o bloco NÃO existe em nível nenhum.
+      expect(dieted.g2_context).not.toHaveProperty("evidence_patterns");
+      expect(full.g2_context).not.toHaveProperty("evidence_patterns");
+
+      // -- instruções + template: INLINE e byte-iguais ao full (0.21).
+      expect(JSON.stringify(dieted.llm_codegen_instructions)).toBe(JSON.stringify(full.llm_codegen_instructions));
+      expect(JSON.stringify(dieted.security_rationale_template)).toBe(JSON.stringify(full.security_rationale_template));
+      expect(dieted).not.toHaveProperty("codegen_instructions_ref");
 
       // -- activation_trace: elidido (s3) com contador exato; debug=true repõe
       //    (testado no caps-resource.test).
@@ -449,56 +437,31 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
       expect(dieted.activation_trace_ref?.entries).toBe(full.activation_trace.length);
 
       // -- legend inline: aponta para o resource com a legenda completa.
-      expect(dieted.provenance_legend.note).toContain("sbd://toe/codegen-instructions/");
+      // 0.21 §6-c: a legenda é uma nota por referência; o texto continua a apontar para o resource
+      expect(NOTES[dieted.provenance_legend.note_id]).toContain("sbd://toe/codegen-instructions/");
+      expect(dieted.notes.read_with).toBe("read_sbd_toe_resource");
     });
 
-    it("s3b (ADENDA 2026-07-05): `minimal` diverge de `standard` SÓ em serialização de traceability (evidence cap 5, grounding mínimo, echo)", () => {
+    it("0.21 §2: `lista` e `standard` diferem EXACTAMENTE na adjacência detalhada (inline vs detail_ref) — fora disso, do eco e do size_estimate são byte-iguais", () => {
+      if (dietedBlocked(fixture, "lista")) return;
       const standard = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "standard" });
-      const minimal = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "minimal" });
+      const lista = handlePrepareCodegenContextDiscover({ ...fixture.input, detail: "lista" });
       expectReadyDieted(standard);
-      expectReadyDieted(minimal);
+      expectReadyDieted(lista);
       expect(standard.input_echo.detail).toBe("standard");
-      expect(minimal.input_echo.detail).toBe("minimal");
-
-      // Contexto de execução INTOCADO (sem top-N, sem subsetting): o
-      // activated_scope completo — requirements/controls com description —,
-      // as entidades g2, as citations (ids_from), o relations_ref, o overlay
-      // e as referências são byte-iguais aos de standard.
-      expect(JSON.stringify(minimal.activated_scope)).toBe(
-        JSON.stringify(standard.activated_scope)
-      );
-      expect(JSON.stringify(minimal.citations)).toBe(JSON.stringify(standard.citations));
-      expect(JSON.stringify(minimal.regulatory_overlay)).toBe(
-        JSON.stringify(standard.regulatory_overlay)
-      );
-      expect(JSON.stringify(minimal.codegen_instructions_ref)).toBe(
-        JSON.stringify(standard.codegen_instructions_ref)
-      );
-      const g2Sansevidence = (
-        result: PrepareCodegenContextResultReadyDieted
-      ): string =>
-        JSON.stringify({ ...result.g2_context, evidence_patterns: null });
-      expect(g2Sansevidence(minimal)).toBe(g2Sansevidence(standard));
-
-      // Divergências PERMITIDAS (e só estas): input_echo (detail), evidence
-      // cap 10→5 (prefixo; contagens no completeness_report) e a forma mínima
-      // do manual_grounding. Normalizando-as, os payloads são byte-iguais.
+      expect(lista.input_echo.detail).toBe("lista");
       const normalize = (result: PrepareCodegenContextResultReadyDieted): string =>
-        JSON.stringify({
-          ...result,
-          input_echo: null,
-          manual_grounding: null,
-          g2_context: { ...result.g2_context, evidence_patterns: null },
-          completeness_report: null
-        });
-      expect(normalize(minimal)).toBe(normalize(standard));
-
-      // Evidence: o minimal (cap 5) é PREFIXO exato do standard (cap 10).
-      expect(JSON.stringify(minimal.g2_context.evidence_patterns)).toBe(
-        JSON.stringify(standard.g2_context.evidence_patterns.slice(0, 5))
-      );
-      // Gates específicos do minimal (grounding mínimo, contagens, referências
-      // executáveis): prepare-codegen-context.minimal.test.ts.
+        JSON.stringify({ ...result, input_echo: null, size_estimate: null, adjacency: null });
+      expect(normalize(lista)).toBe(normalize(standard));
+      expect(standard.adjacency.detail).toBeDefined();
+      expect(lista.adjacency.detail).toBeUndefined();
+      expect(lista.adjacency.detail_ref?.with).toEqual({ detail: "standard" });
+      const { detail: _d, ...standardSummary } = standard.adjacency;
+      const { detail_ref: _r, ...listaSummary } = lista.adjacency;
+      expect(JSON.stringify(listaSummary)).toBe(JSON.stringify(standardSummary));
+      // o envelope declarado é o de cada nível
+      expect(lista.size_estimate?.envelope_tk).toBe(8450);
+      expect(standard.size_estimate?.envelope_tk).toBe(9200);
     });
   });
 
@@ -508,7 +471,7 @@ describe("prepare_sbd_toe_codegen_context — `detail` (v2-token-diet s1)", () =
       risk_level: "L2"
     };
     const byDefault = handlePrepareCodegenContextDiscover(input);
-    const dieted = handlePrepareCodegenContextDiscover({ ...input, detail: "minimal" });
+    const dieted = handlePrepareCodegenContextDiscover({ ...input, detail: "lista" });
     expect(byDefault.status).not.toBe("ready_for_codegen");
     expect(JSON.stringify(dieted)).toBe(JSON.stringify(byDefault));
   });

@@ -1,13 +1,413 @@
 ---
 ai_assisted: true
-model: Claude Opus 5
-date: 2026-09-10
+model: Claude Fable 5.1
+date: 2026-09-25
 purpose: documentation
-reasoning: v0.20.0 (promoção da beta.49, linha estável) — a maturidade do contrato de selecção passa a FACTO DECLARADO (`serving_contract.identity` + `.maturity`, com a maturidade do pacote derivada da versão e nunca escrita à mão) em vez de sufixo numa string; o contrato mantém-se beta deliberadamente, por decisão do lead, e o identificador NÃO se renomeia. Sete declarações servidas que a promoção tornava falsas — cinco a dizer que a linha era beta, uma a dizer que a linha estável era outra — reescritas na forma durável: a prosa nomeia a linha, o campo declarado carrega a maturidade. Zero alteração de comportamento: o oráculo do Eixo H veio byte-idêntico à corrida da beta.49. E publicar deixa de ser o mesmo acto que apontar: o caminho estável do release.yml passa a publicar em `--tag next` — a capacidade que o caminho de prerelease já tinha, aplicada ao que a não tinha — para que a estável possa ser verificada antes de ser o que toda a gente instala; o `latest` move-o o lead, num acto próprio.
+reasoning: 0.21 §7 (eixo lista/standard/full harmonizado em select e threat) + rascunho das release notes 0.21.0 (tabela final da linha e diferenças de superfície face à 0.20.0, para o lead e para o Mensor); §6 (notas por referência, changelog fora das descrições, next do contexto, size_estimate em todas as tools, task vs contrato), decisão do lead (a) — tectos 52/55 — e §6-a (decomposição que soma o todo); antes §2 (adjacência), §3 (os cortes) e §1 (o requisito fundido) por cima da entrada v0.20.0 — a descrição nunca sai, o bloco evidence_patterns morre, ultrathin reforma-se, tectos ratificados 83/88 ligados com o ajuste DECLARADO (achado: a projecção do §5 subestimou o custo por requisito). Entrada anterior: v0.20.0 (promoção da beta.49, linha estável) — a maturidade do contrato de selecção passa a FACTO DECLARADO (`serving_contract.identity` + `.maturity`, com a maturidade do pacote derivada da versão e nunca escrita à mão) em vez de sufixo numa string; o contrato mantém-se beta deliberadamente, por decisão do lead, e o identificador NÃO se renomeia. Sete declarações servidas que a promoção tornava falsas — cinco a dizer que a linha era beta, uma a dizer que a linha estável era outra — reescritas na forma durável: a prosa nomeia a linha, o campo declarado carrega a maturidade. Zero alteração de comportamento: o oráculo do Eixo H veio byte-idêntico à corrida da beta.49. E publicar deixa de ser o mesmo acto que apontar: o caminho estável do release.yml passa a publicar em `--tag next` — a capacidade que o caminho de prerelease já tinha, aplicada ao que a não tinha — para que a estável possa ser verificada antes de ser o que toda a gente instala; o `latest` move-o o lead, num acto próprio.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.21.0 — RASCUNHO das release notes (preparado 2026-09-25; a release é acto do lead: merge squash → tag → `next` → `latest`)
+
+**A linha 0.21 — «a forma da resposta».** Sete fases, cada uma com prova, todas aceites pelo Orchestrator; tectos
+decididos pelo lead (a). Pino **KG v1.12.0** (sha256 `c21d35cb…bece2f`, Manual v1.14.0) inalterado — esta release
+muda a FORMA do que se serve, não o conhecimento. Selecção inalterada: **invariante 3** (conjunto de ids citáveis
+idêntico à 0.20.0, oráculo gerado antes da vaga, 9 casos × 3 níveis) e **Eixo H 10/10**.
+
+### A tabela final da linha (tokens ≈ chars/4)
+
+| caso | nível | 0.20.0 | **0.21.0** |
+|---|---|---:|---:|
+| `auth`/L2, **27** reqs | lista (era `minimal`, sem descrição) | 3.879 | **4.601** — com descrição, verify e evidence |
+| | standard | 4.403 | **5.082** — + adjacência detalhada inline |
+| | full | 11.148 | **7.659** (−31%) |
+| `auth+integrity+deployment`/L3, **83** reqs | lista | — | 14.889 (acima do envelope 8.450 — **bloqueia** por tecto 52, `needs_decomposition` com 2 lotes 48+35 que somam o todo) |
+| | standard | — | 15.274 (idem, tecto 55) |
+| | full | — | **23.781** (sem tecto; preço declarado) |
+| fixture 1 do EPIC (41) | lista / standard / full | ≈18.903 (full) | 6.775 / 7.281 / 12.759 |
+| fixture 2 do EPIC (69) | lista / standard / full | ≈24.731 (full) | bloqueia (52/55) / bloqueia / 20.549 |
+| **tools/list** (o schema pago em TODAS as voltas) | | **13.809** | **11.410** (−17,4%) |
+
+Regressão da forma servida (27→89): **~133 tk/req**; base lista 1.476 / standard 1.987 (antes da §6-c; as notas
+por referência baixaram-na ~465). Tectos por contagem: **lista 52 · standard 55 · full sem tecto**; envelopes
+herdados 8.450/9.200; `size_estimate.within_envelope` diz sempre se coube (achado de CONTRATO com o lead:
+contagem vs tokens — variância por caso real).
+
+### O que muda na superfície servida face à 0.20.0 (para o Mensor e para quem consome)
+
+**`prepare_sbd_toe_codegen_context`**
+1. `activated_scope.requirements[]` = **um objecto por requisito** `{id, name, type, description, verify, evidence}`
+   (era `{requirement_id, name, category, type}` sem descrição). A descrição nunca sai, em nenhum nível.
+2. **`g2_context.evidence_patterns` deixou de existir** (era um bloco capado 25/10/5/0 com join a cargo do modelo);
+   `completeness_report.verification` traz os denominadores e `by_ref` (matriz, ≤50 ids/chamada) para
+   `evidence_pattern_id`/`control_id`/`expected_artifact_type_ids`; `related_by_control_outside_scope` conta + ref.
+3. **Níveis `lista` / `standard` / `full`** (eram ultrathin/minimal/standard/full). `ultrathin` retirado, `minimal` →
+   `lista`; nomes retirados devolvem `-32602` a dizer para onde foram. `LEVEL_FORM` (tabela) decide o que vai inline.
+4. **`citations` em todos os níveis** — `citation_map` deixou de existir (invertido: legenda por fonte + ids por
+   caminho do payload; no full os caminhos são de lista). `citableIds()` exportado.
+5. **Relations saem**: `full` → `relations_ref` (chamadas executáveis + contabilidade); `lista`/`standard` →
+   `relations_summary` (mesma contabilidade) + residuais inline; `include_relations=true` repõe-nas.
+6. **`adjacency` em todos os níveis**: top-5 do que NÃO declaraste e mudaria o conjunto + denominadores; detalhe
+   inline em standard/full, `detail_ref` em lista (o separador lista↔standard).
+7. **Instruções e template inline em todos os níveis** (eram por referência nos dieted); `codegen_instructions_ref`
+   deixou de existir; condição de slot `citations_empty` (era `citation_map_empty`).
+8. **`manual_grounding`** por referência em lista/standard (forma de contagens + `entries_ref` → full); a forma
+   agrupada deixou de existir; `groups_ref` → `entries_ref`.
+9. **Descrição dos controlos `direct` em todos os níveis**, full incluído.
+10. **`size_estimate`** `{chars, approx_tokens, envelope_tk?, within_envelope?, note_id?}` em todos os níveis.
+11. **Tectos por contagem: lista 52 · standard 55** (eram minimal 78 / standard 81 / ultrathin 86); acima,
+    `needs_decomposition` com **lotes que somam o todo** (`requirement_ceiling.batches[].with.categories` +
+    technologies/changed_files, `requirements` reais, `derived_from`, `union.recall`).
+12. **Forma B no prepare**: `chapters` / `categories` aceites e contam como declaração.
+13. **Notas por referência**: `note_id` + cabeçalho `notes` (11 notas em `sbd://toe/notes/{id}`); `provenance_legend`
+    e `repeat_call_hint` passam a `{note_id}`.
+14. **`task` opcional em declarativo** (contexto registado; nenhum gate de texto); em `discover` o gate mantém-se.
+    Declaração inerte ⇒ `needs_input` com `valid_values`.
+
+**`select_sbd_toe_requirements` / `get_threat_landscape`**
+15. `detail`: **`lista` / `standard` / `full`** (era full/standard/minimal) — o mesmo eixo; `minimal` → `-32602`
+    a dizer para onde foi. No threat, `lista` ≡ `standard` (declarado no schema).
+
+**Todas as tools**
+16. **`size_estimate`** em todos os resultados JSON (26/29; 3 de prosa: n/a), medido sobre o payload entregue.
+17. **Descrições ≤600 chars, em inglês, sem changelog**; anteriores verbatim em `sbd://toe/version.surface_history`.
+18. **`next` gerado do contexto** em `assess_sbd_toe_implementation` e `get_sbd_toe_macro_processes`.
+19. **Recursos novos**: `sbd://toe/notes`, `sbd://toe/notes/{id}`; `sbd://toe/version` ganha `surface_history`.
+20. Colaterais corrigidos: `resolve_entities` derivava o esquema de filtros da cache v0 inteira (filtro válido
+    anunciado como desconhecido); guia mede tamanhos com a régua do servidor; runner do Eixo H lia `requirement_id`.
+
+### Fases e commits (ramo `0.21`)
+§5 `cb36422` (proposta) → §1 `28cc817` → §3 `de17d55` → §2 `282831c` → pausa `be75297` → (a)+§6-a `6ea4789` →
+§6 `27226a9` → §7 + este rascunho (ver `git log`). Registo: `agentic/briefs/2026-09-25-pontifex-0.21-*.md`.
+
+## 0.21 (em curso, ramo `0.21`) — §7 «o eixo é um só»: `lista`/`standard`/`full` também em select e threat — 2026-09-25
+
+Ordem do Orchestrator (última fase): «harmoniza com o eixo lista/standard/full ou declara porque é outro eixo,
+mas não fica com o nome a mentir». É o mesmo eixo — inline vs por referência: no select, `standard` põe as
+justificações do trace numa legenda por referência e o antigo `minimal` tira ainda os deriváveis `type` e
+`source_chapter`; no threat, `standard`/`minimal` referenciam os controlos pela `associated_control_legend`.
+Harmonizado: `minimal` → **`lista`** nos dois; `minimal`/`ultrathin` devolvem `-32602` com a indicação (→ lista);
+no threat **`lista` ≡ `standard`** (não há bloco por referência que os separe) — declarado no schema e provado.
+Descrições dos dois `detail` em inglês, ≤600. Guarda: `detail-axis.test.ts` (as três tools, o mesmo eixo, os
+mesmos nomes retirados). Prova: vitest 816/816 · check · smoke · acceptance 141/16/0/23 gate PASS · Eixo H 10/10.
+
+## 0.21 (em curso, ramo `0.21`) — §6 «também nesta vaga»: notas por referência, changelog fora das descrições, `next` do contexto, `size_estimate` em todo o lado, o `task` vs o contrato — 2026-09-25
+
+Ordem do Orchestrator (2026-09-25, após aceitação da decisão (a) e da §6-a): o resto da §6 pela ordem do
+despacho de 11/09. Pino **inalterado** (KG v1.12.0); **0.20.0 e `latest` intocados**; sem tag, sem merge.
+O `minimal` residual de `select`/`threat` (§7) fica para o relatório seguinte.
+
+### (c) Notas por referência — `sbd://toe/notes/{id}`
+
+A prosa que explica um bloco é a mesma em todas as chamadas; pagá-la a cada volta era o defeito que esta
+linha existe para corrigir. Registo `src/serving/notes.ts` (11 notas, id estável), servido em
+`sbd://toe/notes` (índice) e `sbd://toe/notes/{id}` (uma nota; id desconhecido é erro declarado a listar os
+válidos). O payload do prepare leva `note_id` onde levava prosa e **um** cabeçalho `notes` (como ler). Nada se
+remove: muda de sítio. Denominadores e avisos POR RESPOSTA ficam inline (não são estáticos).
+**`lista` 5.066 → 4.601 tk (−465)**; `standard` 5.504 → 5.082; `full` 7.813 → 7.659.
+
+### (d) O changelog sai das descrições — ≤600 caracteres, uma língua
+
+As 29 descrições carregavam história de versões (0.19.4, beta.26, s3c…) e misturavam duas línguas —
+7–10k tokens de schema pagos em TODAS as voltas. Passam a **≤600 caracteres, em inglês, só o que a tool faz**;
+os dois parâmetros longos (`detail` 1.364 → 580; `record_type` 606 → 434) idem. O que lá estava vive
+**verbatim** em `sbd://toe/version.surface_history` (29 tools, `previous_description` + parâmetros longos) —
+nada se apaga. As duas **frases de comportamento** (ordenação das ameaças, paginação do select) continuam a
+ser fonte única para descrição E nota — traduzidas e encurtadas para caberem nos 600; os estatutos pragmáticos
+(«DOES NOT ACT», «PROJECTION», «does not plan for you», «measures nothing», «DOES NOT ANSWER») ficam nas
+primeiras palavras. **tools/list: 13.809 → 11.390 tk** (−17,5%; o resto é `inputSchema`, não descrições).
+Guarda: `surface-descriptions.test.ts` (≤600, sem versões, sem português, histórico completo, notas resolvem).
+
+### `next` gerado do contexto, nunca constante
+
+`assess_sbd_toe_implementation` sugeria literalmente `chapter="07-cicd-seguro"` numa avaliação de outro
+capítulo — passa a ser o capítulo avaliado (ou o do KPI em falta). `get_sbd_toe_macro_processes` sugeria
+`chapters=["01-…"]` à mão — passa a derivar do primeiro MP da ordem de adopção publicada e do primeiro
+capítulo que ele atravessa.
+
+### `size_estimate` em todas as tools
+
+Uma régua só — `withDeclaredSize` (response-shaping) — usada pelo servidor em **todas** as 26 tools de
+resultado JSON (as 3 de prosa não têm onde o carregar; declarado) e pelo guia quando anuncia tamanhos.
+Re-mede sempre sobre o payload **entregue** (o `get_threat_landscape` media o seu 53 chars antes da banda
+`next`); as chaves próprias (`envelope_tk`, `within_envelope`, `note_id`) mantêm-se e o `within_envelope`
+re-avalia-se contra o número entregue.
+
+### O `task` vs o contrato — o gate sai onde o task não é motor
+
+Contrato v1.18-beta: em declarativo o `task` é `recorded_context` e não influencia o resultado. Logo não pode
+barrar a resposta: o gate de contagem de palavras, os padrões de vagueza e a tecnologia fora do âmbito **só
+correm em `discover`**, onde o task é o motor. `task` passa a **opcional** no schema (em `discover` a
+ausência responde needs_clarification, como antes). Consequência honesta apanhada pela matriz banda ×
+superfície: com o gate fora, uma declaração **inerte** (`stack` sem token do vocabulário) recebia
+`needs_clarification` sobre o task — passa a `needs_input` com **`valid_values`** (a lista das tecnologias /
+exposures / sensibilidades válidas): o erro nomeia o vocabulário, não só o aponta. TC-D-02/03 (portão de
+âmbito) passam a correr em `discover` e verificam o `needs_input` declarativo.
+
+### Prova
+
+vitest **813/813** (68 ficheiros); `check`; smoke; `eval:acceptance` **141 PASS / 16 PART / 0 FAIL / 23 SKIP**,
+gate **PASS**; Eixo H **10/10**; matriz banda × superfície sem células FALTA novas; invariante 3 ✅.
+
+## 0.21 (em curso, ramo `0.21`) — decisão (a): tectos 52/55 ligados · §6-a «os lotes somam o todo» — 2026-09-25
+
+**Decisão do lead (a)** (adenda «DECISÃO DO LEAD — tectos» ao despacho da §1, 2026-09-25): **`lista` 52 ·
+`standard` 55 · `full` sem tecto**, sobre os envelopes herdados 8.450/9.200 (inalterados — são do consumidor).
+«Os 83/88 assentavam num custo projectado que não se reproduziu; esta é a mesma decisão com o número certo.»
+Ligado: `REQUIREMENT_CEILING_BY_DETAIL` = `PROPOSED_CEILING_BY_DETAIL` por construção (o teste guarda-o:
+se a medição mudar, a divergência é o sinal de decisão a pedir); `CEILING_FIT.fits = true`; o desajuste
+declarado (§1–§2) e as `KNOWN_TOTAL_DEVIATIONS` deixaram de existir. Decisão local 0003 emendada. Registado
+também: 2-vs-3 níveis fechado em **três** (separador = detalhe da adjacência); (c) fica no Mensor.
+Consequência visível: a **fixture 2 do EPIC (69 reqs) bloqueia por tecto** em `lista`/`standard` —
+`needs_decomposition` declarado, lotes que somam o todo; o `full` continua a servi-la. Pino **inalterado**
+(KG v1.12.0); **0.20.0 e `latest` intocados**; sem tag, sem merge.
+
+### §6-a — a decomposição PRESERVA os activadores e os lotes SOMAM O TODO (condição da decisão)
+
+Achado T2 da avaliação externa: os lotes por *concern* deixavam cair `exposure`/`data_sensitivity`/
+`technologies` e o conjunto mudava. Agora cada lote é uma **declaração ESTRUTURAL** — `categories`, a
+partição exacta das categorias que a declaração activou (guloso por tamanho decrescente, ≤ tecto) —
+com `technologies` e `changed_files` **preservados literalmente**; `exposure`/`data_sensitivity` são
+preservados pelo seu **efeito** (as categorias que produziram entram na partição, e cada lote di-lo em
+`derived_from`): re-declará-los somaria as suas categorias a todos os lotes e nenhum caberia (`public`
+sozinho activa cinco concerns). As tecnologias preservadas podem acrescentar requisitos por regra nomeada
+(SES-008 por `jwt`) fora das categorias do lote — a capacidade de cada lote reserva essa margem. A
+contagem de cada lote é **REAL** (a selecção corre-se para o lote), não estimativa; o servidor declara a
+**união** dos lotes e o **recall** face à selecção inteira. Para o lote ser executável, o `prepare` aceita
+**forma B** (`chapters`/`categories`, como o `select`), e uma declaração estrutural conta como declaração.
+Prova — os lotes **executam-se** nos testes e no TC-F-34, não se confia na contagem:
+
+| caso | lotes (`categories`) | união / recall |
+|---|---|---|
+| **83** real (`auth+integrity+deployment`/L3) | [IAC, CNT, INT, DPL] 48 · [ACC, AUT, SES, DST] 35 | 83 / **1** |
+| **avaliação** (`auth+api+validation`, public, personal/L3; 89) | [ARC, ACC, AUT, LOG, API] 52 · [ENC, SES, VAL, ERR, PRI] 37 | 89 / **1** |
+| avaliação + `jwt` | idem, capacidade 51 (SES-008 reservado) | 90 / **1** |
+| avaliador original (`api`, public, personal, FastAPI/L3; 89) | [52] · [37] | 89 / **1** |
+| fixture 2 (discover, 69) | [OPS, AUT, ACC, LOG, FIL] 47 · [VAL, API, ERR] 22 | 69 / **1** |
+
+Nota declarada (não escondida): o tecto é **por-id** e a variância por caso é real — o primeiro lote do caso
+dos 83 (48 reqs de IAC/CNT/DPL, requisitos longos) custa 10.146 tk em `lista`, acima do envelope; o payload
+di-lo (`size_estimate.within_envelope:false`). O dos 52 do caso da avaliação cabe (8.135).
+
+### Prova
+
+vitest **804/804** (67 ficheiros; novo `decomposition.test` executa 3 casos × 2 níveis); `check`; smoke;
+`eval:acceptance` **141 PASS / 16 PART / 0 FAIL / 23 SKIP**, gate **PASS** (TC-F-34: 89@lista → 2 lotes
+executados [52, 37], m_recall 89/89); Eixo H **10/10**; invariante 3 vs oráculo 0.20.0 ✅.
+
+## 0.21 (em curso, ramo `0.21`) — §2 «a adjacência liga-se ao prepare» — 2026-09-25
+
+Ordem do Orchestrator (2026-09-25, após aceitação da §3): ligar a adjacência de forma a caber **por
+desenho** — resumo dentro da base em todos os níveis, re-medir, derivar os tectos com a fórmula sobre o
+declive real e **apresentá-los como proposta, sem os ligar**. Pino **inalterado** (KG v1.12.0);
+**0.20.0 e `latest` intocados**; sem tag, sem merge.
+
+### `adjacency` em TODOS os níveis — o mais magro incluído
+
+O bloco que só o servidor sabe dar a um modelo a gerar código: «declaraste `auth`, mas `public`
+acrescentaria 43 requisitos, `personal` 37, e não os pediste». É o módulo provado em `a32ca44`
+(aritmética sobre o vocabulário fechado: a mesma selecção determinística re-corrida com cada valor
+não declarado; nunca leitura da tarefa), agora ligado ao `prepare` a seguir ao `activated_scope`:
+`undeclared_that_would_change_the_set` (top-5 por `would_add`, desempate estável), `scanned`,
+`would_change_the_set` (o denominador — nunca se trunca em silêncio) e `shown`. **Resumo inline
+sempre (~170 tk).** O **detalhe** (a lista completa, de que o resumo é o prefixo) vai inline em
+`standard`/`full` (~440–610 tk) e por **referência executável** em `lista` (`detail_ref` →
+`detail='standard'`; os ids de cada sinal: `select_sbd_toe_requirements(declaração + sinal)`). É
+finalmente o **separador `lista`↔`standard`**, decidido pela tabela `LEVEL_FORM`. A prosa que
+explica o bloco não viaja no payload: vive na legenda `detail_encoding.adjacency` e na descrição da
+tool. Em `selection_mode="discover"` a adjacência é relativa à declaração feita, não ao conjunto
+inferido — declarado na legenda.
+
+### A tabela final (tokens ≈ chars/4; §1+§3+§2)
+
+| caso | lista | standard | full |
+|---|---:|---:|---:|
+| `auth`/L2, **27** reqs — 0.20.0 | 3.879 (minimal) | 4.403 | 11.148 |
+| … 0.21 §1+§3+§2 | **5.066** (adj 170) | **5.504** (adj 608) | **7.813** (adj 608; −30% vs 0.20.0) |
+| `auth+integrity+deployment`/L3, **83** reqs (caso real) | **15.412** (>8.450, declarado) | **15.755** (>9.200, declarado) | **23.935** (sem tecto) |
+| 53 reqs | 8.532 | 8.845 | 15.867 |
+| 89 reqs (tecto levantado só para medir) | 13.310 | 13.579 | 16.696 |
+| fixture 1 (41) | 7.240 | 7.704 | 12.913 |
+| fixture 2 (69) | 12.869 (fora do envelope, declarado) | 13.333 (idem) | 20.704 |
+
+Regressão 27→89 da forma servida completa: **lista** declive 133,0 / base 1.476; **standard**
+declive 130,2 / base 1.987 (o detalhe da adjacência encolhe à medida que mais se declara). Constantes
+re-medidas em `payload-ceilings.ts`.
+
+### Os tectos — PROPOSTA, não ligados
+
+`PROPOSED_CEILING_BY_DETAIL` = floor((envelope − base) / custo) sobre as constantes medidas:
+**lista 52 · standard 55** (54 se se fixar o declive único de 133 nos dois níveis). São ≈53/59 menos a
+parte da adjacência, como o Orchestrator antecipou. **Não estão ligados** (teste guarda-o): o tecto
+servido continua o ratificado (83/88) com o desajuste declarado em `CEILING_FIT`,
+`size_estimate.within_envelope` e `KNOWN_TOTAL_DEVIATIONS`. A decisão do lead chega com este número.
+
+### Prova
+
+Invariante 3 contra o oráculo da 0.20.0 ✅ (a adjacência não acrescenta ids citáveis — os sinais são
+vocabulário); Eixo H **10/10**; `detail_ref` executado (o `standard` traz a lista completa com o mesmo
+denominador); bloco byte-igual ao do módulo para a mesma declaração; vitest **825/825**; `check`;
+smoke; `eval:acceptance` **141 PASS / 16 PART / 0 FAIL / 23 SKIP**, gate **PASS** (TC-F-47 verifica
+a adjacência em lista e o detalhe em standard).
+
+## 0.21 (em curso, ramo `0.21`) — §3 «os cortes» — 2026-09-25
+
+Ordem do Orchestrator (2026-09-25, após aceitação da §1): §3 é independente do tecto e baixa a base.
+Pino **inalterado** (KG v1.12.0); **0.20.0 e `latest` intocados**; sem tag, sem merge. Uma fase por
+relatório: a §2 (adjacência) fica para a seguir; o `minimal` residual de `select`/`threat` fica para §6/§7.
+
+### `citations` em todos os níveis — o `citation_map` já não existe
+
+A função do `citation_map` era «estes ids são legais»; a forma repetia `{source, source_data}` uma vez
+por id (56× no caso base, 1.369 tk). O `full` passa a servir o mesmo **`citations` invertido** que os
+dieted já serviam (legenda por fonte + ids referenciados por caminho do payload — no full os caminhos
+são de lista, `g2_context.<lista>[].entity_id`). Lossless, provado pela reconstrução. `citableIds(payload)`
+é exportado: consumidores e testes lêem os ids pela **mesma regra publicada**. As instruções, o template,
+o guia, a skill, o README e as descrições servidas dizem `citations`; a condição de slot passa a
+`citations_empty`.
+
+### As relations saem
+
+Medido: as arestas activadas ligam nós que o payload já carrega (`belongsToSlice` ≡ `slice_id` da
+entidade; `objective→mechanism/practice` recuperável por `trace_sbd_toe_graph`). O «0 de 49» do despacho
+era de um caso; no caso L3 de 3 concerns **6 de 151** apontam para slices não activadas — todas
+recuperáveis do próprio payload (a entidade traz o `slice_id`) e **2 residuais** (lacuna do bundle) que
+ficam **inline**, declaradas. `full`: `relations_ref` (as chamadas executáveis + contabilidade exacta) em
+vez das relations inline; `include_relations=true` repõe-nas com `source`. `lista`/`standard`:
+`relations_summary` com a **mesma contabilidade** (`total_relations`, `via_lenses`,
+`implicit_in_entities`, `residual_inline`) e `residual_relations` inline quando existem; `include_relations`
+continua a inliná-las sem `source`.
+
+### Medição (tokens ≈ chars/4)
+
+| caso | nível | 0.20.0 | §1 | **§3** |
+|---|---|---:|---:|---:|
+| `auth`/L2, 27 reqs | lista (era minimal) | 3.879 | 4.918 | **4.893** |
+| | standard | 4.403 | 4.919 | **4.894** |
+| | full | 11.148 | 10.297 | **7.202** (−35%) |
+| `auth+integrity+deployment`/L3, **83 reqs** (caso real no tecto) | lista | — | — | **15.239** (envelope 8.450 — declarado fora) |
+| | standard | — | — | 15.239 (9.200 — declarado fora) |
+| | full | — | — | 23.419 (sem tecto, preço declarado) |
+| fixture 1 (41) | full / lista | 18.903 / — | 18.896 / 7.104 | **12.276 / 7.066** |
+| fixture 2 (69) | full / lista | ≈24.7k / — | 29.588 / 12.745 | **20.067 / 12.695** (lista fora do envelope, declarado) |
+
+Regressão 27→89 da forma servida: declive **133 tk/req**, base **1.302** (§1: 1.327). A §3 baixa a
+base dos dieted em ~25 tk e o full em ~30%; **não muda o declive** — é o requisito fundido que decide o
+tamanho, como declarado na §1. Pela fórmula, os envelopes herdados suportam **53 / 59**; no tecto
+ratificado o custo é **≈12.341 (lista) / ≈13.007 (standard)**. Os tectos 83/88 continuam ligados e o
+desajuste declarado (`CEILING_FIT`, `size_estimate.within_envelope`, `KNOWN_TOTAL_DEVIATIONS`);
+a decisão do lead está pendente e a §3 não a dispensa.
+
+### Prova
+
+Invariante 3 contra o oráculo da 0.20.0 (9 casos × 3 níveis) ✅ — o `full` lê-se agora pelos caminhos
+de lista; Eixo H **10/10**; `relations_ref` do full executado (superset por execução real das lenses);
+`relations_summary` dos dieted bate na contabilidade com o `relations_ref` do full; vitest **815/815**;
+`check`; smoke; `eval:acceptance` **141 PASS / 16 PART / 0 FAIL / 23 SKIP**, gate **PASS** (TC-A-01/02
+reescritos para `citations`). Gate do reuse-hint refixado pelo medido: a re-chamada `lista` custa <70% do
+full (era <50% quando o full era 3× maior).
+
+## 0.21 (em curso, ramo `0.21`) — §1 «o requisito fundido» — 2026-09-25
+
+**Linha 0.21 (épico da forma da resposta).** Despacho de origem
+`2026-09-11-orchestrator-pontifex-despacho-forma-da-resposta.md`; §5 ratificada pelo lead
+a 2026-09-25 (tectos **lista 83 · standard 88 · full sem tecto**, herança dos envelopes,
+`ultrathin` reforma-se); ordem de avançar em
+`2026-09-25-orchestrator-pontifex-despacho-s1-fusao.md`. Pino **inalterado** (KG v1.12.0 ·
+sha256 `c21d35cb…bece2f`); **0.20.0 e `latest` intocados**; sem tag, sem merge.
+
+### O requisito é UMA coisa, em todos os níveis
+
+`activated_scope.requirements[]` passa a **um objecto por requisito**:
+`{id, name, type, description, verify, evidence}` — verbatim do bundle (`requirements.json` +
+`evidence_patterns.json`, 1:1 por requisito no KG v1.12.0). **A descrição nunca sai, em nenhum
+nível.** `verify` = `verification_logic`, `evidence` = `evidence_expectation` do padrão do próprio
+requisito. O bloco `g2_context.evidence_patterns` (capado a 25/10/5/0 por nível, com o join deixado
+ao modelo) **deixa de existir**. Os campos do padrão que não vão inline (`evidence_pattern_id`,
+`control_id`, `expected_artifact_type_ids`) **mudam de sítio e passam a referenciados**:
+`completeness_report.verification.by_ref` → `get_sbd_toe_verification_matrix` (≤50 ids/chamada,
+`calls` = ⌈n/50⌉). Os padrões que só tocavam o âmbito por um controlo activado (requisito fora do
+conjunto) não são inlinados — contam-se e referenciam-se em
+`verification.related_by_control_outside_scope` (`resolve_entities`, `record_type="evidence_pattern"`).
+Denominadores que fecham: `requirements = with_verify_and_evidence + partial + without_pattern`
+(o bundle publica padrões com `verification_logic` vazio — EP-ENC-* — que contam como `partial`,
+declarados, nunca omitidos). Os controlos `direct` levam a descrição publicada em todos os níveis,
+**full incluído** («não promete caber, promete não faltar»).
+
+### Três níveis: `lista` · `standard` · `full`
+
+O eixo passa a «o que está inline e o que está por referência». `ultrathin` **retirou-se** (a sua
+razão documentada era cortar a descrição) e `minimal` **passou a `lista`** (herda-lhe o envelope
+de 8.450 tk). Ambos devolvem `-32602` com um erro que **diz para onde foram**. `lista`/`standard`:
+instruções e template **INLINE** (2,2% do payload e é o que impede a invenção de ids — o resource
+`sbd://toe/codegen-instructions/{mode}` fica como cópia de referência), `manual_grounding` na forma
+de contagens com `entries_ref` executável → `full`, relations por referência, trace só com `debug`.
+`full`: tudo inline, sem tecto. **Até à §2 (adjacência), `lista` ≡ `standard` fora do eco do nível**
+— o separador fica declarado, não decidido (2 ou 3 níveis: `LEVEL_FORM` é uma tabela,
+parametrizável). `size_estimate` em todos os níveis: `{chars, approx_tokens}` e, nos níveis com
+envelope, `envelope_tk` + `within_envelope` (+ nota quando não coube — **nunca em silêncio**).
+
+### Tectos ligados como ratificados — e o ACHADO, declarado
+
+`payload-ceilings.ts`: **lista 83 / standard 88**, envelopes 8.450 / 9.200 herdados; `full` sem tecto.
+A base e o declive passam a ser a **medição da forma servida** (regressão 27→89 sobre os 5 casos do
+§5): **~132 tk/req, base ~1.350**. **Achado (para o lead):** a projecção do §5 media 81 tk/req porque
+fazia o join verify/evidence a partir do bloco `evidence_patterns` **capado a 25** — só 25 requisitos
+levavam verify/evidence; a partir daí o custo por requisito estava subestimado. Corrigida
+(`scripts/measure/s5-form-projection.mjs`, join 1:1), a própria projecção da forma-alvo dá ~135 tk/req
+e **4.341 tk** no caso base (não 3.900). Consequência: no tecto ratificado o custo projectado
+(`CEILING_FIT`) é **12.287 tk em lista (envelope 8.450)** e **12.946 em standard (9.200)**; pela mesma
+fórmula os envelopes herdados suportariam **53 / 59** requisitos. Não se re-derivou nada: os tectos
+ficam os ratificados, o ajuste é **declarado** em `CEILING_FIT`, em cada payload
+(`size_estimate.within_envelope`) e no `budget.test` (`KNOWN_TOTAL_DEVIATIONS`, fixture 2). A decisão
+— envelope, forma, ou ambos — é do lead.
+
+### Medição (tokens ≈ chars/4; `auth`/L2, 27 requisitos)
+
+| nível | 0.20.0 | 0.21 §1 | descrição? | verify/evidence? |
+|---|---:|---:|---|---|
+| lista (era minimal) | 3.879 | **4.918** | **sim** | **sim** |
+| standard | 4.403 | 4.919 | sim | sim |
+| full | 11.148 | **10.297** (−8%) | **sim** | **sim** |
+
+Fixture 1 do EPIC (41 reqs): lista 7.104 (cabe); fixture 2 (69 reqs): 12.745 — **declarado fora do
+envelope** no payload e no teste.
+
+### Prova
+
+- **Invariante 3 contra o oráculo da 0.20.0**: `src/tools/__snapshots__/citable-ids-0.20.0.json`
+  (gerado ANTES da §1 a partir do dist/ de `cb36422`, 9 casos) + `prepare-codegen-context.invariant3-golden.test.ts`
+  — conjunto de ids citáveis idêntico em `lista`/`standard`/`full` (o Eixo H byte-idêntico não se
+  aplica; este é o substituto exigido). Eixo H (oráculo de selecção) **10/10**.
+- **Cada ref é alcançável, executada**: `entries_ref` → full (contagens por grupo batem);
+  `verification.by_ref` → matriz devolve uma linha por requisito com `validation_method == verify`
+  inline e os campos por referência exactamente como o bundle os publica;
+  `related_by_control_outside_scope.ref` → `resolve_entities` (count bate).
+- Bateria completa: vitest **813/813** (65 ficheiros); `npm run check` verde; smoke MCP verde;
+  `eval:acceptance` **141 PASS / 16 PART / 0 FAIL / 23 SKIP**, gate **PASS**
+  (`acceptance-reports/2026-09-25-v0.20.0-acceptance.md`); TC-F-34 e TC-F-47 reescritos para a
+  forma nova (89@lista bloqueia declarado com tecto 83; by_ref executado ponta a ponta).
+
+### Colaterais (serving, Pontifex)
+
+- `resolve_entities`: o esquema para `unknown_filter_fields` derivava-se dos 100 primeiros itens da
+  cache v0 **inteira** (requirements/controls), pelo que um filtro válido de `evidence_pattern`
+  (`maps_to_control_id`) era **aplicado e ao mesmo tempo anunciado como desconhecido**. Corrigido:
+  deriva-se dos registos do `record_type` pedido.
+- `scripts/acceptance/axis-h.mjs` lia `requirement_id` do prepare — lê `id ?? requirement_id`
+  (o oráculo mede o conjunto, não a forma).
+- Guia grounded-codegen (`prompts/sbd-toe-grounded-codegen.md`) e skill do plugin: deixam de ensinar
+  o bloco morto; ensinam `verify`/`evidence` inline e `verification.by_ref`. Instrução de `test-plan`
+  idem.
+
+### Fica em aberto (declarado)
+
+2 ou 3 níveis (separador = adjacência §2 / `manual_grounding` §4 — `LEVEL_FORM`); a decisão do lead
+sobre envelope × forma (achado acima); §3 (relations saem; citation_map inverte-se no full) e §2
+(adjacência ligada ao prepare) são fases próprias; `select`/`threat` mantêm o seu `detail: minimal`
+(nome de outro eixo — não tocado).
 
 ## 0.20.0 — 2026-09-10
 

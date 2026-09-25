@@ -130,8 +130,9 @@ describe("readGroundedCodegenGuide", () => {
     ]) {
       expect(guide).toContain(status);
     }
-    // Must mandate citation_map citations.
-    expect(guide).toMatch(/citation_map/);
+    // Must mandate citing from `citations` (0.21 §3: citation_map no longer exists).
+    expect(guide).toMatch(/`citations`/);
+    expect(guide).not.toMatch(/citation_map/);
     // Must forbid compliance claims and ID invention.
     expect(guide.toLowerCase()).toMatch(/never declare compliance|do not declare/);
     expect(guide.toLowerCase()).toMatch(/never invent|do not invent/);

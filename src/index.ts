@@ -62,6 +62,9 @@ import {
   readGroundedCodegenGuide
 } from "./resources/sbd-toe-resources.js";
 import { RESOURCE_CATALOG, PROMPT_CATALOG } from "./serving/server-surface.js";
+import { buildNotesResource } from "./serving/notes.js";
+import { SURFACE_HISTORY } from "./serving/surface-history.js";
+import { withDeclaredSize } from "./serving/response-shaping.js";
 import { loadMetrics } from "./tools/assess-implementation.js";
 import { getOntologyData } from "./tools/ontology-loader.js";
 import { buildAgentGuide } from "./serving/agent-guide.js";
@@ -207,6 +210,19 @@ async function materializeResource(uri: string): Promise<{ mimeType: string; tex
     return { mimeType: "application/json", text: JSON.stringify(data, null, 2) };
   }
 
+  // 0.21 §6-c — notas por referência: índice e nota individual.
+  if (uri === "sbd://toe/notes") {
+    return { mimeType: "application/json", text: JSON.stringify(buildNotesResource(), null, 2) };
+  }
+  const notesMatch = /^\/\/toe\/notes\/([^/]+)$/.exec(path);
+  if (notesMatch !== null) {
+    try {
+      return { mimeType: "application/json", text: JSON.stringify(buildNotesResource(decodeURIComponent(notesMatch[1] ?? "")), null, 2) };
+    } catch (error) {
+      throw new ResourceReadError(-32602, error instanceof Error ? error.message : "Unknown note id.");
+    }
+  }
+
   const codegenInstructionsMatch = /^\/\/toe\/codegen-instructions\/([^/]+)$/.exec(path);
   if (codegenInstructionsMatch !== null) {
     const mode = codegenInstructionsMatch[1] ?? "";
@@ -284,6 +300,9 @@ async function materializeResource(uri: string): Promise<{ mimeType: string; tex
         // 0.20.0-beta.21 — a SEMÂNTICA de serviço mudou nesta linha, não só a versão:
         // para um produto que vende reprodutibilidade, mudar isto em silêncio seria a
         // pior violação da própria promessa.
+        // 0.21 §6-d — o CHANGELOG saiu das descrições das tools (≤600 chars, uma língua): o que
+        // lá estava vive aqui, verbatim, para que nada se perca — só muda de sítio.
+        surface_history: SURFACE_HISTORY,
         serving_contract: {
           version: "v1.18-beta",
           /*
@@ -483,6 +502,20 @@ class McpRuntime {
     return {
       message: String(error)
     };
+  }
+
+  /**
+   * 0.21 §6 — `size_estimate` em TODAS as tools de resultado JSON (o prepare já o declara com
+   * envelope; aqui não se toca). Duas passagens, para o número anunciado ser o do payload que
+   * o cliente recebe. Resultados de texto (search/answer/inspect) não têm onde o carregar.
+   */
+  /**
+   * 0.21 §6 — `size_estimate` em TODAS as tools de resultado JSON, medido sobre o payload
+   * entregue (withDeclaredSize é a única régua — o guia anuncia tamanhos com a mesma).
+   * Resultados de texto (search/answer/inspect) não têm onde o carregar.
+   */
+  private toolText(result: unknown): string {
+    return JSON.stringify(withDeclaredSize(result));
   }
 
   private sendResponse(id: JsonRpcId, result: unknown): void {
@@ -770,7 +803,7 @@ class McpRuntime {
           name: "search_sbd_toe_manual",
           title: "Search SbD-ToE Manual",
           description:
-            "NÃO-NORMATIVO — leitura e orientação, NUNCA caminho para um conjunto de requisitos. Pesquisa semântica sobre os chunks publicados do manual: serve para LER e localizar passagens (e para tu, LLM, formares a tua leitura), não para decidir âmbito. O conjunto de requisitos vem de select_sbd_toe_requirements com activadores DECLARADOS (vocabulário em sbd://toe/activation-vocabulary) — o que aqui sai não selecciona nada e não deve ser citado como se fosse selecção.",
+            "NON-NORMATIVE reading aid — never a path to a requirement set. Semantic search over the published manual chunks, to read and locate passages and form your own reading. The requirement set for a task comes from select_sbd_toe_requirements with DECLARED activators (vocabulary: sbd://toe/activation-vocabulary); nothing returned here selects anything and must not be cited as a selection.",
           inputSchema: {
             type: "object",
             properties: {
@@ -805,12 +838,7 @@ class McpRuntime {
           name: "answer_sbd_toe_manual",
           title: "Answer SbD-ToE Manual",
           description:
-            "SERVE CONTEXTO PARA O TEU MODELO RESPONDER — não responde: a resposta é do modelo do cliente, via " +
-            "sampling, e o juízo é de quem pergunta. Recupera contexto do Manual e pede a resposta final ao " +
-            "modelo do cliente via MCP sampling. " +
-            "Requires sampling support from the MCP client. " +
-            "Without sampling, falls back to formatted retrieval output (same as search_sbd_toe_manual). " +
-            "Prefer search_sbd_toe_manual for clients without sampling support.",
+            "DOES NOT ANSWER — serves manual context for the CLIENT model to answer via MCP sampling; the judgement stays with the asker. Requires sampling support; without it, falls back to formatted retrieval output (same as search_sbd_toe_manual), the better choice on clients without sampling.",
           inputSchema: {
             type: "object",
             properties: {
@@ -845,7 +873,7 @@ class McpRuntime {
           name: "inspect_sbd_toe_retrieval",
           title: "Inspect SbD-ToE Retrieval",
           description:
-            "Inspects retrieval, context selection and final prompt without requesting an answer from the client model.",
+            "Inspects retrieval, context selection and the final prompt without requesting an answer from the client model.",
           inputSchema: {
             type: "object",
             properties: {
@@ -876,7 +904,7 @@ class McpRuntime {
           name: "list_sbd_toe_chapters",
           title: "List SbD-ToE Chapters",
           description:
-            "Lists SbD-ToE manual chapters with id, canonical title, a clean readableTitle, graduated applicability (all levels true) and derived demand_by_level (0.14.0 — the binary minLevel theory is retired).",
+            "Lists the manual chapters: id, canonical title, clean readableTitle, graduated applicability (every chapter applies at every level) and derived demand_by_level.",
           inputSchema: {
             type: "object",
             properties: {
@@ -893,7 +921,8 @@ class McpRuntime {
         {
           name: "query_sbd_toe_entities",
           title: "Query SbD-ToE Entities",
-          description: "Queries manual entities by text, entity type, chapter or risk level.",
+          description:
+            "Queries manual entities by text, entity type, chapter or risk level.",
           inputSchema: {
             type: "object",
             properties: {
@@ -912,7 +941,7 @@ class McpRuntime {
           name: "get_sbd_toe_chapter_brief",
           title: "Get SbD-ToE Chapter Brief",
           description:
-            "Returns an operational summary of a chapter: title, objective, role, phases, artefacts (fields are present when the substrate carries them).",
+            "Operational summary of a chapter: title, objective, role, phases, artefacts (fields are present when the substrate carries them).",
           inputSchema: {
             type: "object",
             properties: {
@@ -927,12 +956,7 @@ class McpRuntime {
           name: "plan_sbd_toe_repo_governance",
           title: "List SbD-ToE Manual Artefacts",
           description:
-            "PROJECÇÃO DOS ARTEFACTOS PUBLICADOS — não governa o teu repositório: serve o que o Manual identifica, " +
-            "por capítulo, para tu decidires o que instalas. Lista de artefactos/documentos do SbD-ToE, " +
-            "grouped by chapter, with risk level applicability. " +
-            "Optionally filter by riskLevel (L1/L2/L3). " +
-            "All data comes from the manual indices — nothing is invented. " +
-            "The manual does not provide templates; ask the LLM to generate one if needed.",
+            "PROJECTION of the published artefacts — it does not govern your repository. Lists the artefacts/documents the manual identifies, grouped by chapter, with risk-level applicability (optional riskLevel filter L1/L2/L3), so you decide what to install. All data from the manual indices; nothing invented. The manual provides no templates — ask your model to draft one if needed.",
           inputSchema: {
             type: "object",
             properties: {
@@ -961,15 +985,7 @@ class McpRuntime {
           name: "generate_sbd_toe_skill",
           title: "Generate SbD-ToE Skill Content",
           description:
-            "GERA A PARTIR DO PUBLICADO, SEM VALIDAR O TEU AMBIENTE — não instala, não configura e não verifica " +
-            "nada do teu lado: devolve o texto para TU instalares onde souberes. " +
-            "Use this tool when asked to 'create a skill for SbD-ToE', 'set up instructions', " +
-            "'configure this client/agent to use SbD-ToE', 'configure yourself for role X', or 'integrate SbD-ToE'. " +
-            "Without arguments returns the canonical skill content from sbd://toe/agent-guide. " +
-            "With role= returns a role-specialised skill (format=skill) or an installable sub-agent " +
-            "definition (format=subagent) grounded on the role's manual slice — flavour=harnessed grants " +
-            "the mcp__sbd-toe__* tools (queries live); flavour=skilled embeds the frozen slice with no MCP tools. " +
-            "Save the returned content to suggested_path (or the client equivalent).",
+            "Generates from the published guide without validating your environment: it installs, configures and verifies nothing — it returns text for YOU to install. Use for 'create a skill for SbD-ToE', 'set up instructions', 'configure this agent for role X'. No arguments: the canonical skill (sbd://toe/agent-guide). With role: a role-specialised skill (format=skill) or an installable sub-agent (format=subagent); flavour=harnessed grants the mcp__sbd-toe__* tools, flavour=skilled embeds the frozen slice. Save the content to suggested_path.",
           inputSchema: {
             type: "object",
             properties: {
@@ -1060,10 +1076,7 @@ class McpRuntime {
           name: "get_sbd_toe_chapter_implementation_checklist",
           title: "Get SbD-ToE Chapter Implementation Checklist",
           description:
-            "The canon/20 'how to implement chapter NN' checklist — retrieval-grounded prose from the " +
-            "implementation profile (the operational 'Aplicação no Ciclo de Vida' guidance). Use to answer " +
-            "'how do I implement chapter NN / this area?'. Coverage-preserving; cites chunk ids; nothing invented. " +
-            "For the level-sharp structured Definition-of-Done use get_guide_by_role(include_detail=true).",
+            "The 'how to implement chapter NN' checklist: retrieval-grounded prose from the implementation profile (the operational lifecycle guidance). Coverage-preserving, cites chunk ids, nothing invented. For the level-sharp structured Definition-of-Done use get_guide_by_role(include_detail=true).",
           inputSchema: {
             type: "object",
             properties: {
@@ -1081,9 +1094,7 @@ class McpRuntime {
           name: "get_sbd_toe_operating_model",
           title: "Get SbD-ToE Operating Model",
           description:
-            "The operating model — RACI, decision-rights, governance cadences, org-model — from the rollout " +
-            "playbook (implementation profile). Retrieval-grounded prose; coverage-preserving; nothing invented. " +
-            "Use to answer 'who is responsible / how do we govern the SbD rollout?'.",
+            "The operating model — RACI, decision rights, governance cadences, org model — from the rollout playbook (implementation profile). Retrieval-grounded prose; coverage-preserving; nothing invented. Answers 'who is responsible / how do we govern the SbD rollout?'.",
           inputSchema: {
             type: "object",
             properties: {
@@ -1100,10 +1111,7 @@ class McpRuntime {
           name: "get_sbd_toe_verification_matrix",
           title: "Get SbD-ToE Verification Matrix",
           description:
-            "The EXPECTED side of verification: per requirement/control at a risk level, the validation method " +
-            "+ expected evidence + EvidencePattern reference (the published patterns — totals declared per response). The deterministic " +
-            "complement of the auditor's expectation and the test-plan. Cited per row; coverage-preserving — " +
-            "declares the requirements with no EvidencePattern. Use to answer 'how do I prove chapter/level X?' — or 'how do I prove THESE requirements?' via requirement_ids (o fecho requisito→prova a partir do select).",
+            "The EXPECTED side of verification: per requirement/control at a risk level, the validation method, expected evidence and EvidencePattern reference from the published patterns (totals declared). Cited per row; coverage-preserving — declares requirements with no pattern. Answers 'how do I prove chapter/level X?' or, with requirement_ids (max 50 per call), 'how do I prove THESE requirements?' — the requirement→proof closure from a selection.",
           inputSchema: {
             type: "object",
             properties: {
@@ -1121,12 +1129,7 @@ class McpRuntime {
           name: "assess_sbd_toe_implementation",
           title: "Assess SbD-ToE Implementation",
           description:
-            "SERVE OS LIMIARES PUBLICADOS APLICADOS AOS VALORES QUE DECLARASTE — a leitura é tua: não mede, não " +
-            "verifica os teus valores e não emite juízo de suficiência. Aritmética sobre dado publicado. " +
-            "Progresso auto-declarado: compara os KPI submetidos com os limiares publicados por nível " +
-            "thresholds (metrics.json) → posture (below/at/above) + gaps per KPI. Stateless self-report — values " +
-            "in, posture out, nothing stored; thresholds never invented; an applicable KPI with no value is " +
-            "not_reported (never a pass). Use to answer 'am I compliant at L2 / where are my gaps?'.",
+            "Applies the PUBLISHED thresholds to the KPI values YOU declare — it measures nothing, verifies nothing and issues no sufficiency judgement. Compares submitted kpi_values with the per-level thresholds (metrics.json) → posture (below/at/above) and gaps per KPI. Stateless self-report: values in, posture out, nothing stored; thresholds never invented; an applicable KPI without a value is not_reported (never a pass). Answers 'where are my gaps at L2?'.",
           inputSchema: {
             type: "object",
             properties: {
@@ -1156,10 +1159,7 @@ class McpRuntime {
           name: "plan_sbd_toe_rollout",
           title: "Plan SbD-ToE Rollout (MVP)",
           description:
-            "CONSULTA À SEQUÊNCIA PUBLICADA — não planeia por ti: serve a ordem das fases que o Manual publica, " +
-            "mapeada aos capítulos que cada uma atravessa. O roteiro é teu; isto é o que existe para o fazeres. " +
-            "MVP — phase-ordered, the dependency DAG is deferred (declared, not faked). Grounded in the published " +
-            "runtime; nothing invented. Use to answer 'in what order do we roll out SbD?'.",
+            "Serves the PUBLISHED phase sequence — it does not plan for you: the order of phases the manual publishes, mapped to the chapters each traverses; the roadmap is yours. Phase-ordered; the dependency DAG is deferred (declared, not faked). Grounded in the published runtime; nothing invented. Answers 'in what order do we roll out SbD?'.",
           inputSchema: {
             type: "object",
             properties: {
@@ -1177,10 +1177,7 @@ class McpRuntime {
           name: "get_sbd_toe_macro_processes",
           title: "Get SbD-ToE Macro-Processes (PROGRAMA)",
           description:
-            "LEITURA PROGRAMA (0.20.0-beta.37) — «por onde começamos e com que SEQUÊNCIA?». Serve os cinco macro-processos MP-01..05 que o Manual publica (pergunta, continuidade, invariante, dono, participantes, percurso de capítulos, indicadores, pontos de controlo, evidência esperada, proporcionalidade L1-L3) e a **ORDEM DE ADOPÇÃO publicada**. " +
-            "A ordem deriva EXCLUSIVAMENTE das arestas `dependency`: as `feedback` são realimentação e ficam FORA dela — se entrassem, os cinco macro-processos ciclariam. " +
-            "NÃO é a leitura GUIDE (que requisitos se aplicam a uma tarefa) nem a IMPL (a capacidade de um capítulo): devolver os 273 requisitos, ou um capítulo isolado, seria responder a outra pergunta. " +
-            "Limites DECLARADOS na resposta: não existe entidade «programa» (recusa de curadoria, ratificada); a travessia MP↔fase do SDLC é lacuna publicada e não se deriva; e MacroProcess, capítulo e fase são três segmentações paralelas — `traverses_bundles` é percurso, nunca contenção.",
+            "PROGRAMME reading — 'where do we start, and in what SEQUENCE?'. The five macro-processes (MP-01..05) the manual publishes (question, continuity, invariant, owner, participants, chapter path, indicators, control points, expected evidence, L1–L3 proportionality) and the published ADOPTION ORDER, derived only from dependency edges. Not the GUIDE reading (requirements for a task) nor IMPL (a chapter's capability). Declared limits: no 'programme' entity; MP↔SDLC-phase traversal is a published gap; traverses_bundles is a path, never containment.",
           inputSchema: {
             type: "object",
             properties: {
@@ -1194,9 +1191,7 @@ class McpRuntime {
           name: "explain_sbd_toe_topic",
           title: "Explain SbD-ToE Topic (CONSULT)",
           description:
-            "LEITURA CONSULT (0.20.0-beta.35) — «o que é que o Manual DIZ sobre X?», pergunta de CONHECIMENTO, sem tarefa e sem projecto. Atravessa o Manual: requisitos (com `applies_at`), ORIENTAÇÃO (práticas), PROVAS, AMEAÇAS, **ANTIPADRÕES** («o que NÃO fazer» — a metade que não tinha caminho próprio) e onde no ciclo. Distingue requisito de orientação e marca a proveniência manual-grounded. " +
-            "**`risk_level` é OPCIONAL aqui e ANOTA, nunca filtra** — uma pergunta de conhecimento não tem nível. Fronteira deliberada: o nível continua OBRIGATÓRIO na selecção (`select_sbd_toe_requirements`), no `prepare_sbd_toe_codegen_context` e na vista de capacidade, onde a pergunta é «o que se aplica ao MEU caso». " +
-            "Pede por conceito (`concern`) ou por estrutura (`category` / `chapter`).",
+            "CONSULT reading — 'what does the manual SAY about X?': a knowledge question with no task and no project. Traverses requirements (with applies_at), guidance (practices), proofs, threats, ANTIPATTERNS (what NOT to do) and where in the lifecycle; distinguishes requirement from guidance and marks provenance. risk_level is OPTIONAL and ANNOTATES, never filters — a knowledge question has no level (it stays mandatory in select, prepare and the capability view). Ask by concept (concern) or by structure (category / chapter).",
           inputSchema: {
             type: "object",
             properties: {
@@ -1215,9 +1210,7 @@ class McpRuntime {
           name: "get_sbd_toe_chapter_capability",
           title: "Get SbD-ToE Chapter Capability (IMPL)",
           description:
-            "LEITURA IMPL (0.20.0-beta.34) — «a organização quer implementar o cap. N: que capacidade precisa de ter, como sabe que está capaz, e COMO MEDE?». Publica os KPIs que o MANUAL define para o capítulo, com os `thresholds_by_level` (L1/L2/L3) como dado — é isso que distingue MEDIR de listar — mais os ARTEFACTOS que a capacidade tem de produzir. " +
-            "NÃO é a leitura GUIDE: se a pergunta é «que requisitos se aplicam a ESTA tarefa», isso é `select_sbd_toe_requirements`. A resposta declara qual das duas recebeste no campo `reading`. " +
-            "Alcançável por capítulo (`chapter`), por KPI (`metric_id`) ou por dimensão (`dimension`); `risk_level` acrescenta o alvo desse nível. Fecha o ciclo com `assess_sbd_toe_implementation`, que avalia os valores que TU medires contra estes mesmos KPIs.",
+            "IMPL reading — 'to implement chapter N, what capability do we need, how do we know we have it, and how do we MEASURE?'. The KPIs the manual defines for the chapter, with thresholds_by_level (L1/L2/L3) as data — measuring, not listing — plus the artefacts the capability must produce. Not the GUIDE reading ('which requirements apply to THIS task' is select_sbd_toe_requirements); the response names the reading it gave you. Reachable by chapter, metric_id or dimension; risk_level adds that level's target. Closes the loop with assess_sbd_toe_implementation.",
           inputSchema: {
             type: "object",
             properties: {
@@ -1226,7 +1219,7 @@ class McpRuntime {
               dimension: { type: "string", description: "Filtra por dimensão (ex.: `T-01`)." },
               risk_level: { type: "string", enum: ["L1", "L2", "L3"], description: "Acrescenta `target_at_level`: o threshold que ESTE nível exige." },
               offset: { type: "number", description: "Paginação sobre os KPIs." },
-              limit: { type: "number", description: "KPIs por página (default 25; 99 publicados no total)." }
+              limit: { type: "number", description: `KPIs por página (default 25; ${loadMetrics().length} publicados no total).` }
             },
             additionalProperties: false
           },
@@ -1236,10 +1229,7 @@ class McpRuntime {
           name: "get_sbd_toe_playbook",
           title: "Get SbD-ToE Cross-Check / Playbook",
           description:
-            "CAMINHO NORMATIVO para cross-checks e playbooks (0.20.0-beta.33). Responde a «somos sujeitos ao DORA/NIS2/CRA/RGPD/AI-Act — como é que o SbD-ToE nos serve?» com o PLAYBOOK publicado pelo Manual: mapa artigo→capítulo→acção, fases com marcos e checklist de leitura, servidos com a AUTORIDADE declarada. Ao contrário do `search_sbd_toe_manual` (NÃO-NORMATIVO, leitura), esta superfície é normativa. " +
-            "Sem argumentos devolve o ÍNDICE (barato); `framework=\"DORA\"` os playbooks desse diploma; `playbook_id=…` as secções paginadas. Os EXEMPLOS ILUSTRATIVOS vêm em banda SEPARADA e nunca com o estatuto dos cross-checks. " +
-            "Framework sem cross-check publicado (ISO 27001, HIPAA, PCI-DSS, SOC2, FedRAMP, CSA STAR) devolve `status: \"no_cross_check\"` com o roadmap do próprio Manual — declarado, nunca improvisado. " +
-            "Toda a resposta traz a DELIMITAÇÃO: o SbD-ToE não é uma norma, e implementá-lo não é conformidade.",
+            "NORMATIVE path for cross-checks and playbooks: 'we are subject to DORA/NIS2/CRA/GDPR/AI Act — how does SbD-ToE serve us?', answered with the manual's published playbook (article→chapter→action map, phases with milestones, reading checklist) under its declared authority — unlike search_sbd_toe_manual (non-normative). No arguments: the cheap INDEX; framework: its playbooks; playbook_id: paginated sections. Illustrative examples come in a SEPARATE band; frameworks without a cross-check return no_cross_check. SbD-ToE is not a standard; implementing it is not compliance.",
           inputSchema: {
             type: "object",
             properties: {
@@ -1257,10 +1247,7 @@ class McpRuntime {
           name: "map_sbd_toe_regulatory_activation",
           title: "Map SbD-ToE Regulatory Activation",
           description:
-            "Regulatory lens (reverse of provenance): given a framework (DORA, NIS2, CRA, RGPD), " +
-            "returns which SbD-ToE manual areas/chapters it activates, grouped with mapping + obligation " +
-            "counts per chapter (coverage-preserving — never a blind dump). Data from the published overlay " +
-            "mappings; nothing invented. Use to answer 'framework X → what do I need to implement?'.",
+            "Regulatory lens (reverse of provenance): given a framework (DORA, NIS2, CRA, GDPR), returns which manual areas/chapters it activates, grouped with mapping and obligation counts per chapter (coverage-preserving — never a blind dump). Data from the published overlay mappings; nothing invented. Answers 'framework X → what do I need to implement?'.",
           inputSchema: {
             type: "object",
             properties: {
@@ -1280,7 +1267,7 @@ class McpRuntime {
           name: "map_sbd_toe_applicability",
           title: "Map SbD-ToE Applicability",
           description:
-            "GRADUATED applicability (0.14.0): every chapter applies at every level — returns per-chapter authored demand (obrigatório/recomendado/opcional/specific) derived from the bundle, anchored on the chapter-01 canonical matrix; plus context-conditional bundles for the given technologies. projectRole adds a per-role view. Nothing is excluded by level.",
+            "GRADUATED applicability: every chapter applies at every level — returns per-chapter authored demand (mandatory/recommended/optional/specific) derived from the bundle and anchored on the chapter-01 canonical matrix, plus context-conditional bundles for the given technologies. projectRole adds a per-role view. Nothing is excluded by level.",
           inputSchema: {
             type: "object",
             properties: {
@@ -1340,12 +1327,7 @@ class McpRuntime {
           name: "read_sbd_toe_resource",
           title: "Read SbD-ToE Resource (mirror)",
           description:
-            "Mirror of resources/read for clients without MCP resource support (e.g. Claude Desktop): " +
-            "returns the content of any server resource by URI — including templated ones with the value " +
-            "in the URI (e.g. sbd://toe/codegen-instructions/codegen). Makes the codegen_instructions_ref " +
-            "of dieted prepare payloads resolvable on ANY client, and sbd://toe/version readable as a tool. " +
-            `Valid URIs: ${validResourceUris()}. ` +
-            "Unknown URI returns a declared error listing the valid set (never silent).",
+            "Mirror of resources/read for clients without MCP resource support (e.g. Claude Desktop): returns any server resource by URI, including templated ones with the value in the URI (e.g. sbd://toe/codegen-instructions/codegen, sbd://toe/notes/{id}). Makes the codegen-instructions reference copy, the notes registry and sbd://toe/version readable as a tool. Unknown URI returns a declared error listing the valid set (never silent); resources/list enumerates them.",
           inputSchema: {
             type: "object",
             properties: {
@@ -1363,10 +1345,7 @@ class McpRuntime {
           name: "trace_sbd_toe_requirement_sources",
           title: "Trace SbD-ToE Requirement Sources (estação 3)",
           description:
-            "Onde está a FONTE de cada requisito: fontes DIRECTAS (source_anchors — autoria do Manual, marcador «Fontes») " +
-            "e cadeia COMPENSADA REQ→CTRL→ACO→fontes com tipo/confiança por salto (rótulo coverage_compensated — " +
-            "COBERTURA por correspondência entre modelos, NÃO autoria; related não cobre). Servida verbatim da superfície " +
-            "publicada (contrato v1.17 §1.24); os sem-fonte-declarada vêm DECLARADOS; ids desconhecidos idem.",
+            "Where each requirement's SOURCE is: DIRECT sources (source_anchors — the manual's own 'Fontes' marker) and the COMPENSATED chain REQ→CTRL→ACO→sources with type and confidence per hop (label coverage_compensated: coverage by cross-model correspondence, NOT authorship; 'related' does not cover). Served verbatim from the published surface; requirements without a declared source, and unknown ids, are declared.",
           inputSchema: {
             type: "object",
             properties: {
@@ -1384,18 +1363,7 @@ class McpRuntime {
           name: "select_sbd_toe_requirements",
           title: "Select SbD-ToE Requirements (MP1)",
           description:
-            "START HERE — para qualquer tarefa concreta esta é a 1ª tool. Arranque: lê sbd://toe/agent-guide (read_sbd_toe_resource); setup_sbd_toe_agent é um PROMPT MCP — clientes sem prompts (p.ex. Desktop) não o expõem: segue directo por aqui. DECLARATIVO PRIMEIRO (contrato v1.18-beta, linha 0.20): TU tens o contexto — lê o pedido, o código e a conversa e DECLARA o que interpretaste (risk_level, concerns, exposure, data_sensitivity, technologies, changed_files). EU NÃO INTERPRETO PROSA: respondo com o que o KG sabe sobre o declarado, mais as adjacências do grafo, de forma reproduzível. Vocabulário fechado em sbd://toe/activation-vocabulary. O `task` fica REGISTADO para auditoria e NÃO influencia o resultado; sem nenhuma declaração devolvo needs_input com o vocabulário e candidatos A CONFIRMAR (nunca adivinho, nunca devolvo zero em silêncio); a baseline do nível pede-se explicitamente (mode='baseline'); o motor inferencial antigo fica em mode='discover' (exploratório). The MP1 selection operation (Classificar → Seleccionar): which requirements apply to THIS task in THIS " +
-            "context. Composes the reference semantics the published ontology declares — baseline (cap. 02 base " +
-            "catalogue, by risk level) ∪ domain chapters activated by the DECLARED activators (concerns, exposure, " +
-            "data_sensitivity, technologies, changed_files) ∪ the categories the published vocabulary promises " +
-            "⊕ regulatory overlay (extend) — then narrows deterministically by those same declarations. The task " +
-            "text is NEVER an activator in declarative mode (it is recorded context; it is only an engine in " +
-            "mode='discover'). Returns the bands: selected[] (each with its selection_trace: source/trigger/score), " +
-            "narrowed_out[] (eligible-without-signal, grouped by category, with reason), excluded_by_level[] and " +
-            "out_of_scope_chapters (what no declaration activated, by chapter and count, with how to bring it in) — " +
-            "never silent, and the SCOPE of that promise is the universe, not just the baseline. Paginated. " +
-            SELECT_PAGINATION + " " +
-            "All data from the published deterministic runtime bundle — nothing is invented.",
+            "START HERE. DECLARATIVE FIRST: DECLARE what you read — risk_level, concerns, exposure, data_sensitivity, technologies, changed_files, or structure (chapters, categories); the server never interprets prose (vocabulary: sbd://toe/activation-vocabulary). `task` is recorded, not selecting; no declaration ⇒ needs_input. Bands: selected, narrowed_out, excluded_by_level, out_of_scope_chapters. " + SELECT_PAGINATION,
           inputSchema: {
             type: "object",
             properties: {
@@ -1414,9 +1382,9 @@ class McpRuntime {
               },
               detail: {
                 type: "string",
-                enum: ["full", "standard", "minimal"],
+                enum: ["lista", "standard", "full"],
                 description:
-                  "Nível de SERIALIZAÇÃO da resposta (0.20.0-beta.26; default `full` = comportamento anterior, byte-idêntico). `standard` e `minimal` movem as justificações DISTINTAS do `selection_trace` para `selection_trace_legend` e deixam cada item a referi-las em `trace` — medido: −40% e −48% de payload numa selecção de 115 requisitos (12 justificações distintas para 115 entradas), com o MESMO conjunto de ids. Dieta de serialização, nunca de conteúdo: nenhum id e nenhuma justificação se perdem. `minimal` elide ainda `type` e `source_chapter` (deriváveis)."
+                  "Serialization level — the same axis as prepare (inline vs by reference). full (default): each item carries its full selection_trace. standard: the DISTINCT justifications move to selection_trace_legend and each item references them in `trace` (measured −40%). lista: standard minus the derivable `type` and `source_chapter` (recoverable via trace_sbd_toe_requirement_sources; −48%). Same id set at every level — a serialization diet, never a content one. 'minimal' was renamed 'lista'; the error says so."
               },
               task_context: { type: "string", description: "CONTEXTO REGISTADO (auditoria): o enunciado da tarefa. NOME CANÓNICO desde 0.20.0-beta.24 — um campo chamado `task` convidava a ser o motor, e não é: NÃO influencia a selecção no modo declarativo. Alias `task` continua aceite (aditivo, nunca renomeámos nada); em mode='discover' o texto é motor e `task` é o nome a usar." },
               task: { type: "string", description: "ALIAS de `task_context` (compatibilidade). Em mode='discover' é o MOTOR (casamento lexical, exploratório); no modo declarativo é apenas contexto registado." },
@@ -1445,12 +1413,7 @@ class McpRuntime {
           name: "consult_security_requirements",
           title: "Consult SbD-ToE Security Requirements",
           description:
-            "Deterministic resolution of security requirements, controls and artifacts for a given application context. " +
-            "Filters requirements by risk level, optionally narrows by concern domains (auth, logging, api, etc.), " +
-            "then resolves controls via the published runtime bundle, complementing with ontology domain_mapping when needed. " +
-            "Requirements with no published control link are served and declared in coverage_gaps (never omitted). " +
-            "Os corpos devolvidos são PROJECÇÕES (id/name/category/type) — detalhe completo via resolve_entities; ≤3 concerns por chamada (âmbito recomendado; maxItems no schema). " +
-            "All data comes from the published SbD-ToE deterministic runtime bundle — nothing is invented.",
+            "Deterministic resolution of requirements, controls and artifacts for an application context: filters requirements by risk level, optionally narrows by concern domains (at most 3 per call recommended), then resolves controls via the published runtime bundle, complementing with ontology domain_mapping when needed. Requirements with no published control link are served and declared in coverage_gaps. Bodies are PROJECTIONS (id/name/category/type) — full detail via resolve_entities. All data from the published bundle; nothing invented.",
           inputSchema: {
             type: "object",
             properties: {
@@ -1498,32 +1461,15 @@ class McpRuntime {
           name: "get_threat_landscape",
           title: "Get SbD-ToE Threat Landscape",
           description:
-            `ROTEAMENTO ≠ COBERTURA (0.20.0-beta.29): aceita os ${DECLARED_CONCERNS.length} concerns do vocabulário sem erro, mas só ` +
-            `${threatDomainConcerns().length} têm capítulo de ameaças PRÓPRIO — ${threatDomainConcerns().join(", ")}. ` +
-            `Para os outros ${DECLARED_CONCERNS.length - threatDomainConcerns().length} as ameaças chegam pelos capítulos onde se DEFINEM os controlos que o concern activa: ` +
-            "são reais e do âmbito activado, mas NÃO são «as ameaças deste domínio». A resposta declara-o em `routing_basis` " +
-            "(`domain_chapter` | `activated_controls`) — e a tabela acima diz-to ANTES de gastares a chamada. " +
-            "Em detail='standard'/'minimal' os nomes e ids dos controlos vêm por REFERÊNCIA à `associated_control_legend` — a promessa de campos completos é do detail='full'. " +
-            // 0.20.0-beta.31: a frase da ORDEM vem da mesma constante que a nota da resposta
-            // usa. Enquanto foram dois textos, divergiram duas versões (o `meta.note` ficou a
-            // dar o conselho oposto ao correcto). A guarda em behaviour-notes.test.ts vigia-o.
-            THREAT_ORDERING + " " +
-            "Qualquer outro concern é VÁLIDO e tem requisitos, mas não é roteável AQUI: vem declarado em `unsupported_concerns`, e se TODOS os declarados forem não-roteáveis a resposta é `needs_input` em vez de um payload cheio de ameaças de governação sem relação com o pedido. " +
-            "Deterministic threat resolution for an application context using the SbD-ToE ontology threats pipeline. " +
-            "Returns threats from the published runtime bundle relevant to the active requirement/chapter scope " +
-            "(the defining chapters of activated controls count as in-scope), with structural mitigation confidence, " +
-            "antipattern enrichment, per-threat associated_control_ids (structural CTRL-* ids with declared " +
-            "derivation) and associated_control_names (readable control names, 233/233 since contract v1.16). " +
-            "Optionally narrowed by concern domains. " +
-            "All data comes from the published SbD-ToE deterministic runtime bundle — nothing is invented.",
+            "Threats for a declared context. ROUTING ≠ COVERAGE: all 24 concerns are accepted, but only 11 have a threat chapter of their OWN (architecture, build, deployment, distribution, iac, logging, monitoring, release, supply_chain, testing, threat_modeling); for the others, threats arrive via the chapters that define the activated controls (routing_basis says which); non-routable ones go to unsupported_concerns. " + THREAT_ORDERING,
           inputSchema: {
             type: "object",
             properties: {
               detail: {
                 type: "string",
-                enum: ["full", "standard", "minimal"],
+                enum: ["lista", "standard", "full"],
                 description:
-                  "Nível de SERIALIZAÇÃO (0.20.0-beta.28; default `full` = byte-idêntico ao anterior, mantém `associated_control_ids`/`associated_control_names` como o contrato v1.14 §1.21 os publica). `standard`/`minimal` trocam-nos por referências + `associated_control_legend` — medido −50% do payload (os mesmos 13 nomes vinham repetidos verbatim em cada ameaça). Dedup de serialização: nada se perde."
+                  "Serialization level — the same axis as prepare and select (inline vs by reference). full (default): associated_control_ids / associated_control_names inline on every threat, as the contract publishes them. standard and lista: the controls are referenced through associated_control_legend (measured −50%: the same names were repeated verbatim per threat); for this tool the two are identical — nothing else is served by reference. Same threat set at every level. 'minimal' was renamed 'lista'; the error says so."
               },
               risk_level: {
                 type: "string",
@@ -1550,10 +1496,7 @@ class McpRuntime {
           name: "get_guide_by_role",
           title: "Get SbD-ToE Guide by Role",
           description:
-            "Returns runtime-grounded practices, assignments and user stories for a given risk level, " +
-            "optionally filtered by role and/or lifecycle phase. " +
-            "Each assignment carries its required ARTIFACTS (the requirement→evidence link, served from the bundle since contract v1.16). Roles are resolved via canonical aliases (e.g. 'appsec' → 'appsec-engineer', 'sre' → 'devops-sre', 'security-engineer' → 'appsec-engineer'). " +
-            "Results grouped by role and phase. All data from the published SbD-ToE deterministic runtime bundle — nothing is invented.",
+            "Runtime-grounded practices, assignments and user stories for a risk level, optionally filtered by role and/or lifecycle phase. Each assignment carries its required ARTIFACTS (the requirement→evidence link, served from the bundle). Roles resolve via canonical aliases (e.g. 'appsec' → 'appsec-engineer', 'sre' → 'devops-sre'). Results grouped by role and phase. All data from the published bundle — nothing invented.",
           inputSchema: {
             type: "object",
             properties: {
@@ -1584,67 +1527,14 @@ class McpRuntime {
           name: "resolve_entities",
           title: "Resolve SbD-ToE Entities",
           description:
-            "Low-level entity resolver over the published SbD-ToE deterministic artefacts. " +
-            "Three sources are routed by record_type, each with its own provenance: " +
-            "(1) runtime v0 (data/publish/runtime/*.json) for requirement / control / threat / artifact " +
-            "and related links; " +
-            "(2) AppSec Core v1 (data/publish/runtime/v1/*) for appsec_slice, control_objective, mechanism, " +
-            "appsec_practice, appsec_artifact and appsec_relation; " +
-            "(3) regulatory overlay (data/publish/overlay/*) for regulatory_framework, regulatory_obligation, " +
-            "regulatory_mapping and regulatory_playbook. " +
-            "Query any entity type by record_type with optional field filters. " +
-            "Supports dot-notation for nested fields (e.g. 'applicable_levels.L2'), " +
-            "comparison operators ({gte, lte} for numbers, {in: [...]} for set membership), " +
-            "and array membership checks. " +
-            "If the regulatory overlay is not published in this deployment, regulatory record types " +
-            "return total: 0 with an absent-reason note instead of throwing. " +
-            "Use this when the high-level tools (consult_security_requirements, get_threat_landscape, " +
-            "get_guide_by_role) do not cover your specific query. " +
-            "All data from the published SbD-ToE deterministic artefacts — nothing is invented.",
+            "Low-level entity resolver over the published artefacts, routed by record_type: runtime v0 (requirement, control, threat, artifact, evidence_pattern, links), AppSec Core v1 (appsec_slice, control_objective, mechanism, appsec_practice, appsec_artifact, appsec_relation) and the regulatory overlay (regulatory_framework/_obligation/_mapping/_playbook). Filters: dot-notation ('applicable_levels.L2'), {gte, lte}, {in: [...]}, array membership. Unpublished overlay ⇒ total 0 with a declared reason. Use when the high-level tools do not cover the query. Nothing invented.",
           inputSchema: {
             type: "object",
             properties: {
               record_type: {
                 type: "string",
                 description:
-                  "Entity type to query. " +
-                  "Runtime v0 (data/publish/runtime/*.json): requirement, control, practice, threat, " +
-                  "user_story, assignment, role, phase, artifact, evidence_pattern, signal, antipattern, " +
-                  "requirement_control_link, signal_evidence_link, antipattern_requirement_link, " +
-                  "antipattern_threat_link. " +
-                  "AppSec Core v1 (data/publish/runtime/v1/*): appsec_slice, control_objective, mechanism, " +
-                  "appsec_practice, appsec_artifact, appsec_relation. " +
-                  "Regulatory overlay (data/publish/overlay/*): regulatory_framework, regulatory_obligation, " +
-                  "regulatory_mapping, regulatory_playbook. " +
-                  "Read sbd://toe/ontology to see the schemas.",
-                enum: [
-                  "requirement",
-                  "control",
-                  "practice",
-                  "threat",
-                  "user_story",
-                  "assignment",
-                  "role",
-                  "phase",
-                  "artifact",
-                  "evidence_pattern",
-                  "signal",
-                  "antipattern",
-                  "requirement_control_link",
-                  "signal_evidence_link",
-                  "antipattern_requirement_link",
-                  "antipattern_threat_link",
-                  "appsec_slice",
-                  "control_objective",
-                  "mechanism",
-                  "appsec_practice",
-                  "appsec_artifact",
-                  "appsec_relation",
-                  "regulatory_framework",
-                  "regulatory_obligation",
-                  "regulatory_mapping",
-                  "regulatory_playbook"
-                ]
+                  "Record type to resolve. Runtime v0: requirement, control, threat, artifact, evidence_pattern, requirement_control_link (and related links). AppSec Core v1: appsec_slice, control_objective, mechanism, appsec_practice, appsec_artifact, appsec_relation. Regulatory overlay: regulatory_framework, regulatory_obligation, regulatory_mapping, regulatory_playbook. An unknown value returns a declared error listing the valid record types."
               },
               filters: {
                 type: "object",
@@ -1669,16 +1559,7 @@ class McpRuntime {
           name: "trace_sbd_toe_graph",
           title: "Trace SbD-ToE Ontology Graph",
           description:
-            "Curated multi-hop traversal over the AppSec Core v1 relation graph (slices, control " +
-            "objectives, mechanisms, practices). Answers traceability questions the high-level tools " +
-            "do not expose directly. Pick a `lens`: " +
-            "'slice_implementation' (a slice -> its control objectives -> the mechanisms that implement " +
-            "and practices that realize them); " +
-            "'objective_realization' (a control objective -> its mechanisms + practices); " +
-            "'mechanism_provenance' (a mechanism/practice -> the objectives it serves -> their slices). " +
-            "Optionally scope with `anchor` (an entity id). Results are deterministic and paginated " +
-            "(total + cursor; never silently truncated). All edges from the published deterministic " +
-            "runtime — nothing is invented.",
+            "Curated multi-hop traversal over the AppSec Core v1 relation graph (slices, control objectives, mechanisms, practices) for traceability questions the high-level tools do not expose. Pick a lens: slice_implementation (slice → objectives → implementing mechanisms and realizing practices); objective_realization (objective → mechanisms + practices); mechanism_provenance (mechanism/practice → the objectives it serves → their slices). Optionally scope with anchor (an entity id). Deterministic and paginated (total + cursor; never silently truncated). All edges from the published runtime.",
           inputSchema: {
             type: "object",
             properties: {
@@ -1709,27 +1590,7 @@ class McpRuntime {
           name: "prepare_sbd_toe_codegen_context",
           title: "Prepare SbD-ToE Grounded Codegen Context",
           description:
-            "MONTA CONTEXTO, NÃO AGE — não escreve, não altera e não valida o teu código: reúne o contexto " +
-            "determinístico e citável para TU gerares. Contexto grounded, em porções, para um LLM a jusante gerar, " +
-            "review or plan tests for code. This tool DOES NOT generate code and DOES NOT edit files. " +
-            "It runs a scope gate (rejecting vague or overly broad asks), an auditable semantic " +
-            "activation step (explicit concerns, single-token lexicon, compound phrases such as " +
-            "'endpoint seguro', PT/EN alias expansion via the semantic gateway, and a whole-word intent " +
-            "classifier — every activation carries a deterministic score in [0,1]), and deterministic " +
-            "resolution against runtime v0, runtime v1 and the regulatory overlay. " +
-            "Returns one of four statuses: ready_for_codegen, needs_clarification, needs_decomposition, " +
-            "unsupported_scope. On ready_for_codegen the output carries activation_trace (with score, " +
-            "source and reason), activated_scope, g2_context, manual_grounding, regulatory_overlay, " +
-            "citation_map, completeness_report (incl. as métricas do cap de evidence_patterns — o cap é por PERTENÇA ao âmbito, não por relevância), " +
-            "llm_codegen_instructions and security_rationale_template — with provenance for each section. " +
-            "Evidence patterns are ordered by MEMBERSHIP of the activated scope — first those whose "
-            + "`maps_to_requirement_id` is a requirement of the activated scope, then those of a direct "
-            + "control, then of a derived control; WITHIN each tier the order is by id, which is NOT a "
-            + "ranking: two patterns of the same tier are equally in scope and the id only makes the cut "
-            + "deterministic. Capped (default 25) so " +
-            "the LLM context stays manageable; the dropped patterns are listed in debug.rejected_candidates " +
-            "when debug=true. No canonical IDs are ever invented; names are surfaced only when " +
-            "manual_rastreabilidade publishes them.",
+            "ASSEMBLES CONTEXT, DOES NOT ACT: writes, changes and validates no code — it gathers deterministic, citable context for YOU to generate, review or plan tests. Declare the context (risk_level, concerns, exposure, data_sensitivity, technologies, changed_files, or chapters/categories); the task is recorded, not interpreted. Statuses: ready_for_codegen, needs_clarification, needs_decomposition (batches that sum to the whole), needs_input, unsupported_scope. Ready: one FUSED object per requirement (id, name, type, description, verify, evidence), citations, adjacency, instructions, size_estimate.",
           inputSchema: {
             type: "object",
             properties: {
@@ -1784,6 +1645,18 @@ class McpRuntime {
                 description:
                   "When true (and overlay is published), enriches the response with regulatory_overlay context."
               },
+              chapters: {
+                type: "array",
+                items: { type: "string" },
+                description:
+                  "0.21 §6 — FORMA B (como no select): capítulos declarados (source_bundle, p.ex. \"11-deploy-seguro\"), verificados contra o catálogo. Só no caminho declarativo."
+              },
+              categories: {
+                type: "array",
+                items: { type: "string" },
+                description:
+                  "0.21 §6 — FORMA B: categorias declaradas (p.ex. \"AUT\", \"SES\"). É a receita dos lotes de needs_decomposition: cada lote é a partição exacta das categorias que a tua declaração activou (technologies/changed_files preservados), e a união dos lotes é o conjunto inteiro (m_recall 1). Só no caminho declarativo."
+              },
               technologies: {
                 type: "array",
                 items: { type: "string" },
@@ -1798,51 +1671,24 @@ class McpRuntime {
               },
               detail: {
                 type: "string",
-                enum: ["ultrathin", "minimal", "standard", "full"],
+                enum: ["lista", "standard", "full"],
                 description:
-                  "Response encoding level (v2 token diet). 'full' (default) returns the classic payload, " +
-                  "Níveis dieted têm TECTO de requisitos por chamada — minimal 78, standard 81, " +
-                  "ultrathin 86 (derivados da medição ~68/~68/~29 tk/req vs promessas " +
-                  "8450/9200/4840 tk); acima ⇒ needs_decomposition c/ requirement_ceiling e divisão " +
-                  "ensinada; 'full' sem tecto (promessa = completude). " +
-                  "byte-identical to previous releases. 'standard'/'minimal' return the SAME citable ID set " +
-                  "with a deduplicated encoding: inverted `citations` (run-length source_data + ids_from " +
-                  "payload paths) replaces `citation_map`, `manual_grounding` is grouped, per-item `source` " +
-                  "and other derivable fields (requirement category, entity_type/slice_family, " +
-                  "relevance_score) are elided per the `provenance_legend`/resource legend, and " +
-                  "`g2_context.relations` is replaced by `g2_context.relations_ref` — executable " +
-                  "trace_sbd_toe_graph {lens, anchor} calls (set include_relations=true to keep relations " +
-                  "inline instead). Additionally at 'standard'/'minimal': evidence_patterns are capped " +
-                  "(deterministic prefix; counts + rest-reference in completeness_report), " +
-                  "llm_codegen_instructions + security_rationale_template move to the MCP resource " +
-                  "sbd://toe/codegen-instructions/{mode} (see codegen_instructions_ref), activation_trace is " +
-                  "included only with debug=true (activation_trace_ref keeps the count), and requirements + " +
-                  "direct controls carry the verbatim published `description`. Nothing is silently dropped. " +
-                  "'minimal' keeps the SAME complete activated scope as 'standard' (no ranking/subsetting) " +
-                  "and trims only traceability serialization: evidence_patterns cap 5 (vs 10) and " +
-                  "manual_grounding as counts + shared manual_commit_sha + executable groups_ref " +
-                  "(same input, detail='standard'). 'ultrathin' goes one level below 'minimal' with the same " +
-                  "rules (complete activated set, nothing id-only, never silent): requirements/controls keep " +
-                  "id+name(+type/domain/control_type/confidence) but drop the published description " +
-                  "(executable activated_scope.descriptions_ref, detail='minimal'), evidence_patterns are 0 " +
-                  "inline (counts + rest-ref to detail='minimal'), manual_grounding is " +
-                  "{total_entries, manual_commit_sha, groups_ref} and completeness_report diagnostics become " +
-                  "exact counts (+ executable ref)."
+                  "Response level. lista: every activated requirement complete and verbatim (id, name, type, description, verify, evidence) + citations + inline instructions/template; grounding by reference; relations out (relations_summary); adjacency summary with detail_ref. standard: lista + the adjacency detail inline. full (default): standard + manual_grounding inline, relations_ref, activation_trace, no ceiling, price in size_estimate. Ceilings by declared count: lista 52, standard 55 \u2014 above them needs_decomposition with batches that sum to the whole. 'ultrathin'/'minimal' are retired."
               },
               include_relations: {
                 type: "boolean",
                 description:
-                  "Escape hatch for clients that cannot make a second call (v2 token diet). When true at " +
-                  "detail='standard'/'minimal', keeps g2_context.relations inline (dieted: no per-item source) " +
-                  "instead of the relations_ref reference. Default false. Ignored at detail='full' (full always " +
-                  "carries relations inline, byte-identical to previous releases)."
+                  "Escape hatch for clients that cannot make a second call. When true at " +
+                  "detail='lista'/'standard', keeps g2_context.relations inline (dieted: no per-item source) " +
+                  "instead of the relations_ref reference. Default false. Ignored at detail='full' (relations " +
+                  "always inline there)."
               },
               debug: {
                 type: "boolean",
                 description: "When true, includes rejected_candidates and trace notes in the output."
               }
             },
-            required: ["task"],
+            required: [], // 0.21 §6: em declarativo o task é contexto REGISTADO (opcional); em discover é o motor e a sua ausência responde needs_clarification
             additionalProperties: false
           },
           annotations: { readOnlyHint: true }
@@ -1919,7 +1765,7 @@ class McpRuntime {
       }
       this.sendResponse(request.id, {
         description:
-          "Bundled SbD-ToE grounded codegen prompt — instructs the agent to call prepare_sbd_toe_codegen_context first, branch on status, cite citation_map and avoid compliance claims.",
+          "Bundled SbD-ToE grounded codegen prompt — instructs the agent to call prepare_sbd_toe_codegen_context first, branch on status, cite ids from `citations` and avoid compliance claims.",
         messages: [
           {
             role: "user",
@@ -2243,7 +2089,7 @@ class McpRuntime {
         case "list_sbd_toe_chapters": {
           const result = handleListSbdToeChapters(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           await this.log("info", {
             event_type: "tool.call",
@@ -2257,7 +2103,7 @@ class McpRuntime {
         case "query_sbd_toe_entities": {
           const result = await handleQuerySbdToeEntities(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           await this.log("info", {
             event_type: "tool.call",
@@ -2271,7 +2117,7 @@ class McpRuntime {
         case "get_sbd_toe_chapter_brief": {
           const result = handleGetSbdToeChapterBrief(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           await this.log("info", {
             event_type: "tool.call",
@@ -2285,7 +2131,7 @@ class McpRuntime {
         case "plan_sbd_toe_repo_governance": {
           const result = handlePlanRepoGovernance(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           await this.log("info", {
             event_type: "tool.call",
@@ -2299,7 +2145,7 @@ class McpRuntime {
         case "generate_sbd_toe_skill": {
           const result = handleGenerateSbdToeSkill(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           await this.log("info", {
             event_type: "tool.call",
@@ -2313,7 +2159,7 @@ class McpRuntime {
         case "map_sbd_toe_review_scope": {
           const result = handleMapSbdToeReviewScope(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           await this.log("info", {
             event_type: "tool.call",
@@ -2327,7 +2173,7 @@ class McpRuntime {
         case "get_sbd_toe_chapter_implementation_checklist": {
           const result = handleGetChapterImplementationChecklist(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           await this.log("info", {
             event_type: "tool.call",
@@ -2341,7 +2187,7 @@ class McpRuntime {
         case "get_sbd_toe_operating_model": {
           const result = handleGetOperatingModel(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           await this.log("info", {
             event_type: "tool.call",
@@ -2355,7 +2201,7 @@ class McpRuntime {
         case "get_sbd_toe_verification_matrix": {
           const result = handleGetVerificationMatrix(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           await this.log("info", {
             event_type: "tool.call",
@@ -2369,7 +2215,7 @@ class McpRuntime {
         case "assess_sbd_toe_implementation": {
           const result = handleAssessImplementation(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           await this.log("info", {
             event_type: "tool.call",
@@ -2383,7 +2229,7 @@ class McpRuntime {
         case "plan_sbd_toe_rollout": {
           const result = handlePlanRollout(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           await this.log("info", {
             event_type: "tool.call",
@@ -2397,35 +2243,35 @@ class McpRuntime {
         case "get_sbd_toe_macro_processes": {
           const result = handleGetMacroProcesses(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           return;
         }
         case "explain_sbd_toe_topic": {
           const result = handleExplainTopic(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           return;
         }
         case "get_sbd_toe_chapter_capability": {
           const result = handleGetChapterCapability(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           return;
         }
         case "get_sbd_toe_playbook": {
           const result = handleGetPlaybook(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           return;
         }
         case "map_sbd_toe_regulatory_activation": {
           const result = handleMapRegulatoryActivation(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           await this.log("info", {
             event_type: "tool.call",
@@ -2439,7 +2285,7 @@ class McpRuntime {
         case "map_sbd_toe_applicability": {
           const result = handleMapSbdToeApplicability(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           await this.log("info", {
             event_type: "tool.call",
@@ -2526,7 +2372,7 @@ class McpRuntime {
         case "select_sbd_toe_requirements": {
           const result = handleSelectRequirements(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           await this.log("info", {
             event_type: "tool.call",
@@ -2540,7 +2386,7 @@ class McpRuntime {
         case "consult_security_requirements": {
           const result = handleConsultSecurityRequirements(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           await this.log("info", {
             event_type: "tool.call",
@@ -2554,7 +2400,7 @@ class McpRuntime {
         case "get_threat_landscape": {
           const result = handleGetThreatLandscape(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           await this.log("info", {
             event_type: "tool.call",
@@ -2568,7 +2414,7 @@ class McpRuntime {
         case "get_guide_by_role": {
           const result = handleGetGuideByRole(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           await this.log("info", {
             event_type: "tool.call",
@@ -2582,7 +2428,7 @@ class McpRuntime {
         case "resolve_entities": {
           const result = handleResolveEntities(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           await this.log("info", {
             event_type: "tool.call",
@@ -2596,7 +2442,7 @@ class McpRuntime {
         case "trace_sbd_toe_graph": {
           const result = handleTraceGraph(args);
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           await this.log("info", {
             event_type: "tool.call",
@@ -2612,7 +2458,7 @@ class McpRuntime {
             args as unknown as Parameters<typeof handlePrepareCodegenContext>[0]
           );
           this.sendResponse(request.id, {
-            content: [{ type: "text", text: JSON.stringify(result) }]
+            content: [{ type: "text", text: this.toolText(result) }]
           });
           await this.log("info", {
             event_type: "tool.call",

@@ -447,15 +447,21 @@ export function handleGetThreatLandscape(
    * 0.20.0-beta.28 — a deduplicação é um NÍVEL DE SERIALIZAÇÃO, não uma remoção.
    * `associated_control_ids` é contrato publicado (v1.14 §1.21): renomeá-lo por omissão
    * seria a mesma classe de dano que este ciclo combate. `full` fica byte-idêntico;
-   * `standard`/`minimal` trocam os arrays repetidos por refs + legenda (−50% medido).
+   * `standard`/`lista` trocam os arrays repetidos por refs + legenda (−50% medido). 0.21 §7: o mesmo
+   * eixo do prepare/select; aqui `lista` ≡ `standard` (não há bloco por referência que os separe) — declarado.
    */
   const detailArg = typeof args["detail"] === "string" ? (args["detail"] as string) : undefined;
-  if (detailArg !== undefined && !["full", "standard", "minimal"].includes(detailArg)) {
-    throw Object.assign(new Error(`Invalid detail: "${detailArg}". Allowed: full, standard, minimal.`), {
-      rpcError: { code: -32602, message: `Invalid detail: "${detailArg}". Allowed: full, standard, minimal.` }
+  if (detailArg !== undefined && !["full", "standard", "lista"].includes(detailArg)) {
+    const retired: Record<string, string> = {
+      minimal: "'minimal' passou a chamar-se 'lista' na 0.21 — o mesmo eixo (inline vs por referência) em select, get_threat_landscape e prepare. Usa detail='lista'.",
+      ultrathin: "'ultrathin' nunca existiu nesta tool e retirou-se do prepare na 0.21. Usa detail='lista'."
+    };
+    const msg = retired[detailArg] !== undefined ? `Invalid detail: "${detailArg}". ${retired[detailArg]}` : `Invalid detail: "${detailArg}". Allowed: lista, standard, full.`;
+    throw Object.assign(new Error(msg), {
+      rpcError: { code: -32602, message: msg }
     });
   }
-  const dedupe = detailArg === "standard" || detailArg === "minimal";
+  const dedupe = detailArg === "standard" || detailArg === "lista";
 
   const offsetArg = typeof args["offset"] === "number" ? Math.max(0, Math.floor(args["offset"] as number)) : 0;
   const limitArg = typeof args["limit"] === "number" ? Math.max(1, Math.floor(args["limit"] as number)) : 25;
