@@ -176,7 +176,8 @@ export function buildGroundedCodegenPrompt(args: {
     "Then branch on `status` exactly as described in the guide above:",
     "- `ready_for_codegen` → fill `security_rationale_template`, cite ids from `citations`, produce code + tests + evidence.",
     "- `needs_clarification` → STOP, ask the user the specific missing inputs.",
-    "- `needs_decomposition` → the payload measured above the level's envelope: re-call once per entry of `requirement_ceiling.batches` (each measured to fit; together they sum to the whole), or ask the user to narrow the task. A batch marked `irreducible` returns ready and declared above the envelope.",
+    "- `needs_input` → STOP: nothing activating was declared (or a declaration is inert). Confirm the candidates the response names with the user, then re-call declaring them.",
+    "- `needs_decomposition` → with `requirement_ceiling.batches`: re-call once per batch (each measured to fit; together they cover the whole selection); a batch marked `irreducible` returns ready and declared above the envelope. Without batches: narrow the declaration with the user.",
     "- `unsupported_scope` → STOP, report the missing capability verbatim. Do NOT fabricate IDs.",
     "",
     "Do NOT declare regulatory compliance. Do NOT invent identifiers. Do NOT treat AI-generated code as evidence."

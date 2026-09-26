@@ -470,11 +470,15 @@ export function _resolveConsultResult(
     requirements_without_control_link: {
       count: requirementsWithoutControlLink.length,
       requirement_ids: requirementsWithoutControlLink,
+      // 0.21.2: a nota diz o que o bundle servido mostra — sem datas nem encaminhamentos internos.
       note:
-        `${requirementsWithoutControlLink.length} of ${filteredRequirements.length} active requirements have no ` +
-        `requirement_control_links entry in the consumed bundle (link layer of 2026-04-07 not refreshed for ` +
-        `requirements published since) — declared gap, not an absence of obligation: the requirement is served, ` +
-        `its controls are at most domain-derived (\`_confidence: "derived"\`) and never invented; routed to Codex.`,
+        requirementsWithoutControlLink.length === 0
+          ? `All ${filteredRequirements.length} active requirements have at least one requirement_control_links ` +
+            `entry in the consumed bundle. The field is always present: a requirement without a link would be ` +
+            `listed here by id, as a declared gap.`
+          : `${requirementsWithoutControlLink.length} of ${filteredRequirements.length} active requirements have no ` +
+            `requirement_control_links entry in the consumed bundle — declared gap, not an absence of obligation: ` +
+            `the requirement is served, its controls are at most domain-derived (\`_confidence: "derived"\`) and never invented.`,
     },
   };
 

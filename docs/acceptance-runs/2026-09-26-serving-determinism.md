@@ -28,10 +28,10 @@ A mesma chamada em cada um; payloads comparados **byte a byte**. Repetir no mesm
 | `get_sbd_toe_playbook` | byte-idêntico | 9147 | — |
 | `map_sbd_toe_regulatory_activation` | byte-idêntico | 7764 | — |
 | `map_sbd_toe_applicability` | byte-idêntico | 10499 | — |
-| `read_sbd_toe_resource` | byte-idêntico | 3269 | — |
+| `read_sbd_toe_resource` | byte-idêntico | 3321 | — |
 | `trace_sbd_toe_requirement_sources` | byte-idêntico | 11458 | — |
 | `select_sbd_toe_requirements` | byte-idêntico | 28645 | — |
-| `consult_security_requirements` | byte-idêntico | 8131 | — |
+| `consult_security_requirements` | byte-idêntico | 7993 | — |
 | `get_threat_landscape` | byte-idêntico | 25000 | — |
 | `get_guide_by_role` | byte-idêntico | 69437 | — |
 | `resolve_entities` | byte-idêntico | 10267 | — |

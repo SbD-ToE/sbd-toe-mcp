@@ -133,7 +133,8 @@ export function prepareCodegenAffordances(status: string, citedRequirementIds: r
   const cited = citedRequirementIds.slice(0, 1).map((id) => `"${id}"`).join(", ") || '"<ids de citations>"';
   const byStatus: Affordance =
     status === "needs_decomposition"
-      ? { intent: "split into 2-4 subtasks and call again per subtask", tool: "prepare_sbd_toe_codegen_context", with: "one subtask scope", kind: "structural" }
+      ? // 0.21.2: os lotes vêm prontos na resposta — executá-los, não re-desenhar à mão.
+        { intent: "execute each batch in requirement_ceiling.batches (one call per batch; together they cover the whole selection) — without batches, narrow the declaration", tool: "prepare_sbd_toe_codegen_context", with: "task + risk_level + detail + the batch's `with`", kind: "structural" }
       : status === "ready_for_codegen"
         ? { intent: "cita as citations (ids legais)", tool: "resolve_entities", with: `record_type="requirement", filters={"requirement_id":{"in":[${cited}]}}`, kind: "structural" }
         : { intent: "narrow the scope or consult requirements to unblock", tool: "consult_security_requirements", with: "risk_level + <=5 concerns (recomendado <=3)", kind: "structural" };

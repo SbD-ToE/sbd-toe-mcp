@@ -198,9 +198,9 @@
   },
   "next": [
     {
-      "intent": "split into 2-4 subtasks and call again per subtask",
+      "intent": "execute each batch in requirement_ceiling.batches (one call per batch; together they cover the whole selection) — without batches, narrow the declaration",
       "tool": "prepare_sbd_toe_codegen_context",
-      "with": "one subtask scope",
+      "with": "task + risk_level + detail + the batch's `with`",
       "kind": "structural"
     },
     {
