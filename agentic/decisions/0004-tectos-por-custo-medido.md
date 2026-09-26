@@ -108,3 +108,35 @@ Irredutível existe: a categoria mais cara isolada é **GOV com overlay CRA, 14 
   de ter resposta em `lista`.
 
 O resto desta promessa não depende dessa resposta.
+
+---
+
+## 8. Decisão do lead e implementação (2026-09-26, append)
+
+**Decisão (via Orchestrator):** SIM — o lote irredutível serve-se pronto e declarado; a decomposição só dispara com duas ou mais
+categorias. Promessa fechada; implementação autorizada no branch `0.21.2-cost-ceilings`, sem PR de merge até ordem do lead.
+
+**Implementado como prometido.** Três pontos que a implementação teve de fixar, declarados aqui:
+
+1. **«Duas ou mais categorias» conta as categorias decomponíveis.** Requisitos que o que se preserva em todos os lotes traz por si
+   (ex.: SES-008 por `technologies: ["jwt"]`) vêm em todos os lotes e não são unidade de decomposição. Sem isto, um lote
+   `categories=["GOV"]` com `jwt` teria duas categorias e decomporia outra vez.
+2. **Opt-ins explícitos** (`include_relations`, `debug`) acrescentam o que o consumidor pediu por cima da forma do nível. A decisão
+   mede a forma canónica; se essa cabe, o pedido sai com o preço declarado. Decompor tirava ao consumidor o que pediu (os lotes não
+   levam o opt-in).
+3. **O `mode` viaja no lote quando não é `codegen`**: um pedido de review nunca pode ter lotes que corram em codegen, e a receita
+   tem de reproduzir o payload medido.
+
+**Achado para o lead (anterior a esta release, agora mais visível):** um lote é uma declaração **estrutural** (`categories`), que
+não activa fatias — por isso não traz as entidades G2 por fatia nem o `manual_grounding` que as concerns trazem. O conjunto de
+requisitos soma o todo (recall 1), mas o contexto G2 dos lotes é mais magro do que o do pedido original. É assim desde a 0.21 §6-a.
+Com a regra de custo aparece um caso extremo: `auth`/L2 + overlay RGPD decompõe num **único** lote com os mesmos 27 requisitos
+(9 338 → 8 408 tk), porque o que o fazia passar o envelope era contexto de fatias. Não mexi nesta semântica.
+
+**Estimativa do `select`:** médias por categoria medidas no bundle (payload real de `categories=[c]` em L3, menos a base = o menor
+custo não-requisito entre categorias). Subestima 11–13 % nos casos medidos (4 081 vs 4 582; 12 983 vs 14 874), porque a base é um
+limite inferior. Declarada estimativa; não decide nada.
+
+**Efeito:** idêntico ao da §5 — 87 / 6 / 22 / 1 sobre os 116 casos, 0 violações, `full` byte-idêntico 58/58
+(`docs/acceptance-runs/2026-09-26-v0.21.2-cost-ceiling-matrix.md`).
+

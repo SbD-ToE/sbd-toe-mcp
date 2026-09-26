@@ -53,11 +53,12 @@ describe("invariante 3 — conjunto de ids citáveis idêntico ao oráculo da 0.
     for (const detail of ["lista", "standard", "full"] as const) {
       const r = handlePrepareCodegenContext({ ...c.input, detail });
       if (detail !== "full" && r.status === "needs_decomposition") {
-        // tecto por-id ratificado (lista 83 / standard 88): o bloqueio é DECLARADO e o
-        // full — sem tecto — continua a ser o oráculo do conjunto.
-        const rc = (r as { requirement_ceiling?: { limit: number; selected: number } }).requirement_ceiling;
+        // 0.21.2 (decisão 0004): o payload MEDIDO passa o envelope — o bloqueio é declarado e o
+        // full — sem envelope — continua a ser o oráculo do conjunto.
+        const rc = (r as { requirement_ceiling?: { basis: string; projected_tk: number; promise_tk: number; selected: number } }).requirement_ceiling;
         expect(rc?.selected).toBe(c.requirements);
-        expect(rc!.selected).toBeGreaterThan(rc!.limit);
+        expect(rc!.basis).toBe("measured_payload");
+        expect(rc!.projected_tk).toBeGreaterThan(rc!.promise_tk);
         continue;
       }
       expect(r.status, detail).toBe("ready_for_codegen");

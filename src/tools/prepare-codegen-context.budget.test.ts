@@ -414,18 +414,20 @@ describe("prepare_sbd_toe_codegen_context — orçamento de payload (v2-token-di
 
     // -- lista/standard: TOTAL = envelope herdado; desvios declarados --
 
-    it.each(["standard", "lista"] as const)("respeita os budgets do nível `%s` (0.21 (a): tecto 52/55 — a fixture 2 bloqueia DECLARADO, lotes que somam o todo)", (detail) => {
+    it.each(["standard", "lista"] as const)("respeita os budgets do nível `%s` (0.21.2: regra de custo — a fixture 2 mede acima do envelope e bloqueia com lotes medidos que somam o todo)", (detail) => {
       expect(detailSupported).toBe(true);
       const result = handlePrepareCodegenContextDiscover(withDetail(fixture.input, detail));
       if (fixture.name === "fixture2") {
-        // 69 requisitos > tecto (52 lista / 55 standard): o servidor não engole nem degrada — diz o
-        // limite e ensina a dividir em lotes cuja união é o conjunto inteiro.
-        const blocked = result as { status: string; requirement_ceiling?: { limit: number; selected: number; union: { recall: number }; batches: Array<{ requirements: number }> } };
+        // 0.21.2 (decisão 0004): o payload medido passa o envelope do nível — o servidor não engole
+        // nem degrada: devolve lotes MEDIDOS (cada um cabe) cuja união é o conjunto inteiro.
+        const blocked = result as { status: string; requirement_ceiling?: { basis: string; projected_tk: number; promise_tk: number; selected: number; union: { recall: number }; batches: Array<{ requirements: number; measured_tk: number; irreducible: boolean }> } };
         expect(blocked.status).toBe("needs_decomposition");
         expect(blocked.requirement_ceiling!.selected).toBe(69);
-        expect(blocked.requirement_ceiling!.limit).toBe(detail === "lista" ? 52 : 55);
+        expect(blocked.requirement_ceiling!.basis).toBe("measured_payload");
+        expect(blocked.requirement_ceiling!.promise_tk).toBe(detail === "lista" ? 8450 : 9200);
+        expect(blocked.requirement_ceiling!.projected_tk).toBeGreaterThan(blocked.requirement_ceiling!.promise_tk);
         expect(blocked.requirement_ceiling!.union.recall).toBe(1);
-        for (const b of blocked.requirement_ceiling!.batches) expect(b.requirements).toBeLessThanOrEqual(blocked.requirement_ceiling!.limit);
+        for (const b of blocked.requirement_ceiling!.batches) if (!b.irreducible) expect(b.measured_tk).toBeLessThanOrEqual(blocked.requirement_ceiling!.promise_tk);
         return;
       }
       expectReady(result);

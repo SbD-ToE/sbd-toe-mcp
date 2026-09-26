@@ -50,7 +50,7 @@ interface BaselineFixture {
   name: "fixture1" | "fixture2";
   label: string;
   input: PrepareCodegenContextInput;
-  /** 0.21 (a): 69 reqs > tecto 52 — a lista responde needs_decomposition declarado (lotes que somam o todo). */
+  /** 0.21.2: o payload medido passa o envelope — a lista responde needs_decomposition com lotes medidos que somam o todo. */
   dietedBlockedByCeiling?: boolean;
 }
 
@@ -116,13 +116,14 @@ describe("prepare_sbd_toe_codegen_context — perfil lista (0.21 §1)", () => {
     clearRegulatoryOverlayCacheForTests();
   });
 
-  it("fixture 2 (69 reqs) @ lista: needs_decomposition DECLARADO (tecto 52), lotes que somam o todo (recall 1); o full serve-a", () => {
+  it("fixture 2 (69 reqs) @ lista: needs_decomposition por CUSTO MEDIDO (acima de 8 450 tk), lotes medidos que cabem e somam o todo (recall 1); o full serve-a", () => {
     const blockedFixture = FIXTURES.find((f) => f.dietedBlockedByCeiling)!;
-    const r = handlePrepareCodegenContextDiscover({ ...blockedFixture.input, detail: "lista" }) as { status: string; requirement_ceiling?: { limit: number; selected: number; union: { recall: number }; batches: Array<{ requirements: number }> } };
+    const r = handlePrepareCodegenContextDiscover({ ...blockedFixture.input, detail: "lista" }) as { status: string; requirement_ceiling?: { basis: string; projected_tk: number; promise_tk: number; selected: number; union: { recall: number }; batches: Array<{ requirements: number; measured_tk: number; irreducible: boolean }> } };
     expect(r.status).toBe("needs_decomposition");
-    expect(r.requirement_ceiling).toMatchObject({ limit: 52, selected: 69 });
+    expect(r.requirement_ceiling).toMatchObject({ basis: "measured_payload", selected: 69, promise_tk: 8450 });
+    expect(r.requirement_ceiling!.projected_tk).toBeGreaterThan(8450);
     expect(r.requirement_ceiling!.union.recall).toBe(1);
-    for (const b of r.requirement_ceiling!.batches) expect(b.requirements).toBeLessThanOrEqual(52);
+    for (const b of r.requirement_ceiling!.batches) if (!b.irreducible) expect(b.measured_tk).toBeLessThanOrEqual(8450);
     expect(runFull(blockedFixture).activated_scope.requirements.length).toBe(69);
   });
 

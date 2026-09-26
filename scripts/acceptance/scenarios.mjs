@@ -730,37 +730,38 @@ export const scenarios = [
       const bmeta = bd.meta ?? bd;
       if (bmeta.unknown_record_type !== "ctrl_acore_alignment" || !(bmeta.valid_record_types?.length > 10)) return fail("total:0 silencioso ainda vivo (sem unknown_record_type/valid_record_types)");
       return ok(`3 next à letra: resolve ${rt}+[${ids.join(",")}] → ${nRecs} recs; matrix [${pids.join(",")}] ok (${stabilized ? "via estabilização" : "directo"}); uri ${uri} lido; 63 ids rejeitados c/ tecto 50; record_type desconhecido DECLARADO c/ ${bmeta.valid_record_types.length} válidos`); } },
-  { id: "TC-F-34", axis: "F", title: "0.21 (a): tecto por-id no prepare (89 reqs @ lista, tecto 52) + lotes que SOMAM O TODO (recall 1 executado) — condição da decisão do lead", tool: "prepare_sbd_toe_codegen_context",
+  { id: "TC-F-34", axis: "F", title: "0.21.2 (decisão 0004): o envelope é a regra no prepare — caso do avaliador @ lista medido acima de 8 450 tk ⇒ lotes MEDIDOS que cabem e SOMAM O TODO (recall 1 executado; custo declarado = custo recebido)", tool: "prepare_sbd_toe_codegen_context",
     run: async (c) => {
       const args = { task: "Expor API pública de consulta com chaves de cliente e rate limiting", risk_level: "L3", exposure: "public", data_sensitivity: "personal", stack: "Python/FastAPI", detail: "lista" };
       const p = await c.tool("prepare_sbd_toe_codegen_context", args); if (!p.ok) return fail(p.error);
       const pd = p.data.data ?? p.data;
-      if (pd.status !== "needs_decomposition") return fail(`89 reqs @ lista devia bloquear declarado; status=${pd.status}`);
+      if (pd.status !== "needs_decomposition") return fail(`o caso do avaliador @ lista devia bloquear por custo; status=${pd.status}`);
       const rc = pd.requirement_ceiling;
-      if (!rc || rc.limit !== 52 || rc.selected <= rc.limit) return fail(`requirement_ceiling errado: ${JSON.stringify(rc && { limit: rc.limit, selected: rc.selected })}`);
-      if (!(rc.projected_tk > rc.promise_tk)) return fail("projecção não justifica o bloqueio");
+      if (!rc || rc.basis !== "measured_payload" || "limit" in rc || "cost_per_req_tk" in rc) return fail(`requirement_ceiling errado: ${JSON.stringify(rc && { basis: rc.basis, limit: rc.limit })}`);
+      if (!(rc.projected_tk > rc.promise_tk) || rc.promise_tk !== 8450) return fail(`o custo medido não justifica o bloqueio: ${rc.projected_tk} vs ${rc.promise_tk}`);
       if (!rc.batches?.length || !rc.union || rc.union.recall !== 1) return fail(`lotes sem união declarada com recall 1: ${JSON.stringify(rc.union)}`);
       if (!(pd.suggestions ?? []).some((x) => /SOMAM O TODO/.test(x) && /categories=\[/.test(x))) return fail("suggestions não ensinam a receita por categorias");
-      // EXECUTA todos os lotes e mede a união contra a selecção inteira (full, sem tecto)
+      // EXECUTA todos os lotes: cada um pronto, dentro do envelope (ou irredutível declarado), custo declarado = recebido
       const pf = await c.tool("prepare_sbd_toe_codegen_context", { ...args, detail: "full" }); if (!pf.ok) return fail(pf.error);
-      const pfd = pf.data.data ?? pf.data; if (pfd.status !== "ready_for_codegen") return fail(`full ganhou tecto indevido: ${pfd.status}`);
+      const pfd = pf.data.data ?? pf.data; if (pfd.status !== "ready_for_codegen") return fail(`full ganhou envelope indevido: ${pfd.status}`);
       const fullIds = new Set((pfd.activated_scope?.requirements ?? []).map((q) => q.id));
       const union = new Set(); const sizes = [];
       for (const batch of rc.batches) {
         const r = await c.tool("prepare_sbd_toe_codegen_context", { task: args.task, risk_level: args.risk_level, detail: args.detail, ...batch.with });
         if (!r.ok) return fail(`lote ${JSON.stringify(batch.with.categories)} rejeitado: ${r.error}`);
         const rdd = r.data.data ?? r.data;
-        if (rdd.status !== "ready_for_codegen") return fail(`lote ${JSON.stringify(batch.with.categories)} não ficou pronto: ${rdd.status}`);
+        if (rdd.status !== "ready_for_codegen") return fail(`lote ${JSON.stringify(batch.with.categories)} não ficou pronto (ciclo?): ${rdd.status}`);
         const n = (rdd.activated_scope?.requirements ?? []).length;
-        if (n > rc.limit) return fail(`lote excede o tecto: ${n} > ${rc.limit}`);
         if (n !== batch.requirements) return fail(`contagem declarada ${batch.requirements} ≠ real ${n}`);
+        if (rdd.size_estimate?.approx_tokens !== batch.measured_tk) return fail(`custo declarado ${batch.measured_tk} ≠ recebido ${rdd.size_estimate?.approx_tokens}`);
+        if (!(rdd.size_estimate.within_envelope || (batch.irreducible && rdd.size_estimate.irreducible_note_id))) return fail(`lote fora do envelope sem ser irredutível declarado: ${batch.measured_tk} tk`);
         for (const q of rdd.activated_scope.requirements) union.add(q.id);
-        sizes.push(n);
+        sizes.push(`${n}r/${batch.measured_tk}tk`);
       }
       const covered = [...fullIds].filter((id) => union.has(id)).length;
       if (covered !== fullIds.size) return fail(`m_recall da união ${covered}/${fullIds.size} < 1`);
       if (!pfd.size_estimate || !(pfd.size_estimate.approx_tokens > 0) || pfd.size_estimate.envelope_tk !== undefined) return fail("full não declara o preço (size_estimate sem envelope)");
-      return ok(`89@lista → needs_decomposition declarado (tecto ${rc.limit}, ~${rc.cost_per_req_tk} tk/req, proj ${rc.projected_tk}>${rc.promise_tk}); ${rc.batches.length} lotes executados [${sizes.join(", ")}] → união ${union.size}, m_recall ${covered}/${fullIds.size} = 1; full sem tecto, ${pfd.size_estimate.approx_tokens} tk ✓`); } },
+      return ok(`${rc.selected}@lista → needs_decomposition por custo medido (${rc.projected_tk}>${rc.promise_tk} tk); ${rc.batches.length} lotes executados [${sizes.join(", ")}] → união ${union.size}, m_recall ${covered}/${fullIds.size} = 1; full sem envelope, ${pfd.size_estimate.approx_tokens} tk ✓`); } },
 
   { id: "TC-F-35", axis: "F", title: "0.20.0-beta.21: declarativo primeiro — needs_input ensina, declaração selecciona, redacção não decide", tool: "select_sbd_toe_requirements",
     run: async (c) => {
