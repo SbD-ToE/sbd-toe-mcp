@@ -19,6 +19,18 @@ interface GoldenCase {
   requirements?: number;
   citable_ids?: string[];
 }
+/**
+ * 0.21.2 (decisão 0006, lead 2026-09-26): casos do oráculo cuja RE-BASELINAGEM está PENDENTE DE RATIFICAÇÃO.
+ * Os activadores largos passaram a trazer contexto (fatias pela cadeia do dado), e o conjunto citável destes
+ * casos cresce pelas entidades AppSec Core dessas fatias. O oráculo commitado NÃO se mexe: o lead ratifica a
+ * re-baselinagem no ciclo completo, contra o KG novo, vendo o conjunto antes/depois. Até lá, a prova é:
+ * o conjunto novo CONTÉM o do oráculo, os requisitos são os mesmos, e cada id a mais é uma entidade de
+ * uma fatia trazida pela cadeia (`context_slice_chain` no trace) ou uma entidade dessa fatia.
+ */
+const REBASELINE_PENDING_RATIFICATION: Record<string, string> = {
+  "API pública/L3 + activadores": "decisão 0006 — exposure/data_sensitivity trazem fatias pela cadeia do dado"
+};
+
 const golden = JSON.parse(readFileSync(new URL("./__snapshots__/citable-ids-0.20.0.json", import.meta.url), "utf-8")) as {
   generated_from: string;
   cases: Record<string, GoldenCase>;
@@ -64,7 +76,26 @@ describe("invariante 3 — conjunto de ids citáveis idêntico ao oráculo da 0.
       expect(r.status, detail).toBe("ready_for_codegen");
       readyLevels += 1;
       const ids = [...new Set(citableIds(r))].sort();
-      expect(ids, `detail=${detail}`).toEqual(expected);
+      if (REBASELINE_PENDING_RATIFICATION[_name] !== undefined) {
+        const extras = ids.filter((id) => !expected.includes(id));
+        expect(expected.filter((id) => !ids.includes(id)), `detail=${detail}: nada do oráculo se perde`).toEqual([]);
+        const full = handlePrepareCodegenContext({ ...c.input, detail: "full", debug: true }) as unknown as {
+          activation_trace: Array<{ source: string; produced: string }>;
+          g2_context: Record<string, Array<{ entity_id: string; slice_family?: string; slice_id?: string }>>;
+          activated_scope: { slices: Array<{ slice_id: string; objective_family: string }> };
+        };
+        const chainFamilies = new Set(full.activation_trace.filter((t) => t.source === "context_slice_chain").map((t) => t.produced));
+        const chainSlices = new Set(full.activated_scope.slices.filter((sl) => chainFamilies.has(sl.objective_family)).map((sl) => sl.slice_id));
+        const chainEntityIds = new Set(
+          ["control_objectives", "mechanisms", "practices", "artifacts"].flatMap((k) =>
+            (full.g2_context[k] ?? []).filter((e) => e.slice_id !== undefined && chainSlices.has(e.slice_id)).map((e) => e.entity_id)
+          )
+        );
+        expect(extras.length, `detail=${detail}: o conjunto cresce`).toBeGreaterThan(0);
+        expect(extras.filter((id) => !chainEntityIds.has(id) && !chainSlices.has(id)), `detail=${detail}: só fatias da cadeia e as suas entidades`).toEqual([]);
+      } else {
+        expect(ids, `detail=${detail}`).toEqual(expected);
+      }
       expect((r as { activated_scope: { requirements: unknown[] } }).activated_scope.requirements.length).toBe(c.requirements);
     }
     expect(readyLevels).toBeGreaterThanOrEqual(1); // o full nunca bloqueia por tecto

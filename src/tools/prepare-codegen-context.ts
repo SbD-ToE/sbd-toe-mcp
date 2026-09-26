@@ -64,6 +64,7 @@ import { PAYLOAD_PROMISE_TK as LEVEL_ENVELOPE_TK } from "../serving/payload-ceil
 import { buildDeclaredAdjacency, declaredAdjacencyDetail, type AdjacencySignal } from "../serving/adjacency.js";
 import { NOTES, NOTES_HEADER, type NoteId } from "../serving/notes.js";
 import { buildActivationVocabulary } from "../serving/activation-vocabulary.js";
+import { sliceFamiliesByDataChain } from "../serving/context-slice-chain.js";
 import {
   runSelectionWithActivation,
   buildNeedsInput,
@@ -183,6 +184,8 @@ export interface ActivationTraceEntry {
     | "context_chapter"
     /** 0.21.2 (decisão 0005): família de fatia DECLARADA em `slice_families` — só contexto. */
     | "declared_slice_family"
+    /** 0.21.2 (decisão 0006): família alcançada pela CADEIA DO DADO a partir do que exposure/data_sensitivity seleccionam. */
+    | "context_slice_chain"
     | "scope_gate";
   /** What the activation produced (concern, slice_family, framework_id, decision). */
   produced: string;
@@ -3566,12 +3569,24 @@ function applyCostCeiling(
   // nenhuma categoria da selecção («órfãs») vão no lote da categoria mais cara, para a união
   // nunca perder uma fatia. Calculado aqui, antes do empacotamento, porque o custo medido já as inclui.
   const sliceUnits = [...new Set(selection.selected.map((r) => r.category))];
+  // 0.21.2 (decisão 0006): a tabela concern → família só vale para as concerns NÃO largas (as que
+  // produziram fatias no pedido original); as fatias dos activadores largos vêm da cadeia do dado,
+  // a partir dos requisitos largos das categorias do lote — o mesmo contexto que o pedido tinha.
+  const tableConcerns = new Set(
+    activation.trace
+      .filter((t) => t.source !== "exposure" && t.source !== "data_sensitivity" && CONCERN_LEXICON.has(t.produced))
+      .map((t) => t.produced as Concern)
+  );
+  const categoryOfSelected = new Map(selection.selected.map((r) => [r.requirement_id, r.category]));
   const familyOfConcernCovering = (categories: ReadonlySet<string>): Set<string> => {
     const fams = new Set<string>();
     for (const concern of activation.concerns) {
+      if (!tableConcerns.has(concern)) continue;
       const family = CONCERN_TO_SLICE_FAMILY[concern];
       if (family && [...categoriesForConcerns([concern])].some((k) => categories.has(k))) fams.add(family);
     }
+    const broadHere = [...ctx.broadRequirementIds].filter((id) => categories.has(categoryOfSelected.get(id) ?? ""));
+    for (const family of sliceFamiliesByDataChain(broadHere).keys()) fams.add(family);
     return fams;
   };
   const coveredFamilies = familyOfConcernCovering(new Set(sliceUnits));
@@ -3757,6 +3772,8 @@ interface CoreContext {
   activation: ReturnType<typeof activate>;
   selection: SelectionResult;
   declaredTechnologies: string[];
+  /** 0.21.2 (decisão 0006): requisitos que os activadores largos seleccionam sozinhos (origem das fatias pela cadeia do dado). */
+  broadRequirementIds: ReadonlySet<string>;
 }
 
 function prepareCodegenContextCore(
@@ -3943,7 +3960,55 @@ function prepareCodegenContextCore(
 
   // 0.21.2 (decisão 0004): o tecto deixou de ser por contagem. A decisão por CUSTO vive no
   // handler, depois de o payload ser moldado e medido — aqui só se expõe o contexto da selecção.
-  if (out) out.ctx = { input, activation, selection, declaredTechnologies };
+  // 0.21.2 (decisão 0006, opção A) — os activadores LARGOS trazem contexto, e o contexto vem SÓ do dado.
+  // O defeito era de ordem: as famílias de fatias (passo 4 do motor) calculavam-se antes de exposure/
+  // data_sensitivity acrescentarem as suas concerns (passo 4b), e por isso nunca produziam fatias. A
+  // correcção NÃO reordena o motor — isso faria as concerns largas passarem pela tabela concern→família
+  // (opção B). Em vez disso, depois da selecção: os requisitos que cada activador largo selecciona SOZINHO
+  // a este nível percorrem a cadeia requisito → controlo → objectivo → família (context-slice-chain), e
+  // cada família leva a sua testemunha no trace. As tabelas exposure/data_sensitivity → concerns ficam SÓ
+  // para a selecção de requisitos (inalterada); a tabela concern → família fica SÓ para as concerns não
+  // largas (declaradas, de ficheiros, lexicais) — ambas declaradas na decisão 0006 §10.
+  const broadRequirementIds = new Set<string>();
+  const selectedIdSet = new Set(selection.selected.map((r) => r.requirement_id));
+  const broadActivators: Array<{ trigger: string; only: Pick<NormalizedInput, "exposure" | "data_sensitivity"> }> = [
+    ...(input.exposure ? [{ trigger: `exposure=${input.exposure}`, only: { exposure: input.exposure } }] : []),
+    ...(input.data_sensitivity ? [{ trigger: `data_sensitivity=${input.data_sensitivity}`, only: { data_sensitivity: input.data_sensitivity } }] : [])
+  ];
+  const chainTriggers = new Map<string, string[]>();
+  const chainWitnesses = new Map<string, ReturnType<typeof sliceFamiliesByDataChain> extends Map<string, infer W> ? W : never>();
+  for (const { trigger, only } of broadActivators) {
+    const { stack: _stack, exposure: _exposure, data_sensitivity: _sensitivity, ...rest } = input;
+    void _stack; void _exposure; void _sensitivity;
+    const broadInput: NormalizedInput = {
+      ...rest, task: "", taskTrimmed: "", taskLower: "", tokenCount: 0,
+      concerns: [], unknownConcerns: [], changed_files: [], ...only
+    };
+    const broadSelection = runSelectionWithActivation(broadInput, activate(broadInput, { declaredOnly: true }), [], "declarative", { chapters: [], categories: [] });
+    if (broadSelection.needs_input) continue; // valor inerte (local / low)
+    const ids = broadSelection.selected.map((r) => r.requirement_id).filter((id) => selectedIdSet.has(id));
+    for (const id of ids) broadRequirementIds.add(id);
+    for (const [family, witness] of sliceFamiliesByDataChain(ids)) {
+      chainTriggers.set(family, [...(chainTriggers.get(family) ?? []), trigger]);
+      if (!chainWitnesses.has(family)) chainWitnesses.set(family, witness);
+    }
+  }
+  for (const [family, witness] of [...chainWitnesses.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
+    if (!activation.sliceFamilies.includes(family)) activation.sliceFamilies.push(family);
+    activation.trace.push({
+      source: "context_slice_chain",
+      produced: family,
+      trigger: chainTriggers.get(family)!.join("; "),
+      score: 0.9,
+      confidence: "deterministic",
+      reason:
+        `${chainTriggers.get(family)!.join(" and ")} selects ${witness.requirement_id} → control ${witness.control_id} → ` +
+        `objective ${witness.control_objective_id} (${witness.alignment_type}, ctrl_acore_alignment) → family ${family}. ` +
+        "Published data chain; asserts alignment, not authorship nor that the activator requires the slice."
+    });
+  }
+
+  if (out) out.ctx = { input, activation, selection, declaredTechnologies, broadRequirementIds };
 
   const postGate = gateAfterActivation({
     input,
@@ -4385,6 +4450,26 @@ export function publishedSliceFamilies(): string[] {
   } catch {
     return [];
   }
+}
+
+/**
+ * 0.21.2 (decisão 0006): as famílias que UM activador largo traz a um nível, pela cadeia do dado — o que
+ * o vocabulário publica. Mesma derivação que o prepare usa (selecção só com esse activador → cadeia).
+ * Memorizado por processo (o bundle é fixo por processo).
+ */
+const BROAD_FAMILY_CACHE = new Map<string, string[]>();
+export function sliceFamiliesForBroadActivator(
+  risk_level: RiskLevel,
+  only: { exposure?: NonNullable<PrepareCodegenContextInput["exposure"]> } | { data_sensitivity?: NonNullable<PrepareCodegenContextInput["data_sensitivity"]> }
+): string[] {
+  const key = `${risk_level}|${JSON.stringify(only)}`;
+  const hit = BROAD_FAMILY_CACHE.get(key);
+  if (hit) return hit;
+  const broadInput = normalizeInput({ task: "", risk_level, ...only });
+  const broadSelection = runSelectionWithActivation(broadInput, activate(broadInput, { declaredOnly: true }), [], "declarative", { chapters: [], categories: [] });
+  const families = broadSelection.needs_input ? [] : [...sliceFamiliesByDataChain(broadSelection.selected.map((r) => r.requirement_id)).keys()];
+  BROAD_FAMILY_CACHE.set(key, families);
+  return families;
 }
 
 /** As concerns que produzem uma família de fatia (o mesmo mapa que o motor usa). */

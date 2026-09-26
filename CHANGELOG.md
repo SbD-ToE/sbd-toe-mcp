@@ -34,6 +34,20 @@ não tem envelope e fica **byte-idêntico** à 0.21.1.
 - Nota nova `prepare.size_estimate.irreducible`; `prepare.size_estimate.envelope_exceeded` reescrita; descrições e guia do
   agente (`needs_decomposition` → executar os lotes) alinhados.
 
+**Os activadores largos trazem contexto, derivado só do dado (decisão 0006, opção A; lead 2026-09-26):** `exposure` e
+`data_sensitivity` activavam categorias mas nenhuma fatia (defeito de ordem no motor). Um pedido declarado só por eles não tinha
+contexto AppSec Core nem em `full`. Agora os requisitos que cada activador largo selecciona percorrem a cadeia publicada
+requisito → controlo (`requirement_control_links`) → objectivo (`ctrl_acore_alignment`, exact/partial) → família. Cada família
+leva a sua testemunha no `activation_trace` (`context_slice_chain`).
+- O vocabulário publica, por valor e nível, `activates_slice_families`.
+- As tabelas exposure/data_sensitivity → concerns ficam só para a selecção, que não muda.
+- Os lotes (0005) levam exactamente o contexto do pedido.
+- Matriz dos activadores largos: declarações sem G2 46/47 → **0/47**; decomposições 24 → 52; +29,8 % tokens; 0 violações.
+  O avaliador passa de G2 0 para 163.
+- O caso «API pública/L3 + activadores» do oráculo da invariante 3 fica em **re-baselinagem pendente de ratificação**, no ciclo
+  completo.
+- Seguimento para o KG v2.12: a relação precisa como dado.
+
 **Lotes com os activadores do pedido (decisão 0005, lead 2026-09-26):** cada lote de `needs_decomposition` é o pedido original
 restrito às suas categorias — os mesmos requisitos e o mesmo contexto (fatias AppSec Core e `manual_grounding`), as mesmas
 `technologies`, `changed_files`, overlay e `mode`. A união dos lotes devolve o pedido inteiro. Uma decomposição tem sempre dois

@@ -24,3 +24,19 @@ acceptance `acceptance-reports/2026-09-26-v0.21.2-dev-cost-ceilings-acceptance.m
   0 lotes únicos, cobertura G2 1,00 e 0 violações.
 - **Achado aberto para o lead:** `exposure` e `data_sensitivity` não produzem fatias.
 
+
+## Decisão 0006 — promessa escrita (2026-09-26)
+- **Estado:** promessa no commit `89fa703`, sem código. `exposure` e `data_sensitivity` passam a trazer contexto, e as fatias
+  vêm da cadeia do dado REQ→CTRL→ACO.
+- **Decisões do lead pendentes:** A (dado) ou B (regra); pedido ao KG; re-baselinagem de um caso do oráculo da invariante 3.
+- **Ciclo:** sem release nem PR até o Manual fechar. Depois vem o ciclo completo Manual → KG (v1.27 + v1.28) → ontologia v2.11
+  → MCP, e o branch será re-verificado contra o bundle novo.
+
+## Decisão 0006 — implementada (2026-09-26)
+- **Opção A:** as fatias dos activadores largos vêm só do dado, pela cadeia REQ→CTRL→ACO. Matriz com G2 zero 46 → 0, 0
+  violações, e a união dos lotes exacta.
+- **SEGUIMENTO KG v2.12:** a relação precisa «valor de contexto → fatias» (e «concern → família») como dado. O Archon modela em
+  `ApplicationContext`, o Codex materializa, e o lead ratifica. Não é deste ciclo.
+- **SEGUIMENTO no ciclo completo:** re-baselinar o caso do oráculo «API pública/L3 + activadores», mostrando ao lead o conjunto
+  citável antes/depois contra o KG novo. Re-medir as duas matrizes.
+
