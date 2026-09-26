@@ -66,6 +66,7 @@ import { NOTES, NOTES_HEADER, type NoteId } from "../serving/notes.js";
 import { buildActivationVocabulary } from "../serving/activation-vocabulary.js";
 import {
   runSelectionWithActivation,
+  buildNeedsInput,
   normalizeDeclaredTechnologies,
   stackTokensFromVocabulary,
   type SelectionResult
@@ -132,6 +133,14 @@ export interface PrepareCodegenContextInput {
    */
   chapters?: string[];
   categories?: string[];
+  /**
+   * 0.21.2 (decisão 0005) — activador SÓ DE CONTEXTO: activa as fatias destas famílias (entidades
+   * AppSec Core do g2_context e o manual_grounding) e NUNCA selecciona requisitos. Não conta como
+   * declaração (sozinho devolve needs_input); um valor fora do conjunto publicado é declarado inerte
+   * com valid_values. Quem o escreve é o servidor, na receita dos lotes de needs_decomposition — cada
+   * lote leva as fatias que o pedido original activava para as suas categorias.
+   */
+  slice_families?: string[];
   regulatory_frameworks?: string[];
   include_regulatory_overlay?: boolean;
   detail?: CodegenDetailLevel;
@@ -172,6 +181,8 @@ export interface ActivationTraceEntry {
     | "exposure"
     | "data_sensitivity"
     | "context_chapter"
+    /** 0.21.2 (decisão 0005): família de fatia DECLARADA em `slice_families` — só contexto. */
+    | "declared_slice_family"
     | "scope_gate";
   /** What the activation produced (concern, slice_family, framework_id, decision). */
   produced: string;
@@ -562,6 +573,8 @@ export interface DecompositionBatch {
     categories: string[];
     /** 0.21.2: só quando o pedido não é codegen — o lote corre no mesmo modo. */
     mode?: CodegenMode;
+    /** 0.21.2 (decisão 0005): as fatias que o pedido original activava para as categorias deste lote. */
+    slice_families?: string[];
     technologies?: string[];
     changed_files?: string[];
     regulatory_frameworks?: string[];
@@ -3547,9 +3560,32 @@ function applyCostCeiling(
     ...(raw.risk_level !== undefined ? { risk_level: raw.risk_level } : {}),
     detail
   } as PrepareCodegenContextInput;
+  // 0.21.2 (decisão 0005): cada lote é o pedido original restrito às suas categorias — leva as
+  // fatias que o pedido activava. Uma família entra num lote quando uma concern activada pelo
+  // pedido a produz e cobre uma das categorias do lote; as famílias do pedido que não cobrem
+  // nenhuma categoria da selecção («órfãs») vão no lote da categoria mais cara, para a união
+  // nunca perder uma fatia. Calculado aqui, antes do empacotamento, porque o custo medido já as inclui.
+  const sliceUnits = [...new Set(selection.selected.map((r) => r.category))];
+  const familyOfConcernCovering = (categories: ReadonlySet<string>): Set<string> => {
+    const fams = new Set<string>();
+    for (const concern of activation.concerns) {
+      const family = CONCERN_TO_SLICE_FAMILY[concern];
+      if (family && [...categoriesForConcerns([concern])].some((k) => categories.has(k))) fams.add(family);
+    }
+    return fams;
+  };
+  const coveredFamilies = familyOfConcernCovering(new Set(sliceUnits));
+  const orphanFamilies = activation.sliceFamilies.filter((f) => !coveredFamilies.has(f));
+  let anchorCategory: string | undefined; // definida depois de ordenar as unidades
+  const familiesFor = (categories: readonly string[]): string[] => {
+    const fams = familyOfConcernCovering(new Set(categories));
+    if (anchorCategory !== undefined && categories.includes(anchorCategory)) for (const f of orphanFamilies) fams.add(f);
+    return [...fams].sort();
+  };
   const measure = (categories: string[]) => {
     const o: { ctx?: CoreContext } = {};
-    const r = renderPrepare({ ...baseRaw, ...carried, categories }, o);
+    const families = familiesFor(categories);
+    const r = renderPrepare({ ...baseRaw, ...carried, categories, ...(families.length > 0 ? { slice_families: families } : {}) }, o);
     if (r.status !== "ready_for_codegen" || o.ctx === undefined) {
       throw new Error(`cost ceiling: batch categories=[${categories.join(",")}] did not render ready (${r.status}).`);
     }
@@ -3576,7 +3612,11 @@ function applyCostCeiling(
     return withSizeEstimate(payload, detail, { irreducible: true }) as PrepareCodegenContextResult;
   }
 
-  const isolated = new Map(units.map((c) => [c, measure([c]).tk]));
+  // A âncora das famílias órfãs fixa-se ANTES de medir (o custo isolado de uma categoria depende
+  // das fatias que leva): a primeira categoria por custo sem órfãs, desempate por id.
+  const bare = new Map(units.map((c) => [c, measure([c]).tk]));
+  anchorCategory = [...units].sort((a, b2) => bare.get(b2)! - bare.get(a)! || a.localeCompare(b2))[0];
+  const isolated = new Map(units.map((c) => [c, c === anchorCategory && orphanFamilies.length > 0 ? measure([c]).tk : bare.get(c)!]));
   const order = [...units].sort((a, b2) => isolated.get(b2)! - isolated.get(a)! || a.localeCompare(b2));
   const bins: Array<{ categories: string[]; tk: number }> = [];
   for (const category of order) {
@@ -3590,6 +3630,14 @@ function applyCostCeiling(
       }
     }
     if (!placed) bins.push({ categories: [category], tk: alone });
+  }
+  // 0.21.2 (decisão 0005): uma decomposição tem sempre dois lotes ou mais. Se o empacotamento der um
+  // só lote (com ≥2 categorias, garantido acima), a última categoria sai para um lote próprio — ambos medidos.
+  if (bins.length === 1) {
+    const only = bins[0]!;
+    const last = only.categories.pop()!;
+    only.tk = measure(only.categories).tk;
+    bins.push({ categories: [last], tk: measure([last]).tk });
   }
 
   const activatorConcerns = new Set<string>([
@@ -3605,7 +3653,12 @@ function applyCostCeiling(
     const categories = bin.categories;
     const concerns = [...new Set(categories.flatMap(concernsForCategory))].filter((c) => !activatorConcerns.has(c) || input.concerns.includes(c as Concern)).sort();
     return {
-      with: { categories: [...categories], ...carried },
+      with: {
+        categories: [...categories],
+        ...(carried.mode !== undefined ? { mode: carried.mode } : {}),
+        ...(familiesFor(categories).length > 0 ? { slice_families: familiesFor(categories) } : {}),
+        ...carried
+      },
       requirements: m.ids.length,
       measured_tk: m.tk,
       irreducible: categories.length === 1 && m.tk > envelope,
@@ -3624,6 +3677,7 @@ function applyCostCeiling(
     ...(carried.changed_files ? ["changed_files"] : []),
     ...(carried.regulatory_frameworks || carried.include_regulatory_overlay ? ["overlay"] : [])
   ];
+  const anyFamilies = batches.some((bt) => (bt.with.slice_families?.length ?? 0) > 0);
   const b = blocked(
     input,
     raw,
@@ -3635,7 +3689,8 @@ function applyCostCeiling(
     [
       `Divide em ${batches.length} lotes que SOMAM O TODO (união = ${union.size} ids, m_recall ${recall.toFixed(2)} face à selecção inteira): ` +
         "repete com task + risk_level + detail + `categories` do lote" +
-        (preserved.length > 0 ? ` (${preserved.join("/")} preservados em cada lote)` : "") +
+        (preserved.length > 0 || anyFamilies ? ` + o \`with\` do lote tal e qual (${[...preserved, ...(anyFamilies ? ["slice_families"] : [])].join("/")})` : "") +
+        ". Cada lote é o teu pedido restrito às suas categorias: os mesmos requisitos e o mesmo contexto (fatias AppSec Core e manual_grounding) para elas" +
         ". Cada lote é a partição EXACTA das categorias que a tua declaração activou — exposure/data_sensitivity estão lá pelo seu efeito (re-declará-los somaria as suas categorias a todos os lotes). Cada lote foi medido e cabe no envelope, salvo irredutível declarado. Lotes: " +
         batches.map((bt, i) => `${i + 1}) categories=[${bt.with.categories.map((c) => `"${c}"`).join(", ")}] (${bt.requirements} reqs, ${bt.measured_tk} tk${bt.irreducible ? ", IRREDUTÍVEL: sai pronto e declarado fora do envelope" : ""}; de ${bt.derived_from.concerns.map((c) => `"${c}"`).join(", ") || "activadores"}${bt.derived_from.exposure ? `, exposure=${bt.derived_from.exposure}` : ""}${bt.derived_from.data_sensitivity ? `, data_sensitivity=${bt.derived_from.data_sensitivity}` : ""})`).join("; ") +
         ".",
@@ -3798,14 +3853,69 @@ function prepareCodegenContextCore(
     selectionMode,
     structural
   );
+  // 0.21.2 (decisão 0005): `slice_families` — só contexto. Validado contra o conjunto publicado.
+  const declaredSliceFamilies = Array.isArray(raw.slice_families)
+    ? [...new Set(raw.slice_families.filter((x): x is string => typeof x === "string" && x.length > 0))]
+    : [];
+  const knownSliceFamilies = new Set(publishedSliceFamilies());
+  const unknownSliceFamilies = declaredSliceFamilies.filter((f) => !knownSliceFamilies.has(f)).sort();
+  const sliceFamiliesInert: string[] = [
+    ...(declaredSliceFamilies.length > 0 && selection.needs_input
+      ? [`slice_families=[${declaredSliceFamilies.join(", ")}] (só de contexto: activa fatias, nunca selecciona requisitos — não é declaração)`]
+      : []),
+    ...(unknownSliceFamilies.length > 0
+      ? [`slice_families=[${unknownSliceFamilies.join(", ")}] (fora do conjunto publicado em sbd://toe/activation-vocabulary → slice_families)`]
+      : [])
+  ];
+  if (!selection.needs_input && unknownSliceFamilies.length > 0) {
+    const ni = buildNeedsInput(
+      input,
+      {
+        concerns: [...input.concerns],
+        ...(input.exposure ? { exposure: input.exposure } : {}),
+        ...(input.data_sensitivity ? { data_sensitivity: input.data_sensitivity } : {}),
+        technologies: [...declaredTechnologies],
+        changed_files: [...input.changed_files]
+      },
+      sliceFamiliesInert
+    );
+    const b = blocked(
+      input,
+      raw,
+      "needs_input",
+      [ni.reason, "`slice_families` só aceita as famílias publicadas — o valor não se engole nem se adivinha."],
+      [`Lê as famílias publicadas: read_sbd_toe_resource(uri="sbd://toe/activation-vocabulary") → slice_families.`, `Re-chama sem os valores desconhecidos (${unknownSliceFamilies.join(", ")}).`],
+      activation.trace
+    );
+    b.needs_input = { ...ni, valid_values: { slice_families: [...knownSliceFamilies].sort() } };
+    return b;
+  }
+  if (!selection.needs_input && declaredSliceFamilies.length > 0) {
+    const present = new Set(activation.sliceFamilies);
+    for (const family of [...declaredSliceFamilies].sort()) {
+      if (present.has(family)) continue;
+      activation.sliceFamilies.push(family);
+      activation.trace.push({
+        source: "declared_slice_family",
+        produced: family,
+        trigger: family,
+        score: 1,
+        confidence: "deterministic",
+        reason: "Declared in `slice_families`: context only (AppSec Core entities + manual_grounding of this family's slices); never selects requirements."
+      });
+    }
+  }
   if (selection.needs_input) {
-    const ni = selection.needs_input;
+    const ni = sliceFamiliesInert.length > 0
+      ? { ...selection.needs_input, inert_declarations: [...(selection.needs_input.inert_declarations ?? []), ...sliceFamiliesInert] }
+      : selection.needs_input;
     const inert = (ni.inert_declarations ?? []).join(" ");
     const vocab = buildActivationVocabulary();
     const validValues: Record<string, string[]> = {
       ...(/\bstack=|\btechnologies=/.test(inert) ? { technologies: vocab.technologies.values.map((t) => String(t.value)) } : {}),
       ...(/\bexposure=/.test(inert) ? { exposure: vocab.exposure.values.map((e) => String(e.value)) } : {}),
-      ...(/\bdata_sensitivity=/.test(inert) ? { data_sensitivity: vocab.data_sensitivity.values.map((d) => String(d.value)) } : {})
+      ...(/\bdata_sensitivity=/.test(inert) ? { data_sensitivity: vocab.data_sensitivity.values.map((d) => String(d.value)) } : {}),
+      ...(unknownSliceFamilies.length > 0 ? { slice_families: [...knownSliceFamilies].sort() } : {})
     };
     const blockedNeedsInput = blocked(
       input,
@@ -4263,6 +4373,23 @@ function aggregateExpectedFromSlices(slices: AppSecSlice[]): {
     totals.artifacts += slice.counts_actual.artifacts;
   }
   return totals;
+}
+
+/**
+ * 0.21.2 (decisão 0005) — o conjunto PUBLICADO de famílias de fatia: derivado das fatias do runtime
+ * AppSec Core servido (objective_family), nunca escrito à mão. Vazio quando o runtime falta.
+ */
+export function publishedSliceFamilies(): string[] {
+  try {
+    return [...new Set(getG2Runtime().slices.map((slice) => slice.objective_family))].sort();
+  } catch {
+    return [];
+  }
+}
+
+/** As concerns que produzem uma família de fatia (o mesmo mapa que o motor usa). */
+export function sliceFamilyProducers(family: string): Concern[] {
+  return VALID_CONCERNS.filter((concern) => CONCERN_TO_SLICE_FAMILY[concern] === family);
 }
 
 // Re-export the lexicon so tests / docs can reference the canonical list.

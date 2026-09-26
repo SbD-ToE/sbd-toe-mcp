@@ -137,3 +137,32 @@ Não há pergunta binária: a decisão do lead fixou o quê, e isto é o como. H
 - **O nome e a exposição de `slice_families`.** É um parâmetro público, porque a receita do lote tem de se poder executar
   tal e qual. Proponho mostrá-lo no vocabulário como activador «só de contexto» e não o ensinar como forma de pedir: quem o
   escreve é o servidor, na receita do lote.
+
+---
+
+## 8. Decisão do lead e implementação (2026-09-26, append)
+
+**Decisão (via Orchestrator):** SIM. `slice_families` fica público, declarado no vocabulário como activador «só de contexto»,
+não ensinado como forma de pedir, e sozinho devolve `needs_input`.
+
+**Implementado como prometido**, no branch `0.21.2-cost-ceilings`. Dois pontos que a implementação fixou:
+1. **A âncora das famílias órfãs** é a categoria de maior custo isolado, medido sem as órfãs (desempate por id). Fica fixada antes
+   do empacotamento, porque o custo de uma categoria depende das fatias que leva.
+2. **Um valor desconhecido em `slice_families` devolve `needs_input`**, mesmo com uma declaração válida ao lado. Nomeia o valor e
+   traz `valid_values.slice_families`. Não se engole: a receita do servidor nunca o produz, e um valor inventado por um cliente não
+   deve passar em silêncio.
+
+**Prova:**
+- matriz de 120 casos: 0 decomposições de um só lote; cobertura G2 da união 1,00 (mínima 1,00); fatias completas em 32 de 32;
+  0 violações; `full` byte-idêntico à 0.21.1 em 60 de 60;
+- `prepare-codegen-context.batch-context.test.ts`: casos nomeados, propriedade sobre concerns e trios, selecção invariante por
+  família, `needs_input` sozinho e com valor desconhecido, vocabulário;
+- TC-F-34, com o exemplo dos docs: contexto G2 43/43;
+- vitest 848/848; acceptance 141/16/0/23 PASS; Eixo H 10/10.
+
+**Achado para o lead (anterior, não causado por esta decisão):** `exposure` e `data_sensitivity` activam categorias, mas **nenhuma
+fatia**. As concerns que produzem aparecem no trace, mas não entram no mapa concern → família. Um pedido declarado só por eles
+(ex.: o caso do avaliador, `exposure: public` + `data_sensitivity: personal`) não tem contexto G2 nem no `full`. Os lotes reproduzem
+fielmente o pedido original, como esta decisão promete, e por isso também não têm contexto. Se os activadores largos devem
+produzir fatias, é outra decisão.
+

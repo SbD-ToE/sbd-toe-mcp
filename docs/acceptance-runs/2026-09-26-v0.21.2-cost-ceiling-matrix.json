@@ -1,8 +1,8 @@
 {
   "tally": {
-    "cases": 116,
+    "cases": 120,
     "same_ready": 87,
-    "same_blocked": 6,
+    "same_blocked": 8,
     "ready_to_blocked": [
       "supply_chain L2@lista (32 reqs, 9389 tk)",
       "supply_chain L2@standard (32 reqs, 9839 tk)",
@@ -25,17 +25,24 @@
       "files+privacy+agents L3@lista (33 reqs, 11351 tk)",
       "files+privacy+agents L3@standard (33 reqs, 11820 tk)",
       "auth+logging+RGPD L2@lista (36 reqs, 11523 tk)",
-      "auth+logging+RGPD L2@standard (36 reqs, 11962 tk)"
+      "auth+logging+RGPD L2@standard (36 reqs, 11962 tk)",
+      "auth+RGPD L2@lista (27 reqs, 9347 tk)",
+      "auth+RGPD L2@standard (27 reqs, 9827 tk)"
     ],
     "blocked_to_ready": [
       "auth+logging+validation L3@lista (53 reqs, 7981 tk)"
     ],
     "irreducible_ready": [],
-    "before_ready_above_envelope": 22,
-    "full_byte_identical": "58/58",
+    "before_ready_above_envelope": 24,
+    "full_byte_identical": "60/60",
+    "decompositions": 32,
+    "single_batch_decompositions": 0,
+    "g2_coverage_mean": 1,
+    "g2_coverage_min": 1,
+    "slices_full_union": "32/32",
     "violations": [],
-    "max_ms": 313,
-    "total_s": 32.9
+    "max_ms": 346,
+    "total_s": 31.1
   },
   "rows": [
     {
@@ -44,7 +51,7 @@
       "reqs": 27,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 9,
+      "ms": 10,
       "before_tk": 4582,
       "after_tk": 4582,
       "irreducible": false
@@ -66,7 +73,7 @@
       "reqs": 9,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 2837,
       "after_tk": 2837,
       "irreducible": false
@@ -110,7 +117,7 @@
       "reqs": 7,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 3348,
       "after_tk": 3348,
       "irreducible": false
@@ -187,7 +194,7 @@
       "reqs": 7,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 4127,
       "after_tk": 4127,
       "irreducible": false
@@ -242,7 +249,7 @@
       "reqs": 12,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 9,
+      "ms": 6,
       "before_tk": 4757,
       "after_tk": 4757,
       "irreducible": false
@@ -264,7 +271,7 @@
       "reqs": 11,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 3895,
       "after_tk": 3895,
       "irreducible": false
@@ -286,7 +293,7 @@
       "reqs": 8,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 10,
+      "ms": 7,
       "before_tk": 3352,
       "after_tk": 3352,
       "irreducible": false
@@ -297,7 +304,7 @@
       "reqs": 8,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 9,
+      "ms": 10,
       "before_tk": 3844,
       "after_tk": 3844,
       "irreducible": false
@@ -308,7 +315,7 @@
       "reqs": 14,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 11,
+      "ms": 6,
       "before_tk": 4344,
       "after_tk": 4344,
       "irreducible": false
@@ -319,7 +326,7 @@
       "reqs": 14,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 10,
+      "ms": 7,
       "before_tk": 4795,
       "after_tk": 4795,
       "irreducible": false
@@ -330,7 +337,7 @@
       "reqs": 18,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 5,
       "before_tk": 5949,
       "after_tk": 5949,
       "irreducible": false
@@ -341,7 +348,7 @@
       "reqs": 18,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 5,
       "before_tk": 6429,
       "after_tk": 6429,
       "irreducible": false
@@ -352,21 +359,30 @@
       "reqs": 32,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 313,
+      "ms": 256,
       "before_tk": 9389,
       "after_tk": 9389,
       "batches": [
         {
           "categories": [
             "DEP",
-            "CIC",
+            "CIC"
+          ],
+          "requirements": 23,
+          "measured_tk": 7728,
+          "irreducible": false
+        },
+        {
+          "categories": [
             "INT"
           ],
-          "requirements": 32,
-          "measured_tk": 8373,
+          "requirements": 9,
+          "measured_tk": 3220,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -382,14 +398,23 @@
         {
           "categories": [
             "DEP",
-            "CIC",
+            "CIC"
+          ],
+          "requirements": 23,
+          "measured_tk": 8234,
+          "irreducible": false
+        },
+        {
+          "categories": [
             "INT"
           ],
-          "requirements": 32,
-          "measured_tk": 8879,
+          "requirements": 9,
+          "measured_tk": 3726,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -398,7 +423,7 @@
       "reqs": 8,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 3584,
       "after_tk": 3584,
       "irreducible": false
@@ -409,7 +434,7 @@
       "reqs": 8,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 10,
+      "ms": 6,
       "before_tk": 4051,
       "after_tk": 4051,
       "irreducible": false
@@ -420,7 +445,7 @@
       "reqs": 8,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 10,
+      "ms": 6,
       "before_tk": 4967,
       "after_tk": 4967,
       "irreducible": false
@@ -431,7 +456,7 @@
       "reqs": 8,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 5458,
       "after_tk": 5458,
       "irreducible": false
@@ -464,7 +489,7 @@
       "reqs": 20,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 8,
+      "ms": 6,
       "before_tk": 8131,
       "after_tk": 8131,
       "irreducible": false
@@ -486,7 +511,7 @@
       "reqs": 38,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 65,
+      "ms": 57,
       "before_tk": 9027,
       "after_tk": 9027,
       "batches": [
@@ -494,14 +519,23 @@
           "categories": [
             "DPL",
             "CNT",
-            "IAC",
+            "IAC"
+          ],
+          "requirements": 31,
+          "measured_tk": 7940,
+          "irreducible": false
+        },
+        {
+          "categories": [
             "DST"
           ],
-          "requirements": 38,
-          "measured_tk": 7860,
+          "requirements": 7,
+          "measured_tk": 3355,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -510,7 +544,7 @@
       "reqs": 38,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 63,
+      "ms": 59,
       "before_tk": 9451,
       "after_tk": 9451,
       "batches": [
@@ -518,14 +552,23 @@
           "categories": [
             "DPL",
             "CNT",
-            "IAC",
+            "IAC"
+          ],
+          "requirements": 31,
+          "measured_tk": 8446,
+          "irreducible": false
+        },
+        {
+          "categories": [
             "DST"
           ],
-          "requirements": 38,
-          "measured_tk": 8366,
+          "requirements": 7,
+          "measured_tk": 3861,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -534,7 +577,7 @@
       "reqs": 16,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 4372,
       "after_tk": 4372,
       "irreducible": false
@@ -567,7 +610,7 @@
       "reqs": 8,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 3198,
       "after_tk": 3198,
       "irreducible": false
@@ -578,7 +621,7 @@
       "reqs": 5,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 2234,
       "after_tk": 2234,
       "irreducible": false
@@ -589,7 +632,7 @@
       "reqs": 5,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 9,
+      "ms": 6,
       "before_tk": 2727,
       "after_tk": 2727,
       "irreducible": false
@@ -600,7 +643,7 @@
       "reqs": 18,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 201,
+      "ms": 193,
       "before_tk": 8819,
       "after_tk": 8819,
       "batches": [
@@ -636,6 +679,8 @@
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -680,6 +725,8 @@
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -688,7 +735,7 @@
       "reqs": 28,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 4674,
       "after_tk": 4674,
       "irreducible": false
@@ -699,7 +746,7 @@
       "reqs": 28,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 10,
+      "ms": 6,
       "before_tk": 5156,
       "after_tk": 5156,
       "irreducible": false
@@ -710,7 +757,7 @@
       "reqs": 10,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 2929,
       "after_tk": 2929,
       "irreducible": false
@@ -721,7 +768,7 @@
       "reqs": 10,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 8,
       "before_tk": 3423,
       "after_tk": 3423,
       "irreducible": false
@@ -743,7 +790,7 @@
       "reqs": 15,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 8,
       "before_tk": 4177,
       "after_tk": 4177,
       "irreducible": false
@@ -765,7 +812,7 @@
       "reqs": 7,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 10,
       "before_tk": 3843,
       "after_tk": 3843,
       "irreducible": false
@@ -776,7 +823,7 @@
       "reqs": 7,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 8,
       "before_tk": 3249,
       "after_tk": 3249,
       "irreducible": false
@@ -787,7 +834,7 @@
       "reqs": 7,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 8,
+      "ms": 7,
       "before_tk": 3744,
       "after_tk": 3744,
       "irreducible": false
@@ -798,7 +845,7 @@
       "reqs": 12,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 11,
       "before_tk": 3937,
       "after_tk": 3937,
       "irreducible": false
@@ -809,7 +856,7 @@
       "reqs": 12,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 8,
       "before_tk": 4430,
       "after_tk": 4430,
       "irreducible": false
@@ -820,7 +867,7 @@
       "reqs": 7,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 3635,
       "after_tk": 3635,
       "irreducible": false
@@ -831,7 +878,7 @@
       "reqs": 7,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 4128,
       "after_tk": 4128,
       "irreducible": false
@@ -842,7 +889,7 @@
       "reqs": 6,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 8,
+      "ms": 6,
       "before_tk": 2533,
       "after_tk": 2533,
       "irreducible": false
@@ -864,7 +911,7 @@
       "reqs": 7,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 2330,
       "after_tk": 2330,
       "irreducible": false
@@ -875,7 +922,7 @@
       "reqs": 7,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 2824,
       "after_tk": 2824,
       "irreducible": false
@@ -886,7 +933,7 @@
       "reqs": 15,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 11,
+      "ms": 6,
       "before_tk": 5092,
       "after_tk": 5092,
       "irreducible": false
@@ -908,7 +955,7 @@
       "reqs": 13,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 4127,
       "after_tk": 4127,
       "irreducible": false
@@ -930,7 +977,7 @@
       "reqs": 9,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 3477,
       "after_tk": 3477,
       "irreducible": false
@@ -941,7 +988,7 @@
       "reqs": 9,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 3970,
       "after_tk": 3970,
       "irreducible": false
@@ -952,7 +999,7 @@
       "reqs": 16,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 9,
+      "ms": 6,
       "before_tk": 4634,
       "after_tk": 4634,
       "irreducible": false
@@ -974,7 +1021,7 @@
       "reqs": 20,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 5,
       "before_tk": 6382,
       "after_tk": 6382,
       "irreducible": false
@@ -985,7 +1032,7 @@
       "reqs": 20,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 6864,
       "after_tk": 6864,
       "irreducible": false
@@ -996,7 +1043,7 @@
       "reqs": 37,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 282,
+      "ms": 260,
       "before_tk": 10065,
       "after_tk": 10065,
       "batches": [
@@ -1006,7 +1053,7 @@
             "CIC"
           ],
           "requirements": 25,
-          "measured_tk": 7530,
+          "measured_tk": 8109,
           "irreducible": false
         },
         {
@@ -1014,10 +1061,12 @@
             "INT"
           ],
           "requirements": 12,
-          "measured_tk": 2988,
+          "measured_tk": 3566,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1026,7 +1075,7 @@
       "reqs": 37,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 48,
+      "ms": 49,
       "before_tk": 10516,
       "after_tk": 10516,
       "batches": [
@@ -1036,7 +1085,7 @@
             "CIC"
           ],
           "requirements": 25,
-          "measured_tk": 8038,
+          "measured_tk": 8616,
           "irreducible": false
         },
         {
@@ -1044,10 +1093,12 @@
             "INT"
           ],
           "requirements": 12,
-          "measured_tk": 3495,
+          "measured_tk": 4074,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1056,7 +1107,7 @@
       "reqs": 10,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 9,
+      "ms": 6,
       "before_tk": 3964,
       "after_tk": 3964,
       "irreducible": false
@@ -1067,7 +1118,7 @@
       "reqs": 10,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 8,
+      "ms": 6,
       "before_tk": 4432,
       "after_tk": 4432,
       "irreducible": false
@@ -1078,7 +1129,7 @@
       "reqs": 8,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 9,
+      "ms": 7,
       "before_tk": 4967,
       "after_tk": 4967,
       "irreducible": false
@@ -1089,7 +1140,7 @@
       "reqs": 8,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 8,
+      "ms": 6,
       "before_tk": 5459,
       "after_tk": 5459,
       "irreducible": false
@@ -1100,7 +1151,7 @@
       "reqs": 25,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 8,
+      "ms": 6,
       "before_tk": 7491,
       "after_tk": 7491,
       "irreducible": false
@@ -1111,7 +1162,7 @@
       "reqs": 25,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 10,
+      "ms": 6,
       "before_tk": 7956,
       "after_tk": 7956,
       "irreducible": false
@@ -1122,7 +1173,7 @@
       "reqs": 26,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 45,
+      "ms": 36,
       "before_tk": 9926,
       "after_tk": 9926,
       "batches": [
@@ -1131,7 +1182,7 @@
             "OPS"
           ],
           "requirements": 15,
-          "measured_tk": 6060,
+          "measured_tk": 6988,
           "irreducible": false
         },
         {
@@ -1139,10 +1190,12 @@
             "DPL"
           ],
           "requirements": 11,
-          "measured_tk": 4182,
+          "measured_tk": 5109,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1151,7 +1204,7 @@
       "reqs": 26,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 37,
+      "ms": 35,
       "before_tk": 10406,
       "after_tk": 10406,
       "batches": [
@@ -1160,7 +1213,7 @@
             "OPS"
           ],
           "requirements": 15,
-          "measured_tk": 6568,
+          "measured_tk": 7495,
           "irreducible": false
         },
         {
@@ -1168,10 +1221,12 @@
             "DPL"
           ],
           "requirements": 11,
-          "measured_tk": 4689,
+          "measured_tk": 5617,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1180,7 +1235,7 @@
       "reqs": 43,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 60,
+      "ms": 57,
       "before_tk": 10040,
       "after_tk": 10040,
       "batches": [
@@ -1188,21 +1243,23 @@
           "categories": [
             "DPL",
             "CNT",
-            "IAC"
+            "DST"
           ],
-          "requirements": 36,
-          "measured_tk": 8025,
+          "requirements": 30,
+          "measured_tk": 8226,
           "irreducible": false
         },
         {
           "categories": [
-            "DST"
+            "IAC"
           ],
-          "requirements": 7,
-          "measured_tk": 2428,
+          "requirements": 13,
+          "measured_tk": 3919,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1211,7 +1268,7 @@
       "reqs": 43,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 69,
+      "ms": 59,
       "before_tk": 10464,
       "after_tk": 10464,
       "batches": [
@@ -1219,21 +1276,23 @@
           "categories": [
             "DPL",
             "CNT",
-            "IAC"
+            "DST"
           ],
-          "requirements": 36,
-          "measured_tk": 8532,
+          "requirements": 30,
+          "measured_tk": 8734,
           "irreducible": false
         },
         {
           "categories": [
-            "DST"
+            "IAC"
           ],
-          "requirements": 7,
-          "measured_tk": 2935,
+          "requirements": 13,
+          "measured_tk": 4426,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1242,7 +1301,7 @@
       "reqs": 19,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 9,
+      "ms": 6,
       "before_tk": 4667,
       "after_tk": 4667,
       "irreducible": false
@@ -1253,7 +1312,7 @@
       "reqs": 19,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 10,
+      "ms": 6,
       "before_tk": 5135,
       "after_tk": 5135,
       "irreducible": false
@@ -1264,7 +1323,7 @@
       "reqs": 8,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 10,
+      "ms": 6,
       "before_tk": 2705,
       "after_tk": 2705,
       "irreducible": false
@@ -1275,7 +1334,7 @@
       "reqs": 8,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 11,
+      "ms": 6,
       "before_tk": 3200,
       "after_tk": 3200,
       "irreducible": false
@@ -1286,7 +1345,7 @@
       "reqs": 5,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 9,
+      "ms": 6,
       "before_tk": 2233,
       "after_tk": 2233,
       "irreducible": false
@@ -1297,7 +1356,7 @@
       "reqs": 5,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 9,
+      "ms": 6,
       "before_tk": 2727,
       "after_tk": 2727,
       "irreducible": false
@@ -1308,7 +1367,7 @@
       "reqs": 20,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 276,
+      "ms": 192,
       "before_tk": 9720,
       "after_tk": 9720,
       "batches": [
@@ -1351,6 +1410,8 @@
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1359,7 +1420,7 @@
       "reqs": 20,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 210,
+      "ms": 203,
       "before_tk": 10214,
       "after_tk": 10214,
       "batches": [
@@ -1402,6 +1463,8 @@
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1410,7 +1473,7 @@
       "reqs": 53,
       "before": "needs_decomposition",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "after_tk": 7981,
       "irreducible": false
     },
@@ -1420,7 +1483,7 @@
       "reqs": 53,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 8,
+      "ms": 7,
       "before_tk": 8407,
       "after_tk": 8407,
       "irreducible": false
@@ -1431,7 +1494,7 @@
       "reqs": 26,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 8,
+      "ms": 6,
       "before_tk": 6384,
       "after_tk": 6384,
       "irreducible": false
@@ -1442,7 +1505,7 @@
       "reqs": 26,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 6838,
       "after_tk": 6838,
       "irreducible": false
@@ -1453,7 +1516,7 @@
       "reqs": 20,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 10,
       "before_tk": 5186,
       "after_tk": 5186,
       "irreducible": false
@@ -1464,7 +1527,7 @@
       "reqs": 20,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 8,
+      "ms": 6,
       "before_tk": 5653,
       "after_tk": 5653,
       "irreducible": false
@@ -1475,21 +1538,30 @@
       "reqs": 37,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 41,
+      "ms": 53,
       "before_tk": 9278,
       "after_tk": 9278,
       "batches": [
         {
           "categories": [
             "ARC",
-            "IAC",
+            "IAC"
+          ],
+          "requirements": 28,
+          "measured_tk": 6923,
+          "irreducible": false
+        },
+        {
+          "categories": [
             "ENC"
           ],
-          "requirements": 37,
-          "measured_tk": 7090,
+          "requirements": 9,
+          "measured_tk": 3474,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1498,21 +1570,30 @@
       "reqs": 37,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 43,
+      "ms": 48,
       "before_tk": 9731,
       "after_tk": 9731,
       "batches": [
         {
           "categories": [
             "ARC",
-            "IAC",
+            "IAC"
+          ],
+          "requirements": 28,
+          "measured_tk": 7430,
+          "irreducible": false
+        },
+        {
+          "categories": [
             "ENC"
           ],
-          "requirements": 37,
-          "measured_tk": 7598,
+          "requirements": 9,
+          "measured_tk": 3981,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1521,7 +1602,7 @@
       "reqs": 62,
       "before": "needs_decomposition",
       "after": "needs_decomposition",
-      "ms": 95,
+      "ms": 99,
       "after_tk": 14288,
       "batches": [
         {
@@ -1530,7 +1611,7 @@
             "CIC"
           ],
           "requirements": 25,
-          "measured_tk": 7530,
+          "measured_tk": 8109,
           "irreducible": false
         },
         {
@@ -1541,10 +1622,12 @@
             "CFG"
           ],
           "requirements": 37,
-          "measured_tk": 6946,
+          "measured_tk": 7871,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1553,30 +1636,32 @@
       "reqs": 62,
       "before": "needs_decomposition",
       "after": "needs_decomposition",
-      "ms": 89,
+      "ms": 102,
       "after_tk": 14671,
       "batches": [
         {
           "categories": [
             "DEP",
-            "CIC",
-            "CFG"
+            "CIC"
           ],
-          "requirements": 32,
-          "measured_tk": 9120,
+          "requirements": 25,
+          "measured_tk": 8616,
           "irreducible": false
         },
         {
           "categories": [
             "DEV",
             "INT",
-            "ENC"
+            "ENC",
+            "CFG"
           ],
-          "requirements": 30,
-          "measured_tk": 6540,
+          "requirements": 37,
+          "measured_tk": 8378,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1592,22 +1677,24 @@
         {
           "categories": [
             "OPS",
-            "TST"
+            "LOG"
           ],
           "requirements": 25,
-          "measured_tk": 8061,
+          "measured_tk": 7485,
           "irreducible": false
         },
         {
           "categories": [
             "THR",
-            "LOG"
+            "TST"
           ],
           "requirements": 18,
-          "measured_tk": 5022,
+          "measured_tk": 7095,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1616,29 +1703,31 @@
       "reqs": 43,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 64,
+      "ms": 63,
       "before_tk": 13702,
       "after_tk": 13702,
       "batches": [
         {
           "categories": [
             "OPS",
-            "TST"
+            "LOG"
           ],
           "requirements": 25,
-          "measured_tk": 8568,
+          "measured_tk": 7992,
           "irreducible": false
         },
         {
           "categories": [
             "THR",
-            "LOG"
+            "TST"
           ],
           "requirements": 18,
-          "measured_tk": 5529,
+          "measured_tk": 7603,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1647,38 +1736,40 @@
       "reqs": 77,
       "before": "needs_decomposition",
       "after": "needs_decomposition",
-      "ms": 121,
+      "ms": 134,
       "after_tk": 17237,
       "batches": [
         {
           "categories": [
             "OPS",
-            "CNT"
+            "DST"
           ],
-          "requirements": 27,
-          "measured_tk": 8330,
+          "requirements": 22,
+          "measured_tk": 7998,
           "irreducible": false
         },
         {
           "categories": [
             "DPL",
-            "IAC",
-            "INT",
-            "API"
+            "CNT"
           ],
-          "requirements": 43,
-          "measured_tk": 7999,
+          "requirements": 23,
+          "measured_tk": 7379,
           "irreducible": false
         },
         {
           "categories": [
-            "DST"
+            "IAC",
+            "INT",
+            "API"
           ],
-          "requirements": 7,
-          "measured_tk": 2428,
+          "requirements": 32,
+          "measured_tk": 6540,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1687,38 +1778,40 @@
       "reqs": 77,
       "before": "needs_decomposition",
       "after": "needs_decomposition",
-      "ms": 145,
+      "ms": 131,
       "after_tk": 17594,
       "batches": [
         {
           "categories": [
             "OPS",
-            "CNT"
+            "IAC"
           ],
-          "requirements": 27,
-          "measured_tk": 8837,
+          "requirements": 28,
+          "measured_tk": 9068,
           "irreducible": false
         },
         {
           "categories": [
             "DPL",
-            "IAC",
-            "INT",
-            "API"
+            "CNT",
+            "DST"
           ],
-          "requirements": 43,
-          "measured_tk": 8506,
+          "requirements": 30,
+          "measured_tk": 8734,
           "irreducible": false
         },
         {
           "categories": [
-            "DST"
+            "INT",
+            "API"
           ],
-          "requirements": 7,
-          "measured_tk": 2935,
+          "requirements": 19,
+          "measured_tk": 4697,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1727,7 +1820,7 @@
       "reqs": 33,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 259,
+      "ms": 256,
       "before_tk": 11351,
       "after_tk": 11351,
       "batches": [
@@ -1772,6 +1865,8 @@
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1780,7 +1875,7 @@
       "reqs": 33,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 267,
+      "ms": 265,
       "before_tk": 11820,
       "after_tk": 11820,
       "batches": [
@@ -1825,6 +1920,8 @@
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1833,29 +1930,31 @@
       "reqs": 36,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 118,
+      "ms": 100,
       "before_tk": 11523,
       "after_tk": 11523,
       "batches": [
         {
           "categories": [
             "AUT",
-            "SES",
-            "LOG"
+            "SES"
           ],
-          "requirements": 27,
-          "measured_tk": 8440,
+          "requirements": 18,
+          "measured_tk": 7200,
           "irreducible": false
         },
         {
           "categories": [
+            "LOG",
             "ACC"
           ],
-          "requirements": 9,
-          "measured_tk": 4304,
+          "requirements": 18,
+          "measured_tk": 7332,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1864,29 +1963,31 @@
       "reqs": 36,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 89,
+      "ms": 84,
       "before_tk": 11962,
       "after_tk": 11962,
       "batches": [
         {
           "categories": [
             "AUT",
-            "SES",
-            "LOG"
+            "SES"
           ],
-          "requirements": 27,
-          "measured_tk": 8946,
+          "requirements": 18,
+          "measured_tk": 7706,
           "irreducible": false
         },
         {
           "categories": [
+            "LOG",
             "ACC"
           ],
-          "requirements": 9,
-          "measured_tk": 4811,
+          "requirements": 18,
+          "measured_tk": 7839,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1895,7 +1996,7 @@
       "reqs": 89,
       "before": "needs_decomposition",
       "after": "needs_decomposition",
-      "ms": 161,
+      "ms": 171,
       "after_tk": 12747,
       "batches": [
         {
@@ -1903,26 +2004,28 @@
             "ARC",
             "ENC",
             "API",
-            "AUT",
-            "ACC"
+            "VAL"
           ],
-          "requirements": 51,
-          "measured_tk": 8031,
+          "requirements": 39,
+          "measured_tk": 8409,
           "irreducible": false
         },
         {
           "categories": [
+            "AUT",
             "LOG",
+            "ACC",
             "SES",
-            "VAL",
-            "PRI",
-            "ERR"
+            "ERR",
+            "PRI"
           ],
-          "requirements": 38,
-          "measured_tk": 5420,
+          "requirements": 50,
+          "measured_tk": 7631,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     },
     {
@@ -1931,7 +2034,7 @@
       "reqs": 89,
       "before": "needs_decomposition",
       "after": "needs_decomposition",
-      "ms": 153,
+      "ms": 173,
       "after_tk": 13060,
       "batches": [
         {
@@ -1939,26 +2042,164 @@
             "ARC",
             "ENC",
             "API",
+            "VAL"
+          ],
+          "requirements": 39,
+          "measured_tk": 8917,
+          "irreducible": false
+        },
+        {
+          "categories": [
             "AUT",
+            "LOG",
             "ACC",
+            "SES",
+            "ERR",
             "PRI"
           ],
-          "requirements": 56,
-          "measured_tk": 9164,
+          "requirements": 50,
+          "measured_tk": 8138,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "auth+RGPD L2",
+      "detail": "lista",
+      "reqs": 27,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 56,
+      "before_tk": 9347,
+      "after_tk": 9347,
+      "batches": [
+        {
+          "categories": [
+            "AUT",
+            "SES"
+          ],
+          "requirements": 18,
+          "measured_tk": 7200,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "ACC"
+          ],
+          "requirements": 9,
+          "measured_tk": 4833,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "auth+RGPD L2",
+      "detail": "standard",
+      "reqs": 27,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 54,
+      "before_tk": 9827,
+      "after_tk": 9827,
+      "batches": [
+        {
+          "categories": [
+            "AUT",
+            "SES"
+          ],
+          "requirements": 18,
+          "measured_tk": 7706,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "ACC"
+          ],
+          "requirements": 9,
+          "measured_tk": 5340,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "auth+logging+public+jwt L2",
+      "detail": "lista",
+      "reqs": 70,
+      "before": "needs_decomposition",
+      "after": "needs_decomposition",
+      "ms": 346,
+      "after_tk": 10780,
+      "batches": [
+        {
+          "categories": [
+            "ARC",
+            "API",
+            "VAL",
+            "AUT",
+            "ERR"
+          ],
+          "requirements": 45,
+          "measured_tk": 8388,
           "irreducible": false
         },
         {
           "categories": [
             "LOG",
-            "SES",
-            "VAL",
-            "ERR"
+            "ACC",
+            "SES"
           ],
-          "requirements": 33,
-          "measured_tk": 5303,
+          "requirements": 26,
+          "measured_tk": 4882,
           "irreducible": false
         }
       ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "auth+logging+public+jwt L2",
+      "detail": "standard",
+      "reqs": 70,
+      "before": "needs_decomposition",
+      "after": "needs_decomposition",
+      "ms": 131,
+      "after_tk": 11165,
+      "batches": [
+        {
+          "categories": [
+            "ARC",
+            "API",
+            "VAL",
+            "AUT",
+            "ERR"
+          ],
+          "requirements": 45,
+          "measured_tk": 8881,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "LOG",
+            "ACC",
+            "SES"
+          ],
+          "requirements": 26,
+          "measured_tk": 5375,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
       "recall": 1
     }
   ]

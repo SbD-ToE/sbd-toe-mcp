@@ -1663,6 +1663,12 @@ class McpRuntime {
                 description:
                   "Tecnologias DECLARADAS do vocabulário fechado (containers, kubernetes, iac, ci-cd, sca-sbom, sast, dast, monitoring, jwt) — activam capítulos por TABELA publicada em sbd://toe/activation-vocabulary. Preferir a `stack` em texto livre."
               },
+              slice_families: {
+                type: "array",
+                items: { type: "string" },
+                description:
+                  "Context only: activates the AppSec Core slices of these families (g2_context entities + manual_grounding) and never selects requirements; alone it returns needs_input. Not a way to ask: the server writes it into each needs_decomposition batch recipe so the batch carries the context your request activated for its categories — execute the batch's `with` as given. Published values: sbd://toe/activation-vocabulary → slice_families."
+              },
               selection_mode: {
                 type: "string",
                 enum: ["declarative", "discover"],

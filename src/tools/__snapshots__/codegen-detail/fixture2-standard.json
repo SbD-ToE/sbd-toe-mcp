@@ -15,7 +15,7 @@
     "O payload de 69 requisitos em detail=\"standard\" mede 12852 tk — acima do envelope de 9200 tk deste nível (medido sobre o payload que receberias: requisitos, controlos, entidades, adjacência e overlay)."
   ],
   "suggestions": [
-    "Divide em 2 lotes que SOMAM O TODO (união = 69 ids, m_recall 1.00 face à selecção inteira): repete com task + risk_level + detail + `categories` do lote. Cada lote é a partição EXACTA das categorias que a tua declaração activou — exposure/data_sensitivity estão lá pelo seu efeito (re-declará-los somaria as suas categorias a todos os lotes). Cada lote foi medido e cabe no envelope, salvo irredutível declarado. Lotes: 1) categories=[\"OPS\", \"FIL\", \"API\", \"AUT\", \"VAL\"] (44 reqs, 9122 tk; de \"api\", \"auth\", \"files\", \"monitoring\", \"validation\"); 2) categories=[\"ACC\", \"LOG\", \"ERR\"] (25 reqs, 4390 tk; de \"auth\", \"logging\", \"monitoring\", \"validation\").",
+    "Divide em 2 lotes que SOMAM O TODO (união = 69 ids, m_recall 1.00 face à selecção inteira): repete com task + risk_level + detail + `categories` do lote + o `with` do lote tal e qual (slice_families). Cada lote é o teu pedido restrito às suas categorias: os mesmos requisitos e o mesmo contexto (fatias AppSec Core e manual_grounding) para elas. Cada lote é a partição EXACTA das categorias que a tua declaração activou — exposure/data_sensitivity estão lá pelo seu efeito (re-declará-los somaria as suas categorias a todos os lotes). Cada lote foi medido e cabe no envelope, salvo irredutível declarado. Lotes: 1) categories=[\"OPS\", \"API\", \"AUT\"] (28 reqs, 8655 tk; de \"api\", \"auth\", \"monitoring\"); 2) categories=[\"VAL\", \"LOG\", \"ACC\", \"ERR\", \"FIL\"] (41 reqs, 7539 tk; de \"auth\", \"files\", \"logging\", \"monitoring\", \"validation\").",
     "Em alternativa usa detail=\"full\" (sem envelope — preço declarado em size_estimate) ou reduz o âmbito da task."
   ],
   "partial_activation_trace": [
@@ -151,39 +151,48 @@
         "with": {
           "categories": [
             "OPS",
-            "FIL",
             "API",
-            "AUT",
-            "VAL"
+            "AUT"
+          ],
+          "slice_families": [
+            "ACO-IAT",
+            "ACO-IVF",
+            "ACO-SLG"
           ]
         },
-        "requirements": 44,
-        "measured_tk": 9122,
+        "requirements": 28,
+        "measured_tk": 8655,
         "irreducible": false,
         "derived_from": {
           "concerns": [
             "api",
             "auth",
-            "files",
-            "monitoring",
-            "validation"
+            "monitoring"
           ]
         }
       },
       {
         "with": {
           "categories": [
-            "ACC",
+            "VAL",
             "LOG",
-            "ERR"
+            "ACC",
+            "ERR",
+            "FIL"
+          ],
+          "slice_families": [
+            "ACO-IAT",
+            "ACO-IVF",
+            "ACO-SLG"
           ]
         },
-        "requirements": 25,
-        "measured_tk": 4390,
+        "requirements": 41,
+        "measured_tk": 7539,
         "irreducible": false,
         "derived_from": {
           "concerns": [
             "auth",
+            "files",
             "logging",
             "monitoring",
             "validation"

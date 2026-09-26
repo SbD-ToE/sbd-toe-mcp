@@ -17,3 +17,10 @@ Lead: SIM ao irredutível pronto e declarado; decomposição só com ≥2 catego
 (papéis v1.28 + ids de secção v1.27). Registo: decisão 0004 §8; CHANGELOG 0.21.2 RASCUNHO; matriz
 `docs/acceptance-runs/2026-09-26-v0.21.2-cost-ceiling-matrix.md` (87/6/22/1, 0 violações, full 58/58 byte-idêntico);
 acceptance `acceptance-reports/2026-09-26-v0.21.2-dev-cost-ceilings-acceptance.md` (141/16/0/23 PASS); Eixo H 10/10; vitest 838/838.
+
+## 0.21.2 — textos servidos + decisão 0005 (2026-09-26)
+- **Textos servidos:** guia de codegen, codegen-instructions, `coverage_gaps` e README corrigidos no commit `8c43178`.
+- **Decisão 0005** (lotes com os activadores do pedido, `slice_families` só de contexto): implementada. Matriz de 120 casos com
+  0 lotes únicos, cobertura G2 1,00 e 0 violações.
+- **Achado aberto para o lead:** `exposure` e `data_sensitivity` não produzem fatias.
+
