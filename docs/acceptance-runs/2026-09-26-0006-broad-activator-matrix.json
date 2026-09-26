@@ -1,0 +1,2358 @@
+{
+ "totals": {
+  "before": {
+   "ready": 70,
+   "decomposed": 24,
+   "batches": 48,
+   "single": 0,
+   "violations": 0,
+   "irreducible_ready": 0,
+   "tk_sum": 697183,
+   "g2_full_zero": 46,
+   "g2_full_sum": 43
+  },
+  "B_rule": {
+   "ready": 50,
+   "decomposed": 44,
+   "batches": 88,
+   "single": 0,
+   "violations": 0,
+   "irreducible_ready": 0,
+   "tk_sum": 833310,
+   "g2_full_zero": 0,
+   "g2_full_sum": 3599
+  },
+  "A_chain_broad": {
+   "ready": 42,
+   "decomposed": 52,
+   "batches": 108,
+   "single": 0,
+   "violations": 0,
+   "irreducible_ready": 0,
+   "tk_sum": 904883,
+   "g2_full_zero": 0,
+   "g2_full_sum": 5747
+  },
+  "A2_chain_all": {
+   "ready": 42,
+   "decomposed": 52,
+   "batches": 108,
+   "single": 0,
+   "violations": 0,
+   "irreducible_ready": 0,
+   "tk_sum": 904883,
+   "g2_full_zero": 0,
+   "g2_full_sum": 5747
+  }
+ },
+ "rows": [
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"internal\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 3659,
+   "standard": 4067
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"internal\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-SLG"
+   ],
+   "g2_full": 43,
+   "lista": 4593,
+   "standard": 5001
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"internal\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-SLG"
+   ],
+   "g2_full": 66,
+   "lista": 4934,
+   "standard": 5342
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"internal\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-SLG"
+   ],
+   "g2_full": 66,
+   "lista": 4934,
+   "standard": 5342
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"authenticated\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 3661,
+   "standard": 4068
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"authenticated\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-SLG"
+   ],
+   "g2_full": 43,
+   "lista": 4594,
+   "standard": 5002
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"authenticated\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-SLG"
+   ],
+   "g2_full": 66,
+   "lista": 4935,
+   "standard": 5343
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"authenticated\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-SLG"
+   ],
+   "g2_full": 66,
+   "lista": 4935,
+   "standard": 5343
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"public\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 6476,
+   "standard": 6843
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"public\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG"
+   ],
+   "g2_full": 92,
+   "lista": 8159,
+   "standard": 8526
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"public\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG"
+   ],
+   "g2_full": 144,
+   "lista": "dec 8932 (2)",
+   "standard": "dec 9298 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"public\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG"
+   ],
+   "g2_full": 144,
+   "lista": "dec 8932 (2)",
+   "standard": "dec 9298 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"data_sensitivity\":\"personal\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 3828,
+   "standard": 4215
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"data_sensitivity\":\"personal\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 63,
+   "lista": 5101,
+   "standard": 5488
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG"
+   ],
+   "g2_full": 92,
+   "lista": 5508,
+   "standard": 5895
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG"
+   ],
+   "g2_full": 92,
+   "lista": 5508,
+   "standard": 5895
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 3828,
+   "standard": 4215
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 63,
+   "lista": 5101,
+   "standard": 5488
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG"
+   ],
+   "g2_full": 92,
+   "lista": 5508,
+   "standard": 5896
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG"
+   ],
+   "g2_full": 92,
+   "lista": 5508,
+   "standard": 5896
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 3141,
+   "standard": 3529
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-SPC"
+   ],
+   "g2_full": 19,
+   "lista": 3638,
+   "standard": 4027
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SPC"
+   ],
+   "g2_full": 121,
+   "lista": 5501,
+   "standard": 5890
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SPC"
+   ],
+   "g2_full": 121,
+   "lista": 5501,
+   "standard": 5890
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"internal\",\"data_sensitivity\":\"personal\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 5418,
+   "standard": 5750
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"internal\",\"data_sensitivity\":\"personal\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 88,
+   "lista": 7067,
+   "standard": 7400
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"internal\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG"
+   ],
+   "g2_full": 92,
+   "lista": 7098,
+   "standard": 7431
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"internal\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG"
+   ],
+   "g2_full": 92,
+   "lista": 7098,
+   "standard": 7431
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"internal\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 5418,
+   "standard": 5751
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"internal\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 88,
+   "lista": 7068,
+   "standard": 7400
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"internal\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG"
+   ],
+   "g2_full": 92,
+   "lista": 7099,
+   "standard": 7431
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"internal\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG"
+   ],
+   "g2_full": 92,
+   "lista": 7099,
+   "standard": 7431
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"internal\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 5115,
+   "standard": 5436
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"internal\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 62,
+   "lista": 6396,
+   "standard": 6717
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"internal\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 139,
+   "lista": 7873,
+   "standard": 8194
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"internal\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 139,
+   "lista": 7873,
+   "standard": 8194
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"personal\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 5419,
+   "standard": 5752
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"personal\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 88,
+   "lista": 7069,
+   "standard": 7401
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG"
+   ],
+   "g2_full": 92,
+   "lista": 7100,
+   "standard": 7432
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG"
+   ],
+   "g2_full": 92,
+   "lista": 7100,
+   "standard": 7432
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 5419,
+   "standard": 5752
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 88,
+   "lista": 7069,
+   "standard": 7402
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG"
+   ],
+   "g2_full": 92,
+   "lista": 7100,
+   "standard": 7433
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG"
+   ],
+   "g2_full": 92,
+   "lista": 7100,
+   "standard": 7433
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 5116,
+   "standard": 5437
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 62,
+   "lista": 6397,
+   "standard": 6718
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 139,
+   "lista": 7874,
+   "standard": 8195
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 139,
+   "lista": 7874,
+   "standard": 8195
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"public\",\"data_sensitivity\":\"personal\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 7053,
+   "standard": 7359
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"public\",\"data_sensitivity\":\"personal\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 9058 (2)",
+   "standard": "dec 9364 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"public\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG"
+   ],
+   "g2_full": 144,
+   "lista": "dec 9508 (2)",
+   "standard": "dec 9815 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"public\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG"
+   ],
+   "g2_full": 144,
+   "lista": "dec 9508 (2)",
+   "standard": "dec 9815 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"public\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 7053,
+   "standard": 7359
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"public\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 9058 (2)",
+   "standard": "dec 9364 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"public\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG"
+   ],
+   "g2_full": 144,
+   "lista": "dec 9508 (2)",
+   "standard": "dec 9815 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"public\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG"
+   ],
+   "g2_full": 144,
+   "lista": "dec 9508 (2)",
+   "standard": "dec 9815 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"public\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 7585,
+   "standard": 7866
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"public\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 9590 (2)",
+   "standard": "dec 9871 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"public\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SCBI",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 191,
+   "lista": "dec 11118 (2)",
+   "standard": "dec 11398 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L1\",\"exposure\":\"public\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SCBI",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 191,
+   "lista": "dec 11118 (2)",
+   "standard": "dec 11398 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"internal\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 4834,
+   "standard": 5260
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"internal\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-SLG"
+   ],
+   "g2_full": 43,
+   "lista": 5768,
+   "standard": 6194
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"internal\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-SLG"
+   ],
+   "g2_full": 66,
+   "lista": 6109,
+   "standard": 6535
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"internal\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-SLG"
+   ],
+   "g2_full": 66,
+   "lista": 6109,
+   "standard": 6535
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"authenticated\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 4835,
+   "standard": 5261
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"authenticated\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-SLG"
+   ],
+   "g2_full": 43,
+   "lista": 5769,
+   "standard": 6195
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"authenticated\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-SLG"
+   ],
+   "g2_full": 66,
+   "lista": 6110,
+   "standard": 6536
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"authenticated\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-SLG"
+   ],
+   "g2_full": 66,
+   "lista": 6110,
+   "standard": 6536
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"public\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": "dec 9839 (2)",
+   "standard": "dec 10224 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"public\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG"
+   ],
+   "g2_full": 92,
+   "lista": "dec 11522 (2)",
+   "standard": "dec 11907 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"public\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG"
+   ],
+   "g2_full": 144,
+   "lista": "dec 12281 (2)",
+   "standard": "dec 12666 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"public\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG"
+   ],
+   "g2_full": 144,
+   "lista": "dec 12281 (2)",
+   "standard": "dec 12666 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"data_sensitivity\":\"personal\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 5876,
+   "standard": 6281
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"data_sensitivity\":\"personal\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 63,
+   "lista": 7149,
+   "standard": 7554
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": 7865,
+   "standard": 8270
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": 7865,
+   "standard": 8270
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 5876,
+   "standard": 6281
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 63,
+   "lista": 7149,
+   "standard": 7554
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": 7866,
+   "standard": 8271
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": 7866,
+   "standard": 8271
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 3848,
+   "standard": 4267
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-SPC"
+   ],
+   "g2_full": 19,
+   "lista": 4345,
+   "standard": 4765
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SPC"
+   ],
+   "g2_full": 121,
+   "lista": 6208,
+   "standard": 6628
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SPC"
+   ],
+   "g2_full": 121,
+   "lista": 6208,
+   "standard": 6628
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"internal\",\"data_sensitivity\":\"personal\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 8213,
+   "standard": 8550
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"internal\",\"data_sensitivity\":\"personal\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 88,
+   "lista": "dec 9876 (2)",
+   "standard": "dec 10214 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"internal\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 10216 (2)",
+   "standard": "dec 10553 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"internal\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 10216 (2)",
+   "standard": "dec 10553 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"internal\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 8213,
+   "standard": 8551
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"internal\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 88,
+   "lista": "dec 9876 (2)",
+   "standard": "dec 10214 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"internal\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 10216 (2)",
+   "standard": "dec 10554 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"internal\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 10216 (2)",
+   "standard": "dec 10554 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"internal\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 6992,
+   "standard": 7331
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"internal\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 62,
+   "lista": 8273,
+   "standard": 8612
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"internal\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 139,
+   "lista": "dec 9764 (2)",
+   "standard": "dec 10103 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"internal\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 139,
+   "lista": "dec 9764 (2)",
+   "standard": "dec 10103 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"personal\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 8214,
+   "standard": 8552
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"personal\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 88,
+   "lista": "dec 9877 (2)",
+   "standard": "dec 10215 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 10217 (2)",
+   "standard": "dec 10555 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 10217 (2)",
+   "standard": "dec 10555 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 8214,
+   "standard": 8552
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 88,
+   "lista": "dec 9877 (2)",
+   "standard": "dec 10215 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 10217 (2)",
+   "standard": "dec 10555 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 10217 (2)",
+   "standard": "dec 10555 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 6994,
+   "standard": 7333
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 62,
+   "lista": 8274,
+   "standard": 8613
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 139,
+   "lista": "dec 9765 (2)",
+   "standard": "dec 10104 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 139,
+   "lista": "dec 9765 (2)",
+   "standard": "dec 10104 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"public\",\"data_sensitivity\":\"personal\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": "dec 11542 (2)",
+   "standard": "dec 11853 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"public\",\"data_sensitivity\":\"personal\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 13533 (2)",
+   "standard": "dec 13844 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"public\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 163,
+   "lista": "dec 14292 (2)",
+   "standard": "dec 14603 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"public\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 163,
+   "lista": "dec 14292 (2)",
+   "standard": "dec 14603 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"public\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": "dec 11542 (2)",
+   "standard": "dec 11853 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"public\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 13534 (2)",
+   "standard": "dec 13845 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"public\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 163,
+   "lista": "dec 14293 (2)",
+   "standard": "dec 14604 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"public\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 163,
+   "lista": "dec 14293 (2)",
+   "standard": "dec 14604 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"public\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": "dec 11652 (2)",
+   "standard": "dec 11951 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"public\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 13644 (2)",
+   "standard": "dec 13942 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"public\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SCBI",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 191,
+   "lista": "dec 15171 (2)",
+   "standard": "dec 15470 (3)"
+  },
+  {
+   "case": "{\"risk_level\":\"L2\",\"exposure\":\"public\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SCBI",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 191,
+   "lista": "dec 15171 (2)",
+   "standard": "dec 15470 (3)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"internal\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 5015,
+   "standard": 5442
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"internal\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-SLG"
+   ],
+   "g2_full": 43,
+   "lista": 5948,
+   "standard": 6375
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"internal\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-SLG"
+   ],
+   "g2_full": 66,
+   "lista": 6289,
+   "standard": 6716
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"internal\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-SLG"
+   ],
+   "g2_full": 66,
+   "lista": 6289,
+   "standard": 6716
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"authenticated\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 5016,
+   "standard": 5443
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"authenticated\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-SLG"
+   ],
+   "g2_full": 43,
+   "lista": 5950,
+   "standard": 6377
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"authenticated\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-SLG"
+   ],
+   "g2_full": 66,
+   "lista": 6291,
+   "standard": 6718
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"authenticated\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-SLG"
+   ],
+   "g2_full": 66,
+   "lista": 6291,
+   "standard": 6718
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"public\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": "dec 10357 (2)",
+   "standard": "dec 10743 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"public\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG"
+   ],
+   "g2_full": 92,
+   "lista": "dec 12040 (2)",
+   "standard": "dec 12426 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"public\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG"
+   ],
+   "g2_full": 144,
+   "lista": "dec 12799 (2)",
+   "standard": "dec 13185 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"public\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG"
+   ],
+   "g2_full": 144,
+   "lista": "dec 12799 (2)",
+   "standard": "dec 13185 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"data_sensitivity\":\"personal\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 6092,
+   "standard": 6498
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"data_sensitivity\":\"personal\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 63,
+   "lista": 7365,
+   "standard": 7771
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": 8081,
+   "standard": 8487
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": 8081,
+   "standard": 8487
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 6092,
+   "standard": 6498
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 63,
+   "lista": 7365,
+   "standard": 7771
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": 8082,
+   "standard": 8488
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": 8082,
+   "standard": 8488
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 4137,
+   "standard": 4558
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-SPC"
+   ],
+   "g2_full": 19,
+   "lista": 4635,
+   "standard": 5056
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 139,
+   "lista": 6895,
+   "standard": 7316
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 139,
+   "lista": 6895,
+   "standard": 7316
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"internal\",\"data_sensitivity\":\"personal\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": "dec 8533 (2)",
+   "standard": 8859
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"internal\",\"data_sensitivity\":\"personal\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 88,
+   "lista": "dec 10183 (2)",
+   "standard": "dec 10522 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"internal\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 10523 (2)",
+   "standard": "dec 10862 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"internal\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 10523 (2)",
+   "standard": "dec 10862 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"internal\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": "dec 8534 (2)",
+   "standard": 8859
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"internal\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 88,
+   "lista": "dec 10184 (2)",
+   "standard": "dec 10522 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"internal\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 10523 (2)",
+   "standard": "dec 10862 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"internal\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 10523 (2)",
+   "standard": "dec 10862 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"internal\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 7384,
+   "standard": 7724
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"internal\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 62,
+   "lista": "dec 8678 (2)",
+   "standard": 9004
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"internal\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 139,
+   "lista": "dec 10155 (2)",
+   "standard": "dec 10495 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"internal\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 139,
+   "lista": "dec 10155 (2)",
+   "standard": "dec 10495 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"personal\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": "dec 8535 (2)",
+   "standard": 8860
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"personal\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 88,
+   "lista": "dec 10185 (2)",
+   "standard": "dec 10523 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 10524 (2)",
+   "standard": "dec 10863 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 10524 (2)",
+   "standard": "dec 10863 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": "dec 8535 (2)",
+   "standard": 8860
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 88,
+   "lista": "dec 10185 (2)",
+   "standard": "dec 10524 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 10525 (2)",
+   "standard": "dec 10863 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 10525 (2)",
+   "standard": "dec 10863 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": 7385,
+   "standard": 7725
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-IAT",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 62,
+   "lista": "dec 8679 (2)",
+   "standard": 9006
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 139,
+   "lista": "dec 10156 (2)",
+   "standard": "dec 10496 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"authenticated\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 139,
+   "lista": "dec 10156 (2)",
+   "standard": "dec 10496 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"public\",\"data_sensitivity\":\"personal\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": "dec 12185 (2)",
+   "standard": "dec 12497 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"public\",\"data_sensitivity\":\"personal\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 14176 (2)",
+   "standard": "dec 14489 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"public\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 163,
+   "lista": "dec 14935 (2)",
+   "standard": "dec 15248 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"public\",\"data_sensitivity\":\"personal\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 163,
+   "lista": "dec 14935 (2)",
+   "standard": "dec 15248 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"public\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": "dec 12185 (2)",
+   "standard": "dec 12497 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"public\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 14177 (2)",
+   "standard": "dec 14489 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"public\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 163,
+   "lista": "dec 14936 (2)",
+   "standard": "dec 15248 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"public\",\"data_sensitivity\":\"regulated\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 163,
+   "lista": "dec 14936 (2)",
+   "standard": "dec 15248 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"public\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": "dec 12379 (2)",
+   "standard": "dec 12679 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"public\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "B_rule",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 14371 (2)",
+   "standard": "dec 14670 (2)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"public\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SCBI",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 191,
+   "lista": "dec 15898 (3)",
+   "standard": "dec 16198 (3)"
+  },
+  {
+   "case": "{\"risk_level\":\"L3\",\"exposure\":\"public\",\"data_sensitivity\":\"secrets\"}",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-RPR",
+    "ACO-SCBI",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 191,
+   "lista": "dec 15898 (3)",
+   "standard": "dec 16198 (3)"
+  },
+  {
+   "case": "avaliador",
+   "variant": "before",
+   "families": [],
+   "g2_full": 0,
+   "lista": "dec 12224 (2)",
+   "standard": "dec 12536 (2)"
+  },
+  {
+   "case": "avaliador",
+   "variant": "B_rule",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 111,
+   "lista": "dec 14216 (2)",
+   "standard": "dec 14528 (2)"
+  },
+  {
+   "case": "avaliador",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 163,
+   "lista": "dec 14975 (3)",
+   "standard": "dec 15287 (2)"
+  },
+  {
+   "case": "avaliador",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG",
+    "ACO-SPC"
+   ],
+   "g2_full": 163,
+   "lista": "dec 14975 (3)",
+   "standard": "dec 15287 (2)"
+  },
+  {
+   "case": "docs",
+   "variant": "before",
+   "families": [],
+   "g2_full": 43,
+   "lista": "dec 10780 (2)",
+   "standard": "dec 11165 (2)"
+  },
+  {
+   "case": "docs",
+   "variant": "B_rule",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-IVF",
+    "ACO-SLG"
+   ],
+   "g2_full": 92,
+   "lista": "dec 11529 (2)",
+   "standard": "dec 11915 (2)"
+  },
+  {
+   "case": "docs",
+   "variant": "A_chain_broad",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG"
+   ],
+   "g2_full": 144,
+   "lista": "dec 12289 (2)",
+   "standard": "dec 12674 (2)"
+  },
+  {
+   "case": "docs",
+   "variant": "A2_chain_all",
+   "families": [
+    "ACO-ATB",
+    "ACO-IAT",
+    "ACO-ITS",
+    "ACO-IVF",
+    "ACO-SCBI",
+    "ACO-SLG"
+   ],
+   "g2_full": 144,
+   "lista": "dec 12289 (2)",
+   "standard": "dec 12674 (2)"
+  }
+ ]
+}
