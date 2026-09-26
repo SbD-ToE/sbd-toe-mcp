@@ -9,6 +9,39 @@ review_status: pending-human-review
 
 # Changelog
 
+## 0.21.2 — RASCUNHO (implementada 2026-09-26 no branch `0.21.2-cost-ceilings`; sem PR de merge — vai provavelmente junto com o re-pino do KG, decisão do lead) — o envelope é a regra
+
+**Promessa (decisão 0004, fechada pelo lead a 2026-09-26):** em `lista` e `standard`, uma resposta pronta **cabe no envelope do
+nível** — 8 450 e 9 200 tokens — medido sobre o payload que o cliente recebe, com tudo o que leva (requisitos, controlos,
+entidades, adjacência, overlay). Se não cabe, `needs_decomposition` com lotes que somam o todo e que cabem cada um. A única
+excepção, sempre declarada, é o **lote irredutível** — uma única categoria que sozinha não cabe (ex.: GOV com overlay CRA, L3):
+serve-se pronto, com `within_envelope: false` e `size_estimate.irreducible_note_id`; nunca devolve outra decomposição. `full`
+não tem envelope e fica **byte-idêntico** à 0.21.1.
+
+**O que muda:**
+- **Custo = o `size_estimate` do payload real**, construído e medido antes de responder (mesma régua). Retiram-se os tectos por
+  contagem e a recta que os derivava: `REQUIREMENT_CEILING_BY_DETAIL`, `COST_PER_REQ_TK`, `BASE_TK`, `CEILING_FIT`,
+  `PROPOSED_CEILING_BY_DETAIL`. Fica `PAYLOAD_PROMISE_TK`.
+- **Lotes empacotados por payload medido:** categorias por custo isolado decrescente, cada uma no primeiro lote em que o payload
+  real do lote continue dentro do envelope. Cada lote declara `measured_tk` (é o que a chamada devolve) e `irreducible`.
+  `technologies`, `changed_files`, os parâmetros do overlay e o `mode` (quando não é `codegen`) preservam-se literalmente.
+- **`requirement_ceiling`:** ganha `basis: "measured_payload"`; `projected_tk` passa a ser o medido; **saem `limit` e
+  `cost_per_req_tk`**.
+- **Opt-ins explícitos** (`include_relations`, `debug`) não disparam decomposição: decide a forma canónica do nível, e o pedido
+  sai com o preço declarado.
+- **`select` → `next`:** a única projecção que sobra (custo de um prepare ainda não pedido) é a soma das médias por categoria,
+  medidas no bundle e calibradas uma vez por processo; declarada **ESTIMATIVA**, nunca bloqueia.
+- Nota nova `prepare.size_estimate.irreducible`; `prepare.size_estimate.envelope_exceeded` reescrita; descrições e guia do
+  agente (`needs_decomposition` → executar os lotes) alinhados.
+
+**Efeito medido (matriz de 116 casos, `docs/acceptance-runs/2026-09-26-v0.21.2-cost-ceiling-matrix.md`):** 87 iguais prontos,
+6 iguais bloqueados, **22 prontos → decompõem** (os 22 que a 0.21.1 servia prontos acima do envelope), **1 bloqueado → pronto**
+(auth+logging+validation L3, 53 reqs, 7 981 tk); 0 violações da promessa; `full` byte-idêntico 58/58.
+
+**Prova:** vitest 838/838 (testes de propriedade: sem ciclo sobre o catálogo inteiro, irredutível, overlay/modo preservados,
+custo declarado = recebido); `check`; smoke; `eval:acceptance` 141/16/0/23 gate PASS (TC-F-34 reescrito para a regra de custo);
+Eixo H 10/10; invariante 3 contra o oráculo da 0.20.0. Pino KG v1.12.0 inalterado.
+
 ## 0.21.1 — RASCUNHO (preparado 2026-09-26; merge squash → tag `v0.21.1` → `next` → `latest` são actos do lead) — o overlay regulatório restringe-se ao que a chamada activou
 
 **Defeito, medido nas três versões publicadas (0.19.4 `latest`, 0.20.0, 0.21.0):** com `include_regulatory_overlay`, o

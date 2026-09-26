@@ -11,6 +11,10 @@
  * derivados dessa projecção. Esta versão faz o join sobre o catálogo publicado
  * COMPLETO (1:1 por requisito) e imprime, lado a lado, a projecção corrigida e a
  * forma servida (com o tecto levantado SÓ para medir o caso de 89).
+ *
+ * 0.21.2 (decisão 0004): já não há tecto por contagem para levantar — acima do envelope a
+ * resposta traz o custo MEDIDO do payload inteiro em requirement_ceiling.projected_tk, e é
+ * esse o valor que entra na tabela.
  */
 import { handlePrepareCodegenContext } from "../../dist/tools/prepare-codegen-context.js";
 import { getOntologyData } from "../../dist/tools/ontology-loader.js";
@@ -121,27 +125,25 @@ for (const r of proj) console.log(r.name.padEnd(38), String(r.n).padStart(4), St
 const pd = {};
 for (const lvl of ["lista", "standard", "full"]) { pd[lvl] = regression(proj, lvl, 0, proj.length - 1); console.log(`   ${lvl.padEnd(9)} declive ≈ ${pd[lvl].slope} tk/req | base ≈ ${pd[lvl].base} tk`); }
 
-// ---- Forma SERVIDA (§1 aterrada) — tecto levantado SÓ para medir o caso de 89 ---
-const savedCeilings = { ...ceilings.REQUIREMENT_CEILING_BY_DETAIL };
-for (const k of Object.keys(ceilings.REQUIREMENT_CEILING_BY_DETAIL)) delete ceilings.REQUIREMENT_CEILING_BY_DETAIL[k];
+// ---- Forma SERVIDA — acima do envelope, o custo medido vem em requirement_ceiling (0.21.2) ---
 const served = [];
 for (const [name, args] of CASES) {
   const row = { name, n: 0 };
   for (const lvl of ["lista", "standard", "full"]) {
     const p = handlePrepareCodegenContext({ ...args, detail: lvl });
+    if (p.status === "needs_decomposition" && p.requirement_ceiling) { row.n = p.requirement_ceiling.selected; row[lvl] = p.requirement_ceiling.projected_tk; continue; }
     if (p.status !== "ready_for_codegen") { row[lvl] = p.status; continue; }
     row.n = p.activated_scope.requirements.length; row[lvl] = tk(p);
   }
   served.push(row);
 }
-Object.assign(ceilings.REQUIREMENT_CEILING_BY_DETAIL, savedCeilings);
 console.log("\n=== FORMA SERVIDA (0.21 §1 requisito fundido + §3 cortes + §2 adjacência inline) ===");
 console.log("caso".padEnd(38), "reqs", "   lista standard    full");
 for (const r of served) console.log(r.name.padEnd(38), String(r.n).padStart(4), String(r.lista).padStart(8), String(r.standard).padStart(8), String(r.full).padStart(8));
 const sd = {};
 for (const lvl of ["lista", "standard"]) {
   sd[lvl] = regression(served, lvl, 0, served.length - 1);
-  const env = ceilings.PAYLOAD_PROMISE_TK[lvl]; const ceil = ceilings.REQUIREMENT_CEILING_BY_DETAIL[lvl];
-  console.log(`   ${lvl.padEnd(9)} declive ≈ ${sd[lvl].slope} tk/req | base ≈ ${sd[lvl].base} tk | envelope ${env} ⇒ tecto pela fórmula = ${Math.floor((env - sd[lvl].base) / sd[lvl].slope)} (ratificado: ${ceil}; custo em ${ceil} ≈ ${Math.round(sd[lvl].base + sd[lvl].slope * ceil)} tk)`);
+  const env = ceilings.PAYLOAD_PROMISE_TK[lvl];
+  console.log(`   ${lvl.padEnd(9)} declive ≈ ${sd[lvl].slope} tk/req | base ≈ ${sd[lvl].base} tk | envelope ${env} (0.21.2: a regra é o payload medido, não esta recta)`);
 }
-console.log("\nDERIVED_JSON " + JSON.stringify({ projection_corrected: pd, served: sd, ceiling_fit: ceilings.CEILING_FIT }));
+console.log("\nDERIVED_JSON " + JSON.stringify({ projection_corrected: pd, served: sd, envelopes: ceilings.PAYLOAD_PROMISE_TK }));

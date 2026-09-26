@@ -10,7 +10,7 @@
  * category, with reason) — never silent. Deterministic; paginated (G1).
  */
 import { servedKgReleaseTag, servingServerVersion } from "../version-info.js";
-import { VALID_CONCERNS } from "./prepare-codegen-context.js";
+import { VALID_CONCERNS, estimatePrepareCostTk } from "./prepare-codegen-context.js";
 import { runSelection, type SelectionContextInput, type SelectionResult } from "../serving/selection.js";
 import { handleConsultSecurityRequirements } from "./consult-security-requirements.js";
 import { getRegulatoryOverlay, type RegulatoryObligation } from "./regulatory-overlay-loader.js";
@@ -447,6 +447,6 @@ export function handleSelectRequirements(args: Record<string, unknown>): SelectR
             kind: "structural" as const
           }
         ]
-      : selectRequirementsAffordances(risk, page.map((x) => x.requirement_id), result.empty_selection_warning?.candidate_concerns ?? result.lexical_dominance_warning?.candidate_concerns, result.selected.length)
+      : selectRequirementsAffordances(risk, page.map((x) => x.requirement_id), result.empty_selection_warning?.candidate_concerns ?? result.lexical_dominance_warning?.candidate_concerns, result.selected.length, estimatePrepareCostTk("lista", result.selected.map((x) => x.requirement_id)))
   };
 }

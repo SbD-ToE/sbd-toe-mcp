@@ -129,7 +129,7 @@
     {
       "tool": "select_sbd_toe_requirements",
       "status": "byte-idêntico",
-      "bytes": 28574
+      "bytes": 28645
     },
     {
       "tool": "consult_security_requirements",

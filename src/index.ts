@@ -1655,7 +1655,7 @@ class McpRuntime {
                 type: "array",
                 items: { type: "string" },
                 description:
-                  "0.21 §6 — FORMA B: categorias declaradas (p.ex. \"AUT\", \"SES\"). É a receita dos lotes de needs_decomposition: cada lote é a partição exacta das categorias que a tua declaração activou (technologies/changed_files preservados), e a união dos lotes é o conjunto inteiro (m_recall 1). Só no caminho declarativo."
+                  "0.21 §6 — FORMA B: categorias declaradas (p.ex. \"AUT\", \"SES\"). É a receita dos lotes de needs_decomposition: cada lote é a partição exacta das categorias que a tua declaração activou (technologies/changed_files/overlay preservados), medida e dentro do envelope salvo irredutível declarado, e a união dos lotes é o conjunto inteiro (m_recall 1). Só no caminho declarativo."
               },
               technologies: {
                 type: "array",
@@ -1673,7 +1673,7 @@ class McpRuntime {
                 type: "string",
                 enum: ["lista", "standard", "full"],
                 description:
-                  "Response level. lista: every activated requirement complete and verbatim (id, name, type, description, verify, evidence) + citations + inline instructions/template; grounding by reference; relations out (relations_summary); adjacency summary with detail_ref. standard: lista + the adjacency detail inline. full (default): standard + manual_grounding inline, relations_ref, activation_trace, no ceiling, price in size_estimate. Ceilings by declared count: lista 52, standard 55 \u2014 above them needs_decomposition with batches that sum to the whole. 'ultrathin'/'minimal' are retired."
+                  "Response level. lista: every activated requirement verbatim (id, name, type, description, verify, evidence) + citations + instructions/template; grounding and relations by reference; adjacency summary. standard: lista + adjacency detail. full (default): standard + manual_grounding, relations_ref, trace; no envelope, price in size_estimate. lista fits 8,450 tokens, standard 9,200, measured on the real payload; above, needs_decomposition with measured batches that sum to the whole; a single category that alone does not fit is served ready, declared irreducible. 'ultrathin'/'minimal' retired."
               },
               include_relations: {
                 type: "boolean",

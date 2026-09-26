@@ -12,11 +12,11 @@
     "mode": "codegen"
   },
   "reasons": [
-    "Selecção de 69 requisitos excede o tecto de 52 para detail=\"lista\" (medição: ~133 tk/req sobre base ~1476 tk ⇒ ~10653 tk, acima do envelope de 8450 tk deste nível)."
+    "O payload de 69 requisitos em detail=\"lista\" mede 12346 tk — acima do envelope de 8450 tk deste nível (medido sobre o payload que receberias: requisitos, controlos, entidades, adjacência e overlay)."
   ],
   "suggestions": [
-    "Divide em 2 lotes que SOMAM O TODO (união = 69 ids, m_recall 1.00 face à selecção inteira): repete com task + risk_level + detail + `categories` do lote. Cada lote é a partição EXACTA das categorias que a tua declaração activou — exposure/data_sensitivity estão lá pelo seu efeito (re-declará-los somaria as suas categorias a todos os lotes). Lotes: 1) categories=[\"OPS\", \"AUT\", \"ACC\", \"LOG\", \"FIL\"] (47 reqs; de \"auth\", \"files\", \"logging\", \"monitoring\"); 2) categories=[\"VAL\", \"API\", \"ERR\"] (22 reqs; de \"api\", \"validation\").",
-    "Em alternativa usa detail=\"full\" (sem tecto — preço declarado em size_estimate) ou reduz o âmbito da task."
+    "Divide em 2 lotes que SOMAM O TODO (união = 69 ids, m_recall 1.00 face à selecção inteira): repete com task + risk_level + detail + `categories` do lote. Cada lote é a partição EXACTA das categorias que a tua declaração activou — exposure/data_sensitivity estão lá pelo seu efeito (re-declará-los somaria as suas categorias a todos os lotes). Cada lote foi medido e cabe no envelope, salvo irredutível declarado. Lotes: 1) categories=[\"OPS\", \"FIL\", \"API\", \"AUT\", \"ERR\"] (43 reqs, 8429 tk; de \"api\", \"auth\", \"files\", \"monitoring\", \"validation\"); 2) categories=[\"VAL\", \"ACC\", \"LOG\"] (26 reqs, 4070 tk; de \"auth\", \"logging\", \"monitoring\", \"validation\").",
+    "Em alternativa usa detail=\"full\" (sem envelope — preço declarado em size_estimate) ou reduz o âmbito da task."
   ],
   "partial_activation_trace": [
     {
@@ -142,29 +142,31 @@
   ],
   "requirement_ceiling": {
     "detail": "lista",
-    "limit": 52,
+    "basis": "measured_payload",
     "selected": 69,
-    "cost_per_req_tk": 133,
-    "projected_tk": 10653,
+    "projected_tk": 12346,
     "promise_tk": 8450,
     "batches": [
       {
         "with": {
           "categories": [
             "OPS",
+            "FIL",
+            "API",
             "AUT",
-            "ACC",
-            "LOG",
-            "FIL"
+            "ERR"
           ]
         },
-        "requirements": 47,
+        "requirements": 43,
+        "measured_tk": 8429,
+        "irreducible": false,
         "derived_from": {
           "concerns": [
+            "api",
             "auth",
             "files",
-            "logging",
-            "monitoring"
+            "monitoring",
+            "validation"
           ]
         }
       },
@@ -172,14 +174,18 @@
         "with": {
           "categories": [
             "VAL",
-            "API",
-            "ERR"
+            "ACC",
+            "LOG"
           ]
         },
-        "requirements": 22,
+        "requirements": 26,
+        "measured_tk": 4070,
+        "irreducible": false,
         "derived_from": {
           "concerns": [
-            "api",
+            "auth",
+            "logging",
+            "monitoring",
             "validation"
           ]
         }
