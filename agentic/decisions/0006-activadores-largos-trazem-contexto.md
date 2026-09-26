@@ -32385,3 +32385,53 @@ bundle novo**. A tabela de §3, em particular, é dado e muda com o re-pino.
 release, PR de merge nem publicação até o Manual fechar. A versão do MCP sai no ciclo completo Manual → KG (re-pino v1.27 +
 v1.28) → ontologia v2.11 → MCP. Todos os números abaixo são do bundle pinado actual (v1.12.0), e **serão re-medidos contra o
 bundle novo**. A tabela de §3, em particular, é dado e muda com o re-pino.
+
+---
+
+## 10. Decisões do lead e implementação (2026-09-26, append)
+
+**Decisões (via Orchestrator), SIM às três:**
+1. **Opção A.** Os activadores largos trazem as famílias derivadas só do dado publicado. As tabelas saem do caminho de decisão
+   das fatias.
+2. **A relação precisa** «valor de contexto → fatias» como dado no KG fica para a **v2.12**, não para este ciclo.
+3. **O caso do oráculo** «API pública/L3 + activadores» é re-baselinado com ratificação do lead **no ciclo completo**. Até lá,
+   o oráculo commitado não se mexe.
+
+**Implementado** no branch `0.21.2-cost-ceilings`:
+- `src/serving/context-slice-chain.ts`: a cadeia requisito → controlo → objectivo → família, com testemunha por família.
+- **Onde se corrigiu o defeito de ordem.** A correcção não reordena o motor. Pôr o passo 4b antes do 4 faria as concerns largas
+  passarem pela tabela concern → família, que é a opção B. O passo novo corre **depois da selecção**:
+  1. os requisitos que cada activador largo selecciona sozinho a esse nível percorrem a cadeia;
+  2. cada família entra no `activation_trace` com a fonte `context_slice_chain`, o gatilho e a cadeia.
+- **Lotes (0005).** A tabela concern → família só vale para as concerns não largas. As fatias largas de um lote vêm da cadeia
+  sobre os requisitos largos das suas categorias.
+  - Isto corrige uma imprecisão da 0005: antes, os lotes de um pedido com `exposure` recebiam pela tabela famílias que o
+    pedido original não tinha.
+  - Agora a união é **exactamente** o contexto do pedido: 52 de 52 decomposições na matriz.
+- **Vocabulário.** Cada valor de `exposure` e `data_sensitivity` publica `activates_slice_families`, por nível, derivado pela
+  mesma função. A nota diz as duas origens: a selecção vem da regra declarada, o contexto vem do dado.
+
+**Papel que as tabelas mantêm** (declarado, como pedido):
+- `EXPOSURE_CONCERNS` e `SENSITIVITY_CONCERNS` ficam só para a **selecção de requisitos**, que não muda. São a regra declarada
+  D3 do lead, de 2026-08-31, publicada no vocabulário como `activates_concerns`.
+- `CONCERN_TO_SLICE_FAMILY` fica só para as fatias das **concerns não largas** (declaradas, de ficheiros, lexicais) e para o
+  gate de famílias do `discover`. Discorda do dado em 22 de 24 concerns (§3). Levar as concerns para a cadeia do dado é uma
+  decisão separada, que aguarda a relação precisa do KG na v2.12.
+
+**Prova:**
+- matriz dos activadores largos (94 casos, `docs/acceptance-runs/2026-09-26-0006-broad-activator-matrix.md`): declarações sem G2
+  46 → **0**; decomposições 24 → 52; tokens +29,8 %; 0 lotes únicos; união exacta 52 de 52; **0 violações**;
+- matriz de custo (120 casos): 0 violações; `full` byte-idêntico à 0.21.1 em 58 de 58 declarações sem activadores largos, e as 2
+  com activadores largos mudam por desenho;
+- `prepare-codegen-context.broad-context.test.ts`: propriedade L1–L3; testemunhas verificadas no dado; o serviço igual ao
+  vocabulário; as tabelas fora do caminho; a selecção igual à do `select`; valores inertes; união exacta dos lotes;
+- invariante 3: o caso «API pública/L3 + activadores» fica marcado como **re-baselinagem pendente de ratificação**. O teste prova
+  que o conjunto novo contém o do oráculo e que os ids a mais são só fatias da cadeia e as suas entidades;
+- vitest 854/854; check; smoke; acceptance 141/16/0/23 PASS (TC-F-34: avaliador com 3 lotes; docs com G2 144/144); Eixo H 10/10.
+
+**Seguimentos registados:**
+- **KG v2.12:** a relação precisa «valor de contexto → fatias» (e «concern → família») como dado. O Archon modela-a em
+  `ApplicationContext`, o Codex materializa-a, e o lead ratifica.
+- **Ciclo completo:** re-medir as duas matrizes contra o bundle novo, e mostrar ao lead o conjunto citável antes/depois do caso
+  do oráculo para ratificação.
+

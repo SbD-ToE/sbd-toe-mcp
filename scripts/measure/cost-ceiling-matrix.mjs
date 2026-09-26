@@ -52,12 +52,17 @@ const label = (d) => `${d.concerns.join("+")}${d.exposure ? `+${d.exposure}${d.d
 const rows = [];
 const violations = [];
 let fullIdentical = 0;
+let fullChangedBy0006 = 0;
 const t0 = performance.now();
 for (const d of decls) {
   const base = { task: "x", ...d };
   const fb = JSON.stringify(before.handlePrepareCodegenContext({ ...base, detail: "full" }));
   const fa = after.handlePrepareCodegenContext({ ...base, detail: "full" });
-  if (fb === JSON.stringify(fa)) fullIdentical += 1; else violations.push(`${label(d)}: full difere do 0.21.1`);
+  // Decisão 0006: com exposure/data_sensitivity o full muda POR DESENHO (os activadores largos trazem fatias).
+  const broad = d.exposure !== undefined || d.data_sensitivity !== undefined;
+  if (fb === JSON.stringify(fa)) fullIdentical += 1;
+  else if (broad) fullChangedBy0006 += 1;
+  else violations.push(`${label(d)}: full difere do 0.21.1`);
   const fullIds = new Set((fa.activated_scope?.requirements ?? []).map((q) => q.id));
   const fullG2 = g2OfFull(fa), fullSlices = slicesOf(fa);
   for (const detail of ["lista", "standard"]) {
@@ -106,7 +111,8 @@ const tally = {
   blocked_to_ready: rows.filter((r) => !ready(r.before) && ready(r.after)).map((r) => `${r.case}@${r.detail} (${r.reqs} reqs, ${r.after_tk} tk)`),
   irreducible_ready: rows.filter((r) => r.irreducible).map((r) => `${r.case}@${r.detail}`),
   before_ready_above_envelope: rows.filter((r) => ready(r.before) && r.before_tk > ENV[r.detail]).length,
-  full_byte_identical: `${fullIdentical}/${decls.length}`,
+  full_byte_identical: `${fullIdentical}/${decls.length - fullChangedBy0006}`,
+  full_changed_by_design_0006: fullChangedBy0006,
   decompositions: g2Coverage.length,
   single_batch_decompositions: singleBatch,
   g2_coverage_mean: g2Coverage.length ? Number((g2Coverage.reduce((a, b) => a + b, 0) / g2Coverage.length).toFixed(4)) : 1,
@@ -121,7 +127,7 @@ console.log(`pronto → bloqueia: ${tally.ready_to_blocked.length}`); tally.read
 console.log(`bloqueado → pronto: ${tally.blocked_to_ready.length}`); tally.blocked_to_ready.forEach((t) => console.log("   " + t));
 console.log(`irredutíveis prontos: ${tally.irreducible_ready.length}`);
 console.log(`antes: prontos ACIMA do envelope (promessa por cumprir): ${tally.before_ready_above_envelope}`);
-console.log(`full byte-idêntico ao antes: ${tally.full_byte_identical}`);
+console.log(`full byte-idêntico ao antes (sem activadores largos): ${tally.full_byte_identical} · full mudado por desenho (0006): ${tally.full_changed_by_design_0006}`);
 console.log(`decomposições ${tally.decompositions} · de um só lote ${tally.single_batch_decompositions} · cobertura G2 da união média ${tally.g2_coverage_mean} (mín. ${tally.g2_coverage_min}) · fatias completas ${tally.slices_full_union}`);
 console.log(`violações da promessa: ${violations.length}`); violations.forEach((v) => console.log("   " + v));
 console.log(`latência máx. de uma chamada: ${tally.max_ms} ms · total ${tally.total_s} s`);

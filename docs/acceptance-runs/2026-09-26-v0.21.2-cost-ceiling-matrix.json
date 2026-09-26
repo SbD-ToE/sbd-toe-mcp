@@ -34,15 +34,16 @@
     ],
     "irreducible_ready": [],
     "before_ready_above_envelope": 24,
-    "full_byte_identical": "60/60",
+    "full_byte_identical": "58/58",
+    "full_changed_by_design_0006": 2,
     "decompositions": 32,
     "single_batch_decompositions": 0,
     "g2_coverage_mean": 1,
     "g2_coverage_min": 1,
     "slices_full_union": "32/32",
     "violations": [],
-    "max_ms": 346,
-    "total_s": 31.1
+    "max_ms": 374,
+    "total_s": 32.1
   },
   "rows": [
     {
@@ -51,7 +52,7 @@
       "reqs": 27,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 10,
+      "ms": 8,
       "before_tk": 4582,
       "after_tk": 4582,
       "irreducible": false
@@ -62,7 +63,7 @@
       "reqs": 27,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 9,
+      "ms": 11,
       "before_tk": 5063,
       "after_tk": 5063,
       "irreducible": false
@@ -73,7 +74,7 @@
       "reqs": 9,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 2837,
       "after_tk": 2837,
       "irreducible": false
@@ -106,7 +107,7 @@
       "reqs": 15,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 4175,
       "after_tk": 4175,
       "irreducible": false
@@ -128,7 +129,7 @@
       "reqs": 7,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 3842,
       "after_tk": 3842,
       "irreducible": false
@@ -139,7 +140,7 @@
       "reqs": 6,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 3085,
       "after_tk": 3085,
       "irreducible": false
@@ -161,7 +162,7 @@
       "reqs": 9,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 11,
       "before_tk": 3641,
       "after_tk": 3641,
       "irreducible": false
@@ -172,7 +173,7 @@
       "reqs": 9,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 4133,
       "after_tk": 4133,
       "irreducible": false
@@ -183,7 +184,7 @@
       "reqs": 7,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 3635,
       "after_tk": 3635,
       "irreducible": false
@@ -194,7 +195,7 @@
       "reqs": 7,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 4127,
       "after_tk": 4127,
       "irreducible": false
@@ -238,7 +239,7 @@
       "reqs": 7,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 2822,
       "after_tk": 2822,
       "irreducible": false
@@ -260,7 +261,7 @@
       "reqs": 12,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 10,
       "before_tk": 5248,
       "after_tk": 5248,
       "irreducible": false
@@ -282,7 +283,7 @@
       "reqs": 11,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 4376,
       "after_tk": 4376,
       "irreducible": false
@@ -293,7 +294,7 @@
       "reqs": 8,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 3352,
       "after_tk": 3352,
       "irreducible": false
@@ -315,7 +316,7 @@
       "reqs": 14,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 4344,
       "after_tk": 4344,
       "irreducible": false
@@ -337,7 +338,7 @@
       "reqs": 18,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 5,
+      "ms": 6,
       "before_tk": 5949,
       "after_tk": 5949,
       "irreducible": false
@@ -348,7 +349,7 @@
       "reqs": 18,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 5,
+      "ms": 6,
       "before_tk": 6429,
       "after_tk": 6429,
       "irreducible": false
@@ -359,7 +360,7 @@
       "reqs": 32,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 256,
+      "ms": 267,
       "before_tk": 9389,
       "after_tk": 9389,
       "batches": [
@@ -391,7 +392,7 @@
       "reqs": 32,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 48,
+      "ms": 52,
       "before_tk": 9839,
       "after_tk": 9839,
       "batches": [
@@ -467,7 +468,7 @@
       "reqs": 20,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 8,
       "before_tk": 6218,
       "after_tk": 6218,
       "irreducible": false
@@ -478,7 +479,7 @@
       "reqs": 20,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 6683,
       "after_tk": 6683,
       "irreducible": false
@@ -511,7 +512,7 @@
       "reqs": 38,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 57,
+      "ms": 62,
       "before_tk": 9027,
       "after_tk": 9027,
       "batches": [
@@ -544,7 +545,7 @@
       "reqs": 38,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 59,
+      "ms": 77,
       "before_tk": 9451,
       "after_tk": 9451,
       "batches": [
@@ -588,7 +589,7 @@
       "reqs": 16,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 4838,
       "after_tk": 4838,
       "irreducible": false
@@ -599,7 +600,7 @@
       "reqs": 8,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 2705,
       "after_tk": 2705,
       "irreducible": false
@@ -610,7 +611,7 @@
       "reqs": 8,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 3198,
       "after_tk": 3198,
       "irreducible": false
@@ -621,7 +622,7 @@
       "reqs": 5,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 2234,
       "after_tk": 2234,
       "irreducible": false
@@ -632,7 +633,7 @@
       "reqs": 5,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 8,
       "before_tk": 2727,
       "after_tk": 2727,
       "irreducible": false
@@ -643,7 +644,7 @@
       "reqs": 18,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 193,
+      "ms": 211,
       "before_tk": 8819,
       "after_tk": 8819,
       "batches": [
@@ -689,7 +690,7 @@
       "reqs": 18,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 192,
+      "ms": 206,
       "before_tk": 9312,
       "after_tk": 9312,
       "batches": [
@@ -735,7 +736,7 @@
       "reqs": 28,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 8,
       "before_tk": 4674,
       "after_tk": 4674,
       "irreducible": false
@@ -746,7 +747,7 @@
       "reqs": 28,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 5156,
       "after_tk": 5156,
       "irreducible": false
@@ -768,7 +769,7 @@
       "reqs": 10,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 8,
+      "ms": 11,
       "before_tk": 3423,
       "after_tk": 3423,
       "irreducible": false
@@ -779,7 +780,7 @@
       "reqs": 15,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 3683,
       "after_tk": 3683,
       "irreducible": false
@@ -790,7 +791,7 @@
       "reqs": 15,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 8,
+      "ms": 6,
       "before_tk": 4177,
       "after_tk": 4177,
       "irreducible": false
@@ -812,7 +813,7 @@
       "reqs": 7,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 10,
+      "ms": 7,
       "before_tk": 3843,
       "after_tk": 3843,
       "irreducible": false
@@ -823,7 +824,7 @@
       "reqs": 7,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 8,
+      "ms": 9,
       "before_tk": 3249,
       "after_tk": 3249,
       "irreducible": false
@@ -834,7 +835,7 @@
       "reqs": 7,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 3744,
       "after_tk": 3744,
       "irreducible": false
@@ -845,7 +846,7 @@
       "reqs": 12,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 11,
+      "ms": 7,
       "before_tk": 3937,
       "after_tk": 3937,
       "irreducible": false
@@ -856,7 +857,7 @@
       "reqs": 12,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 8,
+      "ms": 6,
       "before_tk": 4430,
       "after_tk": 4430,
       "irreducible": false
@@ -878,7 +879,7 @@
       "reqs": 7,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 4128,
       "after_tk": 4128,
       "irreducible": false
@@ -889,7 +890,7 @@
       "reqs": 6,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 2533,
       "after_tk": 2533,
       "irreducible": false
@@ -900,7 +901,7 @@
       "reqs": 6,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 8,
       "before_tk": 3028,
       "after_tk": 3028,
       "irreducible": false
@@ -922,7 +923,7 @@
       "reqs": 7,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 2824,
       "after_tk": 2824,
       "irreducible": false
@@ -944,7 +945,7 @@
       "reqs": 15,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 5585,
       "after_tk": 5585,
       "irreducible": false
@@ -955,7 +956,7 @@
       "reqs": 13,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 4127,
       "after_tk": 4127,
       "irreducible": false
@@ -988,7 +989,7 @@
       "reqs": 9,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 3970,
       "after_tk": 3970,
       "irreducible": false
@@ -1010,7 +1011,7 @@
       "reqs": 16,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 5086,
       "after_tk": 5086,
       "irreducible": false
@@ -1021,7 +1022,7 @@
       "reqs": 20,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 5,
+      "ms": 7,
       "before_tk": 6382,
       "after_tk": 6382,
       "irreducible": false
@@ -1032,7 +1033,7 @@
       "reqs": 20,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 7,
       "before_tk": 6864,
       "after_tk": 6864,
       "irreducible": false
@@ -1043,7 +1044,7 @@
       "reqs": 37,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 260,
+      "ms": 257,
       "before_tk": 10065,
       "after_tk": 10065,
       "batches": [
@@ -1075,7 +1076,7 @@
       "reqs": 37,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 49,
+      "ms": 50,
       "before_tk": 10516,
       "after_tk": 10516,
       "batches": [
@@ -1118,7 +1119,7 @@
       "reqs": 10,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 6,
+      "ms": 8,
       "before_tk": 4432,
       "after_tk": 4432,
       "irreducible": false
@@ -1129,7 +1130,7 @@
       "reqs": 8,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 7,
+      "ms": 6,
       "before_tk": 4967,
       "after_tk": 4967,
       "irreducible": false
@@ -1204,7 +1205,7 @@
       "reqs": 26,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 35,
+      "ms": 37,
       "before_tk": 10406,
       "after_tk": 10406,
       "batches": [
@@ -1235,7 +1236,7 @@
       "reqs": 43,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 57,
+      "ms": 58,
       "before_tk": 10040,
       "after_tk": 10040,
       "batches": [
@@ -1268,7 +1269,7 @@
       "reqs": 43,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 59,
+      "ms": 60,
       "before_tk": 10464,
       "after_tk": 10464,
       "batches": [
@@ -1367,7 +1368,7 @@
       "reqs": 20,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 192,
+      "ms": 200,
       "before_tk": 9720,
       "after_tk": 9720,
       "batches": [
@@ -1420,7 +1421,7 @@
       "reqs": 20,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 203,
+      "ms": 213,
       "before_tk": 10214,
       "after_tk": 10214,
       "batches": [
@@ -1516,7 +1517,7 @@
       "reqs": 20,
       "before": "ready_for_codegen",
       "after": "ready_for_codegen",
-      "ms": 10,
+      "ms": 6,
       "before_tk": 5186,
       "after_tk": 5186,
       "irreducible": false
@@ -1538,7 +1539,7 @@
       "reqs": 37,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 53,
+      "ms": 48,
       "before_tk": 9278,
       "after_tk": 9278,
       "batches": [
@@ -1602,7 +1603,7 @@
       "reqs": 62,
       "before": "needs_decomposition",
       "after": "needs_decomposition",
-      "ms": 99,
+      "ms": 104,
       "after_tk": 14288,
       "batches": [
         {
@@ -1636,7 +1637,7 @@
       "reqs": 62,
       "before": "needs_decomposition",
       "after": "needs_decomposition",
-      "ms": 102,
+      "ms": 105,
       "after_tk": 14671,
       "batches": [
         {
@@ -1670,7 +1671,7 @@
       "reqs": 43,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 64,
+      "ms": 70,
       "before_tk": 13292,
       "after_tk": 13292,
       "batches": [
@@ -1703,7 +1704,7 @@
       "reqs": 43,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 63,
+      "ms": 68,
       "before_tk": 13702,
       "after_tk": 13702,
       "batches": [
@@ -1736,7 +1737,7 @@
       "reqs": 77,
       "before": "needs_decomposition",
       "after": "needs_decomposition",
-      "ms": 134,
+      "ms": 149,
       "after_tk": 17237,
       "batches": [
         {
@@ -1778,7 +1779,7 @@
       "reqs": 77,
       "before": "needs_decomposition",
       "after": "needs_decomposition",
-      "ms": 131,
+      "ms": 172,
       "after_tk": 17594,
       "batches": [
         {
@@ -1820,7 +1821,7 @@
       "reqs": 33,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 256,
+      "ms": 260,
       "before_tk": 11351,
       "after_tk": 11351,
       "batches": [
@@ -1875,7 +1876,7 @@
       "reqs": 33,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 265,
+      "ms": 279,
       "before_tk": 11820,
       "after_tk": 11820,
       "batches": [
@@ -1930,7 +1931,7 @@
       "reqs": 36,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 100,
+      "ms": 104,
       "before_tk": 11523,
       "after_tk": 11523,
       "batches": [
@@ -1963,7 +1964,7 @@
       "reqs": 36,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 84,
+      "ms": 82,
       "before_tk": 11962,
       "after_tk": 11962,
       "batches": [
@@ -1996,31 +1997,38 @@
       "reqs": 89,
       "before": "needs_decomposition",
       "after": "needs_decomposition",
-      "ms": 171,
-      "after_tk": 12747,
+      "ms": 211,
+      "after_tk": 14940,
       "batches": [
         {
           "categories": [
-            "ARC",
-            "ENC",
             "API",
-            "VAL"
+            "ARC",
+            "ERR"
           ],
-          "requirements": 39,
-          "measured_tk": 8409,
+          "requirements": 29,
+          "measured_tk": 8165,
           "irreducible": false
         },
         {
           "categories": [
+            "ENC",
             "AUT",
             "LOG",
-            "ACC",
-            "SES",
-            "ERR",
-            "PRI"
+            "PRI",
+            "ACC"
           ],
-          "requirements": 50,
-          "measured_tk": 7631,
+          "requirements": 44,
+          "measured_tk": 8217,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "VAL",
+            "SES"
+          ],
+          "requirements": 16,
+          "measured_tk": 4504,
           "irreducible": false
         }
       ],
@@ -2034,31 +2042,38 @@
       "reqs": 89,
       "before": "needs_decomposition",
       "after": "needs_decomposition",
-      "ms": 173,
-      "after_tk": 13060,
+      "ms": 211,
+      "after_tk": 15252,
       "batches": [
         {
           "categories": [
-            "ARC",
-            "ENC",
             "API",
-            "VAL"
+            "ARC",
+            "ERR"
           ],
-          "requirements": 39,
-          "measured_tk": 8917,
+          "requirements": 29,
+          "measured_tk": 8673,
           "irreducible": false
         },
         {
           "categories": [
+            "ENC",
             "AUT",
             "LOG",
-            "ACC",
-            "SES",
-            "ERR",
-            "PRI"
+            "PRI",
+            "ACC"
           ],
-          "requirements": 50,
-          "measured_tk": 8138,
+          "requirements": 44,
+          "measured_tk": 8724,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "VAL",
+            "SES"
+          ],
+          "requirements": 16,
+          "measured_tk": 5011,
           "irreducible": false
         }
       ],
@@ -2072,7 +2087,7 @@
       "reqs": 27,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 56,
+      "ms": 68,
       "before_tk": 9347,
       "after_tk": 9347,
       "batches": [
@@ -2104,7 +2119,7 @@
       "reqs": 27,
       "before": "ready_for_codegen",
       "after": "needs_decomposition",
-      "ms": 54,
+      "ms": 57,
       "before_tk": 9827,
       "after_tk": 9827,
       "batches": [
@@ -2136,29 +2151,29 @@
       "reqs": 70,
       "before": "needs_decomposition",
       "after": "needs_decomposition",
-      "ms": 346,
-      "after_tk": 10780,
+      "ms": 374,
+      "after_tk": 12289,
       "batches": [
         {
           "categories": [
-            "ARC",
             "API",
-            "VAL",
-            "AUT",
+            "ARC",
             "ERR"
           ],
-          "requirements": 45,
-          "measured_tk": 8388,
+          "requirements": 27,
+          "measured_tk": 7917,
           "irreducible": false
         },
         {
           "categories": [
+            "AUT",
             "LOG",
+            "VAL",
             "ACC",
             "SES"
           ],
-          "requirements": 26,
-          "measured_tk": 4882,
+          "requirements": 44,
+          "measured_tk": 7349,
           "irreducible": false
         }
       ],
@@ -2172,29 +2187,29 @@
       "reqs": 70,
       "before": "needs_decomposition",
       "after": "needs_decomposition",
-      "ms": 131,
-      "after_tk": 11165,
+      "ms": 152,
+      "after_tk": 12674,
       "batches": [
         {
           "categories": [
-            "ARC",
             "API",
-            "VAL",
-            "AUT",
-            "ERR"
+            "ARC",
+            "ERR",
+            "LOG"
           ],
-          "requirements": 45,
-          "measured_tk": 8881,
+          "requirements": 36,
+          "measured_tk": 9189,
           "irreducible": false
         },
         {
           "categories": [
-            "LOG",
+            "AUT",
+            "VAL",
             "ACC",
             "SES"
           ],
-          "requirements": 26,
-          "measured_tk": 5375,
+          "requirements": 35,
+          "measured_tk": 7064,
           "irreducible": false
         }
       ],
