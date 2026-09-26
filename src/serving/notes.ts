@@ -17,6 +17,8 @@ export const NOTES = {
     "relations elided (0.21 §3): every edge links nodes already in this payload; include_relations=true inlines them, detail='full' carries the executable relations_ref (trace_sbd_toe_graph).",
   "prepare.adjacency.detail_ref":
     "Full list of undeclared signals that would change the set (the summary is its prefix) at detail='standard'; for the ids a signal would add: select_sbd_toe_requirements(<your declaration> + the signal).",
+  "prepare.overlay.mappings_scope":
+    "0.21.1 — regulatory_overlay.mappings is SCOPED to this call: only mappings whose target is in the activated scope are served (an activated requirement or control, the evidence pattern of an activated requirement, or the chapter of an activated requirement). Evidence-pattern mappings that mirror a served requirement mapping (same obligation, EP of that requirement) are elided as derivable. The obligations themselves are NOT scoped — they stay the complete, citable set. Every other mapping is counted in mappings_scope and reachable with rest_ref (resolve_entities, record_type=\"regulatory_mapping\"); for the framework-wide view use map_sbd_toe_regulatory_activation.",
   "prepare.size_estimate.envelope_exceeded":
     "Acima do envelope herdado deste nível. O tecto por-id é o ratificado (§5) e o custo por requisito da forma fundida é o medido; quando não fecham, este payload di-lo em vez de o esconder. Divide por área (concerns do lote) ou usa detail='full' (sem envelope, preço declarado).",
   "prepare.repeat_call_hint":
