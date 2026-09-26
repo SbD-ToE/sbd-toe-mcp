@@ -18,8 +18,11 @@ import {
   CONCERN_TO_V0_CATEGORIES_SUPPLEMENT,
   EXPOSURE_CONCERNS,
   SENSITIVITY_CONCERNS,
+  publishedSliceFamilies,
+  sliceFamilyProducers,
   type Concern
 } from "../tools/prepare-codegen-context.js";
+import { getG2Runtime } from "../tools/g2-runtime-loader.js";
 import { CONCERN_TO_DOMAIN_CHAPTERS, TECHNOLOGY_TO_CHAPTERS, SES008_TECHNOLOGY } from "./selection.js";
 import { PATTERN_RULES } from "../tools/map-review-scope.js";
 import { packageMaturity, servedKgReleaseTag, servingServerVersion } from "../version-info.js";
@@ -88,6 +91,13 @@ export interface ActivationVocabulary {
     values: { value: string; activates_chapters: string[]; named_rule?: string; note?: string }[];
   };
   changed_files: { closed_set: false; note: string; patterns: { pattern: string; activates_chapters: string[] }[] };
+  /** 0.21.2 (decisão 0005): activador SÓ DE CONTEXTO — escrito pelo servidor na receita dos lotes. */
+  slice_families: {
+    closed_set: true;
+    context_only: true;
+    note: string;
+    values: { value: string; produced_by_concerns: string[]; slices: number }[];
+  };
   roles: { closed_set: true; note: string; values: { value: string; aliases: string[] }[] };
   phases: { closed_set: true; note: string; values: { value: string; label: string; aliases: string[] }[] };
   not_activators: { field: string; role: string; note: string }[];
@@ -296,6 +306,23 @@ export function buildActivationVocabulary(): ActivationVocabulary {
       note:
         "Caminhos reais do repositório. A activação é por TABELA de padrões de path publicada abaixo — não há interpretação do conteúdo nem do nome.",
       patterns: PATTERN_RULES.map((r) => ({ pattern: r.pattern, activates_chapters: [...r.bundles] }))
+    },
+    slice_families: {
+      closed_set: true,
+      context_only: true,
+      note:
+        "Activador SÓ DE CONTEXTO: activa as fatias AppSec Core destas famílias (entidades do g2_context e manual_grounding) e NUNCA selecciona requisitos; sozinho devolve needs_input. Não é uma forma de pedir: é o servidor que o escreve na receita de cada lote de needs_decomposition, para o lote levar o contexto que o teu pedido activava para as suas categorias. Executa o `with` do lote tal e qual. As concerns produzem estas famílias por si.",
+      values: publishedSliceFamilies().map((value) => ({
+        value,
+        produced_by_concerns: sliceFamilyProducers(value).map(String),
+        slices: (() => {
+          try {
+            return getG2Runtime().slices.filter((slice) => slice.objective_family === value).length;
+          } catch {
+            return 0;
+          }
+        })()
+      }))
     },
     roles: {
       closed_set: true,

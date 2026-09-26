@@ -34,6 +34,18 @@ não tem envelope e fica **byte-idêntico** à 0.21.1.
 - Nota nova `prepare.size_estimate.irreducible`; `prepare.size_estimate.envelope_exceeded` reescrita; descrições e guia do
   agente (`needs_decomposition` → executar os lotes) alinhados.
 
+**Lotes com os activadores do pedido (decisão 0005, lead 2026-09-26):** cada lote de `needs_decomposition` é o pedido original
+restrito às suas categorias — os mesmos requisitos e o mesmo contexto (fatias AppSec Core e `manual_grounding`), as mesmas
+`technologies`, `changed_files`, overlay e `mode`. A união dos lotes devolve o pedido inteiro. Uma decomposição tem sempre dois
+lotes ou mais (com uma só categoria é o irredutível declarado).
+- Parâmetro novo `slice_families` no prepare: **só de contexto** — activa fatias, nunca selecciona requisitos; sozinho devolve
+  `needs_input`; valor fora do conjunto publicado → `needs_input` com `valid_values`. Publicado em
+  `sbd://toe/activation-vocabulary` → `slice_families` (`context_only: true`, derivado do runtime servido). Não se ensina como
+  forma de pedir: é o servidor que o escreve na receita dos lotes (`batches[].with.slice_families`).
+- Matriz de 120 casos: decomposições de um só lote 8 → **0**; cobertura do contexto AppSec Core da união 0,19 → **1,00**; 0
+  violações; `full` byte-idêntico 60/60. TC-F-34 verifica também o contexto (exemplo dos docs: 43/43).
+- Guia de codegen: o `with` do lote executa-se tal e qual, e cada lote é o pedido restrito às suas categorias.
+
 **Textos servidos alinhados com o comportamento (lead, 2026-09-26; só texto):**
 - `sbd://toe/grounded-codegen-guide` conhece `needs_input` e, perante `needs_decomposition`, manda **executar** os lotes de
   `requirement_ceiling.batches` (sem lotes — o gate do `discover` — estreitar a declaração); o fluxo passa a ser declarativo

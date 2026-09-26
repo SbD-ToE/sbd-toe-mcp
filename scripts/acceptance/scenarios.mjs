@@ -730,7 +730,7 @@ export const scenarios = [
       const bmeta = bd.meta ?? bd;
       if (bmeta.unknown_record_type !== "ctrl_acore_alignment" || !(bmeta.valid_record_types?.length > 10)) return fail("total:0 silencioso ainda vivo (sem unknown_record_type/valid_record_types)");
       return ok(`3 next à letra: resolve ${rt}+[${ids.join(",")}] → ${nRecs} recs; matrix [${pids.join(",")}] ok (${stabilized ? "via estabilização" : "directo"}); uri ${uri} lido; 63 ids rejeitados c/ tecto 50; record_type desconhecido DECLARADO c/ ${bmeta.valid_record_types.length} válidos`); } },
-  { id: "TC-F-34", axis: "F", title: "0.21.2 (decisão 0004): o envelope é a regra no prepare — caso do avaliador @ lista medido acima de 8 450 tk ⇒ lotes MEDIDOS que cabem e SOMAM O TODO (recall 1 executado; custo declarado = custo recebido)", tool: "prepare_sbd_toe_codegen_context",
+  { id: "TC-F-34", axis: "F", title: "0.21.2 (decisão 0004): o envelope é a regra no prepare — caso do avaliador @ lista medido acima de 8 450 tk ⇒ lotes MEDIDOS que cabem e SOMAM O TODO (recall 1 executado; custo declarado = custo recebido; decisão 0005: ≥2 lotes e a união devolve o contexto AppSec Core do pedido)", tool: "prepare_sbd_toe_codegen_context",
     run: async (c) => {
       const args = { task: "Expor API pública de consulta com chaves de cliente e rate limiting", risk_level: "L3", exposure: "public", data_sensitivity: "personal", stack: "Python/FastAPI", detail: "lista" };
       const p = await c.tool("prepare_sbd_toe_codegen_context", args); if (!p.ok) return fail(p.error);
@@ -740,11 +740,15 @@ export const scenarios = [
       if (!rc || rc.basis !== "measured_payload" || "limit" in rc || "cost_per_req_tk" in rc) return fail(`requirement_ceiling errado: ${JSON.stringify(rc && { basis: rc.basis, limit: rc.limit })}`);
       if (!(rc.projected_tk > rc.promise_tk) || rc.promise_tk !== 8450) return fail(`o custo medido não justifica o bloqueio: ${rc.projected_tk} vs ${rc.promise_tk}`);
       if (!rc.batches?.length || !rc.union || rc.union.recall !== 1) return fail(`lotes sem união declarada com recall 1: ${JSON.stringify(rc.union)}`);
+      if (rc.batches.length < 2) return fail("decomposição de um só lote (decisão 0005: nunca)");
       if (!(pd.suggestions ?? []).some((x) => /SOMAM O TODO/.test(x) && /categories=\[/.test(x))) return fail("suggestions não ensinam a receita por categorias");
       // EXECUTA todos os lotes: cada um pronto, dentro do envelope (ou irredutível declarado), custo declarado = recebido
       const pf = await c.tool("prepare_sbd_toe_codegen_context", { ...args, detail: "full" }); if (!pf.ok) return fail(pf.error);
       const pfd = pf.data.data ?? pf.data; if (pfd.status !== "ready_for_codegen") return fail(`full ganhou envelope indevido: ${pfd.status}`);
       const fullIds = new Set((pfd.activated_scope?.requirements ?? []).map((q) => q.id));
+      const G2K = ["control_objectives", "mechanisms", "practices", "artifacts"];
+      const fullG2 = new Set(G2K.flatMap((k) => (pfd.g2_context?.[k] ?? []).map((e) => e.entity_id)));
+      const unionG2 = new Set();
       const union = new Set(); const sizes = [];
       for (const batch of rc.batches) {
         const r = await c.tool("prepare_sbd_toe_codegen_context", { task: args.task, risk_level: args.risk_level, detail: args.detail, ...batch.with });
@@ -756,12 +760,31 @@ export const scenarios = [
         if (rdd.size_estimate?.approx_tokens !== batch.measured_tk) return fail(`custo declarado ${batch.measured_tk} ≠ recebido ${rdd.size_estimate?.approx_tokens}`);
         if (!(rdd.size_estimate.within_envelope || (batch.irreducible && rdd.size_estimate.irreducible_note_id))) return fail(`lote fora do envelope sem ser irredutível declarado: ${batch.measured_tk} tk`);
         for (const q of rdd.activated_scope.requirements) union.add(q.id);
+        for (const k of G2K) for (const e of Object.values(rdd.g2_context?.[k] ?? {})) for (const id of Object.keys(e)) unionG2.add(id);
         sizes.push(`${n}r/${batch.measured_tk}tk`);
       }
       const covered = [...fullIds].filter((id) => union.has(id)).length;
       if (covered !== fullIds.size) return fail(`m_recall da união ${covered}/${fullIds.size} < 1`);
+      const g2Covered = [...fullG2].filter((id) => unionG2.has(id)).length;
+      if (g2Covered !== fullG2.size) return fail(`a união dos lotes perde contexto AppSec Core: ${g2Covered}/${fullG2.size}`);
       if (!pfd.size_estimate || !(pfd.size_estimate.approx_tokens > 0) || pfd.size_estimate.envelope_tk !== undefined) return fail("full não declara o preço (size_estimate sem envelope)");
-      return ok(`${rc.selected}@lista → needs_decomposition por custo medido (${rc.projected_tk}>${rc.promise_tk} tk); ${rc.batches.length} lotes executados [${sizes.join(", ")}] → união ${union.size}, m_recall ${covered}/${fullIds.size} = 1; full sem envelope, ${pfd.size_estimate.approx_tokens} tk ✓`); } },
+      // Decisão 0005, caso NÃO vazio: o exemplo dos docs activa fatias — a união dos lotes tem de as devolver todas.
+      const dx = { task: "Implementar endpoint POST /login com lockout", risk_level: "L2", concerns: ["auth", "logging"], technologies: ["jwt"], exposure: "public" };
+      const dl = await c.tool("prepare_sbd_toe_codegen_context", { ...dx, detail: "lista" }); if (!dl.ok) return fail(dl.error);
+      const dld = dl.data.data ?? dl.data; if (dld.status !== "needs_decomposition" || (dld.requirement_ceiling?.batches?.length ?? 0) < 2) return fail(`exemplo dos docs devia decompor em ≥2 lotes: ${dld.status}`);
+      const df = await c.tool("prepare_sbd_toe_codegen_context", { ...dx, detail: "full" }); if (!df.ok) return fail(df.error);
+      const dfd = df.data.data ?? df.data;
+      const docsG2 = new Set(G2K.flatMap((k) => (dfd.g2_context?.[k] ?? []).map((e) => e.entity_id)));
+      if (docsG2.size === 0) return fail("o exemplo dos docs devia ter contexto G2 no full");
+      const docsUnion = new Set();
+      for (const batch of dld.requirement_ceiling.batches) {
+        const r = await c.tool("prepare_sbd_toe_codegen_context", { task: dx.task, risk_level: dx.risk_level, detail: "lista", ...batch.with }); if (!r.ok) return fail(r.error);
+        const rdd = r.data.data ?? r.data; if (rdd.status !== "ready_for_codegen") return fail(`lote do exemplo dos docs: ${rdd.status}`);
+        for (const k of G2K) for (const e of Object.values(rdd.g2_context?.[k] ?? {})) for (const id of Object.keys(e)) docsUnion.add(id);
+      }
+      const docsCovered = [...docsG2].filter((id) => docsUnion.has(id)).length;
+      if (docsCovered !== docsG2.size) return fail(`exemplo dos docs: a união dos lotes perde contexto G2 ${docsCovered}/${docsG2.size}`);
+      return ok(`exemplo dos docs: ${dld.requirement_ceiling.batches.length} lotes, contexto G2 ${docsCovered}/${docsG2.size}; ${rc.selected}@lista → needs_decomposition por custo medido (${rc.projected_tk}>${rc.promise_tk} tk); ${rc.batches.length} lotes executados [${sizes.join(", ")}] → união ${union.size}, m_recall ${covered}/${fullIds.size} = 1, contexto G2 ${g2Covered}/${fullG2.size}; full sem envelope, ${pfd.size_estimate.approx_tokens} tk ✓`); } },
 
   { id: "TC-F-35", axis: "F", title: "0.20.0-beta.21: declarativo primeiro — needs_input ensina, declaração selecciona, redacção não decide", tool: "select_sbd_toe_requirements",
     run: async (c) => {
