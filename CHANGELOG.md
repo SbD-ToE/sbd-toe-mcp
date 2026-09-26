@@ -34,6 +34,17 @@ não tem envelope e fica **byte-idêntico** à 0.21.1.
 - Nota nova `prepare.size_estimate.irreducible`; `prepare.size_estimate.envelope_exceeded` reescrita; descrições e guia do
   agente (`needs_decomposition` → executar os lotes) alinhados.
 
+**Textos servidos alinhados com o comportamento (lead, 2026-09-26; só texto):**
+- `sbd://toe/grounded-codegen-guide` conhece `needs_input` e, perante `needs_decomposition`, manda **executar** os lotes de
+  `requirement_ceiling.batches` (sem lotes — o gate do `discover` — estreitar a declaração); o fluxo passa a ser declarativo
+  e deixa de trazer números de versão na prosa. A descrição do recurso, o prompt de codegen e o `next` do prepare dizem o mesmo
+  (o `next` dizia «split into 2-4 subtasks»).
+- `sbd://toe/codegen-instructions/{mode}`: descrição e conteúdo sem `minimal`, sem «linha 0.20», sem `codegen_instructions_ref`.
+- `consult_security_requirements` → `coverage_gaps`: com contagem 0 a nota diz que todos os requisitos activos têm ligação;
+  sem datas nem encaminhamentos internos.
+- README: a tabela de estados passa a cinco (`needs_input`) e descreve os lotes.
+- Guarda: `src/serving/served-texts.test.ts`.
+
 **Efeito medido (matriz de 116 casos, `docs/acceptance-runs/2026-09-26-v0.21.2-cost-ceiling-matrix.md`):** 87 iguais prontos,
 6 iguais bloqueados, **22 prontos → decompõem** (os 22 que a 0.21.1 servia prontos acima do envelope), **1 bloqueado → pronto**
 (auth+logging+validation L3, 53 reqs, 7 981 tk); 0 violações da promessa; `full` byte-idêntico 58/58.

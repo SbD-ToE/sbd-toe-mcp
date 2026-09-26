@@ -119,7 +119,7 @@
     {
       "tool": "read_sbd_toe_resource",
       "status": "byte-idêntico",
-      "bytes": 3269
+      "bytes": 3321
     },
     {
       "tool": "trace_sbd_toe_requirement_sources",
@@ -134,7 +134,7 @@
     {
       "tool": "consult_security_requirements",
       "status": "byte-idêntico",
-      "bytes": 8131
+      "bytes": 7993
     },
     {
       "tool": "get_threat_landscape",

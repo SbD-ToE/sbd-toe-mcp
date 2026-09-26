@@ -8,8 +8,8 @@ Authority: the MCP server is the only source of normative IDs (requirement_id, c
 
 ## Workflow
 
-1. Collect the user's task. Identify minimum bite-size: one technical surface, one phase, 1–3 concerns.
-2. Call `prepare_sbd_toe_codegen_context` with at least `task`. Provide `risk_level`, `mode` (`codegen` | `review` | `test-plan`), `stack`, `exposure`, `data_sensitivity`, `concerns`, `changed_files`, `regulatory_frameworks`, `include_regulatory_overlay` whenever they are known.
+1. Read the user's task and map what you read onto the closed vocabulary (`sbd://toe/activation-vocabulary`). The server answers what you DECLARE; it does not interpret the task text, which is recorded for audit.
+2. Call `prepare_sbd_toe_codegen_context` with `risk_level` and the declaration: `concerns`, `exposure`, `data_sensitivity`, `technologies`, `changed_files` (or, by structure, `chapters` / `categories`). Add `mode` (`codegen` | `review` | `test-plan`), `detail` (`lista` | `standard` | `full`), `regulatory_frameworks` and `include_regulatory_overlay` when they apply. Pass `task` as context.
 3. Branch on `status`. Do NOT generate code before reading the status.
 
 ### status: ready_for_codegen
@@ -22,7 +22,7 @@ Required output discipline:
 - Fill `security_rationale.validations[]` with the concrete code-level validations you implemented (surface, rule, rejection behaviour).
 - Fill `security_rationale.expected_evidence[]` with the artefacts a reviewer should look for (test path, log shape, SBOM entry, attestation, scan report). Code on its own is NEVER evidence.
 - Fill `security_rationale.residual_risk` with anything NOT addressed by this change.
-- Use each requirement's own `verify` (validation method) and `evidence` (expected proof): since 0.21 every activated requirement carries them inline, verbatim from the published pattern — there is no separate `evidence_patterns` block and nothing is capped. If you skip a requirement's verification, justify it.
+- Use each requirement's own `verify` (validation method) and `evidence` (expected proof): every activated requirement carries them inline, verbatim from the published pattern — there is no separate `evidence_patterns` block and nothing is capped. If you skip a requirement's verification, justify it.
 - Mention `completeness_report.m_recall` when below `1.0` — that signals partial coverage and the agent must flag it.
 
 ### status: needs_clarification
@@ -32,18 +32,23 @@ STOP code generation. Reply to the user with:
 1. The `reasons[]` from the tool response, in plain language.
 2. A minimal set of follow-up questions derived from `suggestions[]`. Do NOT propose code, scaffolds or fixes. Do NOT call `prepare_sbd_toe_codegen_context` again until the user has supplied the missing inputs.
 
+### status: needs_input
+
+STOP code generation. Nothing activating was declared, or a declaration is inert (a value outside the vocabulary, or one that activates nothing on its own).
+
+1. Read the response: it names the closed vocabulary, the candidates derived from the task text (a SUGGESTION to confirm, never a selection) and, for inert declarations, the `valid_values`.
+2. Confirm the candidates with the user, then call `prepare_sbd_toe_codegen_context` again with the declaration completed.
+
+Never treat the candidates as selected, and never re-call with the same inputs.
+
 ### status: needs_decomposition
 
-STOP code generation. Reply to the user with:
+STOP code generation. Two cases, told apart by `requirement_ceiling`:
 
-1. The `reasons[]` showing why the ask is too broad.
-2. A proposed decomposition into 2–4 bite-size sub-tasks, each scoped to:
-   - one technical surface (endpoint, module, file group);
-   - one phase (`implement` | `test` | `deploy` | `operate`);
-   - 1–3 concerns from the lexicon surfaced by `partial_activation_trace`.
-3. Ask the user which sub-task to take first. Once chosen, call `prepare_sbd_toe_codegen_context` again for THAT sub-task.
+1. **With `requirement_ceiling.batches`** — the payload for this declaration, measured, does not fit the level's token envelope. The server already computed the decomposition: EXECUTE it. Re-call once per batch with `task`, `risk_level`, `detail` and the batch's `with` exactly as given. Each batch was measured to fit (`measured_tk`), and together they cover the whole selection (`union.recall`). A batch marked `irreducible` returns ready and declared above the envelope. Tell the user the work is split and why; do NOT redesign the split by hand.
+2. **Without batches** (the `discover` gate on a vague task) — show the user the `reasons[]` and narrow the declaration with them: which surface, which concerns. Then call again declaring it.
 
-Never silently pick one sub-task and proceed.
+Alternatively, `detail: "full"` has no envelope and declares its price in `size_estimate`.
 
 ### status: unsupported_scope
 
@@ -69,7 +74,7 @@ The tool is deterministic: an identical call returns an identical payload. Re-ca
 
 ## Output discipline — what to ALWAYS do
 
-- Treat `citations` as the closed world of valid identifiers for this task (0.21 §3: inverted at every level — legend by source, ids referenced by payload path; the former per-id map no longer exists).
+- Treat `citations` as the closed world of valid identifiers for this task (inverted at every level — legend by source, ids referenced by payload path).
 - Distinguish three artefact classes in any answer:
   - **Code** — the actual source you propose to add or change.
   - **Tests** — automated checks that exercise the validation rules in `security_rationale.validations[]`.
@@ -81,7 +86,7 @@ The tool is deterministic: an identical call returns an identical payload. Re-ca
 - Never declare compliance, conformity or adherence to any regulatory framework, control objective or requirement on the basis of generated code alone. Regulatory overlay is an external cross-check, not an SbD-ToE conformance signal.
 - Never invent identifiers shaped like SbD-ToE/AppSec Core/overlay IDs (e.g. `ACO-…`, `ACM-…`, `EXT-…`, `EP-…`, `CTRL-…`). If you need an identifier that is not in `citations`, the answer is to STOP and re-call the tool with a sharper ask.
 - Never copy entity names that the rastreabilidade did not publish. If `g2_context.*` returns an entity without a `name`, refer to it strictly by its `entity_id`.
-- Never bypass the scope gate by re-calling the tool with the same payload after a `needs_*` response.
+- Never bypass the scope gate by re-calling the tool with the same payload after a `needs_*` response (executing the given batches is not a bypass: each batch is a different declaration).
 - Never treat AI-generated code as the evidence of correctness; require human review and explicit tests.
 
 ## Mode-specific reminders
@@ -92,10 +97,10 @@ The tool is deterministic: an identical call returns an identical payload. Re-ca
 
 ## Reading the response
 
-- `activation_trace[]`: every item carries `source`, `produced`, `trigger`, `score`, `confidence`, `reason`. Use it to explain to the user WHY a slice was activated.
+- `activation_trace[]` (inline at `full`; at `lista`/`standard` only with `debug: true`): every item carries `source`, `produced`, `trigger`, `score`, `confidence`, `reason`. Use it to explain to the user WHY a slice was activated.
 - `activated_scope`: the closed set of requirements / controls / slices / regulatory obligations.
 - `g2_context`: AppSec Core v1 entities (+ `relations_ref` at full / `relations_summary` at lista·standard — relations are recoverable, never inlined unless `include_relations: true`).
-- `manual_grounding[]`: pointers into the SbD-ToE manual (chapter, file, commit). Cite these in `security_rationale` when the change directly references a manual section.
+- `manual_grounding`: pointers into the SbD-ToE manual (chapter, file, commit) — inline at `full`; counts and `entries_ref` at `lista`/`standard`. Cite these in `security_rationale` when the change directly references a manual section.
 - `regulatory_overlay`: optional. Use only as a cross-check, never as a conformance claim.
 - `citations`: closed world of valid IDs for this task (inverted: legend by source + `ids_from` payload paths).
 - `completeness_report`: includes `m_recall` and `verification` (requirements / with_verify_and_evidence / partial / without_pattern — denominators that close). Flag low recall, and any `partial` or `without_pattern` > 0, to the user.

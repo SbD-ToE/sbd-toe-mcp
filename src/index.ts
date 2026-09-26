@@ -2341,7 +2341,7 @@ class McpRuntime {
                 source_data: uriArg,
                 note:
                   "Verbatim mirror of resources/read for clients without resource support — same materialization, no drift. " +
-                  "Motivation: codegen_instructions_ref of dieted payloads is resolvable on any client."
+                  "Motivation: every resource — the codegen-instructions reference copy, the notes behind note_id, the version — is readable on any client."
               },
               uri: uriArg,
               mimeType,

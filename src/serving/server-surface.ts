@@ -83,11 +83,11 @@ export const RESOURCE_CATALOG = [
           uri: "sbd://toe/codegen-instructions/{mode}",
           name: "SbD-ToE Codegen Instructions (per mode)",
           description:
-            "Static per-mode boilerplate of prepare_sbd_toe_codegen_context (mode: codegen, review or " +
-            "test-plan): llm_codegen_instructions slots + security_rationale_template skeleton — " +
-            "byte-identical to the detail=full inline content when assembled per the embedded rules — " +
-            "plus the detail_encoding legend for detail=standard/minimal payloads (v2 token diet). " +
-            "Referenced by codegen_instructions_ref in dieted payloads.",
+            "Reference copy, per mode (codegen, review or test-plan), of the static text of " +
+            "prepare_sbd_toe_codegen_context: llm_codegen_instructions slots + security_rationale_template " +
+            "skeleton — byte-identical to the inline content when assembled per the embedded rules — plus " +
+            "the detail_encoding legend for reading detail=lista/standard payloads. The prepare carries the " +
+            "instructions and the template inline at every level; this resource is the reference, not a dependency.",
           mimeType: "application/json"
         },
         {
@@ -114,8 +114,8 @@ export const RESOURCE_CATALOG = [
           name: "SbD-ToE Grounded Codegen Guide",
           description:
             "Agent-facing guide for using prepare_sbd_toe_codegen_context. " +
-            "Covers workflow, branching by status (ready_for_codegen / needs_clarification / " +
-            "needs_decomposition / unsupported_scope), output discipline (cite `citations` ids, fill " +
+            "Covers the declarative workflow, branching by status (ready_for_codegen / needs_clarification / " +
+            "needs_input / needs_decomposition — execute the given batches / unsupported_scope), output discipline (cite `citations` ids, fill " +
             "security_rationale, distinguish code/tests/evidence), and explicit prohibitions " +
             "(no invented IDs, no compliance claims, no rastreabilidade-noise inside source files).",
           mimeType: "text/markdown"

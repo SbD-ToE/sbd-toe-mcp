@@ -2745,8 +2745,7 @@ export interface CodegenInstructionsResourceContent {
 
 /**
  * Content of the `sbd://toe/codegen-instructions/{mode}` MCP resource — the
- * static-per-mode boilerplate that detail=standard/minimal payloads reference
- * instead of carrying inline. Reconstructing the inline `full` content from
+ * static-per-mode text that every level carries inline (this is the reference copy). Reconstructing the inline `full` content from
  * this resource is byte-exact (tested):
  *   - llm_codegen_instructions = slots filtered by `when` ("always" +
  *     codegen_instructions_ref.active_conditions), in order;
@@ -2760,14 +2759,14 @@ export function buildCodegenInstructionsResourceContent(
     resource: codegenInstructionsResourceUri(mode),
     mode,
     note:
-      "Static per-mode boilerplate of prepare_sbd_toe_codegen_context (0.21: the " +
-      "instructions and the template are INLINE at every level; this resource is the " +
-      "reference copy, slot by slot). Also carries the detail_encoding legend.",
-    // 0.15.0 item 8, invertido para esta linha (0.20): aqui o trace EXISTE.
+      "Static per-mode text of prepare_sbd_toe_codegen_context: the instructions and the " +
+      "template are INLINE at every level; this resource is the reference copy, slot by slot. " +
+      "Also carries the detail_encoding legend.",
+    // 0.15.0 item 8, invertido desde a linha 0.20: aqui o trace EXISTE. (0.21.2: sem versão na prosa servida.)
     line_note:
-      "Nesta linha 0.20 o trace_sbd_toe_graph existe: execute os " +
-      "relations_ref directamente ({lens, anchor}). include_relations=true no " +
-      "prepare continua disponível como atalho para relações inline.",
+      "O trace_sbd_toe_graph existe neste servidor: execute os relations_ref " +
+      "directamente ({lens, anchor}). include_relations=true no prepare continua " +
+      "disponível como atalho para relações inline.",
     llm_codegen_instructions: {
       assembly:
         "Include each slot whose `when` is 'always' or whose condition holds for the call " +
