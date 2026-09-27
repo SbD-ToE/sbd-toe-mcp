@@ -34,7 +34,7 @@ no comercial.
 - os overlays de organização (`tipo_overlay: organizacao`, ids `ORG-*`). O OSS nunca os serve nem os cita, e declara-os se
   aparecerem.
 
-## Regras de composição do L3 (a confirmar pelo lead no dado `regra_lista`)
+## Regras de composição do L3 (confirmadas pelo lead a 2026-09-27; o Manual materializa-as em `regra_lista`)
 
 - **Efectivos** = selecção técnica ∪ elevados ∪ acrescentados.
 - Os ids de origem `base` só entram se a selecção técnica os activar.
