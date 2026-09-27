@@ -59,3 +59,12 @@ no comercial.
 - **Operador `elevar`** na ontologia (`requirement_selection_model`), a cargo do Archon.
 - **Páginas geradas** excluídas dos índices de pesquisa pelo KG.
 - **Âncoras resolvidas** publicadas pelo KG (o MCP não re-implementa a slugificação).
+
+## Princípio do lead (2026-09-27, append): «o que é público é consultado público»
+
+- **Tudo o que o Manual e o KG publicam é servido pelo OSS (L1–L3):** contextos, pisos, `lista_ids`, origem, obrigações, força e
+  fora de âmbito.
+- **O L4 nunca retém nem condiciona conteúdo público.** Acrescenta só o que depende do cliente: a determinação, o registo, as
+  justificações, a análise de lacunas contra o estado real e os overlays de organização.
+- **Teste de fronteira:** se um dado público só pudesse ser obtido pelo L4, isso é um **defeito de fronteira** e corrige-se do
+  lado do OSS. Nunca se aceita como diferenciação comercial.
