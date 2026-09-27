@@ -1,13 +1,41 @@
 ---
 ai_assisted: true
-model: Claude Fable 5.1
-date: 2026-09-25
+model: Claude Opus 5.5
+date: 2026-09-26
 purpose: documentation
-reasoning: 0.21 §7 (eixo lista/standard/full harmonizado em select e threat) + rascunho das release notes 0.21.0 (tabela final da linha e diferenças de superfície face à 0.20.0, para o lead e para o Mensor); §6 (notas por referência, changelog fora das descrições, next do contexto, size_estimate em todas as tools, task vs contrato), decisão do lead (a) — tectos 52/55 — e §6-a (decomposição que soma o todo); antes §2 (adjacência), §3 (os cortes) e §1 (o requisito fundido) por cima da entrada v0.20.0 — a descrição nunca sai, o bloco evidence_patterns morre, ultrathin reforma-se, tectos ratificados 83/88 ligados com o ajuste DECLARADO (achado: a projecção do §5 subestimou o custo por requisito). Entrada anterior: v0.20.0 (promoção da beta.49, linha estável) — a maturidade do contrato de selecção passa a FACTO DECLARADO (`serving_contract.identity` + `.maturity`, com a maturidade do pacote derivada da versão e nunca escrita à mão) em vez de sufixo numa string; o contrato mantém-se beta deliberadamente, por decisão do lead, e o identificador NÃO se renomeia. Sete declarações servidas que a promoção tornava falsas — cinco a dizer que a linha era beta, uma a dizer que a linha estável era outra — reescritas na forma durável: a prosa nomeia a linha, o campo declarado carrega a maturidade. Zero alteração de comportamento: o oráculo do Eixo H veio byte-idêntico à corrida da beta.49. E publicar deixa de ser o mesmo acto que apontar: o caminho estável do release.yml passa a publicar em `--tag next` — a capacidade que o caminho de prerelease já tinha, aplicada ao que a não tinha — para que a estável possa ser verificada antes de ser o que toda a gente instala; o `latest` move-o o lead, num acto próprio.
+reasoning: 0.21.1 (rascunho; release do lead) — o overlay regulatório do prepare passa a servir só os mapeamentos do âmbito activado (defeito desde a 0.19.4: RGPD 1 693 mapeamentos, lista ≈123k tk). Antes: 0.21 §7 (eixo lista/standard/full harmonizado em select e threat) + rascunho das release notes 0.21.0 (tabela final da linha e diferenças de superfície face à 0.20.0, para o lead e para o Mensor); §6 (notas por referência, changelog fora das descrições, next do contexto, size_estimate em todas as tools, task vs contrato), decisão do lead (a) — tectos 52/55 — e §6-a (decomposição que soma o todo); antes §2 (adjacência), §3 (os cortes) e §1 (o requisito fundido) por cima da entrada v0.20.0 — a descrição nunca sai, o bloco evidence_patterns morre, ultrathin reforma-se, tectos ratificados 83/88 ligados com o ajuste DECLARADO (achado: a projecção do §5 subestimou o custo por requisito). Entrada anterior: v0.20.0 (promoção da beta.49, linha estável) — a maturidade do contrato de selecção passa a FACTO DECLARADO (`serving_contract.identity` + `.maturity`, com a maturidade do pacote derivada da versão e nunca escrita à mão) em vez de sufixo numa string; o contrato mantém-se beta deliberadamente, por decisão do lead, e o identificador NÃO se renomeia. Sete declarações servidas que a promoção tornava falsas — cinco a dizer que a linha era beta, uma a dizer que a linha estável era outra — reescritas na forma durável: a prosa nomeia a linha, o campo declarado carrega a maturidade. Zero alteração de comportamento: o oráculo do Eixo H veio byte-idêntico à corrida da beta.49. E publicar deixa de ser o mesmo acto que apontar: o caminho estável do release.yml passa a publicar em `--tag next` — a capacidade que o caminho de prerelease já tinha, aplicada ao que a não tinha — para que a estável possa ser verificada antes de ser o que toda a gente instala; o `latest` move-o o lead, num acto próprio.
 review_status: pending-human-review
 ---
 
 # Changelog
+
+## 0.21.1 — RASCUNHO (preparado 2026-09-26; merge squash → tag `v0.21.1` → `next` → `latest` são actos do lead) — o overlay regulatório restringe-se ao que a chamada activou
+
+**Defeito, medido nas três versões publicadas (0.19.4 `latest`, 0.20.0, 0.21.0):** com `include_regulatory_overlay`, o
+`prepare_sbd_toe_codegen_context` servia **todos** os mapeamentos das obrigações do framework para todo o Manual — não só os do
+âmbito activado. Caso `auth`+`logging`, L2, 36 requisitos:
+
+| framework | mapeamentos servidos antes | `lista` antes | `lista` depois | mapeamentos servidos depois |
+|---|---:|---:|---:|---:|
+| RGPD | 1 693 | 123 056 tk | **11 549** | 85 (+72 deriváveis elididos) |
+| DORA | 1 665 | ≈122k | 11 781 | 86 |
+| NIS2 | 1 167 | ≈88k | 9 444 | 47 |
+| CRA | 1 737 | ≈137k | 12 327 | 86 |
+| AI Act | 750 | ≈60k | 9 631 | 42 |
+| ENISA-CSA | 0 (sem obrigações publicadas) | — | inalterado | — |
+
+**Correcção.** Serve-se um mapeamento quando o alvo está no âmbito activado: um requisito ou controlo activado, o padrão de
+evidência de um requisito activado, ou o capítulo de um requisito activado. Um mapeamento para padrão de evidência que espelha
+um mapeamento de requisito já servido elide-se como derivável — a regra é testada. **As obrigações não mudam** (continuam o
+conjunto completo e citável; invariante 3 intacta). Tudo o resto conta-se em `regulatory_overlay.mappings_scope`
+(`total`, `served`, `derivable_elided`, `out_of_scope`, `by_target_type`) com uma referência executável
+(`rest_ref` → `resolve_entities`, `record_type="regulatory_mapping"`) e uma nota por referência
+(`sbd://toe/notes/prepare.overlay.mappings_scope`). Em todos os níveis. Quando a resposta ainda passa o envelope, continua a
+dizê-lo (`size_estimate.within_envelope: false` + `note_id`).
+
+**Prova:** `prepare-codegen-context.overlay-scope.test.ts` (17 testes, cinco frameworks: âmbito, contas que fecham, total igual
+ao da referência executada, elisão verdadeira, conjunto citável inalterado, honestidade acima do envelope); vitest 833/833;
+`check`; smoke; `eval:acceptance` 141/16/0/23 gate PASS; Eixo H 10/10. Pino KG v1.12.0 inalterado. **Sem tag nem publicação neste PR** — o release é decisão do lead. Só esta correcção entra na 0.21.1; os tectos por custo projectado vão numa release seguinte.
 
 ## 0.21.0 — 2026-09-25
 

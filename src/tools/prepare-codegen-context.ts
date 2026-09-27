@@ -362,6 +362,31 @@ export interface RegulatoryOverlayContext {
     title: string;
     source: "overlay";
   }>;
+  /** 0.21.1 — present when obligations were activated: mappings are scoped to the activated context (see {@link OverlayMappingsScope}). */
+  mappings_scope?: OverlayMappingsScope;
+}
+
+/**
+ * 0.21.1 — O OVERLAY RESTRINGE-SE AO QUE A CHAMADA ACTIVOU.
+ *
+ * Defeito (desde pelo menos a 0.19.4): com `include_regulatory_overlay`, o prepare devolvia TODOS os
+ * mapeamentos das obrigações do framework para todo o Manual — 1 693 no RGPD, ≈117k tokens — quando
+ * só ~5% apontavam para o que a tarefa activou. As obrigações continuam completas (são ids citáveis:
+ * invariante 3); os mapeamentos servem-se só quando o alvo está no âmbito, e o resto conta-se aqui,
+ * por tipo, com a chamada executável que o devolve. Nunca silencioso.
+ */
+export interface OverlayMappingsScope {
+  /** All mappings of the activated obligations (what 0.21.0 served inline). */
+  total: number;
+  /** Mappings served inline in `mappings` (target in the activated scope, not derivable). */
+  served: number;
+  /** Evidence-pattern mappings elided because they mirror a served requirement mapping. */
+  derivable_elided: number;
+  /** Mappings whose target is outside the activated scope — reachable via rest_ref. */
+  out_of_scope: number;
+  /** Per target type: total vs served (exact; the sum closes). */
+  by_target_type: Record<string, { total: number; served: number; derivable_elided: number; out_of_scope: number }>;
+  rest_ref: { tool: "resolve_entities"; with: string; note_id: NoteId };
 }
 
 export interface CitationMapEntry {
@@ -874,6 +899,7 @@ export interface DietedRegulatoryOverlayContext {
   obligations: Array<WithoutSource<RegulatoryOverlayContext["obligations"][number]>>;
   mappings: Array<WithoutSource<RegulatoryOverlayContext["mappings"][number]>>;
   playbooks: Array<WithoutSource<RegulatoryOverlayContext["playbooks"][number]>>;
+  mappings_scope?: OverlayMappingsScope;
 }
 
 /**
@@ -2209,6 +2235,66 @@ interface OverlayResolution {
   activatedFrameworks: RegulatoryFramework[];
 }
 
+/**
+ * 0.21.1 — serve só os mapeamentos cujo alvo está no âmbito activado; o resto conta-se e referencia-se.
+ * Puro e determinístico: a ordem servida é a ordem publicada.
+ */
+function scopeOverlayMappings(
+  context: RegulatoryOverlayContext,
+  scope: {
+    requirementIds: ReadonlySet<string>;
+    controlIds: ReadonlySet<string>;
+    evidencePatternToRequirement: ReadonlyMap<string, string>;
+    bundleIds: ReadonlySet<string>;
+    obligationIds: readonly string[];
+  }
+): RegulatoryOverlayContext {
+  if (scope.obligationIds.length === 0 || context.mappings.length === 0) return context;
+  const inScope = (m: RegulatoryOverlayContext["mappings"][number]): boolean => {
+    switch (m.target_type) {
+      case "Requirement": return scope.requirementIds.has(m.target_id);
+      case "Control": return scope.controlIds.has(m.target_id);
+      case "EvidencePattern": return scope.evidencePatternToRequirement.has(m.target_id);
+      case "KnowledgeBundle": return scope.bundleIds.has(m.target_id);
+      default: return false; // Practice (manual practices chapter:slug) and any future type: counted + ref
+    }
+  };
+  const requirementPairs = new Set(
+    context.mappings.filter((m) => m.target_type === "Requirement" && inScope(m)).map((m) => `${m.obligation_id}|${m.target_id}`)
+  );
+  const served: RegulatoryOverlayContext["mappings"] = [];
+  const byType: OverlayMappingsScope["by_target_type"] = {};
+  let elided = 0;
+  for (const m of context.mappings) {
+    const bucket = (byType[m.target_type] ??= { total: 0, served: 0, derivable_elided: 0, out_of_scope: 0 });
+    bucket.total += 1;
+    if (!inScope(m)) { bucket.out_of_scope += 1; continue; }
+    if (m.target_type === "EvidencePattern") {
+      const req = scope.evidencePatternToRequirement.get(m.target_id);
+      if (req !== undefined && requirementPairs.has(`${m.obligation_id}|${req}`)) { bucket.derivable_elided += 1; elided += 1; continue; }
+    }
+    bucket.served += 1;
+    served.push(m);
+  }
+  const total = context.mappings.length;
+  return {
+    ...context,
+    mappings: served,
+    mappings_scope: {
+      total,
+      served: served.length,
+      derivable_elided: elided,
+      out_of_scope: total - served.length - elided,
+      by_target_type: byType,
+      rest_ref: {
+        tool: "resolve_entities",
+        with: `record_type="regulatory_mapping", filters={"obligation_id":{"in":${JSON.stringify(scope.obligationIds)}}}`,
+        note_id: "prepare.overlay.mappings_scope"
+      }
+    }
+  };
+}
+
 function resolveOverlay(input: NormalizedInput): OverlayResolution {
   const wantsOverlay =
     input.include_regulatory_overlay || input.regulatory_frameworks.length > 0;
@@ -3324,7 +3410,8 @@ function applyStructuralDiet(
       frameworks: stripSource(result.regulatory_overlay.frameworks),
       obligations: stripSource(result.regulatory_overlay.obligations),
       mappings: stripSource(result.regulatory_overlay.mappings),
-      playbooks: stripSource(result.regulatory_overlay.playbooks)
+      playbooks: stripSource(result.regulatory_overlay.playbooks),
+      ...(result.regulatory_overlay.mappings_scope ? { mappings_scope: result.regulatory_overlay.mappings_scope } : {})
     },
     citations: invertCitationMap(result.citation_map),
     completeness_report: result.completeness_report,
@@ -3977,6 +4064,19 @@ function prepareCodegenContextCore(
     detail: declaredAdjacencyDetail(adjacencyBase)
   };
 
+  // ----- 0.21.1: overlay restrito ao âmbito activado ---------------------
+  const scopedOverlay = scopeOverlayMappings(overlayResolution.context, {
+    requirementIds: new Set(v0.requirements.map((r) => r.requirement_id)),
+    controlIds: new Set(v0.controls.map((c) => c.control_id)),
+    evidencePatternToRequirement: new Map(
+      v0.requirements
+        .map((r) => [patternByRequirement.get(r.requirement_id)?.id, r.requirement_id] as const)
+        .filter((pair): pair is readonly [string, string] => typeof pair[0] === "string")
+    ),
+    bundleIds: new Set(v0.requirements.map((r) => r.source_bundle).filter((b): b is string => typeof b === "string")),
+    obligationIds: overlayResolution.activatedObligations.map((o) => o.obligation_id)
+  });
+
   const result: PrepareCodegenContextResultReady = {
     status: "ready_for_codegen",
     notes: NOTES_HEADER,
@@ -3987,7 +4087,7 @@ function prepareCodegenContextCore(
     adjacency,
     g2_context: g2Context,
     manual_grounding: manualGrounding,
-    regulatory_overlay: overlayResolution.context,
+    regulatory_overlay: scopedOverlay,
     citation_map: citationMap,
     completeness_report: completeness,
     llm_codegen_instructions,
