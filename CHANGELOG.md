@@ -9,7 +9,34 @@ review_status: pending-human-review
 
 # Changelog
 
-## 0.21.2 — RASCUNHO (implementada 2026-09-26 no branch `0.21.2-cost-ceilings`; sem PR de merge — vai provavelmente junto com o re-pino do KG, decisão do lead) — o envelope é a regra
+## 0.22.0 — RASCUNHO (preparado 2026-09-28; merge squash → tag `v0.22.0` → `next` → `latest` são actos do lead) — KG v2.0.0 (contrato v2.0) · o envelope é a regra · lotes com o contexto do pedido · activadores largos com contexto do dado
+
+**Re-pino ao KG v2.0.0, contrato v2.0 — INCOMPATÍVEL (decisão do lead 2026-09-27; autorização 2026-09-28).** Tag anotada
+`v2.0.0` (objecto `3f1ae6ab`) → `7fa509e`; artefacto `sbd-toe-knowledge-graph-bundle-v2.0.0.zip`, sha256
+`99a38841d4cc719f054659d1f3f972b45d97327cd9866cfb50e538dc8f791e07`, verificado contra o `.sha256` publicado. Substrato
+`manual-v1.16.0+sbdtoe-ontology-v2.11`.
+- **Gate de subida major no `sync-bundle`** — a `alignment_policy` prometia-o e o sync não o aplicava: uma mudança de major (ou
+  contrato ilegível) PÁRA, salvo `--accept-major v<N> --accept-reason …`, e a aceitação fica registada no pino
+  (`contract_major_acceptance`). O `verify-consumed-bundle` valida o contrato (formato, major suportado = v2).
+- **Migração de ids:** o `id_migrations.jsonl` (3 746 entradas: secções, chunks, menções, registos, hints, overlay, 63
+  assignments retirados, 13 práticas) varrido contra 879 ficheiros versionados → **0 ocorrências**: nenhum ouro, citação,
+  fixture ou cenário a migrar (`docs/acceptance-runs/2026-09-28-v0.22.0-id-migration.md`).
+- **Dado novo absorvido:** os placeholders da rastreabilidade publicam nome (os testes verificam «nome servido = publicado»);
+  **17 papéis canónicos** (rh-peopleops, procurement, legal, tech-lead); `pentester` → appsec-engineer e `secops*` →
+  operacoes resolvem pelo **dado** do KG (a tabela do servidor deixa de ter `secops`); RH/PeopleOps canonizado
+  (`referenced_roles.items` vazio; a banda continua contrato, coberta por teste sintético).
+- **Oráculo da invariante 3 v0.22.0** (append-only): «API pública/L3 + activadores» re-baselinado pela decisão 0006 — 135 →
+  278 ids, +143, −0, mesmos 89 requisitos — **ratificado pelo lead a 2026-09-28**; os outros casos idênticos.
+- **Prompt de sistema:** o nível L1–L3 vem dos eixos E+D+I do cap. 01 e é declarado; não se infere nem segue de haver dados
+  pessoais; o contexto regulatório é outra declaração (achado 5 da revisão técnica).
+
+**Prova (contra o KG v2.0.0):** vitest 862/862; `check`; smoke; `eval:acceptance` 145/12/0/23 gate PASS (era 141/16/0/23);
+Eixo H 10/10; determinismo entre processos 28/0; matriz de custo (120) 0 violações, full idêntico 58/58; matriz dos
+activadores largos (94) G2 zero 46 → 0, união exacta 52/52, 0 violações.
+
+As entradas abaixo (0.21.2, implementadas no ramo `0.21.2-cost-ceilings` e nunca publicadas) entram nesta release.
+
+### Da linha 0.21.2 (não publicada) — o envelope é a regra
 
 **Promessa (decisão 0004, fechada pelo lead a 2026-09-26):** em `lista` e `standard`, uma resposta pronta **cabe no envelope do
 nível** — 8 450 e 9 200 tokens — medido sobre o payload que o cliente recebe, com tudo o que leva (requisitos, controlos,
@@ -79,7 +106,7 @@ lotes ou mais (com uma só categoria é o irredutível declarado).
 custo declarado = recebido); `check`; smoke; `eval:acceptance` 141/16/0/23 gate PASS (TC-F-34 reescrito para a regra de custo);
 Eixo H 10/10; invariante 3 contra o oráculo da 0.20.0. Pino KG v1.12.0 inalterado.
 
-## 0.21.1 — RASCUNHO (preparado 2026-09-26; merge squash → tag `v0.21.1` → `next` → `latest` são actos do lead) — o overlay regulatório restringe-se ao que a chamada activou
+## 0.21.1 — 2026-09-27 — o overlay regulatório restringe-se ao que a chamada activou
 
 **Defeito, medido nas três versões publicadas (0.19.4 `latest`, 0.20.0, 0.21.0):** com `include_regulatory_overlay`, o
 `prepare_sbd_toe_codegen_context` servia **todos** os mapeamentos das obrigações do framework para todo o Manual — não só os do

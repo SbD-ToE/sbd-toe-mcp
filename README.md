@@ -227,6 +227,19 @@ Maintainers who want to update the bundled snapshots from a local checkout of `s
 npm run checkout:backend
 ```
 
+To pin a formal KG release (the bundle and its `.sha256` are fetched from the GitHub Release and the digest is verified before anything is written):
+
+```bash
+node scripts/sync-bundle.mjs --from-release vX.Y.Z --dry-run   # see what changes
+node scripts/sync-bundle.mjs --from-release vX.Y.Z
+```
+
+A **major** change of the consumer contract (for example v1.x → v2.0) is a gate: the sync stops unless the change is accepted explicitly, after the serving logic has been re-validated. The acceptance is recorded in `consumed-bundle.json` (`contract_major_acceptance`), and `npm run check` rejects a contract major that this code does not support.
+
+```bash
+node scripts/sync-bundle.mjs --from-release vX.Y.Z --accept-major v2 --accept-reason "<decision, who, when>"
+```
+
 ---
 
 ## Development
