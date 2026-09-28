@@ -58,21 +58,21 @@
     },
     {
       "artifacts": [
-        "ficheiro_matriz_controlos_aplicada_md_com_rastreamento_req_xxx",
+        "ficheiro_matriz_controlos_aplicada_md_com_rastreamento_ao_requisito_do_cap_02",
         "localizacao_backlog_wiki_repositorio_de_documentacao"
       ],
       "bdd": [
         "Dado uma aplicação já classificada (L1, L2 ou L3)",
         "Quando consulto a matriz de controlos",
-        "Então extraio apenas os requisitos correspondentes ao nível atribuído e mapeio cada um para REQ-XXX específico"
+        "Então extraio apenas os requisitos correspondentes ao nível atribuído e mapeio cada um para o requisito específico do Cap. 02"
       ],
       "benefit": "garantir que apenas os requisitos necessários são exigidos e rastreáveis",
       "chapter_id": "01-classificacao-aplicacoes",
       "checklist_items": [
         "Matriz consultada para o nível da aplicação",
         "Requisitos transformados em cartões/histórias de backlog",
-        "Cada requisito mapeado explicitamente para o ID de catálogo XXX-NNN (ex.: LOG-001 do Cap. 02, ARC-003 do Cap. 04)",
-        "Tabela de rastreamento: controlo | L1/L2/L3 | REQ-XXX | responsável",
+        "Cada requisito mapeado explicitamente para o ID de catálogo do requisito (ex.: LOG-001 do Cap. 02, ARC-003 do Cap. 04)",
+        "Tabela de rastreamento: controlo | L1/L2/L3 | requisito | responsável",
         "Exceções documentadas, aprovadas por AppSec Engineer com justificação técnica",
         "AppSec Engineer valida mapeamento antes de entrada em backlog"
       ],
@@ -86,7 +86,7 @@
         "sdlc integration table extracted",
         "artifact list extracted"
       ],
-      "goal": "aplicar a matriz de controlos e mapear cada requisito para REQ-XXX do Capítulo 02",
+      "goal": "aplicar a matriz de controlos e mapear cada requisito para o do Capítulo 02",
       "id": "01-classificacao-aplicacoes-us-02",
       "links": [],
       "practice_id": "01-classificacao-aplicacoes:aplicacao-da-matriz-de-controlo",
@@ -418,7 +418,7 @@
         "grc-compliance"
       ],
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-14-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-14-adocao-de-modelo-de-classificacao-alternativo-drpbia-mapeado-para-edi",
       "title": "Adoção de modelo de classificação alternativo (DRP/BIA) mapeado para E/D/I",
       "us_id": "US-14",
       "warnings": []
@@ -437,7 +437,7 @@
       "chapter_id": "01-classificacao-aplicacoes",
       "checklist_items": [
         "Inventário central ou GRC existe e regista todas as aplicações com nível, data de revisão, owner e estado de conformidade",
-        "Aprovação registada pela autoridade proporcional ao nível: L1 Scrum Master / Team Lead, L2 AppSec Engineer, L3 CISO — datada e atribuída ao responsável",
+        "Aprovação registada pela autoridade proporcional ao nível: L1 Tech Lead, L2 AppSec Engineer, L3 CISO — datada e atribuída ao responsável",
         "Inventário atualizado após cada alteração de classificação ou transferência de responsabilidade",
         "Inventário acessível para auditoria sem preparação manual"
       ],
@@ -537,9 +537,10 @@
       "id": "02-requisitos-seguranca-us-02",
       "links": [],
       "practice_id": "02-requisitos-seguranca:revisao-por-alteracao-relevante",
-      "role_raw": "Arquitetos de Software e Scrum Master / Team Lead",
+      "role_raw": "Arquitetos de Software / Tech Lead e Scrum Master / Team Lead",
       "roles_normalized": [
         "arquitetos-software",
+        "tech-lead",
         "scrum-master"
       ],
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
@@ -560,7 +561,7 @@
       "benefit": "garantir que todas as exceções são temporais, rastreáveis e revalidadas",
       "chapter_id": "02-requisitos-seguranca",
       "checklist_items": [
-        "Exceção com ID e ligação ao requisito (SEC-Lx-... e/ou REQ-XXX) registada",
+        "Exceção com ID e ligação ao requisito (SEC-Lx-... e/ou ID do requisito) registada",
         "TTL definido conforme a política master de exceções ([Processo Canónico de Gestão de Exceções](/sbd-toe/sbd-manual/governanca-contratacao/addon/processo-excecoes), Cap. 14): prazo máximo por defeito, extensão só com reavaliação",
         "Owner designado e destinatários de alertas definidos",
         "Aprovação técnica por AppSec documentada; aprovação executiva quando aplicável em L3",
@@ -583,9 +584,7 @@
       "role_raw": "Developer (proponente) e GRC/Compliance (regista)",
       "roles_normalized": [
         "developer",
-        "proponente",
-        "grc-compliance",
-        "regista"
+        "grc-compliance"
       ],
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-03-gestao-de-excecoes-com-ttl-e-revalidacao-obrigatoria",
@@ -775,7 +774,7 @@
       "benefit": "assegurar aplicação consistente, versionada e auditável ao longo do SDLC",
       "chapter_id": "02-requisitos-seguranca",
       "checklist_items": [
-        "Catálogo REQ-XXX criado/atualizado e versionado",
+        "Catálogo de requisitos do projeto criado/atualizado e versionado",
         "Owner e periodicidade de revisão definidos",
         "Mapeamento para critérios de validação e tags de backlog",
         "Localização e link persistentes no repositório"
@@ -790,7 +789,7 @@
         "sdlc integration table extracted",
         "artifact list extracted"
       ],
-      "goal": "estabelecer e manter um catálogo de requisitos de segurança do projeto (REQ-XXX)",
+      "goal": "estabelecer e manter um catálogo de requisitos de segurança do projeto",
       "id": "02-requisitos-seguranca-us-08",
       "links": [],
       "practice_id": "02-requisitos-seguranca:catalogo-de-requisitos-do-projeto-criacao-e-manutencao",
@@ -798,7 +797,7 @@
       "roles_normalized": [
         "appsec-engineer",
         "product-owner",
-        "scrum-master"
+        "tech-lead"
       ],
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-08-catalogo-de-requisitos-do-projeto-criacao-e-manutencao",
@@ -812,7 +811,7 @@
         "logs_ci_cd_relatorios_sast_dast_iast_reviews_screenshots"
       ],
       "bdd": [
-        "Dado um requisito REQ-XXX com critérios definidos",
+        "Dado um requisito do catálogo com critérios definidos",
         "Quando executo a validação associada",
         "Então registo o resultado e anexo evidência ao requisito"
       ],
@@ -821,7 +820,7 @@
       "checklist_items": [
         "Método de validação definido por requisito",
         "Execução registada por sprint/release",
-        "Resultado e evidência ligados ao REQ-XXX",
+        "Resultado e evidência ligados ao requisito",
         "Revisão e aprovação por AppSec quando aplicável"
       ],
       "confidence": 0.95,
@@ -834,7 +833,7 @@
         "sdlc integration table extracted",
         "artifact list extracted"
       ],
-      "goal": "validar cada requisito REQ-XXX segundo os critérios definidos",
+      "goal": "validar cada requisito do catálogo segundo os critérios definidos",
       "id": "02-requisitos-seguranca-us-09",
       "links": [],
       "practice_id": "02-requisitos-seguranca:validacao-por-requisito-dominio-req-xxx-evidencia",
@@ -842,10 +841,10 @@
       "roles_normalized": [
         "qa",
         "appsec-engineer",
-        "scrum-master"
+        "tech-lead"
       ],
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-09-validacao-por-requisito-dominio-req-xxx-evidencia",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-09-validacao-por-requisitodominio-req-xxx-evidencia",
       "title": "Validação por requisito/domínio (REQ-XXX → evidência)",
       "us_id": "US-09",
       "warnings": []
@@ -867,7 +866,7 @@
         "DAST em staging quando aplicável (L2/L3 e alterações de exposição)",
         "Geração de SBOM (CycloneDX ou SPDX) anexada ao artefacto",
         "Assinatura do artefacto e armazenamento de assinatura/proveniência",
-        "policy-check valida tags SEC-Lx- e links REQ-XXX no PR",
+        "policy-check valida tags SEC-Lx- e links ao requisito no PR",
         "Sumário do gate ligado ao PR/issue"
       ],
       "confidence": 0.95,
@@ -890,7 +889,7 @@
         "developer"
       ],
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-10-gates-automaticos-em-ci-cd-para-requisitos-de-seguranca",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-10-gates-automaticos-em-cicd-para-requisitos-de-seguranca",
       "title": "Gates automáticos em CI/CD para requisitos de segurança",
       "us_id": "US-10",
       "warnings": []
@@ -951,7 +950,7 @@
       "checklist_items": [
         "Job tag-check presente e executável",
         "Validação de formato conforme taxonomia do capítulo",
-        "Verificação de referência/ligação a REQ-XXX quando aplicável",
+        "Verificação de referência/ligação ao requisito quando aplicável",
         "Comentário automático no PR com instruções quando falhar"
       ],
       "confidence": 0.85,
@@ -963,7 +962,7 @@
         "sdlc integration table extracted",
         "artifact list extracted"
       ],
-      "goal": "que o pipeline valide a presença e conformidade de tags SEC-Lx- e referências a REQ-XXX",
+      "goal": "que o pipeline valide a presença e conformidade de tags SEC-Lx- e referências ao requisito do catálogo",
       "id": "02-requisitos-seguranca-us-12",
       "links": [],
       "practice_id": "02-requisitos-seguranca:validacao-de-tags-sec-lx-e-requisitos-no-pipeline",
@@ -1022,7 +1021,7 @@
     },
     {
       "artifacts": [
-        "pr_mr_com_referencia_a_req_xxx_e_tags_sec_lx",
+        "pr_mr_com_referencia_ao_requisito_e_tags_sec_lx",
         "logs_de_ci_cd_sast_sca_testes",
         "aprovacao_de_code_review",
         "relatorio_de_gates_de_seguranca"
@@ -1030,7 +1029,7 @@
       "bdd": [
         "Dado que é utilizado um assistente automatizado para gerar código, configuração ou testes",
         "Quando o output é integrado no repositório",
-        "Então o artefacto é sujeito a revisão humana, validação automática em CI/CD e ligado a requisitos REQ-XXX aplicáveis"
+        "Então o artefacto é sujeito a revisão humana, validação automática em CI/CD e ligado aos requisitos do catálogo aplicáveis"
       ],
       "benefit": "assegurar que o cumprimento dos requisitos de segurança é verificável e que a responsabilidade permanece humana",
       "chapter_id": "02-requisitos-seguranca",
@@ -1038,7 +1037,7 @@
         "Código/configuração gerada identificada no PR/MR (nota ou template de PR)",
         "Revisão humana efetuada e aprovada (code review formal)",
         "Gates de segurança em CI/CD executados (SAST, SCA e outros aplicáveis)",
-        "Requisitos REQ-XXX e tags SEC-Lx- referenciados no PR/MR",
+        "Requisitos do catálogo e tags SEC-Lx- referenciados no PR/MR",
         "Evidência de validação arquivada (logs de pipeline, relatórios, approvals)",
         "Nenhum segredo, credencial ou dado sensível incluído em prompts ou artefactos gerados"
       ],
@@ -1056,10 +1055,10 @@
       "id": "02-requisitos-seguranca-us-14",
       "links": [],
       "practice_id": "02-requisitos-seguranca:uso-controlado-de-assistentes-automatizados-incluindo-ia-no-desenvolvimento",
-      "role_raw": "Developer, Scrum Master / Team Lead e AppSec Engineer",
+      "role_raw": "Developer, Tech Lead e AppSec Engineer",
       "roles_normalized": [
         "developer",
-        "scrum-master",
+        "tech-lead",
         "appsec-engineer"
       ],
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
@@ -1089,7 +1088,7 @@
       "checklist_items": [
         "Mandate presente em VCS, validado contra esquema mínimo (campos obrigatórios) e referenciado por mandate_ref em audit",
         "autonomy_level classificado de acordo com [níveis A0–A4](./addon/governanca-automatismos#niveis-autonomia) e justificado por escrito",
-        "Approver adequado ao nível (A1: Scrum Master / Team Lead; A2: Scrum Master / Team Lead + AppSec Engineer; A3: Scrum Master / Team Lead + AppSec Engineer + GRC / Compliance; A4: CISO em assinatura formal)",
+        "Approver adequado ao nível (A1: Tech Lead; A2: Tech Lead + AppSec Engineer; A3: Tech Lead + AppSec Engineer + GRC / Compliance; A4: CISO em assinatura formal)",
         "Identity efémera configurada (sem reuso de credenciais humanas)",
         "Kill-switch exercitado em sandbox/staging com cronómetro registado antes da activação",
         "effective_until definido — sem mandates sem janela de validade",
@@ -1099,7 +1098,7 @@
       "context": null,
       "document_path": "010-sbd-manual/02-requisitos-seguranca/aplicacao-lifecycle.md",
       "evidence": [
-        "user story heading detected: US-15 - Classificação e registo do *mandate* de agente AI {#us-15}",
+        "user story heading detected: US-15 - Classificação e registo do *mandate* de agente AI",
         ":::userstory block extracted",
         "proportionality table extracted",
         "sdlc integration table extracted",
@@ -1108,15 +1107,15 @@
       "goal": "classificar o nível de autonomia (A0–A4) de cada agente AI em uso operacional e registar o respectivo mandate versionado em VCS",
       "id": "02-requisitos-seguranca-us-15",
       "links": [],
-      "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai-us-15",
-      "role_raw": "AppSec Engineer e Scrum Master / Team Lead",
+      "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai",
+      "role_raw": "AppSec Engineer e Tech Lead",
       "roles_normalized": [
         "appsec-engineer",
-        "scrum-master"
+        "tech-lead"
       ],
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-15-classificacao-e-registo-do-mandate-de-agente-ai-us-15",
-      "title": "Classificação e registo do *mandate* de agente AI {#us-15}",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-15",
+      "title": "Classificação e registo do *mandate* de agente AI",
       "us_id": "US-15",
       "warnings": []
     },
@@ -1237,10 +1236,10 @@
       "id": "02-requisitos-seguranca-us-18",
       "links": [],
       "practice_id": "02-requisitos-seguranca:intent-declaration-por-tool-call-destrutivo-de-agente-ai",
-      "role_raw": "AppSec Engineer e Scrum Master / Team Lead",
+      "role_raw": "AppSec Engineer e Tech Lead",
       "roles_normalized": [
         "appsec-engineer",
-        "scrum-master"
+        "tech-lead"
       ],
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-18-intent-declaration-por-tool-call-destrutivo-de-agente-ai",
@@ -1507,7 +1506,7 @@
         "appsec-engineer"
       ],
       "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-05-gate-de-controlo-de-consistencia-no-ci-cd",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-05-gate-de-controlo-de-consistencia-no-cicd",
       "title": "Gate de controlo de consistência no CI/CD",
       "us_id": "US-05",
       "warnings": []
@@ -1607,14 +1606,14 @@
       "bdd": [
         "Dado que o sistema trata dados pessoais",
         "Quando executo Threat Modeling",
-        "Então incluo análise LINDDUN com ameaças, mitigação e mapeamento para REQ-PRIV- - E crio privacy-dfd com trust boundaries específicos"
+        "Então incluo análise LINDDUN com ameaças, mitigação e mapeamento para os requisitos de privacidade do Cap. 02 (PRI-001–PRI-005) - E crio privacy-dfd com trust boundaries específicos"
       ],
       "benefit": "garantir cobertura de ameaças de privacidade",
       "chapter_id": "03-threat-modeling",
       "checklist_items": [
         "privacy-dfd criado",
         "Lista LINDDUN preenchida",
-        "Ligação a REQ-PRIV- do Cap. 2",
+        "Ligação aos requisitos de privacidade do Cap. 02 (PRI-001–PRI-005)",
         "Ameaças classificadas quanto a severidade e mitigação",
         "Evidência arquivada no repositório de arquitetura"
       ],
@@ -1677,9 +1676,9 @@
       "id": "03-threat-modeling-us-09",
       "links": [],
       "practice_id": "03-threat-modeling:aprovacao-formal-do-threat-model-baseline-e-revisoes",
-      "role_raw": "Scrum Master / Team Lead e AppSec Engineer",
+      "role_raw": "Tech Lead e AppSec Engineer",
       "roles_normalized": [
-        "scrum-master",
+        "tech-lead",
         "appsec-engineer"
       ],
       "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
@@ -1765,7 +1764,7 @@
       "context": null,
       "document_path": "010-sbd-manual/03-threat-modeling/aplicacao-lifecycle.md",
       "evidence": [
-        "user story heading detected: US-11 - Threat modeling para sistema com agente AI (tool-use) {#us-11}",
+        "user story heading detected: US-11 - Threat modeling para sistema com agente AI (tool-use)",
         ":::userstory block extracted",
         "proportionality table extracted",
         "sdlc integration table extracted",
@@ -1774,15 +1773,15 @@
       "goal": "executar o [playbook agentic](./addon/metodologias-e-ferramentas#playbook-agentic) sempre que um agente A1+ é introduzido no sistema ou sobe de nível de autonomia",
       "id": "03-threat-modeling-us-11",
       "links": [],
-      "practice_id": "03-threat-modeling:threat-modeling-para-sistema-com-agente-ai-tool-use-us-11",
+      "practice_id": "03-threat-modeling:threat-modeling-para-sistema-com-agente-ai-tool-use",
       "role_raw": "Software Architect e AppSec Engineer",
       "roles_normalized": [
         "arquitetos-software",
         "appsec-engineer"
       ],
       "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-11-threat-modeling-para-sistema-com-agente-ai-tool-use-us-11",
-      "title": "Threat modeling para sistema com agente AI (tool-use) {#us-11}",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-11",
+      "title": "Threat modeling para sistema com agente AI (tool-use)",
       "us_id": "US-11",
       "warnings": []
     },
@@ -1828,7 +1827,7 @@
         "appsec-engineer"
       ],
       "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-12-threat-modeling-estendido-para-componentes-ai-ml-nao-agentic",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-12-threat-modeling-estendido-para-componentes-aiml-nao-agentic",
       "title": "Threat modeling estendido para componentes AI/ML não-agentic",
       "us_id": "US-12",
       "warnings": []
@@ -1876,7 +1875,7 @@
         "product-owner"
       ],
       "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-13-derivacao-de-abuse-misuse-cases-para-o-backlog",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-13-derivacao-de-abusemisuse-cases-para-o-backlog",
       "title": "Derivação de abuse/misuse cases para o backlog",
       "us_id": "US-13",
       "warnings": []
@@ -1920,10 +1919,10 @@
       "id": "03-threat-modeling-us-14",
       "links": [],
       "practice_id": "03-threat-modeling:revisao-independente-em-l2-e-pasta-em-alto-risco",
-      "role_raw": "AppSec Engineer e Scrum Master / Team Lead",
+      "role_raw": "AppSec Engineer e Tech Lead",
       "roles_normalized": [
         "appsec-engineer",
-        "scrum-master"
+        "tech-lead"
       ],
       "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-14-revisao-independente-em-l2-e-pasta-em-alto-risco",
@@ -2280,7 +2279,7 @@
         "appsec-engineer"
       ],
       "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-07-validacao-arquitetural-automatizavel-no-ci-cd-quando-aplicavel",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-07-validacao-arquitetural-automatizavel-no-cicd-quando-aplicavel",
       "title": "Validação arquitetural automatizável no CI/CD (quando aplicável)",
       "us_id": "US-07",
       "warnings": []
@@ -2606,7 +2605,7 @@
         "Então o componente é explicitamente identificado e classificado -",
         "E o impacto em segurança, auditoria e controlo é documentado -",
         "E são definidos controlos arquiteturais adequados (isolamento, supervisão, fallback, logging) -",
-        "E existe rastreabilidade entre o componente, ameaças relevantes e requisitos ARC-XXX aplicáveis"
+        "E existe rastreabilidade entre o componente, ameaças relevantes e requisitos de arquitectura aplicáveis"
       ],
       "benefit": "garantir que a arquitetura permanece rastreável, governável e proporcional ao risco",
       "chapter_id": "04-arquitetura-segura",
@@ -2619,7 +2618,7 @@
         "Controlo operacional e mecanismos de fallback",
         "Fronteiras de confiança e isolamento revistos (quando aplicável)",
         "Logging e evidência definidos para decisões relevantes",
-        "Rastreabilidade documentada (componente ↔ ameaça ↔ controlo ↔ requisito ARC-XXX)",
+        "Rastreabilidade documentada (componente ↔ ameaça ↔ controlo ↔ requisito de arquitectura)",
         "Evidência arquivada em repositório de arquitetura"
       ],
       "confidence": 0.95,
@@ -2681,7 +2680,7 @@
       "context": null,
       "document_path": "010-sbd-manual/04-arquitetura-segura/aplicacao-lifecycle.md",
       "evidence": [
-        "user story heading detected: US-16 - Revisão de arquitectura para agente AI em A2+ {#us-16}",
+        "user story heading detected: US-16 - Revisão de arquitectura para agente AI em A2+",
         ":::userstory block extracted",
         "proportionality table extracted",
         "sdlc integration table extracted",
@@ -2690,15 +2689,15 @@
       "goal": "validar que a arquitectura do sistema cumpre integralmente [ARC-015](/sbd-toe/sbd-manual/arquitetura-segura/addon/catalogo-requisitos-arquitetura#arc-015) (identidade dedicada, least privilege per-tool, intent declaration, aprovação humana out-of-band, kill-switch exercitado, audit completo por tool invocation) antes de aprovar a operação de um agente AI em A2 ou superior",
       "id": "04-arquitetura-segura-us-16",
       "links": [],
-      "practice_id": "04-arquitetura-segura:revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
+      "practice_id": "04-arquitetura-segura:revisao-de-arquitectura-para-agente-ai-em-a2",
       "role_raw": "Software Architect e AppSec Engineer",
       "roles_normalized": [
         "arquitetos-software",
         "appsec-engineer"
       ],
       "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-16-revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
-      "title": "Revisão de arquitectura para agente AI em A2+ {#us-16}",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-16",
+      "title": "Revisão de arquitectura para agente AI em A2+",
       "us_id": "US-16",
       "warnings": []
     },
@@ -2795,7 +2794,7 @@
         "appsec-engineer"
       ],
       "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-18-padroes-arquitetonicos-para-sistemas-ai-ml-nao-agentic",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-18-padroes-arquitetonicos-para-sistemas-aiml-nao-agentic",
       "title": "Padrões arquitetónicos para sistemas AI/ML não-agentic",
       "us_id": "US-18",
       "warnings": []
@@ -3005,7 +3004,7 @@
         "product-owner"
       ],
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-05-validacao-de-release-go-no-go",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-05-validacao-de-release-gono-go",
       "title": "Validação de release (*go/no-go*)",
       "us_id": "US-05",
       "warnings": []
@@ -3420,7 +3419,7 @@
       "context": null,
       "document_path": "010-sbd-manual/05-dependencias-sbom-sca/aplicacao-lifecycle.md",
       "evidence": [
-        "user story heading detected: US-14 - AI BOM e gestão de *providers* de modelos AI {#us-14}",
+        "user story heading detected: US-14 - AI BOM e gestão de *providers* de modelos AI",
         "proportionality table extracted",
         "sdlc integration table extracted",
         "artifact list extracted"
@@ -3428,12 +3427,12 @@
       "goal": null,
       "id": "05-dependencias-sbom-sca-us-14",
       "links": [],
-      "practice_id": "05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
+      "practice_id": "05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai",
       "role_raw": null,
       "roles_normalized": [],
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-14-ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
-      "title": "AI BOM e gestão de *providers* de modelos AI {#us-14}",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-14",
+      "title": "AI BOM e gestão de *providers* de modelos AI",
       "us_id": "US-14",
       "warnings": []
     },
@@ -3476,7 +3475,7 @@
       "role_raw": "Developer/Lead",
       "roles_normalized": [
         "developer",
-        "scrum-master"
+        "tech-lead"
       ],
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-15-pinning-de-versoes-e-integridade-por-hash",
@@ -3700,7 +3699,7 @@
         "devops-sre"
       ],
       "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-04-automatizacao-em-ci-cd-linters-sast",
+      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-04-automatizacao-em-cicd-linters-sast",
       "title": "Automatização em CI/CD (Linters & SAST)",
       "us_id": "US-04",
       "warnings": []
@@ -3982,7 +3981,7 @@
         "Repositório de evidências definido (preferencialmente WORM)",
         "Export automático por build/release",
         "Índice de evidências por aplicação e commit",
-        "Política de retenção definida (≥ 2 anos; L3 ≥ 5 anos)",
+        "Política de retenção definida (1 ano em L1, 2 anos em L2, 3 anos em L3; em produtos no âmbito do CRA, pelo menos 10 anos após a colocação no mercado ou o período de apoio, consoante o que for mais longo)",
         "Acesso auditado e controlado"
       ],
       "confidence": 0.95,
@@ -4577,7 +4576,7 @@
         "appsec-engineer"
       ],
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-07-gates-por-risco-separacao-sinal-decisao",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-07-gates-por-risco-separacao-sinaldecisao",
       "title": "Gates por risco (separação sinal/decisão)",
       "us_id": "US-07",
       "warnings": []
@@ -4908,7 +4907,7 @@
         "devops-sre"
       ],
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-14-reprodutibilidade-e-determinismo-do-pipeline",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-14-reprodutibilidade-e-determinismo-do-pipeline",
       "title": "Reprodutibilidade e determinismo do pipeline",
       "us_id": "US-14",
       "warnings": []
@@ -4955,7 +4954,7 @@
         "appsec-engineer"
       ],
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-15-separacao-formal-entre-sinal-automatico-e-decisao-de-promocao",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-15-separacao-formal-entre-sinal-automatico-e-decisao-de-promocao",
       "title": "Separação formal entre sinal automático e decisão de promoção",
       "us_id": "US-15",
       "warnings": []
@@ -5003,7 +5002,7 @@
         "grc-compliance"
       ],
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-16-evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-16-evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao",
       "title": "Evidência empírica obrigatória (anti-“relatórios sem execução”)",
       "us_id": "US-16",
       "warnings": []
@@ -5050,7 +5049,7 @@
         "devops-sre"
       ],
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-17-contencao-de-contexto-e-higiene-de-logs-outputs",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-17-contencao-de-contexto-e-higiene-de-logsoutputs",
       "title": "Contenção de contexto e higiene de logs/outputs",
       "us_id": "US-17",
       "warnings": []
@@ -5097,7 +5096,7 @@
         "devops-sre"
       ],
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-18-nao-repudio-e-ownership-de-promocoes-acoes-irreversiveis",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-18-nao-repudio-e-ownership-de-promocoes-acoes-irreversiveis",
       "title": "Não-repúdio e ownership de promoções (ações irreversíveis)",
       "us_id": "US-18",
       "warnings": []
@@ -5139,7 +5138,7 @@
       "context": null,
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
-        "user story heading detected: US-19 - Agentes AI como *principals* na pipeline {#us-19}",
+        "user story heading detected: US-19 - Agentes AI como *principals* na pipeline",
         ":::userstory block extracted",
         "proportionality table extracted",
         "sdlc integration table extracted",
@@ -5148,15 +5147,15 @@
       "goal": "que os agentes AI que operam o pipeline recebam credenciais via workload identity efémera (OIDC) com scopes per-tool e TTL ≤ 1h, e que cada tool invocation gere audit event estruturado",
       "id": "07-cicd-seguro-us-19",
       "links": [],
-      "practice_id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline-us-19",
+      "practice_id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline",
       "role_raw": "DevOps / SRE e AppSec",
       "roles_normalized": [
         "devops-sre",
         "appsec-engineer"
       ],
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-19-agentes-ai-como-principals-na-pipeline-us-19",
-      "title": "Agentes AI como *principals* na pipeline {#us-19}",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-19",
+      "title": "Agentes AI como *principals* na pipeline",
       "us_id": "US-19",
       "warnings": []
     },
@@ -5191,7 +5190,7 @@
       "context": "Quem escreve no repositório tem de ser identificável, autorizado e não-repudiável. Contexto. O CIC-001 exige pipelines como código sujeitos a revisão e o CIC-002 restringe os triggers a fontes autorizadas (branches protegidas, tags assinadas, merges aprovados). Sem acesso de escrita granular ancorado em identidade empresarial (SSO/RBAC) e sem assinatura criptográfica de commits/tags, a proteção de branch da US-01 protege o fluxo mas não garante quem o originou — e a autorização de trigger por tag perde valor se a tag não for verificável.",
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
-        "user story heading detected: US-20 - Identidade empresarial no SCM e assinatura de commits/tags {#us-20}",
+        "user story heading detected: US-20 - Identidade empresarial no SCM e assinatura de commits/tags",
         ":::userstory block extracted",
         "proportionality table extracted",
         "sdlc integration table extracted",
@@ -5200,15 +5199,15 @@
       "goal": "que o acesso de escrita ao SCM seja granular por branch/projeto através de identidade empresarial (SSO/RBAC) e que aplicações L3 exijam assinatura verificada de commits e tags",
       "id": "07-cicd-seguro-us-20",
       "links": [],
-      "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
+      "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags",
       "role_raw": "DevOps / SRE e AppSec Engineers",
       "roles_normalized": [
         "devops-sre",
         "appsec-engineer"
       ],
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-20-identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
-      "title": "Identidade empresarial no SCM e assinatura de commits/tags {#us-20}",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-20",
+      "title": "Identidade empresarial no SCM e assinatura de commits/tags",
       "us_id": "US-20",
       "warnings": []
     },
@@ -5243,7 +5242,7 @@
       "context": "Cada fase do pipeline tem privilégios próprios; cruzá-los é convidar o escalonamento. Contexto. O CIC-008 exige jobs distintos para build, test e deploy, sem permissões cruzadas e com âmbito de credenciais por stage. O checklist acrescenta a separação funcional entre CI e CD e a reutilização de templates de pipeline versionados. A US-02 garante o pipeline como código versionado, mas não impõe a fronteira de privilégios entre fases — um job de test com credenciais de deploy anula a separação na prática.",
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
-        "user story heading detected: US-21 - Separação CI/CD, build/test/deploy e templates versionados {#us-21}",
+        "user story heading detected: US-21 - Separação CI/CD, build/test/deploy e templates versionados",
         ":::userstory block extracted",
         "proportionality table extracted",
         "sdlc integration table extracted",
@@ -5252,14 +5251,14 @@
       "goal": "pipelines com CI e CD separados por função, fases build/test/deploy em jobs distintos sem permissões cruzadas, e templates reutilizáveis versionados",
       "id": "07-cicd-seguro-us-21",
       "links": [],
-      "practice_id": "07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21",
+      "practice_id": "07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados",
       "role_raw": "DevOps / SRE",
       "roles_normalized": [
         "devops-sre"
       ],
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-21-separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21",
-      "title": "Separação CI/CD, build/test/deploy e templates versionados {#us-21}",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-21",
+      "title": "Separação CI/CD, build/test/deploy e templates versionados",
       "us_id": "US-21",
       "warnings": []
     },
@@ -5293,7 +5292,7 @@
       "context": "Um job com acesso ao Docker socket tem controlo efetivo do host. Contexto. O CIC-010 (L3) exige isolamento forte de runners — containers efémeros ou VMs descartáveis — sem acesso ao Docker socket por jobs não privilegiados, sem capacidades de escalonamento de privilégios e com logs de tentativas bloqueadas. A US-05 (isolamento de runners) cobre efemeridade e segmentação, mas não explicita a interdição de privesc nem a evidência de bloqueio, que o checklist trata como controlo próprio.",
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
-        "user story heading detected: US-22 - Proteção contra escalonamento de privilégios em runners {#us-22}",
+        "user story heading detected: US-22 - Proteção contra escalonamento de privilégios em runners",
         ":::userstory block extracted",
         "proportionality table extracted",
         "sdlc integration table extracted",
@@ -5302,14 +5301,14 @@
       "goal": "que os runners não exponham o Docker socket a jobs não privilegiados nem permitam escalonamento de privilégios, com registo das tentativas bloqueadas",
       "id": "07-cicd-seguro-us-22",
       "links": [],
-      "practice_id": "07-cicd-seguro:protecao-contra-escalonamento-de-privilegios-em-runners-us-22",
+      "practice_id": "07-cicd-seguro:protecao-contra-escalonamento-de-privilegios-em-runners",
       "role_raw": "DevOps / SRE",
       "roles_normalized": [
         "devops-sre"
       ],
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-22-protecao-contra-escalonamento-de-privilegios-em-runners-us-22",
-      "title": "Proteção contra escalonamento de privilégios em runners {#us-22}",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-22",
+      "title": "Proteção contra escalonamento de privilégios em runners",
       "us_id": "US-22",
       "warnings": []
     },
@@ -5343,7 +5342,7 @@
       "context": "O que se guarda, por onde transita e o que se liga ao pipeline é tudo superfície de ataque. Contexto. Três prescrições convergem na fronteira do pipeline: o CIC-007 exige armazenamento e transporte seguros de artefactos com proveniência verificável e deteção de manipulação; o checklist exige que as exceções a controlos sejam sinalizadas visivelmente no pipeline (não apenas registadas — US-10); e o intro trata qualquer sistema externo (scanners, registries, serviços) como dependência de supply chain e potencial canal de exfiltração. A US-06 cobre assinatura/proveniência, mas não a custódia segura nem a integração externa minimizada.",
       "document_path": "010-sbd-manual/07-cicd-seguro/aplicacao-lifecycle.md",
       "evidence": [
-        "user story heading detected: US-23 - Custódia de artefactos, visibilidade de exceção e integrações externas {#us-23}",
+        "user story heading detected: US-23 - Custódia de artefactos, visibilidade de exceção e integrações externas",
         ":::userstory block extracted",
         "sdlc integration table extracted",
         "artifact list extracted"
@@ -5351,15 +5350,15 @@
       "goal": "artefactos armazenados e transportados de forma segura com deteção de manipulação, exceções sinalizadas visivelmente no pipeline, e integrações externas tratadas como dependências de supply chain com contexto minimizado",
       "id": "07-cicd-seguro-us-23",
       "links": [],
-      "practice_id": "07-cicd-seguro:custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas-us-23",
+      "practice_id": "07-cicd-seguro:custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas",
       "role_raw": "DevOps / SRE e AppSec Engineers",
       "roles_normalized": [
         "devops-sre",
         "appsec-engineer"
       ],
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-23-custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas-us-23",
-      "title": "Custódia de artefactos, visibilidade de exceção e integrações externas {#us-23}",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-23",
+      "title": "Custódia de artefactos, visibilidade de exceção e integrações externas",
       "us_id": "US-23",
       "warnings": []
     },
@@ -6263,7 +6262,7 @@
         "appsec-engineer"
       ],
       "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-18-proibicao-de-apply-manual-local-fora-do-pipeline",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-18-proibicao-de-apply-manuallocal-fora-do-pipeline",
       "title": "Proibição de `apply` manual/local fora do pipeline",
       "us_id": "US-18",
       "warnings": []
@@ -6418,7 +6417,7 @@
         "devops-sre"
       ],
       "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-02-validacao-automatica-de-vulnerabilidades-em-imagens-no-pipeline-ci-cd",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-02-validacao-automatica-de-vulnerabilidades-em-imagens-no-pipeline-cicd",
       "title": "Validação automática de vulnerabilidades em imagens no pipeline CI/CD",
       "us_id": "US-02",
       "warnings": []
@@ -6518,7 +6517,7 @@
         "devops-sre"
       ],
       "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-04-aplicacao-de-politicas-formais-de-seguranca-no-runtime-com-opa-kyverno",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-04-aplicacao-de-politicas-formais-de-seguranca-no-runtime-com-opakyverno",
       "title": "Aplicação de políticas formais de segurança no runtime com OPA/Kyverno",
       "us_id": "US-04",
       "warnings": []
@@ -6550,7 +6549,7 @@
         "Alertas para eventos críticos (escalada de privilégios, file modifications, network escape)",
         "Integração com sistema de alertas (SIEM, Prometheus, webhooks)",
         "Playbook de resposta a incidentes documentado e testado",
-        "Retenção de logs com período mínimo definido (ex: 90 dias L2, 180 dias L3)",
+        "Retenção de logs conforme a Política 29 (logs de segurança: 1 ano em L2, 2 anos em L3)",
         "Dashboard de eventos em tempo real"
       ],
       "confidence": 0.95,
@@ -6603,7 +6602,7 @@
         "SBOM anexado ao artefacto de build (registry label, armazenamento separado)",
         "Incluem todas as dependências diretas e transitivas",
         "Versionado com hash da imagem e identificador de build",
-        "Retenção mínima de 1 ano",
+        "Retenção conforme o nível (Política 11: 1 ano em L2, 2 anos em L3; em produtos no âmbito do CRA, pelo menos 10 anos ou o período de apoio, se for mais longo)",
         "Consulta disponível para auditoria e compliance"
       ],
       "confidence": 0.95,
@@ -6835,9 +6834,10 @@
       "id": "09-containers-imagens-us-10",
       "links": [],
       "practice_id": "09-containers-imagens:segmentacao-de-rede-e-networkpolicy",
-      "role_raw": "DevOps / SRE",
+      "role_raw": "DevOps / SRE + Arquitetos de Software",
       "roles_normalized": [
-        "devops-sre"
+        "devops-sre",
+        "arquitetos-software"
       ],
       "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-10-segmentacao-de-rede-e-networkpolicy",
@@ -6856,7 +6856,7 @@
       "bdd": [
         "Dado que uma base Ubuntu 22.04 recebe CVE crítico (CVSS≥9)",
         "Quando o patch está disponível",
-        "Então nova tag é cut (Ex: ubuntu-22.04:v1.2.3→v1.2.4) e propagada em <7d (L3) ou <30d (L2) -",
+        "Então nova tag é cut (Ex: ubuntu-22.04:v1.2.3→v1.2.4) e propagada em ≤ 3 dias (L3) ou ≤ 7 dias (L2), conforme a Política 24 -",
         "Dado que um microsserviço constrói com base descontinuada",
         "Quando validação do pipeline executa",
         "Então build falha com mensagem clara do end-of-life -",
@@ -6869,9 +6869,9 @@
       "checklist_items": [
         "Catálogo golden-images-catalog.md com versionamento semântico (ubuntu-22.04:v1.2.3, alpine:v3.19.1)",
         "Assinatura de cada golden image (Cosign + OIDC via Rekor)",
-        "SLA de patching definido por criticidade (L1: recomendado, L2: 30d, L3: 7–14d)",
+        "SLA de patching definido por criticidade (Política 24: crítico 7 dias em L2, 3 dias em L3; L1 recomendado)",
         "Integração com CVE feed (ex: Trivy API, Red Hat advisories)",
-        "Deprecation policy com aviso 90d antes de remover tag",
+        "Deprecation policy com aviso na data de depreciação e remoção da tag ≤ 60 dias depois (Política 24)",
         "Registo de cada push com SBOM (CycloneDX JSON no image:tag@digest.sbom.json)",
         "Dashboard: time-to-patch por criticidade, adoption rate de imagens antigas"
       ],
@@ -7056,13 +7056,14 @@
       "id": "09-containers-imagens-us-14",
       "links": [],
       "practice_id": "09-containers-imagens:sandboxing-avancado-com-gvisor-kata-para-workloads-criticas",
-      "role_raw": "DevOps / SRE + AppSec Engineer",
+      "role_raw": "DevOps / SRE + AppSec Engineer + Arquitetos de Software",
       "roles_normalized": [
         "devops-sre",
-        "appsec-engineer"
+        "appsec-engineer",
+        "arquitetos-software"
       ],
       "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-14-sandboxing-avancado-com-gvisor-kata-para-workloads-criticas",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-14-sandboxing-avancado-com-gvisorkata-para-workloads-criticas",
       "title": "Sandboxing Avançado com gVisor/Kata para Workloads Críticas",
       "us_id": "US-14",
       "warnings": []
@@ -7089,7 +7090,7 @@
       "checklist_items": [
         "Catálogo versionado em Git (imagem, digest/tag, owner, data aprovação, revisão, estado: active/deprecated/revoked)",
         "Critérios mínimos de aprovação documentados (SBOM, scan, proveniência quando aplicável, EOL conhecido)",
-        "Cadência de revisão definida (L2: trimestral; L3: mensal ou por evento)",
+        "Cadência de revisão definida (L2: semestral; L3: mensal ou por evento)",
         "Processo de revogação com gatilhos e comunicação (inclui rollback/patch plan)",
         "Bloqueio automático em L2/L3 para bases revogadas (admission/pipeline gate)"
       ],
@@ -7190,7 +7191,7 @@
       "chapter_id": "09-containers-imagens",
       "checklist_items": [
         "Registo de exceção versionado (ticket/PR) com owner e aprovador",
-        "TTL obrigatório e curto em L3 (ex.: 7–30 dias); definido em L2 (ex.: 30–90 dias)",
+        "TTL conforme a Política 05 §7 (L3: 30 dias Low/Medium, 14 dias High, Critical não aceitável; L2: 60 / 30 dias)",
         "Medidas compensatórias documentadas (ex.: restrição de egress, runtime sandbox, monitorização reforçada)",
         "Revalidação por evento (CVE novo, incidente, alteração de arquitetura/runtime)",
         "Relatório periódico de exceções ativas (inventário + risco agregado)"
@@ -7215,7 +7216,7 @@
         "grc-compliance"
       ],
       "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-17-excecoes-temporarias-a-findings-policies-com-ttl-compensacoes-e-revalidacao",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-17-excecoes-temporarias-a-findingspolicies-com-ttl-compensacoes-e-revalidacao",
       "title": "Exceções temporárias a findings/policies com TTL, compensações e revalidação",
       "us_id": "US-17",
       "warnings": []
@@ -7311,10 +7312,11 @@
       "id": "09-containers-imagens-us-19",
       "links": [],
       "practice_id": "09-containers-imagens:isolamento-de-gpu-e-separacao-de-workloads-de-inferencia-sensiveis",
-      "role_raw": "DevOps / SRE + AppSec Engineer",
+      "role_raw": "DevOps / SRE + AppSec Engineer + Arquitetos de Software",
       "roles_normalized": [
         "devops-sre",
-        "appsec-engineer"
+        "appsec-engineer",
+        "arquitetos-software"
       ],
       "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-19-isolamento-de-gpu-e-separacao-de-workloads-de-inferencia-sensiveis",
@@ -7421,7 +7423,7 @@
         "appsec-engineer"
       ],
       "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-21-perfis-seccomp-apparmor-e-verificacao-de-drift-de-hardening",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-21-perfis-seccompapparmor-e-verificacao-de-drift-de-hardening",
       "title": "Perfis seccomp/AppArmor e verificação de drift de hardening",
       "us_id": "US-21",
       "warnings": []
@@ -7436,7 +7438,7 @@
       "bdd": [
         "Dado uma imagem base com patch de segurança disponível",
         "Quando o SLA de renovação se aplica",
-        "Então ocorre rebuild (ou trigger automático) dentro do prazo (L3: ≤30 dias; L1: ≤90 dias) -",
+        "Então ocorre rebuild (ou trigger automático) dentro do prazo (L3: ≤30 dias; L2: ≤60 dias; L1: ≤90 dias) -",
         "Dado uma imagem sem rebuild há mais do que o limite definido",
         "Quando a verificação periódica corre",
         "Então é sinalizada e sujeita a renovação ou depreciação -",
@@ -7630,7 +7632,7 @@
         "devops-sre"
       ],
       "source_document_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-04-gates-de-seguranca-no-ci-cd",
+      "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-04-gates-de-seguranca-no-cicd",
       "title": "Gates de segurança no CI/CD",
       "us_id": "US-04",
       "warnings": []
@@ -7846,7 +7848,7 @@
     {
       "artifacts": [
         "configuracao_plataforma_centralizada_versionada",
-        "regras_de_deduplica",
+        "regras_de_deduplicacao",
         "dashboard_de_findings",
         "sla_documento",
         "logs_de_mudanca_de_estado",
@@ -7868,9 +7870,9 @@
       "checklist_items": [
         "Plataforma centralizada deployada (DefectDojo, Vulcan, Security Hub, etc.)",
         "Conectores para todas as ferramentas (SAST, DAST, IAST, SCA) configurados",
-        "Regras de deduplica e correlação ativas",
+        "Regras de deduplicação e correlação ativas",
         "Critérios de triagem documentados (CWE, OWASP, risco organizacional)",
-        "SLA definidos por severidade e Lx (Crítico: <24h, Alto: <7d, Médio: <30d)",
+        "SLA definidos por severidade e Lx (Política 19 §4.3; p. ex. Crítico: 30 / 7 / 3 dias, Alto: 90 / 30 / 15 dias em L1 / L2 / L3)",
         "Dashboard públicos com KPIs (findings abertos, taxa de resolução, tempo médio)",
         "Integração com backlog (Jira/Azure Boards) para atribuição automática",
         "Auditoria de exceções com dupla aprovação para L2/L3"
@@ -7969,7 +7971,7 @@
         "Então decisão é documentada em template T1 (CORRIGIR/ACEITAR/SUPRIMIR/DEFER) com justificação rastreável -",
         "Dado finding HIGH em L3",
         "Quando DevOps propõe ACEITAR-risco mas AppSec discorda",
-        "Então conflito é escalado com template T2 para CISO/Scrum Master / Team Lead, com resolução em SLA 4h -",
+        "Então conflito é escalado com template T2 para CISO/Tech Lead, com resolução em SLA 4h -",
         "Dado decisão de CORRIGIR-IMEDIATO",
         "Quando correção é aplicada em PR",
         "Então revalidação confirma que finding desapareceu e nenhum novo finding CRITICAL foi introduzido -",
@@ -8215,7 +8217,7 @@
         "devops-sre"
       ],
       "source_document_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--checklist-de-release-v-version--us-16-separacao-formal-entre-sinal-automatico-e-decisao-de-bloqueio-override",
+      "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--checklist-de-release-v-version--us-16-separacao-formal-entre-sinal-automatico-e-decisao-de-bloqueiooverride",
       "title": "Separação formal entre sinal automático e decisão de bloqueio/override",
       "us_id": "US-16",
       "warnings": []
@@ -8945,7 +8947,7 @@
         "gestao-executiva"
       ],
       "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-10-deploy-progressivo-com-estrategias-canary-blue-green",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-10-deploy-progressivo-com-estrategias-canaryblue-green",
       "title": "*Deploy* progressivo com estratégias *canary*/*blue-green*",
       "us_id": "US-10",
       "warnings": []
@@ -9200,9 +9202,9 @@
       "id": "11-deploy-seguro-us-16",
       "links": [],
       "practice_id": "11-deploy-seguro:separacao-entre-acao-automatica-e-autorizacao-irreversivel",
-      "role_raw": "Ops",
+      "role_raw": "DevOps / SRE",
       "roles_normalized": [
-        "operacoes"
+        "devops-sre"
       ],
       "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-16-separacao-entre-acao-automatica-e-autorizacao-irreversivel",
@@ -9287,7 +9289,7 @@
       "context": null,
       "document_path": "010-sbd-manual/11-deploy-seguro/aplicacao-lifecycle.md",
       "evidence": [
-        "user story heading detected: US-18 - Release gates específicos para sistemas com agentes AI {#us-18}",
+        "user story heading detected: US-18 - Release gates específicos para sistemas com agentes AI",
         ":::userstory block extracted",
         "proportionality table extracted",
         "sdlc integration table extracted",
@@ -9296,15 +9298,15 @@
       "goal": "que o release de sistemas com agentes AI tenha gates específicos — eval suite como gate; rollback de modelo independente do rollback aplicacional; canary release de versão de modelo — para garantir que mudanças que afectam o comportamento agentic são tão controláveis e reversíveis quanto mudanças de código",
       "id": "11-deploy-seguro-us-18",
       "links": [],
-      "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
+      "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai",
       "role_raw": "DevOps / SRE e AppSec",
       "roles_normalized": [
         "devops-sre",
         "appsec-engineer"
       ],
       "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-18-release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
-      "title": "Release gates específicos para sistemas com agentes AI {#us-18}",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-18",
+      "title": "Release gates específicos para sistemas com agentes AI",
       "us_id": "US-18",
       "warnings": []
     },
@@ -9601,7 +9603,7 @@
         "grc-compliance"
       ],
       "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-05-metricas-de-eficacia-mttd-mttr",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-05-metricas-de-eficacia-mttdmttr",
       "title": "Métricas de eficácia (MTTD/MTTR)",
       "us_id": "US-05",
       "warnings": []
@@ -9670,7 +9672,7 @@
         "Acesso a logs restrito e auditado",
         "Hash ou assinatura digital aplicada por lote",
         "Logs separados de aplicação (forwarder, sidecar, serviço)",
-        "Retenção mínima: 30d (L1), 90d (L2/L3)",
+        "Retenção mínima conforme a [Política 29](/sbd-toe/assets/policies/policy-logging-estruturado#7-retenção-de-logs): logs de segurança 90 dias (L1), 1 ano (L2), 2 anos (L3); logs operacionais 30 dias (L1), 90 dias (L2), 1 ano (L3)",
         "Teste de reversão de retenção trimestralmente"
       ],
       "confidence": 0.95,
@@ -9899,7 +9901,7 @@
       ],
       "bdd": [
         "Dado um framework de conformidade aplicável (SSDF, NIS2, ISO 27001)",
-        "Quando mapéio controlos técnicos (logging, alertas, correlação, IRP, métricas)",
+        "Quando mapeio controlos técnicos (logging, alertas, correlação, IRP, métricas)",
         "Então cada controlo técnico é rastreável até um requisito regulatório específico - E existe evidência auditável (logs, dashboards, relatórios, métricas) - E relatórios de conformidade são gerados trimestralmente"
       ],
       "benefit": "assegurar que a postura de segurança está alinhada com regulações",
@@ -9974,7 +9976,7 @@
       "context": null,
       "document_path": "010-sbd-manual/12-monitorizacao-operacoes/aplicacao-lifecycle.md",
       "evidence": [
-        "user story heading detected: US-13 - Telemetria de agentes AI em produção {#us-13}",
+        "user story heading detected: US-13 - Telemetria de agentes AI em produção",
         ":::userstory block extracted",
         "proportionality table extracted",
         "sdlc integration table extracted",
@@ -9983,15 +9985,15 @@
       "goal": "recolher telemetria dedicada de operação de agentes AI em produção — tool invocations com audit completo, token spend com budget enforcement, deteção de jailbreak e off-policy actions — para detectar abuso, runaway loops e acções fora do mandate em tempo útil, antes de impacto material",
       "id": "12-monitorizacao-operacoes-us-13",
       "links": [],
-      "practice_id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao-us-13",
+      "practice_id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao",
       "role_raw": "Ops / AppSec",
       "roles_normalized": [
         "operacoes",
         "appsec-engineer"
       ],
       "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-13-telemetria-de-agentes-ai-em-producao-us-13",
-      "title": "Telemetria de agentes AI em produção {#us-13}",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-13",
+      "title": "Telemetria de agentes AI em produção",
       "us_id": "US-13",
       "warnings": []
     },
@@ -10007,7 +10009,7 @@
         "Então o valor é redactado/mascarado antes da persistência e a redacção é verificável por amostragem -",
         "Dado um padrão legítimo que dispara um alerta indevido",
         "Quando se pretende suprimi-lo",
-        "Então é criada uma exceção versionada com justificação, aprovador por severidade e data de expiração (máx 6 meses L2, 3 meses L3)"
+        "Então é criada uma exceção versionada com justificação, aprovador por severidade e data de expiração (tectos da Política 05 §7)"
       ],
       "benefit": "impedir fuga de credenciais via logs e manter a supressão de alertas auditável e temporária",
       "chapter_id": "12-monitorizacao-operacoes",
@@ -10127,7 +10129,7 @@
         "operacoes"
       ],
       "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-16-cobertura-att-ck-e-priorizacao-epss-kev",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-16-cobertura-attck-e-priorizacao-epsskev",
       "title": "Cobertura ATT&CK e priorização EPSS/KEV",
       "us_id": "US-16",
       "warnings": []
@@ -10243,7 +10245,7 @@
         "Acesso técnico bloqueado até conclusão",
         "Bloqueio automático em Git/Azure DevOps/pipelines CI/CD",
         "Exceções documentadas com aprovação AppSec/Gestão",
-        "Reautenticação bienal ou por trigger de novo risco"
+        "Recertificação anual (validade de 12 meses) ou por trigger de novo risco"
       ],
       "confidence": 0.95,
       "context": "Contexto. Novos elementos sem formação introduzem riscos básicos.",
@@ -10259,9 +10261,9 @@
       "id": "13-formacao-onboarding-us-01",
       "links": [],
       "practice_id": "13-formacao-onboarding:onboarding-seguro-obrigatorio",
-      "role_raw": "Security Champion (RH)",
+      "role_raw": "RH / PeopleOps",
       "roles_normalized": [
-        "security-champion"
+        "rh-peopleops"
       ],
       "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-01-onboarding-seguro-obrigatorio",
@@ -10491,7 +10493,7 @@
       "artifacts": [
         "diagramas_draw_io_lucidchart",
         "atas_de_sessao",
-        "matriz_de_riscos_com_rastreabilidade_a_req_xxx"
+        "matriz_de_riscos_com_rastreabilidade_aos_requisitos_do_cap_02"
       ],
       "bdd": [
         "Dado que uma feature nova ou refactor é planeado",
@@ -10553,7 +10555,7 @@
         "Tempos de deteção, resposta e resolução medidos (MTTD/MTTR)",
         "Papel de cada interveniente documentado (playbooks)",
         "Debrief realizado com recomendações",
-        "Cadência definida (anual mínimo, trimestral ideal)"
+        "Cadência definida (mínimo: anual em L1, semestral em L2/L3 — Política 32 §8; trimestral recomendado)"
       ],
       "confidence": 0.95,
       "context": "Contexto. Simulações de incidentes treinam equipas na resposta sob pressão, validam processos e criam cultura de prontidão.",
@@ -10716,6 +10718,7 @@
       "practice_id": "13-formacao-onboarding:validacao-formal-de-onboarding-via-checklist",
       "role_raw": "RH / GRC",
       "roles_normalized": [
+        "rh-peopleops",
         "grc-compliance"
       ],
       "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
@@ -10763,7 +10766,8 @@
       "practice_id": "13-formacao-onboarding:validacao-de-conhecimento-via-quizzes-estruturados",
       "role_raw": "AppSec Engineer / RH",
       "roles_normalized": [
-        "appsec-engineer"
+        "appsec-engineer",
+        "rh-peopleops"
       ],
       "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-12-validacao-de-conhecimento-via-quizzes-estruturados",
@@ -10897,7 +10901,8 @@
       "practice_id": "13-formacao-onboarding:formatos-de-entrega-e-dod-por-formato",
       "role_raw": "AppSec Engineer / RH",
       "roles_normalized": [
-        "appsec-engineer"
+        "appsec-engineer",
+        "rh-peopleops"
       ],
       "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-15-formatos-de-entrega-e-dod-por-formato",
@@ -10945,7 +10950,8 @@
       "practice_id": "13-formacao-onboarding:caminho-de-remediacao-abaixo-do-limiar",
       "role_raw": "AppSec Engineer / RH",
       "roles_normalized": [
-        "appsec-engineer"
+        "appsec-engineer",
+        "rh-peopleops"
       ],
       "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-16-caminho-de-remediacao-abaixo-do-limiar",
@@ -11087,7 +11093,8 @@
       "practice_id": "13-formacao-onboarding:formacao-em-uso-seguro-de-ia-e-tooling",
       "role_raw": "AppSec Engineer / RH",
       "roles_normalized": [
-        "appsec-engineer"
+        "appsec-engineer",
+        "rh-peopleops"
       ],
       "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle--aplicacao-de-formacao-e-capacitacao-no-ciclo-de-vida--user-stories-normalizadas--us-19-formacao-em-uso-seguro-de-ia-e-tooling",
@@ -11118,7 +11125,7 @@
         "Permissões iniciais read-only, evoluindo só após validação",
         "Logging de toda a atividade (logins, commits, acessos a secrets) ativado",
         "Exercícios práticos (≥70%) e quiz de compreensão (≥80%) concluídos",
-        "Sign-off de conclusão (Scrum Master / Team Lead + AppSec) condiciona o acesso real",
+        "Sign-off de conclusão (Tech Lead + AppSec) condiciona o acesso real",
         "Destruição do sandbox e revogação de credenciais pós-onboarding; logs arquivados"
       ],
       "confidence": 0.85,
@@ -11156,7 +11163,7 @@
       "bdd": [
         "Dado que um controlo não pode ser cumprido numa aplicação classificada como L1, L2 ou L3",
         "Quando submeto exceção com justificação técnica e compensação",
-        "Então ela é roteada para alçada apropriada, avaliada, e aprovada ou rejeitada - E um calendário de revalidação é automaticamente criado (L3: 3 meses, L2: 6 meses, L1: anual)"
+        "Então ela é roteada para alçada apropriada, avaliada, e aprovada ou rejeitada - E a revalidação é automaticamente agendada para a data de expiração, dentro do TTL da Política 05 §7"
       ],
       "benefit": "assegurar transparência, aprovação proporcional ao risco, e revalidação periódica",
       "chapter_id": "14-governanca-contratacao",
@@ -11164,7 +11171,7 @@
         "Exceção registada em ferramenta GRC com campos obrigatórios: aplicação, risco (L1–L3), controlo em falta, justificação, compensação, owner",
         "Alçada de aprovação determinada automaticamente por nível de risco",
         "Aprovação formal recebida (assinatura digital ou registo de timestamp)",
-        "Calendário de revalidação criado e owner notificado (30 dias antes de expiração)",
+        "Calendário de revalidação criado e owner notificado (15 dias antes da expiração, ou a meio do TTL se este for inferior a 30 dias)",
         "Issue de mitigação criada no backlog de segurança para próxima release",
         "Notificação automática enviada a owner se exceção se aproxima de vencer"
       ],
@@ -11224,9 +11231,10 @@
       "id": "14-governanca-contratacao-us-02",
       "links": [],
       "practice_id": "14-governanca-contratacao:clausulas-contratuais-de-seguranca",
-      "role_raw": "GRC / Compliance (Jurídico + Procurement)",
+      "role_raw": "Jurídico + Procurement",
       "roles_normalized": [
-        "grc-compliance"
+        "legal",
+        "procurement"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--user-stories-normalizadas--us-02-clausulas-contratuais-de-seguranca",
@@ -11388,9 +11396,9 @@
       "id": "14-governanca-contratacao-us-06",
       "links": [],
       "practice_id": "14-governanca-contratacao:execucao-de-fluxo-formal-de-validacao-de-fornecedores",
-      "role_raw": "GRC / Compliance (Procurement Officer)",
+      "role_raw": "Procurement Officer",
       "roles_normalized": [
-        "grc-compliance"
+        "procurement"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-06-execucao-de-fluxo-formal-de-validacao-de-fornecedores",
@@ -11740,7 +11748,7 @@
       "benefit": "assegurar que continuam a cumprir requisitos e SLA, que risco é mitigado, e que decisões de continuidade são baseadas em evidência",
       "chapter_id": "14-governanca-contratacao",
       "checklist_items": [
-        "Calendário de revisão de fornecedores definido e comunicado (anual mínimo, 6 meses para L2, trimestral para L3, ou por evento crítico)",
+        "Calendário de revisão de fornecedores definido e comunicado (anual para L1 e L2, semestral para L3, ou por evento crítico)",
         "Questionário atualizado com perguntas de segurança e SLA enviado ao fornecedor",
         "Análise técnica documentada (AppSec): SBOM validado, CVEs analisados, SLA compliance verificado, mudanças organizacionais/técnicas identificadas",
         "Decisão formalizada e registada em GRC: Aprovado / Exceção criada / Penalização proposta / Rescisão iniciada",
@@ -11758,14 +11766,14 @@
         "sdlc integration table extracted",
         "artifact list extracted"
       ],
-      "goal": "reavalia e reaprovar fornecedores periodicamente (anual por defaut, semestral para L2, trimestral para L3), com validação técnica atualizada, análise de compliance SLA, e escalonamento para decisão de penalização ou substituição se necessário",
+      "goal": "reavalia e reaprovar fornecedores periodicamente (anual para L1 e L2, semestral para L3, e por evento crítico), com validação técnica atualizada, análise de compliance SLA, e escalonamento para decisão de penalização ou substituição se necessário",
       "id": "14-governanca-contratacao-us-14",
       "links": [],
       "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
-      "role_raw": "AppSec Engineer + GRC / Compliance (Procurement Officer)",
+      "role_raw": "Procurement Officer + AppSec Engineer",
       "roles_normalized": [
-        "appsec-engineer",
-        "grc-compliance"
+        "procurement",
+        "appsec-engineer"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-14-reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
@@ -11796,7 +11804,7 @@
         "Quiz de compreensão de políticas de segurança completado (score mínimo 80%)",
         "Acesso a ambiente sandbox fornecido para prática (ex.: repositório Git privado, aplicação demo, ferramentas de segurança)",
         "NDA e confidentiality agreement assinados digitalmente com timestamp",
-        "Checklist de onboarding técnico preenchido e validado pela equipa (Security Champion + Scrum Master / Team Lead)",
+        "Checklist de onboarding técnico preenchido e validado pela equipa (Security Champion + Tech Lead)",
         "Acesso real a sistemas concedido apenas após todos os passos de aprovação",
         "Registo de \"ready for access\" documentado em GRC com data, validador, e referência a todas as validações"
       ],
@@ -11814,9 +11822,10 @@
       "id": "14-governanca-contratacao-us-15",
       "links": [],
       "practice_id": "14-governanca-contratacao:preparacao-tecnica-e-validacao-de-contractors-pre-acesso",
-      "role_raw": "Security Champion (HR/Recruiter)",
+      "role_raw": "Security Champion + RH / PeopleOps",
       "roles_normalized": [
-        "security-champion"
+        "security-champion",
+        "rh-peopleops"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-15-preparacao-tecnica-e-validacao-de-contractors-pre-acesso",
@@ -11854,7 +11863,7 @@
         "SLA de conclusão comunicado ao contractor: Máximo 5 dias úteis antes de data de início",
         "Notificação automática enviada se SLA em risco (ex.: 2 dias antes da deadline)",
         "Sign-off de \"formação completa\" fornecido ao AppSec Engineer (libera acesso técnico)",
-        "Histórico mantido por 3 anos (DORA, NIS2 requirement)"
+        "Histórico mantido conforme a [Política 33](/sbd-toe/assets/policies/policy-contratacao-segura#8-registo-e-rastreabilidade) (duração do contrato + 1 ano em L1 e L2; duração do contrato + 3 anos em L3)"
       ],
       "confidence": 0.95,
       "context": "Contexto. Contractors iniciados sem completar formação de segurança obrigatória. Falta de integração clara entre Cap. 13 (Formação) e Cap. 14 (Governação): quem aprova, qual o SLA, como é tracked.",
@@ -11870,10 +11879,10 @@
       "id": "14-governanca-contratacao-us-16",
       "links": [],
       "practice_id": "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
-      "role_raw": "CISO + Security Champion (Training Manager)",
+      "role_raw": "CISO + Training Manager",
       "roles_normalized": [
         "gestao-executiva",
-        "security-champion"
+        "rh-peopleops"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-16-trilho-de-formacao-obrigatoria-pre-acesso-contractors",
@@ -11899,9 +11908,9 @@
       "benefit": "garantir que acesso é revogado completamente, ativos recuperados, confidencialidade mantida, e conformidade legal assegurada",
       "chapter_id": "14-governanca-contratacao",
       "checklist_items": [
-        "Checklist de offboarding preparado 2 semanas antes (DevOps / SRE, Security Champion, AppSec Engineer, Scrum Master / Team Lead)",
+        "Checklist de offboarding preparado 2 semanas antes (DevOps / SRE, RH / PeopleOps, AppSec Engineer, Tech Lead)",
         "Notificação formal enviada ao contractor/fornecedor com data exata de desativação",
-        "Acesso a sistemas revogado (no máximo 24h após data de termo):",
+        "Acesso a sistemas revogado (no próprio dia da data de termo; ≤ 2 h em saída não planeada; de imediato por causa de segurança):",
         "Contas de utilizador desativadas em Git, Jira, CI/CD",
         "SSH keys e API tokens removidos",
         "VPN, cloud IAM access revogado",
@@ -11915,7 +11924,7 @@
         "Last backup de trabalho do contractor realizado (ex.: clone de repos privados)",
         "Sign-off formal de \"offboarding completo\" registado em GRC com timestamp",
         "Reminder legal enviado ao contractor: Confidentiality obligations continuam pós-término (duração, consequências)",
-        "Relatório de offboarding arquivado por 7 anos (DORA requirement)"
+        "Relatório de offboarding arquivado por 5 anos ([Política 33](/sbd-toe/assets/policies/policy-contratacao-segura#8-registo-e-rastreabilidade))"
       ],
       "confidence": 0.95,
       "context": "Contexto. Contractors terminam projeto ou contrato sem processo formal: acesso mantém-se ativo, ativos (código, credenciais, documentos) não são recuperados. Risco de vazamento pós-rescisão, acesso residual, violação de confidencialidade.",
@@ -11931,9 +11940,10 @@
       "id": "14-governanca-contratacao-us-17",
       "links": [],
       "practice_id": "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
-      "role_raw": "Security Champion (HR) + DevOps / SRE",
+      "role_raw": "Security Champion + RH / PeopleOps + DevOps / SRE",
       "roles_normalized": [
         "security-champion",
+        "rh-peopleops",
         "devops-sre"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
@@ -11967,9 +11977,10 @@
         "SLA não cumprido (ex.: uptime <99.5% para L3, <99% para L2)",
         "Mudança de propriedade, localização, ou subcontratação",
         "Escalação automática com prioridade:",
-        "P0 (CVE crítico explorado): Immediate → AppSec Engineer + GRC / Compliance (Procurement Officer) + CISO",
-        "P1 (CVE crítico, incidente grave): 1h → AppSec Engineer + GRC / Compliance (Procurement Officer)",
-        "P2 (CVE high, incidente moderado): 4h → AppSec Engineer",
+        "P1 (CVE crítico explorado, incidente grave): imediato → AppSec Engineer + Procurement Officer + CISO",
+        "P2 (CVE crítico sem exploração conhecida, incidente significativo): ≤ 1h → AppSec Engineer + Procurement Officer",
+        "P3 (CVE high, incidente moderado): ≤ 4h → AppSec Engineer",
+        "Trilho regulatório (qualquer severidade): GRC/Compliance + EPD/DPO ≤ 1h após a confirmação ([Política 32 §4.1](/sbd-toe/assets/policies/policy-irp#41-triagem-t0----15-minutos-de-detecção))",
         "Trigger automático de revisão especial fora-de-ciclo (US-14) se gap crítico",
         "Registo de alerta, escalonamento, e ação documentado em GRC (audit trail)",
         "Dashboard em tempo real com status de fornecedores críticos e alertas ativas (visível a board)"
@@ -12011,7 +12022,7 @@
       "bdd": [
         "Dado contractors ativos com acesso a sistemas (repos, CI/CD, databases, cloud)",
         "Quando ciclo trimestral de revisão chega",
-        "Então acesso é validado com Scrum Master / Team Lead, e acesso excessivo é removido no mesmo dia"
+        "Então acesso é validado com Tech Lead, e acesso excessivo é removido no mesmo dia"
       ],
       "benefit": "manter principle of least privilege, reduzir risco de acesso excessivo, e remover acesso obsoleto",
       "chapter_id": "14-governanca-contratacao",
@@ -12019,11 +12030,11 @@
         "Lista de contractors ativos extraída de sistemas (Git orgs, Jira, VPN, Cloud IAM, databases)",
         "Por cada contractor:",
         "Acesso listado em detalhe (repositórios, CI/CD pipelines, databases, cloud resources, etc.)",
-        "Scrum Master / Team Lead valida cada acesso: Necessário para projeto atual? (Sim/Não/Modificar)",
+        "Tech Lead valida cada acesso: Necessário para projeto atual? (Sim/Não/Modificar)",
         "Se Não necessário: acesso removido no mesmo dia",
         "Se Modificar: novo scope configurado, antigo revogado",
         "Se Sim: mantém-se com confirmação datada",
-        "Checklist de revisão preenchido e assinado digitalmente por Scrum Master / Team Lead + Security Champion",
+        "Checklist de revisão preenchido e assinado digitalmente por Tech Lead + Security Champion",
         "Notificação enviada a cada contractor informando resultado da revisão",
         "Se acesso removido: notificação clara indicando motivo e data de conclusão",
         "Registo de mudanças documentado em audit trail (Git logs, IAM change log, etc.)",
@@ -12043,11 +12054,11 @@
       "id": "14-governanca-contratacao-us-19",
       "links": [],
       "practice_id": "14-governanca-contratacao:revisao-trimestral-de-acesso-de-contractors-least-privilege",
-      "role_raw": "Security Champion + DevOps / SRE + Scrum Master / Team Lead",
+      "role_raw": "Security Champion + DevOps / SRE + Tech Lead",
       "roles_normalized": [
         "security-champion",
         "devops-sre",
-        "scrum-master"
+        "tech-lead"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-19-revisao-trimestral-de-acesso-de-contractors-least-privilege",
@@ -12066,7 +12077,7 @@
       "bdd": [
         "Dado um contractor cujo projeto termina",
         "Quando offboarding é iniciado (US-17)",
-        "Então feedback form é enviado para Scrum Master / Team Lead + AppSec Engineer preencherem"
+        "Então feedback form é enviado para Tech Lead + AppSec Engineer preencherem"
       ],
       "benefit": "informar decisão de re-hire, melhorar programa de preparação, e criar base de dados de avaliação",
       "chapter_id": "14-governanca-contratacao",
@@ -12077,7 +12088,7 @@
         "Conformidade: Contractor seguiu procedimentos obrigatórios (Sim/Não), Violações (Sim/Não + desc)",
         "Recomendações: Áreas de melhoria em formação/preparação, Rating de segurança geral (1–5 stars)",
         "Decisão: Re-hire recomendado? (Sim/Não/Talvez + justificação)",
-        "Feedback recolhido de Scrum Master / Team Lead + AppSec Engineer + Security Champion (consenso)",
+        "Feedback recolhido de Tech Lead + AppSec Engineer + Security Champion (consenso)",
         "Resultado registado em sistema centralizado (HR, Procurement, GRC) com data e reviewers",
         "Rating (positivo/neutro/negativo) armazenado como referência para futuras contratações",
         "Se múltiplos contractors de mesmo fornecedor: insights agregados para revisão de fornecedor (US-14)",
@@ -12097,10 +12108,10 @@
       "id": "14-governanca-contratacao-us-20",
       "links": [],
       "practice_id": "14-governanca-contratacao:feedback-pos-projeto-e-rating-de-contractors",
-      "role_raw": "Security Champion + Scrum Master / Team Lead",
+      "role_raw": "Security Champion + Tech Lead",
       "roles_normalized": [
         "security-champion",
-        "scrum-master"
+        "tech-lead"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-20-feedback-pos-projeto-e-rating-de-contractors",
@@ -12135,8 +12146,8 @@
         "Audit rights: acesso contratualizado a logs de inferência ou equivalente quando exigido (típico em L3)",
         "SLA de notificação prévia de mudanças que alterem comportamento (versão maior do modelo, política de dados, descontinuação)",
         "SLA de disponibilidade declarado; fallback arquitectónico em caso de outage (cross-link Cap. 04 §AI/ML)",
-        "Conformidade declarada com AI Act Art. 53/55 quando o provedor fornece GPAI",
-        "Conformidade declarada com RGPD Art. 28 (sub-processadores) quando há dados pessoais",
+        "Conformidade declarada com o AI Act art. 53.º (e art. 55.º, se o modelo tiver risco sistémico) quando o provedor fornece GPAI",
+        "Conformidade declarada com o RGPD, art. 28.º (subcontratantes) quando há dados pessoais",
         "Provedor incluído na lista aprovada ([DEP-014](/sbd-toe/sbd-manual/dependencias-sbom-sca/addon/catalogo-requisitos-dependencias#dep-014)) com risk_classification",
         "Cláusulas críticas registadas na ficha do provedor; revisão calendarizada"
       ],
@@ -12144,7 +12155,7 @@
       "context": null,
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
-        "user story heading detected: US-21 - Contratação de provedores de modelos AI {#us-21}",
+        "user story heading detected: US-21 - Contratação de provedores de modelos AI",
         ":::userstory block extracted",
         "proportionality table extracted",
         "sdlc integration table extracted",
@@ -12153,14 +12164,16 @@
       "goal": "que cada contrato com provedor de modelos AI inclua cláusulas mínimas que cubram tratamento de dados, localização, audit rights, notificação de mudanças e conformidade regulatória aplicável",
       "id": "14-governanca-contratacao-us-21",
       "links": [],
-      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
-      "role_raw": "GRC / Compliance (Procurement + Legal)",
+      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai",
+      "role_raw": "GRC / Compliance + Procurement com apoio de Jurídico",
       "roles_normalized": [
-        "grc-compliance"
+        "grc-compliance",
+        "procurement",
+        "legal"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
-      "title": "Contratação de provedores de modelos AI {#us-21}",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21",
+      "title": "Contratação de provedores de modelos AI",
       "us_id": "US-21",
       "warnings": []
     },
@@ -12190,7 +12203,7 @@
       "context": "Uma política não aprovada pela direção não tem autoridade; uma política não auditada perde aderência ao longo do tempo. Contexto. O capítulo prescreve um conjunto de políticas organizacionais relevantes (gestão de exceções, contratação segura, rastreabilidade organizacional, auditoria de fornecedores, KPIs de governação — ver intro §Políticas Organizacionais Relevantes) e o checklist canónico exige que estas estejam formalmente aprovadas e auditadas. A US-12 formaliza a política do modelo de governação, mas o restante corpo de políticas fica sem uma user story que operacionalize o seu ciclo de aprovação pela direção e de auditoria periódica. Sem este ciclo, as políticas existem como documento mas não como controlo vivo: ninguém confirma que continuam aprovadas, atualizadas e cumpridas.",
       "document_path": "010-sbd-manual/14-governanca-contratacao/aplicacao-lifecycle.md",
       "evidence": [
-        "user story heading detected: US-22 - Aprovação formal e auditoria periódica das políticas organizacionais {#us-22}",
+        "user story heading detected: US-22 - Aprovação formal e auditoria periódica das políticas organizacionais",
         ":::userstory block extracted",
         "sdlc integration table extracted",
         "artifact list extracted"
@@ -12198,15 +12211,15 @@
       "goal": "manter cada política organizacional do capítulo num ciclo formal de aprovação pela direção e de auditoria periódica de aderência",
       "id": "14-governanca-contratacao-us-22",
       "links": [],
-      "practice_id": "14-governanca-contratacao:aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais-us-22",
+      "practice_id": "14-governanca-contratacao:aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais",
       "role_raw": "GRC / Compliance com apoio de CISO + Gestão Executiva",
       "roles_normalized": [
         "grc-compliance",
         "gestao-executiva"
       ],
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-22-aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais-us-22",
-      "title": "Aprovação formal e auditoria periódica das políticas organizacionais {#us-22}",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-22",
+      "title": "Aprovação formal e auditoria periódica das políticas organizacionais",
       "us_id": "US-22",
       "warnings": []
     }

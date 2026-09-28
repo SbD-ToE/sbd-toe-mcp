@@ -31,7 +31,7 @@
           "relationship": "Desvios aos controlos ARC requerem excepção formal"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-04, T-06"
         }
       ],
@@ -91,7 +91,7 @@
           "relationship": "Desvios aos controlos ARC requerem excepção formal"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-04, T-06"
         }
       ],
@@ -151,7 +151,7 @@
           "relationship": "Desvios aos controlos ARC requerem excepção formal"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-04, T-06"
         }
       ],
@@ -212,7 +212,7 @@
           "relationship": "Desvios aos controlos ARC requerem excepção formal"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-04, T-06"
         }
       ],
@@ -272,7 +272,7 @@
           "relationship": "Desvios aos controlos ARC requerem excepção formal"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-04, T-06"
         }
       ],
@@ -332,7 +332,7 @@
           "relationship": "Desvios aos controlos ARC requerem excepção formal"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-04, T-06"
         }
       ],
@@ -392,7 +392,7 @@
           "relationship": "Definição dos gates que alimentam CIC-K01"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02, T-03"
         }
       ],
@@ -458,7 +458,7 @@
           "relationship": "Definição dos gates que alimentam CIC-K01"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02, T-03"
         }
       ],
@@ -524,7 +524,7 @@
           "relationship": "Definição dos gates que alimentam CIC-K01"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02, T-03"
         }
       ],
@@ -584,7 +584,7 @@
           "relationship": "Definição dos gates que alimentam CIC-K01"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02, T-03"
         }
       ],
@@ -650,7 +650,7 @@
           "relationship": "Definição dos gates que alimentam CIC-K01"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02, T-03"
         }
       ],
@@ -660,7 +660,7 @@
       "source_file": "010-sbd-manual/07-cicd-seguro/addon/13-kpis-metricas.md",
       "threshold": null,
       "thresholds_by_level": {
-        "L1": "≤ 14d",
+        "L1": "≤ 30d",
         "L2": "≤ 7d",
         "L3": "≤ 3d"
       },
@@ -668,9 +668,9 @@
         "L1": {
           "comparable": true,
           "operator": "lte",
-          "raw": "≤ 14d",
+          "raw": "≤ 30d",
           "unit": "days",
-          "value": 14.0
+          "value": 30.0
         },
         "L2": {
           "comparable": true,
@@ -716,7 +716,7 @@
           "relationship": "Definição dos gates que alimentam CIC-K01"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02, T-03"
         }
       ],
@@ -756,7 +756,7 @@
         "T-01"
       ],
       "instrumentation_support": null,
-      "label": "# pipelines sem registo de última revisão de segurança em mais de 12 meses",
+      "label": "# pipelines sem registo de revisão de segurança dentro da cadência (anual em L1/L2; semestral em L3)",
       "metric_id": "CIC-K07",
       "metric_scope": "domain_kpi",
       "metric_type": "Q# ↓",
@@ -776,7 +776,7 @@
           "relationship": "Definição dos gates que alimentam CIC-K01"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02, T-03"
         }
       ],
@@ -840,7 +840,7 @@
           "relationship": "Aceitação de risco residual (CLA-K05)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-06"
         }
       ],
@@ -910,7 +910,7 @@
           "relationship": "Aceitação de risco residual (CLA-K05)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-06"
         }
       ],
@@ -980,7 +980,7 @@
           "relationship": "Aceitação de risco residual (CLA-K05)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-06"
         }
       ],
@@ -1050,7 +1050,7 @@
           "relationship": "Aceitação de risco residual (CLA-K05)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-06"
         }
       ],
@@ -1114,7 +1114,7 @@
           "relationship": "Aceitação de risco residual (CLA-K05)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-06"
         }
       ],
@@ -1178,7 +1178,7 @@
           "relationship": "Aceitação de risco residual (CLA-K05)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-06"
         }
       ],
@@ -1245,7 +1245,7 @@
           "relationship": "Gestão de vulnerabilidades que alimenta CNT-K01/K02"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03, T-05"
         }
       ],
@@ -1311,7 +1311,7 @@
           "relationship": "Gestão de vulnerabilidades que alimenta CNT-K01/K02"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03, T-05"
         }
       ],
@@ -1321,7 +1321,7 @@
       "source_file": "010-sbd-manual/09-containers-imagens/addon/11-kpis-metricas.md",
       "threshold": null,
       "thresholds_by_level": {
-        "L1": "≤ 14d",
+        "L1": "≤ 30d",
         "L2": "≤ 7d",
         "L3": "≤ 3d"
       },
@@ -1329,9 +1329,9 @@
         "L1": {
           "comparable": true,
           "operator": "lte",
-          "raw": "≤ 14d",
+          "raw": "≤ 30d",
           "unit": "days",
-          "value": 14.0
+          "value": 30.0
         },
         "L2": {
           "comparable": true,
@@ -1378,7 +1378,7 @@
           "relationship": "Gestão de vulnerabilidades que alimenta CNT-K01/K02"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03, T-05"
         }
       ],
@@ -1438,7 +1438,7 @@
           "relationship": "Gestão de vulnerabilidades que alimenta CNT-K01/K02"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03, T-05"
         }
       ],
@@ -1499,7 +1499,7 @@
           "relationship": "Gestão de vulnerabilidades que alimenta CNT-K01/K02"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03, T-05"
         }
       ],
@@ -1565,7 +1565,7 @@
           "relationship": "Gestão de vulnerabilidades que alimenta CNT-K01/K02"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03, T-05"
         }
       ],
@@ -1631,7 +1631,7 @@
           "relationship": "Gestão de vulnerabilidades que alimenta CNT-K01/K02"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03, T-05"
         }
       ],
@@ -1698,7 +1698,7 @@
           "relationship": "CVEs sem resolução dentro de SLA requerem excepção formal"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03, T-05"
         }
       ],
@@ -1764,7 +1764,7 @@
           "relationship": "CVEs sem resolução dentro de SLA requerem excepção formal"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03, T-05"
         }
       ],
@@ -1775,8 +1775,8 @@
       "threshold": null,
       "thresholds_by_level": {
         "L1": "≥ 70% (SLA: 30d)",
-        "L2": "≥ 90% (SLA: 14d)",
-        "L3": "100% (SLA: 5d)"
+        "L2": "≥ 90% (SLA: 7d)",
+        "L3": "100% (SLA: 3d)"
       },
       "thresholds_by_level_parsed": {
         "L1": {
@@ -1790,16 +1790,16 @@
         "L2": {
           "comparable": true,
           "operator": "gte",
-          "raw": "≥ 90% (SLA: 14d)",
-          "sla_days": 14,
+          "raw": "≥ 90% (SLA: 7d)",
+          "sla_days": 7,
           "unit": "pct",
           "value": 90.0
         },
         "L3": {
           "comparable": true,
           "operator": "gte",
-          "raw": "100% (SLA: 5d)",
-          "sla_days": 5,
+          "raw": "100% (SLA: 3d)",
+          "sla_days": 3,
           "unit": "pct",
           "value": 100.0
         }
@@ -1833,7 +1833,7 @@
           "relationship": "CVEs sem resolução dentro de SLA requerem excepção formal"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03, T-05"
         }
       ],
@@ -1845,7 +1845,7 @@
       "thresholds_by_level": {
         "L1": "≥ 60% (SLA: 90d)",
         "L2": "≥ 80% (SLA: 30d)",
-        "L3": "≥ 95% (SLA: 14d)"
+        "L3": "≥ 95% (SLA: 15d)"
       },
       "thresholds_by_level_parsed": {
         "L1": {
@@ -1867,8 +1867,8 @@
         "L3": {
           "comparable": true,
           "operator": "gte",
-          "raw": "≥ 95% (SLA: 14d)",
-          "sla_days": 14,
+          "raw": "≥ 95% (SLA: 15d)",
+          "sla_days": 15,
           "unit": "pct",
           "value": 95.0
         }
@@ -1902,7 +1902,7 @@
           "relationship": "CVEs sem resolução dentro de SLA requerem excepção formal"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03, T-05"
         }
       ],
@@ -1968,7 +1968,7 @@
           "relationship": "CVEs sem resolução dentro de SLA requerem excepção formal"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03, T-05"
         }
       ],
@@ -2034,7 +2034,7 @@
           "relationship": "CVEs sem resolução dentro de SLA requerem excepção formal"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03, T-05"
         }
       ],
@@ -2094,7 +2094,7 @@
           "relationship": "CVEs sem resolução dentro de SLA requerem excepção formal"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03, T-05"
         }
       ],
@@ -2148,7 +2148,7 @@
           "relationship": "Centralização e triagem de findings que alimentam DEV-K01/K05"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02, T-03"
         }
       ],
@@ -2158,34 +2158,25 @@
       "source_file": "010-sbd-manual/06-desenvolvimento-seguro/addon/11-kpis-metricas.md",
       "threshold": null,
       "thresholds_by_level": {
-        "L1": "≥ 70% (SLA: 30d)",
-        "L2": "≥ 85% (SLA: 14d)",
-        "L3": "≥ 98% (SLA: 7d)"
+        "L1": "≥ 70% (SLA: 30d crítica / 90d alta)",
+        "L2": "≥ 85% (SLA: 7d / 30d)",
+        "L3": "≥ 98% (SLA: 3d / 15d)"
       },
       "thresholds_by_level_parsed": {
         "L1": {
-          "comparable": true,
-          "operator": "gte",
-          "raw": "≥ 70% (SLA: 30d)",
-          "sla_days": 30,
-          "unit": "pct",
-          "value": 70.0
+          "comparable": false,
+          "raw": "≥ 70% (SLA: 30d crítica / 90d alta)",
+          "reason": "qualitative"
         },
         "L2": {
-          "comparable": true,
-          "operator": "gte",
-          "raw": "≥ 85% (SLA: 14d)",
-          "sla_days": 14,
-          "unit": "pct",
-          "value": 85.0
+          "comparable": false,
+          "raw": "≥ 85% (SLA: 7d / 30d)",
+          "reason": "qualitative"
         },
         "L3": {
-          "comparable": true,
-          "operator": "gte",
-          "raw": "≥ 98% (SLA: 7d)",
-          "sla_days": 7,
-          "unit": "pct",
-          "value": 98.0
+          "comparable": false,
+          "raw": "≥ 98% (SLA: 3d / 15d)",
+          "reason": "qualitative"
         }
       }
     },
@@ -2217,7 +2208,7 @@
           "relationship": "Centralização e triagem de findings que alimentam DEV-K01/K05"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02, T-03"
         }
       ],
@@ -2284,7 +2275,7 @@
           "relationship": "Centralização e triagem de findings que alimentam DEV-K01/K05"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02, T-03"
         }
       ],
@@ -2344,7 +2335,7 @@
           "relationship": "Centralização e triagem de findings que alimentam DEV-K01/K05"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02, T-03"
         }
       ],
@@ -2410,7 +2401,7 @@
           "relationship": "Centralização e triagem de findings que alimentam DEV-K01/K05"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02, T-03"
         }
       ],
@@ -2470,7 +2461,7 @@
           "relationship": "Centralização e triagem de findings que alimentam DEV-K01/K05"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02, T-03"
         }
       ],
@@ -2536,7 +2527,7 @@
           "relationship": "Checklist de segurança pré-deploy (DPL-K01)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02"
         }
       ],
@@ -2602,7 +2593,7 @@
           "relationship": "Checklist de segurança pré-deploy (DPL-K01)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02"
         }
       ],
@@ -2668,7 +2659,7 @@
           "relationship": "Checklist de segurança pré-deploy (DPL-K01)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02"
         }
       ],
@@ -2728,7 +2719,7 @@
           "relationship": "Checklist de segurança pré-deploy (DPL-K01)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02"
         }
       ],
@@ -2792,7 +2783,7 @@
           "relationship": "Checklist de segurança pré-deploy (DPL-K01)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02"
         }
       ],
@@ -2852,7 +2843,7 @@
           "relationship": "Checklist de segurança pré-deploy (DPL-K01)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02"
         }
       ],
@@ -2918,7 +2909,7 @@
           "relationship": "Checklist de segurança pré-deploy (DPL-K01)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02"
         }
       ],
@@ -3086,7 +3077,7 @@
           "relationship": "Ciclos de revisão que produzem desvios (GOV-K08)"
         },
         {
-          "document_ref": "addon/kpis-governanca.md",
+          "document_ref": "kpis-governanca.md",
           "relationship": "Dimensões transversais T-02, T-04, T-05"
         }
       ],
@@ -3160,7 +3151,7 @@
           "relationship": "Ciclos de revisão que produzem desvios (GOV-K08)"
         },
         {
-          "document_ref": "addon/kpis-governanca.md",
+          "document_ref": "kpis-governanca.md",
           "relationship": "Dimensões transversais T-02, T-04, T-05"
         }
       ],
@@ -3234,7 +3225,7 @@
           "relationship": "Ciclos de revisão que produzem desvios (GOV-K08)"
         },
         {
-          "document_ref": "addon/kpis-governanca.md",
+          "document_ref": "kpis-governanca.md",
           "relationship": "Dimensões transversais T-02, T-04, T-05"
         }
       ],
@@ -3308,7 +3299,7 @@
           "relationship": "Ciclos de revisão que produzem desvios (GOV-K08)"
         },
         {
-          "document_ref": "addon/kpis-governanca.md",
+          "document_ref": "kpis-governanca.md",
           "relationship": "Dimensões transversais T-02, T-04, T-05"
         }
       ],
@@ -3382,7 +3373,7 @@
           "relationship": "Ciclos de revisão que produzem desvios (GOV-K08)"
         },
         {
-          "document_ref": "addon/kpis-governanca.md",
+          "document_ref": "kpis-governanca.md",
           "relationship": "Dimensões transversais T-02, T-04, T-05"
         }
       ],
@@ -3428,11 +3419,11 @@
         "T-05"
       ],
       "instrumentation_support": "GRC + questionários de onboarding",
-      "label": "% fornecedores L3 com validação de segurança anual concluída e documentada",
+      "label": "% fornecedores L3 com validação de segurança semestral concluída e documentada",
       "metric_id": "GOV-K06",
       "metric_scope": "domain_kpi",
       "metric_type": "Q%",
-      "period": "Anual",
+      "period": "Semestral",
       "primary_source": "Registo de validações de fornecedores",
       "related_documents": [
         {
@@ -3456,7 +3447,7 @@
           "relationship": "Ciclos de revisão que produzem desvios (GOV-K08)"
         },
         {
-          "document_ref": "addon/kpis-governanca.md",
+          "document_ref": "kpis-governanca.md",
           "relationship": "Dimensões transversais T-02, T-04, T-05"
         }
       ],
@@ -3518,7 +3509,7 @@
           "relationship": "Ciclos de revisão que produzem desvios (GOV-K08)"
         },
         {
-          "document_ref": "addon/kpis-governanca.md",
+          "document_ref": "kpis-governanca.md",
           "relationship": "Dimensões transversais T-02, T-04, T-05"
         }
       ],
@@ -3586,7 +3577,7 @@
           "relationship": "Ciclos de revisão que produzem desvios (GOV-K08)"
         },
         {
-          "document_ref": "addon/kpis-governanca.md",
+          "document_ref": "kpis-governanca.md",
           "relationship": "Dimensões transversais T-02, T-04, T-05"
         }
       ],
@@ -3652,7 +3643,7 @@
           "relationship": "Mecanismos de enforcement que alimentam IAC-K01/K07"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02"
         }
       ],
@@ -3718,7 +3709,7 @@
           "relationship": "Mecanismos de enforcement que alimentam IAC-K01/K07"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02"
         }
       ],
@@ -3784,7 +3775,7 @@
           "relationship": "Mecanismos de enforcement que alimentam IAC-K01/K07"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02"
         }
       ],
@@ -3844,7 +3835,7 @@
           "relationship": "Mecanismos de enforcement que alimentam IAC-K01/K07"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02"
         }
       ],
@@ -3910,7 +3901,7 @@
           "relationship": "Mecanismos de enforcement que alimentam IAC-K01/K07"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02"
         }
       ],
@@ -3976,7 +3967,7 @@
           "relationship": "Mecanismos de enforcement que alimentam IAC-K01/K07"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02"
         }
       ],
@@ -4036,7 +4027,7 @@
           "relationship": "Mecanismos de enforcement que alimentam IAC-K01/K07"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-02"
         }
       ],
@@ -4102,7 +4093,7 @@
           "relationship": "Excepções a alertas e retenção (OPS-K02, OPS-K08)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensão transversal T-03 (velocidade de resolução)"
         }
       ],
@@ -4168,7 +4159,7 @@
           "relationship": "Excepções a alertas e retenção (OPS-K02, OPS-K08)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensão transversal T-03 (velocidade de resolução)"
         }
       ],
@@ -4234,7 +4225,7 @@
           "relationship": "Excepções a alertas e retenção (OPS-K02, OPS-K08)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensão transversal T-03 (velocidade de resolução)"
         }
       ],
@@ -4300,7 +4291,7 @@
           "relationship": "Excepções a alertas e retenção (OPS-K02, OPS-K08)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensão transversal T-03 (velocidade de resolução)"
         }
       ],
@@ -4310,7 +4301,7 @@
       "source_file": "010-sbd-manual/12-monitorizacao-operacoes/addon/11-kpis-metricas.md",
       "threshold": null,
       "thresholds_by_level": {
-        "L1": "≤ 48h",
+        "L1": "≤ 8h",
         "L2": "≤ 4h",
         "L3": "≤ 1h"
       },
@@ -4318,9 +4309,9 @@
         "L1": {
           "comparable": true,
           "operator": "lte",
-          "raw": "≤ 48h",
+          "raw": "≤ 8h",
           "unit": "hours",
-          "value": 48.0
+          "value": 8.0
         },
         "L2": {
           "comparable": true,
@@ -4366,7 +4357,7 @@
           "relationship": "Excepções a alertas e retenção (OPS-K02, OPS-K08)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensão transversal T-03 (velocidade de resolução)"
         }
       ],
@@ -4432,7 +4423,7 @@
           "relationship": "Excepções a alertas e retenção (OPS-K02, OPS-K08)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensão transversal T-03 (velocidade de resolução)"
         }
       ],
@@ -4492,7 +4483,7 @@
           "relationship": "Excepções a alertas e retenção (OPS-K02, OPS-K08)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensão transversal T-03 (velocidade de resolução)"
         }
       ],
@@ -4558,7 +4549,7 @@
           "relationship": "Excepções a alertas e retenção (OPS-K02, OPS-K08)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensão transversal T-03 (velocidade de resolução)"
         }
       ],
@@ -4628,7 +4619,7 @@
           "relationship": "Requisitos excepcionados (RQS-K02, RQS-K06)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-06"
         }
       ],
@@ -4698,7 +4689,7 @@
           "relationship": "Requisitos excepcionados (RQS-K02, RQS-K06)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-06"
         }
       ],
@@ -4768,7 +4759,7 @@
           "relationship": "Requisitos excepcionados (RQS-K02, RQS-K06)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-06"
         }
       ],
@@ -4832,7 +4823,7 @@
           "relationship": "Requisitos excepcionados (RQS-K02, RQS-K06)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-06"
         }
       ],
@@ -4896,7 +4887,7 @@
           "relationship": "Requisitos excepcionados (RQS-K02, RQS-K06)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-06"
         }
       ],
@@ -4960,7 +4951,7 @@
           "relationship": "Requisitos excepcionados (RQS-K02, RQS-K06)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-06"
         }
       ],
@@ -5030,7 +5021,7 @@
           "relationship": "ARC-K01 (threat model por arquitectura) complementa THR-K01"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-06"
         }
       ],
@@ -5094,7 +5085,7 @@
           "relationship": "ARC-K01 (threat model por arquitectura) complementa THR-K01"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-06"
         }
       ],
@@ -5158,7 +5149,7 @@
           "relationship": "ARC-K01 (threat model por arquitectura) complementa THR-K01"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-06"
         }
       ],
@@ -5222,7 +5213,7 @@
           "relationship": "ARC-K01 (threat model por arquitectura) complementa THR-K01"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-06"
         }
       ],
@@ -5286,7 +5277,7 @@
           "relationship": "ARC-K01 (threat model por arquitectura) complementa THR-K01"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-06"
         }
       ],
@@ -5350,7 +5341,7 @@
           "relationship": "ARC-K01 (threat model por arquitectura) complementa THR-K01"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-06"
         }
       ],
@@ -5414,7 +5405,7 @@
           "relationship": "Requisitos de formação de fornecedores (TRN-K03)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensão transversal T-04 (ownership e formação)"
         }
       ],
@@ -5484,7 +5475,7 @@
           "relationship": "Requisitos de formação de fornecedores (TRN-K03)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensão transversal T-04 (ownership e formação)"
         }
       ],
@@ -5554,7 +5545,7 @@
           "relationship": "Requisitos de formação de fornecedores (TRN-K03)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensão transversal T-04 (ownership e formação)"
         }
       ],
@@ -5618,7 +5609,7 @@
           "relationship": "Requisitos de formação de fornecedores (TRN-K03)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensão transversal T-04 (ownership e formação)"
         }
       ],
@@ -5688,7 +5679,7 @@
           "relationship": "Requisitos de formação de fornecedores (TRN-K03)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensão transversal T-04 (ownership e formação)"
         }
       ],
@@ -5758,7 +5749,7 @@
           "relationship": "Requisitos de formação de fornecedores (TRN-K03)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensão transversal T-04 (ownership e formação)"
         }
       ],
@@ -5822,7 +5813,7 @@
           "relationship": "Requisitos de formação de fornecedores (TRN-K03)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensão transversal T-04 (ownership e formação)"
         }
       ],
@@ -5882,7 +5873,7 @@
           "relationship": "Metodologia de detecção de regressões (TST-K04)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03"
         }
       ],
@@ -5948,7 +5939,7 @@
           "relationship": "Metodologia de detecção de regressões (TST-K04)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03"
         }
       ],
@@ -6008,7 +5999,7 @@
           "relationship": "Metodologia de detecção de regressões (TST-K04)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03"
         }
       ],
@@ -6074,7 +6065,7 @@
           "relationship": "Metodologia de detecção de regressões (TST-K04)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03"
         }
       ],
@@ -6134,7 +6125,7 @@
           "relationship": "Metodologia de detecção de regressões (TST-K04)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03"
         }
       ],
@@ -6200,7 +6191,7 @@
           "relationship": "Metodologia de detecção de regressões (TST-K04)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03"
         }
       ],
@@ -6254,7 +6245,7 @@
           "relationship": "Metodologia de detecção de regressões (TST-K04)"
         },
         {
-          "document_ref": "Cap. 14 addon/kpis-governanca.md",
+          "document_ref": "Cap. 14 kpis-governanca.md",
           "relationship": "Dimensões transversais T-01, T-03"
         }
       ],

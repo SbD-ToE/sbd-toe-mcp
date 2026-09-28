@@ -1,7 +1,7 @@
 {
   "artifact_type": "v1_runtime_surface_manifest",
   "build": {
-    "generated_at": "2026-09-09T23:01:19.600250+00:00",
+    "generated_at": "2026-09-27T16:35:37.217594+00:00",
     "generator": "sbdtoe_indexing.workflows.build_v1_runtime_surface"
   },
   "drift_note": "Counts sourced from slice contracts (authoritative actual). Declared sum from consolidated index. Drift concentrated in working_contract slices (notably ASC-09 RPR); upstream V1 enumeration incomplete in some slices. Flagged for Archon visibility via Step 8 delivery handover.",
@@ -26,34 +26,52 @@
       "practices": 3
     }
   },
+  "entity_label_coverage": {
+    "artifacts": {
+      "named": 53,
+      "total": 53
+    },
+    "control_objectives": {
+      "named": 75,
+      "total": 75
+    },
+    "mechanisms": {
+      "named": 51,
+      "total": 51
+    },
+    "practices": {
+      "named": 66,
+      "total": 66
+    }
+  },
   "files": {
     "artifacts": {
       "path": "v1/artifacts.json",
-      "sha256": "c38aeacdce66741dce3f9d691c10094af37da008947397ad457e76ed0133c666"
+      "sha256": "07b601a0929defc63d1a31ae3ecc660713096cca7f71be5768ed1957e50c2625"
     },
     "control_objectives": {
       "path": "v1/control_objectives.json",
-      "sha256": "026115be178c16fb0b706be46f9b5c5fd2e5552feaa4a0a7cd0e7e7a9dd4a940"
+      "sha256": "e86991c122569861e7916974fb283713a6c748c775f0605c87032de6538a10d3"
     },
     "manual_maturity_progression": {
       "path": "v1/manual_maturity_progression.jsonl",
-      "sha256": "6fedec3111ba85cbb322f67d652bddf9d090172df17511cb9a97333d87a90f2b"
+      "sha256": "30a967c831d14f3c55a44d98d832ae7dbb9e2568382cdb12454a866e0796e7ab"
     },
     "manual_rastreabilidade": {
       "path": "v1/manual_rastreabilidade.jsonl",
-      "sha256": "657a2e6750c07d4e57af74d39d9d473e112a944bb3bf39716ea0a32c58e646f6"
+      "sha256": "513b106dac24b299cfea9429837a56a5cfc398a0d4d431535040e554c76b143c"
     },
     "manual_threat_mitigation": {
       "path": "v1/manual_threat_mitigation.jsonl",
-      "sha256": "9b32e6cc6c6d45baa26dccc052ebfbfe41f0ddb7cd7f85928ed8d5cd38dac4a6"
+      "sha256": "47203a8931e44b8e341f423f7b151b1ce7dbb78f150dfbe9f3d3502a60fc6fc6"
     },
     "mechanisms": {
       "path": "v1/mechanisms.json",
-      "sha256": "a7d247a625e2f2d010c0c7dc235661143fc5a145e7bcb9c14d75181e6beba650"
+      "sha256": "e55af25218694185b8c9b866f4e1d4a025582288189bf84dd05ced8862d05566"
     },
     "practices": {
       "path": "v1/practices.json",
-      "sha256": "e0dd6071c1fc383bf0b411687d03772adb7e5be93fdf3d0a28b1610a0dfd4a32"
+      "sha256": "fa3a617cd922f8995e421b164c165205b1591b22cbff79949e0292056733bd94"
     },
     "relations": {
       "path": "v1/relations.jsonl",
@@ -85,24 +103,24 @@
   "manual_rastreabilidade": {
     "counts": {
       "manual_only_coverage": 21,
-      "manual_v2_entity": 807,
+      "manual_v2_entity": 1026,
       "out_of_appsec_coverage": 18,
       "placeholder": 57,
       "substrate_landing": 202,
-      "total": 1105
+      "total": 1324
     },
     "coverage_counts": {
       "manual_only": 21,
       "out_of_appsec": 18,
       "placeholder": 57,
       "substantive": 202,
-      "v2_entity_index": 807
+      "v2_entity_index": 1026
     },
     "expected_iter2_commit_sha": "b1d129f0",
     "expected_iter3_commit_sha": "71b9c029",
     "expected_run2_commit_sha": "455124a1",
     "format_note": "run-2 5-section structure (Manual ontology V2 entities + Core-mapped + Manual-only + Out-of-AppSec + Future-work). Substrate refs surface in ES grounding column inline (`<Source>: <ref1>, <ref2>; ... ; + N more sources`). §26 methodology label per Core-mapped row (Explícito/Semântico/Parcial/Reparação/Gap/Scope boundary). Manual V2 entities indexed per chapter.",
-    "manual_commit_sha": "0576e914d4c933ddc1af25cb2c5570dd2afcf60f",
+    "manual_commit_sha": "53bd772556323c9d9e04f18d2ec09433702d9170",
     "manual_iter_anchor": "run-2"
   },
   "manual_threat_mitigation": {

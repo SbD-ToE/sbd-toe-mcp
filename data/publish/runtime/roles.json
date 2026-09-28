@@ -1,165 +1,854 @@
 {
   "artifact_type": "deterministic_runtime_snapshot",
-  "count": 13,
+  "count": 17,
   "entity_type": "Role",
   "items": [
     {
       "aliases": [
-        "developer"
+        "appsec",
+        "appsec-engineer",
+        "appsec-engineer-penetration-testing",
+        "appsec-engineer-pentest",
+        "appsec-engineers",
+        "appsec-lead",
+        "appsec-manager",
+        "appsec-team",
+        "equipa-appsec",
+        "equipa-de-seguranca",
+        "equipa-ofensiva",
+        "pentester",
+        "pentesters",
+        "red-team",
+        "responsavel-de-seguranca",
+        "sec",
+        "seguranca"
       ],
       "canonical": true,
-      "role_id": "developer",
+      "name": {
+        "en": "AppSec Engineer",
+        "pt": "AppSec Engineer"
+      },
+      "role_id": "appsec-engineer",
       "role_scope": "intra_instance",
-      "source": "00-fundamentos/roles-responsabilidades"
+      "source": "00-fundamentos/roles-responsabilidades",
+      "specialisations": [
+        {
+          "id": "appsec-engineer:pentest",
+          "name": {
+            "en": "AppSec Engineer (Penetration Testing)",
+            "pt": "AppSec Engineer (Pentest)"
+          },
+          "note": "pode ser externa — o Manual pede evidência independente (INC-07)"
+        }
+      ]
+    },
+    {
+      "aliases": [
+        "architect",
+        "arquitecto",
+        "arquitecto-de-software",
+        "arquitecto-tecnico",
+        "arquitectos",
+        "arquitectos-de-software",
+        "arquitectura",
+        "arquiteto",
+        "arquiteto-de-software",
+        "arquiteto-tecnico",
+        "arquitetos",
+        "arquitetos-de-software",
+        "arquitetos-software",
+        "arquitetura",
+        "equipa-de-arquitectura",
+        "equipa-de-arquitetura",
+        "software-architect",
+        "software-architects",
+        "software_architect"
+      ],
+      "canonical": true,
+      "name": {
+        "en": "Software Architects",
+        "pt": "Arquitetos de Software"
+      },
+      "role_id": "arquitetos-software",
+      "role_scope": "intra_instance",
+      "source": "00-fundamentos/roles-responsabilidades",
+      "specialisations": []
     },
     {
       "aliases": [
         "auditor",
         "auditores",
+        "auditores-internos",
+        "auditores-internos-e-externos",
+        "auditoria",
+        "auditoria-interna",
+        "auditors",
+        "internal-auditor",
         "internal_auditor"
       ],
       "canonical": true,
+      "name": {
+        "en": "Auditors",
+        "pt": "Auditores"
+      },
       "role_id": "auditores",
-      "role_scope": "intra_instance",
-      "source": "00-fundamentos/roles-responsabilidades"
+      "role_scope": "intra_org_other_domain",
+      "source": "00-fundamentos/roles-responsabilidades",
+      "specialisations": []
     },
     {
       "aliases": [
-        "arquitetos-software",
-        "software_architect"
+        "desenvolvedor",
+        "desenvolvedores",
+        "desenvolvimento",
+        "dev",
+        "dev-team",
+        "developer",
+        "developers",
+        "devs",
+        "equipa-de-desenvolvimento",
+        "equipa-dev",
+        "programador",
+        "programadores"
       ],
       "canonical": true,
-      "role_id": "arquitetos-software",
+      "name": {
+        "en": "Developer",
+        "pt": "Developer"
+      },
+      "role_id": "developer",
       "role_scope": "intra_instance",
-      "source": "00-fundamentos/roles-responsabilidades"
+      "source": "00-fundamentos/roles-responsabilidades",
+      "specialisations": []
     },
     {
       "aliases": [
-        "appsec",
-        "appsec-engineer"
+        "cloud",
+        "cloudeng",
+        "devops",
+        "devops-engineer",
+        "devops-lead",
+        "devops-sre",
+        "devops-sre-plataforma",
+        "devops-sre-platform",
+        "devops-sre-release",
+        "devops-sre-release-management",
+        "engenharia-de-plataforma",
+        "equipa-de-devops",
+        "iac-lead",
+        "infra",
+        "infraestrutura",
+        "infrastructure",
+        "plataforma",
+        "platform-engineer",
+        "platform-engineering",
+        "release-management",
+        "release-manager",
+        "release_manager",
+        "sre",
+        "sre-senior"
       ],
       "canonical": true,
-      "role_id": "appsec-engineer",
+      "name": {
+        "en": "DevOps / SRE",
+        "pt": "DevOps / SRE"
+      },
+      "role_id": "devops-sre",
       "role_scope": "intra_instance",
-      "source": "00-fundamentos/roles-responsabilidades"
+      "scope_split": {
+        "counterpart_covers": {
+          "operacoes": "operação do SOC: alertas com SLA, playbooks de IR, correlação de eventos, tuning, cobertura ATT&CK com EPSS/KEV, exercícios de IR, monitorização de fornecedores, telemetria de agentes AI"
+        },
+        "counterpart_role_ids": [
+          "operacoes"
+        ],
+        "covers": "plataforma de detecção: integridade de logs WORM 90 dias, integração SIEM, detecção de falha de ingestão",
+        "perspective": "secops/soc"
+      },
+      "source": "00-fundamentos/roles-responsabilidades",
+      "specialisations": [
+        {
+          "id": "devops-sre:plataforma",
+          "name": {
+            "en": "DevOps / SRE (Platform)",
+            "pt": "DevOps / SRE (Plataforma)"
+          },
+          "note": "P5 — onde a linha é decisão de desenho, o Manual escreve o composto com Arquitetos de Software (lista das linhas para revisão do lead no relatório do Codex)"
+        },
+        {
+          "id": "devops-sre:release",
+          "name": {
+            "en": "DevOps / SRE (Release Management)",
+            "pt": "DevOps / SRE (Release)"
+          }
+        }
+      ]
     },
     {
       "aliases": [
-        "security-champion",
-        "security_champion"
+        "fornecedor",
+        "fornecedores",
+        "fornecedores-terceiros",
+        "supplier",
+        "suppliers",
+        "suppliers-third-parties",
+        "terceiros",
+        "third-parties",
+        "third-party",
+        "third_party"
       ],
       "canonical": true,
-      "role_id": "security-champion",
-      "role_scope": "intra_instance",
-      "source": "00-fundamentos/roles-responsabilidades"
+      "name": {
+        "en": "Suppliers / Third Parties",
+        "pt": "Fornecedores / Terceiros"
+      },
+      "role_id": "fornecedores-terceiros",
+      "role_scope": "inter_instance",
+      "source": "00-fundamentos/roles-responsabilidades",
+      "specialisations": []
     },
     {
       "aliases": [
-        "scrum-master",
-        "scrum_master",
-        "team_lead"
+        "ceo",
+        "ciso",
+        "cto",
+        "direcao",
+        "direccao",
+        "executive-management",
+        "executive-management-ciso",
+        "executive-management-pmo",
+        "executive_management",
+        "gestao",
+        "gestao-executiva",
+        "gestao-executiva-ciso",
+        "gestao-executiva-pmo",
+        "management",
+        "pmo",
+        "security-officer"
       ],
       "canonical": true,
-      "role_id": "scrum-master",
-      "role_scope": "intra_instance",
-      "source": "00-fundamentos/roles-responsabilidades"
-    },
-    {
-      "aliases": [
-        "qa",
-        "tester"
-      ],
-      "canonical": true,
-      "role_id": "qa",
-      "role_scope": "intra_instance",
-      "source": "00-fundamentos/roles-responsabilidades"
-    },
-    {
-      "aliases": [
-        "application_manager",
-        "product-owner",
-        "product_management",
-        "product_owner"
-      ],
-      "canonical": true,
-      "role_id": "product-owner",
-      "role_scope": "intra_instance",
-      "source": "00-fundamentos/roles-responsabilidades"
-    },
-    {
-      "aliases": [
-        "incident_response",
-        "operacoes",
-        "ops"
-      ],
-      "canonical": true,
-      "role_id": "operacoes",
-      "role_scope": "intra_instance",
-      "source": "00-fundamentos/roles-responsabilidades"
+      "name": {
+        "en": "Executive Management / CISO",
+        "pt": "Gestão Executiva / CISO"
+      },
+      "role_id": "gestao-executiva",
+      "role_scope": "intra_org_other_domain",
+      "source": "00-fundamentos/roles-responsabilidades",
+      "specialisations": [
+        {
+          "id": "gestao-executiva:pmo",
+          "name": {
+            "en": "Executive Management (PMO)",
+            "pt": "Gestão Executiva (PMO)"
+          }
+        }
+      ]
     },
     {
       "aliases": [
         "compliance",
+        "compliance-officer",
         "grc",
+        "grc-analyst",
         "grc-compliance"
       ],
       "canonical": true,
+      "name": {
+        "en": "GRC / Compliance",
+        "pt": "GRC / Compliance"
+      },
       "role_id": "grc-compliance",
-      "role_scope": "intra_instance",
-      "source": "00-fundamentos/roles-responsabilidades"
+      "role_scope": "intra_org_other_domain",
+      "source": "00-fundamentos/roles-responsabilidades",
+      "specialisations": []
     },
     {
       "aliases": [
-        "ciso",
-        "executive_management",
-        "gestao-executiva",
-        "management",
-        "pmo"
+        "csirt",
+        "equipa-de-operacoes",
+        "incident-commander",
+        "incident-responder",
+        "incident-responders",
+        "incident-response",
+        "incident_response",
+        "ir",
+        "operacoes",
+        "operacoes-ops",
+        "operations",
+        "ops",
+        "resposta-a-incidentes",
+        "secops",
+        "secops-comandante-de-incidente",
+        "secops-incident-commander",
+        "secops-ir",
+        "secops-operacoes-de-seguranca",
+        "secops-prevencao-de-seguranca",
+        "secops-resposta-a-incidentes",
+        "secops-security-on-call",
+        "secops-security-operations",
+        "secops-soc",
+        "security-monitoring",
+        "security-monitoring-team",
+        "security-operations",
+        "security_operations",
+        "soc"
       ],
       "canonical": true,
-      "role_id": "gestao-executiva",
+      "name": {
+        "en": "SecOps (Security Operations)",
+        "pt": "SecOps (Operações de Segurança)"
+      },
+      "role_id": "operacoes",
       "role_scope": "intra_instance",
-      "source": "00-fundamentos/roles-responsabilidades"
+      "scope_split": {
+        "counterpart_covers": {
+          "devops-sre": "plataforma de detecção: integridade de logs WORM 90 dias, integração SIEM, detecção de falha de ingestão"
+        },
+        "counterpart_role_ids": [
+          "devops-sre"
+        ],
+        "covers": "operação do SOC: alertas com SLA, playbooks de IR, correlação de eventos, tuning, cobertura ATT&CK com EPSS/KEV, exercícios de IR, monitorização de fornecedores, telemetria de agentes AI",
+        "perspective": "secops/soc"
+      },
+      "source": "00-fundamentos/roles-responsabilidades",
+      "specialisations": [
+        {
+          "id": "operacoes:ir",
+          "name": {
+            "en": "SecOps (IR)",
+            "pt": "SecOps (IR)"
+          },
+          "note": "P3 — «SecOps (IR)» e «SecOps (Resposta a Incidentes)» são uma só especialização"
+        },
+        {
+          "id": "operacoes:soc",
+          "name": {
+            "en": "SecOps (SOC)",
+            "pt": "SecOps (SOC)"
+          }
+        },
+        {
+          "id": "operacoes:incident-commander",
+          "name": {
+            "en": "SecOps (Incident Commander)",
+            "pt": "SecOps (Comandante de Incidente)"
+          }
+        },
+        {
+          "id": "operacoes:on-call",
+          "name": {
+            "en": "SecOps (Security On-Call)",
+            "pt": "SecOps (Prevenção de segurança)"
+          }
+        }
+      ]
     },
     {
       "aliases": [
-        "fornecedores-terceiros",
-        "third_party"
+        "application-manager",
+        "application_manager",
+        "ba",
+        "business-analyst",
+        "gestao-de-produto",
+        "gestor-de-aplicacao",
+        "gestor-de-produto",
+        "negocio",
+        "po",
+        "product-management",
+        "product-manager",
+        "product-owner",
+        "product-owner-analise-de-negocio",
+        "product-owner-business-analysis",
+        "product-owners",
+        "product_management",
+        "product_owner",
+        "produto"
       ],
       "canonical": true,
-      "role_id": "fornecedores-terceiros",
-      "role_scope": "inter_instance",
-      "source": "00-fundamentos/roles-responsabilidades"
+      "name": {
+        "en": "Product Owner",
+        "pt": "Product Owner"
+      },
+      "role_id": "product-owner",
+      "role_scope": "intra_instance",
+      "source": "00-fundamentos/roles-responsabilidades",
+      "specialisations": [
+        {
+          "id": "product-owner:analise-negocio",
+          "name": {
+            "en": "Product Owner (Business Analysis)",
+            "pt": "Product Owner (Análise de Negócio)"
+          }
+        }
+      ]
     },
     {
       "aliases": [
-        "devops",
-        "devops-sre",
-        "release_manager",
-        "sre"
+        "qa",
+        "qa-test-engineer",
+        "quality-assurance",
+        "quality-assurance-qa",
+        "test",
+        "test-engineer",
+        "tester",
+        "testers",
+        "testes"
       ],
       "canonical": true,
-      "role_id": "devops-sre",
+      "name": {
+        "en": "QA",
+        "pt": "QA"
+      },
+      "role_id": "qa",
       "role_scope": "intra_instance",
-      "source": "00-fundamentos/roles-responsabilidades"
+      "source": "00-fundamentos/roles-responsabilidades",
+      "specialisations": []
+    },
+    {
+      "aliases": [
+        "scrum-master",
+        "scrum-master-team-lead",
+        "scrum_master",
+        "team-lead",
+        "team_lead"
+      ],
+      "canonical": true,
+      "name": {
+        "en": "Scrum Master / Team Lead",
+        "pt": "Scrum Master / Team Lead"
+      },
+      "role_id": "scrum-master",
+      "role_scope": "intra_instance",
+      "source": "00-fundamentos/roles-responsabilidades",
+      "specialisations": []
+    },
+    {
+      "aliases": [
+        "champion",
+        "champions",
+        "security-champion",
+        "security-champions",
+        "security_champion"
+      ],
+      "canonical": true,
+      "name": {
+        "en": "Security Champion",
+        "pt": "Security Champion"
+      },
+      "role_id": "security-champion",
+      "role_scope": "intra_instance",
+      "source": "00-fundamentos/roles-responsabilidades",
+      "specialisations": []
+    },
+    {
+      "aliases": [
+        "dev-lead",
+        "lead",
+        "lider-tecnico",
+        "lideranca-tecnica",
+        "lideres-tecnicos",
+        "tech-lead",
+        "tech-leads",
+        "technical-lead",
+        "tl"
+      ],
+      "canonical": true,
+      "name": {
+        "en": "Tech Lead",
+        "pt": "Tech Lead"
+      },
+      "role_id": "tech-lead",
+      "role_scope": "intra_instance",
+      "source": "00-fundamentos/roles-responsabilidades",
+      "specialisations": []
+    },
+    {
+      "aliases": [
+        "hr",
+        "hr-learning-development",
+        "hr-manager",
+        "hr-people-operations",
+        "hr-recruiter",
+        "hr-recruiting",
+        "people-operations",
+        "people-ops",
+        "peopleops",
+        "recruiter",
+        "recursos-humanos",
+        "rh",
+        "rh-formacao",
+        "rh-peopleops",
+        "rh-recrutamento",
+        "training",
+        "training-manager"
+      ],
+      "canonical": true,
+      "name": {
+        "en": "HR / People Operations",
+        "pt": "RH / PeopleOps"
+      },
+      "role_id": "rh-peopleops",
+      "role_scope": "intra_org_other_domain",
+      "source": "00-fundamentos/roles-responsabilidades",
+      "specialisations": [
+        {
+          "id": "rh-peopleops:formacao",
+          "name": {
+            "en": "HR (Learning & Development)",
+            "pt": "RH (Formação)"
+          },
+          "note": "P17"
+        },
+        {
+          "id": "rh-peopleops:recrutamento",
+          "name": {
+            "en": "HR (Recruiting)",
+            "pt": "RH (Recrutamento)"
+          }
+        }
+      ]
+    },
+    {
+      "aliases": [
+        "compras",
+        "procurement",
+        "procurement-officer",
+        "procurement-procurement-officer"
+      ],
+      "canonical": true,
+      "name": {
+        "en": "Procurement",
+        "pt": "Procurement"
+      },
+      "role_id": "procurement",
+      "role_scope": "intra_org_other_domain",
+      "source": "00-fundamentos/roles-responsabilidades",
+      "specialisations": [
+        {
+          "id": "procurement:officer",
+          "name": {
+            "en": "Procurement (Procurement Officer)",
+            "pt": "Procurement (Procurement Officer)"
+          }
+        }
+      ]
+    },
+    {
+      "aliases": [
+        "data-protection-officer",
+        "dpo",
+        "encarregado-de-protecao-de-dados",
+        "juridica",
+        "juridico",
+        "juridico-dpo",
+        "legal",
+        "legal-dpo"
+      ],
+      "canonical": true,
+      "name": {
+        "en": "Legal",
+        "pt": "Jurídico"
+      },
+      "role_id": "legal",
+      "role_scope": "intra_org_other_domain",
+      "source": "00-fundamentos/roles-responsabilidades",
+      "specialisations": [
+        {
+          "id": "legal:dpo",
+          "name": {
+            "en": "Legal (DPO)",
+            "pt": "Jurídico (DPO)"
+          },
+          "note": "P16 — pode ser externo; a independência é a incompatibilidade INC-06"
+        }
+      ]
     }
   ],
   "profiles": [
     "guide"
   ],
   "referenced_roles": {
-    "items": [
+    "items": [],
+    "retired": [
       {
         "absence_ref": "ABS-011",
-        "anchors": [
-          "13-formacao-onboarding/aplicacao-lifecycle.md:47 (US-01: «Como RH/PeopleOps, quero garantir formação obrigatória de onboarding em SbD…» — PROTAGONISTA de US autorada)",
+        "current_anchors": [
+          "SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/roles-responsabilidades/rh-peopleops.md",
+          "SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/roles-responsabilidades/_roles.yaml:159 (id: rh-peopleops)",
+          "SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/13-formacao-onboarding/aplicacao-lifecycle.md:47 (US-01, voz «RH / PeopleOps»)"
+        ],
+        "previous_anchors": [
+          "13-formacao-onboarding/aplicacao-lifecycle.md:47 (US-01: «Como RH/PeopleOps, quero garantir formação obrigatória de onboarding em SbD…» — PROTAGONISTA de US autorada) — texto trocado por 4a1e70e8/279695dc; a reverter",
           "02-requisitos-seguranca/addon/02-lista-requisitos-base.md (mapeamento por domínio: responsável típico do cap. 13 inclui PeopleOps)"
         ],
-        "canonical": false,
-        "label": "RH/PeopleOps",
-        "referenced_role_id": "rh-peopleops"
+        "previous_label": "RH/PeopleOps",
+        "reason": "canonizado — 17 papéis (rh-peopleops, procurement, legal, tech-lead acrescentados); confirmado pelo Orchestrator 2026-09-26",
+        "referenced_role_id": "rh-peopleops",
+        "retired_in": "2.11"
       }
     ]
+  },
+  "role_list": {
+    "added_since_13": [
+      "tech-lead",
+      "rh-peopleops",
+      "procurement",
+      "legal"
+    ],
+    "canonical_count": 17,
+    "composites": [
+      {
+        "forms": [
+          "DevSecOps"
+        ],
+        "members": [
+          "devops-sre",
+          "appsec-engineer"
+        ],
+        "name": {
+          "en": "DevSecOps",
+          "pt": "DevSecOps"
+        },
+        "note": "P8 — composto também na lista servida"
+      },
+      {
+        "forms": [
+          "AI Reliability Engineer"
+        ],
+        "members": [
+          "appsec-engineer",
+          "devops-sre",
+          "grc-compliance"
+        ],
+        "name": {
+          "en": "AI Reliability Engineer",
+          "pt": "Engenheiro de Fiabilidade de IA"
+        }
+      },
+      {
+        "forms": [
+          "GRC / Legal",
+          "GRC / Jurídico",
+          "GRC + Jurídico"
+        ],
+        "members": [
+          "grc-compliance",
+          "legal"
+        ],
+        "name": {
+          "en": "GRC + Legal",
+          "pt": "GRC + Jurídico"
+        },
+        "note": "P15"
+      }
+    ],
+    "four_eyes": {
+      "anchors": [
+        "020-assets/policies/26_policy-aprovacao-release.md:59",
+        "010-sbd-manual/07-cicd-seguro/addon/00-gestao-segura-codigo-fonte.md:30"
+      ],
+      "name": {
+        "en": "Four-eyes approval",
+        "pt": "Dupla aprovação"
+      },
+      "rule": "pelo menos duas pessoas distintas aprovam; restrição de número de pessoas, não de papel"
+    },
+    "incompatibilities": [
+      {
+        "anchors": [
+          "020-assets/policies/15_policy-revisao-codigo.md:113",
+          "020-assets/policies/22_policy-aprovacao-plan-iac.md:85"
+        ],
+        "evidence": "explícita",
+        "id": "INC-01",
+        "name": {
+          "en": "Author does not approve",
+          "pt": "Quem escreve não aprova"
+        },
+        "not_same_person": [
+          "autor da alteração (PR de código ou IaC)",
+          "revisor / aprovador dessa alteração"
+        ]
+      },
+      {
+        "anchors": [
+          "020-assets/policies/22_policy-aprovacao-plan-iac.md:85",
+          "010-sbd-manual/08-iac-infraestrutura/aplicacao-lifecycle.md:852"
+        ],
+        "evidence": "explícita",
+        "id": "INC-02",
+        "name": {
+          "en": "Approver does not execute",
+          "pt": "Quem aprova não executa"
+        },
+        "not_same_person": [
+          "aprovador do plan IaC",
+          "executor do apply em produção"
+        ]
+      },
+      {
+        "anchors": [
+          "010-sbd-manual/03-threat-modeling/addon/00-catalogo-requisitos.md:53",
+          "010-sbd-manual/03-threat-modeling/aplicacao-lifecycle.md:614"
+        ],
+        "evidence": "explícita",
+        "id": "INC-03",
+        "name": {
+          "en": "Review independent of the delivery team",
+          "pt": "Revisão independente da equipa de entrega"
+        },
+        "not_same_person": [
+          "revisor do threat model / da arquitectura",
+          "equipa de entrega do sistema revisto"
+        ]
+      },
+      {
+        "anchors": [
+          "010-sbd-manual/00-fundamentos/macro-processos.md:115"
+        ],
+        "evidence": "explícita",
+        "id": "INC-04",
+        "name": {
+          "en": "Second pair of eyes on classification",
+          "pt": "Segundo par de olhos na classificação"
+        },
+        "not_same_person": [
+          "validador da classificação de risco",
+          "owner da aplicação classificada"
+        ]
+      },
+      {
+        "anchors": [
+          "020-assets/policies/07_policy-requisitos-seguranca.md:58"
+        ],
+        "evidence": "explícita",
+        "id": "INC-05",
+        "name": {
+          "en": "Independent review of the selection",
+          "pt": "Revisão independente da selecção"
+        },
+        "not_same_person": [
+          "revisor da selecção de requisitos",
+          "quem seleccionou os requisitos"
+        ]
+      },
+      {
+        "anchors": [
+          "010-sbd-manual/03-threat-modeling/aplicacao-lifecycle.md:374"
+        ],
+        "evidence": "fraca no Manual; forte na lei (RGPD art. 38.º)",
+        "id": "INC-06",
+        "name": {
+          "en": "Independent DPO",
+          "pt": "DPO independente"
+        },
+        "not_same_person": [
+          "legal:dpo",
+          "quem decide finalidades e meios do tratamento"
+        ]
+      },
+      {
+        "anchors": [
+          "010-sbd-manual/10-testes-seguranca/addon/11-pen-testing.md:132"
+        ],
+        "evidence": "explícita",
+        "id": "INC-07",
+        "name": {
+          "en": "Independent offensive testing",
+          "pt": "Teste ofensivo independente"
+        },
+        "not_same_person": [
+          "appsec-engineer:pentest",
+          "equipa que construiu ou defende o sistema"
+        ]
+      },
+      {
+        "anchors": [
+          "010-sbd-manual/00-fundamentos/roles-responsabilidades/auditores.md:20"
+        ],
+        "evidence": "a tornar explícita no Manual (decisão B)",
+        "id": "INC-08",
+        "name": {
+          "en": "Auditor does not audit own work",
+          "pt": "O auditor não audita o que faz"
+        },
+        "not_same_person": [
+          "auditores",
+          "função auditada"
+        ]
+      },
+      {
+        "anchors": [
+          "010-sbd-manual/00-fundamentos/macro-processos.md:440"
+        ],
+        "evidence": "a tornar explícita no Manual (decisão B)",
+        "id": "INC-09",
+        "name": {
+          "en": "Requester does not approve",
+          "pt": "Quem pede não aprova"
+        },
+        "not_same_person": [
+          "quem pede a excepção",
+          "quem a aprova"
+        ]
+      }
+    ],
+    "path": "010-sbd-manual/00-fundamentos/roles-responsabilidades/_roles.yaml",
+    "principle": {
+      "en": "A role is a set of responsibilities, not a person. One person may hold several roles — the Tech Lead may be whoever does the architecture, or even a junior, if the organisation so decides. The Manual prescribes what the role must do, not who does it. The only constraints on who are the incompatibilities.",
+      "pt": "Um papel é um conjunto de responsabilidades, não uma pessoa. Uma pessoa pode acumular papéis — o Tech Lead pode ser quem faz a arquitectura, ou até um júnior, se a organização o decidir. O Manual prescreve o que o papel tem de fazer, não quem o faz. As únicas restrições sobre quem são as incompatibilidades."
+    },
+    "schema": "sbdtoe-role-list/1",
+    "sha256": "7ad3cf1a41bd38da781a00f8e49d5fca3ed82a6e9b7e47555e8cfe9679799014",
+    "source": "manual",
+    "types": {
+      "alias": {
+        "en": "Alias",
+        "pt": "Alias"
+      },
+      "automated_actor": {
+        "en": "Automated actor",
+        "pt": "Actor automático"
+      },
+      "canonical": {
+        "en": "Canonical role",
+        "pt": "Papel canónico"
+      },
+      "composite": {
+        "en": "Composite",
+        "pt": "Composto"
+      },
+      "external_actor": {
+        "en": "External actor",
+        "pt": "Actor externo"
+      },
+      "four_eyes": {
+        "en": "Four-eyes approval",
+        "pt": "Dupla aprovação"
+      },
+      "function_annotation": {
+        "en": "Function annotation",
+        "pt": "Anotação de função"
+      },
+      "incompatibility": {
+        "en": "Incompatibility",
+        "pt": "Incompatibilidade"
+      },
+      "placeholder": {
+        "en": "Owner placeholder",
+        "pt": "Marcador de responsável"
+      },
+      "specialisation": {
+        "en": "Specialisation",
+        "pt": "Especialização"
+      },
+      "subject": {
+        "en": "Process subject",
+        "pt": "Sujeito do processo"
+      }
+    },
+    "version": 3,
+    "without_manual_page": []
   },
   "role_scope": {
     "assignments": {
@@ -175,18 +864,59 @@
         "scrum-master",
         "product-owner",
         "operacoes",
+        "security-champion",
+        "tech-lead"
+      ],
+      "intra_org_other_domain": [
         "grc-compliance",
         "gestao-executiva",
-        "security-champion",
-        "auditores"
+        "auditores",
+        "rh-peopleops",
+        "procurement",
+        "legal"
       ],
-      "note_auditores": "externos ao projecto mas dentro do sistema de asseguramento da instância — intra_instance com nota; se se mostrar de fronteira, é uma linha"
+      "note_auditores": "v2.10: «externos ao projecto mas dentro do sistema de asseguramento da instância — intra_instance com nota; se se mostrar de fronteira, é uma linha». v2.11: a linha foi escrita — com a emenda do princípio, o tier do meio existe e é o sítio deles."
     },
-    "note": "v2.10: inter_instance (fornecedores-terceiros) tem ZERO-ESPERADO DECLARADO — 0 assignments/involvements na nossa instância é o estado correcto (ABS-003 withdrawn no ledger; o índice two-pass ainda a mostra aberta — o ledger prevalece para status)",
+    "note": "ontologia v2.11 (meta.version do espelho): intra_instance = developer, appsec-engineer, qa, devops-sre, arquitetos-software, scrum-master, product-owner, operacoes, security-champion, tech-lead — assignments/involvements esperados — 0 atribuições é ACHADO; intra_org_other_domain = grc-compliance, gestao-executiva, auditores, rh-peopleops, procurement, legal — v2.11 — PRESENÇA NÃO EXIGIDA, AUSÊNCIA DECLARÁVEL: o Manual exprime o que pede a estas funções sobretudo como REQUISITOS (existência) e aprovações publicadas; 0 assignments ou 0 involvements NÃO é achado por defeito e NÃO é o zero-esperado de inter_instance — declara-se com o vocabulário de ausências (dono, prova, tipo), nunca silêncio (never_silence_principle). Onde o Manual atribui trabalho directo a estes papéis, a afirmação é `prescribes` (alcance por afirmação).; inter_instance = fornecedores-terceiros — ZERO-ESPERADO DECLARADO — 0 assignments e 0 involvements NA NOSSA instância é o estado CORRECTO; o papel é OBJECTO dos deveres do cliente (GOV-006/007, TRN-007, GOV-014); mata a classe de falsos-achados que enganou três leitores (GR-04)",
+    "ontology_version": "2.11",
+    "roles_without_scope": [],
+    "scope_notes": {
+      "note_auditores": "v2.10: «externos ao projecto mas dentro do sistema de asseguramento da instância — intra_instance com nota; se se mostrar de fronteira, é uma linha». v2.11: a linha foi escrita — com a emenda do princípio, o tier do meio existe e é o sítio deles."
+    },
+    "scopes": [
+      "inter_instance",
+      "intra_instance",
+      "intra_org_other_domain"
+    ],
+    "structural_expectation_flags_by_scope": {
+      "inter_instance": {
+        "expected_zero": true,
+        "zero_is_finding": false
+      },
+      "intra_instance": {
+        "expected_zero": false,
+        "zero_is_finding": true
+      },
+      "intra_org_other_domain": {
+        "expected_zero": false,
+        "zero_is_finding": false
+      }
+    },
     "structural_expectations_by_scope": {
       "inter_instance": "ZERO-ESPERADO DECLARADO — 0 assignments e 0 involvements NA NOSSA instância é o estado CORRECTO; o papel é OBJECTO dos deveres do cliente (GOV-006/007, TRN-007, GOV-014); mata a classe de falsos-achados que enganou três leitores (GR-04)",
-      "intra_instance": "assignments/involvements esperados — 0 atribuições é ACHADO"
+      "intra_instance": "assignments/involvements esperados — 0 atribuições é ACHADO",
+      "intra_org_other_domain": "v2.11 — PRESENÇA NÃO EXIGIDA, AUSÊNCIA DECLARÁVEL: o Manual exprime o que pede a estas funções sobretudo como REQUISITOS (existência) e aprovações publicadas; 0 assignments ou 0 involvements NÃO é achado por defeito e NÃO é o zero-esperado de inter_instance — declara-se com o vocabulário de ausências (dono, prova, tipo), nunca silêncio (never_silence_principle). Onde o Manual atribui trabalho directo a estes papéis, a afirmação é `prescribes` (alcance por afirmação)."
     }
   },
+  "scope_splits": [
+    {
+      "note": "quem pergunta pela vista SecOps/SOC precisa dos DOIS papéis; responder com um só, sem aviso, é silêncio sobre a repartição",
+      "perspective": "secops/soc",
+      "roles": {
+        "devops-sre": "plataforma de detecção: integridade de logs WORM 90 dias, integração SIEM, detecção de falha de ingestão",
+        "operacoes": "operação do SOC: alertas com SLA, playbooks de IR, correlação de eventos, tuning, cobertura ATT&CK com EPSS/KEV, exercícios de IR, monitorização de fornecedores, telemetria de agentes AI"
+      }
+    }
+  ],
   "source_artifact": "data/entities/canonical_roles_s5.json"
 }

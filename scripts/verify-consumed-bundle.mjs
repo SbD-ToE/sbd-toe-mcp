@@ -45,7 +45,7 @@ for (const key of ["pin_version", "consumer_contract_version", "substrate_versio
 // --- contrato a montante: formato, major suportado, aceitação registada (0.22.0) ---
 // Majors que ESTE código serve. Uma subida de major só entra com o gate do sync-bundle
 // (--accept-major) e com o código re-validado — e é aqui que o CI o impõe.
-const SUPPORTED_CONTRACT_MAJORS = [1, 2]; // passo 1 da 0.22.0: aceita v2; o pino ao v2.0 estreita para [2]
+const SUPPORTED_CONTRACT_MAJORS = [2]; // 0.22.0: pino ao KG v2.0.0 (contrato v2.0)
 {
   const m = /^v(\d+)\.(\d+)$/.exec(pin.consumer_contract_version ?? "");
   if (!m) fail(`consumer_contract_version must look like vN.M, got: ${pin.consumer_contract_version}`);
