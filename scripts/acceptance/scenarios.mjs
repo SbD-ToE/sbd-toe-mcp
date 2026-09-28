@@ -2100,7 +2100,7 @@ export const scenarios = [
       if (!/known chapters/i.test(String(bad.error ?? ""))) return fail("recusa sem entregar o vocabulário ao cliente");
       return ok(`manager declarado (${md.role_vocabulary.canonical_roles.length} canónicos à vista); devops→devops-sre com ${us} user stories; vazio por combinação isolado (papel ${e.assignments_for_role_alone} / fase ${e.assignments_for_phase_alone}) com recuperação no next; ABS-001 só como fronteira, unpublished_gap superseded 1×; erro nomeia os capítulos`); } },
 
-  { id: "TC-F-68", axis: "F", title: "0.20.0-beta.43 (v2.7): a asserção NEGATIVA chega ao consumidor; papel referenciado ≠ canónico; lacuna do pino declarada", tool: "get_sbd_toe_chapter_capability",
+  { id: "TC-F-68", axis: "F", title: "0.20.0-beta.43 (v2.7): a asserção NEGATIVA chega ao consumidor; papel nomeado nunca cai no vazio (v2.11: RH/PeopleOps canonizado); lacuna do pino declarada", tool: "get_sbd_toe_chapter_capability",
     run: async (c) => {
       // (1) cada travessia derivada traz o VERBO e o que NÃO afirma
       const cap = await c.tool("get_sbd_toe_chapter_capability", { chapter: "01-classificacao-aplicacoes" });
@@ -2120,23 +2120,25 @@ export const scenarios = [
       if (!(orf?.count > 0)) return fail("os artefactos sem capítulo probatório não são declarados");
       if (orf.count !== (orf.values ?? []).length) return fail("a contagem de órfãos não bate com a lista");
       if (!orf.values.every((v) => v.artifact_type_id && v.declared_absence)) return fail("órfão sem a ausência que a fonte lhe atribui");
-      // (3) papel REFERENCIADO não vira canónico
+      // (3) um papel que o Manual NOMEIA nunca cai no vazio. Até à ontologia v2.10, RH/PeopleOps era
+      // REFERENCIADO-NÃO-CANÓNICO (banda referenced_role, canonical:false). A v2.11 (KG v2.0.0) CANONIZOU-O —
+      // 17 papéis; referenced_roles.items = [] e rh-peopleops passa a `retired` (retired_in 2.11). A asserção
+      // segue o dado ratificado: resolve para o canónico, com atribuições, e sem banda de referenciado.
+      // O caminho referenced_role continua coberto por teste unitário (get-guide-by-role.test.ts).
       const rh = await c.tool("get_guide_by_role", { risk_level: "L2", role: "RH/PeopleOps" });
       if (!rh.ok) return fail(rh.error);
-      const ref = rh.data.referenced_role;
-      if (!ref) return fail("um papel que o Manual NOMEIA cai no vazio como se não existisse");
-      if (ref.canonical !== false) return fail("o papel referenciado foi promovido a canónico");
-      if (!(ref.anchors ?? []).length) return fail("referenciado sem as âncoras que o provam");
-      if (!/13/.test(ref.note)) return fail("a nota não diz que os canónicos continuam a ser 13");
+      if (rh.data.canonicalRole !== "rh-peopleops") return fail(`um papel que o Manual NOMEIA cai no vazio: resolveu para ${rh.data.canonicalRole}`);
+      if (rh.data.referenced_role) return fail("papel canónico servido como referenciado");
+      if (!((rh.data.assignments ?? []).length > 0)) return fail("rh-peopleops canónico sem atribuições");
       const known = (rh.data.meta?.knownRoles ?? []).filter((r) => r !== "unassigned");
-      if (known.includes(ref.referenced_role_id)) return fail("entrou no vocabulário canónico");
+      if (!known.includes("rh-peopleops")) return fail("rh-peopleops fora do vocabulário canónico");
       // (4) o que o manifesto do pino promete e o pino não traz, declara-se
       const gap = rh.data.decision_involvement_unavailable;
       if (gap) {
         if (gap.shipped !== false || !(gap.declared_in_manifest > 0)) return fail("lacuna do pino mal declarada");
         if (!/não traz|não foi empacotad/.test(gap.note)) return fail("a lacuna não diz que é de empacotamento");
       }
-      return ok(`verbos servidos com asserção negativa (produção: «${pob.asserts.does_not_assert}»; prova: «${ev.asserts.does_not_assert}»); ${orf.count} órfãos declarados um a um; RH/PeopleOps referenciado com ${ref.anchors.length} âncoras e fora dos ${known.length} canónicos${gap ? `; lacuna do pino declarada (${gap.declared_in_manifest} ${gap.entity_type})` : ""}`); } },
+      return ok(`verbos servidos com asserção negativa (produção: «${pob.asserts.does_not_assert}»; prova: «${ev.asserts.does_not_assert}»); ${orf.count} órfãos declarados um a um; RH/PeopleOps canónico (rh-peopleops, ${rh.data.assignments.length} atribuições) entre os ${known.length} canónicos${gap ? `; lacuna do pino declarada (${gap.declared_in_manifest} ${gap.entity_type})` : ""}`); } },
 
   { id: "TC-F-69", axis: "F", title: "0.20.0-beta.44 (v2.7-r2): quem DECIDE ao lado de quem executa, com âncora verbatim e o que não afirma", tool: "get_guide_by_role",
     run: async (c) => {
