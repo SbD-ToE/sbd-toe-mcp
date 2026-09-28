@@ -9,7 +9,7 @@ review_status: pending-human-review
 
 # Changelog
 
-## 0.22.0 — RASCUNHO (preparado 2026-09-28; merge squash → tag `v0.22.0` → `next` → `latest` são actos do lead) — KG v2.0.0 (contrato v2.0) · o envelope é a regra · lotes com o contexto do pedido · activadores largos com contexto do dado
+## 0.22.0 — 2026-09-28 — KG v2.0.0 (contrato v2.0) · o envelope é a regra · lotes com o contexto do pedido · activadores largos com contexto do dado
 
 **Re-pino ao KG v2.0.0, contrato v2.0 — INCOMPATÍVEL (decisão do lead 2026-09-27; autorização 2026-09-28).** Tag anotada
 `v2.0.0` (objecto `3f1ae6ab`) → `7fa509e`; artefacto `sbd-toe-knowledge-graph-bundle-v2.0.0.zip`, sha256
