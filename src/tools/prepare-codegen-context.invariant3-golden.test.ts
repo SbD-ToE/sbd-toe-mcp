@@ -8,6 +8,8 @@
  * partir do dist/ da forma antiga (ramo 0.21 @ cb36422, pino KG v1.12.0) — nove
  * casos, incluindo os cinco da medição do §5, as duas fixtures do EPIC e os modos
  * review/test-plan. Muda a forma; o conjunto não.
+ *
+ * 0.22.0: o oráculo em vigor passa a `citable-ids-0.22.0.json` (append-only; ver abaixo).
  */
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
@@ -20,21 +22,41 @@ interface GoldenCase {
   citable_ids?: string[];
 }
 /**
- * 0.21.2 (decisão 0006, lead 2026-09-26): casos do oráculo cuja RE-BASELINAGEM está PENDENTE DE RATIFICAÇÃO.
- * Os activadores largos passaram a trazer contexto (fatias pela cadeia do dado), e o conjunto citável destes
- * casos cresce pelas entidades AppSec Core dessas fatias. O oráculo commitado NÃO se mexe: o lead ratifica a
- * re-baselinagem no ciclo completo, contra o KG novo, vendo o conjunto antes/depois. Até lá, a prova é:
- * o conjunto novo CONTÉM o do oráculo, os requisitos são os mesmos, e cada id a mais é uma entidade de
- * uma fatia trazida pela cadeia (`context_slice_chain` no trace) ou uma entidade dessa fatia.
+ * 0.22.0 — o oráculo em vigor é `citable-ids-0.22.0.json`: o de 0.20.0 com o caso «API pública/L3 +
+ * activadores» RE-BASELINADO pela decisão 0006 (135 → 278 ids, +143, −0, mesmos 89 requisitos), ratificado
+ * pelo programme lead a 2026-09-28 contra o KG v2.0.0. Append-only: o de 0.20.0 fica, e a linhagem entre os
+ * dois prova-se abaixo (só o caso ratificado muda, e só cresce).
+ * Mecanismo mantido: um caso só entra em REBASELINE_PENDING_RATIFICATION enquanto espera o lead.
  */
-const REBASELINE_PENDING_RATIFICATION: Record<string, string> = {
-  "API pública/L3 + activadores": "decisão 0006 — exposure/data_sensitivity trazem fatias pela cadeia do dado"
-};
+const REBASELINE_PENDING_RATIFICATION: Record<string, string> = {};
 
-const golden = JSON.parse(readFileSync(new URL("./__snapshots__/citable-ids-0.20.0.json", import.meta.url), "utf-8")) as {
+type Oracle = {
   generated_from: string;
+  rebaselined?: { version: string; ratified_by: string; ratified_on: string; cases: Record<string, { removed: number }> };
   cases: Record<string, GoldenCase>;
 };
+const golden = JSON.parse(readFileSync(new URL("./__snapshots__/citable-ids-0.22.0.json", import.meta.url), "utf-8")) as Oracle;
+const golden020 = JSON.parse(readFileSync(new URL("./__snapshots__/citable-ids-0.20.0.json", import.meta.url), "utf-8")) as Oracle;
+
+describe("linhagem do oráculo — 0.22.0 sobre 0.20.0 (append-only, re-baselinagem ratificada)", () => {
+  it("mesmos casos; só os casos ratificados mudam, e só crescem (−0); os restantes são idênticos", () => {
+    expect(Object.keys(golden.cases).sort()).toEqual(Object.keys(golden020.cases).sort());
+    expect(golden.rebaselined?.ratified_by).toBe("programme lead");
+    const ratified = new Set(Object.keys(golden.rebaselined?.cases ?? {}));
+    expect([...ratified]).toEqual(["API pública/L3 + activadores"]);
+    for (const [name, c] of Object.entries(golden.cases)) {
+      const before = golden020.cases[name]!;
+      const now = new Set(c.citable_ids ?? []);
+      if (ratified.has(name)) {
+        expect((before.citable_ids ?? []).filter((id) => !now.has(id)), `${name}: nada removido`).toEqual([]);
+        expect(now.size, name).toBeGreaterThan((before.citable_ids ?? []).length);
+        expect(c.requirements, name).toBe(before.requirements);
+      } else {
+        expect([...now].sort(), name).toEqual([...(before.citable_ids ?? [])].sort());
+      }
+    }
+  });
+});
 
 /** Ids citáveis de qualquer nível: citation_map (full) ou ids_from sobre o próprio payload (dieted). */
 function citableIds(payload: unknown): string[] {
@@ -54,7 +76,7 @@ function citableIds(payload: unknown): string[] {
   return Object.values(p.citations ?? {}).flatMap((g) => g.ids ?? (g.ids_from ?? []).flatMap(at));
 }
 
-describe("invariante 3 — conjunto de ids citáveis idêntico ao oráculo da 0.20.0", () => {
+describe("invariante 3 — conjunto de ids citáveis idêntico ao oráculo em vigor (0.22.0 = 0.20.0 + re-baselinagem ratificada)", () => {
   expect(golden.generated_from).toBe("cb36422");
   const cases = Object.entries(golden.cases).filter(([, c]) => c.status === "ready_for_codegen");
   expect(cases.length).toBeGreaterThanOrEqual(9);
