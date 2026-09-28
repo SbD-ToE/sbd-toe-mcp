@@ -1,7 +1,7 @@
 {
   "status": "needs_decomposition",
   "provenance": {
-    "kg": "v1.12.0",
+    "kg": "v2.0.0",
     "server": "<pkg>"
   },
   "mode": "codegen",
@@ -12,10 +12,10 @@
     "mode": "codegen"
   },
   "reasons": [
-    "O payload de 69 requisitos em detail=\"lista\" mede 12346 tk — acima do envelope de 8450 tk deste nível (medido sobre o payload que receberias: requisitos, controlos, entidades, adjacência e overlay)."
+    "O payload de 69 requisitos em detail=\"lista\" mede 12568 tk — acima do envelope de 8450 tk deste nível (medido sobre o payload que receberias: requisitos, controlos, entidades, adjacência e overlay)."
   ],
   "suggestions": [
-    "Divide em 2 lotes que SOMAM O TODO (união = 69 ids, m_recall 1.00 face à selecção inteira): repete com task + risk_level + detail + `categories` do lote + o `with` do lote tal e qual (slice_families). Cada lote é o teu pedido restrito às suas categorias: os mesmos requisitos e o mesmo contexto (fatias AppSec Core e manual_grounding) para elas. Cada lote é a partição EXACTA das categorias que a tua declaração activou — exposure/data_sensitivity estão lá pelo seu efeito (re-declará-los somaria as suas categorias a todos os lotes). Cada lote foi medido e cabe no envelope, salvo irredutível declarado. Lotes: 1) categories=[\"OPS\", \"API\", \"AUT\"] (28 reqs, 8148 tk; de \"api\", \"auth\", \"monitoring\"); 2) categories=[\"VAL\", \"LOG\", \"ACC\", \"ERR\", \"FIL\"] (41 reqs, 7033 tk; de \"auth\", \"files\", \"logging\", \"monitoring\", \"validation\").",
+    "Divide em 2 lotes que SOMAM O TODO (união = 69 ids, m_recall 1.00 face à selecção inteira): repete com task + risk_level + detail + `categories` do lote + o `with` do lote tal e qual (slice_families). Cada lote é o teu pedido restrito às suas categorias: os mesmos requisitos e o mesmo contexto (fatias AppSec Core e manual_grounding) para elas. Cada lote é a partição EXACTA das categorias que a tua declaração activou — exposure/data_sensitivity estão lá pelo seu efeito (re-declará-los somaria as suas categorias a todos os lotes). Cada lote foi medido e cabe no envelope, salvo irredutível declarado. Lotes: 1) categories=[\"OPS\", \"API\", \"AUT\"] (28 reqs, 8371 tk; de \"api\", \"auth\", \"monitoring\"); 2) categories=[\"VAL\", \"ACC\", \"LOG\", \"ERR\", \"FIL\"] (41 reqs, 7143 tk; de \"auth\", \"files\", \"logging\", \"monitoring\", \"validation\").",
     "Em alternativa usa detail=\"full\" (sem envelope — preço declarado em size_estimate) ou reduz o âmbito da task."
   ],
   "partial_activation_trace": [
@@ -144,7 +144,7 @@
     "detail": "lista",
     "basis": "measured_payload",
     "selected": 69,
-    "projected_tk": 12346,
+    "projected_tk": 12568,
     "promise_tk": 8450,
     "batches": [
       {
@@ -161,7 +161,7 @@
           ]
         },
         "requirements": 28,
-        "measured_tk": 8148,
+        "measured_tk": 8371,
         "irreducible": false,
         "derived_from": {
           "concerns": [
@@ -175,8 +175,8 @@
         "with": {
           "categories": [
             "VAL",
-            "LOG",
             "ACC",
+            "LOG",
             "ERR",
             "FIL"
           ],
@@ -187,7 +187,7 @@
           ]
         },
         "requirements": 41,
-        "measured_tk": 7033,
+        "measured_tk": 7143,
         "irreducible": false,
         "derived_from": {
           "concerns": [

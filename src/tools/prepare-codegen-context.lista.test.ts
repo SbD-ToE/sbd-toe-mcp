@@ -110,6 +110,15 @@ function g2EntityIds(dieted: PrepareCodegenContextResultReadyDieted): Set<string
   return ids;
 }
 
+/** 0.22.0 (KG v2.0.0): os nomes que a rastreabilidade PUBLICA, por entidade — o único sítio de onde um nome pode vir. */
+function publishedV1Names(): Map<string, string> {
+  const rows = readFileSync(new URL("../../data/publish/runtime/v1/manual_rastreabilidade.jsonl", import.meta.url), "utf-8")
+    .split("\n").filter((l) => l.trim()).map((l) => JSON.parse(l) as { v1_entity_id?: string; v1_entity_name?: string });
+  const m = new Map<string, string>();
+  for (const r of rows) if (r.v1_entity_id && r.v1_entity_name) m.set(r.v1_entity_id, r.v1_entity_name);
+  return m;
+}
+
 describe("prepare_sbd_toe_codegen_context — perfil lista (0.21 §1)", () => {
   beforeAll(() => {
     clearG2RuntimeCacheForTests();
@@ -185,7 +194,11 @@ describe("prepare_sbd_toe_codegen_context — perfil lista (0.21 §1)", () => {
       for (const group of grounding.groups) {
         expect(group).not.toHaveProperty("manual_commit_sha");
         expect(group.entries).toBeGreaterThan(0);
-        expect(group.v1_entity_names).toBeUndefined();
+        // Lossless guard: só os nomes NÃO recuperáveis do g2_context, e cada um é o publicado (0.22.0:
+        // com o KG v2.0.0 os placeholders publicam nome, e o conjunto deixou de ser vazio).
+        for (const [id, name] of Object.entries(group.v1_entity_names ?? {})) {
+          expect(name).toBe(publishedV1Names().get(id));
+        }
       }
       expect(grounding.ungrouped).toBeUndefined();
       // EXECUTA a referência: mesmo input, detail='full' — as planas, e por grupo as contagens batem.

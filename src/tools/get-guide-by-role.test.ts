@@ -169,7 +169,8 @@ describe("consumer role aliases", () => {
   it("secops/soc resolvem para operacoes com a repartição DECLARADA (adenda §1+§2)", () => {
     const data = makeOntologyData({
       roles: [
-        { role_id: "operacoes", aliases: ["ops", "incident_response"], canonical: true, source: "00" },
+        // 0.22.0: como o KG v2.0.0 publica — `secops` é alias DO DADO (a tabela do servidor deixou de o ter).
+        { role_id: "operacoes", aliases: ["ops", "incident_response", "secops"], canonical: true, source: "00" },
         { role_id: "devops-sre", aliases: ["devops", "sre"], canonical: true, source: "00" },
       ],
       assignments: [

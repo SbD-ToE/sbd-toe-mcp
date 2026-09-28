@@ -44,7 +44,9 @@ function normalizeToken(value: string): string {
  *     DevSecOps across six chapters; the refusal is now declared on both sides)
  *   - architect  — substrate split (software_architect→developer vs empty arquitetos-software)
  *   - product-manager — product_owner appears under both `qa` and `product-owner`
- *   - training-manager / pentester / security — no canonical content home
+ *   - training-manager / security — no canonical content home
+ *   (0.22.0, KG v2.0.0: `pentester` saiu desta lista — o KG publica-o como alias de appsec-engineer,
+ *    e o servidor resolve-o pelo dado, não por esta tabela.)
  */
 const CONSUMER_ROLE_ALIASES: Record<string, string> = {
   "security-engineer": "appsec-engineer",
@@ -54,9 +56,9 @@ const CONSUMER_ROLE_ALIASES: Record<string, string> = {
   // 2026-09-11 defect wave §1/adenda: SecOps-family → operacoes. Grounds: the Manual's own
   // audience column («Operations, SOC, DevSecOps» on the OPS row) and the Orchestrator-verified
   // adenda (operacoes carries the SOC operation stories; the platform half is devops-sre and is
-  // POINTED AT via the split band below). The KG publishes the same aliases from v1.26 §1.33B —
-  // this map covers the currently pinned bundle until the next re-pin.
-  "secops": "operacoes",
+  // POINTED AT via the split band below). 0.22.0 (re-pino ao KG v2.0.0): o KG publica `secops` e a
+  // família `secops-*` como aliases de operacoes — `secops` saiu desta tabela (resolve pelo dado).
+  // Ficam só os tokens que o KG NÃO publica como alias (`soc`, `security-operations`).
   "soc": "operacoes",
   "security-operations": "operacoes",
   "security_operations": "operacoes",

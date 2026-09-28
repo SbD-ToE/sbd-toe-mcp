@@ -93,8 +93,15 @@ describe("generate_sbd_toe_skill — RF-S role serving", () => {
     expect(result.content).toContain("name: sbd-devops-sre");
   });
 
-  it("rejects unknown roles listing the canonical 13 — never invents", () => {
-    expect(() => handleGenerateSbdToeSkill({ role: "pentester" })).toThrowError(/Canonical roles:.*devops-sre/);
+  it("rejects unknown roles listing the canonical roles — never invents", () => {
+    // 0.22.0 (KG v2.0.0): `pentester` passou a ser alias PUBLICADO de appsec-engineer; o caso
+    // desconhecido é agora um papel que nenhum dado conhece.
+    expect(() => handleGenerateSbdToeSkill({ role: "astronauta" })).toThrowError(/Canonical roles:.*devops-sre/);
+  });
+
+  it("0.22.0 — os aliases publicados pelo KG resolvem pelo dado: pentester → appsec-engineer, SecOps → operacoes", () => {
+    expect(handleGenerateSbdToeSkill({ role: "pentester" }).content).toMatch(/name: sbd-appsec-engineer/);
+    expect(handleGenerateSbdToeSkill({ role: "SecOps" }).content).toMatch(/name: sbd-operacoes/);
   });
 
   it("include_detail embeds checklist items verbatim from the guide", () => {

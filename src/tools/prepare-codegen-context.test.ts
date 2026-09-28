@@ -18,6 +18,7 @@ import {
 import { clearG2RuntimeCacheForTests } from "./g2-runtime-loader.js";
 import { getOntologyData } from "./ontology-loader.js";
 import { citableIds } from "./prepare-codegen-context.js";
+import { readFileSync } from "node:fs";
 import { clearRegulatoryOverlayCacheForTests } from "./regulatory-overlay-loader.js";
 
 function expectBlocked(
@@ -35,6 +36,15 @@ function expectReady(
 // ---------------------------------------------------------------------------
 // Scope gate — needs_clarification
 // ---------------------------------------------------------------------------
+
+/** 0.22.0 (KG v2.0.0): os nomes que a rastreabilidade PUBLICA, por entidade — o único sítio de onde um nome pode vir. */
+function publishedV1Names(): Map<string, string> {
+  const rows = readFileSync(new URL("../../data/publish/runtime/v1/manual_rastreabilidade.jsonl", import.meta.url), "utf-8")
+    .split("\n").filter((l) => l.trim()).map((l) => JSON.parse(l) as { v1_entity_id?: string; v1_entity_name?: string });
+  const m = new Map<string, string>();
+  for (const r of rows) if (r.v1_entity_id && r.v1_entity_name) m.set(r.v1_entity_id, r.v1_entity_name);
+  return m;
+}
 
 describe("handlePrepareCodegenContext — needs_clarification", () => {
   beforeEach(() => {
@@ -263,12 +273,12 @@ describe("handlePrepareCodegenContext — ready_for_codegen (API validation)", (
     });
     expectReady(result);
 
-    // No name is invented. The loader returns v1_entity_name only when
-    // substrate_landing publishes one — never for placeholders.
+    // No name is invented: every served name is EXACTLY the one the rastreabilidade publishes for
+    // that entity. (0.22.0, KG v2.0.0: the placeholders now publish names too — before, none did,
+    // and this test encoded that datum instead of the invariant.)
+    const published = publishedV1Names();
     for (const entry of result.manual_grounding) {
-      if (entry.rastreabilidade_role === "placeholder") {
-        expect(entry.v1_entity_name).toBeUndefined();
-      }
+      if (entry.v1_entity_name !== undefined) expect(entry.v1_entity_name).toBe(published.get(entry.v1_entity_id));
     }
 
     // The completeness counters must agree with the projected g2_context.

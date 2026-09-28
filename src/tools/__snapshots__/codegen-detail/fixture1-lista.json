@@ -570,7 +570,7 @@
   },
   "manual_grounding": {
     "total_entries": 51,
-    "manual_commit_sha": "0576e914d4c933ddc1af25cb2c5570dd2afcf60f",
+    "manual_commit_sha": "53bd772556323c9d9e04f18d2ec09433702d9170",
     "groups": [
       {
         "rastreabilidade_role": "substrate_landing",
@@ -588,7 +588,21 @@
         "rastreabilidade_role": "placeholder",
         "manual_chapter": null,
         "manual_file": null,
-        "entries": 12
+        "entries": 12,
+        "v1_entity_names": {
+          "ACA-IAT-001": "Identity Binding",
+          "ACA-IAT-002": "Access Review",
+          "ACA-IAT-003": "Log Stream",
+          "ACA-IAT-004": "Policy Report",
+          "ACA-IAT-005": "Alert Policy",
+          "ACA-IAT-006": "Approval Record",
+          "ACA-IVF-001": "Guideline Catalog",
+          "ACA-IVF-002": "SAST Report",
+          "ACA-IVF-003": "Validation Evidence",
+          "ACA-IVF-004": "Test Report",
+          "ACA-IVF-005": "Review Checklist",
+          "ACA-IVF-006": "Log Stream"
+        }
       }
     ],
     "entries_ref": {
@@ -731,7 +745,7 @@
     "note_id": "prepare.repeat_call_hint"
   },
   "provenance": {
-    "kg": "v1.12.0",
+    "kg": "v2.0.0",
     "server": "<pkg>",
     "runtime_v0": "data/publish/runtime/*.json + data/publish/ontology/*",
     "runtime_v1": "data/publish/runtime/v1/*",
@@ -752,8 +766,8 @@
     }
   ],
   "size_estimate": {
-    "chars": 27099,
-    "approx_tokens": 6775,
+    "chars": 27485,
+    "approx_tokens": 6872,
     "envelope_tk": 8450,
     "within_envelope": true
   }

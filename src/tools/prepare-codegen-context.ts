@@ -688,7 +688,7 @@ export type CitationsBySource = Partial<
  * entries. Total information is preserved: `v1_entity_ids` lists every entry
  * of the group, and `v1_entity_names` carries ONLY the names that are not
  * already recoverable from the `g2_context` entity lists in the same payload
- * (normally empty — names come from the same rastreabilidade source).
+ * (since KG v2.0.0 the placeholders publish names too, so this is no longer normally empty).
  */
 export interface ManualGroundingGroup {
   rastreabilidade_role: string;
