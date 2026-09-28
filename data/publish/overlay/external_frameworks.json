@@ -50,6 +50,16 @@
       "framework_id": "EXT-ENISA-CSA",
       "framework_kind": "certification",
       "jurisdiction": "EU",
+      "mapping_absence": {
+        "absence_type": "deferred",
+        "by_design": "framework_kind: certification tem CONSEQUÊNCIA DECLARADA — esta espécie mapeia por playbook/nota de enquadramento, não por obrigações reguladas; zero obligations e zero targets é o ESTADO DECLARADO do conteúdo actual, não omissão silenciosa",
+        "debt_of": "manual_content",
+        "decided_by": "análise do Codex por despacho do Orchestrator 2026-09-10; out_of_scope NÃO atribuído (reservado ao programme lead)",
+        "grounds": "fonte autoral única: cross-check-normativo/enisa-csa/01-intro.md («Nota de Enquadramento — quando usar e como mapear»): os esquemas EUCC/EUCS/EU5G estão em desenvolvimento/aprovação (estado 2025 autoral) e o SbD-ToE usa-os como referenciais de boas práticas, «não como lista fechada de obrigações já em vigor» — não há, hoje, lista de obrigações autorada para mapear",
+        "owner": "Author / lane overlay",
+        "playbook_note": "dos 7 playbook_ids no índice, 1 é próprio (OVR-ENISA-CSA-intro — a nota de enquadramento); os 6 restantes são os exemplo-playbook genéricos partilhados por todos os frameworks",
+        "trigger": "maturação dos esquemas (EUCC primeiro, por estado autoral) / ciclo do cross-check normativo (roadmap declarado)"
+      },
       "name": "ENISA / EU Cybersecurity Act certification (EUCC, EUCS, EU5G)",
       "scope_summary": "EU cybersecurity certification schemes (EUCC, EUCS, EU5G) — when to use and how to map SbD-ToE evidence for certification and procurement.",
       "short_code": "ENISA-CSA"

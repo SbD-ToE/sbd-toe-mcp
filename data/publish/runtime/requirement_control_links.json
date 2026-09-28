@@ -643,7 +643,7 @@
         "chapter_overlap": [
           "04-arquitetura-segura"
         ],
-        "runner_up_margin": 0.0047,
+        "runner_up_margin": 0.0025,
         "shared_salient_tokens": [
           "confianca",
           "revisao"
@@ -874,7 +874,7 @@
       "bundle_ids": [
         "04-arquitetura-segura"
       ],
-      "confidence": 0.9075,
+      "confidence": 0.91,
       "evidence_unit_ids": [],
       "justification": [
         "bundle_grounding",
@@ -885,17 +885,17 @@
       "link_id": "ARC-007|maps_to_control|CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4",
       "link_type": "maps_to_control",
       "matched_control_field": "alias",
-      "matched_control_text": "Revisão de arquitectura para agente AI em A2+ {#us-16}",
+      "matched_control_text": "Revisão de arquitectura para agente AI em A2+",
       "score_components": {
         "chapter_overlap": [
           "04-arquitetura-segura"
         ],
-        "runner_up_margin": 0.0375,
+        "runner_up_margin": 0.04,
         "shared_salient_tokens": [
           "arquitectura",
           "revisao"
         ],
-        "token_similarity": 0.125
+        "token_similarity": 0.1333
       },
       "source_id": "ARC-007",
       "source_label": "Padrões de arquitectura reutilizáveis e aprovados",
@@ -990,7 +990,7 @@
       "link_id": "ARC-010|maps_to_control|CTRL-governance-arquitetura-segura-e-rastreavel-74562442c4",
       "link_type": "maps_to_control",
       "matched_control_field": "alias",
-      "matched_control_text": "Revisão de arquitectura para agente AI em A2+ {#us-16}",
+      "matched_control_text": "Revisão de arquitectura para agente AI em A2+",
       "score_components": {
         "chapter_overlap": [
           "04-arquitetura-segura"
@@ -999,7 +999,7 @@
         "shared_salient_tokens": [
           "arquitectura"
         ],
-        "token_similarity": 0.0476
+        "token_similarity": 0.05
       },
       "source_id": "ARC-010",
       "source_label": "Diagramas de arquitectura versionados e acessíveis",
@@ -2058,7 +2058,7 @@
       "link_id": "CIC-005|maps_to_control|CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
       "link_type": "maps_to_control",
       "matched_control_field": "alias",
-      "matched_control_text": "Agentes AI como *principals* na pipeline {#us-19}",
+      "matched_control_text": "Agentes AI como *principals* na pipeline",
       "score_components": {
         "chapter_overlap": [
           "07-cicd-seguro"
@@ -2067,7 +2067,7 @@
         "shared_salient_tokens": [
           "pipeline"
         ],
-        "token_similarity": 0.0357
+        "token_similarity": 0.037
       },
       "source_id": "CIC-005",
       "source_label": "Rastreabilidade completa de cada execução de pipeline",
@@ -2192,7 +2192,7 @@
       "link_id": "CIC-009|maps_to_control|CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
       "link_type": "maps_to_control",
       "matched_control_field": "alias",
-      "matched_control_text": "Agentes AI como *principals* na pipeline {#us-19}",
+      "matched_control_text": "Agentes AI como *principals* na pipeline",
       "score_components": {
         "chapter_overlap": [
           "07-cicd-seguro"
@@ -2201,7 +2201,7 @@
         "shared_salient_tokens": [
           "pipeline"
         ],
-        "token_similarity": 0.0455
+        "token_similarity": 0.0476
       },
       "source_id": "CIC-009",
       "source_label": "Credenciais do pipeline com âmbito mínimo e rotação definida",
@@ -2214,7 +2214,7 @@
       "bundle_ids": [
         "07-cicd-seguro"
       ],
-      "confidence": 0.9129,
+      "confidence": 0.9144,
       "evidence_unit_ids": [],
       "justification": [
         "bundle_grounding",
@@ -2225,19 +2225,19 @@
       "link_id": "CIC-010|maps_to_control|CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
       "link_type": "maps_to_control",
       "matched_control_field": "alias",
-      "matched_control_text": "Proteção contra escalonamento de privilégios em runners {#us-22}",
+      "matched_control_text": "Proteção contra escalonamento de privilégios em runners",
       "score_components": {
         "chapter_overlap": [
           "07-cicd-seguro"
         ],
-        "runner_up_margin": 0.0729,
+        "runner_up_margin": 0.0744,
         "shared_salient_tokens": [
           "contra",
           "escalonamento",
           "privilegio",
           "runner"
         ],
-        "token_similarity": 0.1429
+        "token_similarity": 0.1481
       },
       "source_id": "CIC-010",
       "source_label": "Protecção contra execução de código não autorizado em runners",
@@ -2260,7 +2260,7 @@
       "link_id": "CIC-011|maps_to_control|CTRL-code-integrity-integridade-e-governacao-de-pipelines-d5b14eeef2",
       "link_type": "maps_to_control",
       "matched_control_field": "alias",
-      "matched_control_text": "Agentes AI como *principals* na pipeline {#us-19}",
+      "matched_control_text": "Agentes AI como *principals* na pipeline",
       "score_components": {
         "chapter_overlap": [
           "07-cicd-seguro"
@@ -2269,7 +2269,7 @@
         "shared_salient_tokens": [
           "agente"
         ],
-        "token_similarity": 0.02
+        "token_similarity": 0.0204
       },
       "source_id": "CIC-011",
       "source_label": "Promoção entre ambientes atribuível a um responsável identificado",
@@ -4026,7 +4026,7 @@
       "bundle_ids": [
         "11-deploy-seguro"
       ],
-      "confidence": 0.9026,
+      "confidence": 0.9033,
       "evidence_unit_ids": [],
       "justification": [
         "bundle_grounding",
@@ -4037,18 +4037,18 @@
       "link_id": "DPL-010|maps_to_control|CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0",
       "link_type": "maps_to_control",
       "matched_control_field": "alias",
-      "matched_control_text": "Release gates específicos para sistemas com agentes AI {#us-18}",
+      "matched_control_text": "Release gates específicos para sistemas com agentes AI",
       "score_components": {
         "chapter_overlap": [
           "11-deploy-seguro"
         ],
-        "runner_up_margin": 0.0626,
+        "runner_up_margin": 0.0633,
         "shared_salient_tokens": [
           "agente",
           "gate",
           "release"
         ],
-        "token_similarity": 0.1087
+        "token_similarity": 0.1111
       },
       "source_id": "DPL-010",
       "source_label": "Release gates para sistemas com agentes AI",
@@ -5714,7 +5714,7 @@
       "bundle_ids": [
         "14-governanca-contratacao"
       ],
-      "confidence": 0.9236,
+      "confidence": 0.9217,
       "evidence_unit_ids": [],
       "justification": [
         "bundle_grounding",
@@ -5730,14 +5730,14 @@
         "chapter_overlap": [
           "14-governanca-contratacao"
         ],
-        "runner_up_margin": 0.0215,
+        "runner_up_margin": 0.0207,
         "shared_salient_tokens": [
           "aplicacoe",
           "ciclo",
           "conformidade",
           "periodica"
         ],
-        "token_similarity": 0.1786
+        "token_similarity": 0.1724
       },
       "source_id": "GOV-010",
       "source_label": "Ciclo de validação contínua e revisão periódica de conformidade",
@@ -5750,7 +5750,7 @@
       "bundle_ids": [
         "14-governanca-contratacao"
       ],
-      "confidence": 0.9021,
+      "confidence": 0.901,
       "evidence_unit_ids": [],
       "justification": [
         "bundle_grounding",
@@ -5766,12 +5766,12 @@
         "chapter_overlap": [
           "14-governanca-contratacao"
         ],
-        "runner_up_margin": 0.0321,
+        "runner_up_margin": 0.031,
         "shared_salient_tokens": [
           "continua",
           "fornecedore"
         ],
-        "token_similarity": 0.1071
+        "token_similarity": 0.1034
       },
       "source_id": "GOV-010",
       "source_label": "Ciclo de validação contínua e revisão periódica de conformidade",
@@ -8445,7 +8445,7 @@
       "link_id": "REQ-AGN-001|maps_to_control|CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
       "link_type": "maps_to_control",
       "matched_control_field": "alias",
-      "matched_control_text": "Classificação e registo do *mandate* de agente AI {#us-15}",
+      "matched_control_text": "Classificação e registo do *mandate* de agente AI",
       "score_components": {
         "chapter_overlap": [
           "02-requisitos-seguranca"
@@ -8455,7 +8455,7 @@
           "agente",
           "mandate"
         ],
-        "token_similarity": 0.0789
+        "token_similarity": 0.0811
       },
       "source_id": "REQ-AGN-001",
       "source_label": "Mandate registado e versionado",
@@ -8478,7 +8478,7 @@
       "link_id": "REQ-AGN-002|maps_to_control|CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
       "link_type": "maps_to_control",
       "matched_control_field": "alias",
-      "matched_control_text": "Classificação e registo do *mandate* de agente AI {#us-15}",
+      "matched_control_text": "Classificação e registo do *mandate* de agente AI",
       "score_components": {
         "chapter_overlap": [
           "02-requisitos-seguranca"
@@ -8488,7 +8488,7 @@
           "agente",
           "mandate"
         ],
-        "token_similarity": 0.0714
+        "token_similarity": 0.0741
       },
       "source_id": "REQ-AGN-002",
       "source_label": "Nível de autonomia classificado por contexto",
@@ -8511,7 +8511,7 @@
       "link_id": "REQ-AGN-003|maps_to_control|CTRL-governance-classificacao-e-governacao-por-risco-97aceecf29",
       "link_type": "maps_to_control",
       "matched_control_field": "alias",
-      "matched_control_text": "Classificação e registo do *mandate* de agente AI {#us-15}",
+      "matched_control_text": "Classificação e registo do *mandate* de agente AI",
       "score_components": {
         "chapter_overlap": [
           "02-requisitos-seguranca"
@@ -8520,7 +8520,7 @@
         "shared_salient_tokens": [
           "agente"
         ],
-        "token_similarity": 0.0294
+        "token_similarity": 0.0303
       },
       "source_id": "REQ-AGN-003",
       "source_label": "Kill-switch operacional documentado e testado",
@@ -9657,7 +9657,7 @@
           "risco",
           "teste"
         ],
-        "token_similarity": 0.069
+        "token_similarity": 0.0625
       },
       "source_id": "TST-008",
       "source_label": "Testes de penetração periódicos com escopo e metodologia definidos",

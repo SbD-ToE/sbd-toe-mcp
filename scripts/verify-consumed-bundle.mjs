@@ -41,6 +41,22 @@ try {
 for (const key of ["pin_version", "consumer_contract_version", "substrate_version", "kg_bundle", "inputs"]) {
   if (pin[key] === undefined) fail(`missing required pin field: ${key}`);
 }
+
+// --- contrato a montante: formato, major suportado, aceitação registada (0.22.0) ---
+// Majors que ESTE código serve. Uma subida de major só entra com o gate do sync-bundle
+// (--accept-major) e com o código re-validado — e é aqui que o CI o impõe.
+const SUPPORTED_CONTRACT_MAJORS = [2]; // 0.22.0: pino ao KG v2.0.0 (contrato v2.0)
+{
+  const m = /^v(\d+)\.(\d+)$/.exec(pin.consumer_contract_version ?? "");
+  if (!m) fail(`consumer_contract_version must look like vN.M, got: ${pin.consumer_contract_version}`);
+  else if (!SUPPORTED_CONTRACT_MAJORS.includes(Number(m[1])))
+    fail(`consumer_contract_version ${pin.consumer_contract_version}: major v${m[1]} not supported by this code (supported: ${SUPPORTED_CONTRACT_MAJORS.map((x) => `v${x}`).join(", ")})`);
+  const acc = pin.contract_major_acceptance;
+  if (acc !== undefined) {
+    if (acc.to !== pin.consumer_contract_version) fail(`contract_major_acceptance.to (${acc.to}) ≠ consumer_contract_version (${pin.consumer_contract_version})`);
+    if (!acc.reason || !acc.accepted_on || !acc.from) fail("contract_major_acceptance must record from, to, accepted_on and reason");
+  }
+}
 if (pin.inputs && (!pin.inputs.manual || !pin.inputs.ontology)) {
   fail("pin.inputs must declare both `manual` and `ontology`");
 }

@@ -1,7 +1,7 @@
 {
   "status": "needs_decomposition",
   "provenance": {
-    "kg": "v1.12.0",
+    "kg": "v2.0.0",
     "server": "<pkg>"
   },
   "mode": "codegen",
@@ -12,11 +12,11 @@
     "mode": "codegen"
   },
   "reasons": [
-    "Selecção de 69 requisitos excede o tecto de 52 para detail=\"lista\" (medição: ~133 tk/req sobre base ~1476 tk ⇒ ~10653 tk, acima do envelope de 8450 tk deste nível)."
+    "O payload de 69 requisitos em detail=\"lista\" mede 12568 tk — acima do envelope de 8450 tk deste nível (medido sobre o payload que receberias: requisitos, controlos, entidades, adjacência e overlay)."
   ],
   "suggestions": [
-    "Divide em 2 lotes que SOMAM O TODO (união = 69 ids, m_recall 1.00 face à selecção inteira): repete com task + risk_level + detail + `categories` do lote. Cada lote é a partição EXACTA das categorias que a tua declaração activou — exposure/data_sensitivity estão lá pelo seu efeito (re-declará-los somaria as suas categorias a todos os lotes). Lotes: 1) categories=[\"OPS\", \"AUT\", \"ACC\", \"LOG\", \"FIL\"] (47 reqs; de \"auth\", \"files\", \"logging\", \"monitoring\"); 2) categories=[\"VAL\", \"API\", \"ERR\"] (22 reqs; de \"api\", \"validation\").",
-    "Em alternativa usa detail=\"full\" (sem tecto — preço declarado em size_estimate) ou reduz o âmbito da task."
+    "Divide em 2 lotes que SOMAM O TODO (união = 69 ids, m_recall 1.00 face à selecção inteira): repete com task + risk_level + detail + `categories` do lote + o `with` do lote tal e qual (slice_families). Cada lote é o teu pedido restrito às suas categorias: os mesmos requisitos e o mesmo contexto (fatias AppSec Core e manual_grounding) para elas. Cada lote é a partição EXACTA das categorias que a tua declaração activou — exposure/data_sensitivity estão lá pelo seu efeito (re-declará-los somaria as suas categorias a todos os lotes). Cada lote foi medido e cabe no envelope, salvo irredutível declarado. Lotes: 1) categories=[\"OPS\", \"API\", \"AUT\"] (28 reqs, 8371 tk; de \"api\", \"auth\", \"monitoring\"); 2) categories=[\"VAL\", \"ACC\", \"LOG\", \"ERR\", \"FIL\"] (41 reqs, 7143 tk; de \"auth\", \"files\", \"logging\", \"monitoring\", \"validation\").",
+    "Em alternativa usa detail=\"full\" (sem envelope — preço declarado em size_estimate) ou reduz o âmbito da task."
   ],
   "partial_activation_trace": [
     {
@@ -142,28 +142,31 @@
   ],
   "requirement_ceiling": {
     "detail": "lista",
-    "limit": 52,
+    "basis": "measured_payload",
     "selected": 69,
-    "cost_per_req_tk": 133,
-    "projected_tk": 10653,
+    "projected_tk": 12568,
     "promise_tk": 8450,
     "batches": [
       {
         "with": {
           "categories": [
             "OPS",
-            "AUT",
-            "ACC",
-            "LOG",
-            "FIL"
+            "API",
+            "AUT"
+          ],
+          "slice_families": [
+            "ACO-IAT",
+            "ACO-IVF",
+            "ACO-SLG"
           ]
         },
-        "requirements": 47,
+        "requirements": 28,
+        "measured_tk": 8371,
+        "irreducible": false,
         "derived_from": {
           "concerns": [
+            "api",
             "auth",
-            "files",
-            "logging",
             "monitoring"
           ]
         }
@@ -172,14 +175,26 @@
         "with": {
           "categories": [
             "VAL",
-            "API",
-            "ERR"
+            "ACC",
+            "LOG",
+            "ERR",
+            "FIL"
+          ],
+          "slice_families": [
+            "ACO-IAT",
+            "ACO-IVF",
+            "ACO-SLG"
           ]
         },
-        "requirements": 22,
+        "requirements": 41,
+        "measured_tk": 7143,
+        "irreducible": false,
         "derived_from": {
           "concerns": [
-            "api",
+            "auth",
+            "files",
+            "logging",
+            "monitoring",
             "validation"
           ]
         }
@@ -192,9 +207,9 @@
   },
   "next": [
     {
-      "intent": "split into 2-4 subtasks and call again per subtask",
+      "intent": "execute each batch in requirement_ceiling.batches (one call per batch; together they cover the whole selection) — without batches, narrow the declaration",
       "tool": "prepare_sbd_toe_codegen_context",
-      "with": "one subtask scope",
+      "with": "task + risk_level + detail + the batch's `with`",
       "kind": "structural"
     },
     {

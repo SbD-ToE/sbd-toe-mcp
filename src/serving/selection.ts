@@ -473,7 +473,7 @@ function declaredActivatorsOf(
  * Os candidatos saem do mesmo motor lexical do `discover` — mas aqui não seleccionam
  * nada: são uma proposta ao LLM, que é quem tem o contexto para confirmar.
  */
-function buildNeedsInput(input: NormalizedInput, declared: DeclaredActivators, inert: string[] = []): NeedsInput {
+export function buildNeedsInput(input: NormalizedInput, declared: DeclaredActivators, inert: string[] = []): NeedsInput {
   const exploratory = activate({ ...input, concerns: [] }, { declaredOnly: false });
   const suggested = [...new Set(exploratory.concerns.map(String))].sort();
   const exampleConcerns = suggested.slice(0, 3);

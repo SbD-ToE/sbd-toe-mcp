@@ -50,7 +50,7 @@ interface BaselineFixture {
   name: "fixture1" | "fixture2";
   label: string;
   input: PrepareCodegenContextInput;
-  /** 0.21 (a): 69 reqs > tecto 52 — a lista responde needs_decomposition declarado (lotes que somam o todo). */
+  /** 0.21.2: o payload medido passa o envelope — a lista responde needs_decomposition com lotes medidos que somam o todo. */
   dietedBlockedByCeiling?: boolean;
 }
 
@@ -110,19 +110,29 @@ function g2EntityIds(dieted: PrepareCodegenContextResultReadyDieted): Set<string
   return ids;
 }
 
+/** 0.22.0 (KG v2.0.0): os nomes que a rastreabilidade PUBLICA, por entidade — o único sítio de onde um nome pode vir. */
+function publishedV1Names(): Map<string, string> {
+  const rows = readFileSync(new URL("../../data/publish/runtime/v1/manual_rastreabilidade.jsonl", import.meta.url), "utf-8")
+    .split("\n").filter((l) => l.trim()).map((l) => JSON.parse(l) as { v1_entity_id?: string; v1_entity_name?: string });
+  const m = new Map<string, string>();
+  for (const r of rows) if (r.v1_entity_id && r.v1_entity_name) m.set(r.v1_entity_id, r.v1_entity_name);
+  return m;
+}
+
 describe("prepare_sbd_toe_codegen_context — perfil lista (0.21 §1)", () => {
   beforeAll(() => {
     clearG2RuntimeCacheForTests();
     clearRegulatoryOverlayCacheForTests();
   });
 
-  it("fixture 2 (69 reqs) @ lista: needs_decomposition DECLARADO (tecto 52), lotes que somam o todo (recall 1); o full serve-a", () => {
+  it("fixture 2 (69 reqs) @ lista: needs_decomposition por CUSTO MEDIDO (acima de 8 450 tk), lotes medidos que cabem e somam o todo (recall 1); o full serve-a", () => {
     const blockedFixture = FIXTURES.find((f) => f.dietedBlockedByCeiling)!;
-    const r = handlePrepareCodegenContextDiscover({ ...blockedFixture.input, detail: "lista" }) as { status: string; requirement_ceiling?: { limit: number; selected: number; union: { recall: number }; batches: Array<{ requirements: number }> } };
+    const r = handlePrepareCodegenContextDiscover({ ...blockedFixture.input, detail: "lista" }) as { status: string; requirement_ceiling?: { basis: string; projected_tk: number; promise_tk: number; selected: number; union: { recall: number }; batches: Array<{ requirements: number; measured_tk: number; irreducible: boolean }> } };
     expect(r.status).toBe("needs_decomposition");
-    expect(r.requirement_ceiling).toMatchObject({ limit: 52, selected: 69 });
+    expect(r.requirement_ceiling).toMatchObject({ basis: "measured_payload", selected: 69, promise_tk: 8450 });
+    expect(r.requirement_ceiling!.projected_tk).toBeGreaterThan(8450);
     expect(r.requirement_ceiling!.union.recall).toBe(1);
-    for (const b of r.requirement_ceiling!.batches) expect(b.requirements).toBeLessThanOrEqual(52);
+    for (const b of r.requirement_ceiling!.batches) if (!b.irreducible) expect(b.measured_tk).toBeLessThanOrEqual(8450);
     expect(runFull(blockedFixture).activated_scope.requirements.length).toBe(69);
   });
 
@@ -184,7 +194,11 @@ describe("prepare_sbd_toe_codegen_context — perfil lista (0.21 §1)", () => {
       for (const group of grounding.groups) {
         expect(group).not.toHaveProperty("manual_commit_sha");
         expect(group.entries).toBeGreaterThan(0);
-        expect(group.v1_entity_names).toBeUndefined();
+        // Lossless guard: só os nomes NÃO recuperáveis do g2_context, e cada um é o publicado (0.22.0:
+        // com o KG v2.0.0 os placeholders publicam nome, e o conjunto deixou de ser vazio).
+        for (const [id, name] of Object.entries(group.v1_entity_names ?? {})) {
+          expect(name).toBe(publishedV1Names().get(id));
+        }
       }
       expect(grounding.ungrouped).toBeUndefined();
       // EXECUTA a referência: mesmo input, detail='full' — as planas, e por grupo as contagens batem.

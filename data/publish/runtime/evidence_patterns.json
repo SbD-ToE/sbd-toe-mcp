@@ -1236,6 +1236,7 @@
       "requirement_name": "Segmentação lógica e física entre ambientes",
       "responsible_roles": [
         "AppSec",
+        "Arquitetos de Software",
         "Engenharia de plataforma"
       ],
       "risk_level_hint": "L3",
@@ -3744,7 +3745,7 @@
       "detectable_in": [
         "ci_cd"
       ],
-      "evidence_expectation": "SLA de actualização definido por nível de severidade de CVE (ex: crítico ≤ 48h, elevado ≤ 7 dias, médio ≤ 30 dias); evidência de cumprimento nos ciclos mais recentes; excepções formalizadas quando aplicável.",
+      "evidence_expectation": "SLA de actualização definido por nível de severidade de CVE (conforme a Política 19 §4.3: p. ex. crítico 30 / 7 / 3 dias e elevado 90 / 30 / 15 dias em L1 / L2 / L3; com indício de exploração ativa, o prazo antecipa-se); evidência de cumprimento nos ciclos mais recentes; excepções formalizadas quando aplicável.",
       "evidence_type": "workflow",
       "expected_artifact_type_ids": [
         "ART-policy-report-7e52280504",
@@ -3780,7 +3781,7 @@
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "verification_logic": "SLA de actualização definido por nível de severidade de CVE (ex: crítico ≤ 48h, elevado ≤ 7 dias, médio ≤ 30 dias); evidência de cumprimento nos ciclos mais recentes; excepções formalizadas quando aplicável.",
+      "verification_logic": "SLA de actualização definido por nível de severidade de CVE (conforme a Política 19 §4.3: p. ex. crítico 30 / 7 / 3 dias e elevado 90 / 30 / 15 dias em L1 / L2 / L3; com indício de exploração ativa, o prazo antecipa-se); evidência de cumprimento nos ciclos mais recentes; excepções formalizadas quando aplicável.",
       "verification_when": null
     },
     {
@@ -4061,7 +4062,7 @@
       "detectable_in": [
         "ci_cd"
       ],
-      "evidence_expectation": "Providers de modelos AI (Anthropic, OpenAI, HuggingFace, providers próprios self-hosted) usados pela organização estão numa lista aprovada com classificação de risco e cláusulas contratuais aplicáveis (cross-link Cap. 14 — contratação de AI providers). Critérios mínimos de aprovação: zero retention para dados sensíveis quando aplicável; localização de processamento conforme RGPD Art. 44–49; auditoria contratualizada; SLA de notificação prévia de mudanças de versão; conformidade declarada com AI Act Art. 53/55 se fornecer GPAI. Lista revista periodicamente conforme nível de criticidade.",
+      "evidence_expectation": "Providers de modelos AI (Anthropic, OpenAI, HuggingFace, providers próprios self-hosted) usados pela organização estão numa lista aprovada com classificação de risco e cláusulas contratuais aplicáveis (cross-link Cap. 14 — contratação de AI providers). Critérios mínimos de aprovação: zero retention para dados sensíveis quando aplicável; localização de processamento conforme RGPD Art. 44–49; auditoria contratualizada; SLA de notificação prévia de mudanças de versão; conformidade declarada com o AI Act art. 53.º (e art. 55.º, se o modelo tiver risco sistémico) se fornecer GPAI. Lista revista periodicamente conforme nível de criticidade.",
       "evidence_type": "workflow",
       "expected_artifact_type_ids": [
         "ART-approval-record-6fe32eb803",
@@ -4097,7 +4098,7 @@
       "source_document": "010-sbd-manual/05-dependencias-sbom-sca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "verification_logic": "Providers de modelos AI (Anthropic, OpenAI, HuggingFace, providers próprios self-hosted) usados pela organização estão numa lista aprovada com classificação de risco e cláusulas contratuais aplicáveis (cross-link Cap. 14 — contratação de AI providers). Critérios mínimos de aprovação: zero retention para dados sensíveis quando aplicável; localização de processamento conforme RGPD Art. 44–49; auditoria contratualizada; SLA de notificação prévia de mudanças de versão; conformidade declarada com AI Act Art. 53/55 se fornecer GPAI. Lista revista periodicamente conforme nível de criticidade.",
+      "verification_logic": "Providers de modelos AI (Anthropic, OpenAI, HuggingFace, providers próprios self-hosted) usados pela organização estão numa lista aprovada com classificação de risco e cláusulas contratuais aplicáveis (cross-link Cap. 14 — contratação de AI providers). Critérios mínimos de aprovação: zero retention para dados sensíveis quando aplicável; localização de processamento conforme RGPD Art. 44–49; auditoria contratualizada; SLA de notificação prévia de mudanças de versão; conformidade declarada com o AI Act art. 53.º (e art. 55.º, se o modelo tiver risco sistémico) se fornecer GPAI. Lista revista periodicamente conforme nível de criticidade.",
       "verification_when": null
     },
     {
@@ -4694,30 +4695,28 @@
     {
       "authority_class": "normative",
       "confidence_model": "deterministic",
-      "detectable_in": [
-        "ci_cd"
-      ],
-      "evidence_expectation": "Procedimento de rollback definido, documentado e testado periodicamente (pelo menos uma vez por ciclo de release ou anualmente); tempo máximo de rollback definido e verificado em teste; último teste de rollback com data registada.",
-      "evidence_type": "workflow",
+      "detectable_in": [],
+      "evidence_expectation": "Procedimento de rollback definido, documentado e testado periodicamente (anualmente em L1 e trimestralmente em L2/L3, conforme a Política 27); tempo máximo de rollback definido e verificado em teste; último teste de rollback com data registada.",
+      "evidence_type": "test",
       "expected_artifact_type_ids": [
-        "ART-container-image-51e2624252",
-        "ART-pipeline-config-f8f2ba893d"
+        "ART-policy-report-7e52280504",
+        "ART-rollback-plan-4fbad982bb"
       ],
       "expected_artifacts": [
         {
-          "artifact_type_id": "ART-container-image-51e2624252",
-          "confidence": 0.54,
-          "name": "Container Image",
+          "artifact_type_id": "ART-policy-report-7e52280504",
+          "confidence": 0.64,
+          "name": "Policy Report",
           "shared_salient_tokens": [
-            "release"
+            "politica"
           ]
         },
         {
-          "artifact_type_id": "ART-pipeline-config-f8f2ba893d",
+          "artifact_type_id": "ART-rollback-plan-4fbad982bb",
           "confidence": 0.54,
-          "name": "Pipeline Config",
+          "name": "Rollback Plan",
           "shared_salient_tokens": [
-            "release"
+            "rollback"
           ]
         }
       ],
@@ -4733,7 +4732,7 @@
       "source_document": "010-sbd-manual/11-deploy-seguro/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "verification_logic": "Procedimento de rollback definido, documentado e testado periodicamente (pelo menos uma vez por ciclo de release ou anualmente); tempo máximo de rollback definido e verificado em teste; último teste de rollback com data registada.",
+      "verification_logic": "Procedimento de rollback definido, documentado e testado periodicamente (anualmente em L1 e trimestralmente em L2/L3, conforme a Política 27); tempo máximo de rollback definido e verificado em teste; último teste de rollback com data registada.",
       "verification_when": null
     },
     {
@@ -6564,8 +6563,8 @@
       "detectable_in": [
         "ci_cd"
       ],
-      "evidence_expectation": "Ciclo de revisão periódica definido por tipo de activo (aplicações L3: trimestral; L2: semestral; fornecedores críticos: anual); revisões produzem evidência rastreável; desvios identificados geram acções correctivas com owner e prazo definidos.",
-      "evidence_type": "workflow",
+      "evidence_expectation": "Ciclo de revisão periódica definido por tipo de activo (aplicações L3: trimestral; L2: semestral; fornecedores: anual, semestral em L3 e por evento crítico); revisões produzem evidência rastreável; desvios identificados geram acções correctivas com owner e prazo definidos.",
+      "evidence_type": "log",
       "expected_artifact_type_ids": [
         "ART-validation-evidence-79f6aaf0ec",
         "ART-review-checklist-de29054201"
@@ -6601,7 +6600,7 @@
       "source_document": "010-sbd-manual/14-governanca-contratacao/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "verification_logic": "Ciclo de revisão periódica definido por tipo de activo (aplicações L3: trimestral; L2: semestral; fornecedores críticos: anual); revisões produzem evidência rastreável; desvios identificados geram acções correctivas com owner e prazo definidos.",
+      "verification_logic": "Ciclo de revisão periódica definido por tipo de activo (aplicações L3: trimestral; L2: semestral; fornecedores: anual, semestral em L3 e por evento crítico); revisões produzem evidência rastreável; desvios identificados geram acções correctivas com owner e prazo definidos.",
       "verification_when": null
     },
     {
@@ -8551,9 +8550,10 @@
       "confidence_model": "deterministic",
       "detectable_in": [
         "logs",
-        "ci_cd"
+        "ci_cd",
+        "documentation"
       ],
-      "evidence_expectation": "Política de retenção documentada por tipo de log e contexto regulatório aplicável; logs retidos pelo período mínimo obrigatório; processo de arquivo e purga documentado e auditável; evidência de cumprimento disponível.",
+      "evidence_expectation": "Política de retenção documentada por tipo de log e contexto regulatório aplicável; logs retidos pelo período mínimo obrigatório (para os registos gerados automaticamente por sistemas de IA de risco elevado, pelo menos seis meses — AI Act, art. 19.º, n.º 1, e art. 26.º, n.º 6); processo de arquivo e purga documentado e auditável; evidência de cumprimento disponível.",
       "evidence_type": "log",
       "expected_artifact_type_ids": [
         "ART-log-stream-b67ee06f7e",
@@ -8589,7 +8589,7 @@
       "source_document": "010-sbd-manual/12-monitorizacao-operacoes/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "verification_logic": "Política de retenção documentada por tipo de log e contexto regulatório aplicável; logs retidos pelo período mínimo obrigatório; processo de arquivo e purga documentado e auditável; evidência de cumprimento disponível.",
+      "verification_logic": "Política de retenção documentada por tipo de log e contexto regulatório aplicável; logs retidos pelo período mínimo obrigatório (para os registos gerados automaticamente por sistemas de IA de risco elevado, pelo menos seis meses — AI Act, art. 19.º, n.º 1, e art. 26.º, n.º 6); processo de arquivo e purga documentado e auditável; evidência de cumprimento disponível.",
       "verification_when": null
     },
     {
@@ -10882,27 +10882,27 @@
       "authority_class": "normative",
       "confidence_model": "deterministic",
       "detectable_in": [],
-      "evidence_expectation": "SLA de correcção definido por severidade (ex: crítico ≤ 7 dias, elevado ≤ 30 dias); rastreabilidade finding → ticket → correcção → verificação; findings não resolvidos no SLA com excepção formalizada.",
+      "evidence_expectation": "SLA de correcção definido por severidade (conforme a Política 19 §4.3: crítico 30 / 7 / 3 dias e elevado 90 / 30 / 15 dias em L1 / L2 / L3); rastreabilidade finding → ticket → correcção → verificação; findings não resolvidos no SLA com excepção formalizada.",
       "evidence_type": "artifact",
       "expected_artifact_type_ids": [
-        "ART-artifact-provenance-8b1bffca3c",
-        "ART-finding-register-b39d52b4e7"
+        "ART-policy-report-7e52280504",
+        "ART-artifact-provenance-8b1bffca3c"
       ],
       "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-policy-report-7e52280504",
+          "confidence": 0.64,
+          "name": "Policy Report",
+          "shared_salient_tokens": [
+            "politica"
+          ]
+        },
         {
           "artifact_type_id": "ART-artifact-provenance-8b1bffca3c",
           "confidence": 0.54,
           "name": "Artifact Provenance",
           "shared_salient_tokens": [
             "rastreabilidade"
-          ]
-        },
-        {
-          "artifact_type_id": "ART-finding-register-b39d52b4e7",
-          "confidence": 0.54,
-          "name": "Finding Register",
-          "shared_salient_tokens": [
-            "finding"
           ]
         }
       ],
@@ -10918,7 +10918,7 @@
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "verification_logic": "SLA de correcção definido por severidade (ex: crítico ≤ 7 dias, elevado ≤ 30 dias); rastreabilidade finding → ticket → correcção → verificação; findings não resolvidos no SLA com excepção formalizada.",
+      "verification_logic": "SLA de correcção definido por severidade (conforme a Política 19 §4.3: crítico 30 / 7 / 3 dias e elevado 90 / 30 / 15 dias em L1 / L2 / L3); rastreabilidade finding → ticket → correcção → verificação; findings não resolvidos no SLA com excepção formalizada.",
       "verification_when": null
     },
     {
@@ -11107,13 +11107,21 @@
         "ci_cd",
         "documentation"
       ],
-      "evidence_expectation": "Pentesting executado com frequência mínima definida por nível de risco (ex: anual para L2, semestral para L3); escopo documentado; relatório com findings, severidade e plano de correcção; correcções verificadas em reteste.",
+      "evidence_expectation": "Pentesting executado com frequência mínima definida por nível de risco (anual em L2 e L3, mais os gatilhos da Política 36 §9); escopo documentado; relatório com findings, severidade e plano de correcção; correcções verificadas em reteste.",
       "evidence_type": "log",
       "expected_artifact_type_ids": [
-        "ART-sast-report-0358e14566",
-        "ART-finding-register-b39d52b4e7"
+        "ART-policy-report-7e52280504",
+        "ART-sast-report-0358e14566"
       ],
       "expected_artifacts": [
+        {
+          "artifact_type_id": "ART-policy-report-7e52280504",
+          "confidence": 0.64,
+          "name": "Policy Report",
+          "shared_salient_tokens": [
+            "relatorio"
+          ]
+        },
         {
           "artifact_type_id": "ART-sast-report-0358e14566",
           "confidence": 0.56,
@@ -11121,14 +11129,6 @@
           "shared_salient_tokens": [
             "finding",
             "relatorio"
-          ]
-        },
-        {
-          "artifact_type_id": "ART-finding-register-b39d52b4e7",
-          "confidence": 0.54,
-          "name": "Finding Register",
-          "shared_salient_tokens": [
-            "finding"
           ]
         }
       ],
@@ -11144,7 +11144,7 @@
       "source_document": "010-sbd-manual/10-testes-seguranca/addon/00-catalogo-requisitos.md",
       "source_mode": "explicit",
       "supported_signal_ids": [],
-      "verification_logic": "Pentesting executado com frequência mínima definida por nível de risco (ex: anual para L2, semestral para L3); escopo documentado; relatório com findings, severidade e plano de correcção; correcções verificadas em reteste.",
+      "verification_logic": "Pentesting executado com frequência mínima definida por nível de risco (anual em L2 e L3, mais os gatilhos da Política 36 §9); escopo documentado; relatório com findings, severidade e plano de correcção; correcções verificadas em reteste.",
       "verification_when": null
     },
     {

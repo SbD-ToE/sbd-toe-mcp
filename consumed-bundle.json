@@ -2,26 +2,26 @@
   "_doc": "Pontifex bundle pin (PROGRAMME-PRESERVATION-PROTOCOL §0.6 / AGENTS.md Rule 4). Declares the Codex build artefact this MCP serves. Materialized + maintained by scripts/sync-bundle.mjs (digest-verified against the artefact .sha256), validated by scripts/verify-consumed-bundle.mjs (run in `npm run check`). source: dev-build = cycle snapshot; release = formal vX.Y.Z. release_sha256 is the verified artefact digest — never invented.",
   "pin_version": 1,
   "pinned_at": "2026-08-31",
-  "consumer_contract_version": "v1.25",
+  "consumer_contract_version": "v2.0",
   "_consumer_contract_version_doc": "Contrato a MONTANTE: aquele pelo qual este servidor CONSOME o bundle do Codex. NÃO confundir com `serving_contract.version` (hoje v1.18-beta), servido em `initialize`, que é o contrato a JUSANTE — pelo qual o servidor SERVE selecção a quem o chama. São dois eixos opostos, com donos diferentes, e não se seguem um ao outro; o `alignment_policy` abaixo governa este.",
-  "substrate_version": "manual-v1.14.0+sbdtoe-ontology-v2.10",
+  "substrate_version": "manual-v1.16.0+sbdtoe-ontology-v2.11",
   "kg_bundle": {
-    "release_tag": "v1.12.0",
-    "release_sha256": "c21d35cb7fea408a9efbd4bb4482c6254aafdf39b3596ef4bc7a99cc31bece2f",
+    "release_tag": "v2.0.0",
+    "release_sha256": "99a38841d4cc719f054659d1f3f972b45d97327cd9866cfb50e538dc8f791e07",
     "source": "release",
-    "release_ref": "SbD-ToE/sbd-toe-knowledge-graph@v1.12.0",
-    "surface_built_at": "2026-09-09T23:01:19.600250+00:00",
+    "release_ref": "SbD-ToE/sbd-toe-knowledge-graph@v2.0.0",
+    "surface_built_at": "2026-09-27T16:35:37.217594+00:00",
     "tag_scheme": "semver",
-    "synced_at": "2026-09-10",
-    "artefact": "sbd-toe-knowledge-graph-bundle-v1.12.0.zip"
+    "synced_at": "2026-09-28",
+    "artefact": "sbd-toe-knowledge-graph-bundle-v2.0.0.zip"
   },
   "inputs": {
     "manual": {
       "repo": "SbD-ToE/sbd-toe-manual",
-      "commit": "0576e914d4c933ddc1af25cb2c5570dd2afcf60f",
-      "tag": "v1.14.0",
-      "version": "1.14.0",
-      "generated_at": "2026-09-09T23:00:38Z"
+      "commit": "53bd772556323c9d9e04f18d2ec09433702d9170",
+      "tag": "v1.16.0",
+      "version": "1.16.0",
+      "generated_at": "2026-09-27T16:34:47Z"
     },
     "ontology": {
       "repo": "SbD-ToE/sbd-toe-ontology",
@@ -34,5 +34,12 @@
     "additive": "minor/patch contract bump → align (fetch + verify sha256 + validate contract version + update pin + acceptance-suite smoke-test + log)",
     "breaking": "major contract bump → gate: halt and re-validate serving-logic before pinning (Pontifex + programme lead)",
     "paper_bundles": "paper-*-kg-input-* tags are immutable and never auto-updated (protocol §5.1/§5.2)"
+  },
+  "contract_major_acceptance": {
+    "from": "v1.25",
+    "to": "v2.0",
+    "accepted_on": "2026-09-28",
+    "reason": "KG v2.0.0 (contrato v2.0, incompatível: 697 ids de secção/chunk mudam, migrados via id_migrations.jsonl; 215 secções e 13 practice_id corrigidos); decisão do lead 2026-09-27, autorização do lead 2026-09-28; serving re-validado na 0.22.0",
+    "policy": "alignment_policy.breaking"
   }
 }

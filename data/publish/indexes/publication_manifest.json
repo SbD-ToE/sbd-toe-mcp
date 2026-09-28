@@ -49,15 +49,15 @@
     "build-cross-layer-referrals"
   ],
   "counts": {
-    "chunk_entity_mentions": 4145,
+    "chunk_entity_mentions": 4400,
     "chunk_relation_hints": 1368,
-    "chunks": 4907,
-    "chunks_with_entity_refs": 950,
-    "cross_layer_referrals": 7938,
+    "chunks": 4962,
+    "chunks_with_entity_refs": 958,
+    "cross_layer_referrals": 8170,
     "external_frameworks": 6,
     "external_obligations": 39,
     "framework_overlay_profiles": 6,
-    "mcp_chunks": 4907,
+    "mcp_chunks": 4962,
     "overlay_mappings": 7080,
     "overlay_playbooks": 20,
     "policy_links": 83,
@@ -68,22 +68,22 @@
     "runtime_antipatterns": 26,
     "runtime_artifact_requirements": 45,
     "runtime_artifacts": 45,
-    "runtime_assignments": 1473,
+    "runtime_assignments": 1521,
     "runtime_bundle_artifacts": 20,
     "runtime_controls": 20,
-    "runtime_decision_involvements": 188,
+    "runtime_decision_involvements": 208,
     "runtime_evidence_patterns": 274,
     "runtime_metrics": 99,
     "runtime_phases": 8,
     "runtime_practices": 260,
     "runtime_requirement_control_links": 306,
     "runtime_requirements": 274,
-    "runtime_roles": 13,
+    "runtime_roles": 17,
     "runtime_signal_evidence_links": 11,
     "runtime_signals": 23,
     "runtime_threats": 0,
     "runtime_user_stories": 260,
-    "vector_chunks": 4907
+    "vector_chunks": 4962
   },
   "ontology_roots": {
     "consumer_root": "ontology/sbdtoe-ontology.yaml",
@@ -96,5 +96,5 @@
     "local_mirror_role": "build_input_only"
   },
   "primary_artifact": "canonical_chunks.jsonl",
-  "substrate_version": "manual-v1.14.0+sbdtoe-ontology-v2.10"
+  "substrate_version": "manual-v1.16.0+sbdtoe-ontology-v2.11"
 }

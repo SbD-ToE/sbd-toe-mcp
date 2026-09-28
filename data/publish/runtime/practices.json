@@ -28,7 +28,7 @@
       ],
       "source_section_ids": [
         "010-sbd-manual-01-classificacao-aplicacoes-addon-07-adopcao-drp-bia--modelo-alternativo-via-adocao-de-classificacoes-existentes-e-g-drp-bia",
-        "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-14-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
+        "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-14-adocao-de-modelo-de-classificacao-alternativo-drpbia-mapeado-para-edi",
         "010-sbd-manual-01-classificacao-aplicacoes-intro--classificacao-da-criticidade-aplicacional--prescricao-pratica-o-que-quem-como-quando-porque-e-para-que--como-deve-ser-feito"
       ],
       "warnings": []
@@ -313,11 +313,11 @@
       "confidence": 0.95,
       "evidence": [
         "practice_id derived deterministically from chapter '02-requisitos-seguranca'",
-        "user story title normalized to 'classificacao-e-registo-do-mandate-de-agente-ai-us-15'"
+        "user story title normalized to 'classificacao-e-registo-do-mandate-de-agente-ai'"
       ],
-      "id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai-us-15",
-      "label": "Classificação e registo do *mandate* de agente AI {#us-15}",
-      "normalized_label": "classificacao-e-registo-do-mandate-de-agente-ai-us-15",
+      "id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai",
+      "label": "Classificação e registo do *mandate* de agente AI",
+      "normalized_label": "classificacao-e-registo-do-mandate-de-agente-ai",
       "source_document_ids": [
         "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle"
       ],
@@ -325,7 +325,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-15-classificacao-e-registo-do-mandate-de-agente-ai-us-15"
+        "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-15"
       ],
       "warnings": []
     },
@@ -378,7 +378,7 @@
         "summary"
       ],
       "source_section_ids": [
-        "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-10-gates-automaticos-em-ci-cd-para-requisitos-de-seguranca",
+        "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-10-gates-automaticos-em-cicd-para-requisitos-de-seguranca",
         "010-sbd-manual-02-requisitos-seguranca-intro--requisitos-de-seguranca--prescricao-pratica-o-que-quem-como-quando-porque-e-para-que--o-que-deve-ser-feito"
       ],
       "warnings": []
@@ -696,7 +696,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-09-validacao-por-requisito-dominio-req-xxx-evidencia"
+        "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-09-validacao-por-requisitodominio-req-xxx-evidencia"
       ],
       "warnings": []
     },
@@ -833,7 +833,7 @@
       ],
       "source_section_ids": [
         "010-sbd-manual-03-threat-modeling-addon-12-abuse-misuse-cases--metodo-de-abuse-e-misuse-cases",
-        "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-13-derivacao-de-abuse-misuse-cases-para-o-backlog"
+        "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-13-derivacao-de-abusemisuse-cases-para-o-backlog"
       ],
       "warnings": []
     },
@@ -854,7 +854,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-05-gate-de-controlo-de-consistencia-no-ci-cd"
+        "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-05-gate-de-controlo-de-consistencia-no-cicd"
       ],
       "warnings": []
     },
@@ -943,7 +943,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-12-threat-modeling-estendido-para-componentes-ai-ml-nao-agentic"
+        "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-12-threat-modeling-estendido-para-componentes-aiml-nao-agentic"
       ],
       "warnings": []
     },
@@ -952,11 +952,11 @@
       "confidence": 0.95,
       "evidence": [
         "practice_id derived deterministically from chapter '03-threat-modeling'",
-        "user story title normalized to 'threat-modeling-para-sistema-com-agente-ai-tool-use-us-11'"
+        "user story title normalized to 'threat-modeling-para-sistema-com-agente-ai-tool-use'"
       ],
-      "id": "03-threat-modeling:threat-modeling-para-sistema-com-agente-ai-tool-use-us-11",
-      "label": "Threat modeling para sistema com agente AI (tool-use) {#us-11}",
-      "normalized_label": "threat-modeling-para-sistema-com-agente-ai-tool-use-us-11",
+      "id": "03-threat-modeling:threat-modeling-para-sistema-com-agente-ai-tool-use",
+      "label": "Threat modeling para sistema com agente AI (tool-use)",
+      "normalized_label": "threat-modeling-para-sistema-com-agente-ai-tool-use",
       "source_document_ids": [
         "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle"
       ],
@@ -964,7 +964,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-11-threat-modeling-para-sistema-com-agente-ai-tool-use-us-11"
+        "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-11"
       ],
       "warnings": []
     },
@@ -1289,7 +1289,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-18-padroes-arquitetonicos-para-sistemas-ai-ml-nao-agentic"
+        "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-18-padroes-arquitetonicos-para-sistemas-aiml-nao-agentic"
       ],
       "warnings": []
     },
@@ -1298,11 +1298,11 @@
       "confidence": 0.95,
       "evidence": [
         "practice_id derived deterministically from chapter '04-arquitetura-segura'",
-        "user story title normalized to 'revisao-de-arquitectura-para-agente-ai-em-a2-us-16'"
+        "user story title normalized to 'revisao-de-arquitectura-para-agente-ai-em-a2'"
       ],
-      "id": "04-arquitetura-segura:revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
-      "label": "Revisão de arquitectura para agente AI em A2+ {#us-16}",
-      "normalized_label": "revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
+      "id": "04-arquitetura-segura:revisao-de-arquitectura-para-agente-ai-em-a2",
+      "label": "Revisão de arquitectura para agente AI em A2+",
+      "normalized_label": "revisao-de-arquitectura-para-agente-ai-em-a2",
       "source_document_ids": [
         "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle"
       ],
@@ -1310,7 +1310,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-16-revisao-de-arquitectura-para-agente-ai-em-a2-us-16"
+        "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-16"
       ],
       "warnings": []
     },
@@ -1468,7 +1468,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-07-validacao-arquitetural-automatizavel-no-ci-cd-quando-aplicavel"
+        "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-07-validacao-arquitetural-automatizavel-no-cicd-quando-aplicavel"
       ],
       "warnings": []
     },
@@ -1477,11 +1477,11 @@
       "confidence": 0.95,
       "evidence": [
         "practice_id derived deterministically from chapter '05-dependencias-sbom-sca'",
-        "user story title normalized to 'ai-bom-e-gestao-de-providers-de-modelos-ai-us-14'"
+        "user story title normalized to 'ai-bom-e-gestao-de-providers-de-modelos-ai'"
       ],
-      "id": "05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
-      "label": "AI BOM e gestão de *providers* de modelos AI {#us-14}",
-      "normalized_label": "ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
+      "id": "05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai",
+      "label": "AI BOM e gestão de *providers* de modelos AI",
+      "normalized_label": "ai-bom-e-gestao-de-providers-de-modelos-ai",
       "source_document_ids": [
         "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle"
       ],
@@ -1489,7 +1489,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-14-ai-bom-e-gestao-de-providers-de-modelos-ai-us-14"
+        "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-14"
       ],
       "warnings": []
     },
@@ -1842,7 +1842,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-05-validacao-de-release-go-no-go"
+        "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-05-validacao-de-release-gono-go"
       ],
       "warnings": []
     },
@@ -1889,7 +1889,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-04-automatizacao-em-ci-cd-linters-sast"
+        "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-04-automatizacao-em-cicd-linters-sast"
       ],
       "warnings": []
     },
@@ -2214,11 +2214,11 @@
       "confidence": 0.95,
       "evidence": [
         "practice_id derived deterministically from chapter '07-cicd-seguro'",
-        "user story title normalized to 'agentes-ai-como-principals-na-pipeline-us-19'"
+        "user story title normalized to 'agentes-ai-como-principals-na-pipeline'"
       ],
-      "id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline-us-19",
-      "label": "Agentes AI como *principals* na pipeline {#us-19}",
-      "normalized_label": "agentes-ai-como-principals-na-pipeline-us-19",
+      "id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline",
+      "label": "Agentes AI como *principals* na pipeline",
+      "normalized_label": "agentes-ai-como-principals-na-pipeline",
       "source_document_ids": [
         "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle"
       ],
@@ -2226,7 +2226,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-19-agentes-ai-como-principals-na-pipeline-us-19"
+        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-19"
       ],
       "warnings": []
     },
@@ -2296,7 +2296,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-17-contencao-de-contexto-e-higiene-de-logs-outputs"
+        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-17-contencao-de-contexto-e-higiene-de-logsoutputs"
       ],
       "warnings": []
     },
@@ -2305,11 +2305,11 @@
       "confidence": 0.95,
       "evidence": [
         "practice_id derived deterministically from chapter '07-cicd-seguro'",
-        "user story title normalized to 'custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas-us-23'"
+        "user story title normalized to 'custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas'"
       ],
-      "id": "07-cicd-seguro:custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas-us-23",
-      "label": "Custódia de artefactos, visibilidade de exceção e integrações externas {#us-23}",
-      "normalized_label": "custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas-us-23",
+      "id": "07-cicd-seguro:custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas",
+      "label": "Custódia de artefactos, visibilidade de exceção e integrações externas",
+      "normalized_label": "custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas",
       "source_document_ids": [
         "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle"
       ],
@@ -2317,7 +2317,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-23-custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas-us-23"
+        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-23"
       ],
       "warnings": []
     },
@@ -2370,7 +2370,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-16-evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao"
+        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-16-evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao"
       ],
       "warnings": []
     },
@@ -2391,7 +2391,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-07-gates-por-risco-separacao-sinal-decisao"
+        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-07-gates-por-risco-separacao-sinaldecisao"
       ],
       "warnings": []
     },
@@ -2487,11 +2487,11 @@
       "confidence": 0.95,
       "evidence": [
         "practice_id derived deterministically from chapter '07-cicd-seguro'",
-        "user story title normalized to 'identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20'"
+        "user story title normalized to 'identidade-empresarial-no-scm-e-assinatura-de-commits-tags'"
       ],
-      "id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
-      "label": "Identidade empresarial no SCM e assinatura de commits/tags {#us-20}",
-      "normalized_label": "identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
+      "id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags",
+      "label": "Identidade empresarial no SCM e assinatura de commits/tags",
+      "normalized_label": "identidade-empresarial-no-scm-e-assinatura-de-commits-tags",
       "source_document_ids": [
         "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle"
       ],
@@ -2499,7 +2499,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-20-identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20"
+        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-20"
       ],
       "warnings": []
     },
@@ -2572,7 +2572,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-18-nao-repudio-e-ownership-de-promocoes-acoes-irreversiveis"
+        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-18-nao-repudio-e-ownership-de-promocoes-acoes-irreversiveis"
       ],
       "warnings": []
     },
@@ -2581,11 +2581,11 @@
       "confidence": 0.95,
       "evidence": [
         "practice_id derived deterministically from chapter '07-cicd-seguro'",
-        "user story title normalized to 'protecao-contra-escalonamento-de-privilegios-em-runners-us-22'"
+        "user story title normalized to 'protecao-contra-escalonamento-de-privilegios-em-runners'"
       ],
-      "id": "07-cicd-seguro:protecao-contra-escalonamento-de-privilegios-em-runners-us-22",
-      "label": "Proteção contra escalonamento de privilégios em runners {#us-22}",
-      "normalized_label": "protecao-contra-escalonamento-de-privilegios-em-runners-us-22",
+      "id": "07-cicd-seguro:protecao-contra-escalonamento-de-privilegios-em-runners",
+      "label": "Proteção contra escalonamento de privilégios em runners",
+      "normalized_label": "protecao-contra-escalonamento-de-privilegios-em-runners",
       "source_document_ids": [
         "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle"
       ],
@@ -2593,7 +2593,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-22-protecao-contra-escalonamento-de-privilegios-em-runners-us-22"
+        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-22"
       ],
       "warnings": []
     },
@@ -2640,7 +2640,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-14-reprodutibilidade-e-determinismo-do-pipeline"
+        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-14-reprodutibilidade-e-determinismo-do-pipeline"
       ],
       "warnings": []
     },
@@ -2675,11 +2675,11 @@
       "confidence": 0.95,
       "evidence": [
         "practice_id derived deterministically from chapter '07-cicd-seguro'",
-        "user story title normalized to 'separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21'"
+        "user story title normalized to 'separacao-ci-cd-build-test-deploy-e-templates-versionados'"
       ],
-      "id": "07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21",
-      "label": "Separação CI/CD, build/test/deploy e templates versionados {#us-21}",
-      "normalized_label": "separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21",
+      "id": "07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados",
+      "label": "Separação CI/CD, build/test/deploy e templates versionados",
+      "normalized_label": "separacao-ci-cd-build-test-deploy-e-templates-versionados",
       "source_document_ids": [
         "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle"
       ],
@@ -2687,7 +2687,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-21-separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21"
+        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-21"
       ],
       "warnings": []
     },
@@ -2708,7 +2708,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-15-separacao-formal-entre-sinal-automatico-e-decisao-de-promocao"
+        "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-15-separacao-formal-entre-sinal-automatico-e-decisao-de-promocao"
       ],
       "warnings": []
     },
@@ -3003,7 +3003,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-18-proibicao-de-apply-manual-local-fora-do-pipeline"
+        "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-18-proibicao-de-apply-manuallocal-fora-do-pipeline"
       ],
       "warnings": []
     },
@@ -3222,7 +3222,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-04-aplicacao-de-politicas-formais-de-seguranca-no-runtime-com-opa-kyverno"
+        "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-04-aplicacao-de-politicas-formais-de-seguranca-no-runtime-com-opakyverno"
       ],
       "warnings": []
     },
@@ -3363,7 +3363,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-17-excecoes-temporarias-a-findings-policies-com-ttl-compensacoes-e-revalidacao"
+        "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-17-excecoes-temporarias-a-findingspolicies-com-ttl-compensacoes-e-revalidacao"
       ],
       "warnings": []
     },
@@ -3536,7 +3536,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-21-perfis-seccomp-apparmor-e-verificacao-de-drift-de-hardening"
+        "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-21-perfis-seccompapparmor-e-verificacao-de-drift-de-hardening"
       ],
       "warnings": []
     },
@@ -3646,7 +3646,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-14-sandboxing-avancado-com-gvisor-kata-para-workloads-criticas"
+        "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-14-sandboxing-avancado-com-gvisorkata-para-workloads-criticas"
       ],
       "warnings": []
     },
@@ -3688,7 +3688,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-02-validacao-automatica-de-vulnerabilidades-em-imagens-no-pipeline-ci-cd"
+        "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-02-validacao-automatica-de-vulnerabilidades-em-imagens-no-pipeline-cicd"
       ],
       "warnings": []
     },
@@ -3861,7 +3861,7 @@
       ],
       "source_section_ids": [
         "010-sbd-manual-10-testes-seguranca-addon-07-integracao-pipeline--integracao-dos-testes-de-seguranca-no-pipeline-ci-cd",
-        "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-04-gates-de-seguranca-no-ci-cd"
+        "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-04-gates-de-seguranca-no-cicd"
       ],
       "warnings": []
     },
@@ -4138,7 +4138,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--checklist-de-release-v-version--us-16-separacao-formal-entre-sinal-automatico-e-decisao-de-bloqueio-override"
+        "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--checklist-de-release-v-version--us-16-separacao-formal-entre-sinal-automatico-e-decisao-de-bloqueiooverride"
       ],
       "warnings": []
     },
@@ -4295,7 +4295,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-10-deploy-progressivo-com-estrategias-canary-blue-green"
+        "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-10-deploy-progressivo-com-estrategias-canaryblue-green"
       ],
       "warnings": []
     },
@@ -4430,11 +4430,11 @@
       "confidence": 0.95,
       "evidence": [
         "practice_id derived deterministically from chapter '11-deploy-seguro'",
-        "user story title normalized to 'release-gates-especificos-para-sistemas-com-agentes-ai-us-18'"
+        "user story title normalized to 'release-gates-especificos-para-sistemas-com-agentes-ai'"
       ],
-      "id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
-      "label": "Release gates específicos para sistemas com agentes AI {#us-18}",
-      "normalized_label": "release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
+      "id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai",
+      "label": "Release gates específicos para sistemas com agentes AI",
+      "normalized_label": "release-gates-especificos-para-sistemas-com-agentes-ai",
       "source_document_ids": [
         "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle"
       ],
@@ -4442,7 +4442,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-18-release-gates-especificos-para-sistemas-com-agentes-ai-us-18"
+        "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-18"
       ],
       "warnings": []
     },
@@ -4693,7 +4693,7 @@
       ],
       "source_section_ids": [
         "010-sbd-manual-12-monitorizacao-operacoes-addon-12-epss-kev-priorizacao--priorizacao-de-vulnerabilidades-com-epss-e-kev",
-        "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-16-cobertura-att-ck-e-priorizacao-epss-kev"
+        "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-16-cobertura-attck-e-priorizacao-epsskev"
       ],
       "warnings": []
     },
@@ -4899,7 +4899,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-05-metricas-de-eficacia-mttd-mttr"
+        "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-05-metricas-de-eficacia-mttdmttr"
       ],
       "warnings": []
     },
@@ -4992,11 +4992,11 @@
       "confidence": 0.95,
       "evidence": [
         "practice_id derived deterministically from chapter '12-monitorizacao-operacoes'",
-        "user story title normalized to 'telemetria-de-agentes-ai-em-producao-us-13'"
+        "user story title normalized to 'telemetria-de-agentes-ai-em-producao'"
       ],
-      "id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao-us-13",
-      "label": "Telemetria de agentes AI em produção {#us-13}",
-      "normalized_label": "telemetria-de-agentes-ai-em-producao-us-13",
+      "id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao",
+      "label": "Telemetria de agentes AI em produção",
+      "normalized_label": "telemetria-de-agentes-ai-em-producao",
       "source_document_ids": [
         "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle"
       ],
@@ -5004,7 +5004,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-13-telemetria-de-agentes-ai-em-producao-us-13"
+        "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-13"
       ],
       "warnings": []
     },
@@ -5118,7 +5118,7 @@
       "confidence": 0.95,
       "evidence": [
         "practice_id derived deterministically from chapter '13-formacao-onboarding'",
-        "technical_detail occurrence linked from 010-sbd-manual/13-formacao-onboarding/addon/06-manual-formação-por-capitulo.md",
+        "technical_detail occurrence linked from 010-sbd-manual/13-formacao-onboarding/addon/06-manual-formação-por-capitulo.md",
         "token overlap: ['formacao', 'perfil']",
         "user story title normalized to 'formacao-continua-por-perfil'"
       ],
@@ -5499,11 +5499,11 @@
       "confidence": 0.95,
       "evidence": [
         "practice_id derived deterministically from chapter '14-governanca-contratacao'",
-        "user story title normalized to 'aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais-us-22'"
+        "user story title normalized to 'aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais'"
       ],
-      "id": "14-governanca-contratacao:aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais-us-22",
-      "label": "Aprovação formal e auditoria periódica das políticas organizacionais {#us-22}",
-      "normalized_label": "aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais-us-22",
+      "id": "14-governanca-contratacao:aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais",
+      "label": "Aprovação formal e auditoria periódica das políticas organizacionais",
+      "normalized_label": "aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais",
       "source_document_ids": [
         "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle"
       ],
@@ -5511,7 +5511,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-22-aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais-us-22"
+        "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-22"
       ],
       "warnings": []
     },
@@ -5590,11 +5590,11 @@
       "confidence": 0.95,
       "evidence": [
         "practice_id derived deterministically from chapter '14-governanca-contratacao'",
-        "user story title normalized to 'contratacao-de-provedores-de-modelos-ai-us-21'"
+        "user story title normalized to 'contratacao-de-provedores-de-modelos-ai'"
       ],
-      "id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
-      "label": "Contratação de provedores de modelos AI {#us-21}",
-      "normalized_label": "contratacao-de-provedores-de-modelos-ai-us-21",
+      "id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai",
+      "label": "Contratação de provedores de modelos AI",
+      "normalized_label": "contratacao-de-provedores-de-modelos-ai",
       "source_document_ids": [
         "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle"
       ],
@@ -5602,7 +5602,7 @@
         "operational"
       ],
       "source_section_ids": [
-        "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21"
+        "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21"
       ],
       "warnings": []
     },

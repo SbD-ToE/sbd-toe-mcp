@@ -1644,7 +1644,7 @@
         "L3": true
       },
       "category": "DEP",
-      "description": "SLA de actualização definido por nível de severidade de CVE (ex: crítico ≤ 48h, elevado ≤ 7 dias, médio ≤ 30 dias); evidência de cumprimento nos ciclos mais recentes; excepções formalizadas quando aplicável.",
+      "description": "SLA de actualização definido por nível de severidade de CVE (conforme a Política 19 §4.3: p. ex. crítico 30 / 7 / 3 dias e elevado 90 / 30 / 15 dias em L1 / L2 / L3; com indício de exploração ativa, o prazo antecipa-se); evidência de cumprimento nos ciclos mais recentes; excepções formalizadas quando aplicável.",
       "domain": "dependencies-sbom-sca",
       "evidence_types": [],
       "name": "Política de actualização com SLA definido por severidade",
@@ -1777,7 +1777,7 @@
         "L3": true
       },
       "category": "DEP",
-      "description": "Providers de modelos AI (Anthropic, OpenAI, HuggingFace, providers próprios self-hosted) usados pela organização estão numa lista aprovada com classificação de risco e cláusulas contratuais aplicáveis (cross-link Cap. 14 — contratação de AI providers). Critérios mínimos de aprovação: zero retention para dados sensíveis quando aplicável; localização de processamento conforme RGPD Art. 44–49; auditoria contratualizada; SLA de notificação prévia de mudanças de versão; conformidade declarada com AI Act Art. 53/55 se fornecer GPAI. Lista revista periodicamente conforme nível de criticidade.",
+      "description": "Providers de modelos AI (Anthropic, OpenAI, HuggingFace, providers próprios self-hosted) usados pela organização estão numa lista aprovada com classificação de risco e cláusulas contratuais aplicáveis (cross-link Cap. 14 — contratação de AI providers). Critérios mínimos de aprovação: zero retention para dados sensíveis quando aplicável; localização de processamento conforme RGPD Art. 44–49; auditoria contratualizada; SLA de notificação prévia de mudanças de versão; conformidade declarada com o AI Act art. 53.º (e art. 55.º, se o modelo tiver risco sistémico) se fornecer GPAI. Lista revista periodicamente conforme nível de criticidade.",
       "domain": "dependencies-sbom-sca",
       "evidence_types": [],
       "name": "Lista de providers AI aprovados com classificação de risco",
@@ -2043,7 +2043,7 @@
         "L3": true
       },
       "category": "DPL",
-      "description": "Procedimento de rollback definido, documentado e testado periodicamente (pelo menos uma vez por ciclo de release ou anualmente); tempo máximo de rollback definido e verificado em teste; último teste de rollback com data registada.",
+      "description": "Procedimento de rollback definido, documentado e testado periodicamente (anualmente em L1 e trimestralmente em L2/L3, conforme a Política 27); tempo máximo de rollback definido e verificado em teste; último teste de rollback com data registada.",
       "domain": "secure-deploy",
       "evidence_types": [],
       "name": "Rollback configurado, testado e com SLA definido",
@@ -3064,7 +3064,7 @@
         "L3": true
       },
       "category": "GOV",
-      "description": "Ciclo de revisão periódica definido por tipo de activo (aplicações L3: trimestral; L2: semestral; fornecedores críticos: anual); revisões produzem evidência rastreável; desvios identificados geram acções correctivas com owner e prazo definidos.",
+      "description": "Ciclo de revisão periódica definido por tipo de activo (aplicações L3: trimestral; L2: semestral; fornecedores: anual, semestral em L3 e por evento crítico); revisões produzem evidência rastreável; desvios identificados geram acções correctivas com owner e prazo definidos.",
       "domain": "governance-and-procurement",
       "evidence_types": [],
       "name": "Ciclo de validação contínua e revisão periódica de conformidade",
@@ -4020,7 +4020,7 @@
         "L3": true
       },
       "category": "OPS",
-      "description": "Política de retenção documentada por tipo de log e contexto regulatório aplicável; logs retidos pelo período mínimo obrigatório; processo de arquivo e purga documentado e auditável; evidência de cumprimento disponível.",
+      "description": "Política de retenção documentada por tipo de log e contexto regulatório aplicável; logs retidos pelo período mínimo obrigatório (para os registos gerados automaticamente por sistemas de IA de risco elevado, pelo menos seis meses — AI Act, art. 19.º, n.º 1, e art. 26.º, n.º 6); processo de arquivo e purga documentado e auditável; evidência de cumprimento disponível.",
       "domain": "operations-monitoring",
       "evidence_types": [],
       "name": "Retenção de logs conforme política e requisitos regulatórios",
@@ -5164,7 +5164,7 @@
         "L3": true
       },
       "category": "TST",
-      "description": "SLA de correcção definido por severidade (ex: crítico ≤ 7 dias, elevado ≤ 30 dias); rastreabilidade finding → ticket → correcção → verificação; findings não resolvidos no SLA com excepção formalizada.",
+      "description": "SLA de correcção definido por severidade (conforme a Política 19 §4.3: crítico 30 / 7 / 3 dias e elevado 90 / 30 / 15 dias em L1 / L2 / L3); rastreabilidade finding → ticket → correcção → verificação; findings não resolvidos no SLA com excepção formalizada.",
       "domain": "security-testing",
       "evidence_types": [],
       "name": "Gestão formal de findings com SLA de correcção por severidade",
@@ -5259,7 +5259,7 @@
         "L3": true
       },
       "category": "TST",
-      "description": "Pentesting executado com frequência mínima definida por nível de risco (ex: anual para L2, semestral para L3); escopo documentado; relatório com findings, severidade e plano de correcção; correcções verificadas em reteste.",
+      "description": "Pentesting executado com frequência mínima definida por nível de risco (anual em L2 e L3, mais os gatilhos da Política 36 §9); escopo documentado; relatório com findings, severidade e plano de correcção; correcções verificadas em reteste.",
       "domain": "security-testing",
       "evidence_types": [],
       "name": "Testes de penetração periódicos com escopo e metodologia definidos",

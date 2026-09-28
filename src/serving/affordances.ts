@@ -13,7 +13,7 @@
  */
 
 import { boundAffordances, type Affordance } from "./protocol-envelope.js";
-import { REQUIREMENT_CEILING_BY_DETAIL, projectedCostTk } from "./payload-ceilings.js";
+import { PAYLOAD_PROMISE_TK } from "./payload-ceilings.js";
 
 const concernsHint = (concerns: string[] | undefined): string =>
   concerns && concerns.length > 0 ? `concerns=[${concerns.slice(0, 5).join(", ")}]` : "concerns (recomendado <=3)";
@@ -35,7 +35,7 @@ export function mapApplicabilityAffordances(riskLevel: string | undefined): Affo
   ]);
 }
 
-export function selectRequirementsAffordances(riskLevel: string, selectedIds: readonly string[] = [], lexicalConcerns?: readonly string[], totalSelected?: number): Affordance[] {
+export function selectRequirementsAffordances(riskLevel: string, selectedIds: readonly string[] = [], lexicalConcerns?: readonly string[], totalSelected?: number, listaEstimateTk?: number): Affordance[] {
   // 0.19.0: dominância lexical ⇒ a 1ª sugestão é ESTABILIZAR a selecção.
   // 0.19.2 (princípio novo): o next é CALIBRADO com os limites do destino — nenhuma
   // sugestão pode ser rejeitada pela tool que sugere. Aqui: top-3 concerns por peso
@@ -53,13 +53,14 @@ export function selectRequirementsAffordances(riskLevel: string, selectedIds: re
   const idsHint = selectedIds.length > 0 ? `requirement_ids=[${selectedIds.slice(0, 3).join(", ")}${selectedIds.length > 3 ? ", …" : ""}]${capNote}` : "requirement_ids=[…os selected…] (≤50 ids por chamada; ~190 tk/id medidos)";
   const proveRow: Affordance = { intent: "provar os requisitos seleccionados (requisito → prova)", tool: "get_sbd_toe_verification_matrix", with: `risk_level="${riskLevel}", ${idsHint}`, kind: "structural" };
   const consultRow: Affordance = { intent: "get the controls/artifacts behind the selected requirements", tool: "consult_security_requirements", with: `risk_level="${riskLevel}", <=5 concerns (recomendado <=3)`, kind: "structural" };
-  // 0.19.4: custo anunciado ANTES de pagar (padrão da matrix/0.19.3) — projecção
-  // da contagem seleccionada × custo/req por detail, com o tecto novo declarado.
+  // 0.19.4: custo anunciado ANTES de pagar (padrão da matrix/0.19.3). 0.21.2 (decisão 0004):
+  // já não há tecto por contagem — o prepare MEDE o payload real contra o envelope. Aqui fica a
+  // única projecção inevitável, declarada ESTIMATIVA (médias por categoria medidas no bundle) e
+  // que nunca bloqueia nada.
   const t = totalSelected ?? 0;
-  const ceilLista = REQUIREMENT_CEILING_BY_DETAIL["lista"] ?? 0;
-  const ceilStd = REQUIREMENT_CEILING_BY_DETAIL["standard"] ?? 0;
-  const costNote = t > 0
-    ? ` (${t} seleccionados: lista ≈${projectedCostTk("lista", t) ?? "?"} tk${t > ceilLista ? ` — ACIMA do tecto ${ceilLista}: divide por área` : ""}; tectos lista/standard ${ceilLista}/${ceilStd}; full sem tecto, preço declarado em size_estimate)`
+  const envLista = PAYLOAD_PROMISE_TK["lista"] ?? 0;
+  const costNote = t > 0 && listaEstimateTk !== undefined && listaEstimateTk > 0
+    ? ` (${t} seleccionados: lista ≈${listaEstimateTk} tk — ESTIMATIVA por médias de categoria; o prepare mede o payload real${listaEstimateTk > envLista ? ` e, acima do envelope de ${envLista} tk, devolve lotes medidos que somam o todo` : ` contra o envelope de ${envLista} tk`}; full sem envelope, preço declarado em size_estimate)`
     : "";
   const prepareRow: Affordance = { intent: `prepare grounded codegen context for one concrete task${costNote}`, tool: "prepare_sbd_toe_codegen_context", with: "task + risk_level (+ changed_files)", kind: "semantic" };
   // 0.19.0: com dominância lexical, a 1ª sugestão é ESTABILIZAR — sai a matrix,
@@ -132,7 +133,8 @@ export function prepareCodegenAffordances(status: string, citedRequirementIds: r
   const cited = citedRequirementIds.slice(0, 1).map((id) => `"${id}"`).join(", ") || '"<ids de citations>"';
   const byStatus: Affordance =
     status === "needs_decomposition"
-      ? { intent: "split into 2-4 subtasks and call again per subtask", tool: "prepare_sbd_toe_codegen_context", with: "one subtask scope", kind: "structural" }
+      ? // 0.21.2: os lotes vêm prontos na resposta — executá-los, não re-desenhar à mão.
+        { intent: "execute each batch in requirement_ceiling.batches (one call per batch; together they cover the whole selection) — without batches, narrow the declaration", tool: "prepare_sbd_toe_codegen_context", with: "task + risk_level + detail + the batch's `with`", kind: "structural" }
       : status === "ready_for_codegen"
         ? { intent: "cita as citations (ids legais)", tool: "resolve_entities", with: `record_type="requirement", filters={"requirement_id":{"in":[${cited}]}}`, kind: "structural" }
         : { intent: "narrow the scope or consult requirements to unblock", tool: "consult_security_requirements", with: "risk_level + <=5 concerns (recomendado <=3)", kind: "structural" };

@@ -64,13 +64,14 @@ import { PAYLOAD_PROMISE_TK as LEVEL_ENVELOPE_TK } from "../serving/payload-ceil
 import { buildDeclaredAdjacency, declaredAdjacencyDetail, type AdjacencySignal } from "../serving/adjacency.js";
 import { NOTES, NOTES_HEADER, type NoteId } from "../serving/notes.js";
 import { buildActivationVocabulary } from "../serving/activation-vocabulary.js";
+import { sliceFamiliesByDataChain } from "../serving/context-slice-chain.js";
 import {
   runSelectionWithActivation,
+  buildNeedsInput,
   normalizeDeclaredTechnologies,
   stackTokensFromVocabulary,
   type SelectionResult
 } from "../serving/selection.js";
-import { REQUIREMENT_CEILING_BY_DETAIL, COST_PER_REQ_TK, BASE_TK, PAYLOAD_PROMISE_TK, projectedCostTk } from "../serving/payload-ceilings.js";
 
 // ---------------------------------------------------------------------------
 // Public types
@@ -133,6 +134,14 @@ export interface PrepareCodegenContextInput {
    */
   chapters?: string[];
   categories?: string[];
+  /**
+   * 0.21.2 (decisão 0005) — activador SÓ DE CONTEXTO: activa as fatias destas famílias (entidades
+   * AppSec Core do g2_context e o manual_grounding) e NUNCA selecciona requisitos. Não conta como
+   * declaração (sozinho devolve needs_input); um valor fora do conjunto publicado é declarado inerte
+   * com valid_values. Quem o escreve é o servidor, na receita dos lotes de needs_decomposition — cada
+   * lote leva as fatias que o pedido original activava para as suas categorias.
+   */
+  slice_families?: string[];
   regulatory_frameworks?: string[];
   include_regulatory_overlay?: boolean;
   detail?: CodegenDetailLevel;
@@ -173,6 +182,10 @@ export interface ActivationTraceEntry {
     | "exposure"
     | "data_sensitivity"
     | "context_chapter"
+    /** 0.21.2 (decisão 0005): família de fatia DECLARADA em `slice_families` — só contexto. */
+    | "declared_slice_family"
+    /** 0.21.2 (decisão 0006): família alcançada pela CADEIA DO DADO a partir do que exposure/data_sensitivity seleccionam. */
+    | "context_slice_chain"
     | "scope_gate";
   /** What the activation produced (concern, slice_family, framework_id, decision). */
   produced: string;
@@ -549,17 +562,33 @@ export type DeclaredSize = SizeEstimate & {
   envelope_tk?: number;
   within_envelope?: boolean;
   note_id?: NoteId;
+  /**
+   * 0.21.2 (decisão 0004): presente quando este payload é um LOTE IRREDUTÍVEL — uma única
+   * categoria que sozinha não cabe no envelope. É a única resposta pronta de lista/standard
+   * que pode sair fora do envelope; sai pronta e declarada, nunca outra decomposição.
+   */
+  irreducible_note_id?: NoteId;
 };
 
 export interface DecompositionBatch {
   /** A receita EXECUTÁVEL: re-chama o prepare com estes campos (mais task, risk_level e detail). */
   with: {
     categories: string[];
+    /** 0.21.2: só quando o pedido não é codegen — o lote corre no mesmo modo. */
+    mode?: CodegenMode;
+    /** 0.21.2 (decisão 0005): as fatias que o pedido original activava para as categorias deste lote. */
+    slice_families?: string[];
     technologies?: string[];
     changed_files?: string[];
+    regulatory_frameworks?: string[];
+    include_regulatory_overlay?: boolean;
   };
-  /** Contagem REAL do lote (selecção corrida), ≤ tecto por construção. */
+  /** Contagem REAL do lote (selecção corrida). */
   requirements: number;
+  /** 0.21.2: o size_estimate MEDIDO do payload que esta chamada devolve (mesmos inputs, mesma régua). */
+  measured_tk: number;
+  /** 0.21.2: uma única categoria que sozinha não cabe no envelope — chamada, sai pronta e declarada fora do envelope. */
+  irreducible: boolean;
   /** De onde vieram estas categorias na tua declaração: concerns e activadores largos (efeito preservado). */
   derived_from: { concerns: string[]; exposure?: string; data_sensitivity?: string };
 }
@@ -573,24 +602,23 @@ export interface PrepareCodegenContextResultBlocked {
    * indistinguível.
    */
   provenance: { kg: string; server: string };
-  /** 0.19.4: presente quando o bloqueio é o TECTO DE REQUISITOS por detail (a
-   * promessa de tokens do nível dieted): limite derivado da medição, projecção
-   * de custo, e lotes de divisão ensinados (concerns por área, estimados). */
+  /** 0.19.4, regra de CUSTO desde a 0.21.2 (decisão 0004): presente quando o payload pronto
+   * de lista/standard, medido, não cabe no envelope do nível. `projected_tk` é o size_estimate
+   * medido do payload que seria entregue (não uma recta); `basis` di-lo. */
   requirement_ceiling?: {
     detail: string;
-    limit: number;
+    basis: "measured_payload";
     selected: number;
-    cost_per_req_tk: number;
     projected_tk: number;
     promise_tk: number;
     /**
      * 0.21 §6 (condição da decisão (a), lead 2026-09-25): os lotes SOMAM O TODO. Cada lote é
      * uma declaração ESTRUTURAL (`categories` — a partição exacta das categorias que a tua
-     * declaração activou), com `technologies` e `changed_files` preservados literalmente;
-     * `exposure`/`data_sensitivity` estão preservados pelo seu EFEITO (as categorias que
-     * produziram entram na partição) e não re-declarados — re-declará-los somaria as suas
-     * categorias a todos os lotes e nenhum caberia. `requirements` é a contagem REAL do lote
-     * (a selecção corre-se), não uma estimativa; a união dos lotes ⊇ a selecção inteira.
+     * declaração activou), com `technologies`, `changed_files` e os parâmetros do overlay
+     * preservados literalmente; `exposure`/`data_sensitivity` estão preservados pelo seu EFEITO
+     * (as categorias que produziram entram na partição) e não re-declarados. 0.21.2: o
+     * empacotamento é por payload MEDIDO — cada lote cabe no envelope (`measured_tk`), salvo
+     * o lote irredutível declarado (`irreducible: true`).
      */
     batches: DecompositionBatch[];
     /** Denominador da prova: união dos lotes vs selecção inteira (m_recall = 1 por construção; verificado nos testes). */
@@ -660,7 +688,7 @@ export type CitationsBySource = Partial<
  * entries. Total information is preserved: `v1_entity_ids` lists every entry
  * of the group, and `v1_entity_names` carries ONLY the names that are not
  * already recoverable from the `g2_context` entity lists in the same payload
- * (normally empty — names come from the same rastreabilidade source).
+ * (since KG v2.0.0 the placeholders publish names too, so this is no longer normally empty).
  */
 export interface ManualGroundingGroup {
   rastreabilidade_role: string;
@@ -2733,8 +2761,7 @@ export interface CodegenInstructionsResourceContent {
 
 /**
  * Content of the `sbd://toe/codegen-instructions/{mode}` MCP resource — the
- * static-per-mode boilerplate that detail=standard/minimal payloads reference
- * instead of carrying inline. Reconstructing the inline `full` content from
+ * static-per-mode text that every level carries inline (this is the reference copy). Reconstructing the inline `full` content from
  * this resource is byte-exact (tested):
  *   - llm_codegen_instructions = slots filtered by `when` ("always" +
  *     codegen_instructions_ref.active_conditions), in order;
@@ -2748,14 +2775,14 @@ export function buildCodegenInstructionsResourceContent(
     resource: codegenInstructionsResourceUri(mode),
     mode,
     note:
-      "Static per-mode boilerplate of prepare_sbd_toe_codegen_context (0.21: the " +
-      "instructions and the template are INLINE at every level; this resource is the " +
-      "reference copy, slot by slot). Also carries the detail_encoding legend.",
-    // 0.15.0 item 8, invertido para esta linha (0.20): aqui o trace EXISTE.
+      "Static per-mode text of prepare_sbd_toe_codegen_context: the instructions and the " +
+      "template are INLINE at every level; this resource is the reference copy, slot by slot. " +
+      "Also carries the detail_encoding legend.",
+    // 0.15.0 item 8, invertido desde a linha 0.20: aqui o trace EXISTE. (0.21.2: sem versão na prosa servida.)
     line_note:
-      "Nesta linha 0.20 o trace_sbd_toe_graph existe: execute os " +
-      "relations_ref directamente ({lens, anchor}). include_relations=true no " +
-      "prepare continua disponível como atalho para relações inline.",
+      "O trace_sbd_toe_graph existe neste servidor: execute os relations_ref " +
+      "directamente ({lens, anchor}). include_relations=true no prepare continua " +
+      "disponível como atalho para relações inline.",
     llm_codegen_instructions: {
       assembly:
         "Include each slot whose `when` is 'always' or whose condition holds for the call " +
@@ -3434,7 +3461,11 @@ function applyStructuralDiet(
  */
 const ENVELOPE_EXCEEDED_NOTE_ID: NoteId = "prepare.size_estimate.envelope_exceeded"; // 0.21 §6-c: texto em src/serving/notes.ts → sbd://toe/notes/prepare.size_estimate.envelope_exceeded
 
-function withSizeEstimate<T extends object>(payload: T, detail: CodegenDetailLevel): T & { size_estimate: DeclaredSize } {
+function withSizeEstimate<T extends object>(
+  payload: T,
+  detail: CodegenDetailLevel,
+  opts: { irreducible?: boolean } = {}
+): T & { size_estimate: DeclaredSize } {
   const envelope = LEVEL_ENVELOPE_TK[detail];
   const declare = (est: SizeEstimate): DeclaredSize =>
     envelope === undefined
@@ -3443,21 +3474,24 @@ function withSizeEstimate<T extends object>(payload: T, detail: CodegenDetailLev
           ...est,
           envelope_tk: envelope,
           within_envelope: est.approx_tokens <= envelope,
-          ...(est.approx_tokens <= envelope ? {} : { note_id: ENVELOPE_EXCEEDED_NOTE_ID })
+          ...(est.approx_tokens <= envelope ? {} : { note_id: ENVELOPE_EXCEEDED_NOTE_ID }),
+          ...(opts.irreducible ? { irreducible_note_id: IRREDUCIBLE_NOTE_ID } : {})
         };
   const first = estimateSize({ ...payload, size_estimate: declare({ chars: 0, approx_tokens: 0 }) });
   const second = estimateSize({ ...payload, size_estimate: declare(first) });
   return { ...payload, size_estimate: declare(second) };
 }
 
-export function handlePrepareCodegenContext(
-  raw: PrepareCodegenContextInput
+/** Um payload moldado e medido, sem a regra de custo (é a régua que a regra usa). */
+function renderPrepare(
+  raw: PrepareCodegenContextInput,
+  out?: { ctx?: CoreContext }
 ): PrepareCodegenContextResult {
   // `detail` and `include_relations` select the response ENCODING only —
   // they are validated up-front and never influence activation/resolution.
   const detail = parseDetail(raw);
   const includeRelations = parseIncludeRelations(raw);
-  const result = prepareCodegenContextCore(raw);
+  const result = prepareCodegenContextCore(raw, out);
   const shaped =
     result.status !== "ready_for_codegen"
       ? result
@@ -3470,8 +3504,281 @@ export function handlePrepareCodegenContext(
   return withNext.status === "ready_for_codegen" ? withSizeEstimate(withNext, detail) : withNext;
 }
 
-function prepareCodegenContextCore(
+export function handlePrepareCodegenContext(
   raw: PrepareCodegenContextInput
+): PrepareCodegenContextResult {
+  const detail = parseDetail(raw);
+  const out: { ctx?: CoreContext } = {};
+  const rendered = renderPrepare(raw, out);
+  // 0.21.2 (decisão 0004): em lista/standard a resposta pronta CABE no envelope, medida sobre
+  // o payload que o cliente recebe. `full` não tem envelope (declara o preço, inalterado).
+  if (detail === "full" || rendered.status !== "ready_for_codegen" || out.ctx === undefined) return rendered;
+  const size = (rendered as { size_estimate?: DeclaredSize }).size_estimate;
+  if (size === undefined || size.within_envelope !== false) return rendered;
+  // Os opt-ins explícitos (`include_relations`, `debug`) acrescentam o que o consumidor pediu
+  // por cima da forma do nível: a decisão mede a FORMA CANÓNICA do nível; se essa cabe, o pedido
+  // serve-se com o preço declarado (os lotes não levariam o opt-in — decompor tirava-lho).
+  if (raw.include_relations === true || raw.debug === true) {
+    const canonical = renderPrepare({ ...raw, include_relations: false, debug: false });
+    const canonicalSize = (canonical as { size_estimate?: DeclaredSize }).size_estimate;
+    if (canonical.status !== "ready_for_codegen" || canonicalSize === undefined || canonicalSize.within_envelope !== false) return rendered;
+    return applyCostCeiling(raw, detail, rendered, out.ctx, canonicalSize.approx_tokens);
+  }
+  return applyCostCeiling(raw, detail, rendered, out.ctx, size.approx_tokens);
+}
+
+const IRREDUCIBLE_NOTE_ID: NoteId = "prepare.size_estimate.irreducible"; // 0.21.2: texto em src/serving/notes.ts
+
+/**
+ * 0.21.2 (decisão 0004) — a regra de custo. O payload pronto não coube no envelope do nível:
+ *  - com MENOS de duas categorias decomponíveis, é um lote irredutível — serve-se pronto e
+ *    declarado (`irreducible_note_id`), nunca outra decomposição (é o que impede o ciclo);
+ *  - com duas ou mais, `needs_decomposition` com lotes que SOMAM O TODO, empacotados por
+ *    payload MEDIDO: categorias por custo isolado decrescente (desempate por id), cada uma no
+ *    primeiro lote em que o payload real do lote continue dentro do envelope.
+ * Cada medição constrói o payload com os MESMOS inputs que a chamada do lote vai usar.
+ */
+function applyCostCeiling(
+  raw: PrepareCodegenContextInput,
+  detail: Exclude<CodegenDetailLevel, "full">,
+  rendered: PrepareCodegenContextResult,
+  ctx: CoreContext,
+  wholeTk: number
+): PrepareCodegenContextResult {
+  const { input, activation, selection, declaredTechnologies } = ctx;
+  const envelope = LEVEL_ENVELOPE_TK[detail] ?? 0;
+
+  // O que cada lote leva literalmente, além das suas categorias.
+  const carried = {
+    // O modo muda o conteúdo (review/test-plan): um lote nunca pode correr noutro modo. O default
+    // (codegen) não se repete — a receita ensinada é task + risk_level + detail + with.
+    ...(raw.mode !== undefined && raw.mode !== "codegen" ? { mode: raw.mode } : {}),
+    ...(declaredTechnologies.length > 0 ? { technologies: [...declaredTechnologies] } : {}),
+    ...(input.changed_files.length > 0 ? { changed_files: [...input.changed_files] } : {}),
+    ...(input.regulatory_frameworks.length > 0 ? { regulatory_frameworks: [...input.regulatory_frameworks] } : {}),
+    ...(input.include_regulatory_overlay ? { include_regulatory_overlay: true } : {})
+  };
+  const baseRaw = {
+    ...(typeof raw.task === "string" ? { task: raw.task } : {}),
+    ...(raw.risk_level !== undefined ? { risk_level: raw.risk_level } : {}),
+    detail
+  } as PrepareCodegenContextInput;
+  // 0.21.2 (decisão 0005): cada lote é o pedido original restrito às suas categorias — leva as
+  // fatias que o pedido activava. Uma família entra num lote quando uma concern activada pelo
+  // pedido a produz e cobre uma das categorias do lote; as famílias do pedido que não cobrem
+  // nenhuma categoria da selecção («órfãs») vão no lote da categoria mais cara, para a união
+  // nunca perder uma fatia. Calculado aqui, antes do empacotamento, porque o custo medido já as inclui.
+  const sliceUnits = [...new Set(selection.selected.map((r) => r.category))];
+  // 0.21.2 (decisão 0006): a tabela concern → família só vale para as concerns NÃO largas (as que
+  // produziram fatias no pedido original); as fatias dos activadores largos vêm da cadeia do dado,
+  // a partir dos requisitos largos das categorias do lote — o mesmo contexto que o pedido tinha.
+  const tableConcerns = new Set(
+    activation.trace
+      .filter((t) => t.source !== "exposure" && t.source !== "data_sensitivity" && CONCERN_LEXICON.has(t.produced))
+      .map((t) => t.produced as Concern)
+  );
+  const categoryOfSelected = new Map(selection.selected.map((r) => [r.requirement_id, r.category]));
+  const familyOfConcernCovering = (categories: ReadonlySet<string>): Set<string> => {
+    const fams = new Set<string>();
+    for (const concern of activation.concerns) {
+      if (!tableConcerns.has(concern)) continue;
+      const family = CONCERN_TO_SLICE_FAMILY[concern];
+      if (family && [...categoriesForConcerns([concern])].some((k) => categories.has(k))) fams.add(family);
+    }
+    const broadHere = [...ctx.broadRequirementIds].filter((id) => categories.has(categoryOfSelected.get(id) ?? ""));
+    for (const family of sliceFamiliesByDataChain(broadHere).keys()) fams.add(family);
+    return fams;
+  };
+  const coveredFamilies = familyOfConcernCovering(new Set(sliceUnits));
+  const orphanFamilies = activation.sliceFamilies.filter((f) => !coveredFamilies.has(f));
+  let anchorCategory: string | undefined; // definida depois de ordenar as unidades
+  const familiesFor = (categories: readonly string[]): string[] => {
+    const fams = familyOfConcernCovering(new Set(categories));
+    if (anchorCategory !== undefined && categories.includes(anchorCategory)) for (const f of orphanFamilies) fams.add(f);
+    return [...fams].sort();
+  };
+  const measure = (categories: string[]) => {
+    const o: { ctx?: CoreContext } = {};
+    const families = familiesFor(categories);
+    const r = renderPrepare({ ...baseRaw, ...carried, categories, ...(families.length > 0 ? { slice_families: families } : {}) }, o);
+    if (r.status !== "ready_for_codegen" || o.ctx === undefined) {
+      throw new Error(`cost ceiling: batch categories=[${categories.join(",")}] did not render ready (${r.status}).`);
+    }
+    return {
+      tk: (r as { size_estimate: DeclaredSize }).size_estimate.approx_tokens,
+      ids: o.ctx.selection.selected.map((x) => x.requirement_id)
+    };
+  };
+
+  // Requisitos que o que é preservado em todos os lotes traz por si (ex.: SES-008 por `jwt`):
+  // vêm em todos os lotes, logo não são unidade de decomposição.
+  const carriedIds = new Set<string>();
+  if (carried.technologies || carried.changed_files) {
+    const o: { ctx?: CoreContext } = {};
+    const r = renderPrepare({ ...baseRaw, ...carried }, o);
+    if (r.status === "ready_for_codegen" && o.ctx) for (const x of o.ctx.selection.selected) carriedIds.add(x.requirement_id);
+  }
+  const units = [...new Set(selection.selected.filter((r) => !carriedIds.has(r.requirement_id)).map((r) => r.category))].sort();
+
+  if (units.length < 2) {
+    // Irredutível: pronto e declarado fora do envelope.
+    const { size_estimate: _drop, ...payload } = rendered as PrepareCodegenContextResult & { size_estimate: DeclaredSize };
+    void _drop;
+    return withSizeEstimate(payload, detail, { irreducible: true }) as PrepareCodegenContextResult;
+  }
+
+  // A âncora das famílias órfãs fixa-se ANTES de medir (o custo isolado de uma categoria depende
+  // das fatias que leva): a primeira categoria por custo sem órfãs, desempate por id.
+  const bare = new Map(units.map((c) => [c, measure([c]).tk]));
+  anchorCategory = [...units].sort((a, b2) => bare.get(b2)! - bare.get(a)! || a.localeCompare(b2))[0];
+  const isolated = new Map(units.map((c) => [c, c === anchorCategory && orphanFamilies.length > 0 ? measure([c]).tk : bare.get(c)!]));
+  const order = [...units].sort((a, b2) => isolated.get(b2)! - isolated.get(a)! || a.localeCompare(b2));
+  const bins: Array<{ categories: string[]; tk: number }> = [];
+  for (const category of order) {
+    const alone = isolated.get(category)!;
+    let placed = false;
+    if (alone <= envelope) {
+      for (const bin of bins) {
+        if (bin.tk > envelope) continue; // lote irredutível: fica sozinho
+        const trial = measure([...bin.categories, category]);
+        if (trial.tk <= envelope) { bin.categories.push(category); bin.tk = trial.tk; placed = true; break; }
+      }
+    }
+    if (!placed) bins.push({ categories: [category], tk: alone });
+  }
+  // 0.21.2 (decisão 0005): uma decomposição tem sempre dois lotes ou mais. Se o empacotamento der um
+  // só lote (com ≥2 categorias, garantido acima), a última categoria sai para um lote próprio — ambos medidos.
+  if (bins.length === 1) {
+    const only = bins[0]!;
+    const last = only.categories.pop()!;
+    only.tk = measure(only.categories).tk;
+    bins.push({ categories: [last], tk: measure([last]).tk });
+  }
+
+  const activatorConcerns = new Set<string>([
+    ...(input.exposure ? EXPOSURE_CONCERNS[input.exposure] ?? [] : []),
+    ...(input.data_sensitivity ? SENSITIVITY_CONCERNS[input.data_sensitivity] ?? [] : [])
+  ]);
+  const concernsForCategory = (category: string): string[] =>
+    [...new Set([...input.concerns, ...activation.concerns])].filter((c) => categoriesForConcerns([c as Concern]).has(category)).sort();
+  const union = new Set<string>();
+  const batches: DecompositionBatch[] = bins.map((bin) => {
+    const m = measure(bin.categories);
+    for (const id of m.ids) union.add(id);
+    const categories = bin.categories;
+    const concerns = [...new Set(categories.flatMap(concernsForCategory))].filter((c) => !activatorConcerns.has(c) || input.concerns.includes(c as Concern)).sort();
+    return {
+      with: {
+        categories: [...categories],
+        ...(carried.mode !== undefined ? { mode: carried.mode } : {}),
+        ...(familiesFor(categories).length > 0 ? { slice_families: familiesFor(categories) } : {}),
+        ...carried
+      },
+      requirements: m.ids.length,
+      measured_tk: m.tk,
+      irreducible: categories.length === 1 && m.tk > envelope,
+      derived_from: {
+        concerns,
+        ...(input.exposure && categories.some((cat) => [...activatorConcerns].some((c) => (EXPOSURE_CONCERNS[input.exposure!] ?? []).includes(c as Concern) && categoriesForConcerns([c as Concern]).has(cat))) ? { exposure: input.exposure } : {}),
+        ...(input.data_sensitivity && categories.some((cat) => [...activatorConcerns].some((c) => (SENSITIVITY_CONCERNS[input.data_sensitivity!] ?? []).includes(c as Concern) && categoriesForConcerns([c as Concern]).has(cat))) ? { data_sensitivity: input.data_sensitivity } : {})
+      }
+    };
+  });
+  const selectedIds = selection.selected.map((r) => r.requirement_id);
+  const covered = selectedIds.filter((id) => union.has(id)).length;
+  const recall = selectedIds.length === 0 ? 1 : covered / selectedIds.length;
+  const preserved = [
+    ...(carried.technologies ? ["technologies"] : []),
+    ...(carried.changed_files ? ["changed_files"] : []),
+    ...(carried.regulatory_frameworks || carried.include_regulatory_overlay ? ["overlay"] : [])
+  ];
+  const anyFamilies = batches.some((bt) => (bt.with.slice_families?.length ?? 0) > 0);
+  const b = blocked(
+    input,
+    raw,
+    "needs_decomposition",
+    [
+      `O payload de ${selection.selected.length} requisitos em detail="${detail}" mede ${wholeTk} tk — acima do envelope de ${envelope} tk deste nível ` +
+        `(medido sobre o payload que receberias: requisitos, controlos, entidades, adjacência e overlay).`
+    ],
+    [
+      `Divide em ${batches.length} lotes que SOMAM O TODO (união = ${union.size} ids, m_recall ${recall.toFixed(2)} face à selecção inteira): ` +
+        "repete com task + risk_level + detail + `categories` do lote" +
+        (preserved.length > 0 || anyFamilies ? ` + o \`with\` do lote tal e qual (${[...preserved, ...(anyFamilies ? ["slice_families"] : [])].join("/")})` : "") +
+        ". Cada lote é o teu pedido restrito às suas categorias: os mesmos requisitos e o mesmo contexto (fatias AppSec Core e manual_grounding) para elas" +
+        ". Cada lote é a partição EXACTA das categorias que a tua declaração activou — exposure/data_sensitivity estão lá pelo seu efeito (re-declará-los somaria as suas categorias a todos os lotes). Cada lote foi medido e cabe no envelope, salvo irredutível declarado. Lotes: " +
+        batches.map((bt, i) => `${i + 1}) categories=[${bt.with.categories.map((c) => `"${c}"`).join(", ")}] (${bt.requirements} reqs, ${bt.measured_tk} tk${bt.irreducible ? ", IRREDUTÍVEL: sai pronto e declarado fora do envelope" : ""}; de ${bt.derived_from.concerns.map((c) => `"${c}"`).join(", ") || "activadores"}${bt.derived_from.exposure ? `, exposure=${bt.derived_from.exposure}` : ""}${bt.derived_from.data_sensitivity ? `, data_sensitivity=${bt.derived_from.data_sensitivity}` : ""})`).join("; ") +
+        ".",
+      `Em alternativa usa detail="full" (sem envelope — preço declarado em size_estimate) ou reduz o âmbito da task.`
+    ],
+    activation.trace,
+    input.debug ? { rejected: activation.rejected, notes: activation.notes } : undefined
+  );
+  b.requirement_ceiling = {
+    detail,
+    basis: "measured_payload",
+    selected: selection.selected.length,
+    projected_tk: wholeTk,
+    promise_tk: envelope,
+    batches,
+    union: { requirements: union.size, recall: Number(recall.toFixed(4)) }
+  };
+  return { ...b, next: prepareCodegenAffordances(b.status, []) };
+}
+
+/**
+ * 0.21.2 (decisão 0004 §2) — a ÚNICA projecção que sobra: o `next` do select anuncia o custo
+ * de um prepare que ainda não foi pedido. Soma, por requisito, a média MEDIDA da sua categoria
+ * (payload real de `categories=[c]` em L3, menos a base), mais a base do nível — tudo derivado
+ * do bundle servido, calibrado uma vez por processo, determinístico. É ESTIMATIVA declarada e
+ * NUNCA bloqueia: quem decide é o prepare, que mede o payload real.
+ */
+type CostCalibration = { base: number; perRequirement: Map<string, number>; fallback: number };
+const COST_CALIBRATION = new Map<string, CostCalibration>();
+
+function calibrateCost(detail: Exclude<CodegenDetailLevel, "full">): CostCalibration {
+  const cached = COST_CALIBRATION.get(detail);
+  if (cached) return cached;
+  const categories = [...new Set(getOntologyData().requirements.map((r) => r.category))].sort();
+  const samples: Array<{ category: string; tk: number; n: number; reqTk: number }> = [];
+  for (const category of categories) {
+    const o: { ctx?: CoreContext } = {};
+    const r = renderPrepare({ task: "cost calibration", risk_level: "L3", detail, categories: [category] }, o);
+    if (r.status !== "ready_for_codegen" || !o.ctx || o.ctx.selection.selected.length === 0) continue;
+    const reqTk = estimateSize((r as PrepareCodegenContextResultReadyDieted).activated_scope.requirements).approx_tokens;
+    samples.push({ category, tk: (r as { size_estimate: DeclaredSize }).size_estimate.approx_tokens, n: o.ctx.selection.selected.length, reqTk });
+  }
+  // Base = o menor custo que não é requisito entre as categorias (limite inferior do fixo).
+  const base = samples.length > 0 ? Math.min(...samples.map((x) => x.tk - x.reqTk)) : 0;
+  const perRequirement = new Map(samples.map((x) => [x.category, (x.tk - base) / x.n]));
+  const totalN = samples.reduce((a, x) => a + x.n, 0);
+  const fallback = totalN > 0 ? samples.reduce((a, x) => a + (x.tk - base), 0) / totalN : 0;
+  const calibration = { base, perRequirement, fallback };
+  COST_CALIBRATION.set(detail, calibration);
+  return calibration;
+}
+
+export function estimatePrepareCostTk(detail: Exclude<CodegenDetailLevel, "full">, requirementIds: readonly string[]): number {
+  if (requirementIds.length === 0) return 0;
+  const calibration = calibrateCost(detail);
+  const categoryOf = new Map(getOntologyData().requirements.map((r) => [r.requirement_id, r.category]));
+  let total = calibration.base;
+  for (const id of requirementIds) total += calibration.perRequirement.get(categoryOf.get(id) ?? "") ?? calibration.fallback;
+  return Math.round(total);
+}
+
+interface CoreContext {
+  input: NormalizedInput;
+  activation: ReturnType<typeof activate>;
+  selection: SelectionResult;
+  declaredTechnologies: string[];
+  /** 0.21.2 (decisão 0006): requisitos que os activadores largos seleccionam sozinhos (origem das fatias pela cadeia do dado). */
+  broadRequirementIds: ReadonlySet<string>;
+}
+
+function prepareCodegenContextCore(
+  raw: PrepareCodegenContextInput,
+  out?: { ctx?: CoreContext }
 ): PrepareCodegenContextResultReady | PrepareCodegenContextResultBlocked {
   const input = normalizeInput(raw);
 
@@ -3563,14 +3870,69 @@ function prepareCodegenContextCore(
     selectionMode,
     structural
   );
+  // 0.21.2 (decisão 0005): `slice_families` — só contexto. Validado contra o conjunto publicado.
+  const declaredSliceFamilies = Array.isArray(raw.slice_families)
+    ? [...new Set(raw.slice_families.filter((x): x is string => typeof x === "string" && x.length > 0))]
+    : [];
+  const knownSliceFamilies = new Set(publishedSliceFamilies());
+  const unknownSliceFamilies = declaredSliceFamilies.filter((f) => !knownSliceFamilies.has(f)).sort();
+  const sliceFamiliesInert: string[] = [
+    ...(declaredSliceFamilies.length > 0 && selection.needs_input
+      ? [`slice_families=[${declaredSliceFamilies.join(", ")}] (só de contexto: activa fatias, nunca selecciona requisitos — não é declaração)`]
+      : []),
+    ...(unknownSliceFamilies.length > 0
+      ? [`slice_families=[${unknownSliceFamilies.join(", ")}] (fora do conjunto publicado em sbd://toe/activation-vocabulary → slice_families)`]
+      : [])
+  ];
+  if (!selection.needs_input && unknownSliceFamilies.length > 0) {
+    const ni = buildNeedsInput(
+      input,
+      {
+        concerns: [...input.concerns],
+        ...(input.exposure ? { exposure: input.exposure } : {}),
+        ...(input.data_sensitivity ? { data_sensitivity: input.data_sensitivity } : {}),
+        technologies: [...declaredTechnologies],
+        changed_files: [...input.changed_files]
+      },
+      sliceFamiliesInert
+    );
+    const b = blocked(
+      input,
+      raw,
+      "needs_input",
+      [ni.reason, "`slice_families` só aceita as famílias publicadas — o valor não se engole nem se adivinha."],
+      [`Lê as famílias publicadas: read_sbd_toe_resource(uri="sbd://toe/activation-vocabulary") → slice_families.`, `Re-chama sem os valores desconhecidos (${unknownSliceFamilies.join(", ")}).`],
+      activation.trace
+    );
+    b.needs_input = { ...ni, valid_values: { slice_families: [...knownSliceFamilies].sort() } };
+    return b;
+  }
+  if (!selection.needs_input && declaredSliceFamilies.length > 0) {
+    const present = new Set(activation.sliceFamilies);
+    for (const family of [...declaredSliceFamilies].sort()) {
+      if (present.has(family)) continue;
+      activation.sliceFamilies.push(family);
+      activation.trace.push({
+        source: "declared_slice_family",
+        produced: family,
+        trigger: family,
+        score: 1,
+        confidence: "deterministic",
+        reason: "Declared in `slice_families`: context only (AppSec Core entities + manual_grounding of this family's slices); never selects requirements."
+      });
+    }
+  }
   if (selection.needs_input) {
-    const ni = selection.needs_input;
+    const ni = sliceFamiliesInert.length > 0
+      ? { ...selection.needs_input, inert_declarations: [...(selection.needs_input.inert_declarations ?? []), ...sliceFamiliesInert] }
+      : selection.needs_input;
     const inert = (ni.inert_declarations ?? []).join(" ");
     const vocab = buildActivationVocabulary();
     const validValues: Record<string, string[]> = {
       ...(/\bstack=|\btechnologies=/.test(inert) ? { technologies: vocab.technologies.values.map((t) => String(t.value)) } : {}),
       ...(/\bexposure=/.test(inert) ? { exposure: vocab.exposure.values.map((e) => String(e.value)) } : {}),
-      ...(/\bdata_sensitivity=/.test(inert) ? { data_sensitivity: vocab.data_sensitivity.values.map((d) => String(d.value)) } : {})
+      ...(/\bdata_sensitivity=/.test(inert) ? { data_sensitivity: vocab.data_sensitivity.values.map((d) => String(d.value)) } : {}),
+      ...(unknownSliceFamilies.length > 0 ? { slice_families: [...knownSliceFamilies].sort() } : {})
     };
     const blockedNeedsInput = blocked(
       input,
@@ -3596,114 +3958,57 @@ function prepareCodegenContextCore(
   }
   const estimatedRequirements = selection.selected.length;
 
-  // 0.19.4 («a promessa do minimal», lead opção 2): tecto de requisitos por-id
-  // por nível de detail, derivado da medição (~68 tk/req min/std, ~29 ultrathin)
-  // para que tecto×custo caiba na promessa de cada nível. `full` fica SEM tecto
-  // (promessa = completude; nível do oráculo). Mesma filosofia do
-  // needs_decomposition: nunca erro seco, nunca degradação silenciosa.
-  const ceilingDetail = parseDetail(raw);
-  const requirementCeiling = REQUIREMENT_CEILING_BY_DETAIL[ceilingDetail];
-  if (requirementCeiling !== undefined && selection.selected.length > requirementCeiling) {
-    // 0.21 §6 (condição da decisão (a)): lotes que SOMAM O TODO. Partição das categorias
-    // activadas em lotes ≤ tecto (guloso por tamanho decrescente), cada lote uma declaração
-    // ESTRUTURAL executável; technologies/changed_files preservados literalmente; a contagem
-    // de cada lote é REAL (a selecção corre-se para o lote).
-    const byCategory = new Map<string, number>();
-    for (const r of selection.selected) byCategory.set(r.category, (byCategory.get(r.category) ?? 0) + 1);
-    const categoriesDesc = [...byCategory.entries()].sort((a, b2) => b2[1] - a[1] || a[0].localeCompare(b2[0]));
-    // As tecnologias preservadas em cada lote podem acrescentar requisitos por regra NOMEADA
-    // (ex.: SES-008 por `jwt`) fora das categorias do lote — reserva-se essa margem na
-    // capacidade de cada lote, para que a contagem REAL (abaixo) nunca exceda o tecto.
-    const technologyExtras =
-      declaredTechnologies.length > 0
-        ? runSelectionWithActivation(
-            { ...input, concerns: [], exposure: undefined, data_sensitivity: undefined, changed_files: [] },
-            { ...activation, concerns: [], sliceFamilies: [], trace: [], rejected: [], notes: [] },
-            declaredTechnologies,
-            "declarative",
-            { chapters: [], categories: [] }
-          ).selected.length
-        : 0;
-    const capacity = Math.max(1, requirementCeiling - technologyExtras);
-    const bins: string[][] = [];
-    const binLoad: number[] = [];
-    for (const [category, count] of categoriesDesc) {
-      let placed = false;
-      for (let i = 0; i < bins.length; i += 1) {
-        if (binLoad[i]! + count <= capacity) { bins[i]!.push(category); binLoad[i]! += count; placed = true; break; }
-      }
-      if (!placed) { bins.push([category]); binLoad.push(count); }
-    }
-    const activatorConcerns = new Set<string>([
-      ...(input.exposure ? EXPOSURE_CONCERNS[input.exposure] ?? [] : []),
-      ...(input.data_sensitivity ? SENSITIVITY_CONCERNS[input.data_sensitivity] ?? [] : [])
-    ]);
-    const concernsForCategory = (category: string): string[] =>
-      [...new Set([...input.concerns, ...activation.concerns])].filter((c) => categoriesForConcerns([c as Concern]).has(category)).sort();
-    const batchWith = (categories: string[]) => ({
-      categories,
-      ...(declaredTechnologies.length > 0 ? { technologies: [...declaredTechnologies] } : {}),
-      ...(input.changed_files.length > 0 ? { changed_files: [...input.changed_files] } : {})
-    });
-    const union = new Set<string>();
-    const batches: DecompositionBatch[] = bins.map((categories) => {
-      const w = batchWith(categories);
-      const run = runSelectionWithActivation(
-        { ...input, concerns: [] },
-        { ...activation, concerns: [], sliceFamilies: [], trace: [], rejected: [], notes: [] },
-        w.technologies ?? [],
-        "declarative",
-        { chapters: [], categories }
-      );
-      for (const r of run.selected) union.add(r.requirement_id);
-      const concerns = [...new Set(categories.flatMap(concernsForCategory))].filter((c) => !activatorConcerns.has(c) || input.concerns.includes(c as Concern)).sort();
-      return {
-        with: w,
-        requirements: run.selected.length,
-        derived_from: {
-          concerns,
-          ...(input.exposure && categories.some((cat) => [...activatorConcerns].some((c) => (EXPOSURE_CONCERNS[input.exposure!] ?? []).includes(c as Concern) && categoriesForConcerns([c as Concern]).has(cat))) ? { exposure: input.exposure } : {}),
-          ...(input.data_sensitivity && categories.some((cat) => [...activatorConcerns].some((c) => (SENSITIVITY_CONCERNS[input.data_sensitivity!] ?? []).includes(c as Concern) && categoriesForConcerns([c as Concern]).has(cat))) ? { data_sensitivity: input.data_sensitivity } : {})
-        }
-      };
-    });
-    const selectedIds = selection.selected.map((r) => r.requirement_id);
-    const covered = selectedIds.filter((id) => union.has(id)).length;
-    const recall = selectedIds.length === 0 ? 1 : covered / selectedIds.length;
-    const projected = projectedCostTk(ceilingDetail, selection.selected.length) ?? 0;
-    const b = blocked(
-      input,
-      raw,
-      "needs_decomposition",
-      [
-        `Selecção de ${selection.selected.length} requisitos excede o tecto de ${requirementCeiling} para detail="${ceilingDetail}" ` +
-          `(medição: ~${COST_PER_REQ_TK[ceilingDetail] ?? 0} tk/req sobre base ~${BASE_TK[ceilingDetail] ?? 0} tk ⇒ ~${projected} tk, ` +
-          `acima do envelope de ${PAYLOAD_PROMISE_TK[ceilingDetail] ?? 0} tk deste nível).`
-      ],
-      [
-        `Divide em ${batches.length} lotes que SOMAM O TODO (união = ${union.size} ids, m_recall ${recall.toFixed(2)} face à selecção inteira): ` +
-          "repete com task + risk_level + detail + `categories` do lote" +
-          (declaredTechnologies.length > 0 || input.changed_files.length > 0 ? " (technologies/changed_files preservados em cada lote)" : "") +
-          ". Cada lote é a partição EXACTA das categorias que a tua declaração activou — exposure/data_sensitivity estão lá pelo seu efeito (re-declará-los somaria as suas categorias a todos os lotes). Lotes: " +
-          batches.map((bt, i) => `${i + 1}) categories=[${bt.with.categories.map((c) => `"${c}"`).join(", ")}] (${bt.requirements} reqs; de ${bt.derived_from.concerns.map((c) => `"${c}"`).join(", ") || "activadores"}${bt.derived_from.exposure ? `, exposure=${bt.derived_from.exposure}` : ""}${bt.derived_from.data_sensitivity ? `, data_sensitivity=${bt.derived_from.data_sensitivity}` : ""})`).join("; ") +
-          ".",
-        `Em alternativa usa detail="full" (sem tecto — preço declarado em size_estimate) ou reduz o âmbito da task.`
-      ],
-      activation.trace,
-      input.debug ? { rejected: activation.rejected, notes: activation.notes } : undefined
-    );
-    b.requirement_ceiling = {
-      detail: ceilingDetail,
-      limit: requirementCeiling,
-      selected: selection.selected.length,
-      cost_per_req_tk: COST_PER_REQ_TK[ceilingDetail] ?? 0,
-      projected_tk: projected,
-      promise_tk: PAYLOAD_PROMISE_TK[ceilingDetail] ?? 0,
-      batches,
-      union: { requirements: union.size, recall: Number(recall.toFixed(4)) }
+  // 0.21.2 (decisão 0004): o tecto deixou de ser por contagem. A decisão por CUSTO vive no
+  // handler, depois de o payload ser moldado e medido — aqui só se expõe o contexto da selecção.
+  // 0.21.2 (decisão 0006, opção A) — os activadores LARGOS trazem contexto, e o contexto vem SÓ do dado.
+  // O defeito era de ordem: as famílias de fatias (passo 4 do motor) calculavam-se antes de exposure/
+  // data_sensitivity acrescentarem as suas concerns (passo 4b), e por isso nunca produziam fatias. A
+  // correcção NÃO reordena o motor — isso faria as concerns largas passarem pela tabela concern→família
+  // (opção B). Em vez disso, depois da selecção: os requisitos que cada activador largo selecciona SOZINHO
+  // a este nível percorrem a cadeia requisito → controlo → objectivo → família (context-slice-chain), e
+  // cada família leva a sua testemunha no trace. As tabelas exposure/data_sensitivity → concerns ficam SÓ
+  // para a selecção de requisitos (inalterada); a tabela concern → família fica SÓ para as concerns não
+  // largas (declaradas, de ficheiros, lexicais) — ambas declaradas na decisão 0006 §10.
+  const broadRequirementIds = new Set<string>();
+  const selectedIdSet = new Set(selection.selected.map((r) => r.requirement_id));
+  const broadActivators: Array<{ trigger: string; only: Pick<NormalizedInput, "exposure" | "data_sensitivity"> }> = [
+    ...(input.exposure ? [{ trigger: `exposure=${input.exposure}`, only: { exposure: input.exposure } }] : []),
+    ...(input.data_sensitivity ? [{ trigger: `data_sensitivity=${input.data_sensitivity}`, only: { data_sensitivity: input.data_sensitivity } }] : [])
+  ];
+  const chainTriggers = new Map<string, string[]>();
+  const chainWitnesses = new Map<string, ReturnType<typeof sliceFamiliesByDataChain> extends Map<string, infer W> ? W : never>();
+  for (const { trigger, only } of broadActivators) {
+    const { stack: _stack, exposure: _exposure, data_sensitivity: _sensitivity, ...rest } = input;
+    void _stack; void _exposure; void _sensitivity;
+    const broadInput: NormalizedInput = {
+      ...rest, task: "", taskTrimmed: "", taskLower: "", tokenCount: 0,
+      concerns: [], unknownConcerns: [], changed_files: [], ...only
     };
-    return b;
+    const broadSelection = runSelectionWithActivation(broadInput, activate(broadInput, { declaredOnly: true }), [], "declarative", { chapters: [], categories: [] });
+    if (broadSelection.needs_input) continue; // valor inerte (local / low)
+    const ids = broadSelection.selected.map((r) => r.requirement_id).filter((id) => selectedIdSet.has(id));
+    for (const id of ids) broadRequirementIds.add(id);
+    for (const [family, witness] of sliceFamiliesByDataChain(ids)) {
+      chainTriggers.set(family, [...(chainTriggers.get(family) ?? []), trigger]);
+      if (!chainWitnesses.has(family)) chainWitnesses.set(family, witness);
+    }
   }
+  for (const [family, witness] of [...chainWitnesses.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
+    if (!activation.sliceFamilies.includes(family)) activation.sliceFamilies.push(family);
+    activation.trace.push({
+      source: "context_slice_chain",
+      produced: family,
+      trigger: chainTriggers.get(family)!.join("; "),
+      score: 0.9,
+      confidence: "deterministic",
+      reason:
+        `${chainTriggers.get(family)!.join(" and ")} selects ${witness.requirement_id} → control ${witness.control_id} → ` +
+        `objective ${witness.control_objective_id} (${witness.alignment_type}, ctrl_acore_alignment) → family ${family}. ` +
+        "Published data chain; asserts alignment, not authorship nor that the activator requires the slice."
+    });
+  }
+
+  if (out) out.ctx = { input, activation, selection, declaredTechnologies, broadRequirementIds };
 
   const postGate = gateAfterActivation({
     input,
@@ -4133,6 +4438,43 @@ function aggregateExpectedFromSlices(slices: AppSecSlice[]): {
     totals.artifacts += slice.counts_actual.artifacts;
   }
   return totals;
+}
+
+/**
+ * 0.21.2 (decisão 0005) — o conjunto PUBLICADO de famílias de fatia: derivado das fatias do runtime
+ * AppSec Core servido (objective_family), nunca escrito à mão. Vazio quando o runtime falta.
+ */
+export function publishedSliceFamilies(): string[] {
+  try {
+    return [...new Set(getG2Runtime().slices.map((slice) => slice.objective_family))].sort();
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * 0.21.2 (decisão 0006): as famílias que UM activador largo traz a um nível, pela cadeia do dado — o que
+ * o vocabulário publica. Mesma derivação que o prepare usa (selecção só com esse activador → cadeia).
+ * Memorizado por processo (o bundle é fixo por processo).
+ */
+const BROAD_FAMILY_CACHE = new Map<string, string[]>();
+export function sliceFamiliesForBroadActivator(
+  risk_level: RiskLevel,
+  only: { exposure?: NonNullable<PrepareCodegenContextInput["exposure"]> } | { data_sensitivity?: NonNullable<PrepareCodegenContextInput["data_sensitivity"]> }
+): string[] {
+  const key = `${risk_level}|${JSON.stringify(only)}`;
+  const hit = BROAD_FAMILY_CACHE.get(key);
+  if (hit) return hit;
+  const broadInput = normalizeInput({ task: "", risk_level, ...only });
+  const broadSelection = runSelectionWithActivation(broadInput, activate(broadInput, { declaredOnly: true }), [], "declarative", { chapters: [], categories: [] });
+  const families = broadSelection.needs_input ? [] : [...sliceFamiliesByDataChain(broadSelection.selected.map((r) => r.requirement_id)).keys()];
+  BROAD_FAMILY_CACHE.set(key, families);
+  return families;
+}
+
+/** As concerns que produzem uma família de fatia (o mesmo mapa que o motor usa). */
+export function sliceFamilyProducers(family: string): Concern[] {
+  return VALID_CONCERNS.filter((concern) => CONCERN_TO_SLICE_FAMILY[concern] === family);
 }
 
 // Re-export the lexicon so tests / docs can reference the canonical list.

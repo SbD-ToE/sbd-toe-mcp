@@ -1,12 +1,15 @@
 meta:
   name: SbD-ToE Manual Ontology
-  version: '2.10'
-  status: current
+  version: '2.11'
+  status: current   # v2.11 emissao preparada 2026-09-27; tag e merge sao autoridade do lead
   scope: Manual ontology
-  tag: sbdtoe-ontology-v2.10
+  tag: sbdtoe-ontology-v2.11   # texto da tag pronto em packages/ontology/sbdtoe/v2.11/TAG-MESSAGE.txt; criacao e autoridade do lead
   history:
   - version: '2.0'
     note: V2 backbone + semantic layer (imported baseline from sbd-toe-knowledge-graph)
+  - version: '2.11'
+    date: '2026-09-26'
+    note: "EMISSÃO PREPARADA em branch v2.11-prep 2026-09-27 (autorização directa do lead na sessão do Archon) — sem tag, sem merge para main (ambos autoridade do lead). meta.status current; pacote v2.11 e texto da tag prontos. Emissão única, preparação confirmada pelo programme lead 2026-09-26: (1) EMENDA do prescription_reach_principle — o tier intra_org_other_domain passa a TER papéis canónicos (rh-peopleops, procurement, legal); (2) TERCEIRO valor de Role.role_scope (intra_org_other_domain) e revisão do scope de grc-compliance, gestao-executiva e auditores (proposta do Archon RATIFICADA pelo programme lead 2026-09-26); (3) canon de 17 papéis, DERIVADO da lista formal única (_roles.yaml, schema sbdtoe-role-list/1, P9) — nenhum terceiro resolvedor; referenced_roles perde rh-peopleops (canónico já não é referenciado-não-canónico); (4) mapa irmão aditivo structural_expectation_flags_by_scope (expected_zero, zero_is_finding por tier; as strings de structural_expectations_by_scope ficam intactas); (5) rótulos @en das quatro coinagens da Espécie 2 (segmentation principle · foundation · typed consumption · segmentation traversal; ratificadas 2026-09-25) como chaves IRMÃS — chaves e valores PT/dados inalterados. Aditiva no esquema; a emenda SUPERA texto ratificado da v2.10 e regista-o verbatim (append-only). Ledger: ABS-011 reopened e closed (2026-09-26; o closed com evidência verificável, closure_rule v2.8, depois de a reversão aterrar no Manual 11271106)."
   - version: '2.10'
     date: '2026-09-09'
     note: "Pacote ratificado (gate 2026-09-09, registo agentic/decisions/2026-09-09-principio-de-alcance-da-prescricao.md) + resposta à devolução Q-T2: prescription_reach_principle (3 alcances com verbo; fractal, não cascata; tier do meio vazio DE PAPÉIS porque o Manual o exprime como REQUISITOS — «(Jurídico + Procurement)» aparece entre parênteses, nunca canonizado); Role.role_scope (12 intra_instance · 1 inter_instance · tier do meio declarado vazio; expectativas estruturais: intra com 0 atribuições é ACHADO, inter com 0 é ESTADO CORRECTO DECLARADO); absence_model.transitions (open/closed/withdrawn/reopened; re-tipar = índice/corta versão, retirar = ledger/não corta); Q-T2: a premissa da base por-exigência CAIU (a única aresta artefacto↔prova é pontuada — correspondência, «não prescreve»; deriver prescrição dela violaria a asserção publicada; limiar recusado) — required_by_level_profile fica NÃO-MATERIALIZÁVEL no estado actual (ABS-013, gap/ontology_model/Archon), a união mantém-se com asserção sólida (cadeia curada/declarada, sem scoring), e o caminho legítimo é camada curada texto-autorado(addon-07 «Evidência esperada»)→artifact_type — decisão do lead. Zero valores alterados; aditivo."
@@ -355,7 +358,7 @@ entities:
     authority_class: normative
     attributes:
     - involvement_id: string
-    - role_id: string           # dos 13 canónicos (papéis referenciados não-canónicos NÃO entram aqui — ver referenced_roles)
+    - role_id: string           # dos papéis canónicos (13 até à v2.10; 17 na v2.11 — lista formal única _roles.yaml, Role.role_list); referenciados não-canónicos NÃO entram aqui — ver referenced_roles
     - kind: enum[approves, consulted]  # approves = autoridade de gate (a decisão é condição para o resultado valer); consulted = envolvimento publicado sem gate nem execução
     - bundle_id: string
     - anchor: string            # âncora verbatim ficheiro:linha — OBRIGATÓRIA por registo
@@ -436,18 +439,39 @@ entities:
     layer: core
     description: Canonical role vocabulary reused across the manual
     id_field: role_id
-    source_file: data/entities/canonical_roles_s5.json
+    source_file: _roles.yaml   # v2.11 (P9, decisão do lead 2026-09-26): LISTA FORMAL ÚNICA como dado — ver role_list
+    legacy_source_file: data/entities/canonical_roles_s5.json   # 13 papéis; deixa de ser fonte quando o compile do KG ler a lista formal (Codex, fix/role-list-single-resolver); meta.data_sources.roles mantém-se até lá
     attributes:
     - role_id: string
     - aliases: list[string]
-    - role_scope: enum[intra_instance, inter_instance]  # v2.10 (Q2 ratificada): valores declarados em role_scope_assignments; o tier intra_org_other_domain fica DELIBERADAMENTE sem papéis canónicos (prescription_reach_principle)
+    - name: object              # v2.11 (da lista formal): {pt, en} — nomes PT/EN à nascença (épico i18n §9)
+    - specialisations: list[object]   # v2.11 (da lista formal): id, name, forms — especialização de um papel canónico (ex.: SecOps (IR)); não é papel canónico nem tem role_scope próprio (herda o do papel)
+    - role_scope: enum[intra_instance, intra_org_other_domain, inter_instance]  # v2.10 (Q2): posição do papel face à instância; v2.11: terceiro valor intra_org_other_domain (emenda do prescription_reach_principle) — valores em role_scope_assignments
+    role_list:
+      # v2.11 — P9 (decisão do lead 2026-09-26): UMA lista formal como dado. O KG (compile) e o MCP lêem-na; a entidade Role DERIVA dela. Nenhum terceiro resolvedor.
+      source: "SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/roles-responsabilidades/_roles.yaml — aterrou na fonte PT 11271106 (SbD-ToE-Manual, branch feat/i18n-en-phase1, presente em eaf066ee); sha256 7ad3cf1a41bd38da781a00f8e49d5fca3ed82a6e9b7e47555e8cfe9679799014; publicado em SbD-ToE-Manual tag v1.16.0 (merge 53bd7725, sem squash — master == v1.16.0, verificado 2026-09-27)"
+      verified_against: "o PRÓPRIO ficheiro do Manual (schema sbdtoe-role-list/1, version 3, decided 2026-09-26): 17 entradas canónicas; invariante de ids 17 = 17 contra Role.role_scope_assignments, zero diferenças (2026-09-26; reverificado contra a tag v1.16.0 em 2026-09-27, sha256 idêntico). Idêntico byte a byte ao bootstrap sbd-toe-knowledge-graph@7f2ab30 (mesmo sha256) — o bootstrap deixa de ser a referência de verificação"
+      derivation_rule: "Role (instâncias) = entradas type canonical da lista; role_id = id da entrada; name/aliases/specialisations copiados da lista. A ontologia guarda APENAS o atributo de modelo que a lista não tem: role_scope. Invariante: o conjunto de ids em role_scope_assignments == o conjunto de ids canónicos da lista (falta ou excesso = falha de emissão)."
+      not_copied: "especializações, compostos, non_roles, incompatibilidades (INC-01..09), dupla aprovação e context_rules vivem SÓ na lista — a ontologia aponta, não copia (uma cópia é um segundo resolvedor)"
+      canonical_ids_at_2_11: [appsec-engineer, arquitetos-software, auditores, developer, devops-sre, fornecedores-terceiros, gestao-executiva, grc-compliance, operacoes, product-owner, qa, scrum-master, security-champion, tech-lead, rh-peopleops, procurement, legal]
+      renames_at_2_11: "operacoes passa a «SecOps (Operações de Segurança)» / «SecOps (Security Operations)» — o id NÃO muda (P1)"
     role_scope_assignments:
-      intra_instance: [developer, appsec-engineer, qa, devops-sre, arquitetos-software, scrum-master, product-owner, operacoes, grc-compliance, gestao-executiva, security-champion, auditores]
+      intra_instance: [developer, appsec-engineer, qa, devops-sre, arquitetos-software, scrum-master, product-owner, operacoes, security-champion, tech-lead]
+      intra_org_other_domain: [grc-compliance, gestao-executiva, auditores, rh-peopleops, procurement, legal]
       inter_instance: [fornecedores-terceiros]
-      note_auditores: "externos ao projecto mas dentro do sistema de asseguramento da instância — intra_instance com nota; se se mostrar de fronteira, é uma linha"
+      note_auditores: "v2.10: «externos ao projecto mas dentro do sistema de asseguramento da instância — intra_instance com nota; se se mostrar de fronteira, é uma linha». v2.11: a linha foi escrita — com a emenda do princípio, o tier do meio existe e é o sítio deles."
+    role_scope_reclassification_2_11:   # irmão de role_scope_assignments (fora do mapa: quem itera os tiers não vê chaves de texto); tech-lead é intra_instance por decisão do lead 2026-09-26
+      status: "RATIFICADA pelo programme lead, como dono do programa, 2026-09-26 — proposta A do Archon aceite tal como escrita; tech-lead, appsec-engineer e operacoes (SecOps) ficam em intra_instance, como proposto"
+      note: "grounds (Archon, 2026-09-26): grc-compliance, gestao-executiva e auditores passam de intra_instance (v2.10) para intra_org_other_domain — o lead já os descreve como funções de fora da equipa (nota da emenda). O scope é a POSIÇÃO ORGANIZACIONAL do papel; o alcance da prescrição é POR AFIRMAÇÃO (a mesma função tem afirmações `prescribes` — trabalho directo na instância — e `requires_existence`). Verificado: nenhum dos três dispara a expectativa fraca do tier (0 assignments): grc-compliance 129, gestao-executiva 54, auditores 15 (KG@72c9588, data/entities/practice_assignments.json, pré-reversão). Casos-fronteira DELIBERADAMENTE mantidos em intra_instance: appsec-engineer (498 assignments) e operacoes/SecOps (30) — o Manual escreve o trabalho deles ao grão da instância; mantidos em intra_instance por decisão do lead 2026-09-26. Alternativa recusada: deixar os três em intra_instance e só os 3 papéis novos no tier do meio — mantém o tier definido pelo que é NOVO e não pelo que é, e deixa a nota do lead sem efeito."
     structural_expectations_by_scope:
       intra_instance: "assignments/involvements esperados — 0 atribuições é ACHADO"
+      intra_org_other_domain: "v2.11 — PRESENÇA NÃO EXIGIDA, AUSÊNCIA DECLARÁVEL: o Manual exprime o que pede a estas funções sobretudo como REQUISITOS (existência) e aprovações publicadas; 0 assignments ou 0 involvements NÃO é achado por defeito e NÃO é o zero-esperado de inter_instance — declara-se com o vocabulário de ausências (dono, prova, tipo), nunca silêncio (never_silence_principle). Onde o Manual atribui trabalho directo a estes papéis, a afirmação é `prescribes` (alcance por afirmação)."
       inter_instance: "ZERO-ESPERADO DECLARADO — 0 assignments e 0 involvements NA NOSSA instância é o estado CORRECTO; o papel é OBJECTO dos deveres do cliente (GOV-006/007, TRN-007, GOV-014); mata a classe de falsos-achados que enganou três leitores (GR-04)"
+    structural_expectation_flags_by_scope:
+      # v2.11 — mapa IRMÃO aditivo: a lógica lê ESTES campos, não a prosa de structural_expectations_by_scope (strings da v2.10 intactas; a do tier novo é aditiva)
+      intra_instance: {expected_zero: false, zero_is_finding: true}
+      intra_org_other_domain: {expected_zero: false, zero_is_finding: false}   # 0 não é achado nem zero-esperado: declara-se (never_silence_principle)
+      inter_instance: {expected_zero: true, zero_is_finding: false}
   SDLCPhase:
     layer: core
     description: Canonical SDLC phase
@@ -4793,10 +4817,22 @@ prescription_reach_principle:
   statement: "O Manual prescreve com três alcances, e cada afirmação sobre um actor carrega o seu: dentro do domínio, PRESCREVE; dentro da organização mas noutro domínio, REQUER-QUE-EXISTA; fora da organização, REQUER-ALINHAMENTO-DEMONSTRÁVEL. O Manual é FRACTAL, não em cascata: o fornecedor não é um actor dentro da instância — é onde OUTRA INSTÂNCIA começa; perguntar que práticas executa é perguntar o que a instância dele executa, e a resposta é «as mesmas, no seu próprio grafo». A nossa instância modela a INTERFACE (cláusulas, validação, evidência entregue, acesso condicionado)."
   reaches:
     prescribes: {position: dentro-do-domínio, verb: prescreve, expressed_as: "práticas, US na voz do papel, assignments, decision_involvements", evidence: "260 US · 1296 assignments · 163 involvements"}
-    requires_existence: {position: dentro-da-organização-outro-domínio, verb: requer-que-exista, expressed_as: "REQUISITOS sobre o que precisa de existir — nunca prescrição de como esse domínio trabalha", evidence: "GOV-006 «os contratos INCLUEM cláusulas» (não diz como o jurídico redige); GOV-007 «SÃO VALIDADOS» (não diz como o procurement negoceia); reforço verificado pelo Orchestrator: «Como GRC / Compliance (Jurídico + Procurement)» — jurídico e procurement entre PARÊNTESES, nunca canonizados. O tier do meio está vazio DE PAPÉIS porque o Manual o exprime como REQUISITOS — não se nomeiam actores num domínio que não se governa"}
+    requires_existence: {position: dentro-da-organização-outro-domínio, verb: requer-que-exista, expressed_as: "REQUISITOS sobre o que precisa de existir — nunca prescrição de como esse domínio trabalha; v2.11: o tier TEM papéis canónicos (rh-peopleops, procurement, legal; e as funções de fora da equipa já canónicas: grc-compliance, gestao-executiva, auditores) — role_scope intra_org_other_domain", evidence: "GOV-006 «os contratos INCLUEM cláusulas» (não diz como o jurídico redige); GOV-007 «SÃO VALIDADOS» (não diz como o procurement negoceia); v2.10 lia o tier como vazio de papéis («Como GRC / Compliance (Jurídico + Procurement)» com jurídico e procurement entre parênteses); v2.11 supera essa leitura — ver amendments. Nomear o papel não muda o alcance da afirmação: o Manual continua a pedir EXISTÊNCIA, não a prescrever como a função trabalha"}
     requires_demonstrable_alignment: {position: fora-da-organização, verb: requer-alinhamento-demonstrável, expressed_as: "alinhamento provado, não adopção — «quando perguntamos o que o fornecedor tem que fazer, é o que está no CONTRATO. Se adoptar o mesmo manual, o manual diz-lhe o que fazer» (programme lead)", evidence: "0/260 US na voz do fornecedor; papel sempre objecto («cumprem, entregam, submetem-se»); «devem cumprir os mesmos padrões» = alinhamento"}
-  retroactive_power: "explica decisões tomadas antes de o princípio existir e sem o conhecer: ABS-011 (RH/PeopleOps não canonizado — tier do meio), GOV-006/007 (a fronteira já praticada), e o zero de fornecedores-terceiros lido como dívida (ABS-003 → withdrawn no ledger)"
+  retroactive_power: "explica decisões tomadas antes de o princípio existir e sem o conhecer: ABS-011 (RH/PeopleOps não canonizado — tier do meio; v2.11: reaberto e fechado por canonização, ver amendments e ledger), GOV-006/007 (a fronteira já praticada), e o zero de fornecedores-terceiros lido como dívida (ABS-003 → withdrawn no ledger)"
   authorial_note_scope: "poucas linhas na página de papéis dos fundamentos, nomeando os três alcances; SEM capítulo (âmbito fixado pelo lead)"
+  amendments:
+  - version: '2.11'
+    date: '2026-09-26'
+    decided_by: "programme lead 2026-09-26 (decisões via Orchestrator; preparação confirmada pelo lead directamente na sessão do Archon)"
+    change: "o tier intra_org_other_domain passa a TER papéis canónicos (rh-peopleops, procurement, legal); Role.role_scope ganha o terceiro valor intra_org_other_domain"
+    decision_as_relayed_by_orchestrator: "O alcance mantém o sentido: o Manual prescreve directamente o trabalho da instância, e às funções da organização pede existência e alinhamento demonstrável."
+    justification_as_relayed_by_orchestrator: "GRC, Auditores e Gestão Executiva já eram canónicos e já eram funções de fora da equipa, por isso a emenda torna o princípio coerente com o que o Manual já fazia."
+    unchanged: [statement, reaches.prescribes, reaches.requires_demonstrable_alignment, fractal_not_cascade, authorial_note_scope]
+    superseded_text_from_2_10:
+      where: reaches.requires_existence.evidence (última frase) e retroactive_power (ABS-011)
+      verbatim: "«Como GRC / Compliance (Jurídico + Procurement)» — jurídico e procurement entre PARÊNTESES, nunca canonizados. O tier do meio está vazio DE PAPÉIS porque o Manual o exprime como REQUISITOS — não se nomeiam actores num domínio que não se governa"
+    consequences: "role_scope_assignments ×17 (10 intra_instance · 6 intra_org_other_domain · 1 inter_instance); referenced_roles perde rh-peopleops; ABS-011 reopened → closed no ledger; página de roles da nota autoral («poucas linhas», três alcances) continua a valer — o Author decide se o canon de 17 a altera"
 segmentation_principle:
   # v2.6 — nomeado e normativo (generaliza a adenda v2.5; decisões do lead 2026-09-06 e 2026-09-07)
   statement: "MacroProcess, KnowledgeBundle (capítulo) e SDLCPhase são segmentações PARALELAS do mesmo substrato. Relações entre segmentações nunca se tipam como contenção (campo 1:1, int, «pertence a»). A cardinalidade é propriedade da vista (a vista processual cobre 15 capítulos; a vista de fases tem 8): nenhuma vista substitui ou vence outra."
@@ -4804,6 +4840,42 @@ segmentation_principle:
     travessia: "N:M entre segmentações, PUBLICADA na fonte (ex.: MP → capítulos) ou DERIVADA de dados autorados com regra declarada (ex.: fase ↔ capítulos via assignments). Sem fonte, não há travessia — deriva-se o que é publicado, nunca o que é conveniente."
     dependencia: "consumo tipado entre instâncias da MESMA segmentação (ex.: arestas inter-MP dependency|feedback, regra do template)"
     piso: "relação transversal de fundação — aplica-se a tudo, independentemente do eixo da segmentação (ex.: cap. 00-fundamentos: «capítulo de definição para que se entenda o resto do manual; roles e mínimos — transversal a todo o manual»). O piso NÃO é ausência de nenhuma vista, não recebe fase nem se tipa out_of_scope; a v2.5 já o publica (path_edge kind: piso; MP-01/MP-04/MP-05 atravessam-no)."
+  name_en: segmentation principle   # v2.11 — Espécie 2, coinagem ratificada pelo programme lead 2026-09-25; chaves PT e o texto de relation_species ficam INALTERADOS
+  relation_species_en:
+    travessia: {label_en: segmentation traversal, short_en: traversal, verb_en: traverses, pt: travessia}
+    dependencia: {label_en: typed consumption, verb_en: consumes, pt: dependência, pt_alias: consumo tipado, kinds_en: [dependency, feedback], kinds_note: "dependency e feedback são os DOIS TIPOS da espécie (valores de dados, não se traduzem); «dependency» nunca é o nome da espécie"}
+    piso: {label_en: foundation, verb_en: underlies, pt: piso, edge_kind_value: piso}
+  segmentation_terms_en:
+    segmentation: "one of several parallel, independent, non-hierarchical ways of cutting the same substrate (a facet); cardinality is a property of each segmentation and none subsumes another"
+    axes: {process: process segmentation (MacroProcess), chapter: chapter segmentation (KnowledgeBundle), phase: phase segmentation (SDLCPhase)}
+    together: parallel segmentations
+  not_meant_en:
+    segmentation:
+    - "partition: a partition divides ONE domain into exclusive, exhaustive parts (cf. the ten-slice partition of AppSec Core)"
+    - "view: the papers' engagement/organisational view is a lens on the programme, not an axis"
+    - "network segmentation: domain vocabulary, always qualified"
+    foundation:
+    - "floor: a lower bound on a scalar (admissibility floor, severity-SLA floor)"
+    - "baseline: the content carried by the foundation relation, not the relation kind"
+    - "dependency: a foundation has no direction of consumption and no adoption order"
+    typed_consumption:
+    - "software dependency (SBOM/SCA)"
+    - "downstream consumer (KG, MCP, harness)"
+    - "identifier consumption (ACR protocol)"
+    segmentation_traversal:
+    - "graph traversal: the retrieval algorithm of Papers 3-5"
+    - "traversal between authoritative documents: P7 consumer navigation cost"
+    - "containment or membership"
+    - "mapping, crosswalk or alignment: relations between distinct vocabularies"
+    - "boundary crossing: trust-zone crossing"
+  terminology_note_en: >-
+    In Papers 3-5, «traversal» names the retrieval algorithm («ontology graph traversal»). From Manual ontology v2.6
+    onwards, a «segmentation traversal» — or simply «a traversal» when the context is the segmentation principle —
+    names a relation between parallel segmentations of the Manual (N:M, published in the source or derived from
+    authored data under a declared rule; never containment). The algorithm is always written «graph traversal». A
+    segmentation traversal is data that a graph traversal may walk; the two are never interchangeable. The
+    *_traversal* keys of this ontology (segmentation_traversals, sdlc_phase_traversal, traversal_assertion_rule,
+    traversal_assertions, traverses_bundles, mp_traverses_bundle) name the relation and are unchanged.
   traversal_assertion_rule:
     # v2.7 (ratificada 2026-09-08) — a regra que faltava ao princípio: não só a cardinalidade, o que se AFIRMA.
     statement: "Toda a travessia derivada declara: (i) o VERBO que afirma; (ii) a fonte autorada de que deriva; (iii) o que NÃO afirma (asserções negativas obrigatórias); (iv) a cobertura, com órfãos declarados um a um. Um join que não consegue nomear o verbo NÃO SE PUBLICA — «join permissivo» é violação nomeada."
@@ -4966,11 +5038,20 @@ referenced_roles:
   # do próprio Manual em 00-fundamentos). A ontologia NÃO canoniza papéis por conta própria (seria contradizer a
   # fonte); regista-os como referenciados-não-canónicos para que a extracção os declare resolvidos-como-referenciados
   # em vez de não-resolvidos (nunca-silêncio). Canonizar (14.º) ou mapear é decisão de conteúdo (Author) — ABS-011.
-  items:
+  # v2.11 — o canon passa a 17 papéis (decisão do lead 2026-09-26): um papel canónico deixa de ser «referenciado-não-canónico».
+  # rh-peopleops sai daqui; a âncora passa a viver ONDE O PAPEL É DEFINIDO (página de roles de RH + entrada rh-peopleops no _roles.yaml do Manual).
+  # A reversão aterrou (Manual 11271106): a âncora está reposta onde o papel é definido — ver retired[].current_anchors e o ledger ABS-011 (closed 2026-09-26).
+  items: []
+  retired:
   - referenced_role_id: rh-peopleops
-    label: RH/PeopleOps
-    canonical: false
-    anchors:
-    - "13-formacao-onboarding/aplicacao-lifecycle.md:47 (US-01: «Como RH/PeopleOps, quero garantir formação obrigatória de onboarding em SbD…» — PROTAGONISTA de US autorada)"
+    retired_in: '2.11'
+    reason: "canonizado — 17 papéis (rh-peopleops, procurement, legal, tech-lead acrescentados); confirmado pelo Orchestrator 2026-09-26"
+    previous_label: RH/PeopleOps
+    previous_anchors:
+    - "13-formacao-onboarding/aplicacao-lifecycle.md:47 (US-01: «Como RH/PeopleOps, quero garantir formação obrigatória de onboarding em SbD…» — PROTAGONISTA de US autorada) — texto trocado por 4a1e70e8/279695dc; a reverter"
     - "02-requisitos-seguranca/addon/02-lista-requisitos-base.md (mapeamento por domínio: responsável típico do cap. 13 inclui PeopleOps)"
+    current_anchors:   # onde o papel é definido (v2.11)
+    - "SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/roles-responsabilidades/rh-peopleops.md"
+    - "SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/00-fundamentos/roles-responsabilidades/_roles.yaml:159 (id: rh-peopleops)"
+    - "SbD-ToE-Manual/manuals_src/docs/sbd-toe/010-sbd-manual/13-formacao-onboarding/aplicacao-lifecycle.md:47 (US-01, voz «RH / PeopleOps»)"
     absence_ref: ABS-011

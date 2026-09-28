@@ -2,396 +2,462 @@
   {
     "entity_id": "ACP-SCBI-001",
     "entity_type": "Practice",
+    "name": "Build-Linked SBOM Generation",
     "slice_family": "ACO-SCBI",
     "slice_id": "ASC-01"
   },
   {
     "entity_id": "ACP-SCBI-002",
     "entity_type": "Practice",
+    "name": "Automated Dependency And Image Risk Gating",
     "slice_family": "ACO-SCBI",
     "slice_id": "ASC-01"
   },
   {
     "entity_id": "ACP-SCBI-003",
     "entity_type": "Practice",
+    "name": "Approved Source And Registry Governance",
     "slice_family": "ACO-SCBI",
     "slice_id": "ASC-01"
   },
   {
     "entity_id": "ACP-SCBI-004",
     "entity_type": "Practice",
+    "name": "Pipeline Definition As Reviewed Code",
     "slice_family": "ACO-SCBI",
     "slice_id": "ASC-01"
   },
   {
     "entity_id": "ACP-SCBI-005",
     "entity_type": "Practice",
+    "name": "Governed Promotion And Release Approval",
     "slice_family": "ACO-SCBI",
     "slice_id": "ASC-01"
   },
   {
     "entity_id": "ACP-SCBI-006",
     "entity_type": "Practice",
+    "name": "Artifact Signature And Provenance Validation",
     "slice_family": "ACO-SCBI",
     "slice_id": "ASC-01"
   },
   {
     "entity_id": "ACP-SCBI-007",
     "entity_type": "Practice",
+    "name": "Trusted Container Image Supply",
     "slice_family": "ACO-SCBI",
     "slice_id": "ASC-01"
   },
   {
     "entity_id": "ACP-IAT-001",
     "entity_type": "Practice",
+    "name": "Strong Authentication And Step-Up Enforcement",
     "slice_family": "ACO-IAT",
     "slice_id": "ASC-02"
   },
   {
     "entity_id": "ACP-IAT-002",
     "entity_type": "Practice",
+    "name": "Least-Privilege Authorization Governance",
     "slice_family": "ACO-IAT",
     "slice_id": "ASC-02"
   },
   {
     "entity_id": "ACP-IAT-003",
     "entity_type": "Practice",
+    "name": "Access Review And Timely Revocation",
     "slice_family": "ACO-IAT",
     "slice_id": "ASC-02"
   },
   {
     "entity_id": "ACP-IAT-004",
     "entity_type": "Practice",
+    "name": "Bounded Session And Token Management",
     "slice_family": "ACO-IAT",
     "slice_id": "ASC-02"
   },
   {
     "entity_id": "ACP-IAT-005",
     "entity_type": "Practice",
+    "name": "Authenticated API Boundary Enforcement",
     "slice_family": "ACO-IAT",
     "slice_id": "ASC-02"
   },
   {
     "entity_id": "ACP-IAT-006",
     "entity_type": "Practice",
+    "name": "Access Abuse Monitoring And Audit Trail",
     "slice_family": "ACO-IAT",
     "slice_id": "ASC-02"
   },
   {
     "entity_id": "ACP-ATB-001",
     "entity_type": "Practice",
+    "name": "Architecture Baseline Definition",
     "slice_family": "ACO-ATB",
     "slice_id": "ASC-03"
   },
   {
     "entity_id": "ACP-ATB-002",
     "entity_type": "Practice",
+    "name": "Architectural Decision And Solution Traceability",
     "slice_family": "ACO-ATB",
     "slice_id": "ASC-03"
   },
   {
     "entity_id": "ACP-ATB-003",
     "entity_type": "Practice",
+    "name": "Trust-Boundary And Flow Review",
     "slice_family": "ACO-ATB",
     "slice_id": "ASC-03"
   },
   {
     "entity_id": "ACP-ATB-004",
     "entity_type": "Practice",
+    "name": "External Exposure And Boundary Mediation Design",
     "slice_family": "ACO-ATB",
     "slice_id": "ASC-03"
   },
   {
     "entity_id": "ACP-ATB-005",
     "entity_type": "Practice",
+    "name": "Architecture Review And Approval Governance",
     "slice_family": "ACO-ATB",
     "slice_id": "ASC-03"
   },
   {
     "entity_id": "ACP-ATB-006",
     "entity_type": "Practice",
+    "name": "Architecture Change Trigger Discipline",
     "slice_family": "ACO-ATB",
     "slice_id": "ASC-03"
   },
   {
     "entity_id": "ACP-ATB-007",
     "entity_type": "Practice",
+    "name": "Automatable Topology And Pattern Validation",
     "slice_family": "ACO-ATB",
     "slice_id": "ASC-03"
   },
   {
     "entity_id": "ACP-TSV-001",
     "entity_type": "Practice",
+    "name": "Risk-Based Security Test Planning",
     "slice_family": "ACO-TSV",
     "slice_id": "ASC-04"
   },
   {
     "entity_id": "ACP-TSV-002",
     "entity_type": "Practice",
+    "name": "Governed Static Analysis Execution",
     "slice_family": "ACO-TSV",
     "slice_id": "ASC-04"
   },
   {
     "entity_id": "ACP-TSV-003",
     "entity_type": "Practice",
+    "name": "Findings Triage, SLA And Retest Closure",
     "slice_family": "ACO-TSV",
     "slice_id": "ASC-04"
   },
   {
     "entity_id": "ACP-TSV-004",
     "entity_type": "Practice",
+    "name": "Reproducible Test Evidence Management",
     "slice_family": "ACO-TSV",
     "slice_id": "ASC-04"
   },
   {
     "entity_id": "ACP-TSV-005",
     "entity_type": "Practice",
+    "name": "Staged Dynamic Testing And Gate Enforcement",
     "slice_family": "ACO-TSV",
     "slice_id": "ASC-04"
   },
   {
     "entity_id": "ACP-TSV-006",
     "entity_type": "Practice",
+    "name": "Specialized Empirical Testing",
     "slice_family": "ACO-TSV",
     "slice_id": "ASC-04"
   },
   {
     "entity_id": "ACP-TSV-007",
     "entity_type": "Practice",
+    "name": "Human Review Of Security Test Signals",
     "slice_family": "ACO-TSV",
     "slice_id": "ASC-04"
   },
   {
     "entity_id": "ACP-TMR-001",
     "entity_type": "Practice",
+    "name": "Threat Model Creation And Triggered Refresh",
     "slice_family": "ACO-TMR",
     "slice_id": "ASC-05"
   },
   {
     "entity_id": "ACP-TMR-002",
     "entity_type": "Practice",
+    "name": "DFD And Trust-Boundary Grounding",
     "slice_family": "ACO-TMR",
     "slice_id": "ASC-05"
   },
   {
     "entity_id": "ACP-TMR-003",
     "entity_type": "Practice",
+    "name": "Structured Threat Analysis Method Selection",
     "slice_family": "ACO-TMR",
     "slice_id": "ASC-05"
   },
   {
     "entity_id": "ACP-TMR-004",
     "entity_type": "Practice",
+    "name": "Threat Disposition And Accepted Risk Governance",
     "slice_family": "ACO-TMR",
     "slice_id": "ASC-05"
   },
   {
     "entity_id": "ACP-TMR-005",
     "entity_type": "Practice",
+    "name": "Threat Traceability Into Requirements And Validation",
     "slice_family": "ACO-TMR",
     "slice_id": "ASC-05"
   },
   {
     "entity_id": "ACP-TMR-006",
     "entity_type": "Practice",
+    "name": "Independent Review And Threat Model Approval",
     "slice_family": "ACO-TMR",
     "slice_id": "ASC-05"
   },
   {
     "entity_id": "ACP-TMR-007",
     "entity_type": "Practice",
+    "name": "Threat Model Artifact Governance",
     "slice_family": "ACO-TMR",
     "slice_id": "ASC-05"
   },
   {
     "entity_id": "ACP-TMR-008",
     "entity_type": "Practice",
+    "name": "Security Requirements Identification And Derivation",
     "slice_family": "ACO-TMR",
     "slice_id": "ASC-05"
   },
   {
     "entity_id": "ACP-TMR-009",
     "entity_type": "Practice",
+    "name": "Requirements Communication And Compliance Monitoring",
     "slice_family": "ACO-TMR",
     "slice_id": "ASC-05"
   },
   {
     "entity_id": "ACP-SPC-001",
     "entity_type": "Practice",
+    "name": "Secret Leak Prevention In Source And Pipeline",
     "slice_family": "ACO-SPC",
     "slice_id": "ASC-06"
   },
   {
     "entity_id": "ACP-SPC-002",
     "entity_type": "Practice",
+    "name": "Vault-Backed Secret Storage",
     "slice_family": "ACO-SPC",
     "slice_id": "ASC-06"
   },
   {
     "entity_id": "ACP-SPC-003",
     "entity_type": "Practice",
+    "name": "Secret Rotation And Renewal Discipline",
     "slice_family": "ACO-SPC",
     "slice_id": "ASC-06"
   },
   {
     "entity_id": "ACP-SPC-004",
     "entity_type": "Practice",
+    "name": "Operational Identity Binding And OIDC Use",
     "slice_family": "ACO-SPC",
     "slice_id": "ASC-06"
   },
   {
     "entity_id": "ACP-SPC-005",
     "entity_type": "Practice",
+    "name": "Secret Isolation Across Technical Surfaces",
     "slice_family": "ACO-SPC",
     "slice_id": "ASC-06"
   },
   {
     "entity_id": "ACP-SPC-006",
     "entity_type": "Practice",
+    "name": "Secret Configuration Governance",
     "slice_family": "ACO-SPC",
     "slice_id": "ASC-06"
   },
   {
     "entity_id": "ACP-IVF-001",
     "entity_type": "Practice",
+    "name": "Boundary Input Validation",
     "slice_family": "ACO-IVF",
     "slice_id": "ASC-07"
   },
   {
     "entity_id": "ACP-IVF-002",
     "entity_type": "Practice",
+    "name": "Schema And Allowlist Enforcement",
     "slice_family": "ACO-IVF",
     "slice_id": "ASC-07"
   },
   {
     "entity_id": "ACP-IVF-003",
     "entity_type": "Practice",
+    "name": "Dangerous Pattern Exclusion",
     "slice_family": "ACO-IVF",
     "slice_id": "ASC-07"
   },
   {
     "entity_id": "ACP-IVF-004",
     "entity_type": "Practice",
+    "name": "Pre-Use Data Validation Discipline",
     "slice_family": "ACO-IVF",
     "slice_id": "ASC-07"
   },
   {
     "entity_id": "ACP-IVF-005",
     "entity_type": "Practice",
+    "name": "Non-Revealing Error Surface Control",
     "slice_family": "ACO-IVF",
     "slice_id": "ASC-07"
   },
   {
     "entity_id": "ACP-IVF-006",
     "entity_type": "Practice",
+    "name": "Centralized Error Governance",
     "slice_family": "ACO-IVF",
     "slice_id": "ASC-07"
   },
   {
     "entity_id": "ACP-IVF-007",
     "entity_type": "Practice",
+    "name": "Context-Aware Output Encoding At Rendering Boundaries",
     "slice_family": "ACO-IVF",
     "slice_id": "ASC-07"
   },
   {
     "entity_id": "ACP-ITS-001",
     "entity_type": "Practice",
+    "name": "Trust Boundary And Integration Review",
     "slice_family": "ACO-ITS",
     "slice_id": "ASC-08"
   },
   {
     "entity_id": "ACP-ITS-002",
     "entity_type": "Practice",
+    "name": "Machine Identity And Mutual Authentication Discipline",
     "slice_family": "ACO-ITS",
     "slice_id": "ASC-08"
   },
   {
     "entity_id": "ACP-ITS-003",
     "entity_type": "Practice",
+    "name": "Transport And Protocol Hardening",
     "slice_family": "ACO-ITS",
     "slice_id": "ASC-08"
   },
   {
     "entity_id": "ACP-ITS-004",
     "entity_type": "Practice",
+    "name": "Message Integrity And Authorized Peer Validation",
     "slice_family": "ACO-ITS",
     "slice_id": "ASC-08"
   },
   {
     "entity_id": "ACP-ITS-005",
     "entity_type": "Practice",
+    "name": "Integration Contract And Change Assurance",
     "slice_family": "ACO-ITS",
     "slice_id": "ASC-08"
   },
   {
     "entity_id": "ACP-ITS-006",
     "entity_type": "Practice",
+    "name": "External Interaction Audit Logging",
     "slice_family": "ACO-ITS",
     "slice_id": "ASC-08"
   },
   {
     "entity_id": "ACP-RPR-001",
     "entity_type": "Practice",
+    "name": "Accountable Release Approval",
     "slice_family": "ACO-RPR",
     "slice_id": "ASC-09"
   },
   {
     "entity_id": "ACP-RPR-002",
     "entity_type": "Practice",
+    "name": "Verified Artifact Promotion",
     "slice_family": "ACO-RPR",
     "slice_id": "ASC-09"
   },
   {
     "entity_id": "ACP-RPR-003",
     "entity_type": "Practice",
+    "name": "Pre-Promotion Gates And Staging Validation",
     "slice_family": "ACO-RPR",
     "slice_id": "ASC-09"
   },
   {
     "entity_id": "ACP-RPR-004",
     "entity_type": "Practice",
+    "name": "End-to-End Deploy Traceability",
     "slice_family": "ACO-RPR",
     "slice_id": "ASC-09"
   },
   {
     "entity_id": "ACP-RPR-005",
     "entity_type": "Practice",
+    "name": "Tested Rollback Discipline",
     "slice_family": "ACO-RPR",
     "slice_id": "ASC-09"
   },
   {
     "entity_id": "ACP-RPR-006",
     "entity_type": "Practice",
+    "name": "Progressive Rollout And Containment",
     "slice_family": "ACO-RPR",
     "slice_id": "ASC-09"
   },
   {
     "entity_id": "ACP-SLG-001",
     "entity_type": "Practice",
+    "name": "Critical Event Catalog Governance",
     "slice_family": "ACO-SLG",
     "slice_id": "ASC-10"
   },
   {
     "entity_id": "ACP-SLG-002",
     "entity_type": "Practice",
+    "name": "Structured And Centralized Security Logging",
     "slice_family": "ACO-SLG",
     "slice_id": "ASC-10"
   },
   {
     "entity_id": "ACP-SLG-003",
     "entity_type": "Practice",
+    "name": "Log Integrity And Protected Access",
     "slice_family": "ACO-SLG",
     "slice_id": "ASC-10"
   },
   {
     "entity_id": "ACP-SLG-004",
     "entity_type": "Practice",
+    "name": "Log Retention And Lifecycle Governance",
     "slice_family": "ACO-SLG",
     "slice_id": "ASC-10"
   },
   {
     "entity_id": "ACP-SLG-005",
     "entity_type": "Practice",
+    "name": "Logging Pipeline Health Visibility",
     "slice_family": "ACO-SLG",
     "slice_id": "ASC-10"
   }

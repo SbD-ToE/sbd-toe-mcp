@@ -725,7 +725,7 @@
       "description": "Configuration artifact used as auditable evidence.",
       "evidence": [
         "control CTRL-infrastructure-deploy-seguro-e-reversivel-ae204be5f0 references deployment_plan",
-        "practice 07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21 matched alias 'deploy'",
+        "practice 07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados matched alias 'deploy'",
         "practice 11-deploy-seguro:controlo-de-execucao-com-feature-flags matched alias 'deploy'",
         "practice 11-deploy-seguro:controlo-e-validacao-de-drift-operacional matched alias 'deploy'",
         "practice 11-deploy-seguro:credenciais-de-deploy-isoladas-por-aplicacao-e-efemeras matched alias 'deploy'"
@@ -2193,7 +2193,7 @@
         "control CTRL-supply-chain-supply-chain-segura-de-imagens-e-containers-8a8af25a4d references signature_attestation",
         "practice 02-requisitos-seguranca:geracao-de-sbom-e-assinatura-de-artefactos-de-build matched alias 'assinatura'",
         "practice 07-cicd-seguro:assinatura-e-proveniencia matched alias 'assinatura'",
-        "practice 07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20 matched alias 'assinatura'",
+        "practice 07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags matched alias 'assinatura'",
         "practice 08-iac-infraestrutura:assinatura-e-proveniencia-de-artefactos-iac matched alias 'assinatura'"
       ],
       "lifecycle_phases": [
@@ -2244,7 +2244,7 @@
         "corpus document 010-sbd-manual/00-fundamentos/intro.md matched aliases ['fornecedor']",
         "corpus document 010-sbd-manual/00-fundamentos/macro-processos.md matched aliases ['fornecedor']",
         "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/fornecedores-terceiros.md matched aliases ['fornecedor']",
-        "corpus document 010-sbd-manual/05-dependencias-sbom-sca/addon/01-inventario-sbom.md matched aliases ['fornecedor']"
+        "corpus document 010-sbd-manual/00-fundamentos/roles-responsabilidades/legal.md matched aliases ['fornecedor']"
       ],
       "lifecycle_phases": [
         "design",

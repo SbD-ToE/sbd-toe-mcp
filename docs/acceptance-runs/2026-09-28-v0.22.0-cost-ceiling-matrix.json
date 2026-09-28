@@ -1,0 +1,2228 @@
+{
+  "tally": {
+    "cases": 120,
+    "same_ready": 87,
+    "same_blocked": 8,
+    "ready_to_blocked": [
+      "supply_chain L2@lista (32 reqs, 9592 tk)",
+      "supply_chain L2@standard (32 reqs, 10042 tk)",
+      "deployment L2@lista (38 reqs, 9108 tk)",
+      "deployment L2@standard (38 reqs, 9532 tk)",
+      "agents L2@lista (18 reqs, 8857 tk)",
+      "agents L2@standard (18 reqs, 9349 tk)",
+      "supply_chain L3@lista (37 reqs, 10269 tk)",
+      "supply_chain L3@standard (37 reqs, 10720 tk)",
+      "release L3@lista (26 reqs, 10119 tk)",
+      "release L3@standard (26 reqs, 10599 tk)",
+      "deployment L3@lista (43 reqs, 10121 tk)",
+      "deployment L3@standard (43 reqs, 10545 tk)",
+      "agents L3@lista (20 reqs, 9757 tk)",
+      "agents L3@standard (20 reqs, 10252 tk)",
+      "architecture+iac+encryption L3@lista (37 reqs, 9396 tk)",
+      "architecture+iac+encryption L3@standard (37 reqs, 9849 tk)",
+      "testing+threat_modeling+monitoring L3@lista (43 reqs, 13556 tk)",
+      "testing+threat_modeling+monitoring L3@standard (43 reqs, 13967 tk)",
+      "files+privacy+agents L3@lista (33 reqs, 11388 tk)",
+      "files+privacy+agents L3@standard (33 reqs, 11857 tk)",
+      "auth+logging+RGPD L2@lista (36 reqs, 11587 tk)",
+      "auth+logging+RGPD L2@standard (36 reqs, 12026 tk)",
+      "auth+RGPD L2@lista (27 reqs, 9397 tk)",
+      "auth+RGPD L2@standard (27 reqs, 9877 tk)"
+    ],
+    "blocked_to_ready": [
+      "auth+logging+validation L3@lista (53 reqs, 8092 tk)"
+    ],
+    "irreducible_ready": [],
+    "before_ready_above_envelope": 24,
+    "full_byte_identical": "58/58",
+    "full_changed_by_design_0006": 2,
+    "decompositions": 32,
+    "single_batch_decompositions": 0,
+    "g2_coverage_mean": 1,
+    "g2_coverage_min": 1,
+    "slices_full_union": "32/32",
+    "violations": [],
+    "max_ms": 431,
+    "total_s": 31.5
+  },
+  "rows": [
+    {
+      "case": "auth L2",
+      "detail": "lista",
+      "reqs": 27,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 9,
+      "before_tk": 4632,
+      "after_tk": 4632,
+      "irreducible": false
+    },
+    {
+      "case": "auth L2",
+      "detail": "standard",
+      "reqs": 27,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 8,
+      "before_tk": 5113,
+      "after_tk": 5113,
+      "irreducible": false
+    },
+    {
+      "case": "logging L2",
+      "detail": "lista",
+      "reqs": 9,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 8,
+      "before_tk": 2856,
+      "after_tk": 2856,
+      "irreducible": false
+    },
+    {
+      "case": "logging L2",
+      "detail": "standard",
+      "reqs": 9,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3349,
+      "after_tk": 3349,
+      "irreducible": false
+    },
+    {
+      "case": "validation L2",
+      "detail": "lista",
+      "reqs": 15,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 3734,
+      "after_tk": 3734,
+      "irreducible": false
+    },
+    {
+      "case": "validation L2",
+      "detail": "standard",
+      "reqs": 15,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 8,
+      "before_tk": 4226,
+      "after_tk": 4226,
+      "irreducible": false
+    },
+    {
+      "case": "api L2",
+      "detail": "lista",
+      "reqs": 7,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3399,
+      "after_tk": 3399,
+      "irreducible": false
+    },
+    {
+      "case": "api L2",
+      "detail": "standard",
+      "reqs": 7,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 3893,
+      "after_tk": 3893,
+      "irreducible": false
+    },
+    {
+      "case": "config L2",
+      "detail": "lista",
+      "reqs": 6,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3105,
+      "after_tk": 3105,
+      "irreducible": false
+    },
+    {
+      "case": "config L2",
+      "detail": "standard",
+      "reqs": 6,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3598,
+      "after_tk": 3598,
+      "irreducible": false
+    },
+    {
+      "case": "integrity L2",
+      "detail": "lista",
+      "reqs": 9,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3728,
+      "after_tk": 3728,
+      "irreducible": false
+    },
+    {
+      "case": "integrity L2",
+      "detail": "standard",
+      "reqs": 9,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 4220,
+      "after_tk": 4220,
+      "irreducible": false
+    },
+    {
+      "case": "distribution L2",
+      "detail": "lista",
+      "reqs": 7,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3705,
+      "after_tk": 3705,
+      "irreducible": false
+    },
+    {
+      "case": "distribution L2",
+      "detail": "standard",
+      "reqs": 7,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 4197,
+      "after_tk": 4197,
+      "irreducible": false
+    },
+    {
+      "case": "ide L2",
+      "detail": "lista",
+      "reqs": 6,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 2532,
+      "after_tk": 2532,
+      "irreducible": false
+    },
+    {
+      "case": "ide L2",
+      "detail": "standard",
+      "reqs": 6,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3027,
+      "after_tk": 3027,
+      "irreducible": false
+    },
+    {
+      "case": "requirements L2",
+      "detail": "lista",
+      "reqs": 7,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 2330,
+      "after_tk": 2330,
+      "irreducible": false
+    },
+    {
+      "case": "requirements L2",
+      "detail": "standard",
+      "reqs": 7,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 2822,
+      "after_tk": 2822,
+      "irreducible": false
+    },
+    {
+      "case": "architecture L2",
+      "detail": "lista",
+      "reqs": 12,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 8,
+      "before_tk": 4793,
+      "after_tk": 4793,
+      "irreducible": false
+    },
+    {
+      "case": "architecture L2",
+      "detail": "standard",
+      "reqs": 12,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 5285,
+      "after_tk": 5285,
+      "irreducible": false
+    },
+    {
+      "case": "iac L2",
+      "detail": "lista",
+      "reqs": 11,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3965,
+      "after_tk": 3965,
+      "irreducible": false
+    },
+    {
+      "case": "iac L2",
+      "detail": "standard",
+      "reqs": 11,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 4446,
+      "after_tk": 4446,
+      "irreducible": false
+    },
+    {
+      "case": "encryption L2",
+      "detail": "lista",
+      "reqs": 8,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3372,
+      "after_tk": 3372,
+      "irreducible": false
+    },
+    {
+      "case": "encryption L2",
+      "detail": "standard",
+      "reqs": 8,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3864,
+      "after_tk": 3864,
+      "irreducible": false
+    },
+    {
+      "case": "secrets L2",
+      "detail": "lista",
+      "reqs": 14,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 4364,
+      "after_tk": 4364,
+      "irreducible": false
+    },
+    {
+      "case": "secrets L2",
+      "detail": "standard",
+      "reqs": 14,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 4815,
+      "after_tk": 4815,
+      "irreducible": false
+    },
+    {
+      "case": "build L2",
+      "detail": "lista",
+      "reqs": 18,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 6036,
+      "after_tk": 6036,
+      "irreducible": false
+    },
+    {
+      "case": "build L2",
+      "detail": "standard",
+      "reqs": 18,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 6516,
+      "after_tk": 6516,
+      "irreducible": false
+    },
+    {
+      "case": "supply_chain L2",
+      "detail": "lista",
+      "reqs": 32,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 265,
+      "before_tk": 9592,
+      "after_tk": 9592,
+      "batches": [
+        {
+          "categories": [
+            "DEP",
+            "CIC"
+          ],
+          "requirements": 23,
+          "measured_tk": 7931,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "INT"
+          ],
+          "requirements": 9,
+          "measured_tk": 3307,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "supply_chain L2",
+      "detail": "standard",
+      "reqs": 32,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 52,
+      "before_tk": 10042,
+      "after_tk": 10042,
+      "batches": [
+        {
+          "categories": [
+            "DEP",
+            "CIC"
+          ],
+          "requirements": 23,
+          "measured_tk": 8438,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "INT"
+          ],
+          "requirements": 9,
+          "measured_tk": 3813,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "testing L2",
+      "detail": "lista",
+      "reqs": 8,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3689,
+      "after_tk": 3689,
+      "irreducible": false
+    },
+    {
+      "case": "testing L2",
+      "detail": "standard",
+      "reqs": 8,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 4156,
+      "after_tk": 4156,
+      "irreducible": false
+    },
+    {
+      "case": "threat_modeling L2",
+      "detail": "lista",
+      "reqs": 8,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 5006,
+      "after_tk": 5006,
+      "irreducible": false
+    },
+    {
+      "case": "threat_modeling L2",
+      "detail": "standard",
+      "reqs": 8,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 5497,
+      "after_tk": 5497,
+      "irreducible": false
+    },
+    {
+      "case": "monitoring L2",
+      "detail": "lista",
+      "reqs": 20,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 6349,
+      "after_tk": 6349,
+      "irreducible": false
+    },
+    {
+      "case": "monitoring L2",
+      "detail": "standard",
+      "reqs": 20,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 6813,
+      "after_tk": 6813,
+      "irreducible": false
+    },
+    {
+      "case": "release L2",
+      "detail": "lista",
+      "reqs": 20,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 8324,
+      "after_tk": 8324,
+      "irreducible": false
+    },
+    {
+      "case": "release L2",
+      "detail": "standard",
+      "reqs": 20,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 8802,
+      "after_tk": 8802,
+      "irreducible": false
+    },
+    {
+      "case": "deployment L2",
+      "detail": "lista",
+      "reqs": 38,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 57,
+      "before_tk": 9108,
+      "after_tk": 9108,
+      "batches": [
+        {
+          "categories": [
+            "DPL",
+            "CNT",
+            "IAC"
+          ],
+          "requirements": 31,
+          "measured_tk": 8021,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "DST"
+          ],
+          "requirements": 7,
+          "measured_tk": 3426,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "deployment L2",
+      "detail": "standard",
+      "reqs": 38,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 58,
+      "before_tk": 9532,
+      "after_tk": 9532,
+      "batches": [
+        {
+          "categories": [
+            "DPL",
+            "CNT",
+            "IAC"
+          ],
+          "requirements": 31,
+          "measured_tk": 8527,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "DST"
+          ],
+          "requirements": 7,
+          "measured_tk": 3932,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "integration L2",
+      "detail": "lista",
+      "reqs": 16,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 4415,
+      "after_tk": 4415,
+      "irreducible": false
+    },
+    {
+      "case": "integration L2",
+      "detail": "standard",
+      "reqs": 16,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 4882,
+      "after_tk": 4882,
+      "irreducible": false
+    },
+    {
+      "case": "files L2",
+      "detail": "lista",
+      "reqs": 8,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 2704,
+      "after_tk": 2704,
+      "irreducible": false
+    },
+    {
+      "case": "files L2",
+      "detail": "standard",
+      "reqs": 8,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3198,
+      "after_tk": 3198,
+      "irreducible": false
+    },
+    {
+      "case": "privacy L2",
+      "detail": "lista",
+      "reqs": 5,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 2234,
+      "after_tk": 2234,
+      "irreducible": false
+    },
+    {
+      "case": "privacy L2",
+      "detail": "standard",
+      "reqs": 5,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 2727,
+      "after_tk": 2727,
+      "irreducible": false
+    },
+    {
+      "case": "agents L2",
+      "detail": "lista",
+      "reqs": 18,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 202,
+      "before_tk": 8857,
+      "after_tk": 8857,
+      "batches": [
+        {
+          "categories": [
+            "DEP",
+            "THR"
+          ],
+          "requirements": 21,
+          "measured_tk": 7678,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "OPS",
+            "ARC",
+            "AUT"
+          ],
+          "requirements": 33,
+          "measured_tk": 8218,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "CIC",
+            "DPL",
+            "ENC",
+            "ACC"
+          ],
+          "requirements": 36,
+          "measured_tk": 7938,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "AGN"
+          ],
+          "requirements": 4,
+          "measured_tk": 2196,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "agents L2",
+      "detail": "standard",
+      "reqs": 18,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 285,
+      "before_tk": 9349,
+      "after_tk": 9349,
+      "batches": [
+        {
+          "categories": [
+            "DEP",
+            "OPS"
+          ],
+          "requirements": 24,
+          "measured_tk": 9103,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "THR",
+            "ARC",
+            "CIC"
+          ],
+          "requirements": 30,
+          "measured_tk": 9107,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "DPL",
+            "ENC",
+            "AUT",
+            "ACC",
+            "AGN"
+          ],
+          "requirements": 40,
+          "measured_tk": 7972,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "auth L3",
+      "detail": "lista",
+      "reqs": 28,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 4724,
+      "after_tk": 4724,
+      "irreducible": false
+    },
+    {
+      "case": "auth L3",
+      "detail": "standard",
+      "reqs": 28,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 5206,
+      "after_tk": 5206,
+      "irreducible": false
+    },
+    {
+      "case": "logging L3",
+      "detail": "lista",
+      "reqs": 10,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 2948,
+      "after_tk": 2948,
+      "irreducible": false
+    },
+    {
+      "case": "logging L3",
+      "detail": "standard",
+      "reqs": 10,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3442,
+      "after_tk": 3442,
+      "irreducible": false
+    },
+    {
+      "case": "validation L3",
+      "detail": "lista",
+      "reqs": 15,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3734,
+      "after_tk": 3734,
+      "irreducible": false
+    },
+    {
+      "case": "validation L3",
+      "detail": "standard",
+      "reqs": 15,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 4228,
+      "after_tk": 4228,
+      "irreducible": false
+    },
+    {
+      "case": "api L3",
+      "detail": "lista",
+      "reqs": 7,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3399,
+      "after_tk": 3399,
+      "irreducible": false
+    },
+    {
+      "case": "api L3",
+      "detail": "standard",
+      "reqs": 7,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3894,
+      "after_tk": 3894,
+      "irreducible": false
+    },
+    {
+      "case": "config L3",
+      "detail": "lista",
+      "reqs": 7,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3270,
+      "after_tk": 3270,
+      "irreducible": false
+    },
+    {
+      "case": "config L3",
+      "detail": "standard",
+      "reqs": 7,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3764,
+      "after_tk": 3764,
+      "irreducible": false
+    },
+    {
+      "case": "integrity L3",
+      "detail": "lista",
+      "reqs": 12,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 4024,
+      "after_tk": 4024,
+      "irreducible": false
+    },
+    {
+      "case": "integrity L3",
+      "detail": "standard",
+      "reqs": 12,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 4517,
+      "after_tk": 4517,
+      "irreducible": false
+    },
+    {
+      "case": "distribution L3",
+      "detail": "lista",
+      "reqs": 7,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3705,
+      "after_tk": 3705,
+      "irreducible": false
+    },
+    {
+      "case": "distribution L3",
+      "detail": "standard",
+      "reqs": 7,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 4198,
+      "after_tk": 4198,
+      "irreducible": false
+    },
+    {
+      "case": "ide L3",
+      "detail": "lista",
+      "reqs": 6,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 2532,
+      "after_tk": 2532,
+      "irreducible": false
+    },
+    {
+      "case": "ide L3",
+      "detail": "standard",
+      "reqs": 6,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3028,
+      "after_tk": 3028,
+      "irreducible": false
+    },
+    {
+      "case": "requirements L3",
+      "detail": "lista",
+      "reqs": 7,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 2330,
+      "after_tk": 2330,
+      "irreducible": false
+    },
+    {
+      "case": "requirements L3",
+      "detail": "standard",
+      "reqs": 7,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 2823,
+      "after_tk": 2823,
+      "irreducible": false
+    },
+    {
+      "case": "architecture L3",
+      "detail": "lista",
+      "reqs": 15,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 5129,
+      "after_tk": 5129,
+      "irreducible": false
+    },
+    {
+      "case": "architecture L3",
+      "detail": "standard",
+      "reqs": 15,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 5622,
+      "after_tk": 5622,
+      "irreducible": false
+    },
+    {
+      "case": "iac L3",
+      "detail": "lista",
+      "reqs": 13,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 4198,
+      "after_tk": 4198,
+      "irreducible": false
+    },
+    {
+      "case": "iac L3",
+      "detail": "standard",
+      "reqs": 13,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 4680,
+      "after_tk": 4680,
+      "irreducible": false
+    },
+    {
+      "case": "encryption L3",
+      "detail": "lista",
+      "reqs": 9,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3497,
+      "after_tk": 3497,
+      "irreducible": false
+    },
+    {
+      "case": "encryption L3",
+      "detail": "standard",
+      "reqs": 9,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3991,
+      "after_tk": 3991,
+      "irreducible": false
+    },
+    {
+      "case": "secrets L3",
+      "detail": "lista",
+      "reqs": 16,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 4654,
+      "after_tk": 4654,
+      "irreducible": false
+    },
+    {
+      "case": "secrets L3",
+      "detail": "standard",
+      "reqs": 16,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 5106,
+      "after_tk": 5106,
+      "irreducible": false
+    },
+    {
+      "case": "build L3",
+      "detail": "lista",
+      "reqs": 20,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 5,
+      "before_tk": 6469,
+      "after_tk": 6469,
+      "irreducible": false
+    },
+    {
+      "case": "build L3",
+      "detail": "standard",
+      "reqs": 20,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 6951,
+      "after_tk": 6951,
+      "irreducible": false
+    },
+    {
+      "case": "supply_chain L3",
+      "detail": "lista",
+      "reqs": 37,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 256,
+      "before_tk": 10269,
+      "after_tk": 10269,
+      "batches": [
+        {
+          "categories": [
+            "DEP",
+            "CIC"
+          ],
+          "requirements": 25,
+          "measured_tk": 8312,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "INT"
+          ],
+          "requirements": 12,
+          "measured_tk": 3653,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "supply_chain L3",
+      "detail": "standard",
+      "reqs": 37,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 49,
+      "before_tk": 10720,
+      "after_tk": 10720,
+      "batches": [
+        {
+          "categories": [
+            "DEP",
+            "CIC"
+          ],
+          "requirements": 25,
+          "measured_tk": 8820,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "INT"
+          ],
+          "requirements": 12,
+          "measured_tk": 4161,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "testing L3",
+      "detail": "lista",
+      "reqs": 10,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 4069,
+      "after_tk": 4069,
+      "irreducible": false
+    },
+    {
+      "case": "testing L3",
+      "detail": "standard",
+      "reqs": 10,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 4537,
+      "after_tk": 4537,
+      "irreducible": false
+    },
+    {
+      "case": "threat_modeling L3",
+      "detail": "lista",
+      "reqs": 8,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 5006,
+      "after_tk": 5006,
+      "irreducible": false
+    },
+    {
+      "case": "threat_modeling L3",
+      "detail": "standard",
+      "reqs": 8,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 5498,
+      "after_tk": 5498,
+      "irreducible": false
+    },
+    {
+      "case": "monitoring L3",
+      "detail": "lista",
+      "reqs": 25,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 7621,
+      "after_tk": 7621,
+      "irreducible": false
+    },
+    {
+      "case": "monitoring L3",
+      "detail": "standard",
+      "reqs": 25,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 8087,
+      "after_tk": 8087,
+      "irreducible": false
+    },
+    {
+      "case": "release L3",
+      "detail": "lista",
+      "reqs": 26,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 36,
+      "before_tk": 10119,
+      "after_tk": 10119,
+      "batches": [
+        {
+          "categories": [
+            "OPS"
+          ],
+          "requirements": 15,
+          "measured_tk": 7170,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "DPL"
+          ],
+          "requirements": 11,
+          "measured_tk": 5190,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "release L3",
+      "detail": "standard",
+      "reqs": 26,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 37,
+      "before_tk": 10599,
+      "after_tk": 10599,
+      "batches": [
+        {
+          "categories": [
+            "OPS"
+          ],
+          "requirements": 15,
+          "measured_tk": 7677,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "DPL"
+          ],
+          "requirements": 11,
+          "measured_tk": 5698,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "deployment L3",
+      "detail": "lista",
+      "reqs": 43,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 58,
+      "before_tk": 10121,
+      "after_tk": 10121,
+      "batches": [
+        {
+          "categories": [
+            "DPL",
+            "CNT",
+            "DST"
+          ],
+          "requirements": 30,
+          "measured_tk": 8307,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "IAC"
+          ],
+          "requirements": 13,
+          "measured_tk": 3989,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "deployment L3",
+      "detail": "standard",
+      "reqs": 43,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 60,
+      "before_tk": 10545,
+      "after_tk": 10545,
+      "batches": [
+        {
+          "categories": [
+            "DPL",
+            "CNT",
+            "DST"
+          ],
+          "requirements": 30,
+          "measured_tk": 8815,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "IAC"
+          ],
+          "requirements": 13,
+          "measured_tk": 4497,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "integration L3",
+      "detail": "lista",
+      "reqs": 19,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 4711,
+      "after_tk": 4711,
+      "irreducible": false
+    },
+    {
+      "case": "integration L3",
+      "detail": "standard",
+      "reqs": 19,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 5178,
+      "after_tk": 5178,
+      "irreducible": false
+    },
+    {
+      "case": "files L3",
+      "detail": "lista",
+      "reqs": 8,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 2704,
+      "after_tk": 2704,
+      "irreducible": false
+    },
+    {
+      "case": "files L3",
+      "detail": "standard",
+      "reqs": 8,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 3199,
+      "after_tk": 3199,
+      "irreducible": false
+    },
+    {
+      "case": "privacy L3",
+      "detail": "lista",
+      "reqs": 5,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 2232,
+      "after_tk": 2232,
+      "irreducible": false
+    },
+    {
+      "case": "privacy L3",
+      "detail": "standard",
+      "reqs": 5,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 6,
+      "before_tk": 2727,
+      "after_tk": 2727,
+      "irreducible": false
+    },
+    {
+      "case": "agents L3",
+      "detail": "lista",
+      "reqs": 20,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 224,
+      "before_tk": 9757,
+      "after_tk": 9757,
+      "batches": [
+        {
+          "categories": [
+            "OPS",
+            "ENC"
+          ],
+          "requirements": 24,
+          "measured_tk": 7730,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "DEP",
+            "DPL"
+          ],
+          "requirements": 25,
+          "measured_tk": 7978,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "THR",
+            "ARC",
+            "AUT"
+          ],
+          "requirements": 33,
+          "measured_tk": 7715,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "CIC",
+            "ACC",
+            "AGN"
+          ],
+          "requirements": 25,
+          "measured_tk": 5596,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "agents L3",
+      "detail": "standard",
+      "reqs": 20,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 316,
+      "before_tk": 10252,
+      "after_tk": 10252,
+      "batches": [
+        {
+          "categories": [
+            "OPS",
+            "CIC"
+          ],
+          "requirements": 26,
+          "measured_tk": 9122,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "DEP",
+            "DPL"
+          ],
+          "requirements": 25,
+          "measured_tk": 8485,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "THR",
+            "ARC",
+            "ENC"
+          ],
+          "requirements": 32,
+          "measured_tk": 8762,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "AUT",
+            "ACC",
+            "AGN"
+          ],
+          "requirements": 24,
+          "measured_tk": 4569,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "auth+logging+validation L3",
+      "detail": "lista",
+      "reqs": 53,
+      "before": "needs_decomposition",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "after_tk": 8092,
+      "irreducible": false
+    },
+    {
+      "case": "auth+logging+validation L3",
+      "detail": "standard",
+      "reqs": 53,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 8518,
+      "after_tk": 8518,
+      "irreducible": false
+    },
+    {
+      "case": "api+config+integrity L3",
+      "detail": "lista",
+      "reqs": 26,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 6533,
+      "after_tk": 6533,
+      "irreducible": false
+    },
+    {
+      "case": "api+config+integrity L3",
+      "detail": "standard",
+      "reqs": 26,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 6987,
+      "after_tk": 6987,
+      "irreducible": false
+    },
+    {
+      "case": "distribution+ide+requirements L3",
+      "detail": "lista",
+      "reqs": 20,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 5256,
+      "after_tk": 5256,
+      "irreducible": false
+    },
+    {
+      "case": "distribution+ide+requirements L3",
+      "detail": "standard",
+      "reqs": 20,
+      "before": "ready_for_codegen",
+      "after": "ready_for_codegen",
+      "ms": 7,
+      "before_tk": 5723,
+      "after_tk": 5723,
+      "irreducible": false
+    },
+    {
+      "case": "architecture+iac+encryption L3",
+      "detail": "lista",
+      "reqs": 37,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 48,
+      "before_tk": 9396,
+      "after_tk": 9396,
+      "batches": [
+        {
+          "categories": [
+            "ARC",
+            "IAC"
+          ],
+          "requirements": 28,
+          "measured_tk": 7025,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "ENC"
+          ],
+          "requirements": 9,
+          "measured_tk": 3494,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "architecture+iac+encryption L3",
+      "detail": "standard",
+      "reqs": 37,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 49,
+      "before_tk": 9849,
+      "after_tk": 9849,
+      "batches": [
+        {
+          "categories": [
+            "ARC",
+            "IAC"
+          ],
+          "requirements": 28,
+          "measured_tk": 7532,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "ENC"
+          ],
+          "requirements": 9,
+          "measured_tk": 4002,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "secrets+build+supply_chain L3",
+      "detail": "lista",
+      "reqs": 62,
+      "before": "needs_decomposition",
+      "after": "needs_decomposition",
+      "ms": 101,
+      "after_tk": 14507,
+      "batches": [
+        {
+          "categories": [
+            "DEP",
+            "CIC"
+          ],
+          "requirements": 25,
+          "measured_tk": 8312,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "DEV",
+            "INT",
+            "ENC",
+            "CFG"
+          ],
+          "requirements": 37,
+          "measured_tk": 7974,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "secrets+build+supply_chain L3",
+      "detail": "standard",
+      "reqs": 62,
+      "before": "needs_decomposition",
+      "after": "needs_decomposition",
+      "ms": 113,
+      "after_tk": 14890,
+      "batches": [
+        {
+          "categories": [
+            "DEP",
+            "CIC"
+          ],
+          "requirements": 25,
+          "measured_tk": 8820,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "DEV",
+            "INT",
+            "ENC",
+            "CFG"
+          ],
+          "requirements": 37,
+          "measured_tk": 8481,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "testing+threat_modeling+monitoring L3",
+      "detail": "lista",
+      "reqs": 43,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 66,
+      "before_tk": 13556,
+      "after_tk": 13556,
+      "batches": [
+        {
+          "categories": [
+            "OPS",
+            "LOG"
+          ],
+          "requirements": 25,
+          "measured_tk": 7615,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "THR",
+            "TST"
+          ],
+          "requirements": 18,
+          "measured_tk": 7234,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "testing+threat_modeling+monitoring L3",
+      "detail": "standard",
+      "reqs": 43,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 70,
+      "before_tk": 13967,
+      "after_tk": 13967,
+      "batches": [
+        {
+          "categories": [
+            "OPS",
+            "LOG"
+          ],
+          "requirements": 25,
+          "measured_tk": 8123,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "THR",
+            "TST"
+          ],
+          "requirements": 18,
+          "measured_tk": 7742,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "release+deployment+integration L3",
+      "detail": "lista",
+      "reqs": 77,
+      "before": "needs_decomposition",
+      "after": "needs_decomposition",
+      "ms": 136,
+      "after_tk": 17469,
+      "batches": [
+        {
+          "categories": [
+            "OPS",
+            "DST"
+          ],
+          "requirements": 22,
+          "measured_tk": 8180,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "DPL",
+            "CNT"
+          ],
+          "requirements": 23,
+          "measured_tk": 7460,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "IAC",
+            "INT",
+            "API"
+          ],
+          "requirements": 32,
+          "measured_tk": 6649,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "release+deployment+integration L3",
+      "detail": "standard",
+      "reqs": 77,
+      "before": "needs_decomposition",
+      "after": "needs_decomposition",
+      "ms": 137,
+      "after_tk": 17825,
+      "batches": [
+        {
+          "categories": [
+            "OPS",
+            "DST"
+          ],
+          "requirements": 22,
+          "measured_tk": 8688,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "DPL",
+            "CNT"
+          ],
+          "requirements": 23,
+          "measured_tk": 7967,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "IAC",
+            "INT",
+            "API"
+          ],
+          "requirements": 32,
+          "measured_tk": 7157,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "files+privacy+agents L3",
+      "detail": "lista",
+      "reqs": 33,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 270,
+      "before_tk": 11388,
+      "after_tk": 11388,
+      "batches": [
+        {
+          "categories": [
+            "OPS",
+            "ENC",
+            "PRI"
+          ],
+          "requirements": 29,
+          "measured_tk": 8356,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "DEP",
+            "DPL"
+          ],
+          "requirements": 25,
+          "measured_tk": 7978,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "THR",
+            "ARC",
+            "FIL"
+          ],
+          "requirements": 31,
+          "measured_tk": 7867,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "CIC",
+            "AUT",
+            "ACC",
+            "AGN"
+          ],
+          "requirements": 35,
+          "measured_tk": 6504,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "files+privacy+agents L3",
+      "detail": "standard",
+      "reqs": 33,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 291,
+      "before_tk": 11857,
+      "after_tk": 11857,
+      "batches": [
+        {
+          "categories": [
+            "OPS",
+            "CIC"
+          ],
+          "requirements": 26,
+          "measured_tk": 9122,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "DEP",
+            "DPL"
+          ],
+          "requirements": 25,
+          "measured_tk": 8485,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "THR",
+            "ARC",
+            "ENC"
+          ],
+          "requirements": 32,
+          "measured_tk": 8762,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "FIL",
+            "AUT",
+            "ACC",
+            "PRI",
+            "AGN"
+          ],
+          "requirements": 37,
+          "measured_tk": 6392,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "auth+logging+RGPD L2",
+      "detail": "lista",
+      "reqs": 36,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 100,
+      "before_tk": 11587,
+      "after_tk": 11587,
+      "batches": [
+        {
+          "categories": [
+            "AUT",
+            "SES"
+          ],
+          "requirements": 18,
+          "measured_tk": 7250,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "LOG",
+            "ACC"
+          ],
+          "requirements": 18,
+          "measured_tk": 7396,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "auth+logging+RGPD L2",
+      "detail": "standard",
+      "reqs": 36,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 86,
+      "before_tk": 12026,
+      "after_tk": 12026,
+      "batches": [
+        {
+          "categories": [
+            "AUT",
+            "SES"
+          ],
+          "requirements": 18,
+          "measured_tk": 7756,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "LOG",
+            "ACC"
+          ],
+          "requirements": 18,
+          "measured_tk": 7903,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "api+public/personal L3",
+      "detail": "lista",
+      "reqs": 89,
+      "before": "needs_decomposition",
+      "after": "needs_decomposition",
+      "ms": 223,
+      "after_tk": 15219,
+      "batches": [
+        {
+          "categories": [
+            "API",
+            "ARC",
+            "ERR"
+          ],
+          "requirements": 29,
+          "measured_tk": 8428,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "ENC",
+            "AUT",
+            "LOG",
+            "PRI",
+            "ACC"
+          ],
+          "requirements": 44,
+          "measured_tk": 8382,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "VAL",
+            "SES"
+          ],
+          "requirements": 16,
+          "measured_tk": 4639,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "api+public/personal L3",
+      "detail": "standard",
+      "reqs": 89,
+      "before": "needs_decomposition",
+      "after": "needs_decomposition",
+      "ms": 219,
+      "after_tk": 15531,
+      "batches": [
+        {
+          "categories": [
+            "API",
+            "ARC",
+            "ERR"
+          ],
+          "requirements": 29,
+          "measured_tk": 8936,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "ENC",
+            "AUT",
+            "LOG",
+            "PRI",
+            "ACC"
+          ],
+          "requirements": 44,
+          "measured_tk": 8889,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "VAL",
+            "SES"
+          ],
+          "requirements": 16,
+          "measured_tk": 5147,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "auth+RGPD L2",
+      "detail": "lista",
+      "reqs": 27,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 58,
+      "before_tk": 9397,
+      "after_tk": 9397,
+      "batches": [
+        {
+          "categories": [
+            "AUT",
+            "SES"
+          ],
+          "requirements": 18,
+          "measured_tk": 7250,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "ACC"
+          ],
+          "requirements": 9,
+          "measured_tk": 4883,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "auth+RGPD L2",
+      "detail": "standard",
+      "reqs": 27,
+      "before": "ready_for_codegen",
+      "after": "needs_decomposition",
+      "ms": 56,
+      "before_tk": 9877,
+      "after_tk": 9877,
+      "batches": [
+        {
+          "categories": [
+            "AUT",
+            "SES"
+          ],
+          "requirements": 18,
+          "measured_tk": 7756,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "ACC"
+          ],
+          "requirements": 9,
+          "measured_tk": 5390,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "auth+logging+public+jwt L2",
+      "detail": "lista",
+      "reqs": 70,
+      "before": "needs_decomposition",
+      "after": "needs_decomposition",
+      "ms": 431,
+      "after_tk": 12552,
+      "batches": [
+        {
+          "categories": [
+            "API",
+            "ARC",
+            "ERR"
+          ],
+          "requirements": 27,
+          "measured_tk": 8180,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "AUT",
+            "LOG",
+            "VAL",
+            "ACC",
+            "SES"
+          ],
+          "requirements": 44,
+          "measured_tk": 7498,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    },
+    {
+      "case": "auth+logging+public+jwt L2",
+      "detail": "standard",
+      "reqs": 70,
+      "before": "needs_decomposition",
+      "after": "needs_decomposition",
+      "ms": 183,
+      "after_tk": 12937,
+      "batches": [
+        {
+          "categories": [
+            "API",
+            "ARC",
+            "ERR"
+          ],
+          "requirements": 27,
+          "measured_tk": 8674,
+          "irreducible": false
+        },
+        {
+          "categories": [
+            "AUT",
+            "LOG",
+            "VAL",
+            "ACC",
+            "SES"
+          ],
+          "requirements": 44,
+          "measured_tk": 7992,
+          "irreducible": false
+        }
+      ],
+      "g2_coverage": 1,
+      "slices_coverage": 1,
+      "recall": 1
+    }
+  ]
+}

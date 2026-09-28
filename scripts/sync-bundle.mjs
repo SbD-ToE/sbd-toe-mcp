@@ -17,6 +17,8 @@
  * Usage:
  *   node scripts/sync-bundle.mjs --archive <zip> --tag <kg-tag> [--source dev-build|release] [--dry-run]
  *   node scripts/sync-bundle.mjs --from-release <tag> [--repo <owner/name>] [--tag <pin-tag>] [--dry-run]
+ *   Subida MAJOR de contrato (alignment_policy.breaking): o sync PÁRA, salvo aceitação explícita —
+ *     --accept-major v<N> --accept-reason "<decisão, quem, quando>"   (0.22.0; o registo fica no pino)
  *
  * Always verifies sha256 against the sidecar (or --sha256). Materializes only the
  * bundle-files.json entries (no dynamic traversal). Refreshes consumed-bundle.json
@@ -152,6 +154,36 @@ try {
     contractVersion = (cc.match(/\*\*Version:\*\*\s*(v\d+\.\d+)/) ?? [])[1] ?? "unknown";
   } catch { /* contract not bundled */ }
 
+  // --- 4b. GATE de subida MAJOR (alignment_policy.breaking; 0.22.0) ---------
+  // A política declara «major contract bump → gate: halt and re-validate serving-logic before
+  // pinning». Até à 0.22.0 o sync só lia e gravava a versão; agora aplica o gate: uma subida (ou
+  // descida) de major, ou um contrato ilegível, PÁRA — salvo aceitação explícita que nomeia o
+  // major novo e a razão, e que fica registada no pino.
+  const currentPin = JSON.parse(readFileSync(path.join(repoRoot, "consumed-bundle.json"), "utf-8"));
+  const majorOf = (v) => { const m = /^v(\d+)\.\d+$/.exec(v ?? ""); return m ? Number(m[1]) : undefined; };
+  const fromMajor = majorOf(currentPin.consumer_contract_version);
+  const toMajor = majorOf(contractVersion);
+  let majorAcceptance;
+  if (toMajor === undefined) die(`contract version unreadable in artefact (got "${contractVersion}") — gate: cannot pin an unknown contract.`);
+  if (fromMajor !== toMajor) {
+    const accept = opt("--accept-major");
+    const reason = opt("--accept-reason");
+    if (accept !== `v${toMajor}` || !reason) {
+      die(
+        `MAJOR contract change ${currentPin.consumer_contract_version} → ${contractVersion} (alignment_policy.breaking): halt. ` +
+          `Re-validate the serving logic, then re-run with --accept-major v${toMajor} --accept-reason "<decision, who, when>".`
+      );
+    }
+    majorAcceptance = {
+      from: currentPin.consumer_contract_version,
+      to: contractVersion,
+      accepted_on: new Date().toISOString().slice(0, 10),
+      reason,
+      policy: "alignment_policy.breaking"
+    };
+    console.error(`• MAJOR contract change ACCEPTED: ${majorAcceptance.from} → ${majorAcceptance.to} — ${reason}`);
+  }
+
   if (dryRun) {
     console.error(`\n✓ DRY-RUN — no files written. ${added + changed + removed} change(s) for ${tag}. contract=${contractVersion}, substrate=${pub.substrate_version ?? "?"}.`);
     process.exit(0);
@@ -171,6 +203,7 @@ try {
   const pinPath = path.join(repoRoot, "consumed-bundle.json");
   const pin = JSON.parse(readFileSync(pinPath, "utf-8"));
   pin.consumer_contract_version = contractVersion;
+  if (majorAcceptance) pin.contract_major_acceptance = majorAcceptance;
   pin.substrate_version = pub.substrate_version ?? pin.substrate_version;
   const ontologySrc = det?.ontology_source ?? pub.ontology_source ?? {};
   pin.kg_bundle = {

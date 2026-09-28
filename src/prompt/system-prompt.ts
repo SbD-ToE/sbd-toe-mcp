@@ -55,11 +55,7 @@ Organizational governance and required security policies.
 
 ## Risk model
 
-Applications are classified by risk:
-
-L1 - low risk
-L2 - medium risk
-L3 - critical
+Applications are classified into three levels, L1, L2 and L3. The level comes from the risk axes of chapter 01 (E, D and I) and is declared by whoever classifies the application, in \`risk_level\`. It is not inferred by the server, and it does not follow from the application processing personal data: an application with personal data can be L1. The regulatory context (GDPR, NIS2, DORA, …) is a separate declaration, not the level.
 
 These represent application risk, not maturity.
 

@@ -730,37 +730,61 @@ export const scenarios = [
       const bmeta = bd.meta ?? bd;
       if (bmeta.unknown_record_type !== "ctrl_acore_alignment" || !(bmeta.valid_record_types?.length > 10)) return fail("total:0 silencioso ainda vivo (sem unknown_record_type/valid_record_types)");
       return ok(`3 next à letra: resolve ${rt}+[${ids.join(",")}] → ${nRecs} recs; matrix [${pids.join(",")}] ok (${stabilized ? "via estabilização" : "directo"}); uri ${uri} lido; 63 ids rejeitados c/ tecto 50; record_type desconhecido DECLARADO c/ ${bmeta.valid_record_types.length} válidos`); } },
-  { id: "TC-F-34", axis: "F", title: "0.21 (a): tecto por-id no prepare (89 reqs @ lista, tecto 52) + lotes que SOMAM O TODO (recall 1 executado) — condição da decisão do lead", tool: "prepare_sbd_toe_codegen_context",
+  { id: "TC-F-34", axis: "F", title: "0.21.2 (decisão 0004): o envelope é a regra no prepare — caso do avaliador @ lista medido acima de 8 450 tk ⇒ lotes MEDIDOS que cabem e SOMAM O TODO (recall 1 executado; custo declarado = custo recebido; decisão 0005: ≥2 lotes e a união devolve o contexto AppSec Core do pedido)", tool: "prepare_sbd_toe_codegen_context",
     run: async (c) => {
       const args = { task: "Expor API pública de consulta com chaves de cliente e rate limiting", risk_level: "L3", exposure: "public", data_sensitivity: "personal", stack: "Python/FastAPI", detail: "lista" };
       const p = await c.tool("prepare_sbd_toe_codegen_context", args); if (!p.ok) return fail(p.error);
       const pd = p.data.data ?? p.data;
-      if (pd.status !== "needs_decomposition") return fail(`89 reqs @ lista devia bloquear declarado; status=${pd.status}`);
+      if (pd.status !== "needs_decomposition") return fail(`o caso do avaliador @ lista devia bloquear por custo; status=${pd.status}`);
       const rc = pd.requirement_ceiling;
-      if (!rc || rc.limit !== 52 || rc.selected <= rc.limit) return fail(`requirement_ceiling errado: ${JSON.stringify(rc && { limit: rc.limit, selected: rc.selected })}`);
-      if (!(rc.projected_tk > rc.promise_tk)) return fail("projecção não justifica o bloqueio");
+      if (!rc || rc.basis !== "measured_payload" || "limit" in rc || "cost_per_req_tk" in rc) return fail(`requirement_ceiling errado: ${JSON.stringify(rc && { basis: rc.basis, limit: rc.limit })}`);
+      if (!(rc.projected_tk > rc.promise_tk) || rc.promise_tk !== 8450) return fail(`o custo medido não justifica o bloqueio: ${rc.projected_tk} vs ${rc.promise_tk}`);
       if (!rc.batches?.length || !rc.union || rc.union.recall !== 1) return fail(`lotes sem união declarada com recall 1: ${JSON.stringify(rc.union)}`);
+      if (rc.batches.length < 2) return fail("decomposição de um só lote (decisão 0005: nunca)");
       if (!(pd.suggestions ?? []).some((x) => /SOMAM O TODO/.test(x) && /categories=\[/.test(x))) return fail("suggestions não ensinam a receita por categorias");
-      // EXECUTA todos os lotes e mede a união contra a selecção inteira (full, sem tecto)
+      // EXECUTA todos os lotes: cada um pronto, dentro do envelope (ou irredutível declarado), custo declarado = recebido
       const pf = await c.tool("prepare_sbd_toe_codegen_context", { ...args, detail: "full" }); if (!pf.ok) return fail(pf.error);
-      const pfd = pf.data.data ?? pf.data; if (pfd.status !== "ready_for_codegen") return fail(`full ganhou tecto indevido: ${pfd.status}`);
+      const pfd = pf.data.data ?? pf.data; if (pfd.status !== "ready_for_codegen") return fail(`full ganhou envelope indevido: ${pfd.status}`);
       const fullIds = new Set((pfd.activated_scope?.requirements ?? []).map((q) => q.id));
+      const G2K = ["control_objectives", "mechanisms", "practices", "artifacts"];
+      const fullG2 = new Set(G2K.flatMap((k) => (pfd.g2_context?.[k] ?? []).map((e) => e.entity_id)));
+      const unionG2 = new Set();
       const union = new Set(); const sizes = [];
       for (const batch of rc.batches) {
         const r = await c.tool("prepare_sbd_toe_codegen_context", { task: args.task, risk_level: args.risk_level, detail: args.detail, ...batch.with });
         if (!r.ok) return fail(`lote ${JSON.stringify(batch.with.categories)} rejeitado: ${r.error}`);
         const rdd = r.data.data ?? r.data;
-        if (rdd.status !== "ready_for_codegen") return fail(`lote ${JSON.stringify(batch.with.categories)} não ficou pronto: ${rdd.status}`);
+        if (rdd.status !== "ready_for_codegen") return fail(`lote ${JSON.stringify(batch.with.categories)} não ficou pronto (ciclo?): ${rdd.status}`);
         const n = (rdd.activated_scope?.requirements ?? []).length;
-        if (n > rc.limit) return fail(`lote excede o tecto: ${n} > ${rc.limit}`);
         if (n !== batch.requirements) return fail(`contagem declarada ${batch.requirements} ≠ real ${n}`);
+        if (rdd.size_estimate?.approx_tokens !== batch.measured_tk) return fail(`custo declarado ${batch.measured_tk} ≠ recebido ${rdd.size_estimate?.approx_tokens}`);
+        if (!(rdd.size_estimate.within_envelope || (batch.irreducible && rdd.size_estimate.irreducible_note_id))) return fail(`lote fora do envelope sem ser irredutível declarado: ${batch.measured_tk} tk`);
         for (const q of rdd.activated_scope.requirements) union.add(q.id);
-        sizes.push(n);
+        for (const k of G2K) for (const e of Object.values(rdd.g2_context?.[k] ?? {})) for (const id of Object.keys(e)) unionG2.add(id);
+        sizes.push(`${n}r/${batch.measured_tk}tk`);
       }
       const covered = [...fullIds].filter((id) => union.has(id)).length;
       if (covered !== fullIds.size) return fail(`m_recall da união ${covered}/${fullIds.size} < 1`);
+      const g2Covered = [...fullG2].filter((id) => unionG2.has(id)).length;
+      if (g2Covered !== fullG2.size) return fail(`a união dos lotes perde contexto AppSec Core: ${g2Covered}/${fullG2.size}`);
       if (!pfd.size_estimate || !(pfd.size_estimate.approx_tokens > 0) || pfd.size_estimate.envelope_tk !== undefined) return fail("full não declara o preço (size_estimate sem envelope)");
-      return ok(`89@lista → needs_decomposition declarado (tecto ${rc.limit}, ~${rc.cost_per_req_tk} tk/req, proj ${rc.projected_tk}>${rc.promise_tk}); ${rc.batches.length} lotes executados [${sizes.join(", ")}] → união ${union.size}, m_recall ${covered}/${fullIds.size} = 1; full sem tecto, ${pfd.size_estimate.approx_tokens} tk ✓`); } },
+      // Decisão 0005, caso NÃO vazio: o exemplo dos docs activa fatias — a união dos lotes tem de as devolver todas.
+      const dx = { task: "Implementar endpoint POST /login com lockout", risk_level: "L2", concerns: ["auth", "logging"], technologies: ["jwt"], exposure: "public" };
+      const dl = await c.tool("prepare_sbd_toe_codegen_context", { ...dx, detail: "lista" }); if (!dl.ok) return fail(dl.error);
+      const dld = dl.data.data ?? dl.data; if (dld.status !== "needs_decomposition" || (dld.requirement_ceiling?.batches?.length ?? 0) < 2) return fail(`exemplo dos docs devia decompor em ≥2 lotes: ${dld.status}`);
+      const df = await c.tool("prepare_sbd_toe_codegen_context", { ...dx, detail: "full" }); if (!df.ok) return fail(df.error);
+      const dfd = df.data.data ?? df.data;
+      const docsG2 = new Set(G2K.flatMap((k) => (dfd.g2_context?.[k] ?? []).map((e) => e.entity_id)));
+      if (docsG2.size === 0) return fail("o exemplo dos docs devia ter contexto G2 no full");
+      const docsUnion = new Set();
+      for (const batch of dld.requirement_ceiling.batches) {
+        const r = await c.tool("prepare_sbd_toe_codegen_context", { task: dx.task, risk_level: dx.risk_level, detail: "lista", ...batch.with }); if (!r.ok) return fail(r.error);
+        const rdd = r.data.data ?? r.data; if (rdd.status !== "ready_for_codegen") return fail(`lote do exemplo dos docs: ${rdd.status}`);
+        for (const k of G2K) for (const e of Object.values(rdd.g2_context?.[k] ?? {})) for (const id of Object.keys(e)) docsUnion.add(id);
+      }
+      const docsCovered = [...docsG2].filter((id) => docsUnion.has(id)).length;
+      if (docsCovered !== docsG2.size) return fail(`exemplo dos docs: a união dos lotes perde contexto G2 ${docsCovered}/${docsG2.size}`);
+      return ok(`exemplo dos docs: ${dld.requirement_ceiling.batches.length} lotes, contexto G2 ${docsCovered}/${docsG2.size}; ${rc.selected}@lista → needs_decomposition por custo medido (${rc.projected_tk}>${rc.promise_tk} tk); ${rc.batches.length} lotes executados [${sizes.join(", ")}] → união ${union.size}, m_recall ${covered}/${fullIds.size} = 1, contexto G2 ${g2Covered}/${fullG2.size}; full sem envelope, ${pfd.size_estimate.approx_tokens} tk ✓`); } },
 
   { id: "TC-F-35", axis: "F", title: "0.20.0-beta.21: declarativo primeiro — needs_input ensina, declaração selecciona, redacção não decide", tool: "select_sbd_toe_requirements",
     run: async (c) => {
@@ -2076,7 +2100,7 @@ export const scenarios = [
       if (!/known chapters/i.test(String(bad.error ?? ""))) return fail("recusa sem entregar o vocabulário ao cliente");
       return ok(`manager declarado (${md.role_vocabulary.canonical_roles.length} canónicos à vista); devops→devops-sre com ${us} user stories; vazio por combinação isolado (papel ${e.assignments_for_role_alone} / fase ${e.assignments_for_phase_alone}) com recuperação no next; ABS-001 só como fronteira, unpublished_gap superseded 1×; erro nomeia os capítulos`); } },
 
-  { id: "TC-F-68", axis: "F", title: "0.20.0-beta.43 (v2.7): a asserção NEGATIVA chega ao consumidor; papel referenciado ≠ canónico; lacuna do pino declarada", tool: "get_sbd_toe_chapter_capability",
+  { id: "TC-F-68", axis: "F", title: "0.20.0-beta.43 (v2.7): a asserção NEGATIVA chega ao consumidor; papel nomeado nunca cai no vazio (v2.11: RH/PeopleOps canonizado); lacuna do pino declarada", tool: "get_sbd_toe_chapter_capability",
     run: async (c) => {
       // (1) cada travessia derivada traz o VERBO e o que NÃO afirma
       const cap = await c.tool("get_sbd_toe_chapter_capability", { chapter: "01-classificacao-aplicacoes" });
@@ -2096,23 +2120,25 @@ export const scenarios = [
       if (!(orf?.count > 0)) return fail("os artefactos sem capítulo probatório não são declarados");
       if (orf.count !== (orf.values ?? []).length) return fail("a contagem de órfãos não bate com a lista");
       if (!orf.values.every((v) => v.artifact_type_id && v.declared_absence)) return fail("órfão sem a ausência que a fonte lhe atribui");
-      // (3) papel REFERENCIADO não vira canónico
+      // (3) um papel que o Manual NOMEIA nunca cai no vazio. Até à ontologia v2.10, RH/PeopleOps era
+      // REFERENCIADO-NÃO-CANÓNICO (banda referenced_role, canonical:false). A v2.11 (KG v2.0.0) CANONIZOU-O —
+      // 17 papéis; referenced_roles.items = [] e rh-peopleops passa a `retired` (retired_in 2.11). A asserção
+      // segue o dado ratificado: resolve para o canónico, com atribuições, e sem banda de referenciado.
+      // O caminho referenced_role continua coberto por teste unitário (get-guide-by-role.test.ts).
       const rh = await c.tool("get_guide_by_role", { risk_level: "L2", role: "RH/PeopleOps" });
       if (!rh.ok) return fail(rh.error);
-      const ref = rh.data.referenced_role;
-      if (!ref) return fail("um papel que o Manual NOMEIA cai no vazio como se não existisse");
-      if (ref.canonical !== false) return fail("o papel referenciado foi promovido a canónico");
-      if (!(ref.anchors ?? []).length) return fail("referenciado sem as âncoras que o provam");
-      if (!/13/.test(ref.note)) return fail("a nota não diz que os canónicos continuam a ser 13");
+      if (rh.data.canonicalRole !== "rh-peopleops") return fail(`um papel que o Manual NOMEIA cai no vazio: resolveu para ${rh.data.canonicalRole}`);
+      if (rh.data.referenced_role) return fail("papel canónico servido como referenciado");
+      if (!((rh.data.assignments ?? []).length > 0)) return fail("rh-peopleops canónico sem atribuições");
       const known = (rh.data.meta?.knownRoles ?? []).filter((r) => r !== "unassigned");
-      if (known.includes(ref.referenced_role_id)) return fail("entrou no vocabulário canónico");
+      if (!known.includes("rh-peopleops")) return fail("rh-peopleops fora do vocabulário canónico");
       // (4) o que o manifesto do pino promete e o pino não traz, declara-se
       const gap = rh.data.decision_involvement_unavailable;
       if (gap) {
         if (gap.shipped !== false || !(gap.declared_in_manifest > 0)) return fail("lacuna do pino mal declarada");
         if (!/não traz|não foi empacotad/.test(gap.note)) return fail("a lacuna não diz que é de empacotamento");
       }
-      return ok(`verbos servidos com asserção negativa (produção: «${pob.asserts.does_not_assert}»; prova: «${ev.asserts.does_not_assert}»); ${orf.count} órfãos declarados um a um; RH/PeopleOps referenciado com ${ref.anchors.length} âncoras e fora dos ${known.length} canónicos${gap ? `; lacuna do pino declarada (${gap.declared_in_manifest} ${gap.entity_type})` : ""}`); } },
+      return ok(`verbos servidos com asserção negativa (produção: «${pob.asserts.does_not_assert}»; prova: «${ev.asserts.does_not_assert}»); ${orf.count} órfãos declarados um a um; RH/PeopleOps canónico (rh-peopleops, ${rh.data.assignments.length} atribuições) entre os ${known.length} canónicos${gap ? `; lacuna do pino declarada (${gap.declared_in_manifest} ${gap.entity_type})` : ""}`); } },
 
   { id: "TC-F-69", axis: "F", title: "0.20.0-beta.44 (v2.7-r2): quem DECIDE ao lado de quem executa, com âncora verbatim e o que não afirma", tool: "get_guide_by_role",
     run: async (c) => {

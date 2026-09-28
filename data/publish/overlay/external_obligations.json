@@ -7,8 +7,8 @@
       "normative_strength": "curated",
       "obligation_id": "EXT-AI-ACT-OBL-10",
       "obligation_kind": "article",
-      "title": "Dados e governação",
-      "topic": "Dados e governação"
+      "title": "Dados e governação de dados",
+      "topic": "Dados e governação de dados"
     },
     {
       "applicability_scope": "framework_specific",
@@ -37,8 +37,8 @@
       "normative_strength": "curated",
       "obligation_id": "EXT-AI-ACT-OBL-13",
       "obligation_kind": "article",
-      "title": "Transparência aos *deployers*",
-      "topic": "Transparência aos *deployers*"
+      "title": "Transparência e prestação de informações aos responsáveis pela implantação",
+      "topic": "Transparência e prestação de informações aos responsáveis pela implantação"
     },
     {
       "applicability_scope": "framework_specific",
@@ -57,8 +57,8 @@
       "normative_strength": "curated",
       "obligation_id": "EXT-AI-ACT-OBL-15",
       "obligation_kind": "article",
-      "title": "Robustez e cibersegurança",
-      "topic": "Robustez e cibersegurança"
+      "title": "Exatidão, solidez e cibersegurança",
+      "topic": "Exatidão, solidez e cibersegurança"
     },
     {
       "applicability_scope": "framework_specific",
@@ -77,8 +77,8 @@
       "normative_strength": "curated",
       "obligation_id": "EXT-AI-ACT-OBL-25",
       "obligation_kind": "article",
-      "title": "Cadeia de fornecimento",
-      "topic": "Cadeia de fornecimento"
+      "title": "Responsabilidades ao longo da cadeia de valor da IA",
+      "topic": "Responsabilidades ao longo da cadeia de valor da IA"
     },
     {
       "applicability_scope": "framework_specific",
@@ -87,8 +87,8 @@
       "normative_strength": "curated",
       "obligation_id": "EXT-AI-ACT-OBL-26",
       "obligation_kind": "article",
-      "title": "Obrigações do *deployer*",
-      "topic": "Obrigações do *deployer*"
+      "title": "Obrigações dos responsáveis pela implantação",
+      "topic": "Obrigações dos responsáveis pela implantação"
     },
     {
       "applicability_scope": "framework_specific",
@@ -97,8 +97,8 @@
       "normative_strength": "curated",
       "obligation_id": "EXT-AI-ACT-OBL-4",
       "obligation_kind": "article",
-      "title": "Literacia em IA",
-      "topic": "Literacia em IA"
+      "title": "Literacia no domínio da IA (medidas para a promover — redação do Reg. (UE) 2026/1744)",
+      "topic": "Literacia no domínio da IA (medidas para a promover — redação do Reg. (UE) 2026/1744)"
     },
     {
       "applicability_scope": "framework_specific",
@@ -117,8 +117,8 @@
       "normative_strength": "curated",
       "obligation_id": "EXT-AI-ACT-OBL-72",
       "obligation_kind": "article",
-      "title": "Monitorização pós-mercado",
-      "topic": "Monitorização pós-mercado"
+      "title": "Acompanhamento pós-comercialização",
+      "topic": "Acompanhamento pós-comercialização"
     },
     {
       "applicability_scope": "framework_specific",

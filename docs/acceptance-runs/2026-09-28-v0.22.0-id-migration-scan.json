@@ -1,0 +1,15 @@
+{
+ "map": "sbd-toe-knowledge-graph-bundle-v2.0.0.zip → data/publish/indexes/id_migrations.jsonl (sha256 9bab1506fbeb8981ec7dc78b14380f7fef74aed526ae93e549af7a831b62a001)",
+ "entries": 3746,
+ "by_kind": {
+  "section": 774,
+  "record": 1548,
+  "practice": 13,
+  "assignment": 63,
+  "hint": 238,
+  "mention": 951,
+  "overlay_mapping": 159
+ },
+ "files_scanned": 879,
+ "hits": []
+}

@@ -2,318 +2,371 @@
   {
     "entity_id": "ACA-SCBI-001",
     "entity_type": "Artifact",
+    "name": "SBOM",
     "slice_family": "ACO-SCBI",
     "slice_id": "ASC-01"
   },
   {
     "entity_id": "ACA-SCBI-002",
     "entity_type": "Artifact",
+    "name": "Dependency Inventory",
     "slice_family": "ACO-SCBI",
     "slice_id": "ASC-01"
   },
   {
     "entity_id": "ACA-SCBI-003",
     "entity_type": "Artifact",
+    "name": "SCA Report",
     "slice_family": "ACO-SCBI",
     "slice_id": "ASC-01"
   },
   {
     "entity_id": "ACA-SCBI-004",
     "entity_type": "Artifact",
+    "name": "Pipeline Config",
     "slice_family": "ACO-SCBI",
     "slice_id": "ASC-01"
   },
   {
     "entity_id": "ACA-SCBI-005",
     "entity_type": "Artifact",
+    "name": "Release Gate",
     "slice_family": "ACO-SCBI",
     "slice_id": "ASC-01"
   },
   {
     "entity_id": "ACA-SCBI-006",
     "entity_type": "Artifact",
+    "name": "Approval Record",
     "slice_family": "ACO-SCBI",
     "slice_id": "ASC-01"
   },
   {
     "entity_id": "ACA-SCBI-007",
     "entity_type": "Artifact",
+    "name": "Artifact Signature",
     "slice_family": "ACO-SCBI",
     "slice_id": "ASC-01"
   },
   {
     "entity_id": "ACA-SCBI-008",
     "entity_type": "Artifact",
+    "name": "Signature Attestation",
     "slice_family": "ACO-SCBI",
     "slice_id": "ASC-01"
   },
   {
     "entity_id": "ACA-SCBI-009",
     "entity_type": "Artifact",
+    "name": "Artifact Provenance",
     "slice_family": "ACO-SCBI",
     "slice_id": "ASC-01"
   },
   {
     "entity_id": "ACA-SCBI-010",
     "entity_type": "Artifact",
+    "name": "Container Image",
     "slice_family": "ACO-SCBI",
     "slice_id": "ASC-01"
   },
   {
     "entity_id": "ACA-IAT-001",
     "entity_type": "Artifact",
+    "name": "Identity Binding",
     "slice_family": "ACO-IAT",
     "slice_id": "ASC-02"
   },
   {
     "entity_id": "ACA-IAT-002",
     "entity_type": "Artifact",
+    "name": "Access Review",
     "slice_family": "ACO-IAT",
     "slice_id": "ASC-02"
   },
   {
     "entity_id": "ACA-IAT-003",
     "entity_type": "Artifact",
+    "name": "Log Stream",
     "slice_family": "ACO-IAT",
     "slice_id": "ASC-02"
   },
   {
     "entity_id": "ACA-IAT-004",
     "entity_type": "Artifact",
+    "name": "Policy Report",
     "slice_family": "ACO-IAT",
     "slice_id": "ASC-02"
   },
   {
     "entity_id": "ACA-IAT-005",
     "entity_type": "Artifact",
+    "name": "Alert Policy",
     "slice_family": "ACO-IAT",
     "slice_id": "ASC-02"
   },
   {
     "entity_id": "ACA-IAT-006",
     "entity_type": "Artifact",
+    "name": "Approval Record",
     "slice_family": "ACO-IAT",
     "slice_id": "ASC-02"
   },
   {
     "entity_id": "ACA-ATB-001",
     "entity_type": "Artifact",
+    "name": "Review Checklist",
     "slice_family": "ACO-ATB",
     "slice_id": "ASC-03"
   },
   {
     "entity_id": "ACA-ATB-002",
     "entity_type": "Artifact",
+    "name": "Approval Record",
     "slice_family": "ACO-ATB",
     "slice_id": "ASC-03"
   },
   {
     "entity_id": "ACA-ATB-003",
     "entity_type": "Artifact",
+    "name": "Pipeline Config",
     "slice_family": "ACO-ATB",
     "slice_id": "ASC-03"
   },
   {
     "entity_id": "ACA-ATB-004",
     "entity_type": "Artifact",
+    "name": "Policy Report",
     "slice_family": "ACO-ATB",
     "slice_id": "ASC-03"
   },
   {
     "entity_id": "ACA-TSV-001",
     "entity_type": "Artifact",
+    "name": "SAST Report",
     "slice_family": "ACO-TSV",
     "slice_id": "ASC-04"
   },
   {
     "entity_id": "ACA-TSV-002",
     "entity_type": "Artifact",
+    "name": "Test Report",
     "slice_family": "ACO-TSV",
     "slice_id": "ASC-04"
   },
   {
     "entity_id": "ACA-TSV-003",
     "entity_type": "Artifact",
+    "name": "Finding Register",
     "slice_family": "ACO-TSV",
     "slice_id": "ASC-04"
   },
   {
     "entity_id": "ACA-TSV-004",
     "entity_type": "Artifact",
+    "name": "Release Gate",
     "slice_family": "ACO-TSV",
     "slice_id": "ASC-04"
   },
   {
     "entity_id": "ACA-TSV-005",
     "entity_type": "Artifact",
+    "name": "Approval Record",
     "slice_family": "ACO-TSV",
     "slice_id": "ASC-04"
   },
   {
     "entity_id": "ACA-TSV-006",
     "entity_type": "Artifact",
+    "name": "Pipeline Config",
     "slice_family": "ACO-TSV",
     "slice_id": "ASC-04"
   },
   {
     "entity_id": "ACA-TMR-001",
     "entity_type": "Artifact",
+    "name": "Threat Model",
     "slice_family": "ACO-TMR",
     "slice_id": "ASC-05"
   },
   {
     "entity_id": "ACA-TMR-002",
     "entity_type": "Artifact",
+    "name": "Risk Acceptance Record",
     "slice_family": "ACO-TMR",
     "slice_id": "ASC-05"
   },
   {
     "entity_id": "ACA-TMR-003",
     "entity_type": "Artifact",
+    "name": "Validation Evidence",
     "slice_family": "ACO-TMR",
     "slice_id": "ASC-05"
   },
   {
     "entity_id": "ACA-TMR-004",
     "entity_type": "Artifact",
+    "name": "Pipeline Config",
     "slice_family": "ACO-TMR",
     "slice_id": "ASC-05"
   },
   {
     "entity_id": "ACA-SPC-001",
     "entity_type": "Artifact",
+    "name": "Secret Config",
     "slice_family": "ACO-SPC",
     "slice_id": "ASC-06"
   },
   {
     "entity_id": "ACA-SPC-002",
     "entity_type": "Artifact",
+    "name": "Identity Binding",
     "slice_family": "ACO-SPC",
     "slice_id": "ASC-06"
   },
   {
     "entity_id": "ACA-IVF-001",
     "entity_type": "Artifact",
+    "name": "Guideline Catalog",
     "slice_family": "ACO-IVF",
     "slice_id": "ASC-07"
   },
   {
     "entity_id": "ACA-IVF-002",
     "entity_type": "Artifact",
+    "name": "SAST Report",
     "slice_family": "ACO-IVF",
     "slice_id": "ASC-07"
   },
   {
     "entity_id": "ACA-IVF-003",
     "entity_type": "Artifact",
+    "name": "Validation Evidence",
     "slice_family": "ACO-IVF",
     "slice_id": "ASC-07"
   },
   {
     "entity_id": "ACA-IVF-004",
     "entity_type": "Artifact",
+    "name": "Test Report",
     "slice_family": "ACO-IVF",
     "slice_id": "ASC-07"
   },
   {
     "entity_id": "ACA-IVF-005",
     "entity_type": "Artifact",
+    "name": "Review Checklist",
     "slice_family": "ACO-IVF",
     "slice_id": "ASC-07"
   },
   {
     "entity_id": "ACA-IVF-006",
     "entity_type": "Artifact",
+    "name": "Log Stream",
     "slice_family": "ACO-IVF",
     "slice_id": "ASC-07"
   },
   {
     "entity_id": "ACA-ITS-001",
     "entity_type": "Artifact",
+    "name": "Identity Binding",
     "slice_family": "ACO-ITS",
     "slice_id": "ASC-08"
   },
   {
     "entity_id": "ACA-ITS-002",
     "entity_type": "Artifact",
+    "name": "Policy Report",
     "slice_family": "ACO-ITS",
     "slice_id": "ASC-08"
   },
   {
     "entity_id": "ACA-ITS-003",
     "entity_type": "Artifact",
+    "name": "Review Checklist",
     "slice_family": "ACO-ITS",
     "slice_id": "ASC-08"
   },
   {
     "entity_id": "ACA-ITS-004",
     "entity_type": "Artifact",
+    "name": "Approval Record",
     "slice_family": "ACO-ITS",
     "slice_id": "ASC-08"
   },
   {
     "entity_id": "ACA-ITS-005",
     "entity_type": "Artifact",
+    "name": "Log Stream",
     "slice_family": "ACO-ITS",
     "slice_id": "ASC-08"
   },
   {
     "entity_id": "ACA-RPR-001",
     "entity_type": "Artifact",
+    "name": "Approval Record",
     "slice_family": "ACO-RPR",
     "slice_id": "ASC-09"
   },
   {
     "entity_id": "ACA-RPR-002",
     "entity_type": "Artifact",
+    "name": "Release Gate",
     "slice_family": "ACO-RPR",
     "slice_id": "ASC-09"
   },
   {
     "entity_id": "ACA-RPR-003",
     "entity_type": "Artifact",
+    "name": "Artifact Provenance",
     "slice_family": "ACO-RPR",
     "slice_id": "ASC-09"
   },
   {
     "entity_id": "ACA-RPR-004",
     "entity_type": "Artifact",
+    "name": "Artifact Signature",
     "slice_family": "ACO-RPR",
     "slice_id": "ASC-09"
   },
   {
     "entity_id": "ACA-RPR-005",
     "entity_type": "Artifact",
+    "name": "Pipeline Config",
     "slice_family": "ACO-RPR",
     "slice_id": "ASC-09"
   },
   {
     "entity_id": "ACA-RPR-006",
     "entity_type": "Artifact",
+    "name": "Deployment Plan",
     "slice_family": "ACO-RPR",
     "slice_id": "ASC-09"
   },
   {
     "entity_id": "ACA-RPR-007",
     "entity_type": "Artifact",
+    "name": "Rollback Plan",
     "slice_family": "ACO-RPR",
     "slice_id": "ASC-09"
   },
   {
     "entity_id": "ACA-RPR-008",
     "entity_type": "Artifact",
+    "name": "Operational Evidence",
     "slice_family": "ACO-RPR",
     "slice_id": "ASC-09"
   },
   {
     "entity_id": "ACA-SLG-001",
     "entity_type": "Artifact",
+    "name": "Log Stream",
     "slice_family": "ACO-SLG",
     "slice_id": "ASC-10"
   },
   {
     "entity_id": "ACA-SLG-002",
     "entity_type": "Artifact",
+    "name": "Alert Policy",
     "slice_family": "ACO-SLG",
     "slice_id": "ASC-10"
   }

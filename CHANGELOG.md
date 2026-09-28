@@ -9,7 +9,104 @@ review_status: pending-human-review
 
 # Changelog
 
-## 0.21.1 — RASCUNHO (preparado 2026-09-26; merge squash → tag `v0.21.1` → `next` → `latest` são actos do lead) — o overlay regulatório restringe-se ao que a chamada activou
+## 0.22.0 — RASCUNHO (preparado 2026-09-28; merge squash → tag `v0.22.0` → `next` → `latest` são actos do lead) — KG v2.0.0 (contrato v2.0) · o envelope é a regra · lotes com o contexto do pedido · activadores largos com contexto do dado
+
+**Re-pino ao KG v2.0.0, contrato v2.0 — INCOMPATÍVEL (decisão do lead 2026-09-27; autorização 2026-09-28).** Tag anotada
+`v2.0.0` (objecto `3f1ae6ab`) → `7fa509e`; artefacto `sbd-toe-knowledge-graph-bundle-v2.0.0.zip`, sha256
+`99a38841d4cc719f054659d1f3f972b45d97327cd9866cfb50e538dc8f791e07`, verificado contra o `.sha256` publicado. Substrato
+`manual-v1.16.0+sbdtoe-ontology-v2.11`.
+- **Gate de subida major no `sync-bundle`** — a `alignment_policy` prometia-o e o sync não o aplicava: uma mudança de major (ou
+  contrato ilegível) PÁRA, salvo `--accept-major v<N> --accept-reason …`, e a aceitação fica registada no pino
+  (`contract_major_acceptance`). O `verify-consumed-bundle` valida o contrato (formato, major suportado = v2).
+- **Migração de ids:** o `id_migrations.jsonl` (3 746 entradas: secções, chunks, menções, registos, hints, overlay, 63
+  assignments retirados, 13 práticas) varrido contra 879 ficheiros versionados → **0 ocorrências**: nenhum ouro, citação,
+  fixture ou cenário a migrar (`docs/acceptance-runs/2026-09-28-v0.22.0-id-migration.md`).
+- **Dado novo absorvido:** os placeholders da rastreabilidade publicam nome (os testes verificam «nome servido = publicado»);
+  **17 papéis canónicos** (rh-peopleops, procurement, legal, tech-lead); `pentester` → appsec-engineer e `secops*` →
+  operacoes resolvem pelo **dado** do KG (a tabela do servidor deixa de ter `secops`); RH/PeopleOps canonizado
+  (`referenced_roles.items` vazio; a banda continua contrato, coberta por teste sintético).
+- **Oráculo da invariante 3 v0.22.0** (append-only): «API pública/L3 + activadores» re-baselinado pela decisão 0006 — 135 →
+  278 ids, +143, −0, mesmos 89 requisitos — **ratificado pelo lead a 2026-09-28**; os outros casos idênticos.
+- **Prompt de sistema:** o nível L1–L3 vem dos eixos E+D+I do cap. 01 e é declarado; não se infere nem segue de haver dados
+  pessoais; o contexto regulatório é outra declaração (achado 5 da revisão técnica).
+
+**Prova (contra o KG v2.0.0):** vitest 862/862; `check`; smoke; `eval:acceptance` 145/12/0/23 gate PASS (era 141/16/0/23);
+Eixo H 10/10; determinismo entre processos 28/0; matriz de custo (120) 0 violações, full idêntico 58/58; matriz dos
+activadores largos (94) G2 zero 46 → 0, união exacta 52/52, 0 violações.
+
+As entradas abaixo (0.21.2, implementadas no ramo `0.21.2-cost-ceilings` e nunca publicadas) entram nesta release.
+
+### Da linha 0.21.2 (não publicada) — o envelope é a regra
+
+**Promessa (decisão 0004, fechada pelo lead a 2026-09-26):** em `lista` e `standard`, uma resposta pronta **cabe no envelope do
+nível** — 8 450 e 9 200 tokens — medido sobre o payload que o cliente recebe, com tudo o que leva (requisitos, controlos,
+entidades, adjacência, overlay). Se não cabe, `needs_decomposition` com lotes que somam o todo e que cabem cada um. A única
+excepção, sempre declarada, é o **lote irredutível** — uma única categoria que sozinha não cabe (ex.: GOV com overlay CRA, L3):
+serve-se pronto, com `within_envelope: false` e `size_estimate.irreducible_note_id`; nunca devolve outra decomposição. `full`
+não tem envelope e fica **byte-idêntico** à 0.21.1.
+
+**O que muda:**
+- **Custo = o `size_estimate` do payload real**, construído e medido antes de responder (mesma régua). Retiram-se os tectos por
+  contagem e a recta que os derivava: `REQUIREMENT_CEILING_BY_DETAIL`, `COST_PER_REQ_TK`, `BASE_TK`, `CEILING_FIT`,
+  `PROPOSED_CEILING_BY_DETAIL`. Fica `PAYLOAD_PROMISE_TK`.
+- **Lotes empacotados por payload medido:** categorias por custo isolado decrescente, cada uma no primeiro lote em que o payload
+  real do lote continue dentro do envelope. Cada lote declara `measured_tk` (é o que a chamada devolve) e `irreducible`.
+  `technologies`, `changed_files`, os parâmetros do overlay e o `mode` (quando não é `codegen`) preservam-se literalmente.
+- **`requirement_ceiling`:** ganha `basis: "measured_payload"`; `projected_tk` passa a ser o medido; **saem `limit` e
+  `cost_per_req_tk`**.
+- **Opt-ins explícitos** (`include_relations`, `debug`) não disparam decomposição: decide a forma canónica do nível, e o pedido
+  sai com o preço declarado.
+- **`select` → `next`:** a única projecção que sobra (custo de um prepare ainda não pedido) é a soma das médias por categoria,
+  medidas no bundle e calibradas uma vez por processo; declarada **ESTIMATIVA**, nunca bloqueia.
+- Nota nova `prepare.size_estimate.irreducible`; `prepare.size_estimate.envelope_exceeded` reescrita; descrições e guia do
+  agente (`needs_decomposition` → executar os lotes) alinhados.
+
+**Os activadores largos trazem contexto, derivado só do dado (decisão 0006, opção A; lead 2026-09-26):** `exposure` e
+`data_sensitivity` activavam categorias mas nenhuma fatia (defeito de ordem no motor). Um pedido declarado só por eles não tinha
+contexto AppSec Core nem em `full`. Agora os requisitos que cada activador largo selecciona percorrem a cadeia publicada
+requisito → controlo (`requirement_control_links`) → objectivo (`ctrl_acore_alignment`, exact/partial) → família. Cada família
+leva a sua testemunha no `activation_trace` (`context_slice_chain`).
+- O vocabulário publica, por valor e nível, `activates_slice_families`.
+- As tabelas exposure/data_sensitivity → concerns ficam só para a selecção, que não muda.
+- Os lotes (0005) levam exactamente o contexto do pedido.
+- Matriz dos activadores largos: declarações sem G2 46/47 → **0/47**; decomposições 24 → 52; +29,8 % tokens; 0 violações.
+  O avaliador passa de G2 0 para 163.
+- O caso «API pública/L3 + activadores» do oráculo da invariante 3 fica em **re-baselinagem pendente de ratificação**, no ciclo
+  completo.
+- Seguimento para o KG v2.12: a relação precisa como dado.
+
+**Lotes com os activadores do pedido (decisão 0005, lead 2026-09-26):** cada lote de `needs_decomposition` é o pedido original
+restrito às suas categorias — os mesmos requisitos e o mesmo contexto (fatias AppSec Core e `manual_grounding`), as mesmas
+`technologies`, `changed_files`, overlay e `mode`. A união dos lotes devolve o pedido inteiro. Uma decomposição tem sempre dois
+lotes ou mais (com uma só categoria é o irredutível declarado).
+- Parâmetro novo `slice_families` no prepare: **só de contexto** — activa fatias, nunca selecciona requisitos; sozinho devolve
+  `needs_input`; valor fora do conjunto publicado → `needs_input` com `valid_values`. Publicado em
+  `sbd://toe/activation-vocabulary` → `slice_families` (`context_only: true`, derivado do runtime servido). Não se ensina como
+  forma de pedir: é o servidor que o escreve na receita dos lotes (`batches[].with.slice_families`).
+- Matriz de 120 casos: decomposições de um só lote 8 → **0**; cobertura do contexto AppSec Core da união 0,19 → **1,00**; 0
+  violações; `full` byte-idêntico 60/60. TC-F-34 verifica também o contexto (exemplo dos docs: 43/43).
+- Guia de codegen: o `with` do lote executa-se tal e qual, e cada lote é o pedido restrito às suas categorias.
+
+**Textos servidos alinhados com o comportamento (lead, 2026-09-26; só texto):**
+- `sbd://toe/grounded-codegen-guide` conhece `needs_input` e, perante `needs_decomposition`, manda **executar** os lotes de
+  `requirement_ceiling.batches` (sem lotes — o gate do `discover` — estreitar a declaração); o fluxo passa a ser declarativo
+  e deixa de trazer números de versão na prosa. A descrição do recurso, o prompt de codegen e o `next` do prepare dizem o mesmo
+  (o `next` dizia «split into 2-4 subtasks»).
+- `sbd://toe/codegen-instructions/{mode}`: descrição e conteúdo sem `minimal`, sem «linha 0.20», sem `codegen_instructions_ref`.
+- `consult_security_requirements` → `coverage_gaps`: com contagem 0 a nota diz que todos os requisitos activos têm ligação;
+  sem datas nem encaminhamentos internos.
+- README: a tabela de estados passa a cinco (`needs_input`) e descreve os lotes.
+- Guarda: `src/serving/served-texts.test.ts`.
+
+**Efeito medido (matriz de 116 casos, `docs/acceptance-runs/2026-09-26-v0.21.2-cost-ceiling-matrix.md`):** 87 iguais prontos,
+6 iguais bloqueados, **22 prontos → decompõem** (os 22 que a 0.21.1 servia prontos acima do envelope), **1 bloqueado → pronto**
+(auth+logging+validation L3, 53 reqs, 7 981 tk); 0 violações da promessa; `full` byte-idêntico 58/58.
+
+**Prova:** vitest 838/838 (testes de propriedade: sem ciclo sobre o catálogo inteiro, irredutível, overlay/modo preservados,
+custo declarado = recebido); `check`; smoke; `eval:acceptance` 141/16/0/23 gate PASS (TC-F-34 reescrito para a regra de custo);
+Eixo H 10/10; invariante 3 contra o oráculo da 0.20.0. Pino KG v1.12.0 inalterado.
+
+## 0.21.1 — 2026-09-27 — o overlay regulatório restringe-se ao que a chamada activou
 
 **Defeito, medido nas três versões publicadas (0.19.4 `latest`, 0.20.0, 0.21.0):** com `include_regulatory_overlay`, o
 `prepare_sbd_toe_codegen_context` servia **todos** os mapeamentos das obrigações do framework para todo o Manual — não só os do

@@ -1,6 +1,6 @@
 {
   "agent": "lifecycle_extractor",
-  "generated_at": "2026-09-09T23:00:38Z",
+  "generated_at": "2026-09-27T16:34:47Z",
   "items": [
     {
       "confidence": 0.91,
@@ -84,7 +84,7 @@
         "grc-compliance",
         "product-owner"
       ],
-      "sla": "3 dias úteis após trigger",
+      "sla": "Início ≤ 5 dias úteis após o trigger; conclusão ≤ 30 dias (Política 04)",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-03-revisao-por-alteracao-relevante-event-based",
       "trigger": "Mudança arquitetura, dados ou exposição",
@@ -126,9 +126,7 @@
       "responsible_normalized": [
         "qa",
         "appsec-engineer",
-        "gestao-executiva",
-        "l3",
-        "untitled"
+        "gestao-executiva"
       ],
       "sla": "2 dias úteis antes de deploy",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
@@ -149,7 +147,7 @@
       "responsible": "**AppSec Engineer + Arquitetos + Developer**",
       "responsible_normalized": [
         "appsec-engineer",
-        "arquitetos",
+        "arquitetos-software",
         "developer"
       ],
       "sla": "Antes de dev começar",
@@ -237,7 +235,7 @@
       ],
       "sla": "Antes da primeira release",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-14-adocao-de-modelo-de-classificacao-alternativo-drp-bia-mapeado-para-e-d-i",
+      "source_section_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle--aplicacao-da-classificacao-de-criticidade-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-14-adocao-de-modelo-de-classificacao-alternativo-drpbia-mapeado-para-edi",
       "trigger": "Existência de DRP/BIA aplicável à aplicação",
       "user_story_id": "01-classificacao-aplicacoes-us-14",
       "warnings": []
@@ -253,9 +251,7 @@
       "practice_id": "01-classificacao-aplicacoes:producao-e-manutencao-do-inventario-central-com-autoridade-de-aprovacao-proporcional",
       "responsible": "GRC/Compliance (mantém) + autoridade de aprovação por nível",
       "responsible_normalized": [
-        "grc-compliance",
-        "mantem",
-        "autoridade-de-aprovacao-por-nivel"
+        "grc-compliance"
       ],
       "sla": "Atualização ≤ 5 dias úteis após o evento",
       "source_document_id": "010-sbd-manual-01-classificacao-aplicacoes-aplicacao-lifecycle",
@@ -293,10 +289,10 @@
       "phase": "Design/Refactor",
       "phase_normalized": "unassigned",
       "practice_id": "02-requisitos-seguranca:revisao-por-alteracao-relevante",
-      "responsible": "Arquitetos de Software + Scrum Master / Team Lead",
+      "responsible": "Arquitetos de Software + Tech Lead",
       "responsible_normalized": [
         "arquitetos-software",
-        "scrum-master"
+        "tech-lead"
       ],
       "sla": "Antes da release",
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
@@ -417,11 +413,11 @@
       "phase": "Início",
       "phase_normalized": "plan",
       "practice_id": "02-requisitos-seguranca:catalogo-de-requisitos-do-projeto-criacao-e-manutencao",
-      "responsible": "AppSec Engineer + Product Owner + Scrum Master / Team Lead",
+      "responsible": "AppSec Engineer + Product Owner + Tech Lead",
       "responsible_normalized": [
         "appsec-engineer",
         "product-owner",
-        "scrum-master"
+        "tech-lead"
       ],
       "sla": "Antes do backlog inicial / antes da release",
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
@@ -439,15 +435,15 @@
       "phase": "Testes/Review",
       "phase_normalized": "test",
       "practice_id": "02-requisitos-seguranca:validacao-por-requisito-dominio-req-xxx-evidencia",
-      "responsible": "QA + AppSec Engineer + Scrum Master / Team Lead",
+      "responsible": "QA + AppSec Engineer + Tech Lead",
       "responsible_normalized": [
         "qa",
         "appsec-engineer",
-        "scrum-master"
+        "tech-lead"
       ],
       "sla": "Por sprint e antes de release",
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-09-validacao-por-requisito-dominio-req-xxx-evidencia",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-09-validacao-por-requisitodominio-req-xxx-evidencia",
       "trigger": "Pipelines e checkpoints",
       "user_story_id": "02-requisitos-seguranca-us-09",
       "warnings": []
@@ -468,7 +464,7 @@
       ],
       "sla": "Bloqueio automático até resolução",
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-10-gates-automaticos-em-ci-cd-para-requisitos-de-seguranca",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-10-gates-automaticos-em-cicd-para-requisitos-de-seguranca",
       "trigger": "PR/MR targeting main/release",
       "user_story_id": "02-requisitos-seguranca-us-10",
       "warnings": []
@@ -545,10 +541,10 @@
       "phase": "PR/MR",
       "phase_normalized": "build",
       "practice_id": "02-requisitos-seguranca:uso-controlado-de-assistentes-automatizados-incluindo-ia-no-desenvolvimento",
-      "responsible": "Developer + Scrum Master / Team Lead",
+      "responsible": "Developer + Tech Lead",
       "responsible_normalized": [
         "developer",
-        "scrum-master"
+        "tech-lead"
       ],
       "sla": "Antes do merge",
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
@@ -585,14 +581,14 @@
       "id": "02-requisitos-seguranca-us-15-operate-1",
       "phase": "Activação",
       "phase_normalized": "operate",
-      "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai-us-15",
+      "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai",
       "responsible": "*Owner* + AppSec Engineer",
       "responsible_normalized": [
         "appsec-engineer"
       ],
       "sla": "Antes do primeiro *tool call*",
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-15-classificacao-e-registo-do-mandate-de-agente-ai-us-15",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-15",
       "trigger": "Pedido para operar agente em A1+",
       "user_story_id": "02-requisitos-seguranca-us-15",
       "warnings": []
@@ -605,14 +601,14 @@
       "id": "02-requisitos-seguranca-us-15-test-2",
       "phase": "Revisão",
       "phase_normalized": "test",
-      "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai-us-15",
+      "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai",
       "responsible": "*Owner* + AppSec Engineer",
       "responsible_normalized": [
         "appsec-engineer"
       ],
       "sla": "Conforme cadência declarada",
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-15-classificacao-e-registo-do-mandate-de-agente-ai-us-15",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-15",
       "trigger": "`review_cadence` ou alteração material",
       "user_story_id": "02-requisitos-seguranca-us-15",
       "warnings": []
@@ -625,14 +621,14 @@
       "id": "02-requisitos-seguranca-us-15-operate-3",
       "phase": "Revogação",
       "phase_normalized": "operate",
-      "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai-us-15",
+      "practice_id": "02-requisitos-seguranca:classificacao-e-registo-do-mandate-de-agente-ai",
       "responsible": "*Owner* + AppSec Engineer",
       "responsible_normalized": [
         "appsec-engineer"
       ],
       "sla": "Imediata via *kill-switch*",
       "source_document_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-15-classificacao-e-registo-do-mandate-de-agente-ai-us-15",
+      "source_section_id": "010-sbd-manual-02-requisitos-seguranca-aplicacao-lifecycle--aplicacao-de-requisitos-de-seguranca-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-15",
       "trigger": "*Off-policy action*, *credential exposure*, falha de *kill-switch*",
       "user_story_id": "02-requisitos-seguranca-us-15",
       "warnings": []
@@ -819,7 +815,7 @@
       ],
       "sla": "Gate não-bloqueante com alerta (L2); bloqueante com exceção formal e prazo (L3)",
       "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-05-gate-de-controlo-de-consistencia-no-ci-cd",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-05-gate-de-controlo-de-consistencia-no-cicd",
       "trigger": "Alteração relevante (novo fluxo, nova dependência, nova *trust boundary*)",
       "user_story_id": "03-threat-modeling-us-05",
       "warnings": []
@@ -937,15 +933,15 @@
       "id": "03-threat-modeling-us-11-design-1",
       "phase": "Design",
       "phase_normalized": "design",
-      "practice_id": "03-threat-modeling:threat-modeling-para-sistema-com-agente-ai-tool-use-us-11",
-      "responsible": "`software_architect` + `appsec`",
+      "practice_id": "03-threat-modeling:threat-modeling-para-sistema-com-agente-ai-tool-use",
+      "responsible": "Arquitetos de Software + AppSec Engineer",
       "responsible_normalized": [
         "arquitetos-software",
         "appsec-engineer"
       ],
       "sla": "Antes da activação do *mandate*",
       "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-11-threat-modeling-para-sistema-com-agente-ai-tool-use-us-11",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-11",
       "trigger": "Introdução do agente no sistema",
       "user_story_id": "03-threat-modeling-us-11",
       "warnings": []
@@ -958,14 +954,14 @@
       "id": "03-threat-modeling-us-11-operate-2",
       "phase": "Subida de nível",
       "phase_normalized": "operate",
-      "practice_id": "03-threat-modeling:threat-modeling-para-sistema-com-agente-ai-tool-use-us-11",
+      "practice_id": "03-threat-modeling:threat-modeling-para-sistema-com-agente-ai-tool-use",
       "responsible": "`appsec`",
       "responsible_normalized": [
         "appsec-engineer"
       ],
       "sla": "Antes da nova activação",
       "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-11-threat-modeling-para-sistema-com-agente-ai-tool-use-us-11",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-11",
       "trigger": "Promoção A1→A2 ou superior",
       "user_story_id": "03-threat-modeling-us-11",
       "warnings": []
@@ -978,14 +974,14 @@
       "id": "03-threat-modeling-us-11-operate-3",
       "phase": "Alteração de *tools*",
       "phase_normalized": "operate",
-      "practice_id": "03-threat-modeling:threat-modeling-para-sistema-com-agente-ai-tool-use-us-11",
+      "practice_id": "03-threat-modeling:threat-modeling-para-sistema-com-agente-ai-tool-use",
       "responsible": "`appsec`",
       "responsible_normalized": [
         "appsec-engineer"
       ],
       "sla": "Antes de a *tool* entrar em uso",
       "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-11-threat-modeling-para-sistema-com-agente-ai-tool-use-us-11",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-11",
       "trigger": "Adição/remoção em `tools_allowlist`",
       "user_story_id": "03-threat-modeling-us-11",
       "warnings": []
@@ -998,14 +994,14 @@
       "id": "03-threat-modeling-us-11-operate-4",
       "phase": "Mudança de modelo",
       "phase_normalized": "operate",
-      "practice_id": "03-threat-modeling:threat-modeling-para-sistema-com-agente-ai-tool-use-us-11",
+      "practice_id": "03-threat-modeling:threat-modeling-para-sistema-com-agente-ai-tool-use",
       "responsible": "`appsec`",
       "responsible_normalized": [
         "appsec-engineer"
       ],
       "sla": "Antes do *cutover*",
       "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-11-threat-modeling-para-sistema-com-agente-ai-tool-use-us-11",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-11",
       "trigger": "Versão maior do *provider*",
       "user_story_id": "03-threat-modeling-us-11",
       "warnings": []
@@ -1019,14 +1015,14 @@
       "phase": "Design",
       "phase_normalized": "design",
       "practice_id": "03-threat-modeling:threat-modeling-estendido-para-componentes-ai-ml-nao-agentic",
-      "responsible": "`software_architect` + `appsec`",
+      "responsible": "Arquitetos de Software + AppSec Engineer",
       "responsible_normalized": [
         "arquitetos-software",
         "appsec-engineer"
       ],
       "sla": "Antes do go-live",
       "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-12-threat-modeling-estendido-para-componentes-ai-ml-nao-agentic",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-12-threat-modeling-estendido-para-componentes-aiml-nao-agentic",
       "trigger": "Introdução de componente AI/ML sem tool-use",
       "user_story_id": "03-threat-modeling-us-12",
       "warnings": []
@@ -1046,7 +1042,7 @@
       ],
       "sla": "Antes do cutover",
       "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-12-threat-modeling-estendido-para-componentes-ai-ml-nao-agentic",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-12-threat-modeling-estendido-para-componentes-aiml-nao-agentic",
       "trigger": "Troca de modelo base, dataset ou pipeline RAG",
       "user_story_id": "03-threat-modeling-us-12",
       "warnings": []
@@ -1060,14 +1056,14 @@
       "phase": "Requisitos / Threat Modeling",
       "phase_normalized": "design",
       "practice_id": "03-threat-modeling:derivacao-de-abuse-misuse-cases-para-o-backlog",
-      "responsible": "`appsec` + `product_owner`",
+      "responsible": "AppSec Engineer + Product Owner",
       "responsible_normalized": [
         "appsec-engineer",
         "product-owner"
       ],
       "sla": "Antes da derivação de requisitos",
       "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-13-derivacao-de-abuse-misuse-cases-para-o-backlog",
+      "source_section_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle--aplicacao-de-threat-modeling-no-ciclo-de-vida--user-stories-e-cartoes-reutilizaveis--us-13-derivacao-de-abusemisuse-cases-para-o-backlog",
       "trigger": "Início de épico ou fluxo funcional relevante",
       "user_story_id": "03-threat-modeling-us-13",
       "warnings": []
@@ -1083,8 +1079,7 @@
       "practice_id": "03-threat-modeling:revisao-independente-em-l2-e-pasta-em-alto-risco",
       "responsible": "`appsec` (independente)",
       "responsible_normalized": [
-        "appsec-engineer",
-        "independente"
+        "appsec-engineer"
       ],
       "sla": "Antes do go-live (bloqueante)",
       "source_document_id": "010-sbd-manual-03-threat-modeling-aplicacao-lifecycle",
@@ -1102,7 +1097,7 @@
       "phase": "Design",
       "phase_normalized": "design",
       "practice_id": "03-threat-modeling:revisao-independente-em-l2-e-pasta-em-alto-risco",
-      "responsible": "`software_architect` + `appsec`",
+      "responsible": "Arquitetos de Software + AppSec Engineer",
       "responsible_normalized": [
         "arquitetos-software",
         "appsec-engineer"
@@ -1123,7 +1118,7 @@
       "phase": "Threat Modeling",
       "phase_normalized": "design",
       "practice_id": "03-threat-modeling:tratamento-explicito-dos-riscos-de-processo-do-threat-modeling",
-      "responsible": "`appsec` + `software_architect`",
+      "responsible": "AppSec Engineer + Arquitetos de Software",
       "responsible_normalized": [
         "appsec-engineer",
         "arquitetos-software"
@@ -1274,7 +1269,7 @@
       ],
       "sla": "Em cada build relevante",
       "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-07-validacao-arquitetural-automatizavel-no-ci-cd-quando-aplicavel",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-07-validacao-arquitetural-automatizavel-no-cicd-quando-aplicavel",
       "trigger": "Alteração com impacto",
       "user_story_id": "04-arquitetura-segura-us-07",
       "warnings": []
@@ -1416,8 +1411,7 @@
       "practice_id": "04-arquitetura-segura:revisao-formal-de-arquitetura-para-l3-governacao-reforcada",
       "responsible": "Gestão/CISO + Revisores definidos",
       "responsible_normalized": [
-        "gestao-executiva",
-        "revisores-definidos"
+        "gestao-executiva"
       ],
       "sla": "SLA interno (ex.: ≥ 2 semanas antes)",
       "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
@@ -1455,15 +1449,15 @@
       "id": "04-arquitetura-segura-us-16-design-1",
       "phase": "Design / Revisão",
       "phase_normalized": "design",
-      "practice_id": "04-arquitetura-segura:revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
-      "responsible": "`software_architect` + `appsec`",
+      "practice_id": "04-arquitetura-segura:revisao-de-arquitectura-para-agente-ai-em-a2",
+      "responsible": "Arquitetos de Software + AppSec Engineer",
       "responsible_normalized": [
         "arquitetos-software",
         "appsec-engineer"
       ],
       "sla": "Antes da activação do *mandate*",
       "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-16-revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-16",
       "trigger": "Activação de agente em A2+",
       "user_story_id": "04-arquitetura-segura-us-16",
       "warnings": []
@@ -1476,16 +1470,16 @@
       "id": "04-arquitetura-segura-us-16-operate-2",
       "phase": "Subida de nível",
       "phase_normalized": "operate",
-      "practice_id": "04-arquitetura-segura:revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
+      "practice_id": "04-arquitetura-segura:revisao-de-arquitectura-para-agente-ai-em-a2",
       "responsible": "`appsec` (+ `grc` em A3; + `CISO` em A4)",
       "responsible_normalized": [
         "appsec-engineer",
-        "grc-em-a3",
-        "ciso-em-a4"
+        "grc-compliance",
+        "gestao-executiva"
       ],
       "sla": "Antes da nova activação",
       "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-16-revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-16",
       "trigger": "Promoção A2→A3 ou A3→A4",
       "user_story_id": "04-arquitetura-segura-us-16",
       "warnings": []
@@ -1498,14 +1492,14 @@
       "id": "04-arquitetura-segura-us-16-govern-3",
       "phase": "Revisão periódica",
       "phase_normalized": "govern",
-      "practice_id": "04-arquitetura-segura:revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
+      "practice_id": "04-arquitetura-segura:revisao-de-arquitectura-para-agente-ai-em-a2",
       "responsible": "`appsec`",
       "responsible_normalized": [
         "appsec-engineer"
       ],
       "sla": "Conforme cadência (anual A2; semestral A3; trimestral A4)",
       "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-16-revisao-de-arquitectura-para-agente-ai-em-a2-us-16",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-16",
       "trigger": "`review_cadence` do *mandate*",
       "user_story_id": "04-arquitetura-segura-us-16",
       "warnings": []
@@ -1547,7 +1541,7 @@
       ],
       "sla": "Antes da aprovação do design",
       "source_document_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-18-padroes-arquitetonicos-para-sistemas-ai-ml-nao-agentic",
+      "source_section_id": "010-sbd-manual-04-arquitetura-segura-aplicacao-lifecycle--aplicacao-de-arquitetura-segura-no-ciclo-de-vida--user-stories-reutilizaveis--us-18-padroes-arquitetonicos-para-sistemas-aiml-nao-agentic",
       "trigger": "Introdução ou alteração de componente AI/ML não-agentic",
       "user_story_id": "04-arquitetura-segura-us-18",
       "warnings": []
@@ -1652,7 +1646,7 @@
       ],
       "sla": "Antes do deploy a produção",
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-05-validacao-de-release-go-no-go",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-05-validacao-de-release-gono-go",
       "trigger": "RC pronta",
       "user_story_id": "05-dependencias-sbom-sca-us-05",
       "warnings": []
@@ -1668,8 +1662,7 @@
       "practice_id": "05-dependencias-sbom-sca:repositorios-internos-como-fonte-unica",
       "responsible": "DevOps/CI",
       "responsible_normalized": [
-        "devops-sre",
-        "ci"
+        "devops-sre"
       ],
       "sla": "Imediato (bloqueio em tempo real)",
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
@@ -1753,8 +1746,7 @@
       "practice_id": "05-dependencias-sbom-sca:auditoria-periodica-de-bibliotecas-copiadas-manualmente",
       "responsible": "DevOps (bloqueio)",
       "responsible_normalized": [
-        "devops-sre",
-        "bloqueio"
+        "devops-sre"
       ],
       "sla": "Imediato (bloqueio em tempo real)",
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
@@ -1834,9 +1826,7 @@
       "phase_normalized": "operate",
       "practice_id": "05-dependencias-sbom-sca:alertas-sobre-vulnerabilidades-em-componentes-usados",
       "responsible": "Automático (feed)",
-      "responsible_normalized": [
-        "feed"
-      ],
+      "responsible_normalized": [],
       "sla": "Detecção automática (1–6h)",
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-11-alertas-sobre-vulnerabilidades-em-componentes-usados",
@@ -1879,7 +1869,7 @@
         "devops-sre",
         "appsec-engineer"
       ],
-      "sla": "L1: 30d, L2: 14d, L3: 7d",
+      "sla": "Crítico: L1 30d, L2 7d, L3 3d (Política 19 §4.3)",
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-11-alertas-sobre-vulnerabilidades-em-componentes-usados",
       "trigger": "Plano de correção ou exceção",
@@ -1916,12 +1906,7 @@
       "phase_normalized": "build",
       "practice_id": "05-dependencias-sbom-sca:validacao-automatica-de-compatibilidade-de-licencas",
       "responsible": "CI/CD (bloqueio/alerta)",
-      "responsible_normalized": [
-        "ci",
-        "cd",
-        "bloqueio",
-        "alerta"
-      ],
+      "responsible_normalized": [],
       "sla": "Durante o build (imediato)",
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-12-validacao-automatica-de-compatibilidade-de-licencas",
@@ -1941,7 +1926,7 @@
       "responsible": "AppSec + Legal (se necessário)",
       "responsible_normalized": [
         "appsec-engineer",
-        "se-necessario"
+        "legal"
       ],
       "sla": "Antes do go-live",
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
@@ -1979,17 +1964,15 @@
       "id": "05-dependencias-sbom-sca-us-14-build-1",
       "phase": "Build",
       "phase_normalized": "build",
-      "practice_id": "05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
+      "practice_id": "05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai",
       "responsible": "DevOps (gera AI BOM) + AppSec (revê)",
       "responsible_normalized": [
         "devops-sre",
-        "gera-ai-bom",
-        "appsec-engineer",
-        "reve"
+        "appsec-engineer"
       ],
       "sla": "Por *build*",
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-14-ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-14",
       "trigger": "Cada *build*",
       "user_story_id": "05-dependencias-sbom-sca-us-14",
       "warnings": []
@@ -2002,16 +1985,15 @@
       "id": "05-dependencias-sbom-sca-us-14-govern-2",
       "phase": "Aprovação de provider",
       "phase_normalized": "govern",
-      "practice_id": "05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
+      "practice_id": "05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai",
       "responsible": "AppSec + GRC (+ Legal se necessário)",
       "responsible_normalized": [
         "appsec-engineer",
-        "grc-compliance",
-        "legal-se-necessario"
+        "grc-compliance"
       ],
       "sla": "Antes do uso operacional",
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-14-ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-14",
       "trigger": "Adição de novo *provider* AI",
       "user_story_id": "05-dependencias-sbom-sca-us-14",
       "warnings": []
@@ -2024,7 +2006,7 @@
       "id": "05-dependencias-sbom-sca-us-14-deploy-3",
       "phase": "Mudança de versão",
       "phase_normalized": "deploy",
-      "practice_id": "05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
+      "practice_id": "05-dependencias-sbom-sca:ai-bom-e-gestao-de-providers-de-modelos-ai",
       "responsible": "AppSec + DevOps",
       "responsible_normalized": [
         "appsec-engineer",
@@ -2032,7 +2014,7 @@
       ],
       "sla": "Antes do *cutover* — com *eval* e *threat review* concluídos",
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-14-ai-bom-e-gestao-de-providers-de-modelos-ai-us-14",
+      "source_section_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-dependencias-sbom-e-sca--user-stories-reutilizaveis--us-14",
       "trigger": "*Bump* de modelo / MCP server / dataset",
       "user_story_id": "05-dependencias-sbom-sca-us-14",
       "warnings": []
@@ -2049,7 +2031,7 @@
       "responsible": "Developer/Lead",
       "responsible_normalized": [
         "developer",
-        "scrum-master"
+        "tech-lead"
       ],
       "sla": "Na alteração do manifesto",
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
@@ -2069,8 +2051,7 @@
       "practice_id": "05-dependencias-sbom-sca:pinning-de-versoes-e-integridade-por-hash",
       "responsible": "DevOps/CI",
       "responsible_normalized": [
-        "devops-sre",
-        "ci"
+        "devops-sre"
       ],
       "sla": "Durante o build (bloqueio imediato)",
       "source_document_id": "010-sbd-manual-05-dependencias-sbom-sca-aplicacao-lifecycle",
@@ -2176,7 +2157,6 @@
       "responsible_normalized": [
         "developer",
         "qa",
-        "untitled",
         "scrum-master"
       ],
       "sla": "Antes do merge",
@@ -2222,7 +2202,7 @@
       ],
       "sla": "Cada build",
       "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-04-automatizacao-em-ci-cd-linters-sast",
+      "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-04-automatizacao-em-cicd-linters-sast",
       "trigger": "Execução pipeline",
       "user_story_id": "06-desenvolvimento-seguro-us-04",
       "warnings": []
@@ -2239,8 +2219,7 @@
       "responsible": "**AppSec Engineer** + **Product Owner (PO)**",
       "responsible_normalized": [
         "appsec-engineer",
-        "product-owner",
-        "untitled"
+        "product-owner"
       ],
       "sla": "Antes do go-live",
       "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
@@ -2261,8 +2240,7 @@
       "responsible": "**Developer** + **Quality Assurance (QA)**",
       "responsible_normalized": [
         "developer",
-        "qa",
-        "untitled"
+        "qa"
       ],
       "sla": "Antes do merge",
       "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
@@ -2305,8 +2283,7 @@
       "responsible": "**Developer** + **Quality Assurance (QA)**",
       "responsible_normalized": [
         "developer",
-        "qa",
-        "untitled"
+        "qa"
       ],
       "sla": "Até ao merge",
       "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
@@ -2367,10 +2344,9 @@
       "responsible": "**Quality Assurance (QA)** + **DevOps / SRE**",
       "responsible_normalized": [
         "qa",
-        "untitled",
         "devops-sre"
       ],
-      "sla": "Export por *build*/*release*; retenção ≥ 2 anos (≥ 5 anos em L3)",
+      "sla": "Export por *build*/*release*; retenção de 1 ano (L1), 2 anos (L2), 3 anos (L3); ≥ 10 anos em produtos no âmbito do CRA",
       "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-desenvolvimento-seguro--user-stories-reutilizaveis--us-11-arquivo-central-de-evidencias-de-validacao",
       "trigger": "Conclusão da execução de validações no pipeline",
@@ -2431,8 +2407,7 @@
       "responsible_normalized": [
         "appsec-engineer",
         "devops-sre",
-        "grc-compliance",
-        "quando-aplicavel"
+        "grc-compliance"
       ],
       "sla": "Relatório mensal",
       "source_document_id": "010-sbd-manual-06-desenvolvimento-seguro-aplicacao-lifecycle",
@@ -2778,7 +2753,7 @@
       ],
       "sla": "Bloqueio no *gate*, antes da promoção",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-07-gates-por-risco-separacao-sinal-decisao",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-07-gates-por-risco-separacao-sinaldecisao",
       "trigger": "Falha High ou Critical em aplicação L3",
       "user_story_id": "07-cicd-seguro-us-07",
       "warnings": []
@@ -2798,7 +2773,7 @@
       ],
       "sla": "Alerta no *gate*, sem bloqueio",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-07-gates-por-risco-separacao-sinal-decisao",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-07-gates-por-risco-separacao-sinaldecisao",
       "trigger": "Falha Medium em aplicação L1",
       "user_story_id": "07-cicd-seguro-us-07",
       "warnings": []
@@ -2818,7 +2793,7 @@
       ],
       "sla": "Na decisão de promoção",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-07-gates-por-risco-separacao-sinal-decisao",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-normalizadas--us-07-gates-por-risco-separacao-sinaldecisao",
       "trigger": "Apresentação de *score*/recomendação automática",
       "user_story_id": "07-cicd-seguro-us-07",
       "warnings": []
@@ -3078,7 +3053,7 @@
       ],
       "sla": "Resultado equivalente, ou divergência justificada e registada",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-14-reprodutibilidade-e-determinismo-do-pipeline",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-14-reprodutibilidade-e-determinismo-do-pipeline",
       "trigger": "Reexecução do mesmo pipeline sobre o mesmo *commit*",
       "user_story_id": "07-cicd-seguro-us-14",
       "warnings": []
@@ -3098,7 +3073,7 @@
       ],
       "sla": "Configuração efetiva registada a cada execução",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-14-reprodutibilidade-e-determinismo-do-pipeline",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-14-reprodutibilidade-e-determinismo-do-pipeline",
       "trigger": "Execução com parâmetros ou configuração",
       "user_story_id": "07-cicd-seguro-us-14",
       "warnings": []
@@ -3118,7 +3093,7 @@
       ],
       "sla": "Decisão nominal registada antes da promoção",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-15-separacao-formal-entre-sinal-automatico-e-decisao-de-promocao",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-15-separacao-formal-entre-sinal-automatico-e-decisao-de-promocao",
       "trigger": "Promoção considerada a partir de sinais (*scores*, recomendações)",
       "user_story_id": "07-cicd-seguro-us-15",
       "warnings": []
@@ -3138,7 +3113,7 @@
       ],
       "sla": "Bloqueio até registo nominal de aprovação",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-15-separacao-formal-entre-sinal-automatico-e-decisao-de-promocao",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-15-separacao-formal-entre-sinal-automatico-e-decisao-de-promocao",
       "trigger": "Tentativa de promoção sem decisão formal",
       "user_story_id": "07-cicd-seguro-us-15",
       "warnings": []
@@ -3158,7 +3133,7 @@
       ],
       "sla": "Referência verificável à execução (*run id*, logs, artefactos) no registo",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-16-evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-16-evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao",
       "trigger": "Uso de um relatório de validação como evidência",
       "user_story_id": "07-cicd-seguro-us-16",
       "warnings": []
@@ -3178,7 +3153,7 @@
       ],
       "sla": "Rejeição imediata como «não verificável»",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-16-evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-16-evidencia-empirica-obrigatoria-anti-relatorios-sem-execucao",
       "trigger": "Registo de resultado sem execução observável",
       "user_story_id": "07-cicd-seguro-us-16",
       "warnings": []
@@ -3198,7 +3173,7 @@
       ],
       "sla": "*Masking*/redação por defeito, a cada execução",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-17-contencao-de-contexto-e-higiene-de-logs-outputs",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-17-contencao-de-contexto-e-higiene-de-logsoutputs",
       "trigger": "Geração de logs pelo pipeline",
       "user_story_id": "07-cicd-seguro-us-17",
       "warnings": []
@@ -3218,7 +3193,7 @@
       ],
       "sla": "Aprovação prévia, janela limitada no tempo e evidência de desativação",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-17-contencao-de-contexto-e-higiene-de-logs-outputs",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-17-contencao-de-contexto-e-higiene-de-logsoutputs",
       "trigger": "Ativação temporária de *debug*",
       "user_story_id": "07-cicd-seguro-us-17",
       "warnings": []
@@ -3238,7 +3213,7 @@
       ],
       "sla": "Registo nominal e *timestamp* no momento da promoção",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-18-nao-repudio-e-ownership-de-promocoes-acoes-irreversiveis",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-18-nao-repudio-e-ownership-de-promocoes-acoes-irreversiveis",
       "trigger": "Promoção para produção executada",
       "user_story_id": "07-cicd-seguro-us-18",
       "warnings": []
@@ -3258,7 +3233,7 @@
       ],
       "sla": "Bloqueio imediato da ação",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-18-nao-repudio-e-ownership-de-promocoes-acoes-irreversiveis",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-18-nao-repudio-e-ownership-de-promocoes-acoes-irreversiveis",
       "trigger": "Tentativa de promoção sem *owner* humano",
       "user_story_id": "07-cicd-seguro-us-18",
       "warnings": []
@@ -3271,7 +3246,7 @@
       "id": "07-cicd-seguro-us-19-govern-1",
       "phase": "Onboarding do agente",
       "phase_normalized": "govern",
-      "practice_id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline-us-19",
+      "practice_id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline",
       "responsible": "`devops` + `appsec`",
       "responsible_normalized": [
         "devops-sre",
@@ -3279,7 +3254,7 @@
       ],
       "sla": "Antes do primeiro *tool call*",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-19-agentes-ai-como-principals-na-pipeline-us-19",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-19",
       "trigger": "Activação do *mandate* (Policy 38)",
       "user_story_id": "07-cicd-seguro-us-19",
       "warnings": []
@@ -3292,14 +3267,12 @@
       "id": "07-cicd-seguro-us-19-operate-2",
       "phase": "Operação",
       "phase_normalized": "operate",
-      "practice_id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline-us-19",
+      "practice_id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline",
       "responsible": "Agente (com audit automático)",
-      "responsible_normalized": [
-        "com-audit-automatico"
-      ],
+      "responsible_normalized": [],
       "sla": "*Real-time*",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-19-agentes-ai-como-principals-na-pipeline-us-19",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-19",
       "trigger": "Cada *tool invocation*",
       "user_story_id": "07-cicd-seguro-us-19",
       "warnings": []
@@ -3312,14 +3285,14 @@
       "id": "07-cicd-seguro-us-19-test-3",
       "phase": "Revisão",
       "phase_normalized": "test",
-      "practice_id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline-us-19",
+      "practice_id": "07-cicd-seguro:agentes-ai-como-principals-na-pipeline",
       "responsible": "`appsec`",
       "responsible_normalized": [
         "appsec-engineer"
       ],
       "sla": "Conforme cadência",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-19-agentes-ai-como-principals-na-pipeline-us-19",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-19",
       "trigger": "`review_cadence` do *mandate*",
       "user_story_id": "07-cicd-seguro-us-19",
       "warnings": []
@@ -3332,7 +3305,7 @@
       "id": "07-cicd-seguro-us-20-govern-1",
       "phase": "Onboarding/offboarding",
       "phase_normalized": "govern",
-      "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
+      "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags",
       "responsible": "`devops` + `appsec`",
       "responsible_normalized": [
         "devops-sre",
@@ -3340,7 +3313,7 @@
       ],
       "sla": "Na alteração de acesso",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-20-identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-20",
       "trigger": "Concessão ou revogação de acesso ao SCM",
       "user_story_id": "07-cicd-seguro-us-20",
       "warnings": []
@@ -3353,14 +3326,12 @@
       "id": "07-cicd-seguro-us-20-deploy-2",
       "phase": "Promoção",
       "phase_normalized": "deploy",
-      "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
+      "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags",
       "responsible": "Pipeline (verificação automática)",
-      "responsible_normalized": [
-        "verificacao-automatica"
-      ],
+      "responsible_normalized": [],
       "sla": "*Real-time*",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-20-identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-20",
       "trigger": "Cada *trigger* por *commit*/*tag*",
       "user_story_id": "07-cicd-seguro-us-20",
       "warnings": []
@@ -3373,14 +3344,14 @@
       "id": "07-cicd-seguro-us-20-test-3",
       "phase": "Revisão",
       "phase_normalized": "test",
-      "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
+      "practice_id": "07-cicd-seguro:identidade-empresarial-no-scm-e-assinatura-de-commits-tags",
       "responsible": "`grc`",
       "responsible_normalized": [
         "grc-compliance"
       ],
       "sla": "Semestral",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-20-identidade-empresarial-no-scm-e-assinatura-de-commits-tags-us-20",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-20",
       "trigger": "Auditoria periódica de acessos",
       "user_story_id": "07-cicd-seguro-us-20",
       "warnings": []
@@ -3393,14 +3364,14 @@
       "id": "07-cicd-seguro-us-21-develop-1",
       "phase": "Criação/refactor",
       "phase_normalized": "develop",
-      "practice_id": "07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21",
+      "practice_id": "07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados",
       "responsible": "`devops`",
       "responsible_normalized": [
         "devops-sre"
       ],
       "sla": "No PR",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-21-separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-21",
       "trigger": "Alteração da estrutura do pipeline",
       "user_story_id": "07-cicd-seguro-us-21",
       "warnings": []
@@ -3413,7 +3384,7 @@
       "id": "07-cicd-seguro-us-21-test-2",
       "phase": "Revisão",
       "phase_normalized": "test",
-      "practice_id": "07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21",
+      "practice_id": "07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados",
       "responsible": "`appsec` + `devops`",
       "responsible_normalized": [
         "appsec-engineer",
@@ -3421,7 +3392,7 @@
       ],
       "sla": "No PR",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-21-separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-21",
       "trigger": "Alteração de *templates* ou credenciais de *stage*",
       "user_story_id": "07-cicd-seguro-us-21",
       "warnings": []
@@ -3434,14 +3405,14 @@
       "id": "07-cicd-seguro-us-21-govern-3",
       "phase": "Auditoria",
       "phase_normalized": "govern",
-      "practice_id": "07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21",
+      "practice_id": "07-cicd-seguro:separacao-ci-cd-build-test-deploy-e-templates-versionados",
       "responsible": "`grc`",
       "responsible_normalized": [
         "grc-compliance"
       ],
       "sla": "Semestral",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-21-separacao-ci-cd-build-test-deploy-e-templates-versionados-us-21",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-21",
       "trigger": "Revisão periódica de permissões por *stage*",
       "user_story_id": "07-cicd-seguro-us-21",
       "warnings": []
@@ -3454,14 +3425,14 @@
       "id": "07-cicd-seguro-us-22-deploy-1",
       "phase": "Provisionamento",
       "phase_normalized": "deploy",
-      "practice_id": "07-cicd-seguro:protecao-contra-escalonamento-de-privilegios-em-runners-us-22",
+      "practice_id": "07-cicd-seguro:protecao-contra-escalonamento-de-privilegios-em-runners",
       "responsible": "`devops`",
       "responsible_normalized": [
         "devops-sre"
       ],
       "sla": "No PR de infra",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-22-protecao-contra-escalonamento-de-privilegios-em-runners-us-22",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-22",
       "trigger": "Criação/alteração de *runners*",
       "user_story_id": "07-cicd-seguro-us-22",
       "warnings": []
@@ -3474,14 +3445,12 @@
       "id": "07-cicd-seguro-us-22-operate-2",
       "phase": "Operação",
       "phase_normalized": "operate",
-      "practice_id": "07-cicd-seguro:protecao-contra-escalonamento-de-privilegios-em-runners-us-22",
+      "practice_id": "07-cicd-seguro:protecao-contra-escalonamento-de-privilegios-em-runners",
       "responsible": "*Runner* (deteção automática)",
-      "responsible_normalized": [
-        "detecao-automatica"
-      ],
+      "responsible_normalized": [],
       "sla": "*Real-time*",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-22-protecao-contra-escalonamento-de-privilegios-em-runners-us-22",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-22",
       "trigger": "Tentativa de acesso privilegiado",
       "user_story_id": "07-cicd-seguro-us-22",
       "warnings": []
@@ -3494,14 +3463,14 @@
       "id": "07-cicd-seguro-us-22-test-3",
       "phase": "Revisão",
       "phase_normalized": "test",
-      "practice_id": "07-cicd-seguro:protecao-contra-escalonamento-de-privilegios-em-runners-us-22",
+      "practice_id": "07-cicd-seguro:protecao-contra-escalonamento-de-privilegios-em-runners",
       "responsible": "`appsec`",
       "responsible_normalized": [
         "appsec-engineer"
       ],
       "sla": "Semestral",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-22-protecao-contra-escalonamento-de-privilegios-em-runners-us-22",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-22",
       "trigger": "Auditoria de configuração de *runners*",
       "user_story_id": "07-cicd-seguro-us-22",
       "warnings": []
@@ -3514,14 +3483,14 @@
       "id": "07-cicd-seguro-us-23-unassigned-1",
       "phase": "Build/Promoção",
       "phase_normalized": "unassigned",
-      "practice_id": "07-cicd-seguro:custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas-us-23",
+      "practice_id": "07-cicd-seguro:custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas",
       "responsible": "`devops`",
       "responsible_normalized": [
         "devops-sre"
       ],
       "sla": "A cada promoção",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-23-custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas-us-23",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-23",
       "trigger": "Produção e consumo de artefactos",
       "user_story_id": "07-cicd-seguro-us-23",
       "warnings": []
@@ -3534,7 +3503,7 @@
       "id": "07-cicd-seguro-us-23-operate-2",
       "phase": "Operação",
       "phase_normalized": "operate",
-      "practice_id": "07-cicd-seguro:custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas-us-23",
+      "practice_id": "07-cicd-seguro:custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas",
       "responsible": "`appsec` + `grc`",
       "responsible_normalized": [
         "appsec-engineer",
@@ -3542,7 +3511,7 @@
       ],
       "sla": "No pedido de exceção",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-23-custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas-us-23",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-23",
       "trigger": "Registo/aplicação de exceção a *gate*",
       "user_story_id": "07-cicd-seguro-us-23",
       "warnings": []
@@ -3555,7 +3524,7 @@
       "id": "07-cicd-seguro-us-23-unassigned-3",
       "phase": "Integração",
       "phase_normalized": "unassigned",
-      "practice_id": "07-cicd-seguro:custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas-us-23",
+      "practice_id": "07-cicd-seguro:custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas",
       "responsible": "`devops` + `appsec`",
       "responsible_normalized": [
         "devops-sre",
@@ -3563,7 +3532,7 @@
       ],
       "sla": "No PR de integração",
       "source_document_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-ci-cd-moderno--us-23-custodia-de-artefactos-visibilidade-de-excecao-e-integracoes-externas-us-23",
+      "source_section_id": "010-sbd-manual-07-cicd-seguro-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-ci-cd-seguro--user-stories-adicionais-riscos-de-processo-do-cicd-moderno--us-23",
       "trigger": "Adição/alteração de serviço externo",
       "user_story_id": "07-cicd-seguro-us-23",
       "warnings": []
@@ -4572,7 +4541,7 @@
       ],
       "sla": "Execução só em pipeline; bloqueio imediato fora dele",
       "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-18-proibicao-de-apply-manual-local-fora-do-pipeline",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-18-proibicao-de-apply-manuallocal-fora-do-pipeline",
       "trigger": "Pedido de `apply`",
       "user_story_id": "08-iac-infraestrutura-us-18",
       "warnings": []
@@ -4592,7 +4561,7 @@
       ],
       "sla": "Revisão trimestral de tentativas e exceções",
       "source_document_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-18-proibicao-de-apply-manual-local-fora-do-pipeline",
+      "source_section_id": "010-sbd-manual-08-iac-infraestrutura-aplicacao-lifecycle--aplicacao-no-ciclo-de-vida-infraestrutura-como-codigo-iac--user-stories-adicionais-processo-automatizado-e-assistido--us-18-proibicao-de-apply-manuallocal-fora-do-pipeline",
       "trigger": "Auditoria periódica",
       "user_story_id": "08-iac-infraestrutura-us-18",
       "warnings": []
@@ -4692,7 +4661,7 @@
       ],
       "sla": "Automático",
       "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-02-validacao-automatica-de-vulnerabilidades-em-imagens-no-pipeline-ci-cd",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-02-validacao-automatica-de-vulnerabilidades-em-imagens-no-pipeline-cicd",
       "trigger": "Build da imagem",
       "user_story_id": "09-containers-imagens-us-02",
       "warnings": []
@@ -4733,7 +4702,7 @@
       ],
       "sla": "Imediato",
       "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-04-aplicacao-de-politicas-formais-de-seguranca-no-runtime-com-opa-kyverno",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-04-aplicacao-de-politicas-formais-de-seguranca-no-runtime-com-opakyverno",
       "trigger": "Criação de pod",
       "user_story_id": "09-containers-imagens-us-04",
       "warnings": []
@@ -4829,8 +4798,9 @@
       "phase": "Deploy",
       "phase_normalized": "deploy",
       "practice_id": "09-containers-imagens:rbac-minimo-e-serviceaccounts-dedicadas",
-      "responsible": "DevOps / SRE",
+      "responsible": "Arquitetos de Software aprovam; DevOps / SRE executa",
       "responsible_normalized": [
+        "arquitetos-software",
         "devops-sre"
       ],
       "sla": "Antes do go-live",
@@ -4894,7 +4864,7 @@
         "devops-sre",
         "appsec-engineer"
       ],
-      "sla": "30d audit log retention",
+      "sla": "Retenção do audit log conforme a Política 29",
       "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-10-segmentacao-de-rede-e-networkpolicy",
       "trigger": "Auditoria de fluxos",
@@ -4952,8 +4922,7 @@
       "practice_id": "09-containers-imagens:golden-base-images-com-patching-automatico",
       "responsible": "DevOps / SRE (automático se via Dependabot)",
       "responsible_normalized": [
-        "devops-sre",
-        "automatico-se-via-dependabot"
+        "devops-sre"
       ],
       "sla": "Per SLA",
       "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
@@ -4972,10 +4941,7 @@
       "phase_normalized": "test",
       "practice_id": "09-containers-imagens:golden-base-images-com-patching-automatico",
       "responsible": "Pipeline CI/CD",
-      "responsible_normalized": [
-        "pipeline-ci",
-        "cd"
-      ],
+      "responsible_normalized": [],
       "sla": "`<2h` para aprovação",
       "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-11-golden-base-images-com-patching-automatico",
@@ -4997,7 +4963,7 @@
         "devops-sre",
         "grc-compliance"
       ],
-      "sla": "Notificação 90d antes",
+      "sla": "Aviso na depreciação; remoção ≤ 60d",
       "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-11-golden-base-images-com-patching-automatico",
       "trigger": "EOL atingido",
@@ -5121,7 +5087,7 @@
       ],
       "sla": "Antes do deploy em produção",
       "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-14-sandboxing-avancado-com-gvisor-kata-para-workloads-criticas",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-14-sandboxing-avancado-com-gvisorkata-para-workloads-criticas",
       "trigger": "Criação de pod sensível",
       "user_story_id": "09-containers-imagens-us-14",
       "warnings": []
@@ -5135,8 +5101,9 @@
       "phase": "Design/Plataforma",
       "phase_normalized": "design",
       "practice_id": "09-containers-imagens:aprovacao-depreciacao-e-revogacao-de-golden-base-images-catalogo-organizacional",
-      "responsible": "DevOps / SRE + AppSec Engineer",
+      "responsible": "Arquitetos de Software aprovam; DevOps / SRE + AppSec Engineer executam",
       "responsible_normalized": [
+        "arquitetos-software",
         "devops-sre",
         "appsec-engineer"
       ],
@@ -5207,7 +5174,7 @@
       ],
       "sla": "Antes do go-live",
       "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-17-excecoes-temporarias-a-findings-policies-com-ttl-compensacoes-e-revalidacao",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-17-excecoes-temporarias-a-findingspolicies-com-ttl-compensacoes-e-revalidacao",
       "trigger": "Bloqueio por finding/policy",
       "user_story_id": "09-containers-imagens-us-17",
       "warnings": []
@@ -5260,8 +5227,9 @@
       "phase": "Design/Plataforma",
       "phase_normalized": "design",
       "practice_id": "09-containers-imagens:isolamento-de-gpu-e-separacao-de-workloads-de-inferencia-sensiveis",
-      "responsible": "DevOps / SRE + AppSec Engineer",
+      "responsible": "Arquitetos de Software aprovam; DevOps / SRE + AppSec Engineer executam",
       "responsible_normalized": [
+        "arquitetos-software",
         "devops-sre",
         "appsec-engineer"
       ],
@@ -5346,7 +5314,7 @@
       ],
       "sla": "Imediato",
       "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-21-perfis-seccomp-apparmor-e-verificacao-de-drift-de-hardening",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-21-perfis-seccompapparmor-e-verificacao-de-drift-de-hardening",
       "trigger": "Criação de pod",
       "user_story_id": "09-containers-imagens-us-21",
       "warnings": []
@@ -5367,7 +5335,7 @@
       ],
       "sla": "Periódica (L3: contínua)",
       "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-21-perfis-seccomp-apparmor-e-verificacao-de-drift-de-hardening",
+      "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-21-perfis-seccompapparmor-e-verificacao-de-drift-de-hardening",
       "trigger": "Verificação de *drift*",
       "user_story_id": "09-containers-imagens-us-21",
       "warnings": []
@@ -5385,7 +5353,7 @@
       "responsible_normalized": [
         "devops-sre"
       ],
-      "sla": "Per SLA (L3: ≤30d)",
+      "sla": "Per SLA (L1 ≤90d; L2 ≤60d; L3 ≤30d)",
       "source_document_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-09-containers-imagens-aplicacao-lifecycle--aplicacao-ao-ciclo-de-vida-containers-e-execucao-isolada--user-stories-reutilizaveis--us-22-retencao-e-limpeza-de-imagens-com-renovacao-periodica-por-sla",
       "trigger": "Patch de base / janela de renovação",
@@ -5489,7 +5457,7 @@
       ],
       "sla": "Em cada build",
       "source_document_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-04-gates-de-seguranca-no-ci-cd",
+      "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--user-stories-reutilizaveis--us-04-gates-de-seguranca-no-cicd",
       "trigger": "Execução pipeline",
       "user_story_id": "10-testes-seguranca-us-04",
       "warnings": []
@@ -5841,7 +5809,7 @@
       ],
       "sla": "Antes do merge/release",
       "source_document_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--checklist-de-release-v-version--us-16-separacao-formal-entre-sinal-automatico-e-decisao-de-bloqueio-override",
+      "source_section_id": "010-sbd-manual-10-testes-seguranca-aplicacao-lifecycle--aplicacao-de-testes-de-seguranca-ao-longo-do-ciclo-de-vida--checklist-de-release-v-version--us-16-separacao-formal-entre-sinal-automatico-e-decisao-de-bloqueiooverride",
       "trigger": "Gate falhou ou exceção proposta",
       "user_story_id": "10-testes-seguranca-us-16",
       "warnings": []
@@ -6167,7 +6135,7 @@
       "responsible_normalized": [
         "devops-sre"
       ],
-      "sla": "≤ 1h",
+      "sla": "RTO de rollback conforme a Política 27 §6 (≤ 30 min em L2, ≤ 15 min em L3)",
       "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-04-rollback-rapido-e-testado",
       "trigger": "Incidente ou falha",
@@ -6294,7 +6262,7 @@
       ],
       "sla": "Por etapa ≤ 30 min",
       "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-10-deploy-progressivo-com-estrategias-canary-blue-green",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-10-deploy-progressivo-com-estrategias-canaryblue-green",
       "trigger": "Promoção a produção",
       "user_story_id": "11-deploy-seguro-us-10",
       "warnings": []
@@ -6333,7 +6301,7 @@
       "responsible_normalized": [
         "devops-sre"
       ],
-      "sla": "≤ 15 min",
+      "sla": "RTO de rollback conforme a Política 27 §6 (≤ 30 min em L2, ≤ 15 min em L3)",
       "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--user-stories-reutilizaveis--us-12-rollback-estruturado-por-tipo-binario-configuracao-bd-infra",
       "trigger": "Falha em produção",
@@ -6411,9 +6379,9 @@
       "phase": "Produção",
       "phase_normalized": "operate",
       "practice_id": "11-deploy-seguro:separacao-entre-acao-automatica-e-autorizacao-irreversivel",
-      "responsible": "Ops",
+      "responsible": "DevOps / SRE",
       "responsible_normalized": [
-        "operacoes"
+        "devops-sre"
       ],
       "sla": "Antes da execução",
       "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
@@ -6451,7 +6419,7 @@
       "id": "11-deploy-seguro-us-18-deploy-1",
       "phase": "Pré-promoção",
       "phase_normalized": "deploy",
-      "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
+      "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai",
       "responsible": "DevOps + AppSec",
       "responsible_normalized": [
         "devops-sre",
@@ -6459,7 +6427,7 @@
       ],
       "sla": "Bloqueio imediato",
       "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-18-release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-18",
       "trigger": "*Eval gate* falha",
       "user_story_id": "11-deploy-seguro-us-18",
       "warnings": []
@@ -6472,17 +6440,15 @@
       "id": "11-deploy-seguro-us-18-deploy-2",
       "phase": "Promoção",
       "phase_normalized": "deploy",
-      "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
+      "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai",
       "responsible": "DevOps + AppSec + *owner* do agente (Policy 38)",
       "responsible_normalized": [
         "devops-sre",
-        "appsec-engineer",
-        "owner-do-agente",
-        "policy-38"
+        "appsec-engineer"
       ],
       "sla": "Janela *canary* declarada",
       "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-18-release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-18",
       "trigger": "Mudança de versão maior de modelo / prompt",
       "user_story_id": "11-deploy-seguro-us-18",
       "warnings": []
@@ -6495,7 +6461,7 @@
       "id": "11-deploy-seguro-us-18-operate-3",
       "phase": "Degradação em produção",
       "phase_normalized": "operate",
-      "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
+      "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai",
       "responsible": "Ops + AppSec",
       "responsible_normalized": [
         "operacoes",
@@ -6503,7 +6469,7 @@
       ],
       "sla": "*Rollback* conforme nível de severidade",
       "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-18-release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-18",
       "trigger": "`OPS-011/013/014` dispara",
       "user_story_id": "11-deploy-seguro-us-18",
       "warnings": []
@@ -6516,14 +6482,14 @@
       "id": "11-deploy-seguro-us-18-govern-4",
       "phase": "Auditoria",
       "phase_normalized": "govern",
-      "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
+      "practice_id": "11-deploy-seguro:release-gates-especificos-para-sistemas-com-agentes-ai",
       "responsible": "AppSec",
       "responsible_normalized": [
         "appsec-engineer"
       ],
       "sla": "Conforme cadência",
       "source_document_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-18-release-gates-especificos-para-sistemas-com-agentes-ai-us-18",
+      "source_section_id": "010-sbd-manual-11-deploy-seguro-aplicacao-lifecycle--aplicacao-de-deploy-seguro-no-ciclo-de-vida--artefactos-esperados--us-18",
       "trigger": "`review_cadence` do *mandate*",
       "user_story_id": "11-deploy-seguro-us-18",
       "warnings": []
@@ -6644,7 +6610,7 @@
       "responsible_normalized": [
         "operacoes"
       ],
-      "sla": "≤ 30 min",
+      "sla": "Por severidade, conforme as Políticas 31 e 32 (P1: primeira resposta ≤ 5 min, triagem ≤ 15 min)",
       "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-04-integracao-com-processos-de-resposta-a-incidentes",
       "trigger": "Alerta confirmado",
@@ -6666,7 +6632,7 @@
       ],
       "sla": "Trimestral",
       "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-05-metricas-de-eficacia-mttd-mttr",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-05-metricas-de-eficacia-mttdmttr",
       "trigger": "Revisão periódica",
       "user_story_id": "12-monitorizacao-operacoes-us-05",
       "warnings": []
@@ -6809,7 +6775,7 @@
       "responsible": "GRC + Auditoria Interna",
       "responsible_normalized": [
         "grc-compliance",
-        "auditoria-interna"
+        "auditores"
       ],
       "sla": "Trimestral",
       "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
@@ -6826,7 +6792,7 @@
       "id": "12-monitorizacao-operacoes-us-13-govern-1",
       "phase": "Onboarding do agente",
       "phase_normalized": "govern",
-      "practice_id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao-us-13",
+      "practice_id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao",
       "responsible": "`devops` + `appsec`",
       "responsible_normalized": [
         "devops-sre",
@@ -6834,7 +6800,7 @@
       ],
       "sla": "Antes da operação em produção",
       "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-13-telemetria-de-agentes-ai-em-producao-us-13",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-13",
       "trigger": "Activação do *mandate* (Policy 38)",
       "user_story_id": "12-monitorizacao-operacoes-us-13",
       "warnings": []
@@ -6847,16 +6813,14 @@
       "id": "12-monitorizacao-operacoes-us-13-operate-2",
       "phase": "Operação",
       "phase_normalized": "operate",
-      "practice_id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao-us-13",
+      "practice_id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao",
       "responsible": "Agente (audit automático) + `appsec` (revisão de sinais)",
       "responsible_normalized": [
-        "audit-automatico",
-        "appsec-engineer",
-        "revisao-de-sinais"
+        "appsec-engineer"
       ],
       "sla": "*Real-time*",
       "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-13-telemetria-de-agentes-ai-em-producao-us-13",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-13",
       "trigger": "Cada *tool invocation*",
       "user_story_id": "12-monitorizacao-operacoes-us-13",
       "warnings": []
@@ -6869,7 +6833,7 @@
       "id": "12-monitorizacao-operacoes-us-13-operate-3",
       "phase": "Incidente",
       "phase_normalized": "operate",
-      "practice_id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao-us-13",
+      "practice_id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao",
       "responsible": "`appsec` + `ops`",
       "responsible_normalized": [
         "appsec-engineer",
@@ -6877,7 +6841,7 @@
       ],
       "sla": "Conforme severidade (US-04 deste capítulo)",
       "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-13-telemetria-de-agentes-ai-em-producao-us-13",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-13",
       "trigger": "OPS-014 dispara",
       "user_story_id": "12-monitorizacao-operacoes-us-13",
       "warnings": []
@@ -6890,14 +6854,14 @@
       "id": "12-monitorizacao-operacoes-us-13-test-4",
       "phase": "Revisão",
       "phase_normalized": "test",
-      "practice_id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao-us-13",
+      "practice_id": "12-monitorizacao-operacoes:telemetria-de-agentes-ai-em-producao",
       "responsible": "`appsec` + *owner*",
       "responsible_normalized": [
         "appsec-engineer"
       ],
       "sla": "Conforme cadência",
       "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-13-telemetria-de-agentes-ai-em-producao-us-13",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-13",
       "trigger": "`review_cadence` do *mandate*",
       "user_story_id": "12-monitorizacao-operacoes-us-13",
       "warnings": []
@@ -6959,7 +6923,7 @@
       ],
       "sla": "Por release / por triagem",
       "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-16-cobertura-att-ck-e-priorizacao-epss-kev",
+      "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-16-cobertura-attck-e-priorizacao-epsskev",
       "trigger": "Criação/revisão de regra / triagem de vulnerabilidade",
       "user_story_id": "12-monitorizacao-operacoes-us-16",
       "warnings": []
@@ -6978,7 +6942,7 @@
         "operacoes",
         "appsec-engineer"
       ],
-      "sla": "No último ciclo (anual mínimo)",
+      "sla": "No último ciclo (Política 32 §8: anual em L1, semestral em L2/L3)",
       "source_document_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-12-monitorizacao-operacoes-aplicacao-lifecycle--aplicacao-de-monitorizacao-operacoes-no-ciclo-de-vida--user-stories-reutilizaveis--us-17-exercicios-de-resposta-a-incidentes-end-to-end",
       "trigger": "Ciclo de exercício / revisão de playbook",
@@ -7015,9 +6979,9 @@
       "phase": "Onboarding",
       "phase_normalized": "govern",
       "practice_id": "13-formacao-onboarding:onboarding-seguro-obrigatorio",
-      "responsible": "Security Champion (RH) + AppSec Engineer",
+      "responsible": "RH / PeopleOps + AppSec Engineer",
       "responsible_normalized": [
-        "security-champion",
+        "rh-peopleops",
         "appsec-engineer"
       ],
       "sla": "Antes de acesso técnico",
@@ -7036,10 +7000,10 @@
       "phase": "Ciclo contínuo",
       "phase_normalized": "operate",
       "practice_id": "13-formacao-onboarding:formacao-continua-por-perfil",
-      "responsible": "AppSec Engineer + Security Champion (RH)",
+      "responsible": "AppSec Engineer + RH / PeopleOps",
       "responsible_normalized": [
         "appsec-engineer",
-        "security-champion"
+        "rh-peopleops"
       ],
       "sla": "Deadline comunicado com 2 semanas",
       "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
@@ -7182,11 +7146,11 @@
       "phase": "Governance/Auditoria",
       "phase_normalized": "govern",
       "practice_id": "13-formacao-onboarding:manutencao-e-atualizacao-de-trilhos-formativos",
-      "responsible": "AppSec Engineer + GRC / Compliance + Security Champion (RH)",
+      "responsible": "AppSec Engineer + GRC / Compliance + RH / PeopleOps",
       "responsible_normalized": [
         "appsec-engineer",
         "grc-compliance",
-        "security-champion"
+        "rh-peopleops"
       ],
       "sla": "Antes do ciclo de formação novo",
       "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
@@ -7204,10 +7168,10 @@
       "phase": "Onboarding / Governance",
       "phase_normalized": "govern",
       "practice_id": "13-formacao-onboarding:trilhos-formativos-proporcionais-por-risco-l1l3",
-      "responsible": "AppSec Engineer + Security Champion (RH)",
+      "responsible": "AppSec Engineer + RH / PeopleOps",
       "responsible_normalized": [
         "appsec-engineer",
-        "security-champion"
+        "rh-peopleops"
       ],
       "sla": "Antes de primeira atribuição técnica",
       "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
@@ -7225,9 +7189,9 @@
       "phase": "Onboarding",
       "phase_normalized": "govern",
       "practice_id": "13-formacao-onboarding:validacao-formal-de-onboarding-via-checklist",
-      "responsible": "Security Champion (RH) + GRC / Compliance",
+      "responsible": "RH / PeopleOps + GRC / Compliance",
       "responsible_normalized": [
-        "security-champion",
+        "rh-peopleops",
         "grc-compliance"
       ],
       "sla": "Antes de acesso técnico",
@@ -7246,10 +7210,10 @@
       "phase": "Onboarding / Contínuo",
       "phase_normalized": "govern",
       "practice_id": "13-formacao-onboarding:validacao-de-conhecimento-via-quizzes-estruturados",
-      "responsible": "AppSec Engineer + Security Champion (RH)",
+      "responsible": "AppSec Engineer + RH / PeopleOps",
       "responsible_normalized": [
         "appsec-engineer",
-        "security-champion"
+        "rh-peopleops"
       ],
       "sla": "Antes/durante acesso",
       "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
@@ -7267,10 +7231,10 @@
       "phase": "Onboarding",
       "phase_normalized": "govern",
       "practice_id": "13-formacao-onboarding:operacionalizacao-de-formacao-de-terceiros",
-      "responsible": "GRC / Compliance + Security Champion (RH) + AppSec Engineer",
+      "responsible": "GRC / Compliance + RH / PeopleOps + AppSec Engineer",
       "responsible_normalized": [
         "grc-compliance",
-        "security-champion",
+        "rh-peopleops",
         "appsec-engineer"
       ],
       "sla": "Antes de acesso",
@@ -7312,7 +7276,8 @@
       "practice_id": "13-formacao-onboarding:formatos-de-entrega-e-dod-por-formato",
       "responsible": "AppSec Engineer / RH",
       "responsible_normalized": [
-        "appsec-engineer"
+        "appsec-engineer",
+        "rh-peopleops"
       ],
       "sla": "DoD mínimo e artefactos associados definidos no planeamento",
       "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
@@ -7330,10 +7295,10 @@
       "phase": "Onboarding",
       "phase_normalized": "govern",
       "practice_id": "13-formacao-onboarding:caminho-de-remediacao-abaixo-do-limiar",
-      "responsible": "AppSec Engineer + Security Champion (RH)",
+      "responsible": "AppSec Engineer + RH / PeopleOps",
       "responsible_normalized": [
         "appsec-engineer",
-        "security-champion"
+        "rh-peopleops"
       ],
       "sla": "Remediação iniciada antes de qualquer concessão de acesso",
       "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
@@ -7351,10 +7316,10 @@
       "phase": "Onboarding",
       "phase_normalized": "govern",
       "practice_id": "13-formacao-onboarding:termo-de-responsabilidade-de-terceiros",
-      "responsible": "GRC / Compliance + Security Champion (RH) + AppSec Engineer",
+      "responsible": "GRC / Compliance + RH / PeopleOps + AppSec Engineer",
       "responsible_normalized": [
         "grc-compliance",
-        "security-champion",
+        "rh-peopleops",
         "appsec-engineer"
       ],
       "sla": "Termo registado antes de acesso",
@@ -7394,10 +7359,10 @@
       "phase": "Onboarding / Ciclo contínuo",
       "phase_normalized": "govern",
       "practice_id": "13-formacao-onboarding:formacao-em-uso-seguro-de-ia-e-tooling",
-      "responsible": "AppSec Engineer + Security Champion (RH)",
+      "responsible": "AppSec Engineer + RH / PeopleOps",
       "responsible_normalized": [
         "appsec-engineer",
-        "security-champion"
+        "rh-peopleops"
       ],
       "sla": "Antes de uso autónomo de tooling de IA",
       "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
@@ -7415,11 +7380,11 @@
       "phase": "Onboarding",
       "phase_normalized": "govern",
       "practice_id": "13-formacao-onboarding:sandbox-isolado-para-pratica-de-contractors",
-      "responsible": "DevOps / SRE + AppSec Engineer + Security Champion (Training Manager)",
+      "responsible": "DevOps / SRE + AppSec Engineer + Training Manager",
       "responsible_normalized": [
         "devops-sre",
         "appsec-engineer",
-        "security-champion"
+        "rh-peopleops"
       ],
       "sla": "Provisão T-5 dias; sign-off antes de acesso real (T+7)",
       "source_document_id": "010-sbd-manual-13-formacao-onboarding-aplicacao-lifecycle",
@@ -7440,11 +7405,8 @@
       "responsible": "Developer (submissão) + AppSec Engineer (validação) + Gestão Executiva / CISO (aprovação conforme nível)",
       "responsible_normalized": [
         "developer",
-        "submissao",
         "appsec-engineer",
-        "validacao",
-        "gestao-executiva",
-        "aprovacao-conforme-nivel"
+        "gestao-executiva"
       ],
       "sla": "Aprovação em 5 dias (L1–L2), 3 dias (L3); Notificação de revalidação 30 dias antes do vencimento",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
@@ -7462,9 +7424,10 @@
       "phase": "Planeamento",
       "phase_normalized": "plan",
       "practice_id": "14-governanca-contratacao:clausulas-contratuais-de-seguranca",
-      "responsible": "GRC / Compliance (Jurídico + Procurement)",
+      "responsible": "Jurídico + Procurement",
       "responsible_normalized": [
-        "grc-compliance"
+        "legal",
+        "procurement"
       ],
       "sla": "Conforme ciclo da US",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
@@ -7544,10 +7507,10 @@
       "phase": "Planeamento",
       "phase_normalized": "plan",
       "practice_id": "14-governanca-contratacao:execucao-de-fluxo-formal-de-validacao-de-fornecedores",
-      "responsible": "AppSec Engineer + GRC / Compliance (Procurement Officer)",
+      "responsible": "AppSec Engineer + Procurement Officer",
       "responsible_normalized": [
         "appsec-engineer",
-        "grc-compliance"
+        "procurement"
       ],
       "sla": "2 semanas (L2), 1 semana (L3)",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
@@ -7748,7 +7711,7 @@
       "sla": "Relatório publicado 5 dias após fim do período",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-11-consolidacao-de-kpis-de-governacao-e-maturidade",
-      "trigger": "Trimestral (mínimo), Semestral (recomendado)",
+      "trigger": "Conforme a Política 35: anual (L1), semestral (L2), trimestral (L3)",
       "user_story_id": "14-governanca-contratacao-us-11",
       "warnings": []
     },
@@ -7770,7 +7733,7 @@
       "sla": "Relatório publicado 5 dias após fim do período",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-11-consolidacao-de-kpis-de-governacao-e-maturidade",
-      "trigger": "Trimestral (mínimo), Semestral (recomendado)",
+      "trigger": "Conforme a Política 35: anual (L1), semestral (L2), trimestral (L3)",
       "user_story_id": "14-governanca-contratacao-us-11",
       "warnings": []
     },
@@ -7783,11 +7746,12 @@
       "phase": "Planeamento",
       "phase_normalized": "plan",
       "practice_id": "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
-      "responsible": "CISO + AppSec Engineer + GRC / Compliance (Jurídico)",
+      "responsible": "CISO + AppSec Engineer + GRC / Compliance + Jurídico",
       "responsible_normalized": [
         "gestao-executiva",
         "appsec-engineer",
-        "grc-compliance"
+        "grc-compliance",
+        "legal"
       ],
       "sla": "Publicação em 2 semanas",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
@@ -7805,11 +7769,12 @@
       "phase": "Execução",
       "phase_normalized": "unassigned",
       "practice_id": "14-governanca-contratacao:formalizacao-de-modelo-de-governacao-por-nivel-de-risco",
-      "responsible": "CISO + AppSec Engineer + GRC / Compliance (Jurídico)",
+      "responsible": "CISO + AppSec Engineer + GRC / Compliance + Jurídico",
       "responsible_normalized": [
         "gestao-executiva",
         "appsec-engineer",
-        "grc-compliance"
+        "grc-compliance",
+        "legal"
       ],
       "sla": "Publicação em 2 semanas",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
@@ -7830,11 +7795,8 @@
       "responsible": "AppSec Engineer (validação) + Scrum Master / Team Lead (preenchimento) + GRC / Compliance (consolidação)",
       "responsible_normalized": [
         "appsec-engineer",
-        "validacao",
         "scrum-master",
-        "preenchimento",
-        "grc-compliance",
-        "consolidacao"
+        "grc-compliance"
       ],
       "sla": "Atualização em 5 dias úteis após trigger",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
@@ -7855,11 +7817,8 @@
       "responsible": "AppSec Engineer (validação) + Scrum Master / Team Lead (preenchimento) + GRC / Compliance (consolidação)",
       "responsible_normalized": [
         "appsec-engineer",
-        "validacao",
         "scrum-master",
-        "preenchimento",
-        "grc-compliance",
-        "consolidacao"
+        "grc-compliance"
       ],
       "sla": "Atualização em 5 dias úteis após trigger",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
@@ -7880,11 +7839,8 @@
       "responsible": "AppSec Engineer (validação) + Scrum Master / Team Lead (preenchimento) + GRC / Compliance (consolidação)",
       "responsible_normalized": [
         "appsec-engineer",
-        "validacao",
         "scrum-master",
-        "preenchimento",
-        "grc-compliance",
-        "consolidacao"
+        "grc-compliance"
       ],
       "sla": "Atualização em 5 dias úteis após trigger",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
@@ -7905,11 +7861,8 @@
       "responsible": "AppSec Engineer (validação) + Scrum Master / Team Lead (preenchimento) + GRC / Compliance (consolidação)",
       "responsible_normalized": [
         "appsec-engineer",
-        "validacao",
         "scrum-master",
-        "preenchimento",
-        "grc-compliance",
-        "consolidacao"
+        "grc-compliance"
       ],
       "sla": "Atualização em 5 dias úteis após trigger",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
@@ -7927,14 +7880,11 @@
       "phase": "Validação",
       "phase_normalized": "test",
       "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
-      "responsible": "AppSec Engineer (análise técnica) + GRC / Compliance (Procurement Officer — coordenação; decisão e registo)",
+      "responsible": "AppSec Engineer (análise técnica) + Procurement Officer (coordenação) + GRC / Compliance (decisão e registo)",
       "responsible_normalized": [
         "appsec-engineer",
-        "analise-tecnica",
-        "grc-compliance",
-        "procurement-officer-coordenacao",
-        "decisao",
-        "registo"
+        "procurement",
+        "grc-compliance"
       ],
       "sla": "Reavaliação completada em 2 semanas desde trigger",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
@@ -7952,14 +7902,11 @@
       "phase": "Operação",
       "phase_normalized": "operate",
       "practice_id": "14-governanca-contratacao:reavaliacao-continua-e-rotacao-de-fornecedores-pos-onboarding",
-      "responsible": "AppSec Engineer (análise técnica) + GRC / Compliance (Procurement Officer — coordenação; decisão e registo)",
+      "responsible": "AppSec Engineer (análise técnica) + Procurement Officer (coordenação) + GRC / Compliance (decisão e registo)",
       "responsible_normalized": [
         "appsec-engineer",
-        "analise-tecnica",
-        "grc-compliance",
-        "procurement-officer-coordenacao",
-        "decisao",
-        "registo"
+        "procurement",
+        "grc-compliance"
       ],
       "sla": "Reavaliação completada em 2 semanas desde trigger",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
@@ -7977,14 +7924,11 @@
       "phase": "Planeamento",
       "phase_normalized": "plan",
       "practice_id": "14-governanca-contratacao:preparacao-tecnica-e-validacao-de-contractors-pre-acesso",
-      "responsible": "Security Champion (coordenação HR) + AppSec Engineer (validação) + Scrum Master / Team Lead (sandbox setup)",
+      "responsible": "RH / PeopleOps (coordenação) + AppSec Engineer (validação) + Tech Lead (sandbox setup)",
       "responsible_normalized": [
-        "security-champion",
-        "coordenacao-hr",
+        "rh-peopleops",
         "appsec-engineer",
-        "validacao",
-        "scrum-master",
-        "sandbox-setup"
+        "tech-lead"
       ],
       "sla": "Conclusão em 2–3 dias úteis antes de data de início; Notificação: Contractor informado via email sobre trilho",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
@@ -8002,13 +7946,10 @@
       "phase": "Planeamento",
       "phase_normalized": "plan",
       "practice_id": "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
-      "responsible": "AppSec Engineer (validação de conclusão) + Security Champion (Training Manager — coordenação trilho; rastreabilidade HR)",
+      "responsible": "AppSec Engineer (validação de conclusão) + Training Manager (coordenação do trilho; rastreabilidade RH)",
       "responsible_normalized": [
         "appsec-engineer",
-        "validacao-de-conclusao",
-        "security-champion",
-        "training-manager-coordenacao-trilho",
-        "rastreabilidade-hr"
+        "rh-peopleops"
       ],
       "sla": "Formação completa antes de acesso real; Notificação: Semanais se em risco, daily se `<`3 dias",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
@@ -8026,13 +7967,10 @@
       "phase": "Execução",
       "phase_normalized": "unassigned",
       "practice_id": "14-governanca-contratacao:trilho-de-formacao-obrigatoria-pre-acesso-contractors",
-      "responsible": "AppSec Engineer (validação de conclusão) + Security Champion (Training Manager — coordenação trilho; rastreabilidade HR)",
+      "responsible": "AppSec Engineer (validação de conclusão) + Training Manager (coordenação do trilho; rastreabilidade RH)",
       "responsible_normalized": [
         "appsec-engineer",
-        "validacao-de-conclusao",
-        "security-champion",
-        "training-manager-coordenacao-trilho",
-        "rastreabilidade-hr"
+        "rh-peopleops"
       ],
       "sla": "Formação completa antes de acesso real; Notificação: Semanais se em risco, daily se `<`3 dias",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
@@ -8050,15 +7988,11 @@
       "phase": "Operação",
       "phase_normalized": "operate",
       "practice_id": "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
-      "responsible": "DevOps / SRE (acesso técnico) + AppSec Engineer (validação) + Security Champion (coordenação timeline HR; checkpoints)",
+      "responsible": "DevOps / SRE (acesso técnico) + AppSec Engineer (validação) + RH / PeopleOps (coordenação da timeline; checkpoints)",
       "responsible_normalized": [
         "devops-sre",
-        "acesso-tecnico",
         "appsec-engineer",
-        "validacao",
-        "security-champion",
-        "coordenacao-timeline-hr",
-        "checkpoints"
+        "rh-peopleops"
       ],
       "sla": "Offboarding completo em **`<`24h** da data de termo; Notificação: HR envia aviso 2 semanas antes",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
@@ -8076,15 +8010,11 @@
       "phase": "Validação",
       "phase_normalized": "test",
       "practice_id": "14-governanca-contratacao:offboarding-seguro-de-contractors-e-rescisao-de-fornecedores",
-      "responsible": "DevOps / SRE (acesso técnico) + AppSec Engineer (validação) + Security Champion (coordenação timeline HR; checkpoints)",
+      "responsible": "DevOps / SRE (acesso técnico) + AppSec Engineer (validação) + RH / PeopleOps (coordenação da timeline; checkpoints)",
       "responsible_normalized": [
         "devops-sre",
-        "acesso-tecnico",
         "appsec-engineer",
-        "validacao",
-        "security-champion",
-        "coordenacao-timeline-hr",
-        "checkpoints"
+        "rh-peopleops"
       ],
       "sla": "Offboarding completo em **`<`24h** da data de termo; Notificação: HR envia aviso 2 semanas antes",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
@@ -8105,11 +8035,9 @@
       "responsible": "AppSec Engineer (setup inicial) + Operações (Ops) (operação 24x7)",
       "responsible_normalized": [
         "appsec-engineer",
-        "setup-inicial",
-        "operacoes",
-        "operacao-24x7"
+        "operacoes"
       ],
-      "sla": "Alerta em **`<`1h** de deteção, escalonamento em `<`15 min",
+      "sla": "Triagem ≤ 15 min após o alerta; escalonamento por severidade (P1 imediato; P2 ≤ 1h); GRC/Compliance + EPD/DPO ≤ 1h se houver trilho regulatório",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
       "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-18-monitorizacao-continua-de-conformidade-de-fornecedores-alertas-e-escalacao",
       "trigger": "Incidente, CVE crítico, SLA breach, mudança contratual",
@@ -8125,14 +8053,11 @@
       "phase": "Validação",
       "phase_normalized": "test",
       "practice_id": "14-governanca-contratacao:revisao-trimestral-de-acesso-de-contractors-least-privilege",
-      "responsible": "Security Champion (coordenação) + Scrum Master / Team Lead (validação de necessidade) + DevOps / SRE (mudanças técnicas)",
+      "responsible": "Security Champion (coordenação) + Tech Lead (validação de necessidade) + DevOps / SRE (mudanças técnicas)",
       "responsible_normalized": [
         "security-champion",
-        "coordenacao",
-        "scrum-master",
-        "validacao-de-necessidade",
-        "devops-sre",
-        "mudancas-tecnicas"
+        "tech-lead",
+        "devops-sre"
       ],
       "sla": "Revisão iniciada e completada em **1 semana**",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
@@ -8150,13 +8075,11 @@
       "phase": "Operação",
       "phase_normalized": "operate",
       "practice_id": "14-governanca-contratacao:feedback-pos-projeto-e-rating-de-contractors",
-      "responsible": "Security Champion (coordenação) + Scrum Master / Team Lead + AppSec Engineer (preenchimento)",
+      "responsible": "Security Champion (coordenação) + Tech Lead + AppSec Engineer (preenchimento)",
       "responsible_normalized": [
         "security-champion",
-        "coordenacao",
-        "scrum-master",
-        "appsec-engineer",
-        "preenchimento"
+        "tech-lead",
+        "appsec-engineer"
       ],
       "sla": "Feedback completado em **3 dias úteis** após fim do contrato",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
@@ -8173,14 +8096,16 @@
       "id": "14-governanca-contratacao-us-21-govern-1",
       "phase": "Pré-onboarding",
       "phase_normalized": "govern",
-      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
-      "responsible": "GRC / Compliance (Procurement + Legal)",
+      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai",
+      "responsible": "GRC / Compliance + Procurement + Jurídico",
       "responsible_normalized": [
-        "grc-compliance"
+        "grc-compliance",
+        "procurement",
+        "legal"
       ],
       "sla": "Antes do uso operacional",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21",
       "trigger": "Adopção de novo provedor AI",
       "user_story_id": "14-governanca-contratacao-us-21",
       "warnings": []
@@ -8193,7 +8118,7 @@
       "id": "14-governanca-contratacao-us-21-operate-2",
       "phase": "Operação",
       "phase_normalized": "operate",
-      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
+      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai",
       "responsible": "AppSec Engineer + GRC / Compliance",
       "responsible_normalized": [
         "appsec-engineer",
@@ -8201,7 +8126,7 @@
       ],
       "sla": "Conforme SLA contratual; pré-*cutover*",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21",
       "trigger": "Notificação de mudança pelo provedor",
       "user_story_id": "14-governanca-contratacao-us-21",
       "warnings": []
@@ -8214,14 +8139,14 @@
       "id": "14-governanca-contratacao-us-21-govern-3",
       "phase": "Revisão periódica",
       "phase_normalized": "govern",
-      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
+      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai",
       "responsible": "GRC / Compliance",
       "responsible_normalized": [
         "grc-compliance"
       ],
       "sla": "L1 anual / L2 semestral / L3 trimestral",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21",
       "trigger": "Cadência por nível de risco",
       "user_story_id": "14-governanca-contratacao-us-21",
       "warnings": []
@@ -8234,7 +8159,7 @@
       "id": "14-governanca-contratacao-us-21-operate-4",
       "phase": "Descontinuação",
       "phase_normalized": "operate",
-      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai-us-21",
+      "practice_id": "14-governanca-contratacao:contratacao-de-provedores-de-modelos-ai",
       "responsible": "GRC / Compliance + DevOps / SRE",
       "responsible_normalized": [
         "grc-compliance",
@@ -8242,7 +8167,7 @@
       ],
       "sla": "Plano de migração antes da remoção operacional",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21-contratacao-de-provedores-de-modelos-ai-us-21",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-21",
       "trigger": "Provider removido da lista",
       "user_story_id": "14-governanca-contratacao-us-21",
       "warnings": []
@@ -8255,16 +8180,15 @@
       "id": "14-governanca-contratacao-us-22-plan-1",
       "phase": "Planeamento",
       "phase_normalized": "plan",
-      "practice_id": "14-governanca-contratacao:aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais-us-22",
+      "practice_id": "14-governanca-contratacao:aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais",
       "responsible": "GRC / Compliance + CISO + Gestão Executiva (aprovação)",
       "responsible_normalized": [
         "grc-compliance",
-        "gestao-executiva",
-        "aprovacao"
+        "gestao-executiva"
       ],
       "sla": "Aprovação antes da entrada em vigor",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-22-aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais-us-22",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-22",
       "trigger": "Criação ou revisão de política",
       "user_story_id": "14-governanca-contratacao-us-22",
       "warnings": []
@@ -8277,7 +8201,7 @@
       "id": "14-governanca-contratacao-us-22-govern-2",
       "phase": "Auditoria",
       "phase_normalized": "govern",
-      "practice_id": "14-governanca-contratacao:aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais-us-22",
+      "practice_id": "14-governanca-contratacao:aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais",
       "responsible": "GRC / Compliance + AppSec Engineer",
       "responsible_normalized": [
         "grc-compliance",
@@ -8285,25 +8209,25 @@
       ],
       "sla": "Auditoria concluída no ciclo; ações corretivas com prazo definido",
       "source_document_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle",
-      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-22-aprovacao-formal-e-auditoria-periodica-das-politicas-organizacionais-us-22",
+      "source_section_id": "010-sbd-manual-14-governanca-contratacao-aplicacao-lifecycle--aplicacao-de-governanca-contratacao-no-ciclo-de-vida--matriz-de-rastreabilidade-global--us-22",
       "trigger": "Ciclo periódico (≤ anual) ou mudança organizacional",
       "user_story_id": "14-governanca-contratacao-us-22",
       "warnings": []
     }
   ],
-  "run_id": "20260909T230038Z",
+  "run_id": "20260927T163447Z",
   "source": {
     "branch": "HEAD",
-    "commit_sha": "0576e914d4c933ddc1af25cb2c5570dd2afcf60f",
+    "commit_sha": "53bd772556323c9d9e04f18d2ec09433702d9170",
     "corpus_root": "manuals_src/docs/sbd-toe",
-    "repo_url": "git@github.com:SbD-ToE/sbd-toe-manual.git"
+    "repo_url": "https://github.com/SbD-ToE/sbd-toe-manual.git"
   },
   "stats": {
     "errors": 0,
     "processed_files": 253,
-    "processed_sections": 2568,
+    "processed_sections": 2569,
     "skipped": 0,
-    "warnings": 53
+    "warnings": 52
   },
   "summary": {
     "sdlc_integration_rows": 396
@@ -8312,7 +8236,6 @@
   "warnings": [
     "010-sbd-manual/01-classificacao-aplicacoes/aplicacao-lifecycle.md:US-15 missing proportionality table",
     "010-sbd-manual/02-requisitos-seguranca/aplicacao-lifecycle.md:US-02 missing proportionality table",
-    "010-sbd-manual/02-requisitos-seguranca/aplicacao-lifecycle.md:US-03 role drift detected for 'Developer (proponente) e GRC/Compliance (regista)'",
     "010-sbd-manual/02-requisitos-seguranca/aplicacao-lifecycle.md:US-03 missing proportionality table",
     "010-sbd-manual/02-requisitos-seguranca/aplicacao-lifecycle.md:US-11 missing proportionality table",
     "010-sbd-manual/02-requisitos-seguranca/aplicacao-lifecycle.md:US-12 missing proportionality table",

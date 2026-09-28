@@ -62,16 +62,17 @@ interface BaselineFixture {
   name: "fixture1" | "fixture2";
   label: string;
   input: PrepareCodegenContextInput;
-  /** 0.21 (a): 69 reqs > tecto 52/55 — os níveis dieted respondem needs_decomposition declarado. */
+  /** 0.21.2 (decisão 0004): o payload medido passa o envelope — os níveis dieted respondem needs_decomposition com lotes medidos. */
   dietedBlockedByCeiling?: boolean;
 }
 
 /** Guarda dos dieted: na fixture bloqueada por tecto, prova o bloqueio declarado e sai. */
 function dietedBlocked(fixture: BaselineFixture, detail: "lista" | "standard"): boolean {
   if (!fixture.dietedBlockedByCeiling) return false;
-  const r = handlePrepareCodegenContextDiscover({ ...fixture.input, detail }) as { status: string; requirement_ceiling?: { limit: number; selected: number; union: { recall: number } } };
+  const r = handlePrepareCodegenContextDiscover({ ...fixture.input, detail }) as { status: string; requirement_ceiling?: { basis: string; projected_tk: number; promise_tk: number; selected: number; union: { recall: number }; batches: Array<{ requirements: number; measured_tk: number; irreducible: boolean }> } };
   expect(r.status).toBe("needs_decomposition");
-  expect(r.requirement_ceiling!.selected).toBeGreaterThan(r.requirement_ceiling!.limit);
+  expect(r.requirement_ceiling!.basis).toBe("measured_payload");
+  expect(r.requirement_ceiling!.projected_tk).toBeGreaterThan(r.requirement_ceiling!.promise_tk);
   expect(r.requirement_ceiling!.union.recall).toBe(1);
   return true;
 }
@@ -94,8 +95,8 @@ const FIXTURES: readonly BaselineFixture[] = [
       risk_level: "L2",
       mode: "codegen"
     },
-    // 0.21 — decisão do lead (a): tecto lista 52 / standard 55. A fixture 2 (69 requisitos)
-    // BLOQUEIA por tecto nos níveis dieted (needs_decomposition declarado); só o full a serve.
+    // 0.21.2 — regra de custo (decisão 0004): a fixture 2 (69 requisitos) mede acima do envelope
+    // nos níveis dieted (needs_decomposition com lotes medidos); só o full a serve.
     dietedBlockedByCeiling: true
   }
 ];

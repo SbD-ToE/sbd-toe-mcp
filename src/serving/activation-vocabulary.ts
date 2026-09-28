@@ -18,8 +18,12 @@ import {
   CONCERN_TO_V0_CATEGORIES_SUPPLEMENT,
   EXPOSURE_CONCERNS,
   SENSITIVITY_CONCERNS,
+  publishedSliceFamilies,
+  sliceFamilyProducers,
+  sliceFamiliesForBroadActivator,
   type Concern
 } from "../tools/prepare-codegen-context.js";
+import { getG2Runtime } from "../tools/g2-runtime-loader.js";
 import { CONCERN_TO_DOMAIN_CHAPTERS, TECHNOLOGY_TO_CHAPTERS, SES008_TECHNOLOGY } from "./selection.js";
 import { PATTERN_RULES } from "../tools/map-review-scope.js";
 import { packageMaturity, servedKgReleaseTag, servingServerVersion } from "../version-info.js";
@@ -51,6 +55,8 @@ export interface ActivatorVocabularyEntry {
   /** P1-A/item 2: valor válido que NÃO activa nada — publicado como tal, nunca omitido. */
   inert?: true;
   note: string;
+  /** 0.21.2 (decisão 0006): as famílias de fatia que o valor traz, por nível — derivadas SÓ do dado (cadeia requisito → controlo → objectivo → família). */
+  activates_slice_families?: Record<"L1" | "L2" | "L3", string[]>;
 }
 
 export interface ActivationVocabulary {
@@ -88,9 +94,49 @@ export interface ActivationVocabulary {
     values: { value: string; activates_chapters: string[]; named_rule?: string; note?: string }[];
   };
   changed_files: { closed_set: false; note: string; patterns: { pattern: string; activates_chapters: string[] }[] };
+  /** 0.21.2 (decisão 0005): activador SÓ DE CONTEXTO — escrito pelo servidor na receita dos lotes. */
+  slice_families: {
+    closed_set: true;
+    context_only: true;
+    note: string;
+    values: { value: string; produced_by_concerns: string[]; slices: number }[];
+  };
   roles: { closed_set: true; note: string; values: { value: string; aliases: string[] }[] };
   phases: { closed_set: true; note: string; values: { value: string; label: string; aliases: string[] }[] };
   not_activators: { field: string; role: string; note: string }[];
+}
+
+/**
+ * 0.21.2 (decisão 0006): o que exposure/data_sensitivity publicam — a SELECÇÃO por regra declarada
+ * (activates_concerns, tabela do motor: decisão D3 do lead, 2026-08-31) e o CONTEXTO pela cadeia do
+ * dado (activates_slice_families, por nível). As duas origens são diferentes e ditas.
+ */
+const CONTEXT_NOTE = (what: string): string =>
+  `Activador declarado. ${what} impõe concerns por regra declarada (activates_concerns — é a selecção de requisitos). ` +
+  "O CONTEXTO (fatias AppSec Core, g2_context, manual_grounding) vem SÓ do dado publicado: requisitos que este valor selecciona → " +
+  "controlos (requirement_control_links) → objectivos (ctrl_acore_alignment, exact/partial) → famílias (activates_slice_families, por nível). " +
+  "Afirma alinhamento, não autoria nem que o valor exija a fatia.";
+
+// A selecção usa o vocabulário (dicas de activação) e o cálculo das famílias usa a selecção: guarda de
+// reentrada. Durante o cálculo, o vocabulário INTERNO das dicas sai sem famílias (não as usa); o
+// vocabulário publicado sai sempre completo (o resultado fica memorizado no prepare).
+let computingFamilies = false;
+function familiesByLevel(
+  only: { exposure?: (typeof EXPOSURE_VALUES)[number] } | { data_sensitivity?: (typeof SENSITIVITY_VALUES)[number] }
+): { activates_slice_families?: Record<"L1" | "L2" | "L3", string[]> } {
+  if (computingFamilies) return {};
+  computingFamilies = true;
+  try {
+    return {
+      activates_slice_families: {
+        L1: sliceFamiliesForBroadActivator("L1", only as never),
+        L2: sliceFamiliesForBroadActivator("L2", only as never),
+        L3: sliceFamiliesForBroadActivator("L3", only as never)
+      }
+    };
+  } finally {
+    computingFamilies = false;
+  }
 }
 
 /** Categorias v0 que um concern activa — pela mesma via do motor (loader ⊕ suplemento). */
@@ -222,11 +268,11 @@ export function buildActivationVocabulary(): ActivationVocabulary {
     },
     exposure: {
       closed_set: true,
-      note: "Activador declarado: a superfície exposta impõe concerns por regra publicada.",
+      note: CONTEXT_NOTE("A superfície exposta"),
       values: EXPOSURE_VALUES.map((value) => {
         const list = [...(EXPOSURE_CONCERNS[value] ?? [])];
         return list.length > 0
-          ? { value, activates_concerns: list, note: `exposure='${value}' activa ${list.join(", ")} por regra declarada.` }
+          ? { value, activates_concerns: list, ...familiesByLevel({ exposure: value }), note: `exposure='${value}' activa ${list.join(", ")} por regra declarada.` }
           : {
               value,
               activates_concerns: [],
@@ -237,7 +283,7 @@ export function buildActivationVocabulary(): ActivationVocabulary {
     },
     data_sensitivity: {
       closed_set: true,
-      note: "Activador declarado: a natureza dos dados impõe concerns por regra publicada.",
+      note: CONTEXT_NOTE("A natureza dos dados"),
       values: SENSITIVITY_VALUES.map((value) => {
         const list = [...(SENSITIVITY_CONCERNS[value] ?? [])];
         /**
@@ -267,7 +313,7 @@ export function buildActivationVocabulary(): ActivationVocabulary {
               }
             : {};
         return list.length > 0
-          ? { value, activates_concerns: list, ...equivalence, note: `data_sensitivity='${value}' activa ${list.join(", ")} por regra declarada.` }
+          ? { value, activates_concerns: list, ...familiesByLevel({ data_sensitivity: value }), ...equivalence, note: `data_sensitivity='${value}' activa ${list.join(", ")} por regra declarada.` }
           : {
               value,
               activates_concerns: [],
@@ -296,6 +342,23 @@ export function buildActivationVocabulary(): ActivationVocabulary {
       note:
         "Caminhos reais do repositório. A activação é por TABELA de padrões de path publicada abaixo — não há interpretação do conteúdo nem do nome.",
       patterns: PATTERN_RULES.map((r) => ({ pattern: r.pattern, activates_chapters: [...r.bundles] }))
+    },
+    slice_families: {
+      closed_set: true,
+      context_only: true,
+      note:
+        "Activador SÓ DE CONTEXTO: activa as fatias AppSec Core destas famílias (entidades do g2_context e manual_grounding) e NUNCA selecciona requisitos; sozinho devolve needs_input. Não é uma forma de pedir: é o servidor que o escreve na receita de cada lote de needs_decomposition, para o lote levar o contexto que o teu pedido activava para as suas categorias. Executa o `with` do lote tal e qual. As concerns produzem estas famílias por si.",
+      values: publishedSliceFamilies().map((value) => ({
+        value,
+        produced_by_concerns: sliceFamilyProducers(value).map(String),
+        slices: (() => {
+          try {
+            return getG2Runtime().slices.filter((slice) => slice.objective_family === value).length;
+          } catch {
+            return 0;
+          }
+        })()
+      }))
     },
     roles: {
       closed_set: true,
